@@ -67,14 +67,14 @@
 35: surface_upward_sensible_heat_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
 36: toa_incoming_shortwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
 37: toa_outgoing_shortwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
-38: upward_air_velocity / (m s-1)       (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS	
-39: x_wind / (m s-1)                    (time: 2; grid_latitude: 501; grid_longitude: 500)									# 10-M, BGRID										
-40: x_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS	
+38: upward_air_velocity / (m s-1)       (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS
+39: x_wind / (m s-1)                    (time: 2; grid_latitude: 501; grid_longitude: 500)									# 10-M, BGRID
+40: x_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS
 41: y_wind / (m s-1)                    (time: 2; grid_latitude: 501; grid_longitude: 500)									# 10-M, B-GRID
-42: y_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 501; grid_longitude: 500)					# RHO LEVELS	
+42: y_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 501; grid_longitude: 500)					# RHO LEVELS
 
 
-'umnsaa_pvera000': 
+'umnsaa_pvera000':
 
 0: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
 1: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
@@ -154,4 +154,3 @@
 0: air_temperature / (K)               (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# WET BULB AIR TEMPERATURE? (PGRID)
 1: geopotential_height / (m)           (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# PGRID
 2: relative_humidity / (%)             (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# WRT WATER ON PGRID
-

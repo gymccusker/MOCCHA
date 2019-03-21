@@ -6,18 +6,34 @@
 
 import time
 import datetime
-import iris
-import iris.plot as iplt
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
 
-import matplotlib
-import matplotlib.cm as mpl_cm
-import matplotlib.pyplot as plt
+def cart_plot(data):
 
-import cartopy.crs as crs
-import cartopy.feature as cfe
+    import iris
+    import iris.plot as iplt
+    import matplotlib
+    import matplotlib.cm as mpl_cm
+    import matplotlib.pyplot as plt
+    import cartopy.crs as crs
+    import cartopy.feature as cfe
+    import iris.quickplot as qplt
+
+    # Create a figure
+    fig = plt.figure(figsize=(8,4))
+
+    ## set axes position
+    ax = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
+
+    ## Allow interactive plotting
+    plt.interactive(True)
+
+    ## Draw the contour with 25 levels.
+    contour = qplt.contourf(data[0,:,:], cmap = mpl_cm.Reds)
+
+    plt.show()
 
 
 def main():
@@ -47,6 +63,7 @@ def main():
 
     print cube1 # lists all diagnostics in file
 
+    data = cube1[16]    # 3D air temperature, K
 
 if __name__ == '__main__':
 
