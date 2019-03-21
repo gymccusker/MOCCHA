@@ -6,6 +6,7 @@
 
 
 import iris
+import iris.plot as iplt
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
@@ -31,9 +32,12 @@ root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_
 #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
 #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
-filename1 = root_dir + 'umnsaa_pverd000'
+filename1 = root_dir + 'umnsaa_da015'
 
 cube1 = iris.load(filename1)
 
 print cube1 # lists all diagnostics in file
+
+
+
 
