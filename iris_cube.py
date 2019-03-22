@@ -9,7 +9,7 @@ import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
-import diags_MOCCHA as diags_ukv
+# import diags_MOCCHA as diags_ukv
 
 def cart_plot(data):
 
@@ -26,14 +26,31 @@ def cart_plot(data):
     fig = plt.figure(figsize=(8,4))
 
     ## set axes position
-    ax = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
+    ax = fig.add_axes([0.1,0.1,0.35,0.8])	# left, bottom, width, height
 
     ## Allow interactive plotting
-    plt.interactive(True)
+    # plt.interactive(True)
 
     ## Draw the contour with 25 levels.
-    contour = qplt.contourf(data[0,:,:], cmap = mpl_cm.Reds)
+    # contour = qplt.contourf(data[0,0,:,:], cmap = mpl_cm.Reds)
+    # iplt.plot(data[0,:,0,0])
+    # iplt.plot(data[0,:,200,200],data.aux_coords[2])
+    ## iplt.plot(data[1,0:30,200,200],data.aux_coords[2][0:30])
+    for i in range(0,np.size(data1,0)):
+        strgi = "%1.f" % (i) # string of timestep
+        iplt.plot(data1[i,0:30,200,200],data1.aux_coords[2][0:30],label=strgi)
+    plt.legend()
+    plt.title(data1.standard_name)
 
+    # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
+
+    ## set axes position
+    ax = fig.add_axes([0.1,0.1,0.35,0.8])	# left, bottom, width, height
+    for i in range(0,np.size(data1,0)):
+        strgi = "%1.f" % (i) # string of timestep
+        iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
+    plt.legend()
+    plt.title(data2.standard_name)
     plt.show()
 
 
@@ -61,14 +78,15 @@ def main():
     filename1 = root_dir + 'umnsaa_pb000'
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube1 = iris.load_cube(filename1, var_con)
+    # var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    # cube1 = iris.load_cube(filename1, var_con)
 
-    #cube1 = iris.load(filename1)
+    cube1 = iris.load(filename1)
 
     print cube1 # lists all diagnostics in file
 
-    data = cube1[16]    # 3D air temperature, K
+    data1 = cube1[16]    # 3D air temperature, K
+    data2 = cube1[26]    # 3D specific humidity, kg/kg
 
 if __name__ == '__main__':
 
