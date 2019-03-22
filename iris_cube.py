@@ -9,6 +9,7 @@ import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
+import diags_MOCCHA as diags_ukv
 
 def cart_plot(data):
 
@@ -59,7 +60,11 @@ def main():
 
     filename1 = root_dir + 'umnsaa_pb000'
 
-    cube1 = iris.load(filename1)
+    ## Set variable constraint (i.e. which variable to load in based on stash code)
+    var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    cube1 = iris.load_cube(filename1, var_con)
+
+    #cube1 = iris.load(filename1)
 
     print cube1 # lists all diagnostics in file
 
