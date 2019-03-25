@@ -67,11 +67,9 @@ def makeGlobalStashList():
     GlobalStashList = diags_ukv.returnWantedStash()
 
     print GlobalStashList
+    print GlobalStashList[0]
 
     return GlobalStashList
-
-
-
 
 def main():
 
