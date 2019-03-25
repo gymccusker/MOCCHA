@@ -3,14 +3,13 @@
 ### SCRIPT TO READ IN UM MODEL DATA AS IRIS CUBE
 ###
 ###
-#!/usr/bin/python2.7
 
 import time
 import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
-# import diags_MOCCHA as diags_ukv
+import diags_MOCCHA as diags_ukv
 
 def cart_plot(data1, data2):
 
@@ -54,7 +53,6 @@ def cart_plot(data1, data2):
 
     plt.show()
 
-
 def main():
 
     import iris
@@ -86,20 +84,21 @@ def main():
     # var_con = iris.AttributeConstraint(STASH='m01s16i222')
     # cube1 = iris.load_cube(filename1, var_con)
 
-    cube1 = iris.load(filename1)
+    cube = iris.load(filename1)
 
-    print cube1 # lists all diagnostics in file
+    print cube # lists all diagnostics in file
 
-    temperature = cube1[15]    # 3D air temperature, K
-    Qvap = cube1[25]    # 3D specific humidity, kg/kg
+    temperature = cube[15]    # 3D air temperature, K
+    Qvap = cube[25]    # 3D specific humidity, kg/kg
 
     plot = cart_plot(temperature, Qvap)
+
+    out = writeNetCDF(cube)
 
     END_TIME = time.time()
     print ''
     print 'End: ' + time.strftime("%c")
     print ''
-
 
 if __name__ == '__main__':
 
