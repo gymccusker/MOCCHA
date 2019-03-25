@@ -90,6 +90,8 @@ def main():
     data1 = cube1[16]    # 3D air temperature, K
     data2 = cube1[26]    # 3D specific humidity, kg/kg
 
+    plot = cart_plot(data1)
+
 if __name__ == '__main__':
 
     main()
