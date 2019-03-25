@@ -40,7 +40,7 @@ def cart_plot(data1, data2):
         strgi = "%1.f" % (i) # string of timestep
         iplt.plot(data1[i,0:30,200,200],data1.aux_coords[2][0:30],label=strgi)
     plt.legend()
-    plt.title(data1.standard_name)
+    plt.title(data1.standard_name + ', ' + str(data1.units))
 
     # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
 
@@ -50,7 +50,7 @@ def cart_plot(data1, data2):
         strgi = "%1.f" % (i) # string of timestep
         iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
     plt.legend()
-    plt.title(data2.standard_name)
+    plt.title(data2.standard_name + ', ' + str(data2.units))
 
     plt.show()
 
