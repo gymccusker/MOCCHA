@@ -3,6 +3,7 @@
 ### SCRIPT TO READ IN UM MODEL DATA AS IRIS CUBE
 ###
 ###
+#!/usr/bin/python2.7
 
 import time
 import datetime
