@@ -96,6 +96,10 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
+    print 'Reading in files: '
+    print filename1
+    print ' '
+    
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
 
     # -------------------------------------------------------------------------
@@ -104,6 +108,8 @@ def main():
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
+
+    print 'Cubes at ' + TIME + ':'
 
     # -------------------------------------------------------------
     # Load cubes
