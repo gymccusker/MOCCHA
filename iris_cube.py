@@ -89,10 +89,16 @@ def main():
 
     print cube1 # lists all diagnostics in file
 
-    temperature = cube1[16]    # 3D air temperature, K
-    Qvap = cube1[26]    # 3D specific humidity, kg/kg
+    temperature = cube1[15]    # 3D air temperature, K
+    Qvap = cube1[25]    # 3D specific humidity, kg/kg
 
     plot = cart_plot(temperature, Qvap)
+
+    END_TIME = time.time()
+    print ''
+    print 'End: ' + time.strftime("%c")
+    print ''
+
 
 if __name__ == '__main__':
 
