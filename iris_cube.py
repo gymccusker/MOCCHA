@@ -12,7 +12,7 @@ from netCDF4 import Dataset
 import numpy as np
 # import diags_MOCCHA as diags_ukv
 
-def cart_plot(data):
+def cart_plot(data1, data2):
 
     import iris.plot as iplt
     import matplotlib
@@ -92,9 +92,7 @@ def main():
     temperature = cube1[16]    # 3D air temperature, K
     Qvap = cube1[26]    # 3D specific humidity, kg/kg
 
-    data = temperature    # choose data to plot
-
-    plot = cart_plot(data)
+    plot = cart_plot(temperature, Qvap)
 
 if __name__ == '__main__':
 
