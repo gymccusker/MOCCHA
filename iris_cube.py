@@ -61,7 +61,9 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
-    root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    # root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+    out_dir = '1_20160401_61DIAG_TEST/'
 
     #### 	FILE NAMES
     #In [15]: ls
@@ -75,7 +77,7 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
-    filename1 = root_dir + 'umnsaa_pb000'
+    filename1 = root_dir + out_dir + 'umnsaa_pb000'
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     # var_con = iris.AttributeConstraint(STASH='m01s16i222')
