@@ -9,7 +9,7 @@ import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
-import diags_MOCCHA as diags_ukv
+import diags_MOCCHA as diags
 
 def cart_plot(data1, data2):
 
@@ -64,12 +64,18 @@ def makeGlobalStashList():
     make a list of all the stash code we want to load
     '''
 
-    GlobalStashList = diags_ukv.returnWantedStash()
+    GlobalStashList = diags.returnWantedStash()
 
     print GlobalStashList
     print GlobalStashList[0]
 
     return GlobalStashList
+
+def callback(cube, field, filename):
+    iStash = cube.attributes['STASH'].__str__()
+    if diags.findfieldName(iStash):
+        if cube.name() != diags.findfieldName(iStash):
+            cube.rename(diags.findfieldName(iStash))
 
 def main():
 
@@ -99,7 +105,7 @@ def main():
     print 'Reading in files: '
     print filename1
     print ' '
-    
+
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
 
     # -------------------------------------------------------------------------
@@ -115,11 +121,11 @@ def main():
     # Load cubes
     # -------------------------------------------------------------
     # cube = iris.load(filenames, global_con, callback)
-
+    cube = iris.load(filename1, global_con, callback)
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube1 = iris.load_cube(filename1, var_con)
+    # var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    # cube1 = iris.load_cube(filename1, var_con)
 
     # cube = iris.load(filename1)
 
