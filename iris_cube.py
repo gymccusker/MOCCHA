@@ -13,7 +13,6 @@ import numpy as np
 
 def cart_plot(data):
 
-    import iris
     import iris.plot as iplt
     import matplotlib
     import matplotlib.cm as mpl_cm
@@ -55,6 +54,8 @@ def cart_plot(data):
 
 
 def main():
+
+    import iris
 
     START_TIME = time.time()
     print ''
