@@ -117,7 +117,7 @@ def main():
 
     print 'Cubes read in at ' + time.strftime("%c")
     print ' '
-        
+
     # -------------------------------------------------------------
     # Load cubes
     # -------------------------------------------------------------
@@ -130,7 +130,7 @@ def main():
 
     # cube = iris.load(filename1)
 
-    # print cube # lists all diagnostics in file
+    print cube # lists all diagnostics in file
 
     # out = writeNetCDF(cube)
 
