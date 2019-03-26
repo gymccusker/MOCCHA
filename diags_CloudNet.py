@@ -115,8 +115,9 @@ def main():
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
 
-    print 'Cubes at ' + TIME + ':'
-
+    print 'Cubes read in at ' + time.strftime("%c")
+    print ' '
+        
     # -------------------------------------------------------------
     # Load cubes
     # -------------------------------------------------------------
