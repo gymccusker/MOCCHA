@@ -1,4 +1,4 @@
-###
+##
 ###
 ### SCRIPT TO READ IN UM MODEL DATA AS IRIS CUBE
 ###
@@ -92,8 +92,6 @@ def main():
     Qvap = cube[25]    # 3D specific humidity, kg/kg
 
     plot = cart_plot(temperature, Qvap)
-
-    out = writeNetCDF(cube)
 
     END_TIME = time.time()
     print ''
