@@ -102,11 +102,11 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
+    filename1 = root_dir + out_dir + 'umnsaa_pb000'
+
     print 'Reading in files: '
     print filename1
     print ' '
-
-    filename1 = root_dir + out_dir + 'umnsaa_pb000'
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
