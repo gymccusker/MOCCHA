@@ -88,7 +88,10 @@ def main():
 
     # root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-    out_dir = '1_20160401_61DIAG_TEST/'
+    out_dir = '2_20180801_61DIAGS_TEST/'
+
+    ## 1_20160401_61DIAG_TEST/
+    ## 2_20180801_61DIAGS_TEST
 
     #### 	FILE NAMES
     #In [15]: ls
