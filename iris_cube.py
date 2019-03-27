@@ -81,7 +81,7 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
-    filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    filename1 = root_dir + out_dir + 'umnsaa_pb024'
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     # var_con = iris.AttributeConstraint(STASH='m01s16i222')
