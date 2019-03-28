@@ -13,7 +13,12 @@ import matplotlib.cm as cm
 from datetime import datetime, date
 
 
+def readfile(filename):
 
+    data = pd.read_csv(filename,header=(1))
+    values = data.values
+
+    return data, values
 
 def main():
 
@@ -22,8 +27,17 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
-    root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-    out_dir = '2_20180801_61DIAGS_TEST/'
+    ####    UM DIRECTORY ON JASMIN
+    # root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+    # out_dir = '2_20180801_61DIAGS_TEST/'
+
+    filename = '/nfs/see-fs-02_users/eargy/MOCCHA/gillian/ship/2018_shipposition_1hour.txt'
+
+    data, values = readfile(filename)
+
+    print ''
+    print data.head
+    print ''
 
     END_TIME = time.time()
     print ''
