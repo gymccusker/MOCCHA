@@ -28,27 +28,73 @@ def assignColumns(data):
 
 def plotmap(data):
 
-    import cartopy
-    import cartopy.crs as crs
-    import cartopy.feature as cfe
+    # import cartopy
+    # import cartopy.crs as crs
+    # import cartopy.feature as cfe
+    from mpl_toolkits.basemap import Basemap
 
     ###################################
     ## PLOT MAP
     ###################################
 
-    # Create a figure
-    fig = plt.figure(figsize=(8,4))
+    ##################################################
+    ##################################################
+    #### 	BASEMAP
+    ##################################################
+    ##################################################
 
-    # Set the GeoAxes to the projection used by WRF
-    ax = fig.add_axes([0.1,0.1,0.4,0.8], projection=cart_proj)	# left, bottom, width, height
-    # ax = plt.axes(projection=cart_proj)
+    SMALL_SIZE = 10
+    MED_SIZE = 12
+    LARGE_SIZE = 14
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    ## create figure and axes instances
+    fig = plt.figure(figsize=(5,4))
+
+    #########################################################################################################
+
+    ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
+
+    ### MAP DIMENSIONS
+    dim = 6500000
+
+    m = Basemap(width=0.75*dim,height=dim,
+                resolution='l',projection='stere',\
+                lat_ts=90,lat_0=90,lon_0=0)
+    m.drawcoastlines()
+    m.bluemarble()
+
+    # define parallels/meridians
+    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
+    m.drawmeridians(np.arange(-180.,181.,5.),labels=[0,0,1,0],linewidth=0.8,fontsize=10)
+    m.drawcoastlines(linewidth=1.)
+
+    # m.drawmapboundary(fill_color='lightgrey')
+    # m.fillcontinents(color='white')
+
+    ######################################################
+    ### CARTOPY CODE
+    ######################################################
+    # # Create a figure
+    # fig = plt.figure(figsize=(8,4))
+    #
+    # # Set the GeoAxes to the projection used by WRF
+    # ax = fig.add_axes([0.1,0.1,0.4,0.8], projection=cart_proj)	# left, bottom, width, height
+    # # ax = plt.axes(projection=cart_proj)
 
     # Add coastlines
-    ax.coastlines('50m', linewidth=0.8)
+    # ax.coastlines('50m', linewidth=0.8)
 
-    # Plot contours
-    plt.plot(data.values[:,6], data.values[:,6],
-                    transform=crs.PlateCarree())
+    # Plot ship track as line plot
+    x, y = m(data.values[:,6], data.values[:,7])
+    plt.plot(x, y, linewidth = 2)
 
     # Add a color bar
     # cbar = plt.colorbar(ax=ax, shrink=.62)
@@ -59,7 +105,7 @@ def plotmap(data):
     # ax.set_ylim(wrf.cartopy_ylim(qncloud1))
 
     # Add the gridlines
-    ax.gridlines(color="black", linestyle="dotted")
+    # ax.gridlines(color="black", linestyle="dotted")
 
     plt.title('MOCCHA ship track')
 
