@@ -15,7 +15,7 @@ import time
 
 def readfile(filename):
 
-    data = pd.read_csv(filename,header=(1))
+    data = pd.read_csv(filename, sep = " ")
     values = data.values
 
     return data, values
