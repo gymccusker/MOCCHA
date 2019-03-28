@@ -163,11 +163,18 @@ def main():
     # root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
     # out_dir = '2_20180801_61DIAGS_TEST/'
 
-    filename = '/nfs/see-fs-02_users/eargy/MOCCHA/gillian/ship/2018_shipposition_1hour.txt'
 
-    seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
-    seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
-    seaice_path = seaice_rootdir + seaice_file
+    #### FILENAME - DEPENDS ON PLATFORM
+    ## LEEDS
+    # filename = '/nfs/see-fs-02_users/eargy/MOCCHA/gillian/ship/2018_shipposition_1hour.txt'
+
+    ## JASMIN
+    filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+
+    #### CODE NOT WORKING
+    # seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
+    # seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
+    # seaice_path = seaice_rootdir + seaice_file
 
     data, values = readfile(filename)
 
