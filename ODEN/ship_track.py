@@ -108,7 +108,7 @@ def plotmap(data):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     ## create figure and axes instances
-    fig = plt.figure(figsize=(5,4))
+    fig = plt.figure(figsize=(6,8))
 
     #########################################################################################################
 
