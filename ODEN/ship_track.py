@@ -67,7 +67,7 @@ def inIce(data):
     ###################################
 
     Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
-    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=21,data.values[:,1]==9))
+    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=19,data.values[:,1]==9))
     inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     print ''
@@ -115,11 +115,11 @@ def plotmap(data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 5000000
+    dim = 3000000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=90,lat_0=90,lon_0=0)
+                lat_ts=86,lat_0=86,lon_0=0)
     m.drawcoastlines()
     m.bluemarble()
 
