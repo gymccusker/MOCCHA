@@ -9,9 +9,17 @@ import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
-import diags_MOCCHA as diags_ukv
+# import diags_MOCCHA as diags_ukv
 
-def cart_plot(data1, data2):
+def rotateGrid(data1):
+    ##
+    ##      ROTATE GRID BACK TO NORMAL
+    ##
+
+    rot_lat = data1.coord('grid_latitude').points
+    rot_lat = data1.coord('grid_longitude').points
+
+def vertical_profile(data1):
 
     import iris.plot as iplt
     import matplotlib
@@ -50,6 +58,48 @@ def cart_plot(data1, data2):
         iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
     plt.legend()
     plt.title(data2.standard_name + ', ' + str(data2.units))
+
+    plt.show()
+
+def cart_map(data1, data2):
+
+    import iris.plot as iplt
+    import matplotlib
+    import matplotlib.cm as mpl_cm
+    import matplotlib.pyplot as plt
+    import cartopy.crs as crs
+    import cartopy.feature as cfe
+    import iris.quickplot as qplt
+
+    # Create a figure
+    fig = plt.figure(figsize=(8,4))
+
+    ## set axes position
+    ax = fig.add_axes([0.1,0.1,0.35,0.8]), projection=cart_proj)	# left, bottom, width, height
+    # ax = plt.axes(projection=cart_proj)
+
+    # Add coastlines
+    ax.coastlines('50m', linewidth=0.8)
+
+    rot_lat = data1.coord('grid_latitude').points
+    rot_lat = data1.coord('grid_longitude').points
+
+    # Plot contours
+    # plt.contourf(wrf.to_np(lons), wrf.to_np(lats), data2, 10,
+    #                 transform=crs.PlateCarree(), cmap = mpl_cm.Reds)
+
+    ## Add a color bar
+    # cbar = plt.colorbar(ax=ax, shrink=.62)
+    # cbar.set_label(qnwfa2.name[-5:])
+
+    # Set the map limits.  Not really necessary, but used for demonstration.
+    # ax.set_xlim(wrf.cartopy_xlim(qnwfa2))
+    # ax.set_ylim(wrf.cartopy_ylim(qnwfa2))
+
+    # # Add the gridlines
+    # ax.gridlines(color="black", linestyle="dotted")
+
+    # plt.title(qnwfa2.name+'\n'+str(qnwfa2.Time.values))
 
     plt.show()
 
@@ -94,7 +144,8 @@ def main():
     temperature = cube[15]    # 3D air temperature, K
     Qvap = cube[25]    # 3D specific humidity, kg/kg
 
-    plot = cart_plot(temperature, Qvap)
+    # plot = vertical_profile(temperature, Qvap)
+    plot = cart_map(temperature)
 
     END_TIME = time.time()
     print ''
