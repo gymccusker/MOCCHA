@@ -26,6 +26,21 @@ def assignColumns(data):
 
     return columns
 
+def readSeaice(seaice_path):
+
+    import h5py as hdf
+
+    seaice = hdf.File(seaice_path, 'r')
+
+    ### LIST HDF KEYS
+    seaice_keys = seaice.keys()
+
+    print ''
+    print seaice_keys
+    print ''
+
+    return seaice
+
 def plotmap(data):
 
     # import cartopy
@@ -124,6 +139,9 @@ def main():
 
     filename = '/nfs/see-fs-02_users/eargy/MOCCHA/gillian/ship/2018_shipposition_1hour.txt'
 
+    seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
+    seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
+
     data, values = readfile(filename)
 
     columns = assignColumns(data)
@@ -133,6 +151,8 @@ def main():
     print ''
 
     map = plotmap(data)
+
+    seaice = readSeaice(seaice_file)
 
     END_TIME = time.time()
     print ''
