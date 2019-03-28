@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from datetime import datetime, date
-
+import time
 
 def readfile(filename):
 
