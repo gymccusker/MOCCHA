@@ -1,0 +1,156 @@
+###
+###
+###	OUTPUT DIAGNOSTICS FROM UM (AS 19 MAR 2019)
+###		V1: TRIAL OF INCLUDING CLOUDNET DIAGS (61_DIAGS) - umnsaa_pbXXX
+###
+###
+
+
+'umnsaa_cb000':
+
+0: unknown / (unknown)                 (model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+1: unknown / (unknown)                 (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+2: air_potential_temperature / (K)     (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+3: dimensionless_exner_function / (1)  (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+4: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+5: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+6: specific_humidity / (kg kg-1)       (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+7: surface_altitude / (m)              (grid_latitude: 500; grid_longitude: 500)
+8: upward_air_velocity / (m s-1)       (model_level_number: 71; grid_latitude: 500; grid_longitude: 500)
+9: x_wind / (m s-1)                    (model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+10: y_wind / (m s-1)                    (model_level_number: 70; grid_latitude: 501; grid_longitude: 500)
+
+
+'umnsaa_pa000':		## DEFAULT DIAGS (60_DIAGS)
+
+0: land_binary_mask / (1)              (grid_latitude: 500; grid_longitude: 500)
+1: surface_altitude / (m)              (grid_latitude: 500; grid_longitude: 500)
+
+
+'umnsaa_pb000':		## CLOUDNET DIAGNOSTICS (61 DIAGS)
+
+0: stratiform_snowfall_rate / (kg m-2 s-1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+1: Turbulent mixing height after boundary layer / (m) (time: 2; grid_latitude: 500; grid_longitude: 500)
+2: Stable boundary layer indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+3: Stratocumulus over stable boundary layer indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+4: Well-mixed boundary layer indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+5: Decoupled stratocumulus not over cumulus indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+6: Decoupled stratocumulus over cumulus indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+7: Cumulus capped boundary layer indicator / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+8: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+9: unknown / (unknown)                 (time: 2; grid_latitude: 500; grid_longitude: 500)
+10: cloud_volume_fraction_in_atmosphere_layer / (1) (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+11: air_pressure / (Pa)                 (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+12: air_pressure / (Pa)                 (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+13: air_pressure_at_sea_level / (Pa)    (time: 2; grid_latitude: 500; grid_longitude: 500)
+14: air_temperature / (K)               (time: 2; grid_latitude: 500; grid_longitude: 500)
+15: air_temperature / (K)               (time: 2; pressure: 21; grid_latitude: 500; grid_longitude: 500)
+16: air_temperature / (K)               (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+17: dew_point_temperature / (K)         (time: 2; grid_latitude: 500; grid_longitude: 500)
+18: high_type_cloud_area_fraction / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+19: low_type_cloud_area_fraction / (1)  (time: 2; grid_latitude: 500; grid_longitude: 500)
+20: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+21: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+22: medium_type_cloud_area_fraction / (1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+23: relative_humidity / (%)             (time: 2; grid_latitude: 500; grid_longitude: 500)
+24: relative_humidity / (%)             (time: 2; pressure: 21; grid_latitude: 500; grid_longitude: 500)
+25: specific_humidity / (1)             (time: 2; grid_latitude: 500; grid_longitude: 500)
+26: specific_humidity / (kg kg-1)       (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)
+27: stratiform_rainfall_rate / (kg m-2 s-1) (time: 2; grid_latitude: 500; grid_longitude: 500)
+28: surface_air_pressure / (Pa)         (time: 2; grid_latitude: 500; grid_longitude: 500)
+29: surface_downwelling_longwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+30: surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+31: surface_net_downward_longwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+32: surface_net_downward_shortwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+33: surface_temperature / (K)           (time: 2; grid_latitude: 500; grid_longitude: 500)
+34: surface_upward_latent_heat_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+35: surface_upward_sensible_heat_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+36: toa_incoming_shortwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+37: toa_outgoing_shortwave_flux / (W m-2) (time: 2; grid_latitude: 500; grid_longitude: 500)
+38: upward_air_velocity / (m s-1)       (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS
+39: x_wind / (m s-1)                    (time: 2; grid_latitude: 501; grid_longitude: 500)									# 10-M, BGRID
+40: x_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 500; grid_longitude: 500)					# RHO LEVELS
+41: y_wind / (m s-1)                    (time: 2; grid_latitude: 501; grid_longitude: 500)									# 10-M, B-GRID
+42: y_wind / (m s-1)                    (time: 2; model_level_number: 70; grid_latitude: 501; grid_longitude: 500)					# RHO LEVELS
+
+
+'umnsaa_pvera000':
+
+0: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
+1: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
+2: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+3: Turbulent mixing height after boundary layer / (m) (time: 6; grid_latitude: 500; grid_longitude: 500)
+4: Cumulus capped boundary layer indicator / (1) (time: 6; grid_latitude: 500; grid_longitude: 500)
+5: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+6: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+7: air_temperature / (K)               (time: 7; grid_latitude: 500; grid_longitude: 500)
+8: land_binary_mask / (1)              (grid_latitude: 500; grid_longitude: 500)
+9: relative_humidity / (%)             (time: 7; grid_latitude: 500; grid_longitude: 500)
+10: sea_ice_area_fraction / (1)         (time: 6; grid_latitude: 500; grid_longitude: 500)
+11: snowfall_amount / (kg m-2)          (time: 6; grid_latitude: 500; grid_longitude: 500)
+12: surface_altitude / (m)              (grid_latitude: 500; grid_longitude: 500)
+13: surface_downwelling_longwave_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+14: surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+15: surface_net_downward_longwave_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+16: surface_temperature / (K)           (time: 7; grid_latitude: 500; grid_longitude: 500)
+17: surface_upward_latent_heat_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+18: surface_upward_sensible_heat_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+19: toa_incoming_shortwave_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+20: toa_outgoing_longwave_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+21: toa_outgoing_shortwave_flux / (W m-2) (time: 7; grid_latitude: 500; grid_longitude: 500)
+22: toa_outgoing_shortwave_flux / (W m-2) (time: 6; grid_latitude: 500; grid_longitude: 500)
+23: visibility_in_air / (m)             (time: 7; grid_latitude: 500; grid_longitude: 500)
+24: wind_speed_of_gust / (m s-1)        (time: 6; grid_latitude: 500; grid_longitude: 500)
+25: x_wind / (m s-1)                    (time: 7; grid_latitude: 501; grid_longitude: 500)
+26: y_wind / (m s-1)                    (time: 7; grid_latitude: 501; grid_longitude: 500)
+
+
+'umnsaa_pverb000':		# GLOBAL UM DIAGNOSTICS (DEFAULT SUITE): DIAGS (1LEVEL), PER TIMESTEP (TS1) OR 3-HOURLY (T3HR)
+
+0: unknown / (unknown)                 (time: 3; grid_latitude: 500; grid_longitude: 500)
+1: unknown / (unknown)                 (time: 3; grid_latitude: 500; grid_longitude: 500)
+2: stratiform_snowfall_rate / (kg m-2 s-1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+3: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
+4: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+5: cloud_area_fraction_assuming_only_consider_surface_to_1000_feet_asl / (1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+6: unknown / (unknown)                 (time: 7; grid_latitude: 500; grid_longitude: 500)
+7: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+8: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+9: stratiform_snowfall_rate / (kg m-2 s-1) (time: 6; grid_latitude: 500; grid_longitude: 500)
+10: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+11: unknown / (unknown)                 (-- : 6; grid_latitude: 500; grid_longitude: 500)
+12: unknown / (unknown)                 (time: 6; grid_latitude: 500; grid_longitude: 500)
+13: cloud_base_altitude_assuming_only_consider_cloud_area_fraction_greater_than_2p5_oktas / (kft) (time: 6; grid_latitude: 500; grid_longitude: 500)
+14: air_pressure_at_sea_level / (Pa)    (time: 7; grid_latitude: 500; grid_longitude: 500)
+15: atmosphere_cloud_ice_content / (kg m-2) (time: 3; grid_latitude: 500; grid_longitude: 500)
+16: atmosphere_cloud_liquid_water_content / (kg m-2) (time: 3; grid_latitude: 500; grid_longitude: 500)
+17: atmosphere_mass_content_of_water / (kg m-2) (time: 3; grid_latitude: 500; grid_longitude: 500)
+18: high_type_cloud_area_fraction / (1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+19: high_type_cloud_area_fraction / (1) (time: 6; grid_latitude: 500; grid_longitude: 500)
+20: low_type_cloud_area_fraction / (1)  (time: 7; grid_latitude: 500; grid_longitude: 500)
+21: low_type_cloud_area_fraction / (1)  (time: 6; grid_latitude: 500; grid_longitude: 500)
+22: medium_type_cloud_area_fraction / (1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+23: medium_type_cloud_area_fraction / (1) (time: 6; grid_latitude: 500; grid_longitude: 500)
+24: moisture_content_of_soil_layer / (kg m-2) (time: 7; soil_model_level_number: 4; grid_latitude: 500; grid_longitude: 500)
+25: soil_temperature / (K)              (time: 7; soil_model_level_number: 4; grid_latitude: 500; grid_longitude: 500)
+26: stratiform_rainfall_amount / (kg m-2) (grid_latitude: 500; grid_longitude: 500)
+27: stratiform_rainfall_amount / (kg m-2) (-- : 6; grid_latitude: 500; grid_longitude: 500)
+28: stratiform_rainfall_rate / (kg m-2 s-1) (time: 7; grid_latitude: 500; grid_longitude: 500)
+29: stratiform_rainfall_rate / (kg m-2 s-1) (time: 6; grid_latitude: 500; grid_longitude: 500)
+30: stratiform_snowfall_amount / (kg m-2) (grid_latitude: 500; grid_longitude: 500)
+31: stratiform_snowfall_amount / (kg m-2) (-- : 6; grid_latitude: 500; grid_longitude: 500)
+32: upward_air_velocity / (m s-1)       (time: 6; grid_latitude: 500; grid_longitude: 500)
+
+
+'umnsaa_pverc000':		# GLOBAL UM DIAGNOSTICS (DEFAULT SUITE): P850 LEVELS
+
+0: unknown / (unknown)                 (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# BGRID
+1: x_wind / (m s-1)                    (time: 3; pressure: 16; grid_latitude: 501; grid_longitude: 500)			# BGRID
+2: y_wind / (m s-1)                    (time: 3; pressure: 16; grid_latitude: 501; grid_longitude: 500)			# BGRID
+
+
+'umnsaa_pverd000':		# GLOBAL UM DIAGNOSTICS (DEFAULT SUITE): P850 LEVELS
+
+0: air_temperature / (K)               (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# WET BULB AIR TEMPERATURE? (PGRID)
+1: geopotential_height / (m)           (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# PGRID
+2: relative_humidity / (%)             (time: 3; pressure: 16; grid_latitude: 500; grid_longitude: 500)			# WRT WATER ON PGRID
