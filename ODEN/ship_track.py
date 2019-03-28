@@ -49,7 +49,7 @@ def iceDrift(data):
     ###################################
 
     Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=21))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     print ''
@@ -95,9 +95,9 @@ def plotmap(data):
     ##################################################
     ##################################################
 
-    SMALL_SIZE = 10
-    MED_SIZE = 12
-    LARGE_SIZE = 14
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
@@ -115,7 +115,7 @@ def plotmap(data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 3000000
+    dim = 2500000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
@@ -155,7 +155,7 @@ def plotmap(data):
 
     # Plot tracks as line plot
     plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
-    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 2, label = 'Drift')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 2, label = 'In Ice')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 2, label = 'Drift')
 
     ### ADD LEGEND
