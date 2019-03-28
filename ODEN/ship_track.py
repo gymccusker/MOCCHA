@@ -73,7 +73,7 @@ def plotmap(data):
 
     # define parallels/meridians
     m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
-    m.drawmeridians(np.arange(-180.,181.,5.),labels=[0,0,1,0],linewidth=0.8,fontsize=10)
+    m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
     # m.drawmapboundary(fill_color='lightgrey')
@@ -94,7 +94,7 @@ def plotmap(data):
 
     # Plot ship track as line plot
     x, y = m(data.values[:,6], data.values[:,7])
-    plt.plot(x, y, linewidth = 2)
+    plt.plot(x, y, color = 'darkorange', linewidth = 2)
 
     # Add a color bar
     # cbar = plt.colorbar(ax=ax, shrink=.62)
