@@ -126,11 +126,19 @@ def plotmap(data):
     # Add coastlines
     # ax.coastlines('50m', linewidth=0.8)
 
+    ### DEFINE DRIFT PERIOD
+    drift_index = iceDrift(data)
 
-
-    # Plot ship track as line plot
+    ### MAP ONTO PROJECTION
     x, y = m(data.values[:,6], data.values[:,7])
+    x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
+
+    # Plot tracks as line plot
     plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Whole')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 2, label = 'Drift')
+
+    ### ADD LEGEND
+    plt.legend()
 
     # Add a color bar
     # cbar = plt.colorbar(ax=ax, shrink=.62)
