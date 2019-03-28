@@ -20,6 +20,51 @@ def readfile(filename):
 
     return data, values
 
+def assignColumns(data):
+
+    columns = ['Year', 'Month', 'Day', 'Hour', 'Minutes', 'Seconds', 'Longitude', 'Latitude']
+
+    return columns
+
+def plotmap(data):
+
+    import cartopy
+    import cartopy.crs as crs
+    import cartopy.feature as cfe
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    # Create a figure
+    fig = plt.figure(figsize=(8,4))
+
+    # Set the GeoAxes to the projection used by WRF
+    ax = fig.add_axes([0.1,0.1,0.4,0.8], projection=cart_proj)	# left, bottom, width, height
+    # ax = plt.axes(projection=cart_proj)
+
+    # Add coastlines
+    ax.coastlines('50m', linewidth=0.8)
+
+    # Plot contours
+    plt.plot(data.values[:,6], data.values[:,6],
+                    transform=crs.PlateCarree())
+
+    # Add a color bar
+    # cbar = plt.colorbar(ax=ax, shrink=.62)
+    # cbar.set_label(qncloud1.name[-5:])
+
+    # Set the map limits.  Not really necessary, but used for demonstration.
+    # ax.set_xlim(wrf.cartopy_xlim(qncloud1))
+    # ax.set_ylim(wrf.cartopy_ylim(qncloud1))
+
+    # Add the gridlines
+    ax.gridlines(color="black", linestyle="dotted")
+
+    plt.title('MOCCHA ship track')
+
+    plt.show()
+
 def main():
 
     START_TIME = time.time()
@@ -35,9 +80,13 @@ def main():
 
     data, values = readfile(filename)
 
+    columns = assignColumns(data)
+
     print ''
     print data.head
     print ''
+
+    map = plotmap(data)
 
     END_TIME = time.time()
     print ''
