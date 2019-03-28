@@ -141,6 +141,7 @@ def main():
 
     seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
     seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
+    seaice_path = seaice_rootdir + seaice_file
 
     data, values = readfile(filename)
 
