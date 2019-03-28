@@ -155,8 +155,8 @@ def plotmap(data):
 
     # Plot tracks as line plot
     plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
-    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 2, label = 'In Ice')
-    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 2, label = 'Drift')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
     ### ADD LEGEND
     plt.legend()
