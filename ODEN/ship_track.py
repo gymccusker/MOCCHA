@@ -49,7 +49,7 @@ def iceDrift(data):
     ###################################
 
     Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=21)
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=21))
     drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     print ''
