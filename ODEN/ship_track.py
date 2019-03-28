@@ -49,16 +49,34 @@ def iceDrift(data):
     ###################################
 
     Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=21)
     drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     print ''
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:3]) + ' - ' + str(data.values[drift_index[-1],0:3])
+    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
     print ''
 
     return drift_index
+
+def inIce(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
+    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=21,data.values[:,1]==9))
+    inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
+
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print ''
+
+    return inIce_index
 
 def plotmap(data):
 
@@ -126,15 +144,18 @@ def plotmap(data):
     # Add coastlines
     # ax.coastlines('50m', linewidth=0.8)
 
-    ### DEFINE DRIFT PERIOD
+    ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
+    inIce_index = inIce(data)
 
     ### MAP ONTO PROJECTION
     x, y = m(data.values[:,6], data.values[:,7])
+    x_inIcePeriod, y_inIcePeriod = m(data.values[inIce_index,6],data.values[inIce_index,7])
     x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
 
     # Plot tracks as line plot
-    plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Whole')
+    plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 2, label = 'Drift')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 2, label = 'Drift')
 
     ### ADD LEGEND
