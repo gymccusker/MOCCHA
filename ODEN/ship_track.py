@@ -7,13 +7,14 @@
 
 from netCDF4 import Dataset as NetCDFFile
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from datetime import datetime, date
 import time
 
 def readfile(filename):
+
+    import pandas as pd
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -40,6 +41,24 @@ def readSeaice(seaice_path):
     print ''
 
     return seaice
+
+def iceDrift(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Sep_drift_index = np.where(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9))
+    drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
+    print 'Whole drift: ' + str(data.values[drift_index[0],0:3]) + ' - ' + str(data.values[drift_index[-1],0:3])
+    print ''
+
+    return drift_index
 
 def plotmap(data):
 
@@ -78,7 +97,7 @@ def plotmap(data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 6500000
+    dim = 5000000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
@@ -107,9 +126,11 @@ def plotmap(data):
     # Add coastlines
     # ax.coastlines('50m', linewidth=0.8)
 
+
+
     # Plot ship track as line plot
     x, y = m(data.values[:,6], data.values[:,7])
-    plt.plot(x, y, color = 'darkorange', linewidth = 2)
+    plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Whole')
 
     # Add a color bar
     # cbar = plt.colorbar(ax=ax, shrink=.62)
@@ -147,13 +168,13 @@ def main():
 
     columns = assignColumns(data)
 
-    print ''
-    print data.head
-    print ''
+    # print ''
+    # print data.head
+    # print ''
 
     map = plotmap(data)
 
-    seaice = readSeaice(seaice_file)
+    # seaice = readSeaice(seaice_file)
 
     END_TIME = time.time()
     print ''
