@@ -131,19 +131,6 @@ def plotmap(data):
     # m.drawmapboundary(fill_color='lightgrey')
     # m.fillcontinents(color='white')
 
-    ######################################################
-    ### CARTOPY CODE
-    ######################################################
-    # # Create a figure
-    # fig = plt.figure(figsize=(8,4))
-    #
-    # # Set the GeoAxes to the projection used by WRF
-    # ax = fig.add_axes([0.1,0.1,0.4,0.8], projection=cart_proj)	# left, bottom, width, height
-    # # ax = plt.axes(projection=cart_proj)
-
-    # Add coastlines
-    # ax.coastlines('50m', linewidth=0.8)
-
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
     inIce_index = inIce(data)
@@ -160,17 +147,6 @@ def plotmap(data):
 
     ### ADD LEGEND
     plt.legend()
-
-    # Add a color bar
-    # cbar = plt.colorbar(ax=ax, shrink=.62)
-    # cbar.set_label(qncloud1.name[-5:])
-
-    # Set the map limits.  Not really necessary, but used for demonstration.
-    # ax.set_xlim(wrf.cartopy_xlim(qncloud1))
-    # ax.set_ylim(wrf.cartopy_ylim(qncloud1))
-
-    # Add the gridlines
-    # ax.gridlines(color="black", linestyle="dotted")
 
     plt.title('MOCCHA ship track')
 
