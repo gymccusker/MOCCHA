@@ -81,9 +81,6 @@ def cart_map(data1, data2):
     # Add coastlines
     ax.coastlines('50m', linewidth=0.8)
 
-    rot_lat = data1.coord('grid_latitude').points
-    rot_lat = data1.coord('grid_longitude').points
-
     # Plot contours
     # plt.contourf(wrf.to_np(lons), wrf.to_np(lats), data2, 10,
     #                 transform=crs.PlateCarree(), cmap = mpl_cm.Reds)
