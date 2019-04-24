@@ -21,14 +21,6 @@ def rotateGrid(data1):
 
 def vertical_profile(data1):
 
-    import iris.plot as iplt
-    import matplotlib
-    import matplotlib.cm as mpl_cm
-    import matplotlib.pyplot as plt
-    import cartopy.crs as crs
-    import cartopy.feature as cfe
-    import iris.quickplot as qplt
-
     # Create a figure
     fig = plt.figure(figsize=(8,4))
 
@@ -63,23 +55,15 @@ def vertical_profile(data1):
 
 def cart_map(data1, data2):
 
-    import iris.plot as iplt
-    import matplotlib
-    import matplotlib.cm as mpl_cm
-    import matplotlib.pyplot as plt
-    import cartopy.crs as crs
-    import cartopy.feature as cfe
-    import iris.quickplot as qplt
-
     # Create a figure
     fig = plt.figure(figsize=(8,4))
 
     ## set axes position
-    ax = fig.add_axes([0.1,0.1,0.35,0.8]), projection=cart_proj)	# left, bottom, width, height
+    # ax = fig.add_axes([0.1,0.1,0.35,0.8]), projection=cart_proj)	# left, bottom, width, height
     # ax = plt.axes(projection=cart_proj)
 
     # Add coastlines
-    ax.coastlines('50m', linewidth=0.8)
+    # ax.coastlines('50m', linewidth=0.8)
 
     # Plot contours
     # plt.contourf(wrf.to_np(lons), wrf.to_np(lats), data2, 10,
@@ -103,6 +87,13 @@ def cart_map(data1, data2):
 def main():
 
     import iris
+    import iris.plot as iplt
+    import matplotlib
+    import matplotlib.cm as mpl_cm
+    import matplotlib.pyplot as plt
+    import cartopy.crs as crs
+    import cartopy.feature as cfe
+    import iris.quickplot as qplt
 
     START_TIME = time.time()
     print ''
