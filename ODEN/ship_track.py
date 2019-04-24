@@ -153,6 +153,7 @@ def plotmap(data):
         # Drift limits are:
         # latitude   88.4502 to 89.6388
         # longitude  4.6830 to 73.7629
+        # R.P. original (0, 86.625) @ 500x500
 
     latr = np.arange(80.9998,89.9998,0.09)
     lonr = np.arange(3.0,76.0,0.73)
