@@ -141,8 +141,8 @@ def main():
     temperature = cube[15]    # 3D air temperature, K
     Qvap = cube[25]    # 3D specific humidity, kg/kg
 
-    # plot = vertical_profile(temperature, Qvap)
-    plot = cart_map(temperature)
+    plot = vertical_profile(temperature, Qvap)
+    # plot = cart_map(temperature)
 
     END_TIME = time.time()
     print ''
