@@ -72,6 +72,10 @@ def makeGlobalStashList():
     return GlobalStashList
 
 def callback(cube, field, filename):
+    '''
+    rename cube diagnostics per list of wanted stash diags
+    '''
+
     iStash = cube.attributes['STASH'].__str__()
     if diags.findfieldName(iStash):
         if cube.name() != diags.findfieldName(iStash):
