@@ -197,6 +197,7 @@ def plotmap(data):
 
     plt.title('MOCCHA ship track')
 
+    plt.savefig('FIGS/ShipTrack_wNest_wSwath.png',dpi=300)
     plt.show()
 
 def main():
