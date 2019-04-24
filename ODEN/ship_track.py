@@ -174,9 +174,9 @@ def plotmap(data):
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
     ### NEST
-    grx = float(500)
+    grx = float(700)
     gry = float(500)
-    centlon = float(0)
+    centlon = float(4.0)
     centlat = float(86.625)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
     lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
@@ -187,7 +187,7 @@ def plotmap(data):
                   facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
     plt.gca().add_patch(pols)
 
-    # draw nests
+    # draw nest
     poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
                   facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
     plt.gca().add_patch(poln)
