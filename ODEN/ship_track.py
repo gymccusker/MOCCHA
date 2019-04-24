@@ -116,7 +116,7 @@ def plotmap(data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 2500000
+    dim = 2550000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
