@@ -26,7 +26,7 @@ def vertical_profile(data1, data2):
     import matplotlib.pyplot as plt
     import iris
     import iris.plot as iplt
-    
+
     # Create a figure
     fig = plt.figure(figsize=(8,4))
 
@@ -50,7 +50,7 @@ def vertical_profile(data1, data2):
     # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
 
     ## set axes position
-    ax = fig.add_axes([0.5,0.1,0.35,0.8])	# left, bottom, width, height
+    ax = fig.add_axes([0.55,0.1,0.35,0.8])	# left, bottom, width, height
     for i in range(0,np.size(data1,0)):
         strgi = "%1.f" % (i) # string of timestep
         iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
