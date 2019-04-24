@@ -114,11 +114,12 @@ def main():
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
-    print 'Make stash list at ' + time.strftime("%c")
+    print 'Make stash list for cube read in at ' + time.strftime("%c")
     print ' '
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
+            ### defines which stash variables to load
 
     print 'Cubes read in at ' + time.strftime("%c")
     print ' '
