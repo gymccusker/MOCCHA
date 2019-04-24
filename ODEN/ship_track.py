@@ -155,7 +155,7 @@ def plotmap(data):
         # longitude  4.6830 to 73.7629
 
     latr = np.arange(80.9998,89.9998,0.09)
-    lonr = np.arange(4.0,75.0.71)
+    lonr = np.arange(4.0,75.0,0.71)
 
     lon, lat = np.meshgrid(lonr, latr)
 
