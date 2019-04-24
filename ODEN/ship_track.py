@@ -175,7 +175,7 @@ def plotmap(data):
 
     ### NEST
     grx = float(1000)
-    gry = float(550)
+    gry = float(500)
     centlon = float(39.5)
     centlat = float(86.625)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
