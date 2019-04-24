@@ -176,8 +176,10 @@ def plotmap(data):
     ### NEST
     grx = float(500)
     gry = float(500)
-    latn = np.arange((86.625-(gry*float(0.5)*0.0135)),(86.625+(gry*float(0.5)*0.0135)),0.0135)
-    lonn = np.arange((86.625-(grx*float(0.5)*0.0135)),(86.625+(grx*float(0.5)*0.0135)),0.0135)
+    centlon = float(0)
+    centlat = float(86.625)
+    latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
+    lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     # draw swath
