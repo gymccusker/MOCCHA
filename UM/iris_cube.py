@@ -24,7 +24,9 @@ def vertical_profile(data1, data2):
     import matplotlib
     import matplotlib.cm as mpl_cm
     import matplotlib.pyplot as plt
-
+    import iris
+    import iris.plot as iplt
+    
     # Create a figure
     fig = plt.figure(figsize=(8,4))
 
