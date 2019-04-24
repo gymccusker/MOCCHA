@@ -84,6 +84,7 @@ def plotmap(data):
     # import cartopy.crs as crs
     # import cartopy.feature as cfe
     from mpl_toolkits.basemap import Basemap
+    from matplotlib.patches import Polygon
 
     ###################################
     ## PLOT MAP
@@ -147,6 +148,31 @@ def plotmap(data):
 
     ### ADD LEGEND
     plt.legend()
+
+    ###########################################
+    ### PLOT SWATH FOR INCREASED FREQ DIAGS
+    ###########################################
+        # I.B.:
+        # Drift limits are:
+        # latitude   88.4502 to 89.6388
+        # longitude  4.6830 to 73.7629
+
+    latr = np.arange(88.4502,89.6388,0.01188600000000008)
+    lonr = np.arange(4.6830,73.7629,0.690799)
+
+    lon, lat = np.meshgrid(lonr, latr)
+
+    nx = np.size(lon,0)
+    ny = np.size(lat,1)
+    x1, y1 = m(lon[ny-1,0],lat[ny-1,0])
+    x2, y2 = m(lon[0,0],lat[0,0])
+    x3, y3 = m(lon[0,nx-1],lat[0,nx-1])
+    x4, y4 = m(lon[ny-1,nx-1],lat[ny-1,nx-1])
+
+    # draw nests
+    pol =  Polygon([(x1,y1),(x2,y2),(x3,y3),(x4,y4)],\
+                  facecolor='none',linestyle='--',edgecolor='k',linewidth=2)
+    plt.gca().add_patch(pol)
 
     plt.title('MOCCHA ship track')
 
