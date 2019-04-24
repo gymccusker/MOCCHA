@@ -174,8 +174,8 @@ def plotmap(data):
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
     ### NEST
-    grx = float(700)
-    gry = float(500)
+    grx = float(1000)
+    gry = float(550)
     centlon = float(39.5)
     centlat = float(86.625)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
