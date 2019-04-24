@@ -21,6 +21,10 @@ def rotateGrid(data1):
 
 def vertical_profile(data1, data2):
 
+    import matplotlib
+    import matplotlib.cm as mpl_cm
+    import matplotlib.pyplot as plt
+
     # Create a figure
     fig = plt.figure(figsize=(8,4))
 
