@@ -10,6 +10,7 @@ import numpy as np
 from netCDF4 import Dataset
 import numpy as np
 import diags_MOCCHA as diags
+import cartopy.crs as ccrs
 
 def cart_plot(data1, data2):
 
@@ -58,6 +59,45 @@ def cart_plot(data1, data2):
 
 # def writeNetCDF(cube):
 
+
+def rotateGrid(data):
+    ##
+    ##      ROTATE GRID BACK TO STANDARD
+    ##
+
+    pole_lat = float(37.5000)       ### from rose suite
+    pole_lon = float(177.5000)
+
+    lat = data.coord('grid_latitude').points
+    lon = data.coord('grid_longitude').points
+
+    rot_pole = data.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    # Transform real lat, lon point into rotated coords
+    # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
+    ll = ccrs.Geodetic()
+    rot_lon = np.zeros(np.size(lon,0))
+    rot_lat = np.zeros(np.size(lat,0))
+    for n in range(0,np.size(lon)-1):
+        target_xy = rot_pole.transform_point(lon[n], lat[n], ll)  # lower left corner
+        rot_lon[n] = target_xy[0] + 180.
+        rot_lat[n] = target_xy[1] * float(-1.0)
+
+    rot_lon, rot_lat = np.meshgrid(rot_lon, rot_lat)
+
+    # Print to check sites
+    print '******'
+    print 'Test to rotate coordinate grid: '
+    print 'Lon (.pp output) = ', lon[0]
+    print 'Lat (.pp output) = ', lat[0]
+    print 'Rotated lon coord = ', rot_lon[0,0]
+    print 'Rotated lat coord = ', rot_lat[0,0]
+    print ' '
+
+    # Transform real lat, lon point into rotated coords
+    # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    return data, rot_lon, rot_lat
 
 def makeGlobalStashList():
     '''
@@ -132,15 +172,23 @@ def main():
     # Load cubes
     # -------------------------------------------------------------
     # cube = iris.load(filenames, global_con, callback)
-    cube = iris.load(filename1, global_con, callback)
+    # cube = iris.load(filename1, global_con, callback)
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    # var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    # cube1 = iris.load_cube(filename1, var_con)
+    var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    cube1 = iris.load_cube(filename1, var_con)
 
     # cube = iris.load(filename1)
 
-    print cube # lists all diagnostics in file
+    print cube1 # lists all diagnostics in file
+
+    rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    cube1_rot, lat, lon = rotateGrid(cube1)
+
+    print ''
+    print cube1_rot
+    print ''
 
     # out = writeNetCDF(cube)
 

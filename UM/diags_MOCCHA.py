@@ -4,7 +4,7 @@ List of variables from the UKV
 
 """
 
-Stash_list = {'m01s16i222': 'air_pressure_at_sea_level_TESTCHANGE',
+Stash_list = {'m01s16i222': 'air_pressure_at_sea_level',
               'm01s00i024': 'surface_temperature',
               'm01s03i236': 'air_temperature',
               'm01s03i245': 'relative_humidity',
