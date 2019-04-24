@@ -19,7 +19,7 @@ def rotateGrid(data1):
     rot_lat = data1.coord('grid_latitude').points
     rot_lat = data1.coord('grid_longitude').points
 
-def vertical_profile(data1):
+def vertical_profile(data1, data2):
 
     # Create a figure
     fig = plt.figure(figsize=(8,4))
