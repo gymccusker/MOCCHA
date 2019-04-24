@@ -84,10 +84,10 @@ def gridSetup(lont, latt, m):
 
     nx = np.size(lon,0)
     ny = np.size(lat,1)
-    x1, y1 = m(lon[ny-1,0],lat[ny-1,0])
+    x1, y1 = m(lon[nx-1,0],lat[nx-1,0])
     x2, y2 = m(lon[0,0],lat[0,0])
-    x3, y3 = m(lon[0,nx-1],lat[0,nx-1])
-    x4, y4 = m(lon[ny-1,nx-1],lat[ny-1,nx-1])
+    x3, y3 = m(lon[0,ny-1],lat[0,ny-1])
+    x4, y4 = m(lon[nx-1,ny-1],lat[nx-1,ny-1])
 
     return x1, x2, x3, x4, y1, y2, y3, y4
 
