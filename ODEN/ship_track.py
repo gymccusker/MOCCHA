@@ -78,9 +78,9 @@ def inIce(data):
 
     return inIce_index
 
-def gridSetup(lon, lat, m):
+def gridSetup(lont, latt, m):
 
-    lon, lat = np.meshgrid(lonr, latr)
+    lon, lat = np.meshgrid(lont, latt)
 
     nx = np.size(lon,0)
     ny = np.size(lat,1)
