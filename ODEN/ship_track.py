@@ -146,9 +146,6 @@ def plotmap(data):
     plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
-    ### ADD LEGEND
-    plt.legend()
-
     ###########################################
     ### PLOT SWATH FOR INCREASED FREQ DIAGS
     ###########################################
@@ -171,8 +168,11 @@ def plotmap(data):
 
     # draw nests
     pol =  Polygon([(x1,y1),(x2,y2),(x3,y3),(x4,y4)],\
-                  facecolor='none',linestyle='--',edgecolor='k',linewidth=2)
+                  facecolor='none',linestyle='--',edgecolor='w',linewidth=2,label='Swath')
     plt.gca().add_patch(pol)
+
+    ### ADD LEGEND
+    plt.legend()
 
     plt.title('MOCCHA ship track')
 
