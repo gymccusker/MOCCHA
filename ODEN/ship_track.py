@@ -78,6 +78,19 @@ def inIce(data):
 
     return inIce_index
 
+def gridSetup(lon, lat, m):
+
+        lon, lat = np.meshgrid(lonr, latr)
+
+        nx = np.size(lon,0)
+        ny = np.size(lat,1)
+        x1, y1 = m(lon[ny-1,0],lat[ny-1,0])
+        x2, y2 = m(lon[0,0],lat[0,0])
+        x3, y3 = m(lon[0,nx-1],lat[0,nx-1])
+        x4, y4 = m(lon[ny-1,nx-1],lat[ny-1,nx-1])
+
+    return x1, x2, x3, x4, y1, y2, y3, y4
+
 def plotmap(data):
 
     # import cartopy
@@ -147,7 +160,7 @@ def plotmap(data):
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
     ###########################################
-    ### PLOT SWATH FOR INCREASED FREQ DIAGS
+    ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
     ###########################################
         # I.B.:
         # Drift limits are:
@@ -155,22 +168,27 @@ def plotmap(data):
         # longitude  4.6830 to 73.7629
         # R.P. original (0, 86.625) @ 500x500
 
-    latr = np.arange(80.9998,89.9998,0.09)
-    lonr = np.arange(3.0,76.0,0.73)
+    ### SWATH
+    lats = np.arange(80.9998,89.9998,0.09)
+    lons = np.arange(3.0,76.0,0.73)
+    x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
-    lon, lat = np.meshgrid(lonr, latr)
+    ### NEST
+    grx = float(500)
+    gry = float(500)
+    latn = np.arange((86.625-(gry*float(0.5)*0.0135)),(86.625+(gry*float(0.5)*0.0135)),0.0135)
+    lonn = np.arange((86.625-(grx*float(0.5)*0.0135)),(86.625+(grx*float(0.5)*0.0135)),0.0135)
+    x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
-    nx = np.size(lon,0)
-    ny = np.size(lat,1)
-    x1, y1 = m(lon[ny-1,0],lat[ny-1,0])
-    x2, y2 = m(lon[0,0],lat[0,0])
-    x3, y3 = m(lon[0,nx-1],lat[0,nx-1])
-    x4, y4 = m(lon[ny-1,nx-1],lat[ny-1,nx-1])
+    # draw swath
+    pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
+                  facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
+    plt.gca().add_patch(pols)
 
     # draw nests
-    pol =  Polygon([(x1,y1),(x2,y2),(x3,y3),(x4,y4)],\
-                  facecolor='none',linestyle='--',edgecolor='w',linewidth=2,label='Swath')
-    plt.gca().add_patch(pol)
+    poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
+                  facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
+    plt.gca().add_patch(poln)
 
     ### ADD LEGEND
     plt.legend()
