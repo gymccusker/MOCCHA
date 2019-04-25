@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Figure files
+*.png
+*.svg
