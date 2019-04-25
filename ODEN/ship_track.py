@@ -1,7 +1,7 @@
 #####################################
 ##
-## Read in and plot ship track
-##      -- future release: relate to UM nest
+## Read in and plot ship track, UM nest + swath
+##
 ##
 #####################################
 
@@ -173,7 +173,7 @@ def plotmap(data):
     lons = np.arange(3.0,76.0,0.73)
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
-    ### NEST
+    ### NEST (input)
     grx = float(5600)
     gry = float(700)
     centlon = float(39.5)
@@ -197,7 +197,7 @@ def plotmap(data):
 
     plt.title('MOCCHA ship track')
 
-    plt.savefig('FIGS/ShipTrack_wNest_wSwath.png',dpi=300)
+    # plt.savefig('FIGS/ShipTrack_wNest_wSwath.png',dpi=300)
     plt.show()
 
 def main():
