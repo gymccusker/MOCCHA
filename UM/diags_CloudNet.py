@@ -58,11 +58,8 @@ def cart_plot(data1, data2):
 
     plt.show()
 
-def plot_basemap(data):
+def plot_basemap(ship_data, cube):
 
-    # import cartopy
-    # import cartopy.crs as crs
-    # import cartopy.feature as cfe
     from mpl_toolkits.basemap import Basemap
     from matplotlib.patches import Polygon
 
@@ -113,13 +110,13 @@ def plot_basemap(data):
     # m.fillcontinents(color='white')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(data)
-    inIce_index = inIce(data)
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
 
     ### MAP ONTO PROJECTION
-    x, y = m(data.values[:,6], data.values[:,7])
-    x_inIcePeriod, y_inIcePeriod = m(data.values[inIce_index,6],data.values[inIce_index,7])
-    x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
+    x, y = m(ship_data.values[:,6], ship_data.values[:,7])
+    x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
+    x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
 
     # Plot tracks as line plot
     plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
@@ -133,7 +130,8 @@ def plot_basemap(data):
         # Drift limits are:
         # latitude   88.4502 to 89.6388
         # longitude  4.6830 to 73.7629
-        # R.P. original (0, 86.625) @ 500x500
+        #
+        # R.P.: original 1.5km nest -> (0, 86.625) @ 500x500
 
     ### SWATH
     lats = np.arange(80.9998,89.9998,0.09)
@@ -149,15 +147,24 @@ def plot_basemap(data):
     lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
+    ### NEST (output)
+    lato, lono = rotateGrid(cube)
+    x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lono, lato, m)
+
     # draw swath
     pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
                   facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
     plt.gca().add_patch(pols)
 
-    # draw nest
+    # draw nest (input)
     poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
                   facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
     plt.gca().add_patch(poln)
+
+    # draw nest (output)
+    polo =  Polygon([(x1o,y1o),(x2o,y2o),(x3o,y3o),(x4o,y4o)],\
+                  facecolor='none',linestyle='--',edgecolor='y',linewidth=2,label='Nest (output)')
+    plt.gca().add_patch(polo)
 
     ### ADD LEGEND
     plt.legend()
@@ -234,7 +241,6 @@ def rotateGrid(data):
     ##
 
     import iris.analysis.cartography as ircrt
-
 
     ### LAM Configuration from suite u-bg610
     dlat = 0.015714
@@ -358,11 +364,9 @@ def main():
 
     print cube1 # lists all diagnostics in file
 
-    rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
+    # rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    lat, lon = rotateGrid(cube1)
-
-    ## JASMIN
+    ## LOCATION ON JASMIN
     ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
 
     #### CODE NOT WORKING
@@ -378,7 +382,7 @@ def main():
     # print data.head
     # print ''
 
-    map = plot_basemap(ship_data)
+    map = plot_basemap(ship_data, cube1)
 
     # out = writeNetCDF(cube)
 
