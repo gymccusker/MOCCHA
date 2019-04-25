@@ -188,7 +188,7 @@ def main():
 
     rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    lat, lon = rotateGrid(cube1
+    lat, lon = rotateGrid(cube1)
 
     # out = writeNetCDF(cube)
 
