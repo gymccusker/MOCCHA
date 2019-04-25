@@ -12,6 +12,9 @@ import numpy as np
 import diags_MOCCHA as diags
 import cartopy.crs as ccrs
 import iris
+from netCDF4 import Dataset as NetCDFFile
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 
 def cart_plot(data1, data2):
 
