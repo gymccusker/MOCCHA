@@ -68,8 +68,14 @@ def rotateGrid(data):
 
     import iris.analysis.cartography as ircrt
 
-    pole_lat = float(37.5000)       ### from rose suite
-    pole_lon = float(177.5000)
+
+    ### LAM Configuration from suite u-bg610
+    dlat = 0.015714
+    dlon = 0.016334
+    frst_lat = -5.6112
+    frst_lon = 353.0345
+    pole_lat = 37.5000
+    pole_lon = 177.5000
 
     rot_lat = data.coord('grid_latitude').points
     rot_lon = data.coord('grid_longitude').points
@@ -86,15 +92,14 @@ def rotateGrid(data):
     #     rot_lon[n] = target_xy[0] + 180.
     #     rot_lat[n] = target_xy[1] * float(-1.0)
 
-    rot_lon, rot_lat = np.meshgrid(rot_lon, rot_lat)
-
-    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
+    lon, lat = np.meshgrid(lon, lat)
 
     # Print to check sites
     print '******'
     print 'Test to rotate coordinate grid: '
-    print 'Rotated lon coord = ', rot_lon[0,0]
-    print 'Rotated lat coord = ', rot_lat[0,0]
+    print 'Rotated lon coord = ', rot_lon[0]
+    print 'Rotated lat coord = ', rot_lat[0]
     print 'Lon = ', lon[0,0]
     print 'Lat = ', lat[0,0]
     print ' '
