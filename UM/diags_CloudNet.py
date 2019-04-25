@@ -11,6 +11,7 @@ from netCDF4 import Dataset
 import numpy as np
 import diags_MOCCHA as diags
 import cartopy.crs as ccrs
+import iris
 
 def cart_plot(data1, data2):
 
@@ -65,39 +66,43 @@ def rotateGrid(data):
     ##      ROTATE GRID BACK TO STANDARD
     ##
 
+    import iris.analysis.cartography as ircrt
+
     pole_lat = float(37.5000)       ### from rose suite
     pole_lon = float(177.5000)
 
-    lat = data.coord('grid_latitude').points
-    lon = data.coord('grid_longitude').points
+    rot_lat = data.coord('grid_latitude').points
+    rot_lon = data.coord('grid_longitude').points
 
     rot_pole = data.coord('grid_latitude').coord_system.as_cartopy_crs()
 
     # Transform real lat, lon point into rotated coords
     # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
     ll = ccrs.Geodetic()
-    rot_lon = np.zeros(np.size(lon,0))
-    rot_lat = np.zeros(np.size(lat,0))
-    for n in range(0,np.size(lon)-1):
-        target_xy = rot_pole.transform_point(lon[n], lat[n], ll)  # lower left corner
-        rot_lon[n] = target_xy[0] + 180.
-        rot_lat[n] = target_xy[1] * float(-1.0)
+    # rot_lon = np.zeros(np.size(lon,0))
+    # rot_lat = np.zeros(np.size(lat,0))
+    # for n in range(0,np.size(lon)-1):
+    #     target_xy = rot_pole.transform_point(lon[n], lat[n], ll)  # lower left corner
+    #     rot_lon[n] = target_xy[0] + 180.
+    #     rot_lat[n] = target_xy[1] * float(-1.0)
 
     rot_lon, rot_lat = np.meshgrid(rot_lon, rot_lat)
+
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
 
     # Print to check sites
     print '******'
     print 'Test to rotate coordinate grid: '
-    print 'Lon (.pp output) = ', lon[0]
-    print 'Lat (.pp output) = ', lat[0]
     print 'Rotated lon coord = ', rot_lon[0,0]
     print 'Rotated lat coord = ', rot_lat[0,0]
+    print 'Lon = ', lon[0,0]
+    print 'Lat = ', lat[0,0]
     print ' '
 
     # Transform real lat, lon point into rotated coords
     # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    return data, rot_lon, rot_lat
+    return lon, lat
 
 def makeGlobalStashList():
     '''
@@ -122,8 +127,6 @@ def callback(cube, field, filename):
             cube.rename(diags.findfieldName(iStash))
 
 def main():
-
-    import iris
 
     START_TIME = time.time()
     print ''
@@ -165,12 +168,13 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load
 
-    print 'Cubes read in at ' + time.strftime("%c")
-    print ' '
-
     # -------------------------------------------------------------
     # Load cubes
     # -------------------------------------------------------------
+    print 'Cubes read in at ' + time.strftime("%c")
+    print ' '
+
+
     # cube = iris.load(filenames, global_con, callback)
     # cube = iris.load(filename1, global_con, callback)
 
@@ -184,11 +188,7 @@ def main():
 
     rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    cube1_rot, lat, lon = rotateGrid(cube1)
-
-    print ''
-    print cube1_rot
-    print ''
+    lat, lon = rotateGrid(cube1
 
     # out = writeNetCDF(cube)
 
