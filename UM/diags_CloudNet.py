@@ -149,7 +149,7 @@ def plot_basemap(ship_data, cube):
 
     ### NEST (output)
     lato, lono = rotateGrid(cube)
-    x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lono, lato, m)
+    x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
 
     # draw swath
     pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
