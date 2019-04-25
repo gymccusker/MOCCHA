@@ -374,8 +374,14 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
+    ### LOCATION ON MONSOON
     # root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    ### LOCATION ON JASMIN
     root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+    ### LOCATION ON LAPTOP
+    # root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+
+    ### CHOSEN RUN
     out_dir = '2_20180801_61DIAGS_TEST/'
 
     ## 1_20160401_61DIAG_TEST/
