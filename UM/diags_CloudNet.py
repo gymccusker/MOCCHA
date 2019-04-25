@@ -164,13 +164,13 @@ def plot_basemap(ship_data, cube):
     x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
 
     ### NEST (output) -- trial
-    lato_test = np.arange(lato[0]-2.0,lato[-1]+2.0)
-    lono_test = np.arange(lono[0]-2.0,lono[-1]+2.0)
-    print '******'
-    print ''
-    print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
-    print ''
-    x1ot, x2ot, x3ot, x4ot, y1ot, y2ot, y3ot, y4ot = gridSetup(lono_test, lato_test, m)
+    # lato_test = np.arange(lato[0]-2.0,lato[-1]+2.0)
+    # lono_test = np.arange(lono[0]-2.0,lono[-1]+2.0)
+    # print '******'
+    # print ''
+    # print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
+    # print ''
+    # x1ot, x2ot, x3ot, x4ot, y1ot, y2ot, y3ot, y4ot = gridSetup(lono_test, lato_test, m)
 
     # draw swath
     pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
