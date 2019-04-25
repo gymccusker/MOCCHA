@@ -14,14 +14,11 @@ import cartopy.crs as ccrs
 import iris
 from netCDF4 import Dataset as NetCDFFile
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+import matplotlib.cm as mpl_cm
 
 def cart_plot(data1, data2):
 
     import iris.plot as iplt
-    import matplotlib
-    import matplotlib.cm as mpl_cm
-    import matplotlib.pyplot as plt
     import cartopy.crs as crs
     import cartopy.feature as cfe
     import iris.quickplot as qplt
