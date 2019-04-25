@@ -34,3 +34,8 @@
 # Figure files
 *.png
 *.svg
+
+# Data files
+*.txt
+*.nc
+*.pp
