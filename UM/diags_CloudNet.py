@@ -288,7 +288,7 @@ def unrotateGrid(data):
 
     rot_pole = data.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
 
     # Print to check conversion
     print '******'
