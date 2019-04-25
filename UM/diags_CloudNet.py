@@ -188,9 +188,9 @@ def plot_basemap(ship_data, cube):
     plt.gca().add_patch(polo)
 
     # draw nest (output)
-    polot =  Polygon([(x1ot,y1ot),(x2ot,y2ot),(x3ot,y3ot),(x4ot,y4ot)],\
-                  facecolor='none',linestyle='--',edgecolor='m',linewidth=2,label='Test nest')
-    plt.gca().add_patch(polot)
+    # polot =  Polygon([(x1ot,y1ot),(x2ot,y2ot),(x3ot,y3ot),(x4ot,y4ot)],\
+    #               facecolor='none',linestyle='--',edgecolor='m',linewidth=2,label='Test nest')
+    # plt.gca().add_patch(polot)
 
     ### ADD LEGEND
     plt.legend()
