@@ -136,6 +136,10 @@ def plot_basemap(ship_data, cube):
     ### SWATH
     lats = np.arange(80.9998,89.9998,0.09)
     lons = np.arange(3.0,76.0,0.73)
+    print '******'
+    print ''
+    print 'lat/lon vertices of proposed swath: ', lats[0], lats[-1], lons[0], lons[-1]
+    print ''
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
     ### NEST (input)
@@ -145,10 +149,18 @@ def plot_basemap(ship_data, cube):
     centlat = float(85.275)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
     lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
+    print '******'
+    print ''
+    print 'lat/lon vertices of nest (input): ', latn[0], latn[-1], lonn[0], lonn[-1]
+    print ''
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     ### NEST (output)
     lato, lono = rotateGrid(cube)
+    print '******'
+    print ''
+    print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
+    print ''
     x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
 
     # draw swath
@@ -175,6 +187,11 @@ def readfile(filename):
 
     import pandas as pd
 
+    print '******'
+    print ''
+    print 'Reading .txt file with pandas'
+    print ''
+
     data = pd.read_csv(filename, sep = " ")
     values = data.values
 
@@ -196,6 +213,7 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
+    print '******'
     print ''
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
@@ -214,6 +232,7 @@ def inIce(data):
     Sep_inIce = np.where(np.logical_and(data.values[:,2]<20,data.values[:,1]==9))
     inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
+    print '******'
     print ''
     # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
@@ -307,6 +326,7 @@ def callback(cube, field, filename):
 def main():
 
     START_TIME = time.time()
+    print '******'
     print ''
     print 'Start: ' + time.strftime("%c")
     print ''
@@ -332,13 +352,15 @@ def main():
 
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
 
-    print 'Reading in files: '
+    print '******'
+    print 'Reading in .pp files: '
     print filename1
     print ' '
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
+    print '******'
     print 'Make stash list for cube read in at ' + time.strftime("%c")
     print ' '
     GlobalStashList = makeGlobalStashList()
@@ -349,9 +371,9 @@ def main():
     # -------------------------------------------------------------
     # Load cubes
     # -------------------------------------------------------------
-    print 'Cubes read in at ' + time.strftime("%c")
+    print '******'
+    print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-
 
     # cube = iris.load(filenames, global_con, callback)
     # cube = iris.load(filename1, global_con, callback)
@@ -360,33 +382,40 @@ def main():
     var_con = iris.AttributeConstraint(STASH='m01s16i222')
     cube1 = iris.load_cube(filename1, var_con)
 
-    # cube = iris.load(filename1)
+    print '******'
+    print 'Cubes read in complete at ' + time.strftime("%c")
+    print ' '
 
+    # cube = iris.load(filename1)
+    print '******'
+    print ''
     print cube1 # lists all diagnostics in file
+    print ''
 
     # rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
 
+    print '******'
+    print ''
+    print 'Load in ship track file:'
+    print ''
     ## LOCATION ON JASMIN
     ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
-
-    #### CODE NOT WORKING
-    # seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
-    # seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
-    # seaice_path = seaice_rootdir + seaice_file
-
     ship_data, values = readfile(ship_filename)
-
     columns = assignColumns(ship_data)
 
     # print ''
     # print data.head
     # print ''
-
+    print '******'
+    print ''
+    print 'Plot basemap:'
+    print ''
     map = plot_basemap(ship_data, cube1)
 
     # out = writeNetCDF(cube)
 
     END_TIME = time.time()
+    print '******'
     print ''
     print 'End: ' + time.strftime("%c")
     print ''
