@@ -36,6 +36,7 @@
 *.svg
 
 # Data files
+DATA/*
 *.txt
 *.nc
 *.pp
