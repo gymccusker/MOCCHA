@@ -266,15 +266,15 @@ def rotateGrid(data):
     #     rot_lat[n] = target_xy[1] * float(-1.0)
 
     lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
-    lon, lat = np.meshgrid(lon, lat)
+    # lon, lat = np.meshgrid(lon, lat)
 
     # Print to check sites
     print '******'
     print 'Test to rotate coordinate grid: '
     print 'Rotated lon coord = ', rot_lon[0]
     print 'Rotated lat coord = ', rot_lat[0]
-    print 'Lon = ', lon[0,0]
-    print 'Lat = ', lat[0,0]
+    print 'Lon = ', lon[0]
+    print 'Lat = ', lat[0]
     print ' '
 
     # Transform real lat, lon point into rotated coords
