@@ -156,7 +156,7 @@ def plot_basemap(ship_data, cube):
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     ### NEST (output)
-    lato, lono = rotateGrid(cube)
+    lono, lato = rotateGrid(cube)
     print '******'
     print ''
     print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
@@ -287,7 +287,7 @@ def rotateGrid(data):
     lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
     # lon, lat = np.meshgrid(lon, lat)
 
-    # Print to check sites
+    # Print to check conversion
     print '******'
     print 'Test to rotate coordinate grid: '
     print 'Rotated lon coord = ', rot_lon[0]
@@ -296,6 +296,9 @@ def rotateGrid(data):
     print 'Lat = ', lat[0]
     print ' '
 
+    # ******
+    # lat/lon vertices of nest (output):  49.567255645848604 -27.55740381723681 85.960219407715 80.41973098346767
+    # ******
     # Transform real lat, lon point into rotated coords
     # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
 
