@@ -93,11 +93,11 @@ def plot_basemap(ship_data, cube):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 2550000
+    dim = 2000000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=86,lat_0=86,lon_0=0)
+                lat_ts=86,lat_0=86,lon_0=10)
     m.drawcoastlines()
     m.bluemarble()
 
@@ -143,10 +143,10 @@ def plot_basemap(ship_data, cube):
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
     ### NEST (input)
-    grx = float(5600)
-    gry = float(700)
-    centlon = float(39.5)
-    centlat = float(85.275)
+    grx = float(500)
+    gry = float(500)
+    centlon = float(0.0)
+    centlat = float(86.625)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
     lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
     print '******'
@@ -163,14 +163,18 @@ def plot_basemap(ship_data, cube):
     print ''
     x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
 
-    ### NEST (output) -- trial
-    # lato_test = np.arange(lato[0]-2.0,lato[-1]+2.0)
-    # lono_test = np.arange(lono[0]-2.0,lono[-1]+2.0)
+    ### NEST (required input to cover swath)
+    # grx = float(5600)
+    # gry = float(700)
+    # centlon = float(39.5)
+    # centlat = float(85.275)
+    # latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
+    # lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
     # print '******'
     # print ''
-    # print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
+    # print 'lat/lon vertices of nest (input): ', latn[0], latn[-1], lonn[0], lonn[-1]
     # print ''
-    # x1ot, x2ot, x3ot, x4ot, y1ot, y2ot, y3ot, y4ot = gridSetup(lono_test, lato_test, m)
+    # x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     # draw swath
     pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
