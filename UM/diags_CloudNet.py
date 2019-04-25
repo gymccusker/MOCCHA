@@ -156,12 +156,21 @@ def plot_basemap(ship_data, cube):
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     ### NEST (output)
-    lono, lato = rotateGrid(cube)
+    lono, lato = unrotateGrid(cube)
     print '******'
     print ''
     print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
     print ''
     x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
+
+    ### NEST (output) -- trial
+    lato_test = np.arange(lato[0]-2.0,lato[-1]+2.0)
+    lono_test = np.arange(lono[0]-2.0,lono[-1]+2.0)
+    print '******'
+    print ''
+    print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
+    print ''
+    x1ot, x2ot, x3ot, x4ot, y1ot, y2ot, y3ot, y4ot = gridSetup(lono_test, lato_test, m)
 
     # draw swath
     pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
@@ -175,8 +184,13 @@ def plot_basemap(ship_data, cube):
 
     # draw nest (output)
     polo =  Polygon([(x1o,y1o),(x2o,y2o),(x3o,y3o),(x4o,y4o)],\
-                  facecolor='none',linestyle='--',edgecolor='y',linewidth=2,label='Nest (output)')
+                  facecolor='none',linestyle='-',edgecolor='y',linewidth=2,label='Nest (output)')
     plt.gca().add_patch(polo)
+
+    # draw nest (output)
+    polot =  Polygon([(x1ot,y1ot),(x2ot,y2ot),(x3ot,y3ot),(x4ot,y4ot)],\
+                  facecolor='none',linestyle='--',edgecolor='m',linewidth=2,label='Test nest')
+    plt.gca().add_patch(polot)
 
     ### ADD LEGEND
     plt.legend()
@@ -254,7 +268,7 @@ def gridSetup(lont, latt, m):
 
     return x1, x2, x3, x4, y1, y2, y3, y4
 
-def rotateGrid(data):
+def unrotateGrid(data):
     ##
     ##      ROTATE GRID BACK TO STANDARD
     ##
@@ -274,22 +288,11 @@ def rotateGrid(data):
 
     rot_pole = data.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    # Transform real lat, lon point into rotated coords
-    # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
-    ll = ccrs.Geodetic()
-    # rot_lon = np.zeros(np.size(lon,0))
-    # rot_lat = np.zeros(np.size(lat,0))
-    # for n in range(0,np.size(lon)-1):
-    #     target_xy = rot_pole.transform_point(lon[n], lat[n], ll)  # lower left corner
-    #     rot_lon[n] = target_xy[0] + 180.
-    #     rot_lat[n] = target_xy[1] * float(-1.0)
-
     lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
-    # lon, lat = np.meshgrid(lon, lat)
 
     # Print to check conversion
     print '******'
-    print 'Test to rotate coordinate grid: '
+    print 'Test of unrotated coordinate grid: '
     print 'Rotated lon coord = ', rot_lon[0]
     print 'Rotated lat coord = ', rot_lat[0]
     print 'Lon = ', lon[0]
@@ -297,10 +300,43 @@ def rotateGrid(data):
     print ' '
 
     # ******
-    # lat/lon vertices of nest (output):  49.567255645848604 -27.55740381723681 85.960219407715 80.41973098346767
+    # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
     # ******
-    # Transform real lat, lon point into rotated coords
-    # rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    return lon, lat
+
+def rotateGrid(data):
+    ##
+    ##      RELATE GRID TO ROTATED POLE
+    ##
+
+    import iris.analysis.cartography as ircrt
+
+    ### LAM Configuration from suite u-bg610
+    dlat = 0.015714
+    dlon = 0.016334
+    frst_lat = -5.6112
+    frst_lon = 353.0345
+    pole_lat = 37.5000
+    pole_lon = 177.5000
+
+    lat = np.arange((centlat-(gry*float(0.5)*dlat)),(centlat+(gry*float(0.5)*dlat)),dlat)
+    lon = np.arange((centlon-(grx*float(0.5)*dlon)),(centlon+(grx*float(0.5)*dlon)),dlon)
+
+    rot_lon, rot_lat = ircrt.rotate_pole(lon, lat, frst_lon, frst_lat)
+
+    # Print to check conversion
+    print '******'
+    print 'Test of rotated coordinate grid: '
+    print 'Lon = ', lon[0]
+    print 'Lat = ', lat[0]
+    print 'Rotated lon coord = ', rot_lon[0]
+    print 'Rotated lat coord = ', rot_lat[0]
+    print ' '
+
+    # ******
+    # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
+    # ******
 
     return lon, lat
 
