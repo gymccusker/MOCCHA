@@ -591,7 +591,7 @@ def main():
     # map = plot_basemap(ship_data, cube1)
 
     nc_filename = filename1 + '_r0.nc'
-    out = writeNetCDF(cube, nc_filename)
+    # out = writeNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
