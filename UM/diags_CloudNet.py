@@ -461,12 +461,19 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
-    ### LOCATION ON MONSOON
-    # root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
-    ### LOCATION ON JASMIN
-    root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-    ### LOCATION ON LAPTOP
-    # root_dir = '~/MOCCHA/UM/DATA/'
+    ### CHOOSE PLATFORM
+    platform = 'JASMIN'
+    ### LAPTOP
+    ### MONSOON
+
+    if platform == 'JASMIN':
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+    if platform == 'LAPTOP':
+        root_dir = '~/MOCCHA/UM/DATA/'
+        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    if platform == 'MONSOON':
+        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
 
     ### CHOSEN RUN
     out_dir = '2_20180801_61DIAGS_TEST/'
@@ -488,7 +495,9 @@ def main():
 
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
     for i in range(0,3):
-
+        res = i*3.0
+        str_i = "%03d" % res # file number
+        fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
 
     print '******'
     print 'Reading in .pp files: '
@@ -536,10 +545,6 @@ def main():
     print ''
     print 'Load in ship track file:'
     print ''
-    ## LOCATION ON JASMIN
-    ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
-    ## LOCATION ON LAPTOP
-    # ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
