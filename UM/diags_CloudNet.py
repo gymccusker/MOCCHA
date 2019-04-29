@@ -502,7 +502,7 @@ def main():
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube1 = iris.load_cube(filename1, var_con)
+    cube = iris.load_cube(filename1, var_con)
 
     print '******'
     print 'Cubes read in complete at ' + time.strftime("%c")
@@ -511,7 +511,7 @@ def main():
     # cube = iris.load(filename1)
     print '******'
     print ''
-    print cube1 # lists all diagnostics in file
+    print cube # lists all diagnostics in file
     print ''
 
     # rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
