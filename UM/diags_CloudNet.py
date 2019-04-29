@@ -206,7 +206,7 @@ def readfile(filename):
 
     import pandas as pd
 
-    print '******'
+    # print '******'
     print ''
     print 'Reading .txt file with pandas'
     print ''
