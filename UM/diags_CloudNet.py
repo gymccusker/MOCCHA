@@ -12,7 +12,6 @@ import numpy as np
 import diags_MOCCHA as diags
 import cartopy.crs as ccrs
 import iris
-from netCDF4 import Dataset as NetCDFFile
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 
@@ -363,6 +362,83 @@ def callback(cube, field, filename):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
 
+def writeNetCDF(cube, outfile):
+
+    from netCDF4 import num2date, date2num
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
+
+    print dataset.file_format
+
+    ###################################
+    ## Global Attributes
+    ###################################
+    desc = 'Test netCDF write out'
+    micro = 'Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983)'
+    dataset.description = desc
+    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
+    dataset.references = 'N/A'
+    dataset.project = 'MOCCHA'
+    dataset.comment = ''
+    dataset.institution = 'University of Leeds.'
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    # time = dataset.createDimension('time', np.size(icenum1,0))
+    # Z = dataset.createDimension('Z', np.size(icenum1,1))
+    # X = dataset.createDimension('X', np.size(ice1,2))
+    # Y = dataset.createDimension('Y', np.size(ice1,3))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### Times
+    # times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    # times.comment = 'hourly data dumps'
+    # times.units = ['hours since 09:00:00 on 23-MAR-2013']
+    # times[:] = times1[:]
+
+    ###################################
+    ###################################
+    ## Create 2-d variables
+    ###################################
+    ###################################
+    #### Nisg
+    # nisgbar = dataset.createVariable('nisgbar', np.float32, ('time','Z',),fill_value='-9999')
+    # nisgbar.long_name = 'domain-averaged total ice number concentration'
+    # nisgbar.comment = 'Sum of ice, snow, and graupel particles'
+    # nisgbar.units = 'L-1'
+    # nisgbar[:] = icenum1[:]
+
+    ###################################
+    ###################################
+    ## Create 4-d variables
+    ###################################
+    ###################################
+    # #### Nisg
+    # nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
+    # nisg.long_name = 'total ice number concentration'
+    # nisg.comment = 'Sum of ice, snow, and graupel particles'
+    # nisg.units = 'L-1'
+    # nisg[:] = ice1[:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
 def main():
 
     START_TIME = time.time()
@@ -460,7 +536,8 @@ def main():
     print ''
     map = plot_basemap(ship_data, cube1)
 
-    # out = writeNetCDF(cube)
+    nc_filename = filename1 + '.nc'
+    # out = writeNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
