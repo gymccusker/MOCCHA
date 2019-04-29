@@ -408,19 +408,31 @@ def writeNetCDF(cube, outfile):
     ###################################
     ## Data dimensions
     ###################################
-    # time = dataset.createDimension('time', np.size(icenum1,0))
+    time = dataset.createDimension('time', np.size(cube.coord('time').points))
     # Z = dataset.createDimension('Z', np.size(icenum1,1))
-    # X = dataset.createDimension('X', np.size(ice1,2))
-    # Y = dataset.createDimension('Y', np.size(ice1,3))
+    lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
+    lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
 
     ###################################
     ## Dimensions variables
     ###################################
-    #### Times
-    # times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    # times.comment = 'hourly data dumps'
-    # times.units = ['hours since 09:00:00 on 23-MAR-2013']
-    # times[:] = times1[:]
+    #### Time
+    time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    time.comment = cube.coord('time').standard_name
+    time.units = str(cube.coord('time').units)
+    time[:] = cube.aux_coords[1].points
+
+    #### Latitude
+    lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
+    lat.comment = cube.coord('grid_latitude').standard_name
+    lat.units = str(cube.coord('grid_latitude').units)
+    lat[:] = cube.coord('grid_latitude').points
+
+    #### Longitude
+    lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
+    lon.comment = cube.coord('grid_latitude').standard_name
+    lon.units = str(cube.coord('grid_longitude').units)
+    lon[:] = cube.coord('grid_longitude').points
 
     ###################################
     ###################################
@@ -436,10 +448,19 @@ def writeNetCDF(cube, outfile):
 
     ###################################
     ###################################
+    ## Create 3-d variables
+    ###################################
+    ###################################
+    data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
+    data.units = cube.units
+    data.comment = cube.metadata
+    data[:,:,:] = cube.data[:]
+
+    ###################################
+    ###################################
     ## Create 4-d variables
     ###################################
     ###################################
-    # #### Nisg
     # nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
     # nisg.long_name = 'total ice number concentration'
     # nisg.comment = 'Sum of ice, snow, and graupel particles'
@@ -544,7 +565,7 @@ def main():
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube = iris.load_cube(fileout, var_con)
+    cube = iris.load_cube(filename1, var_con)
 
     print '******'
     print ''
