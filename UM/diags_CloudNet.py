@@ -598,8 +598,7 @@ def main():
     print ''
     print 'End: ' + time.strftime("%c")
     print ''
-
-    return cube
+    
 
 if __name__ == '__main__':
 
