@@ -63,6 +63,11 @@ def plot_basemap(ship_data, cube):
     ## PLOT MAP
     ###################################
 
+    print '******'
+    print ''
+    print 'Plot basemap:'
+    print ''
+
     ##################################################
     ##################################################
     #### 	BASEMAP
@@ -368,6 +373,11 @@ def writeNetCDF(cube, outfile):
     import time
     from datetime import datetime, timedelta
 
+    print '******'
+    print ''
+    print 'Writing NetCDF file:'
+    print ''
+
     ###################################
     ## Open File
     ###################################
@@ -531,19 +541,8 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    # print ''
-    # print data.head
-    # print ''
-    print '******'
-    print ''
-    print 'Plot basemap:'
-    print ''
     # map = plot_basemap(ship_data, cube1)
 
-    print '******'
-    print ''
-    print 'Writing NetCDF file:'
-    print ''
     nc_filename = filename1 + '_r0.nc'
     out = writeNetCDF(cube, nc_filename)
 
