@@ -396,7 +396,7 @@ def writeNetCDF(cube, outfile):
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'N/A'
-    dataset.project = 'MOCCHA'
+    dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = ''
     dataset.institution = 'University of Leeds.'
 
@@ -487,6 +487,8 @@ def main():
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    for i in range(0,3):
+
 
     print '******'
     print 'Reading in .pp files: '
@@ -544,7 +546,7 @@ def main():
     # map = plot_basemap(ship_data, cube1)
 
     nc_filename = filename1 + '_r0.nc'
-    out = writeNetCDF(cube, nc_filename)
+    # out = writeNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
