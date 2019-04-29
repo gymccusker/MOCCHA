@@ -542,7 +542,7 @@ def main():
     print ''
     print 'Writing NetCDF file:'
     print ''
-    nc_filename = filename1 + '.nc'
+    nc_filename = filename1 + '_r0.nc'
     out = writeNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
