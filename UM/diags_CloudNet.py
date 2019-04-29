@@ -365,6 +365,8 @@ def callback(cube, field, filename):
 def writeNetCDF(cube, outfile):
 
     from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
 
     ###################################
     ## Open File
