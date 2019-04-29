@@ -534,10 +534,14 @@ def main():
     print ''
     print 'Plot basemap:'
     print ''
-    map = plot_basemap(ship_data, cube1)
+    # map = plot_basemap(ship_data, cube1)
 
+    print '******'
+    print ''
+    print 'Writing NetCDF file:'
+    print ''
     nc_filename = filename1 + '.nc'
-    # out = writeNetCDF(cube, nc_filename)
+    out = writeNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
