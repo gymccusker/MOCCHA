@@ -588,7 +588,7 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    # map = plot_basemap(ship_data, cube1)
+    map = plot_basemap(ship_data, cube1)
 
     nc_filename = filename1 + '_r0.nc'
     # out = writeNetCDF(cube, nc_filename)
