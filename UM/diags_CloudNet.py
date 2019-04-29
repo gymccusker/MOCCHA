@@ -461,7 +461,7 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
-    ### CHOOSE PLATFORM
+    ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'JASMIN'
     ### LAPTOP
     ### MONSOON
@@ -497,6 +497,7 @@ def main():
     # make global stash list and constraint
     # -------------------------------------------------------------------------
     print '******'
+    print ''
     print 'Make stash list for cube read in at ' + time.strftime("%c")
     print ' '
     GlobalStashList = makeGlobalStashList()
@@ -505,6 +506,7 @@ def main():
             ### defines which stash variables to load
 
     print '******'
+    print ''
     print 'Identifying .pp files: '
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
     for i in range(0,3):
@@ -533,6 +535,7 @@ def main():
     # Load cubes
     # -------------------------------------------------------------
     print '******'
+    print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
 
@@ -544,6 +547,7 @@ def main():
     cube = iris.load_cube(fileout, var_con)
 
     print '******'
+    print ''
     print 'Cubes read in complete at ' + time.strftime("%c")
     print ' '
 
