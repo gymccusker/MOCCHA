@@ -541,7 +541,7 @@ def main():
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube = iris.load_cube(fileout
+    cube = iris.load_cube(fileout, var_con)
 
     print '******'
     print 'Cubes read in complete at ' + time.strftime("%c")
