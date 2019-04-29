@@ -453,7 +453,8 @@ def writeNetCDF(cube, outfile):
     ###################################
     data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
     data.units = str(cube.units)
-    data.comment = cube.metadata
+    # data.comment = cube.metadata
+    data.attributes = cube.attributes
     data[:] = cube.data[:]
 
     ###################################
