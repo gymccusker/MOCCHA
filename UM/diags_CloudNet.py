@@ -493,17 +493,6 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
-    filename1 = root_dir + out_dir + 'umnsaa_pb000'
-    for i in range(0,3):
-        res = i*3.0
-        str_i = "%03d" % res # file number
-        fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
-
-    print '******'
-    print 'Reading in .pp files: '
-    print filename1
-    print ' '
-
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
@@ -514,6 +503,31 @@ def main():
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load
+
+    print '******'
+    print 'Identifying .pp files: '
+    filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    for i in range(0,3):
+        res = i*3.0
+        str_i = "%03d" % res # file number
+        fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
+        print fileout
+        print ' '
+
+        # # -------------------------------------------------------------
+        # # Load cubes
+        # # -------------------------------------------------------------
+        # print '******'
+        # print 'Begin cube read in at ' + time.strftime("%c")
+        # print ' '
+        #
+        # # cube = iris.load(filenames, global_con, callback)
+        # # cube = iris.load(filename1, global_con, callback)
+        #
+        # ## Set variable constraint (i.e. which variable to load in based on stash code)
+        # var_con = iris.AttributeConstraint(STASH='m01s16i222')
+        # cube = iris.load_cube(fileout, var_con)
+
 
     # -------------------------------------------------------------
     # Load cubes
@@ -527,7 +541,7 @@ def main():
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     var_con = iris.AttributeConstraint(STASH='m01s16i222')
-    cube = iris.load_cube(filename1, var_con)
+    cube = iris.load_cube(fileout
 
     print '******'
     print 'Cubes read in complete at ' + time.strftime("%c")
