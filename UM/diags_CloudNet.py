@@ -449,7 +449,7 @@ def writeNetCDF(cube, outfile):
     ###################################
     ## Write out file
     ###################################
-    # dataset.close()
+    dataset.close()
 
     return dataset
 
