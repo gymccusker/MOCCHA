@@ -374,9 +374,9 @@ def main():
     ### LOCATION ON MONSOON
     # root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     ### LOCATION ON JASMIN
-    # root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+    root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
     ### LOCATION ON LAPTOP
-    root_dir = '~/MOCCHA/UM/DATA/'
+    # root_dir = '~/MOCCHA/UM/DATA/'
 
     ### CHOSEN RUN
     out_dir = '2_20180801_61DIAGS_TEST/'
@@ -445,9 +445,9 @@ def main():
     print 'Load in ship track file:'
     print ''
     ## LOCATION ON JASMIN
-    # ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+    ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     ## LOCATION ON LAPTOP
-    ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    # ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
