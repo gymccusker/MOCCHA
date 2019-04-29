@@ -373,7 +373,9 @@ def writeNetCDF(cube, outfile):
     ###################################
     dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
 
+    print ''
     print dataset.file_format
+    print ''
 
     ###################################
     ## Global Attributes
