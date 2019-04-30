@@ -175,14 +175,14 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM nest
     #################################################################
-    # x1n = cube.coord('grid_longitude').points[0]
-    # x2n = cube.coord('grid_longitude').points[-1]
-    # y1n = cube.coord('grid_latitude').points[0]
-    # y2n = cube.coord('grid_latitude').points[-1]
+    x1n = np.nanmin(cube.coord('grid_longitude').points)
+    x2n = np.nanmax(cube.coord('grid_longitude').points)
+    y1n = np.nanmin(cube.coord('grid_latitude').points)
+    y2n = np.nanmax(cube.coord('grid_latitude').points)
     # # iplt.plot(([x1n,x1n],[y1n,y2n]),'w',linewidth = 2)
-    # plt.plot(cube.coord('grid_longitude').points[0],cube.coord('grid_latitude').points[0],
-    #          'ws', linewidth = 2,
-    #          )
+    plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmin(cube.coord('grid_latitude').points),
+             'ws', linewidth = 2,
+             )
 
     #################################################################
     ## plot ship track
