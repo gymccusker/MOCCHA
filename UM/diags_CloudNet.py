@@ -268,7 +268,7 @@ def plot_cartmap(ship_data, cube):
     import cartopy.crs as ccrs
 
     plt.figure()
-    plt.axes(projection=ccrs.PlateCarree())
+    plt.axes(projection=ccrs.NorthPolarStereo())
     iplt.pcolormesh(cube[0,:,:])
     plt.gca().stock_img()
     plt.gca().coastlines()
