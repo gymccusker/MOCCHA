@@ -175,19 +175,9 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM nest
     #################################################################
-    # x1n = np.nanmin(cube.coord('grid_longitude').points)
-    # x2n = np.nanmax(cube.coord('grid_longitude').points)
-    # y1n = np.nanmin(cube.coord('grid_latitude').points)
-    # y2n = np.nanmax(cube.coord('grid_latitude').points)
-    # # # iplt.plot(([x1n,x1n],[y1n,y2n]),'w',linewidth = 2)
-    # plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmin(cube.coord('grid_latitude').points),
-    #          'ws', linewidth = 2,
-    #          )
-    # plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmax(cube.coord('grid_latitude').points),
-    #         'ws', linewidth = 2,
-    #          )
-
-    qplt.outline(cube[0,:,200:300])
+    ### draw outline of grid
+    # qplt.outline(cube[0,:,200:300])
+    iplt.default_projection_extent(cube[0,:,200:300])
 
     # rotated_pole = ccrs.RotatedPole(pole_latitude = 37.5000, pole_longitude = 177.5000)
     # x = [np.nanmin(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points)]
