@@ -164,7 +164,7 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[3,:,:], label = ['UM: ' + cube.standard_name])
+    iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
 
     #################################################################
     ## plot ship track
