@@ -283,7 +283,7 @@ def plot_cartmap(ship_data, cube):
     ax.set_global()
     ax.gridlines()
 
-    ax.pcolormesh(cube[0,:,:])
+    iplt.pcolormesh(cube[0,:,:])
 
     plt.show()
 
