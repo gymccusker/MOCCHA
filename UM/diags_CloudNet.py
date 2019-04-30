@@ -152,7 +152,8 @@ def plot_cartmap(ship_data, cube):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(5,4))
-    ax = plt.axes(projection=ccrs.Orthographic(0, 90))
+    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    ax = plt.axes(projection=ccrs.PlateCarree())
 
     #################################################################
     ## add geographic features/guides for reference
@@ -165,7 +166,7 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
+    # iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
 
     #################################################################
     ## plot ship track
@@ -184,22 +185,22 @@ def plot_cartmap(ship_data, cube):
     plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7], color = 'darkorange', linewidth = 3, label = 'In Ice')
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7], color = 'red', linewidth = 4, label = 'Drift')
 
-    #################################################################
-    ## plot subset of globe
-    #################################################################
-    ## Compute a circle in axes coordinates, which we can use as a boundary
-    ## for the map. We can pan/zoom as much as we like - the boundary will be
-    ## permanently circular.
-    theta = np.linspace(0, 2*np.pi, 100)
-    center, radius = [0.5, 0.5], 0.5
-    verts = np.vstack([np.sin(theta), np.cos(theta)]).T
-    circle = mpath.Path(verts * radius + center)
-
-    ax.set_boundary(circle, transform=ax.transAxes)
+    # #################################################################
+    # ## plot subset of globe
+    # #################################################################
+    # ## Compute a circle in axes coordinates, which we can use as a boundary
+    # ## for the map. We can pan/zoom as much as we like - the boundary will be
+    # ## permanently circular.
+    # theta = np.linspace(0, 2*np.pi, 100)
+    # center, radius = [0.5, 0.5], 0.5
+    # verts = np.vstack([np.sin(theta), np.cos(theta)]).T
+    # circle = mpath.Path(verts * radius + center)
+    #
+    # ax.set_boundary(circle, transform=ax.transAxes)
 
     plt.legend()
 
-    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png',dpi=300)
+    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png',dpi=300)
     plt.show()
 
 def plot_basemap(ship_data, cube):
