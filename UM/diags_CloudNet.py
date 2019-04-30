@@ -269,7 +269,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.figure()
     plt.axes(projection=ccrs.PlateCarree())
-    iplt.pcolormesh(cube)
+    iplt.pcolormesh(cube[0,:,:])
     plt.gca().stock_img()
     plt.gca().coastlines()
 
