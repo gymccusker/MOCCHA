@@ -267,11 +267,24 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
 
+    # plt.figure()
+    # plt.axes(projection=ccrs.PlateCarree())
+    # iplt.pcolormesh(cube[0,:,:])
+    # ## plt.gca().stock_img()
+    # plt.gca().coastlines()
+
     plt.figure()
-    plt.axes(projection=ccrs.PlateCarree())
-    iplt.pcolormesh(cube[0,:,:])
-    ## plt.gca().stock_img()
-    plt.gca().coastlines()
+    ax = plt.axes(projection=ccrs.Orthographic(-10, 45))
+
+    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+
+    ax.set_global()
+    ax.gridlines()
+
+    ax.pcolormesh(cube[0,:,:])
+
+    plt.show()
 
     ## BASIC MAP PLOT
     # plt.figure()
@@ -632,8 +645,8 @@ def main():
         res = i*3.0
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
-        print fileout
-        print ' '
+        # print fileout
+        # print ' '
 
         # # -------------------------------------------------------------
         # # Load cubes
