@@ -177,7 +177,7 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[0,:,200:300])
-    iplt.default_projection_extent(cube[0,:,200:300])
+    iplt.default_projection_extent(cube[0,:,:])
 
     # rotated_pole = ccrs.RotatedPole(pole_latitude = 37.5000, pole_longitude = 177.5000)
     # x = [np.nanmin(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points)]
