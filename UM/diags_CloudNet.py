@@ -17,42 +17,42 @@ import matplotlib.cm as mpl_cm
 
 # def cart_plot(data1, data2):
 
-    import iris.plot as iplt
-    import cartopy.crs as crs
-    import cartopy.feature as cfe
-    import iris.quickplot as qplt
-
-    # Create a figure
-    fig = plt.figure(figsize=(8,4))
-
-    ## set axes position
-    ax = fig.add_axes([0.1,0.1,0.35,0.8])	# left, bottom, width, height
-
-    ## Allow interactive plotting
-    # plt.interactive(True)
-
-    ## Draw the contour with 25 levels.
-    # contour = qplt.contourf(data[0,0,:,:], cmap = mpl_cm.Reds)
-    # iplt.plot(data[0,:,0,0])
-    # iplt.plot(data[0,:,200,200],data.aux_coords[2])
-    ## iplt.plot(data[1,0:30,200,200],data.aux_coords[2][0:30])
-    for i in range(0,np.size(data1,0)):
-        strgi = "%1.f" % (i) # string of timestep
-        iplt.plot(data1[i,0:30,200,200],data1.aux_coords[2][0:30],label=strgi)
-    plt.legend()
-    plt.title(data1.standard_name + ', ' + str(data1.units))
-
-    # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
-
-    ## set axes position
-    ax = fig.add_axes([0.5,0.1,0.35,0.8])	# left, bottom, width, height
-    for i in range(0,np.size(data1,0)):
-        strgi = "%1.f" % (i) # string of timestep
-        iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
-    plt.legend()
-    plt.title(data2.standard_name + ', ' + str(data2.units))
-
-    plt.show()
+    # import iris.plot as iplt
+    # import cartopy.crs as crs
+    # import cartopy.feature as cfe
+    # import iris.quickplot as qplt
+    #
+    # # Create a figure
+    # fig = plt.figure(figsize=(8,4))
+    #
+    # ## set axes position
+    # ax = fig.add_axes([0.1,0.1,0.35,0.8])	# left, bottom, width, height
+    #
+    # ## Allow interactive plotting
+    # # plt.interactive(True)
+    #
+    # ## Draw the contour with 25 levels.
+    # # contour = qplt.contourf(data[0,0,:,:], cmap = mpl_cm.Reds)
+    # # iplt.plot(data[0,:,0,0])
+    # # iplt.plot(data[0,:,200,200],data.aux_coords[2])
+    # ## iplt.plot(data[1,0:30,200,200],data.aux_coords[2][0:30])
+    # for i in range(0,np.size(data1,0)):
+    #     strgi = "%1.f" % (i) # string of timestep
+    #     iplt.plot(data1[i,0:30,200,200],data1.aux_coords[2][0:30],label=strgi)
+    # plt.legend()
+    # plt.title(data1.standard_name + ', ' + str(data1.units))
+    #
+    # # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
+    #
+    # ## set axes position
+    # ax = fig.add_axes([0.5,0.1,0.35,0.8])	# left, bottom, width, height
+    # for i in range(0,np.size(data1,0)):
+    #     strgi = "%1.f" % (i) # string of timestep
+    #     iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
+    # plt.legend()
+    # plt.title(data2.standard_name + ', ' + str(data2.units))
+    #
+    # plt.show()
 
 def readfile(filename):
 
