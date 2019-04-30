@@ -119,7 +119,7 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
-    import matplotlib.path as mpath
+    from matplotlib.patches import Polygon
 
     ###################################
     ## PLOT MAP
@@ -169,7 +169,21 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
+    # iplt.pcolormesh(cube[0,:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
+
+    #################################################################
+    ## plot UM nest
+    #################################################################
+    # iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
+    ### draw swath
+    x1n = cube.coord('grid_longitude').points[0]
+    x2n = cube.coord('grid_longitude').points[-1]
+    y1n = cube.coord('grid_latitude').points[0]
+    y2n = cube.coord('grid_latitude').points[-1]
+    poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
+                  facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
+    plt.gca().add_patch(poln)
 
     #################################################################
     ## plot ship track
@@ -178,12 +192,7 @@ def plot_cartmap(ship_data, cube):
     drift_index = iceDrift(ship_data)
     inIce_index = inIce(ship_data)
 
-    ### MAP ONTO PROJECTION
-    # x, y = m(ship_data.values[:,6], ship_data.values[:,7])
-    # x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
-    # x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
-
-    # Plot tracks as line plot
+    ### Plot tracks as line plot
     plt.plot(ship_data.values[:,6], ship_data.values[:,7],
              color = 'yellow', linewidth = 2,
              transform = ccrs.PlateCarree(), label = 'Whole',
@@ -205,22 +214,10 @@ def plot_cartmap(ship_data, cube):
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
 
-    # #################################################################
-    # ## plot subset of globe
-    # #################################################################
-    # ## Compute a circle in axes coordinates, which we can use as a boundary
-    # ## for the map. We can pan/zoom as much as we like - the boundary will be
-    # ## permanently circular.
-    # theta = np.linspace(0, 2*np.pi, 100)
-    # center, radius = [0.5, 0.5], 0.5
-    # verts = np.vstack([np.sin(theta), np.cos(theta)]).T
-    # circle = mpath.Path(verts * radius + center)
-    #
-    # ax.set_boundary(circle, transform=ax.transAxes)
 
     plt.legend()
 
-    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png',dpi=300)
+    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png',dpi=300)
     plt.show()
 
 def plot_basemap(ship_data, cube):
