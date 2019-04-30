@@ -153,10 +153,11 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.LambertConformal())
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
+    ax.set_extent([-180, 180, 50, 90], crs=ccrs.PlateCarree())
 
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO
-    
+    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+
     #################################################################
     ## add geographic features/guides for reference
     #################################################################
