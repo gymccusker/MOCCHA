@@ -169,8 +169,8 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[0,:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
+    # iplt.pcolormesh(cube[0,:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
