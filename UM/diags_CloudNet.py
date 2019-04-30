@@ -112,6 +112,79 @@ def inIce(data):
 
     return inIce_index
 
+def plot_cartmap(ship_data, cube):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plot cartopy map:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.figure(figsize=(5,4))
+    ax = plt.axes(projection=ccrs.Orthographic(0, 90))
+
+    #################################################################
+    ## add geographic features/guides for reference
+    #################################################################
+    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    ax.set_global()
+    ax.gridlines()
+
+    #################################################################
+    ## plot UM data
+    #################################################################
+    iplt.pcolormesh(cube[3,:,:])
+
+    #################################################################
+    ## plot ship track
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+
+    ### MAP ONTO PROJECTION
+    # x, y = m(ship_data.values[:,6], ship_data.values[:,7])
+    # x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
+    # x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
+
+    # Plot tracks as line plot
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7], color = 'yellow', linewidth = 2, label = 'Whole')
+    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7], color = 'darkorange', linewidth = 3, label = 'In Ice')
+    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7], color = 'red', linewidth = 4, label = 'Drift')
+
+    plt.show()
+
 def plot_basemap(ship_data, cube):
 
     from mpl_toolkits.basemap import Basemap
@@ -257,42 +330,6 @@ def plot_basemap(ship_data, cube):
 
     ### ADD LEGEND
     plt.legend()
-
-    plt.show()
-
-def plot_cartmap(ship_data, cube):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-
-    # plt.figure()
-    # plt.axes(projection=ccrs.PlateCarree())
-    # iplt.pcolormesh(cube[0,:,:])
-    # ## plt.gca().stock_img()
-    # plt.gca().coastlines()
-
-    plt.figure()
-    ax = plt.axes(projection=ccrs.Orthographic(0, 90))
-
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-
-    ax.set_global()
-    ax.gridlines()
-
-    iplt.pcolormesh(cube[0,:,:])
-
-    plt.show()
-
-    ## BASIC MAP PLOT
-    # plt.figure()
-    # points = qplt.points(cube[0,:,:], c=cube[0,:,:].data)
-    # cb = plt.colorbar(points, orientation='horizontal')
-    # cb.set_label(cube[0,:,:].units)
-    # plt.gca().coastlines()
 
     plt.show()
 
