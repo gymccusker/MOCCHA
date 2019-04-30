@@ -183,6 +183,9 @@ def plot_cartmap(ship_data, cube):
     plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmin(cube.coord('grid_latitude').points),
              'ws', linewidth = 2,
              )
+     plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmax(cube.coord('grid_latitude').points),
+              'ws', linewidth = 2,
+              )
 
     #################################################################
     ## plot ship track
