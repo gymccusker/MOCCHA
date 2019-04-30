@@ -274,7 +274,7 @@ def plot_cartmap(ship_data, cube):
     # plt.gca().coastlines()
 
     plt.figure()
-    ax = plt.axes(projection=ccrs.Orthographic(-10, 45))
+    ax = plt.axes(projection=ccrs.Orthographic(0, 90))
 
     ax.add_feature(cartopy.feature.OCEAN, zorder=0)
     ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
