@@ -266,6 +266,7 @@ def plot_cartmap(ship_data, cube):
     import iris.quickplot as qplt
     import iris.analysis.cartography
     import cartopy.crs as ccrs
+    import cartopy
 
     # plt.figure()
     # plt.axes(projection=ccrs.PlateCarree())
