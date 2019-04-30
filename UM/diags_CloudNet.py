@@ -164,7 +164,7 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[3,:,:])
+    iplt.pcolormesh(cube[3,:,:], label = ['UM: ' + cube.standard_name])
 
     #################################################################
     ## plot ship track
@@ -182,6 +182,8 @@ def plot_cartmap(ship_data, cube):
     plt.plot(ship_data.values[:,6], ship_data.values[:,7], color = 'yellow', linewidth = 2, label = 'Whole')
     plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7], color = 'darkorange', linewidth = 3, label = 'In Ice')
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7], color = 'red', linewidth = 4, label = 'Drift')
+
+    plt.legend()
 
     plt.show()
 
