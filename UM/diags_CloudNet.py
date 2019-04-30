@@ -161,10 +161,10 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## add geographic features/guides for reference
     #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    ax.set_global()
-    ax.gridlines()
+    # ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    # ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    # ax.set_global()
+    # ax.gridlines()
 
     #################################################################
     ## plot UM data
