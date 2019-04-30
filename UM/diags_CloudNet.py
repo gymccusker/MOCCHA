@@ -267,11 +267,18 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
 
+    # plt.figure()
+    # plt.axes(projection=ccrs.PlateCarree())
+    # iplt.pcolormesh(cube[0,:,:])
+    # plt.gca().stock_img()
+    # plt.gca().coastlines()
+
     plt.figure()
-    plt.axes(projection=ccrs.Stereographic())
-    iplt.pcolormesh(cube[0,:,:])
-    plt.gca().stock_img()
+    points = qplt.points(cube[0,:,:], c=cube[0,:,:].data)
+    cb = plt.colorbar(points, orientation='horizontal')
+    cb.set_label(cube[0,:,:].units)
     plt.gca().coastlines()
+    plt.show()
 
     plt.show()
 
