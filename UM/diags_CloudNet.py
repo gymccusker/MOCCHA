@@ -15,7 +15,7 @@ import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 
-def cart_plot(data1, data2):
+# def cart_plot(data1, data2):
 
     import iris.plot as iplt
     import cartopy.crs as crs
@@ -53,6 +53,64 @@ def cart_plot(data1, data2):
     plt.title(data2.standard_name + ', ' + str(data2.units))
 
     plt.show()
+
+def readfile(filename):
+
+    import pandas as pd
+
+    # print '******'
+    print ''
+    print 'Reading .txt file with pandas'
+    print ''
+
+    data = pd.read_csv(filename, sep = " ")
+    values = data.values
+
+    return data, values
+
+def assignColumns(data):
+
+    columns = ['Year', 'Month', 'Day', 'Hour', 'Minutes', 'Seconds', 'Longitude', 'Latitude']
+
+    return columns
+
+def iceDrift(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+
+    print '******'
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
+    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
+    print ''
+
+    return drift_index
+
+def inIce(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
+    Sep_inIce = np.where(np.logical_and(data.values[:,2]<20,data.values[:,1]==9))
+    inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
+
+    print '******'
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print ''
+
+    return inIce_index
 
 def plot_basemap(ship_data, cube):
 
@@ -202,63 +260,20 @@ def plot_basemap(ship_data, cube):
 
     plt.show()
 
-def readfile(filename):
+def plot_cartmap(ship_data, cube):
 
-    import pandas as pd
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
 
-    # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    plt.figure()
+    plt.axes(projection=ccrs.PlateCarree())
+    iplt.pcolormesh(cube)
+    plt.gca().stock_img()
+    plt.gca().coastlines()
 
-    data = pd.read_csv(filename, sep = " ")
-    values = data.values
-
-    return data, values
-
-def assignColumns(data):
-
-    columns = ['Year', 'Month', 'Day', 'Hour', 'Minutes', 'Seconds', 'Longitude', 'Latitude']
-
-    return columns
-
-def iceDrift(data):
-
-    ###################################
-    ## Define ice drift period
-    ###################################
-
-    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
-    drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
-
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
-
-    return drift_index
-
-def inIce(data):
-
-    ###################################
-    ## Define ice drift period
-    ###################################
-
-    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
-    Sep_inIce = np.where(np.logical_and(data.values[:,2]<20,data.values[:,1]==9))
-    inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
-
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
-    print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-
-    return inIce_index
+    plt.show()
 
 def gridSetup(lont, latt, m):
 
@@ -603,7 +618,9 @@ def main():
     print '******'
     print ''
     print 'Identifying .pp files: '
+    print ''
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
+
     for i in range(0,3):
         res = i*3.0
         str_i = "%03d" % res # file number
@@ -661,7 +678,8 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    map = plot_basemap(ship_data, cube)
+    # map = plot_basemap(ship_data, cube)
+    map = plot_cartmap(ship_data, cube)
 
     nc_filename = filename1 + '_r0.nc'
     # out = write4DNetCDF(cube, nc_filename)
