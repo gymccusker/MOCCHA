@@ -187,7 +187,7 @@ def plot_cartmap(ship_data, cube):
     #         'ws', linewidth = 2,
     #          )
 
-    qplt.outline(cube[0,200:300,200:300])
+    qplt.outline(cube[0,:,200:300])
 
     # rotated_pole = ccrs.RotatedPole(pole_latitude = 37.5000, pole_longitude = 177.5000)
     # x = [np.nanmin(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points)]
