@@ -183,7 +183,7 @@ def plot_cartmap(ship_data, cube):
     y2n = cube.coord('grid_latitude').points[-1]
     # iplt.plot(([x1n,x1n],[y1n,y2n]),'w',linewidth = 2)
     plt.plot(cube.coord('grid_longitude').points[0],cube.coord('grid_latitude').points[0],
-             'ws', linewidth = 2, transform = ccrs.PlateCarree(),
+             'ws', linewidth = 2,
              )
     # poln =  Polygon([(x1n,y1n),(x2n,y1n),(x2n,y2n),(x1n,y2n)],\
     #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
