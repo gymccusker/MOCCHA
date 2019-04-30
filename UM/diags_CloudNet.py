@@ -169,7 +169,7 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    # iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
+    iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
 
     #################################################################
     ## plot ship track
@@ -196,7 +196,10 @@ def plot_cartmap(ship_data, cube):
              'k^', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
-
+    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
              color = 'red', linewidth = 4,
              transform = ccrs.PlateCarree(), label = 'Drift',
