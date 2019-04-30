@@ -367,7 +367,7 @@ def callback(cube, field, filename):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
 
-def writeNetCDF(cube, outfile):
+def write3DNetCDF(cube, outfile):
 
     from netCDF4 import num2date, date2num
     import time
@@ -436,15 +436,88 @@ def writeNetCDF(cube, outfile):
 
     ###################################
     ###################################
-    ## Create 2-d variables
+    ## Create 3-d variables
     ###################################
     ###################################
-    #### Nisg
-    # nisgbar = dataset.createVariable('nisgbar', np.float32, ('time','Z',),fill_value='-9999')
-    # nisgbar.long_name = 'domain-averaged total ice number concentration'
-    # nisgbar.comment = 'Sum of ice, snow, and graupel particles'
-    # nisgbar.units = 'L-1'
-    # nisgbar[:] = icenum1[:]
+    data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
+    data.units = str(cube.units)
+    # data.comment = cube.metadata
+    data.attributes = str(cube.attributes)
+    data[:] = cube.data[:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+def write4DNetCDF(cube, outfile):
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    print 'Writing NetCDF file:'
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
+
+    print ''
+    print dataset.file_format
+    print ''
+
+    ###################################
+    ## Global Attributes
+    ###################################
+    desc = 'Test netCDF write out'
+    micro = 'Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983)'
+    dataset.description = desc
+    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
+    dataset.references = 'N/A'
+    dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
+    dataset.comment = ''
+    dataset.institution = 'University of Leeds.'
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    time = dataset.createDimension('time', np.size(cube.coord('time').points))
+    # Z = dataset.createDimension('Z', np.size(icenum1,1))
+    lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
+    lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### Time
+    time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    time.comment = cube.coord('time').standard_name
+    time.units = str(cube.coord('time').units)
+    time[:] = cube.aux_coords[1].points
+
+    #### Latitude
+    lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
+    lat.comment = cube.coord('grid_latitude').standard_name
+    lat.units = str(cube.coord('grid_latitude').units)
+    lat[:] = cube.coord('grid_latitude').points
+
+    #### Longitude
+    lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
+    lon.comment = cube.coord('grid_latitude').standard_name
+    lon.units = str(cube.coord('grid_longitude').units)
+    lon[:] = cube.coord('grid_longitude').points
 
     ###################################
     ###################################
@@ -591,14 +664,15 @@ def main():
     map = plot_basemap(ship_data, cube)
 
     nc_filename = filename1 + '_r0.nc'
-    # out = writeNetCDF(cube, nc_filename)
+    # out = write4DNetCDF(cube, nc_filename)
+    # out = write3DNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
     print ''
     print 'End: ' + time.strftime("%c")
     print ''
-    
+
 
 if __name__ == '__main__':
 
