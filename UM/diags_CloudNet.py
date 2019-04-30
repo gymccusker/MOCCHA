@@ -199,6 +199,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
+    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png',dpi=300)
     plt.show()
 
 def plot_basemap(ship_data, cube):
