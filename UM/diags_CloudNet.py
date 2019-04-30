@@ -154,7 +154,7 @@ def plot_cartmap(ship_data, cube):
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
-    ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -192,6 +192,11 @@ def plot_cartmap(ship_data, cube):
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'In Ice',
              )
+    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+             color = 'darkorange', marker = '^', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
              color = 'red', linewidth = 4,
              transform = ccrs.PlateCarree(), label = 'Drift',
