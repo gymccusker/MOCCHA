@@ -195,36 +195,36 @@ def plot_cartmap(ship_data, cube):
     # ax.plot(x, y, marker='o', transform = ccrs.PlateCarree())
     # ax.fill(x, y, transform = ccrs.PlateCarree(), color='coral', alpha=0.4)
 
-    # #################################################################
-    # ## plot ship track
-    # #################################################################
-    # ### DEFINE DRIFT + IN_ICE PERIODS
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
-    #
-    # ### Plot tracks as line plot
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-    #          color = 'yellow', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'In Ice',
-    #          )
-    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-    #          color = 'red', linewidth = 4,
-    #          transform = ccrs.PlateCarree(), label = 'Drift',
-    #          )
-    #
-    # plt.legend()
+    #################################################################
+    ## plot ship track
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+             color = 'yellow', linewidth = 2,
+             transform = ccrs.PlateCarree(), label = 'Whole',
+             )
+    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+             color = 'red', linewidth = 4,
+             transform = ccrs.PlateCarree(), label = 'Drift',
+             )
+
+    plt.legend()
 
     # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
     plt.show()
