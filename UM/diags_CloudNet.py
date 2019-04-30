@@ -193,8 +193,8 @@ def plot_cartmap(ship_data, cube):
              transform = ccrs.PlateCarree(), label = 'In Ice',
              )
     plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             color = 'darkorange', marker = '^', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
              )
 
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
