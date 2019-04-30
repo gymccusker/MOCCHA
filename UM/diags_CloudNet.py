@@ -4,6 +4,7 @@
 ###
 ###
 
+
 import time
 import datetime
 import numpy as np
@@ -14,7 +15,6 @@ import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
-
 # def cart_plot(data1, data2):
 
     # import iris.plot as iplt
@@ -154,7 +154,7 @@ def plot_cartmap(ship_data, cube):
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
-    ax.set_extent([-180, 180, 75, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([-150, 150, 75, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -666,7 +666,9 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
+
+    ### JASMIN
     ### LAPTOP
     ### MONSOON
 
