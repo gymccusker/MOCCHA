@@ -185,7 +185,7 @@ def plot_cartmap(ship_data, cube):
     iplt.plot(cube.coord('grid_longitude').points[0],cube.coord('grid_latitude').points[0],'ws',linewidth = 2)
     # poln =  Polygon([(x1n,y1n),(x2n,y1n),(x2n,y2n),(x1n,y2n)],\
     #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
-    plt.gca().add_patch(poln)
+    # plt.gca().add_patch(poln)
 
     #################################################################
     ## plot ship track
