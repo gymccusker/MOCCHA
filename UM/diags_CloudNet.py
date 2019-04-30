@@ -119,7 +119,7 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
-    from matplotlib.patches import Polygon
+    # from matplotlib.patches import Polygon
 
     ###################################
     ## PLOT MAP
@@ -181,8 +181,9 @@ def plot_cartmap(ship_data, cube):
     x2n = cube.coord('grid_longitude').points[-1]
     y1n = cube.coord('grid_latitude').points[0]
     y2n = cube.coord('grid_latitude').points[-1]
-    poln =  Polygon([(x1n,y1n),(x2n,y1n),(x2n,y2n),(x1n,y2n)],\
-                  facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
+    iplt.plot([x1n,y1n),(x2n,y1n)],'w',linewidth = 2)
+    # poln =  Polygon([(x1n,y1n),(x2n,y1n),(x2n,y2n),(x1n,y2n)],\
+    #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
     plt.gca().add_patch(poln)
 
     #################################################################
