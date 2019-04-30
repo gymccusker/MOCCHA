@@ -119,6 +119,7 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
+    import matplotlib.path as mpath
 
     ###################################
     ## PLOT MAP
