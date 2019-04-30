@@ -154,7 +154,7 @@ def plot_cartmap(ship_data, cube):
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
-    ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([-180, 180, 75, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -169,25 +169,20 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    # iplt.pcolormesh(cube[0,:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    iplt.pcolormesh(cube[0,:,:])
+    plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
     #################################################################
-    # iplt.pcolormesh(cube[0,:,:], label = ['UM: ' + cube.standard_name])
-    ### draw swath
-    x1n = cube.coord('grid_longitude').points[0]
-    x2n = cube.coord('grid_longitude').points[-1]
-    y1n = cube.coord('grid_latitude').points[0]
-    y2n = cube.coord('grid_latitude').points[-1]
-    # iplt.plot(([x1n,x1n],[y1n,y2n]),'w',linewidth = 2)
-    plt.plot(cube.coord('grid_longitude').points[0],cube.coord('grid_latitude').points[0],
-             'ws', linewidth = 2,
-             )
-    # poln =  Polygon([(x1n,y1n),(x2n,y1n),(x2n,y2n),(x1n,y2n)],\
-    #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
-    # plt.gca().add_patch(poln)
+    # x1n = cube.coord('grid_longitude').points[0]
+    # x2n = cube.coord('grid_longitude').points[-1]
+    # y1n = cube.coord('grid_latitude').points[0]
+    # y2n = cube.coord('grid_latitude').points[-1]
+    # # iplt.plot(([x1n,x1n],[y1n,y2n]),'w',linewidth = 2)
+    # plt.plot(cube.coord('grid_longitude').points[0],cube.coord('grid_latitude').points[0],
+    #          'ws', linewidth = 2,
+    #          )
 
     #################################################################
     ## plot ship track
