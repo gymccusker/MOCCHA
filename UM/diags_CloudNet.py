@@ -679,7 +679,10 @@ def main():
     print ''
     print 'Identifying .pp files: '
     print ''
+
     filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    print filename1
+    print ''
 
     for i in range(0,3):
         res = i*3.0
