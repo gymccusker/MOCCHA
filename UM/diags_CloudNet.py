@@ -154,7 +154,7 @@ def plot_cartmap(ship_data, cube):
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
-    ax.set_extent([-150, 150, 75, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -169,8 +169,8 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[0,:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
+    # iplt.pcolormesh(cube[0,:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
@@ -186,6 +186,14 @@ def plot_cartmap(ship_data, cube):
     # plt.plot(np.nanmin(cube.coord('grid_longitude').points),np.nanmax(cube.coord('grid_latitude').points),
     #         'ws', linewidth = 2,
     #          )
+
+    qplt.outline(cube[0,:,:])
+
+    # rotated_pole = ccrs.RotatedPole(pole_latitude = 37.5000, pole_longitude = 177.5000)
+    # x = [np.nanmin(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points)]
+    # y = [np.nanmin(cube.coord('grid_latitude').points), np.nanmax(cube.coord('grid_latitude').points), np.nanmax(cube.coord('grid_latitude').points), np.nanmin(cube.coord('grid_latitude').points), np.nanmin(cube.coord('grid_latitude').points)]
+    # ax.plot(x, y, marker='o', transform = ccrs.PlateCarree())
+    # ax.fill(x, y, transform = ccrs.PlateCarree(), color='coral', alpha=0.4)
 
     #################################################################
     ## plot ship track
@@ -218,7 +226,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
-    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
+    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
     plt.show()
 
 def plot_basemap(ship_data, cube):
@@ -666,7 +674,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
