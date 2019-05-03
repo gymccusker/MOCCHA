@@ -761,7 +761,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'DESKTOP'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -815,7 +815,7 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pc001'
+    filename1 = root_dir + out_dir + 'umnsaa_pb000'
     print filename1
     print ''
 
