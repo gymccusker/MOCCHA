@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 
 
-ACC_STASH_CODE = 'm01s16i222'
+STASH_CODE = 'm01s16i222'
 
 
 def readfile(filename):
@@ -463,6 +463,81 @@ def assignTimecoord(cube):
 
     return cube
 
+def fixTimecoord(local_cube_list):
+
+    import cf_units
+    import iris.coords as icoords
+
+    time_unit = cf_units.Unit(
+        'hours since 1970-01-01', calendar=cf_units.CALENDAR_GREGORIAN)
+
+    # build ref Time coord
+    LBYR = str(local_cube_list[period_1].attributes['LBYR'])
+    if local_cube_list[period_1].attributes['LBMON'] >= 10:
+        LBMON = str(local_cube_list[period_1].attributes['LBMON'])
+    else:
+        LBMON = '0' + \
+            str(local_cube_list[period_1].attributes['LBMON'])
+    if local_cube_list[period_1].attributes['LBDAT'] >= 10:
+        LBDAT = str(local_cube_list[period_1].attributes['LBDAT'])
+    else:
+        LBDAT = '0' + \
+            str(local_cube_list[period_1].attributes['LBDAT'])
+    if local_cube_list[period_1].attributes['LBHR'] >= 10:
+        LBHR = str(local_cube_list[period_1].attributes['LBHR'])
+    else:
+        LBHR = '0' + \
+            str(local_cube_list[period_1].attributes['LBHR'])
+    if local_cube_list[period_1].attributes['LBMIN'] > - 10:
+        LBMIN = str(local_cube_list[period_1].attributes['LBMIN'])
+    else:
+        LBMIN = '0' + \
+            str(local_cube_list[period_1].attributes['LBMIN'])
+
+    scanTime = LBYR + '/' + LBMON + '/' + \
+        LBDAT + ' ' + LBHR + ':' + LBMIN
+
+    refTime = datetime.datetime.strptime(
+        scanTime, "%Y/%m/%d %H:%M")
+
+    refTimeCoord = icoords.AuxCoord(
+        time_unit.date2num(refTime),
+        standard_name='forecast_reference_time',
+        units=time_unit)
+
+    # Data ref Time coord
+    LBYR = str(local_cube_list[period_2].attributes['LBYRD'])
+    if local_cube_list[period_2].attributes['LBMOND'] >= 10:
+        LBMON = str(local_cube_list[period_2].attributes['LBMOND'])
+    else:
+        LBMON = '0' + \
+            str(local_cube_list[period_2].attributes['LBMOND'])
+    if local_cube_list[period_2].attributes['LBDATD'] >= 10:
+        LBDAT = str(local_cube_list[period_2].attributes['LBDATD'])
+    else:
+        LBDAT = '0' + \
+            str(local_cube_list[period_2].attributes['LBDATD'])
+    if local_cube_list[period_2].attributes['LBHRD'] >= 10:
+        LBHR = str(local_cube_list[period_2].attributes['LBHRD'])
+    else:
+        LBHR = '0' + \
+            str(local_cube_list[period_2].attributes['LBHRD'])
+    if local_cube_list[period_2].attributes['LBMIND'] > - 10:
+        LBMIN = str(local_cube_list[period_2].attributes['LBMIND'])
+    else:
+        LBMIN = '0' + \
+            str(local_cube_list[period_2].attributes['LBMIND'])
+
+    scanTime = LBYR + '/' + LBMON + '/' + \
+        LBDAT + ' ' + LBHR + ':' + LBMIN
+
+    dataTime = datetime.datetime.strptime(
+        scanTime, "%Y/%m/%d %H:%M")
+
+    dataTimeCoord = icoords.AuxCoord(time_unit.date2num(dataTime),
+                                     standard_name='time',
+                                     units=time_unit)
+
 def testInput(cube):
 
     from netCDF4 import num2date, date2num
@@ -753,10 +828,7 @@ def main():
         # var_con = iris.AttributeConstraint(STASH='m01s16i222')
         # cube = iris.load_cube(fileout, var_con)
 
-    ## -------------------------------------------------------------------------
-    ## Create time constrain to take data every hour
-    ## -------------------------------------------------------------------------
-    # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
+
 
     # -------------------------------------------------------------
     # FIX: 1
@@ -784,13 +856,24 @@ def main():
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
 
-    # cube = iris.load(filenames, global_con, callback)
-    # cube = iris.load(filename1, global_con, callback)
+    ## -------------------------------------------------------------------------
+    ## Define time and Stash constraints:
+    ## -------------------------------------------------------------------------
+    ## Time: constrain to take data every hour
+    time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH=ACC_STASH_CODE)
+    var_con = iris.AttributeConstraint(STASH=STASH_CODE)
+
+    #### LOAD CUBE
     cube = iris.load_cube(filename1, var_con)
-    cube = assignTimecoord(cube)
+    # cube = assignTimecoord(cube)
+
+
+    ###### IF WANTING TO EXTRACT A PROFILE...
+    #### local_cube_list = cube.extract(var_con & time_con)
+
+
 
     print '---'
     print ''
