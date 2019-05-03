@@ -177,7 +177,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM data
     #################################################################
     iplt.pcolormesh(cube[0,:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
@@ -217,7 +217,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
-    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
+    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
     plt.show()
 
 def plot_basemap(ship_data, cube):
@@ -681,7 +681,7 @@ def main():
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA'
+        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
