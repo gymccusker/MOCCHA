@@ -761,7 +761,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'DESKTOP'
 
     ### JASMIN
     ### LAPTOP
