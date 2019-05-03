@@ -438,7 +438,7 @@ def makeGlobalStashList():
     GlobalStashList = diags.returnWantedStash()
 
     print GlobalStashList
-    print GlobalStashList[0]
+    # print GlobalStashList[0]
 
     return GlobalStashList
 
@@ -467,11 +467,17 @@ def fixTimecoord(local_cube_list):
 
     import cf_units
     import iris.coords as icoords
+    from datetime import datetime
 
     period_1 = 0
 
+    time_ref = datetime(1970,1,1,0,0,0,0)
+    time_start = datetime(2018,8,11,12,0,0,0)
+
     time_unit = cf_units.Unit(
         'hours since 1970-01-01', calendar=cf_units.CALENDAR_GREGORIAN)
+
+    time.gmtime((cube.coord('time')[0].points)*3600)
 
     # build ref Time coord
     LBYR = str(local_cube_list[period_1].attributes['LBYR'])
@@ -507,7 +513,7 @@ def fixTimecoord(local_cube_list):
         standard_name='forecast_reference_time',
         units=time_unit)
 
-    # Data ref Time coord
+    # Data Time coord
     LBYR = str(local_cube_list[period_2].attributes['LBYRD'])
     if local_cube_list[period_2].attributes['LBMOND'] >= 10:
         LBMON = str(local_cube_list[period_2].attributes['LBMOND'])
@@ -798,7 +804,7 @@ def main():
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
-            ### defines which stash variables to load
+            ### defines which stash variables to load - should be within a loop
 
     print '******'
     print ''
