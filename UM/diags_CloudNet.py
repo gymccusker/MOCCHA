@@ -15,44 +15,10 @@ import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
-# def cart_plot(data1, data2):
 
-    # import iris.plot as iplt
-    # import cartopy.crs as crs
-    # import cartopy.feature as cfe
-    # import iris.quickplot as qplt
-    #
-    # # Create a figure
-    # fig = plt.figure(figsize=(8,4))
-    #
-    # ## set axes position
-    # ax = fig.add_axes([0.1,0.1,0.35,0.8])	# left, bottom, width, height
-    #
-    # ## Allow interactive plotting
-    # # plt.interactive(True)
-    #
-    # ## Draw the contour with 25 levels.
-    # # contour = qplt.contourf(data[0,0,:,:], cmap = mpl_cm.Reds)
-    # # iplt.plot(data[0,:,0,0])
-    # # iplt.plot(data[0,:,200,200],data.aux_coords[2])
-    # ## iplt.plot(data[1,0:30,200,200],data.aux_coords[2][0:30])
-    # for i in range(0,np.size(data1,0)):
-    #     strgi = "%1.f" % (i) # string of timestep
-    #     iplt.plot(data1[i,0:30,200,200],data1.aux_coords[2][0:30],label=strgi)
-    # plt.legend()
-    # plt.title(data1.standard_name + ', ' + str(data1.units))
-    #
-    # # iplt.plot(data1[1,0:30,200,200],data1.aux_coords[2][0:30])
-    #
-    # ## set axes position
-    # ax = fig.add_axes([0.5,0.1,0.35,0.8])	# left, bottom, width, height
-    # for i in range(0,np.size(data1,0)):
-    #     strgi = "%1.f" % (i) # string of timestep
-    #     iplt.plot(data2[i,0:30,200,200],data2.aux_coords[2][0:30],label=strgi)
-    # plt.legend()
-    # plt.title(data2.standard_name + ', ' + str(data2.units))
-    #
-    # plt.show()
+
+ACC_STASH_CODE = 'm01s16i222'
+
 
 def readfile(filename):
 
@@ -486,7 +452,16 @@ def callback(cube, field, filename):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
 
-def testOutput(cube):
+def fixTimecoord(cube):
+
+    if not cube.coords('time', dim_coords=True):
+        time = cube.coord('time')
+        time.bounds = None
+        iris.util.promote_aux_coord_to_dim_coord(cube, time)
+
+    return cube
+
+def testInput(cube):
 
     from netCDF4 import num2date, date2num
     import time
@@ -494,7 +469,7 @@ def testOutput(cube):
 
     print '******'
     print ''
-    print 'Investigating NetCDF file:'
+    print 'Investigating input file:'
     print ''
 
     print 'Cube attributes:'
@@ -776,6 +751,28 @@ def main():
         # var_con = iris.AttributeConstraint(STASH='m01s16i222')
         # cube = iris.load_cube(fileout, var_con)
 
+    ## -------------------------------------------------------------------------
+    ## Create time constrain to take data every hour
+    ## -------------------------------------------------------------------------
+    # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
+
+    # -------------------------------------------------------------
+    # FIX: 1
+    # Some field are unknown, this will stop the concatenation
+    # So fix name from stash list
+    # Solve in the callback
+    # -------------------------------------------------------------
+    # cube = iris.load(filenames, global_con, callback)
+
+    # -------------------------------------------------------------
+    # FIX: 2
+    # fix time coordinate
+    # it happen for all the snow field
+    # -------------------------------------------------------------
+    # for icube in cube:
+    #     STASH = icube.attributes['STASH'].__str__()
+    #     if STASH not in ACC_STASH_CODE:
+    #         icube = fixTimecoord(icube)
 
     # -------------------------------------------------------------
     # Load cubes
@@ -789,8 +786,9 @@ def main():
     # cube = iris.load(filename1, global_con, callback)
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    var_con = iris.AttributeConstraint(STASH=ACC_STASH_CODE)
     cube = iris.load_cube(filename1, var_con)
+    cube = fixTimecoord(cube)
 
     print '---'
     print ''
@@ -827,7 +825,7 @@ def main():
     print ''
     nc_filename = filename1 + '_r0.nc'
 
-    out = testOutput(cube)
+    out = testInput(cube)
 
     # out = write4DNetCDF(cube, nc_filename)
     # out = write3DNetCDF(cube, nc_filename)
