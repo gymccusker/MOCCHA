@@ -815,15 +815,15 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pc006'
+    filename1 = root_dir + out_dir + 'umnsaa_pc001'
     print filename1
     print ''
 
-    for i in range(0,3):
-        res = i*3.0
+    for i in range(0,12):
+        res = i
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
-        # print fileout
+        print fileout
         # print ' '
 
         # # -------------------------------------------------------------
