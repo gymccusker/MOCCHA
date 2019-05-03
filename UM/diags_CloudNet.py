@@ -149,7 +149,10 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[1,:,:])
+    if np.size(cube.shape) == 3:
+        iplt.pcolormesh(cube[0,:,:])
+    elif np.size(cube.shape) == 2:
+        iplt.pcolormesh(cube[:,:])
     plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
@@ -477,7 +480,7 @@ def fixTimecoord(local_cube_list):
     time_unit = cf_units.Unit(
         'hours since 1970-01-01', calendar=cf_units.CALENDAR_GREGORIAN)
 
-    time.gmtime((cube.coord('time')[0].points)*3600)
+    time.gmtime((cube.coord('time')[0].points)*3600)    ## TIME IN UTC
 
     # build ref Time coord
     LBYR = str(local_cube_list[period_1].attributes['LBYR'])
@@ -566,6 +569,7 @@ def testInput(cube):
     print 'Cube dim coords:'
     print cube.dim_coords
     print ''
+    print np.size(cube.shape)
 
 def write3DNetCDF(cube, outfile):
 
@@ -893,6 +897,8 @@ def main():
     print cube # lists all diagnostics in file
     print ''
 
+    inp = testInput(cube)
+
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
@@ -907,7 +913,7 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     # map = plot_basemap(ship_data, cube)
-    # map = plot_cartmap(ship_data, cube)
+    map = plot_cartmap(ship_data, cube)
 
     # -------------------------------------------------------------
     # Write out data
@@ -917,8 +923,6 @@ def main():
     print 'Outputting data:'
     print ''
     nc_filename = filename1 + '_r0.nc'
-
-    out = testInput(cube)
 
     # out = write4DNetCDF(cube, nc_filename)
     # out = write3DNetCDF(cube, nc_filename)
