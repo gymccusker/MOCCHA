@@ -497,9 +497,15 @@ def testOutput(cube):
     print 'Investigating NetCDF file:'
     print ''
 
+    print 'Cube attributes:'
     print cube.attributes
+    print ''
+    print 'Cube aux coords:'
     print cube.aux_coords
+    print ''
+    print 'Cube dim coords:'
     print cube.dim_coords
+    print ''
 
 def write3DNetCDF(cube, outfile):
 
