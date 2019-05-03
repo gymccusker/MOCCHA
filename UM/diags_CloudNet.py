@@ -486,6 +486,21 @@ def callback(cube, field, filename):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
 
+def testOutput(cube):
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    print 'Investigating NetCDF file:'
+    print ''
+
+    print cube.attributes
+    print cube.aux_coords
+    print cube.dim_coords
+
 def write3DNetCDF(cube, outfile):
 
     from netCDF4 import num2date, date2num
@@ -730,7 +745,7 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pb012'
+    filename1 = root_dir + out_dir + 'umnsaa_pb000'
     print filename1
     print ''
 
@@ -768,7 +783,7 @@ def main():
     # cube = iris.load(filename1, global_con, callback)
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH='m01s16i004')
+    var_con = iris.AttributeConstraint(STASH='m01s16i222')
     cube = iris.load_cube(filename1, var_con)
 
     print '---'
@@ -805,6 +820,9 @@ def main():
     print 'Outputting data:'
     print ''
     nc_filename = filename1 + '_r0.nc'
+
+    out = testOutput(cube)
+
     # out = write4DNetCDF(cube, nc_filename)
     # out = write3DNetCDF(cube, nc_filename)
 
