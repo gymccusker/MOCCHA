@@ -671,7 +671,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'DESKTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -691,7 +691,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '2_20180801_61DIAGS_TEST/'
+    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST
