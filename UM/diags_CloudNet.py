@@ -117,7 +117,9 @@ def inIce(data):
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
     print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
     print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index[0],6])) + ', ' + str(np.nanmedian(data.values[inIce_index[0],7])) + ')'
+    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
+    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
     print ''
 
     return inIce_index
@@ -179,14 +181,14 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    iplt.pcolormesh(cube[0,:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
+    # iplt.pcolormesh(cube[0,:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    # qplt.outline(cube[0,:,200:300])
+    qplt.outline(cube[0,:,150:250])
     # iplt.default_projection_extent(cube[0,:,:])
 
     #################################################################
@@ -220,7 +222,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
-    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
+    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
     plt.show()
 
 def plot_basemap(ship_data, cube):
