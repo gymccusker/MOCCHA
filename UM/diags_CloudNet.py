@@ -112,10 +112,12 @@ def inIce(data):
 
     print '******'
     print ''
-    print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
     print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print ''
+    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index[0],6])) + ', ' + str(np.nanmedian(data.values[inIce_index[0],7])) + ')'
     print ''
 
     return inIce_index
@@ -127,7 +129,7 @@ def plot_cartmap(ship_data, cube):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
-    # from matplotlib.patches import Polygon
+        # from matplotlib.patches import Polygon
 
     ###################################
     ## PLOT MAP
@@ -195,10 +197,10 @@ def plot_cartmap(ship_data, cube):
     inIce_index = inIce(ship_data)
 
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-             color = 'yellow', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+    #          color = 'yellow', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
     plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'In Ice',
@@ -218,7 +220,7 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
-    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png')
+    plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
     plt.show()
 
 def plot_basemap(ship_data, cube):
@@ -666,7 +668,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'DESKTOP'
 
     ### JASMIN
     ### LAPTOP
