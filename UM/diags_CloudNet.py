@@ -99,14 +99,14 @@ def inIce(data):
     ## DEFINE IN ICE PERIOD
     ###################################
     # Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
-    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==0))
+    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
     # inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=12,data.values[:,1]==0))
-    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==0))
+    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8))
+    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
     inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     print '******'
