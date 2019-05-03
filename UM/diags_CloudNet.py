@@ -82,7 +82,7 @@ def iceDrift(data):
 
     Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
-    drift_index = np.arange(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+    drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     print '******'
     print ''
@@ -106,13 +106,14 @@ def inIce(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     Aug_inIce = np.where(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8))
-    Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
-    inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
+    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
+    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
+    inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     print '******'
     print ''
-    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
     print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
     print ''
