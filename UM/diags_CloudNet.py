@@ -183,15 +183,14 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    # iplt.pcolormesh(cube[0,:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    iplt.pcolormesh(cube[1,:,:])
+    plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0,:,165:285])
-    # iplt.default_projection_extent(cube[0,:,:])
+    # qplt.outline(cube[0,380:500,230:285])
 
     #################################################################
     ## plot ship track
@@ -731,7 +730,7 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    filename1 = root_dir + out_dir + 'umnsaa_pb012'
     print filename1
     print ''
 
@@ -769,22 +768,22 @@ def main():
     # cube = iris.load(filename1, global_con, callback)
 
     ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH='m01s16i222')
+    var_con = iris.AttributeConstraint(STASH='m01s16i004')
     cube = iris.load_cube(filename1, var_con)
 
-    print '******'
+    print '---'
     print ''
     print 'Cubes read in complete at ' + time.strftime("%c")
     print ' '
 
-    # cube = iris.load(filename1)
-    print '******'
+    print '---'
     print ''
     print cube # lists all diagnostics in file
     print ''
 
-    # rot_pole = cube1.coord('grid_latitude').coord_system.as_cartopy_crs()
-
+    # -------------------------------------------------------------
+    # Load ship track
+    # -------------------------------------------------------------
     print '******'
     print ''
     print 'Load in ship track file:'
@@ -792,9 +791,19 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
+    # -------------------------------------------------------------
+    # Plot data (map)
+    # -------------------------------------------------------------
     # map = plot_basemap(ship_data, cube)
-    map = plot_cartmap(ship_data, cube)
+    # map = plot_cartmap(ship_data, cube)
 
+    # -------------------------------------------------------------
+    # Write out data
+    # -------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Outputting data:'
+    print ''
     nc_filename = filename1 + '_r0.nc'
     # out = write4DNetCDF(cube, nc_filename)
     # out = write3DNetCDF(cube, nc_filename)
