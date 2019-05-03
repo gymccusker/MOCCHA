@@ -141,7 +141,7 @@ def plot_cartmap(ship_data, cube):
 
     print '******'
     print ''
-    print 'Plot cartopy map:'
+    print 'Plotting cartopy map:'
     print ''
 
     ##################################################
@@ -190,7 +190,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0,:,150:250])
+    qplt.outline(cube[0,:,165:285])
     # iplt.default_projection_extent(cube[0,:,:])
 
     #################################################################
@@ -223,6 +223,11 @@ def plot_cartmap(ship_data, cube):
              )
 
     plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting cartopy map! :)'
+    print ''
 
     # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
     plt.show()
