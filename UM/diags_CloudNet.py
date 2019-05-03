@@ -176,21 +176,15 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    # iplt.pcolormesh(cube[0,:,:])
+    iplt.pcolormesh(cube[0,:,:])
     # plt.title(cube.standard_name + ', ' + str(cube.units))
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0,:,200:300])
+    # qplt.outline(cube[0,:,200:300])
     # iplt.default_projection_extent(cube[0,:,:])
-
-    # rotated_pole = ccrs.RotatedPole(pole_latitude = 37.5000, pole_longitude = 177.5000)
-    # x = [np.nanmin(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmax(cube.coord('grid_longitude').points), np.nanmin(cube.coord('grid_longitude').points)]
-    # y = [np.nanmin(cube.coord('grid_latitude').points), np.nanmax(cube.coord('grid_latitude').points), np.nanmax(cube.coord('grid_latitude').points), np.nanmin(cube.coord('grid_latitude').points), np.nanmin(cube.coord('grid_latitude').points)]
-    # ax.plot(x, y, marker='o', transform = ccrs.PlateCarree())
-    # ax.fill(x, y, transform = ccrs.PlateCarree(), color='coral', alpha=0.4)
 
     #################################################################
     ## plot ship track
