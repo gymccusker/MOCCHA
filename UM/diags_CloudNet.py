@@ -452,8 +452,10 @@ def callback(cube, field, filename):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
 
-def fixTimecoord(cube):
-
+def assignTimecoord(cube):
+    '''
+    assign Time as dimension coordinate if not present in cube
+    '''
     if not cube.coords('time', dim_coords=True):
         time = cube.coord('time')
         time.bounds = None
@@ -788,7 +790,7 @@ def main():
     ## Set variable constraint (i.e. which variable to load in based on stash code)
     var_con = iris.AttributeConstraint(STASH=ACC_STASH_CODE)
     cube = iris.load_cube(filename1, var_con)
-    cube = fixTimecoord(cube)
+    cube = assignTimecoord(cube)
 
     print '---'
     print ''
