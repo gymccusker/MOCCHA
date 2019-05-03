@@ -468,6 +468,8 @@ def fixTimecoord(local_cube_list):
     import cf_units
     import iris.coords as icoords
 
+    period_1 = 0
+
     time_unit = cf_units.Unit(
         'hours since 1970-01-01', calendar=cf_units.CALENDAR_GREGORIAN)
 
