@@ -815,7 +815,7 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pb000'
+    filename1 = root_dir + out_dir + 'umnsaa_pc006'
     print filename1
     print ''
 
