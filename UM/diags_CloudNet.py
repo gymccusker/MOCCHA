@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 
 
-STASH_CODE = 'm01s00i254'
+STASH_CODE = 'm01s01i201'
 
 
 def readfile(filename):
@@ -150,7 +150,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM data
     #################################################################
     if np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[10,:,:])
+        iplt.pcolormesh(cube[0,:,:])
     elif np.size(cube.shape) == 2:
         iplt.pcolormesh(cube[:,:])
     if cube.units in locals():
