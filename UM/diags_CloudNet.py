@@ -150,7 +150,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM data
     #################################################################
     if np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[0,:,:])
+        iplt.pcolormesh(cube[1,:,:])
     elif np.size(cube.shape) == 2:
         iplt.pcolormesh(cube[:,:])
     plt.title(cube.standard_name + ', ' + str(cube.units))
