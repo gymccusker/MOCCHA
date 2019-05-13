@@ -157,6 +157,7 @@ def plot_cartmap(ship_data, cube):
         plt.title(cube.standard_name + ', ' + str(cube.units))
     else:
         plt.title(cube.standard_name)
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
