@@ -20,13 +20,8 @@ Stash_list = {'m01s16i222': 'air_pressure_at_sea_level',
               'm01s09i204': 'cloud_area_fraction_in_atmosphere_layer',
               'm01s09i205': 'cloud_area_fraction_in_atmosphere_layer',
               'm01s03i026': 'surface_roughness_length',
-              # 'm01s08i223': 'lwe_thickness_of_moisture_content_of_soil_layer',
-              # 'm01s08i225': 'soil_temperature',
               'm01s15i201': 'eastward_wind',
               'm01s15i202': 'northward_wind',
-              # 'm01s03i316': 'surface_temperature_on_tiles',
-              # 'm01s03i290': 'surface_sensible_heat_flux_on_tiles',
-              # 'm01s03i321': 'canopy_water_on_tiles',
               'm01s04i201': 'large_scale_rainfall_amount',
               'm01s04i202': 'large_scale_snowfall_amount',
               'm01s03i241': 'water_evaporation_amount',
@@ -55,11 +50,6 @@ Stash_list = {'m01s16i222': 'air_pressure_at_sea_level',
               'm01s03i248': 'screen_fog_fraction',
               'm01s03i247': 'screen_visibility',
               'm01s04i118': 'total_radar_reflectivity'
-              # 'm01s00i022': 'canopy_water',
-              # 'm01s03i328': 'screen_temp_on_tiles',
-              # 'm01s00i234': 'roughness_length_on_tiles',
-              # 'm01s03i314': 'surface_net_radiation_on_tiles',
-              # 'm01s03i330': 'surface_latent_heat_on_tiles'
               }
 
 
