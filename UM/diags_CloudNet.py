@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 
 
-STASH_CODE = 'm01s16i222'
+STASH_CODE = 'm01s00i408'
 
 
 def readfile(filename):
