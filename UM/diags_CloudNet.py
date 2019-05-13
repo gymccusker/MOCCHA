@@ -823,7 +823,7 @@ def main():
         res = i
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
-        print fileout
+        # print fileout
         # print ' '
 
         # # -------------------------------------------------------------
@@ -878,7 +878,10 @@ def main():
     var_con = iris.AttributeConstraint(STASH=STASH_CODE)
 
     #### LOAD CUBE
-    cube = iris.load_cube(filename1, var_con)
+    if 'var_con' in locals():
+        cube = iris.load_cube(filename1, var_con)
+    else
+        cube = iris.load_cube(filename1)
     # cube = assignTimecoord(cube)
 
 
