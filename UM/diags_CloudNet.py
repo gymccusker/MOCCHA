@@ -830,9 +830,16 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
+
+    # -------------------------------------------------------------------------
+    # define output filenames
+    # -------------------------------------------------------------------------
     filename1 = root_dir + out_dir + 'umnsaa_pc000'
-    print filename1
-    print ''
+    nc_filename = filename1 + '_r0.nc'
+    pp_filename = filename1 + '_r0.pp'
+
+    # print filename1
+    # print ''
 
     for i in range(0,24):
         res = i
@@ -920,9 +927,6 @@ def main():
         print ''
         print 'Outputting ' + str_i + ' data:'
         print ''
-        nc_filename = filename1 + '_r0.nc'
-        pp_filename = filename1 + '_r0.pp'
-
         iris.save(cube, pp_filename, append=True)
         # out = write4DNetCDF(cube, nc_filename)
         # out = write3DNetCDF(cube, nc_filename)
