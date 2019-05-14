@@ -41,3 +41,6 @@ UM/DATA/*
 *.txt
 *.nc
 *.pp
+
+# Compiled files
+*.pyc
