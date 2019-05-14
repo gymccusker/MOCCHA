@@ -892,7 +892,7 @@ def main():
 
         #### LOAD CUBE
         if 'var_con' in locals():
-            cube = iris.load(fileout, var_con)
+            cube = iris.load_cube(fileout, var_con)
         else:
             cube = iris.load(fileout)
         # cube = assignTimecoord(cube)
