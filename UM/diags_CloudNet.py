@@ -925,6 +925,7 @@ def main():
             print '******'
             print ''
             print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+            print cube
             print ''
             iris.save(cube, pp_filename, append=True)
         # cube = assignTimecoord(cube)
@@ -945,6 +946,13 @@ def main():
         #
         #     local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
 
+        # out = write4DNetCDF(cube, nc_filename)
+        # out = write3DNetCDF(cube, nc_filename)
+
+        # print '---'
+        # print ''
+        # print str_i + ' cube output complete at ' + time.strftime("%c")
+        # print ' '
 
     # -------------------------------------------------------------
     # Plot data (map)
