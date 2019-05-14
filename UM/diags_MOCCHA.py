@@ -28,11 +28,11 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s16i203': 'air_temperature',
               # 'm01s16i204': 'relative_humidity',
               # 'm01s00i409': 'surface_air_pressure',
-              'm01s16i004': 'air_temperature_th1-70',      #included
-              # 'm01s00i407': 'air_pressure',
+              'm01s16i004': 'air_temperature',      # th 1-70
+              'm01s00i407': 'air_pressure',         # th 1-70
               # 'm01s00i408': 'air_pressure_th1-70',
               # 'm01s00i090': 'total aerosol (for visibility)',
-              # 'm01s00i010': 'specific_humidity',        #included
+              'm01s00i010': 'specific_humidity',        # th 1-70
               # 'm01s00i002': 'eastward_wind',
               # 'm01s00i003': 'northward_wind',
               # 'm01s00i266': 'large_scale_cloud_area_fraction',
@@ -49,7 +49,7 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s02i201': 'net_LW_radiation',
               # 'm01s03i248': 'screen_fog_fraction',
               # 'm01s03i247': 'screen_visibility',
-              'm01s04i118': 'total_radar_reflectivity'
+              # 'm01s04i118': 'total_radar_reflectivity'
               }
 
 
