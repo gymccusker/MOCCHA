@@ -830,9 +830,9 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    # filename1 = root_dir + out_dir + 'umnsaa_pc006'
-    # print filename1
-    # print ''
+    filename1 = root_dir + out_dir + 'umnsaa_pc000'
+    print filename1
+    print ''
 
     for i in range(0,2):
         res = i
