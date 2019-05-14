@@ -856,7 +856,7 @@ def main():
     # print filename1
     # print ''
 
-    for i in range(0,19):
+    for i in range(0,3):
         res = i
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
