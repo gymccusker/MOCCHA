@@ -907,7 +907,7 @@ def main():
         if 'var_con' in locals():
             cube = iris.load(fileout, var_con)
         elif 'global_con' in locals():
-            cube = iris.load(fileout)
+            cube = iris.load(fileout, global_con, callback)
         # cube = assignTimecoord(cube)
 
         ###### IF WANTING TO EXTRACT A PROFILE...
