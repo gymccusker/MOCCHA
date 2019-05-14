@@ -802,6 +802,17 @@ def main():
     #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
     #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
+    # -------------------------------------------------------------
+    # Load ship track
+    # -------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Load in ship track file:'
+    print ''
+    ship_data, values = readfile(ship_filename)
+    columns = assignColumns(ship_data)
+
+
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
@@ -819,11 +830,11 @@ def main():
     print 'Identifying .pp files: '
     print ''
 
-    filename1 = root_dir + out_dir + 'umnsaa_pc006'
-    print filename1
-    print ''
+    # filename1 = root_dir + out_dir + 'umnsaa_pc006'
+    # print filename1
+    # print ''
 
-    for i in range(0,12):
+    for i in range(0,2):
         res = i
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
@@ -844,96 +855,82 @@ def main():
         # var_con = iris.AttributeConstraint(STASH='m01s16i222')
         # cube = iris.load_cube(fileout, var_con)
 
+        # -------------------------------------------------------------
+        # FIX: 1
+        # Some field are unknown, this will stop the concatenation
+        # So fix name from stash list
+        # Solve in the callback
+        # -------------------------------------------------------------
+        # cube = iris.load(filenames, global_con, callback)
+
+        # -------------------------------------------------------------
+        # FIX: 2
+        # fix time coordinate
+        # it happen for all the snow field
+        # -------------------------------------------------------------
+        # for icube in cube:
+        #     STASH = icube.attributes['STASH'].__str__()
+        #     if STASH not in ACC_STASH_CODE:
+        #         icube = fixTimecoord(icube)
+
+        # -------------------------------------------------------------
+        # Load cubes
+        # -------------------------------------------------------------
+        print '******'
+        print ''
+        print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
+        print ' '
+
+        ## -------------------------------------------------------------------------
+        ## Define time and Stash constraints:
+        ## -------------------------------------------------------------------------
+        ## Time: constrain to take data every hour
+        time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
+
+        ## Set variable constraint (i.e. which variable to load in based on stash code)
+        var_con = iris.AttributeConstraint(STASH=STASH_CODE)
+
+        #### LOAD CUBE
+        if 'var_con' in locals():
+            cube = iris.load_cube(fileout, var_con)
+        else:
+            cube = iris.load_cube(fileout)
+        # cube = assignTimecoord(cube)
+
+        ###### IF WANTING TO EXTRACT A PROFILE...
+        #### local_cube_list = cube.extract(var_con & time_con)
+
+        print '---'
+        print ''
+        print str_i + ' cube read in complete at ' + time.strftime("%c")
+        print ' '
+
+        # print '---'
+        # print ''
+        # print cube # lists all diagnostics in file
+        # print ''
+
+        # inp = testInput(cube)
 
 
-    # -------------------------------------------------------------
-    # FIX: 1
-    # Some field are unknown, this will stop the concatenation
-    # So fix name from stash list
-    # Solve in the callback
-    # -------------------------------------------------------------
-    # cube = iris.load(filenames, global_con, callback)
+        # -------------------------------------------------------------
+        # Write out data
+        # -------------------------------------------------------------
+        print '******'
+        print ''
+        print 'Outputting ' + str_i + ' data:'
+        print ''
+        nc_filename = filename1 + '_r0.nc'
 
-    # -------------------------------------------------------------
-    # FIX: 2
-    # fix time coordinate
-    # it happen for all the snow field
-    # -------------------------------------------------------------
-    # for icube in cube:
-    #     STASH = icube.attributes['STASH'].__str__()
-    #     if STASH not in ACC_STASH_CODE:
-    #         icube = fixTimecoord(icube)
-
-    # -------------------------------------------------------------
-    # Load cubes
-    # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
-
-    ## -------------------------------------------------------------------------
-    ## Define time and Stash constraints:
-    ## -------------------------------------------------------------------------
-    ## Time: constrain to take data every hour
-    time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
-
-    ## Set variable constraint (i.e. which variable to load in based on stash code)
-    var_con = iris.AttributeConstraint(STASH=STASH_CODE)
-
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        cube = iris.load_cube(filename1, var_con)
-    else:
-        cube = iris.load_cube(filename1)
-    # cube = assignTimecoord(cube)
-
-
-    ###### IF WANTING TO EXTRACT A PROFILE...
-    #### local_cube_list = cube.extract(var_con & time_con)
-
-
-
-    print '---'
-    print ''
-    print 'Cubes read in complete at ' + time.strftime("%c")
-    print ' '
-
-    print '---'
-    print ''
-    print cube # lists all diagnostics in file
-    print ''
-
-    inp = testInput(cube)
-
-    # -------------------------------------------------------------
-    # Load ship track
-    # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
-    ship_data, values = readfile(ship_filename)
-    columns = assignColumns(ship_data)
+        iris.save(cube, nc_filename, append = True)
+        # out = write4DNetCDF(cube, nc_filename)
+        # out = write3DNetCDF(cube, nc_filename)
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     # map = plot_basemap(ship_data, cube)
     # map = plot_cartmap(ship_data, cube)
-
-    # -------------------------------------------------------------
-    # Write out data
-    # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Outputting data:'
-    print ''
-    nc_filename = filename1 + '_r0.nc'
-
-    iris.save(cube, nc_filename)
-    # out = write4DNetCDF(cube, nc_filename)
-    # out = write3DNetCDF(cube, nc_filename)
 
     END_TIME = time.time()
     print '******'
