@@ -907,11 +907,6 @@ def main():
         ###### IF WANTING TO EXTRACT A PROFILE...
         #### local_cube_list = cube.extract(var_con & time_con)
 
-        print '---'
-        print ''
-        print str_i + ' cube read in complete at ' + time.strftime("%c")
-        print ' '
-
         # print '---'
         # print ''
         # print cube # lists all diagnostics in file
@@ -930,6 +925,11 @@ def main():
         iris.save(cube, pp_filename, append=True)
         # out = write4DNetCDF(cube, nc_filename)
         # out = write3DNetCDF(cube, nc_filename)
+
+        print '---'
+        print ''
+        print str_i + ' cube output complete at ' + time.strftime("%c")
+        print ' '
 
     # -------------------------------------------------------------
     # Plot data (map)
