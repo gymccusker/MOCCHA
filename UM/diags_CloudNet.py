@@ -444,7 +444,7 @@ def makeGlobalStashList():
 
     GlobalStashList = diags.returnWantedStash()
 
-    print GlobalStashList
+    # print GlobalStashList
     # print GlobalStashList[0]
 
     return GlobalStashList
@@ -812,7 +812,11 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-
+    ## -------------------------------------------------------------------------
+    ## -------------------------------------------------------------------------
+    ## Define time and Stash constraints:
+    ## -------------------------------------------------------------------------
+    ## -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
@@ -824,6 +828,17 @@ def main():
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
+
+    ## -------------------------------------------------------------------------
+    ## Time: constrain to take data every hour
+    ## -------------------------------------------------------------------------
+    # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
+
+    ## -------------------------------------------------------------------------
+    ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
+    ## -------------------------------------------------------------------------
+    # var_con = iris.AttributeConstraint(STASH=STASH_CODE)
+
 
     print '******'
     print ''
@@ -888,19 +903,10 @@ def main():
         print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
         print ' '
 
-        ## -------------------------------------------------------------------------
-        ## Define time and Stash constraints:
-        ## -------------------------------------------------------------------------
-        ## Time: constrain to take data every hour
-        time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
-
-        ## Set variable constraint (i.e. which variable to load in based on stash code)
-        var_con = iris.AttributeConstraint(STASH=STASH_CODE)
-
         #### LOAD CUBE
         if 'var_con' in locals():
-            cube = iris.load_cube(fileout, var_con)
-        else:
+            cube = iris.load(fileout, var_con)
+        elif 'global_con' in locals():
             cube = iris.load(fileout)
         # cube = assignTimecoord(cube)
 
@@ -926,10 +932,10 @@ def main():
         # out = write4DNetCDF(cube, nc_filename)
         # out = write3DNetCDF(cube, nc_filename)
 
-        print '---'
-        print ''
-        print str_i + ' cube output complete at ' + time.strftime("%c")
-        print ' '
+        # print '---'
+        # print ''
+        # print str_i + ' cube output complete at ' + time.strftime("%c")
+        # print ' '
 
     # -------------------------------------------------------------
     # Plot data (map)
