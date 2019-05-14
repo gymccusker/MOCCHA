@@ -28,7 +28,7 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s16i203': 'air_temperature',
               # 'm01s16i204': 'relative_humidity',
               # 'm01s00i409': 'surface_air_pressure',
-              # 'm01s16i004': 'air_temperature_th1-70',      #included
+              'm01s16i004': 'air_temperature_th1-70',      #included
               # 'm01s00i407': 'air_pressure',
               # 'm01s00i408': 'air_pressure_th1-70',
               # 'm01s00i090': 'total aerosol (for visibility)',
