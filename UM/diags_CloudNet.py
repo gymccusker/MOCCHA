@@ -834,7 +834,7 @@ def main():
     print filename1
     print ''
 
-    for i in range(0,2):
+    for i in range(0,24):
         res = i
         str_i = "%03d" % res # file number
         fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
@@ -936,6 +936,10 @@ def main():
     # -------------------------------------------------------------
     # Convert .pp to .nc
     # -------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Converting to netCDF:'
+    print ''
     pp_cube = iris.load(pp_filename)
     iris.save(pp_cube, nc_filename)
     os.remove(pp_filename)
