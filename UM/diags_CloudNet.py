@@ -849,7 +849,7 @@ def main():
     # -------------------------------------------------------------------------
     # define output filenames
     # -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pc000'
+    filename1 = root_dir + out_dir + 'umnsaa_pc011'
     nc_filename = filename1 + '_r0.nc'
     pp_filename = filename1 + '_r0.pp'
 
