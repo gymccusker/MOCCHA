@@ -15,7 +15,7 @@ import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
-
+import os
 
 STASH_CODE = 'm01s04i118'
 
@@ -932,6 +932,13 @@ def main():
     # -------------------------------------------------------------
     # map = plot_basemap(ship_data, cube)
     # map = plot_cartmap(ship_data, cube)
+
+    # -------------------------------------------------------------
+    # Convert .pp to .nc
+    # -------------------------------------------------------------
+    pp_cube = iris.load(pp_filename)
+    iris.save(pp_cube, nc_filename)
+    os.remove(pp_filename)
 
     END_TIME = time.time()
     print '******'
