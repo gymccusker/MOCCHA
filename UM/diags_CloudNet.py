@@ -922,7 +922,7 @@ def main():
         print ''
         nc_filename = filename1 + '_r0.nc'
 
-        iris.save(cube, nc_filename, append = True)
+        iris.save(cube, nc_filename, append=True)
         # out = write4DNetCDF(cube, nc_filename)
         # out = write3DNetCDF(cube, nc_filename)
 
