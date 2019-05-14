@@ -920,7 +920,7 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     # map = plot_basemap(ship_data, cube)
-    map = plot_cartmap(ship_data, cube)
+    # map = plot_cartmap(ship_data, cube)
 
     # -------------------------------------------------------------
     # Write out data
