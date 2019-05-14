@@ -917,24 +917,16 @@ def main():
             iris.save(cube, pp_filename, append=True)
 
         elif 'global_con' in locals():
-            for iStash in GlobalStashList:
-                STASH_TIME = time.time()
-                print 'Stash: ', iStash
+            cube = iris.load(fileout, global_con, callback)
 
-                local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
-
-                cube = iris.load(fileout, local_stash_constrain, callback)
-
-                # -------------------------------------------------------------
-                # Write out data
-                # -------------------------------------------------------------
-                print '******'
-                print ''
-                print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
-                print ''
-                iris.save(cube, pp_filename, append=True)
-
-
+            # -------------------------------------------------------------
+            # Write out data
+            # -------------------------------------------------------------
+            print '******'
+            print ''
+            print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+            print ''
+            iris.save(cube, pp_filename, append=True)
         # cube = assignTimecoord(cube)
 
         ###### IF WANTING TO EXTRACT A PROFILE...
@@ -947,7 +939,11 @@ def main():
 
         # inp = testInput(cube)
 
-
+        # for iStash in GlobalStashList:
+        #     STASH_TIME = time.time()
+        #     print 'Stash: ', iStash
+        #
+        #     local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
 
 
     # -------------------------------------------------------------
