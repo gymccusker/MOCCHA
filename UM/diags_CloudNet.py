@@ -906,8 +906,35 @@ def main():
         #### LOAD CUBE
         if 'var_con' in locals():
             cube = iris.load(fileout, var_con)
+
+            # -------------------------------------------------------------
+            # Write out data
+            # -------------------------------------------------------------
+            print '******'
+            print ''
+            print 'Outputting fixed constraint ' + str_i + ' data:'
+            print ''
+            iris.save(cube, pp_filename, append=True)
+
         elif 'global_con' in locals():
-                cube = iris.load(fileout, global_con, callback)
+            for iStash in GlobalStashList:
+                STASH_TIME = time.time()
+                print 'Stash: ', iStash
+
+                local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
+
+                cube = iris.load(fileout, local_stash_constrain, callback)
+
+                # -------------------------------------------------------------
+                # Write out data
+                # -------------------------------------------------------------
+                print '******'
+                print ''
+                print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+                print ''
+                iris.save(cube, pp_filename, append=True)
+
+
         # cube = assignTimecoord(cube)
 
         ###### IF WANTING TO EXTRACT A PROFILE...
@@ -920,29 +947,8 @@ def main():
 
         # inp = testInput(cube)
 
-        # for iStash in GlobalStashList:
-        #     STASH_TIME = time.time()
-        #     print 'Stash: ', iStash
-        #
-        #     local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
 
 
-
-        # -------------------------------------------------------------
-        # Write out data
-        # -------------------------------------------------------------
-        print '******'
-        print ''
-        print 'Outputting ' + str_i + ' data:'
-        print ''
-        iris.save(cube, pp_filename, append=True)
-        # out = write4DNetCDF(cube, nc_filename)
-        # out = write3DNetCDF(cube, nc_filename)
-
-        # print '---'
-        # print ''
-        # print str_i + ' cube output complete at ' + time.strftime("%c")
-        # print ' '
 
     # -------------------------------------------------------------
     # Plot data (map)
