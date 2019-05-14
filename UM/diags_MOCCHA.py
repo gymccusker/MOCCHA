@@ -33,14 +33,14 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               'm01s00i408': 'air_pressure',                                     # th 1-70
               # 'm01s00i090': 'total aerosol (for visibility)',
               'm01s00i010': 'specific_humidity',                                # th 1-70
-              # 'm01s00i002': 'eastward_wind',
-              # 'm01s00i003': 'northward_wind',
-              # 'm01s00i266': 'large_scale_cloud_area_fraction',
-              # 'm01s00i254': 'mass_fraction_of_cloud_liquid_water_in_air',
+              'm01s00i002': 'eastward_wind',                                    # th 1-70
+              'm01s00i003': 'northward_wind',                                   # th 1-70
+              'm01s00i266': 'large_scale_cloud_area_fraction',                  # th 1-70
+              'm01s00i254': 'mass_fraction_of_cloud_liquid_water_in_air',       # th 1-70
               # 'm01s00i272': 'rain',
-              # 'm01s00i012': 'mass_fraction_of_cloud_ice_in_air',
+              'm01s00i012': 'mass_fraction_of_cloud_ice_in_air',                # th 1-70
               # 'm01s09i229': 'relative_humidity',
-              # 'm01s00i150': 'upward_air_velocity',
+              'm01s00i150': 'upward_air_velocity',                              # th 1-70
               # 'm01s03i216': 'boundary_layer_heat_fluxes',
               # 'm01s03i222': 'boundary_layer_total_moisture_fluxes',
               # 'm01s01i235': 'downwelling_SW_radiation',
@@ -49,7 +49,8 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s02i201': 'net_LW_radiation',
               # 'm01s03i248': 'screen_fog_fraction',
               # 'm01s03i247': 'screen_visibility',
-              # 'm01s04i118': 'total_radar_reflectivity'
+              'm01s04i118': 'total_radar_reflectivity'                          # th 1-70
+              # 'm01s03i473': 'turbulent_kinetic_energy'                        # ro 1-70
               }
 
 
