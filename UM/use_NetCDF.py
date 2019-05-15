@@ -89,7 +89,7 @@ def inIce(data):
 
     return inIce_index
 
-def plot_cartmap(ship_data, cube):
+def plot_cartmap(ship_data, cube, hour):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -146,15 +146,17 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    if np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[9,:,:])
+    if np.size(cube.shape) == 4:
+        iplt.pcolormesh(cube[hour,0,:,:])
+    elif np.size(cube.shape) == 3:
+        iplt.pcolormesh(cube[hour,:,:])
     elif np.size(cube.shape) == 2:
         iplt.pcolormesh(cube[:,:])
     if cube.units in locals():
         plt.title(cube.standard_name + ', ' + str(cube.units))
     else:
         plt.title(cube.standard_name)
-    plt.colorbar()
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -286,7 +288,9 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    map = plot_cartmap(ship_data, cube)
+    ### select hour to plot
+    hour = 9
+    map = plot_cartmap(ship_data, cube, hour)
 
     END_TIME = time.time()
     print '******'
