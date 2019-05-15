@@ -212,23 +212,23 @@ def unrotateGrid(cube):
     dlon = 0.016334
     frst_lat = -5.6112
     frst_lon = 353.0345
-    pole_lat = 37.5000
-    pole_lon = 177.5000
+    pole_lat = 3.375 # UM SUITE: 37.5000
+    pole_lon = 210.0 # UM SUITE: 177.5000
 
     rot_lat = cube.coord('grid_latitude').points
     rot_lon = cube.coord('grid_longitude').points
 
     rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
 
     # Print to check conversion
     print '******'
     print 'Test of unrotated coordinate grid: '
-    print 'Rotated lon coord = ', rot_lon[0]
-    print 'Rotated lat coord = ', rot_lat[0]
-    print 'Lon = ', lon[0]
-    print 'Lat = ', lat[0]
+    print 'Rotated lon coord = ', rot_lon[250]
+    print 'Rotated lat coord = ', rot_lat[250]
+    print 'Lon = ', lon[250]
+    print 'Lat = ', lat[250]
     print ' '
 
     # ******
@@ -301,7 +301,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'air_temperature'
+    var = 'surface_net_downward_shortwave_flux'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
@@ -371,7 +371,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour)
+    # map = plot_cartmap(ship_data, cube, hour)
 
     END_TIME = time.time()
     print '******'
