@@ -130,8 +130,11 @@ def plot_cartmap(ship_data, cube, hour):
     #################################################################
     plt.figure(figsize=(5,4))
     # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
-    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+
+    ### set size
+    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())
+    # ax.set_extent([-180, 180, 80, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -261,7 +264,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'specific_humidity'
+    var = 'air_temperature'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
