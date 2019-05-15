@@ -4,7 +4,7 @@ List of variables from the UKV
 
 """
 
-Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
+Stash_list = {'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s00i024': 'surface_temperature',
               # 'm01s03i236': 'air_temperature',
               # 'm01s03i245': 'relative_humidity',
@@ -44,7 +44,7 @@ Stash_list = {#'m01s16i222': 'air_pressure_at_sea_level',
               # 'm01s03i216': 'boundary_layer_heat_fluxes',
               # 'm01s03i222': 'boundary_layer_total_moisture_fluxes',
               # 'm01s01i235': 'downwelling_SW_radiation',
-              'm01s01i201': 'net_SW_radiation',
+              # 'm01s01i201': 'net_SW_radiation',
               # 'm01s02i207': 'downwelling_LW_radiation',
               # 'm01s02i201': 'net_LW_radiation',
               # 'm01s03i248': 'screen_fog_fraction',
