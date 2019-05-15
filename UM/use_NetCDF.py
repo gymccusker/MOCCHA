@@ -197,7 +197,7 @@ def plot_cartmap(ship_data, cube, hour):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    plt.savefig('FIGS/Test_AirTemperature_t12_wShipTrack.png', dpi=200)
+    # plt.savefig('FIGS/Test_AirTemperature_t12_wShipTrack.png', dpi=200)
     plt.show()
 
 def unrotateGrid(cube):
@@ -290,7 +290,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pc011_r0.nc'
+    filename1 = root_dir + out_dir + 'umnsaa_pa012_r0.nc'
     print filename1
     print ''
 
@@ -307,6 +307,49 @@ def main():
 
     print cube
     print ''
+
+    ### paXXX
+    # <iris 'Cube' of air_pressure_at_sea_level / (Pa) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of air_temperature / (K) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of dew_point_temperature / (K) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of relative_humidity / (%) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of specific_humidity / (1) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_air_pressure / (Pa) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_downwelling_longwave_flux_in_air / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_net_downward_longwave_flux / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_net_downward_shortwave_flux / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of surface_temperature / (K) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of toa_incoming_shortwave_flux / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of toa_outgoing_shortwave_flux / (W m-2) (time: 8; grid_latitude: 500; grid_longitude: 500)>,
+    # <iris 'Cube' of x_wind / (m s-1) (time: 8; grid_latitude: 501; grid_longitude: 500)>,
+    # <iris 'Cube' of y_wind / (m s-1) (time: 8; grid_latitude: 501; grid_longitude: 500)>]
+
+
+    ### pbXXX
+    # 0: Turbulent mixing height after boundary layer / (m) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 1: Stable boundary layer indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 2: Stratocumulus over stable boundary layer indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 3: Well-mixed boundary layer indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 4: Decoupled stratocumulus not over cumulus indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 5: Decoupled stratocumulus over cumulus indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 6: Cumulus capped boundary layer indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 7: Shear driven boundary layer indicator / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 8: cloud_area_fraction_assuming_random_overlap / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 9: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 10: wet_bulb_freezing_level_altitude / (m) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 11: air_pressure_at_sea_level / (Pa)    (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 12: atmosphere_boundary_layer_thickness / (m) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 13: high_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 14: low_type_cloud_area_fraction / (1)  (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 15: medium_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 16: stratiform_rainfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 17: stratiform_snowfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 18: surface_upward_latent_heat_flux / (W m-2) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 19: surface_upward_sensible_heat_flux / (W m-2) (time: 3; grid_latitude: 121; grid_longitude: 56)
+    # 20: water_evaporation_amount / (unknown) (time: 3; grid_latitude: 121; grid_longitude: 56)
+
+    ### pcXXX
     # <iris 'Cube' of cloud_volume_fraction_in_atmosphere_layer / (1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
     # <iris 'Cube' of m01s04i118 / (1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
     # <iris 'Cube' of air_pressure / (Pa) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
@@ -320,7 +363,8 @@ def main():
 
     # FORECAST_PERIOD = cube1.aux_coords[1][:]
     # ROTATED_POLE_LAT = cube1.dim_coords[2][:] + (90.0 - 3.375)
-    cube = unrotateGrid(cube)
+
+    lon, lat = unrotateGrid(cube)
 
     # -------------------------------------------------------------
     # Plot data (map)
