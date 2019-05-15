@@ -197,8 +197,45 @@ def plot_cartmap(ship_data, cube, hour):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
+    plt.savefig('FIGS/Test_AirTemperature_t12_wShipTrack.png', dpi=200)
     plt.show()
+
+def unrotateGrid(cube):
+    ##
+    ##      ROTATE GRID BACK TO STANDARD
+    ##
+
+    import iris.analysis.cartography as ircrt
+
+    ### LAM Configuration from suite u-bg610
+    dlat = 0.015714
+    dlon = 0.016334
+    frst_lat = -5.6112
+    frst_lon = 353.0345
+    pole_lat = 37.5000
+    pole_lon = 177.5000
+
+    rot_lat = cube.coord('grid_latitude').points
+    rot_lon = cube.coord('grid_longitude').points
+
+    rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
+
+    # Print to check conversion
+    print '******'
+    print 'Test of unrotated coordinate grid: '
+    print 'Rotated lon coord = ', rot_lon[0]
+    print 'Rotated lat coord = ', rot_lat[0]
+    print 'Lon = ', lon[0]
+    print 'Lat = ', lat[0]
+    print ' '
+
+    # ******
+    # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
+    # ******
+
+    return lon, lat
 
 def main():
 
@@ -281,12 +318,15 @@ def main():
     # <iris 'Cube' of x_wind / (m s-1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
     # <iris 'Cube' of y_wind / (m s-1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>]
 
+    # FORECAST_PERIOD = cube1.aux_coords[1][:]
+    # ROTATED_POLE_LAT = cube1.dim_coords[2][:] + (90.0 - 3.375)
+    cube = unrotateGrid(cube)
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 9
+    hour = 0
     map = plot_cartmap(ship_data, cube, hour)
 
     END_TIME = time.time()
