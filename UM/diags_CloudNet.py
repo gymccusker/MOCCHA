@@ -841,8 +841,8 @@ def main():
     ### -------------------------------------------------------------------------
     ### define output filenames
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pa012'
-    # filename1 = root_dir + out_dir + 'umnsaa_pb012'
+    # filename1 = root_dir + out_dir + 'umnsaa_pa012'
+    filename1 = root_dir + out_dir + 'umnsaa_pb012'
     # filename1 = root_dir + out_dir + 'umnsaa_pc011'
     nc_filename = filename1 + '_r0.nc'
     pp_filename = filename1 + '_r0.pp'
@@ -850,13 +850,13 @@ def main():
     # print filename1
     # print ''
 
-    for i in range(2,6):
-    # for i in range(4,12):
+    # for i in range(2,6):
+    for i in range(4,12):
     # for i in range(11,36):
-        res = i * 6
+        res = i * 3
         str_i = "%03d" % res # file number
-        fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
-        # fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
+        # fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
+        fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
 
         # # -------------------------------------------------------------
