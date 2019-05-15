@@ -210,7 +210,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -248,7 +248,7 @@ def main():
 
     print '******'
     print ''
-    print 'Identifying .pp files: '
+    print 'Identifying .nc file: '
     print ''
 
     ### -------------------------------------------------------------------------
