@@ -790,17 +790,6 @@ def main():
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST
 
-    #### 	FILE NAMES
-    #In [15]: ls
-    #umnsaa_cb000  umnsaa_cb009  umnsaa_cb018  umnsaa_cb027     umnsaa_pverb000  umnsaa_pverc024
-    #umnsaa_cb001  umnsaa_cb010  umnsaa_cb019  umnsaa_cb028     umnsaa_pverb006  umnsaa_pverd000
-    #umnsaa_cb002  umnsaa_cb011  umnsaa_cb020  umnsaa_pa000     umnsaa_pverb012  umnsaa_pverd006
-    #umnsaa_cb003  umnsaa_cb012  umnsaa_cb021  umnsaa_pb000     umnsaa_pverb018  umnsaa_pverd012
-    #umnsaa_cb004  umnsaa_cb013  umnsaa_cb022  umnsaa_pvera000  umnsaa_pverb024  umnsaa_pverd018
-    #umnsaa_cb005  umnsaa_cb014  umnsaa_cb023  umnsaa_pvera006  umnsaa_pverc000  umnsaa_pverd024
-    #umnsaa_cb006  umnsaa_cb015  umnsaa_cb024  umnsaa_pvera012  umnsaa_pverc006  umnsa.stash
-    #umnsaa_cb007  umnsaa_cb016  umnsaa_cb025  umnsaa_pvera018  umnsaa_pverc012  umnsa.xhist
-    #umnsaa_cb008  umnsaa_cb017  umnsaa_cb026  umnsaa_pvera024  umnsaa_pverc018
 
     # -------------------------------------------------------------
     # Load ship track
@@ -812,11 +801,11 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    ## -------------------------------------------------------------------------
-    ## -------------------------------------------------------------------------
-    ## Define time and Stash constraints:
-    ## -------------------------------------------------------------------------
-    ## -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Define time and Stash constraints:
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
@@ -829,26 +818,29 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    ## -------------------------------------------------------------------------
-    ## Time: constrain to take data every hour
-    ## -------------------------------------------------------------------------
-    # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
 
     ## -------------------------------------------------------------------------
     ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
     ## -------------------------------------------------------------------------
+    # print '******'
+    # print ''
+    # print 'Use fixed constraint at ' + time.strftime("%c")
+    # print ' '
     # var_con = iris.AttributeConstraint(STASH=STASH_CODE)
 
+    ## -------------------------------------------------------------------------
+    ## Time: constrain to take data every hour
+    ## -------------------------------------------------------------------------
+    # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
 
     print '******'
     print ''
     print 'Identifying .pp files: '
     print ''
 
-
-    # -------------------------------------------------------------------------
-    # define output filenames
-    # -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### define output filenames
+    ### -------------------------------------------------------------------------
     filename1 = root_dir + out_dir + 'umnsaa_pc011'
     nc_filename = filename1 + '_r0.nc'
     pp_filename = filename1 + '_r0.pp'
@@ -866,38 +858,6 @@ def main():
         # # -------------------------------------------------------------
         # # Load cubes
         # # -------------------------------------------------------------
-        # print '******'
-        # print 'Begin cube read in at ' + time.strftime("%c")
-        # print ' '
-        #
-        # # cube = iris.load(filenames, global_con, callback)
-        # # cube = iris.load(filename1, global_con, callback)
-        #
-        # ## Set variable constraint (i.e. which variable to load in based on stash code)
-        # var_con = iris.AttributeConstraint(STASH='m01s16i222')
-        # cube = iris.load_cube(fileout, var_con)
-
-        # -------------------------------------------------------------
-        # FIX: 1
-        # Some field are unknown, this will stop the concatenation
-        # So fix name from stash list
-        # Solve in the callback
-        # -------------------------------------------------------------
-        # cube = iris.load(filenames, global_con, callback)
-
-        # -------------------------------------------------------------
-        # FIX: 2
-        # fix time coordinate
-        # it happen for all the snow field
-        # -------------------------------------------------------------
-        # for icube in cube:
-        #     STASH = icube.attributes['STASH'].__str__()
-        #     if STASH not in ACC_STASH_CODE:
-        #         icube = fixTimecoord(icube)
-
-        # -------------------------------------------------------------
-        # Load cubes
-        # -------------------------------------------------------------
         print '******'
         print ''
         print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
