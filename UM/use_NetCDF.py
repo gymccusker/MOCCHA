@@ -152,17 +152,11 @@ def plot_cartmap(ship_data, cube, hour):
         iplt.pcolormesh(cube[hour,:,:])
     elif np.size(cube.shape) == 2:
         iplt.pcolormesh(cube[:,:])
-    if cube.units in locals():
-        plt.title(cube.standard_name + ', ' + str(cube.units))
-    else:
-        plt.title(cube.standard_name)
-    # plt.colorbar()
-
-    #################################################################
-    ## plot UM nest
-    #################################################################
-    ### draw outline of grid
-    # qplt.outline(cube[0,380:500,230:285])
+    # if cube.units in locals():
+    plt.title(cube.standard_name + ', ' + str(cube.units))
+    # else:
+    #     plt.title(cube.standard_name)
+    plt.colorbar()
 
     #################################################################
     ## plot ship track
