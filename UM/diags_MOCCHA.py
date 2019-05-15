@@ -49,7 +49,7 @@ Stash_list = {'m01s16i222': 'air_pressure_at_sea_level',
               'm01s02i201': 'net_LW_radiation',
               'm01s03i248': 'screen_fog_fraction',
               'm01s03i247': 'screen_visibility',
-              'm01s04i118': 'total_radar_reflectivity'                          # th 1-70
+              'm01s04i118': 'total_radar_reflectivity',                          # th 1-70
               'm01s03i473': 'turbulent_kinetic_energy'                        # ro 1-70
               }
 
