@@ -263,7 +263,7 @@ def main():
     # # -------------------------------------------------------------
     print '******'
     print ''
-    print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
+    print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
     cube = iris.load(filename1)
 
