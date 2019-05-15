@@ -266,7 +266,7 @@ def main():
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
     var = 'specific_humidity'
-    cube = iris.load(filename1, var)
+    cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
     print cube
@@ -286,7 +286,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    # map = plot_cartmap(ship_data, cube)
+    map = plot_cartmap(ship_data, cube)
 
     END_TIME = time.time()
     print '******'
