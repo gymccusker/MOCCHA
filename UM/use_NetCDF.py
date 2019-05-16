@@ -232,11 +232,6 @@ def unrotateGrid(cube):
     print 'Lat = ', lat[250]
     print ' '
 
-    print 'lon = ', lon.shape
-    print 'lat = ', lat.shape
-    print 'rot_lon = ' rot_lon.shape
-    print 'rot_lat = ' rot_lat.shape
-
     # ******
     # write to csv file
     # ******
