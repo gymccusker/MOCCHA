@@ -206,7 +206,7 @@ def unrotateGrid(cube):
     ##
 
     import iris.analysis.cartography as ircrt
-    import csv
+    import pandas as pd
 
     ### LAM Configuration from suite u-bg610
     dlat = 0.015714
@@ -236,10 +236,16 @@ def unrotateGrid(cube):
     # write to txt file
     # ******
 
-    with open('POSITION_UNROTATED.csv', mode='w') as position:
-    position = csv.writer(position, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    position.writerow(['John Smith', 'Accounting', 'November'])
-    position.writerow(['Erica Meyers', 'IT', 'March'])
+    # with open('POSITION_UNROTATED.csv', mode='w') as position:
+    # position = csv.writer(position, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    # position.writerow(['John Smith', 'Accounting', 'November'])
+    # position.writerow(['Erica Meyers', 'IT', 'March'])
+
+    lonp = pd.DataFrame(lon)
+    latp = pd.DataFrame(lat)
+    dat = {'Latitude': lat, 'Longitude': lon}
+    df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
+    df.to_csv('test.csv', sep = ',')
 
     return lon, lat
 
