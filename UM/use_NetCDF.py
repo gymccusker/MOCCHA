@@ -318,7 +318,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pc011_r0.nc'
+    filename1 = root_dir + out_dir + 'umnsaa_pa012_r0.nc'
     print filename1
     print ''
 
