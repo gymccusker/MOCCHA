@@ -388,7 +388,8 @@ def main():
 
     #### read in saved unrotated coordinate grid
     position_data = readfile(position_filename)
-    lon =
+    lon = position_data.values[:,2]     ### unrotated longitude
+    lat = position_data.values[:,1]     ### unrotated latitude
 
     # -------------------------------------------------------------
     # Plot data (map)
