@@ -89,7 +89,7 @@ def inIce(data):
 
     return inIce_index
 
-def plot_cartmap(ship_data, cube, hour, lon, lat):
+def plot_cartmap(ship_data, cube, hour): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -314,7 +314,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pa012_r0.nc'
+    filename1 = root_dir + out_dir + 'umnsaa_pc011_r0.nc'
     print filename1
     print ''
 
@@ -325,7 +325,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'surface_net_downward_shortwave_flux'
+    var = 'air_temperature'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
@@ -396,17 +396,17 @@ def main():
     # lon, lat = unrotateGrid(cube)
 
     #### read in saved unrotated coordinate grid
-    position_data = readfile(position_filename)
-    lon = position_data.values[:,2]     ### unrotated longitude
-    lat = position_data.values[:,1]     ### unrotated latitude
-    lon, lat = np.meshgrid(lon,lat)     ### mesh for use with model diags
+    # position_data = readfile(position_filename)
+    # lon = position_data.values[:,2]     ### unrotated longitude
+    # lat = position_data.values[:,1]     ### unrotated latitude
+    # lon, lat = np.meshgrid(lon,lat)     ### mesh for use with model diags
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour, lon, lat)
+    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
     END_TIME = time.time()
     print '******'
