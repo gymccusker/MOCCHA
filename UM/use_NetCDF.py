@@ -390,7 +390,8 @@ def main():
     position_data = readfile(position_filename)
     lon = position_data.values[:,2]     ### unrotated longitude
     lat = position_data.values[:,1]     ### unrotated latitude
-
+    lon, lat = np.meshgrid(lon,lat)     ### mesh for use with model diags
+    
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
