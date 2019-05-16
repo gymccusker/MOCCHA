@@ -191,13 +191,13 @@ def plot_cartmap(ship_data, cube, hour, lon, lat):
              )
 
     plt.plot(np.nanmin(lon),np.nanmin(lat),
-            transform = ccrs.PlateCarree(),'ks')
+            'ks',transform = ccrs.PlateCarree())
     plt.plot(np.nanmin(lon),np.nanmax(lat),
-            transform = ccrs.PlateCarree(),'ks')
+            'ks',transform = ccrs.PlateCarree())
     plt.plot(np.nanmax(lon),np.nanmin(lat),
-            transform = ccrs.PlateCarree(),'ks')
+            'ks',transform = ccrs.PlateCarree())
     plt.plot(np.nanmax(lon),np.nanmax(lat),
-            transform = ccrs.PlateCarree(),'ks')
+            'ks',transform = ccrs.PlateCarree())
 
     plt.legend()
 
