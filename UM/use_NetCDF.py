@@ -149,14 +149,21 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     #################################################################
-    if np.size(cube.shape) == 4:
-        iplt.pcolormesh(cube[hour,0,:,:])
-    elif np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[hour,:,:])
-    elif np.size(cube.shape) == 2:
-        iplt.pcolormesh(cube[:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
-    plt.colorbar()
+    # if np.size(cube.shape) == 4:
+    #     iplt.pcolormesh(cube[hour,0,:,:])
+    # elif np.size(cube.shape) == 3:
+    #     iplt.pcolormesh(cube[hour,:,:])
+    # elif np.size(cube.shape) == 2:
+    #     iplt.pcolormesh(cube[:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    # plt.colorbar()
+
+    #################################################################
+    ## plot UM nest
+    #################################################################
+    ### draw outline of grid
+    qplt.outline(cube[0,380:500,230:285])
+
 
     #################################################################
     ## plot ship track
