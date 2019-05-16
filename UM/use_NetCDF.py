@@ -232,26 +232,26 @@ def unrotateGrid(cube):
     print 'Lat = ', lat[250]
     print ' '
 
+    print 'lon = ', lon.shape
+    print 'lat = ', lat.shape
+    print 'rot_lon = ' rot_lon.shape
+    print 'rot_lat = ' rot_lat.shape
+
     # ******
-    # write to txt file
+    # write to csv file
     # ******
 
-    # with open('POSITION_UNROTATED.csv', mode='w') as position:
-    # position = csv.writer(position, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    # position.writerow(['John Smith', 'Accounting', 'November'])
-    # position.writerow(['Erica Meyers', 'IT', 'March'])
-
-    print '******'
-    print 'Writing unrotated coordinate grid to file:'
-    print ''
-    lonp = pd.DataFrame(lon)
-    latp = pd.DataFrame(lat)
-    dat = {'Latitude': lat, 'Longitude': lon}
-    df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
-    df.to_csv('POSITION_UNROTATED.csv',  sep = " ")
-    print '... finished!'
-    print ''
-    print '******'
+    # print '******'
+    # print 'Writing unrotated coordinate grid to file:'
+    # print ''
+    # lonp = pd.DataFrame(lon)
+    # latp = pd.DataFrame(lat)
+    # dat = {'Latitude': lat, 'Longitude': lon}
+    # df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
+    # df.to_csv('POSITION_UNROTATED.csv',  sep = " ")
+    # print '... finished!'
+    # print ''
+    # print '******'
 
     return lon, lat
 
