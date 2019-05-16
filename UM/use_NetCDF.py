@@ -134,7 +134,7 @@ def plot_cartmap(ship_data, cube, hour, lon, lat):
 
     ### set size
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())
-    ax.set_extent([-180, 180, 80, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
