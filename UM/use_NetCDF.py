@@ -248,9 +248,9 @@ def unrotateGrid(cube):
     latp = pd.DataFrame(lat)
     dat = {'Latitude': lat, 'Longitude': lon}
     df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
-    df.to_csv('test.csv', sep = ',')
-    print ''
+    df.to_csv('POSITION_UNROTATED.csv',  sep = " ")
     print '... finished!'
+    print ''
     print '******'
 
     return lon, lat
