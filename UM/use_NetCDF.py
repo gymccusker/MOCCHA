@@ -29,7 +29,7 @@ def readfile(filename):
     data = pd.read_csv(filename, sep = " ")
     values = data.values
 
-    return data, values
+    return data
 
 def assignColumns(data):
 
@@ -269,6 +269,7 @@ def main():
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        position_filename = 'POSITION_UNROTATED.csv'
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -277,6 +278,7 @@ def main():
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
+    position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
     out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
@@ -292,7 +294,7 @@ def main():
     print ''
     print 'Load in ship track file:'
     print ''
-    ship_data, values = readfile(ship_filename)
+    ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
     print '******'
@@ -375,9 +377,18 @@ def main():
     # <iris 'Cube' of y_wind / (m s-1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>]
 
     # FORECAST_PERIOD = cube1.aux_coords[1][:]
-    # ROTATED_POLE_LAT = cube1.dim_coords[2][:] + (90.0 - 3.375)
 
-    lon, lat = unrotateGrid(cube)
+    # -------------------------------------------------------------
+    # Define unrotated coordinate grid
+    # -------------------------------------------------------------
+    #### the following uses iris to unrotate the coordinate grid.
+    ####    this only works with square domains (i.e. paXXX files)
+    ####    only needs to be performed once -- saved grid as .csv file
+    # lon, lat = unrotateGrid(cube)
+
+    #### read in saved unrotated coordinate grid
+    position_data = readfile(position_filename)
+    lon =
 
     # -------------------------------------------------------------
     # Plot data (map)
