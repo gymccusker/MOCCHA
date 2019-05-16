@@ -163,7 +163,9 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    qplt.outline(cube[hour,386:494,230:285])
+    qplt.outline(cube[hour,386:495,203:313])
+
+            #### MID POINT: (440, 258)
 
     #################################################################
     ## plot ship track
