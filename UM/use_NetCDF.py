@@ -206,6 +206,7 @@ def unrotateGrid(cube):
     ##
 
     import iris.analysis.cartography as ircrt
+    import csv
 
     ### LAM Configuration from suite u-bg610
     dlat = 0.015714
@@ -232,8 +233,13 @@ def unrotateGrid(cube):
     print ' '
 
     # ******
-    # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
+    # write to txt file
     # ******
+
+    with open('POSITION_UNROTATED.csv', mode='w') as position:
+    position = csv.writer(position, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    position.writerow(['John Smith', 'Accounting', 'November'])
+    position.writerow(['Erica Meyers', 'IT', 'March'])
 
     return lon, lat
 
