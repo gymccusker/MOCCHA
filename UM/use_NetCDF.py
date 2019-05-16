@@ -162,7 +162,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0,380:500,230:285])
+    qplt.outline(cube[hour,0,380:500,230:285])
 
 
     #################################################################
