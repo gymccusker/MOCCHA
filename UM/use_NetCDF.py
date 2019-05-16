@@ -241,11 +241,17 @@ def unrotateGrid(cube):
     # position.writerow(['John Smith', 'Accounting', 'November'])
     # position.writerow(['Erica Meyers', 'IT', 'March'])
 
+    print '******'
+    print 'Writing unrotated coordinate grid to file:'
+    print ''
     lonp = pd.DataFrame(lon)
     latp = pd.DataFrame(lat)
     dat = {'Latitude': lat, 'Longitude': lon}
     df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
     df.to_csv('test.csv', sep = ',')
+    print ''
+    print '... finished!'
+    print '******'
 
     return lon, lat
 
