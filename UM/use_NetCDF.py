@@ -397,8 +397,6 @@ def main():
     lat = position_data.values[:,1]     ### unrotated latitude
     lon, lat = np.meshgrid(lon,lat)     ### mesh for use with model diags
 
-    print lon.shape, lat.shape
-
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
