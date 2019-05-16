@@ -89,7 +89,7 @@ def inIce(data):
 
     return inIce_index
 
-def plot_cartmap(ship_data, cube, hour):
+def plot_cartmap(ship_data, cube, hour, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -189,6 +189,11 @@ def plot_cartmap(ship_data, cube, hour):
              color = 'red', linewidth = 4,
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
+
+    plt.plot(np.nanmin(lon),np.nanmin(lat),'ks')
+    plt.plot(np.nanmin(lon),np.nanmax(lat),'ks')
+    plt.plot(np.nanmax(lon),np.nanmin(lat),'ks')
+    plt.plot(np.nanmax(lon),np.nanmax(lat),'ks')
 
     plt.legend()
 
@@ -399,7 +404,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    # map = plot_cartmap(ship_data, cube, hour)
+    map = plot_cartmap(ship_data, cube, hour, lon, lat)
 
     END_TIME = time.time()
     print '******'
