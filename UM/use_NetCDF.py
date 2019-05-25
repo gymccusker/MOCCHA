@@ -111,8 +111,8 @@ def findLatLon(ship_data, cube, hour):
     lon, lat = unrotateGrid(cube)
 
     print 'findLatLon testing:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[:,7][0]) + ', ' + str(ship_data.values[:,6][0])
-    print 'Model unrotated [0], (lat,lon): ' + str(lat[0]) + ', ' + str(lon[0])
+    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
+    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
 
 
     ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
