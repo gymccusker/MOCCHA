@@ -89,6 +89,26 @@ def inIce(data):
 
     return inIce_index
 
+def findLatLon(ship_data, cube, hour):
+
+    print ''
+    print 'Finding lat/lon test'
+    print '...'
+
+    # -------------------------------------------------------------
+    # Define unrotated coordinate grid
+    # -------------------------------------------------------------
+    #### the following uses iris to unrotate the coordinate grid.
+    ####    this only works with square domains (i.e. paXXX files)
+    ####    only needs to be performed once -- saved grid as .csv file
+    lon, lat = unrotateGrid(cube)
+
+
+
+
+
+    return lat, lon
+
 def plot_cartmap(ship_data, cube, hour): #, lon, lat):
 
     import iris.plot as iplt
@@ -149,21 +169,21 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     #################################################################
-    # if np.size(cube.shape) == 4:
-    #     iplt.pcolormesh(cube[hour,0,:,:])
-    # elif np.size(cube.shape) == 3:
-    #     iplt.pcolormesh(cube[hour,:,:])
-    # elif np.size(cube.shape) == 2:
-    #     iplt.pcolormesh(cube[:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
-    # plt.colorbar()
+    if np.size(cube.shape) == 4:
+        iplt.pcolormesh(cube[hour,0,:,:])
+    elif np.size(cube.shape) == 3:
+        iplt.pcolormesh(cube[hour,:,:])
+    elif np.size(cube.shape) == 2:
+        iplt.pcolormesh(cube[:,:])
+    plt.title(cube.standard_name + ', ' + str(cube.units))
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    qplt.outline(cube[hour,386:479,211:305])
+    # qplt.outline(cube[hour,386:479,211:305])
 
             #### MID POINT: (433, 258)
 
@@ -401,6 +421,10 @@ def main():
     ####    only needs to be performed once -- saved grid as .csv file
     # lon, lat = unrotateGrid(cube)
 
+    hour = 0
+    test = findLatLon(ship_data, cube, hour)
+
+    ############## DOESN'T WORK
     #### read in saved unrotated coordinate grid
     # position_data = readfile(position_filename)
     # lon = position_data.values[:,2]     ### unrotated longitude
@@ -411,8 +435,10 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
-    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    # hour = 0
+    # map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+
+
 
     END_TIME = time.time()
     print '******'
