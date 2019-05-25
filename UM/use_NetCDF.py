@@ -254,14 +254,17 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
 
-    # plt.plot(np.nanmin(lon),np.nanmin(lat),
-    #         'ks',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmin(lon),np.nanmax(lat),
-    #         'ks',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmin(lat),
-    #         'ks',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmax(lat),
-    #         'ks',transform = ccrs.PlateCarree())
+    #### test plotting of unrotated grid
+    lon, lat = unrotateGrid(cube)
+
+    plt.plot(np.nanmin(lon),np.nanmin(lat),
+            'ks',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmin(lon),np.nanmax(lat),
+            'ks',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmax(lon),np.nanmin(lat),
+            'ks',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmax(lon),np.nanmax(lat),
+            'ks',transform = ccrs.PlateCarree())
 
     plt.legend()
 
@@ -474,7 +477,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # hour = 0
-    # map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
 
 
