@@ -111,7 +111,8 @@ def findLatLon(ship_data, cube, hour):
     lon, lat = unrotateGrid(cube)
 
     print 'Start of drift:'
-    print 'Ship (lon/lat): ' + str(ship_data.values[drift_index,7][0]) + ',' + str(ship_data.values[drift_index,6][0])
+    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ',' + str(ship_data.values[drift_index,6][0])
+    print 'Model unrotated [0], (lat,lon): ' + str(lat[0]) + ',' + str(lon[0])
     print 'test complete!'
 
 
