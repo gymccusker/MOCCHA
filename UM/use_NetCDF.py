@@ -294,7 +294,7 @@ def unrotateGrid(cube):
 
     rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
 
-    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
+    lon, lat = ircrt.rotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
 
     # Print to check conversion
     print '******'
