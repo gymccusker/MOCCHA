@@ -92,20 +92,51 @@ def inIce(data):
 def findLatLon(ship_data, cube, hour):
 
     print ''
-    print 'Finding lat/lon test'
+    print 'Finding lat/lon of ship track'
     print '...'
 
+    #################################################################
+    ## find ship track coordinates
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+
     # -------------------------------------------------------------
-    # Define unrotated coordinate grid
+    # Define unrotated coordinate model grid
     # -------------------------------------------------------------
     #### the following uses iris to unrotate the coordinate grid.
     ####    this only works with square domains (i.e. paXXX files)
     ####    only needs to be performed once -- saved grid as .csv file
     lon, lat = unrotateGrid(cube)
 
+    print 'Start of drift:'
+    print 'Ship track lat/lon:' + ship_data.values[drift_index,6][0] + ',' + ship_data.values[drift_index,7]
+    print 'test complete!'
 
 
 
+### Plot tracks as line plot
+# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+#          color = 'yellow', linewidth = 2,
+#          transform = ccrs.PlateCarree(), label = 'Whole',
+#          )
+# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+#          color = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(), label = 'In Ice',
+#          )
+# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+#          color = 'red', linewidth = 4,
+#          transform = ccrs.PlateCarree(), label = 'Drift',
+#          )
 
     return lat, lon
 
