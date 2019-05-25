@@ -110,12 +110,18 @@ def findLatLon(ship_data, cube, hour):
     ####    only needs to be performed once -- saved grid as .csv file
     lon, lat = unrotateGrid(cube)
 
-    print 'Start of drift:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ',' + str(ship_data.values[drift_index,6][0])
-    print 'Model unrotated [0], (lat,lon): ' + str(lat[0]) + ',' + str(lon[0])
+    print 'findLatLon testing:'
+    print 'Ship (lon,lat): ' + str(ship_data.values[:,7][0]) + ', ' + str(ship_data.values[:,6][0])
+    print 'Model unrotated [0], (lat,lon): ' + str(lat[0]) + ', ' + str(lon[0])
+
+
+    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
+    print 'Ship index test'
+    print ship_index
+    # print lat[ship_index[0]
+
+
     print 'test complete!'
-
-
 
 ### Plot tracks as line plot
 # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
