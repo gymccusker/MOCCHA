@@ -94,6 +94,10 @@ def gridShipTrack(cube):
 
     import iris.plot as iplt
 
+    # cube.dim_coords[1].coord_system
+
+    ### 12th August 2018
+
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],
             'rs',
             )    ### box pick 0-1h
@@ -220,6 +224,8 @@ def gridShipTrack(cube):
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
             'bs',
             )    ### box pick 23-00h
+
+    ### 13th August 2018
 
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
             'go',
@@ -439,15 +445,15 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    # if np.size(cube.shape) == 4:
-    #     iplt.pcolormesh(cube[hour,0,:,:])
-    # elif np.size(cube.shape) == 3:
-    #     # iplt.pcolormesh(cube[hour,:,:])
-    #     iplt.pcolormesh(cube[hour,472:495,240:263])
-    # elif np.size(cube.shape) == 2:
-    #     iplt.pcolormesh(cube[:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
-    # plt.colorbar()
+    if np.size(cube.shape) == 4:
+        iplt.pcolormesh(cube[hour,0,:,:])
+    elif np.size(cube.shape) == 3:
+        # iplt.pcolormesh(cube[hour,:,:])
+        iplt.pcolormesh(cube[hour,471:495,240:264])
+    elif np.size(cube.shape) == 2:
+        iplt.pcolormesh(cube[:,:])
+    plt.title(cube.standard_name + ', ' + str(cube.units))
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -455,7 +461,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
-    qplt.outline(cube[hour,471:495,240:264])            ### 12th Aug swath
+    # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
 
     gridship = gridShipTrack(cube)
 
@@ -524,7 +530,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/12Aug_Outline_wShipTrackMAPPED.svg')
+    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
 def unrotateGrid(cube):
