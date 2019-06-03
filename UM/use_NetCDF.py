@@ -68,7 +68,7 @@ def inIce(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
     # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
     Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
@@ -255,16 +255,16 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
              )
 
     #### test plotting of unrotated grid
-    lon, lat = unrotateGrid(cube)
+    # lon, lat = unrotateGrid(cube)
 
-    plt.plot(np.nanmin(lon),np.nanmin(lat),
-            'ks',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmin(lon),np.nanmax(lat),
-            'ks',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmax(lon),np.nanmin(lat),
-            'ks',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmax(lon),np.nanmax(lat),
-            'ks',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmin(lon),np.nanmin(lat),
+    #         'ks',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmin(lon),np.nanmax(lat),
+    #         'ks',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmax(lon),np.nanmin(lat),
+    #         'ks',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmax(lon),np.nanmax(lat),
+    #         'ks',transform = ccrs.PlateCarree())
 
     plt.legend()
 
@@ -335,7 +335,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -462,8 +462,8 @@ def main():
     ####    only needs to be performed once -- saved grid as .csv file
     # lon, lat = unrotateGrid(cube)
 
-    hour = 0
-    test = findLatLon(ship_data, cube, hour)
+    # hour = 0
+    # test = findLatLon(ship_data, cube, hour)
 
     ############## DOESN'T WORK
     #### read in saved unrotated coordinate grid
@@ -476,8 +476,8 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    # hour = 0
-    # map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    hour = 0
+    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
 
 
