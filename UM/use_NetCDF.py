@@ -90,27 +90,6 @@ def inIce(data):
 
     return inIce_index
 
-def trackShip(data):
-
-    ###################################
-    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
-    ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=6))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==23))
-    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
-
-    print '******'
-    print ''
-    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
-    print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
-    print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
-
-    return trackShip_index
-
 def gridShipTrack(cube):
 
     import iris.plot as iplt
@@ -295,6 +274,40 @@ def gridShipTrack(cube):
     iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][473],
             'ko',
             )    ### box pick 5-6h    (13th aug)
+    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][472],
+            'ko',
+            )    ### box pick 5-6h    (13th aug)
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            'ko',
+            )    ### box pick 5-6h    (13th aug)
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            'ko',
+            )    ### box pick 5-6h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            'ro',
+            )    ### box pick 6-17h    (13th aug)
+
+def trackShip(data):
+
+    ###################################
+    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
+    ###################################
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=17))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==19))
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
+
+    print '******'
+    print ''
+    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
+    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
+    print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
+    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
+    print ''
+
+    return trackShip_index
 
 def findLatLon(ship_data, cube, hour):
 
