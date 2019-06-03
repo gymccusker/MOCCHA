@@ -95,8 +95,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=3))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==5))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -229,11 +229,12 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
 
     #################################################################
     ## plot UM data
-    #################################################################
+    ################################################################
     # if np.size(cube.shape) == 4:
     #     iplt.pcolormesh(cube[hour,0,:,:])
     # elif np.size(cube.shape) == 3:
-    #     iplt.pcolormesh(cube[hour,:,:])
+    #     # iplt.pcolormesh(cube[hour,:,:])
+    #     iplt.pcolormesh(cube[hour,472:495,240:263])
     # elif np.size(cube.shape) == 2:
     #     iplt.pcolormesh(cube[:,:])
     # plt.title(cube.standard_name + ', ' + str(cube.units))
@@ -267,21 +268,21 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
             )    ### box pick 0-1h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'bd',
+            'bs',
             )    ### box pick 1-2h
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][493],
-            'bd',
+            'bs',
             )    ### box pick 1-2h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][493],
-            'go',
+            'gs',
             )    ### box pick 2-3h
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'go',
+            'gs',
             )    ### box pick 2-3h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'kp',
+            'ks',
             )    ### box pick 3-18h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
@@ -295,51 +296,51 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
             )    ### box pick 18-19h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][490],
-            'bd',
+            'bs',
             )    ### box pick 19-20h
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][489],
-            'bd',
+            'bs',
             )    ### box pick 19-20h
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][488],
-            'bd',
+            'bs',
             )    ### box pick 19-20h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][488],
-            'bd',
+            'bs',
             )    ### box pick 19-20h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][487],
-            'bd',
+            'bs',
             )    ### box pick 19-20h
 
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][487],
-            'go',
+            'gs',
             )    ### box pick 20-21h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][486],
-            'go',
+            'gs',
             )    ### box pick 20-21h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][485],
-            'go',
+            'gs',
             )    ### box pick 20-21h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][484],
-            'go',
+            'gs',
             )    ### box pick 20-21h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][483],
-            'go',
+            'gs',
             )    ### box pick 20-21h
 
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][483],
-            'kp',
+            'ks',
             )    ### box pick 21-22h
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][483],
-            'kp',
+            'ks',
             )    ### box pick 21-22h
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][483],
-            'kp',
+            'ks',
             )    ### box pick 21-22h
     iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][483],
-            'kp',
+            'ks',
             )    ### box pick 21-22h
     iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][483],
-            'kp',
+            'ks',
             )    ### box pick 21-22h
 
     iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][483],
@@ -359,25 +360,50 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
             )    ### box pick 22-23h
 
     iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][479],
-            'rs',
-            )    ### box pick 22-23h
-
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][479],
-            'bd',
+            'bs',
             )    ### box pick 23-00h
     iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][479],
-            'bd',
+            'bs',
             )    ### box pick 23-00h
     iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][478],
-            'bd',
+            'bs',
             )    ### box pick 23-00h
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][478],
-            'bd',
+            'bs',
             )    ### box pick 23-00h
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
-            'bd',
+            'bs',
             )    ### box pick 23-00h
 
+    iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
+            'go',
+            )    ### box pick 00-01h    (13th aug)
+    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][477],
+            'go',
+            )    ### box pick 00-01h    (13th aug)
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][477],
+            'go',
+            )    ### box pick 00-01h    (13th aug)
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][476],
+            'go',
+            )    ### box pick 00-01h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][476],
+            'ko',
+            )    ### box pick 1-2h    (13th aug)
+    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][476],
+            'ko',
+            )    ### box pick 1-2h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][476],
+            'ro',
+            )    ### box pick 1-2h    (13th aug)
+    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][475],
+            'ro',
+            )    ### box pick 1-2h    (13th aug)
+    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][475],
+            'ro',
+            )    ### box pick 1-2h    (13th aug)
 
             #### MID POINT: (433, 258)
 
@@ -444,7 +470,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    plt.savefig('FIGS/12Aug_Outline_wShipTrackMAPPED.png', dpi=200)
+    # plt.savefig('FIGS/12Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
 def unrotateGrid(cube):
