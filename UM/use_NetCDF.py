@@ -95,8 +95,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=3))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==5))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=6))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==23))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -111,142 +111,9 @@ def trackShip(data):
 
     return trackShip_index
 
-def findLatLon(ship_data, cube, hour):
-
-    print ''
-    print 'Finding lat/lon of ship track'
-    print '...'
-
-    #################################################################
-    ## find ship track coordinates
-    #################################################################
-    ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
-
-    # -------------------------------------------------------------
-    # Define unrotated coordinate model grid
-    # -------------------------------------------------------------
-    #### the following uses iris to unrotate the coordinate grid.
-    ####    this only works with square domains (i.e. paXXX files)
-    ####    only needs to be performed once -- saved grid as .csv file
-    lon, lat = unrotateGrid(cube)
-
-    print 'findLatLon testing:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
-    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
-
-
-    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
-    print 'Ship index test'
-    print ship_index
-    # print lat[ship_index[0]
-
-
-    print 'test complete!'
-
-### Plot tracks as line plot
-# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-#          color = 'yellow', linewidth = 2,
-#          transform = ccrs.PlateCarree(), label = 'Whole',
-#          )
-# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-#          color = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(), label = 'In Ice',
-#          )
-# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-#          color = 'red', linewidth = 4,
-#          transform = ccrs.PlateCarree(), label = 'Drift',
-#          )
-
-    return lat, lon
-
-def plot_cartmap(ship_data, cube, hour): #, lon, lat):
+def gridShipTrack(cube):
 
     import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(5,4))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
-
-    ### set size
-    ax.set_extent([0, 60, 89.5, 90], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
-    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
-
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
-
-    #################################################################
-    ## add geographic features/guides for reference
-    #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    # ax.set_global()
-    ax.gridlines()
-
-    #################################################################
-    ## plot UM data
-    ################################################################
-    # if np.size(cube.shape) == 4:
-    #     iplt.pcolormesh(cube[hour,0,:,:])
-    # elif np.size(cube.shape) == 3:
-    #     # iplt.pcolormesh(cube[hour,:,:])
-    #     iplt.pcolormesh(cube[hour,472:495,240:263])
-    # elif np.size(cube.shape) == 2:
-    #     iplt.pcolormesh(cube[:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
-    # plt.colorbar()
-
-    #################################################################
-    ## plot UM nest
-    #################################################################
-    ### draw outline of grid
-    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
-    qplt.outline(cube[hour,472:495,240:263])            ### 12th Aug swath
 
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],
             'rs',
@@ -397,13 +264,176 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
 
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][476],
             'ro',
-            )    ### box pick 1-2h    (13th aug)
+            )    ### box pick 2-3h    (13th aug)
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][475],
             'ro',
-            )    ### box pick 1-2h    (13th aug)
+            )    ### box pick 2-3h    (13th aug)
     iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][475],
             'ro',
-            )    ### box pick 1-2h    (13th aug)
+            )    ### box pick 2-3h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][475],
+            'bo',
+            )    ### box pick 3-4h    (13th aug)
+    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][474],
+            'bo',
+            )    ### box pick 3-4h    (13th aug)
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][474],
+            'bo',
+            )    ### box pick 3-4h    (13th aug)
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][473],
+            'bo',
+            )    ### box pick 3-4h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][473],
+            'go',
+            )    ### box pick 4-5h    (13th aug)
+    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][473],
+            'go',
+            )    ### box pick 4-5h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][473],
+            'ko',
+            )    ### box pick 5-6h    (13th aug)
+
+def findLatLon(ship_data, cube, hour):
+
+    print ''
+    print 'Finding lat/lon of ship track'
+    print '...'
+
+    #################################################################
+    ## find ship track coordinates
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+
+    # -------------------------------------------------------------
+    # Define unrotated coordinate model grid
+    # -------------------------------------------------------------
+    #### the following uses iris to unrotate the coordinate grid.
+    ####    this only works with square domains (i.e. paXXX files)
+    ####    only needs to be performed once -- saved grid as .csv file
+    lon, lat = unrotateGrid(cube)
+
+    print 'findLatLon testing:'
+    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
+    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
+
+
+    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
+    print 'Ship index test'
+    print ship_index
+    # print lat[ship_index[0]
+
+
+    print 'test complete!'
+
+### Plot tracks as line plot
+# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+#          color = 'yellow', linewidth = 2,
+#          transform = ccrs.PlateCarree(), label = 'Whole',
+#          )
+# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+#          color = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(), label = 'In Ice',
+#          )
+# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+#          color = 'red', linewidth = 4,
+#          transform = ccrs.PlateCarree(), label = 'Drift',
+#          )
+
+    return lat, lon
+
+def plot_cartmap(ship_data, cube, hour): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting cartopy map:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.figure(figsize=(5,4))
+    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+
+    ### set size
+    ax.set_extent([0, 60, 89.5, 90], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
+
+    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+
+    #################################################################
+    ## add geographic features/guides for reference
+    #################################################################
+    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    # ax.set_global()
+    ax.gridlines()
+
+    #################################################################
+    ## plot UM data
+    ################################################################
+    # if np.size(cube.shape) == 4:
+    #     iplt.pcolormesh(cube[hour,0,:,:])
+    # elif np.size(cube.shape) == 3:
+    #     # iplt.pcolormesh(cube[hour,:,:])
+    #     iplt.pcolormesh(cube[hour,472:495,240:263])
+    # elif np.size(cube.shape) == 2:
+    #     iplt.pcolormesh(cube[:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    # plt.colorbar()
+
+    #################################################################
+    ## plot UM nest
+    #################################################################
+    ### draw outline of grid
+    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
+    # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
+    qplt.outline(cube[hour,471:495,240:264])            ### 12th Aug swath
+
+    gridship = gridShipTrack(cube)
 
             #### MID POINT: (433, 258)
 
