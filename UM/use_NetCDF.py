@@ -69,7 +69,7 @@ def inIce(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
-    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
     # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
     # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
@@ -89,6 +89,28 @@ def inIce(data):
     print ''
 
     return inIce_index
+
+def trackShip(data):
+
+    ###################################
+    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
+    ###################################
+    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
+    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
+
+    # print '******'
+    # print ''
+    # print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    # print ''
+    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    # print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
+    # print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
+    # print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
+    # print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
+    # print ''
+
+    return trackShip_index
 
 def findLatLon(ship_data, cube, hour):
 
@@ -231,30 +253,45 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ## plot ship track
     #################################################################
     ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
+    # drift_index = iceDrift(ship_data)
+    # inIce_index = inIce(ship_data)
+    trackShip_index = trackShip(ship_data)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     ### Plot tracks as line plot
     # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
     #          color = 'yellow', linewidth = 2,
     #          transform = ccrs.PlateCarree(), label = 'Whole',
     #          )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
-             transform = ccrs.PlateCarree(), label = 'Drift',
-             )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+    #          color = 'red', linewidth = 4,
+    #          transform = ccrs.PlateCarree(), label = 'Drift',
+    #          )
 
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
