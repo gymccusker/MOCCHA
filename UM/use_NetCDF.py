@@ -223,7 +223,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
-    qplt.outline(cube[hour,479:495,241:257])            ### 12th swath
+    qplt.outline(cube[hour,475:495,241:261])            ### 12th swath
 
             #### MID POINT: (433, 258)
 
