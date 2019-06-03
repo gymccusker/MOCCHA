@@ -95,20 +95,19 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
-    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=13,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=13,data.values[:,1]==8),data.values[:,3]<=1))
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    # print '******'
-    # print ''
-    # print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    # print ''
+    print '******'
+    print ''
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    # print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    # print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    # print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    # print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    # print ''
+    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
+    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print 'Start: ' + str(data.values[trackShip_start[0][0],0:3]) + ' - ' + str(data.values[trackShip_start[0][-1],0:3])
+    print 'End: ' + str(data.values[trackShip_end[0][0],0:3]) + ' - ' + str(data.values[trackShip_end[0][-1],0:3])
+    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
+    print ''
 
     return trackShip_index
 
@@ -246,7 +245,10 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
-    qplt.outline(cube[hour,472:495,240:263])            ### 12th swath
+    qplt.outline(cube[hour,472:495,240:263])            ### 12th Aug swath
+    iplt.plot(cube.dim_coords[2][240], cube.dim_coords[1][472],
+            'rs',
+            )    ### box pick
 
             #### MID POINT: (433, 258)
 
