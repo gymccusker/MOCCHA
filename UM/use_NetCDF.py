@@ -68,7 +68,7 @@ def inIce(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
     # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
     Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
@@ -221,7 +221,8 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    qplt.outline(cube[hour,386:479,211:305])
+    # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
+    qplt.outline(cube[hour,479:499,211:305])            ### 12th swath
 
             #### MID POINT: (433, 258)
 
