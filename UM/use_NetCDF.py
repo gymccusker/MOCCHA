@@ -191,8 +191,8 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())
-    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())
+    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())
+    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -207,21 +207,21 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     #################################################################
-    if np.size(cube.shape) == 4:
-        iplt.pcolormesh(cube[hour,0,:,:])
-    elif np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[hour,:,:])
-    elif np.size(cube.shape) == 2:
-        iplt.pcolormesh(cube[:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
-    plt.colorbar()
+    # if np.size(cube.shape) == 4:
+    #     iplt.pcolormesh(cube[hour,0,:,:])
+    # elif np.size(cube.shape) == 3:
+    #     iplt.pcolormesh(cube[hour,:,:])
+    # elif np.size(cube.shape) == 2:
+    #     iplt.pcolormesh(cube[:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[hour,386:479,211:305])
+    qplt.outline(cube[hour,386:479,211:305])
 
             #### MID POINT: (433, 258)
 
