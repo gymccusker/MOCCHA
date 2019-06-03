@@ -392,7 +392,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ### Plot tracks as line plot
     plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
              color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
+             transform = ccrs.PlateCarree(), label = 'Ship track',
              )
     plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
              'k^', markerfacecolor = 'darkorange', linewidth = 3,
@@ -444,7 +444,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/Test_AirTemperature_t12_wShipTrack.png', dpi=200)
+    plt.savefig('FIGS/12Aug_Outline_wShipTrackMAPPED.png', dpi=200)
     plt.show()
 
 def unrotateGrid(cube):
