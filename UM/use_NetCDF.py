@@ -288,13 +288,24 @@ def gridShipTrack(cube):
             'ro',
             )    ### box pick 6-17h    (13th aug)
 
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            'bo',
+            )    ### box pick 17-18h    (13th aug)
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            'bo',
+            )    ### box pick 17-18h    (13th aug)
+
+    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            'go',
+            )    ### box pick 18-23h    (13th aug)
+
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=17))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==19))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=23))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
