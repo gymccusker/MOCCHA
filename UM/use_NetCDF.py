@@ -96,7 +96,7 @@ def trackShip(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
-    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=13,data.values[:,1]==8),data.values[:,3]>=0))
     trackShip_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     # print '******'
