@@ -100,12 +100,8 @@ def gridShipTrack(cube):
 
     ### 12th August 2018
 
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],
-            'rs',
-            )    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][490],
-            'rs',
-            )    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],'rs')    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][490],'rs')    ### box pick 0-1h
     iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][490],
             'rs',
             )    ### box pick 0-1h
@@ -485,7 +481,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
 
-    # gridship = gridShipTrack(cube)
+    gridship = gridShipTrack(cube)
 
             #### MID POINT: (433, 258)
 
