@@ -96,24 +96,16 @@ def gridShipTrack(cube):
 
     # cube.dim_coords[1].coord_system
 
-    time = np.arange(0,24)      ### define time array
+    # time = np.arange(0,24)      ### define time array
 
     ### 12th August 2018
 
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],'rs')    ### box pick 0-1h
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][490],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][490],
-            'rs',
-            )    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][491],
-            'rs',
-            )    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][492],
-            'rs',
-            )    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'rs',
-            )    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][490],'rs')    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][491],'rs')    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][492],'rs')    ### box pick 0-1h
+    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],'rs')    ### box pick 0-1h
 
     iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
             'bs',
