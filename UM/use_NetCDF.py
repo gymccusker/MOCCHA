@@ -194,17 +194,18 @@ def gridShipTrack(cube):
     # write to csv file
     # ******
 
-    # print '******'
-    # print 'Writing 12th Aug grid to file:'
-    # print ''
-    # lonp = pd.DataFrame(lon)
-    # latp = pd.DataFrame(lat)
-    # dat = {'Time': time, 'Grid Latitude': lat128, 'Grid Longitude': lon128}
-    # df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
-    # df.to_csv('AUX_DATA/ShipTrack_GRIDDED.csv',  sep = " ")
-    # print '... finished!'
-    # print ''
-    # print '******'
+    print '******'
+    print 'Writing 12th Aug grid to file:'
+    print ''
+    timp = pd.DataFrame(tim_128)
+    lonp = pd.DataFrame(lon_128)
+    latp = pd.DataFrame(lat_128)
+    dat = {'Time': tim_128, 'Grid Latitude': lat_128, 'Grid Longitude': lon_128}
+    df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
+    df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
+    print '... finished!'
+    print ''
+    print '******'
 
     ###---------------------------------
     ### 13th August 2018
