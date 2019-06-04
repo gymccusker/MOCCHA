@@ -96,125 +96,63 @@ def gridShipTrack(cube):
 
     # cube.dim_coords[1].coord_system
 
-    # time = np.arange(0,24)      ### define time array
-
     ### 12th August 2018
 
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][490],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][490],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][491],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][492],'rs')    ### box pick 0-1h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],'rs')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][489],color='red')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][490],color='red')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][490],color='red')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][491],color='red')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][492],color='red')    ### box pick 0-1h
+    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='red')    ### box pick 0-1h
+    ### box pick 0-1h
+    lon = np.array([253,253,252,252,252,251])
+    lat = np.array([489,490,490,491,492,492])
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][i], cube.dim_coords[1][i],color='red')
 
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'bs',
-            )    ### box pick 1-2h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][493],
-            'bs',
-            )    ### box pick 1-2h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='blue')    ### box pick 1-2h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][493],color='blue')    ### box pick 1-2h
 
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][493],
-            'gs',
-            )    ### box pick 2-3h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'gs',
-            )    ### box pick 2-3h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][493],color='green')    ### box pick 2-3h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='green')    ### box pick 2-3h
 
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'ks',
-            )    ### box pick 3-18h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='black')    ### box pick 3-18h
 
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][492],
-            'rs',
-            )    ### box pick 18-19h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][491],
-            'rs',
-            )    ### box pick 18-19h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][490],
-            'rs',
-            )    ### box pick 18-19h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='red')    ### box pick 18-19h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][491],color='red')    ### box pick 18-19h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][490],color='red')    ### box pick 18-19h
 
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][490],
-            'bs',
-            )    ### box pick 19-20h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][489],
-            'bs',
-            )    ### box pick 19-20h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][488],
-            'bs',
-            )    ### box pick 19-20h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][488],
-            'bs',
-            )    ### box pick 19-20h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][487],
-            'bs',
-            )    ### box pick 19-20h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][490],color='blue')    ### box pick 19-20h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][489],color='blue')    ### box pick 19-20h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][488],color='blue')    ### box pick 19-20h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][488],color='blue')    ### box pick 19-20h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][487],color='blue')    ### box pick 19-20h
 
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][487],
-            'gs',
-            )    ### box pick 20-21h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][486],
-            'gs',
-            )    ### box pick 20-21h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][485],
-            'gs',
-            )    ### box pick 20-21h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][484],
-            'gs',
-            )    ### box pick 20-21h
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][483],
-            'gs',
-            )    ### box pick 20-21h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][487],color='green')    ### box pick 20-21h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][486],color='green')    ### box pick 20-21h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][485],color='green')    ### box pick 20-21h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][484],color='green')    ### box pick 20-21h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][483],color='green')    ### box pick 20-21h
 
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][483],
-            'ks',
-            )    ### box pick 21-22h
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][483],
-            'ks',
-            )    ### box pick 21-22h
-    iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][483],
-            'ks',
-            )    ### box pick 21-22h
-    iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][483],
-            'ks',
-            )    ### box pick 21-22h
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][483],
-            'ks',
-            )    ### box pick 21-22h
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
+    iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
+    iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
 
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][483],
-            'rs',
-            )    ### box pick 22-23h
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][482],
-            'rs',
-            )    ### box pick 22-23h
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][481],
-            'rs',
-            )    ### box pick 22-23h
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][480],
-            'rs',
-            )    ### box pick 22-23h
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][479],
-            'rs',
-            )    ### box pick 22-23h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][483],color='red')    ### box pick 22-23h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][482],color='red')    ### box pick 22-23h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][481],color='red')    ### box pick 22-23h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][480],color='red')    ### box pick 22-23h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][479],color='red')    ### box pick 22-23h
 
-    iplt.plot(cube.dim_coords[2][248], cube.dim_coords[1][479],
-            'bs',
-            )    ### box pick 23-00h
-    iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][479],
-            'bs',
-            )    ### box pick 23-00h
-    iplt.plot(cube.dim_coords[2][249], cube.dim_coords[1][478],
-            'bs',
-            )    ### box pick 23-00h
-    iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][478],
-            'bs',
-            )    ### box pick 23-00h
-    iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
-            'bs',
-            )    ### box pick 23-00h
+    iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][479],color='blue')    ### box pick 23-00h
+    iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][479],color='blue')    ### box pick 23-00h
+    iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][478],color='blue')    ### box pick 23-00h
+    iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][478],color='blue')    ### box pick 23-00h
+    iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][477],color='blue')    ### box pick 23-00h
 
+    time = np.arange(0,24)      ### define time array
     lat128 = np.array([489,490,490,491,492,492,492,493,493,492,492,492,
         491,490,490,489,488,488,487,487,486,485,484,483,483,483,483,483,
         483,483,482,481,480,479,479,479,478,477])
@@ -237,82 +175,82 @@ def gridShipTrack(cube):
 
     ### 13th August 2018
 
-    iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
-            'go',
+    iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][477],
+            color='green',
             )    ### box pick 00-01h    (13th aug)
-    iplt.plot(cube.dim_coords[2][251], cube.dim_coords[1][477],
-            'go',
+    iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][477],
+            color='green',
             )    ### box pick 00-01h    (13th aug)
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][477],
-            'go',
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][477],
+            color='green',
             )    ### box pick 00-01h    (13th aug)
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][476],
-            'go',
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][476],
+            color='green',
             )    ### box pick 00-01h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][252], cube.dim_coords[1][476],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][476],
+            color='black',
             )    ### box pick 1-2h    (13th aug)
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][476],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][476],
+            color='black',
             )    ### box pick 1-2h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][476],
-            'ro',
+    iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][476],
+            color='red',
             )    ### box pick 2-3h    (13th aug)
-    iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][475],
-            'ro',
+    iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][475],
+            color='red',
             )    ### box pick 2-3h    (13th aug)
-    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][475],
-            'ro',
+    iplt.scatter(cube.dim_coords[2][254], cube.dim_coords[1][475],
+            color='red',
             )    ### box pick 2-3h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][475],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][254], cube.dim_coords[1][475],
+            color='blue',
             )    ### box pick 3-4h    (13th aug)
-    iplt.plot(cube.dim_coords[2][254], cube.dim_coords[1][474],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][254], cube.dim_coords[1][474],
+            color='blue',
             )    ### box pick 3-4h    (13th aug)
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][474],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][474],
+            color='blue',
             )    ### box pick 3-4h    (13th aug)
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][473],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][473],
+            color='blue',
             )    ### box pick 3-4h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][473],
-            'go',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][473],
+            color='green',
             )    ### box pick 4-5h    (13th aug)
-    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][473],
-            'go',
+    iplt.scatter(cube.dim_coords[2][256], cube.dim_coords[1][473],
+            color='green',
             )    ### box pick 4-5h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][473],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][256], cube.dim_coords[1][473],
+            color='black',
             )    ### box pick 5-6h    (13th aug)
-    iplt.plot(cube.dim_coords[2][256], cube.dim_coords[1][472],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][256], cube.dim_coords[1][472],
+            color='black',
             )    ### box pick 5-6h    (13th aug)
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            color='black',
             )    ### box pick 5-6h    (13th aug)
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
-            'ko',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            color='black',
             )    ### box pick 5-6h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
-            'ro',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            color='red',
             )    ### box pick 6-17h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][471],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][471],
+            color='blue',
             )    ### box pick 17-18h    (13th aug)
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
-            'bo',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            color='blue',
             )    ### box pick 17-18h    (13th aug)
 
-    iplt.plot(cube.dim_coords[2][255], cube.dim_coords[1][472],
-            'go',
+    iplt.scatter(cube.dim_coords[2][255], cube.dim_coords[1][472],
+            color='green',
             )    ### box pick 18-23h    (13th aug)
 
 def trackShip(data):
@@ -525,13 +463,13 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # lon, lat = unrotateGrid(cube)
 
     # plt.plot(np.nanmin(lon),np.nanmin(lat),
-    #         'ks',transform = ccrs.PlateCarree())
+    #         color='black',transform = ccrs.PlateCarree())
     # plt.plot(np.nanmin(lon),np.nanmax(lat),
-    #         'ks',transform = ccrs.PlateCarree())
+    #         color='black',transform = ccrs.PlateCarree())
     # plt.plot(np.nanmax(lon),np.nanmin(lat),
-    #         'ks',transform = ccrs.PlateCarree())
+    #         color='black',transform = ccrs.PlateCarree())
     # plt.plot(np.nanmax(lon),np.nanmax(lat),
-    #         'ks',transform = ccrs.PlateCarree())
+    #         color='black',transform = ccrs.PlateCarree())
 
     plt.legend()
 
