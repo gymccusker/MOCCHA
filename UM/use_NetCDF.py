@@ -611,8 +611,8 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'air_temperature'
-    cube = iris.load_cube(filename1)
+    var = 'surface_net_downward_shortwave_flux'
+    cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
     print cube
@@ -636,36 +636,38 @@ def main():
     # <iris 'Cube' of y_wind / (m s-1) (time: 8; grid_latitude: 501; grid_longitude: 500)>]
 
     #### 12 AUG ONLY - NO FULL NEST DIAGNOSTICS
-    # 0: surface_net_SW_radiation / (W m-2)  (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 1: surface_downwelling_SW_radiation / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 2: surface_net_LW_radiation / (W m-2)  (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 3: surface_downwelling_LW_radiation / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 4: toa_incoming_shortwave_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 5: toa_outgoing_shortwave_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # <iris 'Cube' of surface_downwelling_longwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_net_downward_longwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_net_downward_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of toa_incoming_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of toa_outgoing_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
+
 
     ### pbXXX
-    # 0: Turbulent mixing height after boundary layer / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 1: cloud_area_fraction_assuming_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 2: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 3: wet_bulb_freezing_level_altitude / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 4: air_pressure_at_sea_level / (Pa)    (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 5: air_temperature / (K)               (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 6: atmosphere_boundary_layer_thickness / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 7: dew_point_temperature / (K)         (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 8: eastward_wind / (m s-1)             (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 9: high_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 10: low_type_cloud_area_fraction / (1)  (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 11: medium_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 12: northward_wind / (m s-1)            (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 13: relative_humidity / (%)             (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 14: specific_humidity / (1)             (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 15: stratiform_rainfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 16: stratiform_snowfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 17: surface_air_pressure / (Pa)         (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 18: surface_temperature / (K)           (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 19: surface_upward_latent_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 20: surface_upward_sensible_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 21: water_evaporation_amount / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # [<iris 'Cube' of cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of cloud_area_fraction_assuming_random_overlap / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of m01s03i241 / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of Turbulent mixing height after boundary layer / (m) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of wet_bulb_freezing_level_altitude / (m) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of air_pressure_at_sea_level / (Pa) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of air_temperature / (K) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of atmosphere_boundary_layer_thickness / (m) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of dew_point_temperature / (K) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of high_type_cloud_area_fraction / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of low_type_cloud_area_fraction / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of medium_type_cloud_area_fraction / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of relative_humidity / (%) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of specific_humidity / (1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of stratiform_rainfall_flux / (kg m-2 s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of stratiform_snowfall_flux / (kg m-2 s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_air_pressure / (Pa) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_temperature / (K) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_upward_latent_heat_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of surface_upward_sensible_heat_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of x_wind / (m s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'Cube' of y_wind / (m s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
+
 
     ### pcXXX
     # <iris 'Cube' of cloud_volume_fraction_in_atmosphere_layer / (1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
