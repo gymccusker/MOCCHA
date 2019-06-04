@@ -96,6 +96,8 @@ def gridShipTrack(cube):
 
     # cube.dim_coords[1].coord_system
 
+    time = np.arange(0,24)      ### define time array
+
     ### 12th August 2018
 
     iplt.plot(cube.dim_coords[2][253], cube.dim_coords[1][489],
@@ -225,6 +227,26 @@ def gridShipTrack(cube):
             'bs',
             )    ### box pick 23-00h
 
+    lat128 = np.array([489,490,490,491,492,492,492,493,493,492,492,492,
+        491,490,490,489,488,488,487,487,486,485,484,483,483,483,483,483,
+        483,483,482,481,480,479,479,479,478,477])
+
+    # ******
+    # write to csv file
+    # ******
+
+    print '******'
+    print 'Writing 12th Aug grid to file:'
+    print ''
+    lonp = pd.DataFrame(lon)
+    latp = pd.DataFrame(lat)
+    dat = {'Time': time, 'Grid Latitude': lat128, 'Grid Longitude': lon128}
+    df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
+    df.to_csv('AUX_DATA/ShipTrack_GRIDDED.csv',  sep = " ")
+    print '... finished!'
+    print ''
+    print '******'
+
     ### 13th August 2018
 
     iplt.plot(cube.dim_coords[2][250], cube.dim_coords[1][477],
@@ -319,8 +341,8 @@ def trackShip(data):
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
     print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
     print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
-    print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
-    print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
+    # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
+    # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
     print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
     print ''
 
