@@ -103,67 +103,92 @@ def gridShipTrack(cube):
     ### box pick 0-1h
     lon0 = np.array([253,253,252,252,252,251])
     lat0 = np.array([489,490,490,491,492,492])
+    tim0 = np.zeros([np.size(lon0)])
     for i in range(0,np.size(lon0)-1):
         iplt.scatter(cube.dim_coords[2][lon0[i]], cube.dim_coords[1][lat0[i]],color='yellow')
 
     ### box pick 1-2h
     lon1 = np.array([251,251])
     lat1 = np.array([492,493])
+    tim1 = np.zeros([np.size(lon1)])
+    tim1[:] = 1.0
     for i in range(0,np.size(lon1)-1):
         iplt.scatter(cube.dim_coords[2][lon1[i]], cube.dim_coords[1][lat1[i]],color='blue')
 
     ### box pick 2-3h
     lon2 = np.array([251,251])
     lat2 = np.array([493,492])
+    tim2 = np.zeros([np.size(lon2)])
+    tim2[:] = 2.0
     for i in range(0,np.size(lon2)-1):
         iplt.scatter(cube.dim_coords[2][lon2[i]], cube.dim_coords[1][lat2[i]],color='green')
 
     ### box pick 3-18h
-    lon3 = np.array([251])
-    lat3 = np.array([492])
+    tim3 = np.arange(3,18)
+    lon3 = np.zeros([np.size(tim3)])
+    lon3[:] = 251
+    lat3 = np.zeros([np.size(tim3)])
+    lat3[:] = 492
     for i in range(0,np.size(lon3)-1):
         iplt.scatter(cube.dim_coords[2][lon3[i]], cube.dim_coords[1][lat3[i]],color='black')
 
     ### box pick 18-19h
     lon18 = np.array([251,251,251])
     lat18 = np.array([492,491,490])
+    tim18 = np.zeros([np.size(lon18)])
+    tim18[:] = 18.0
     for i in range(0,np.size(lon18)-1):
         iplt.scatter(cube.dim_coords[2][lon18[i]], cube.dim_coords[1][lat18[i]],color='red')
 
     ### box pick 19-20h
     lon19 = np.array([251,251,251,252,252])
     lat19 = np.array([490,489,488,488,487])
+    tim19 = np.zeros([np.size(lon19)])
+    tim19[:] = 19.0
     for i in range(0,np.size(lon19)-1):
         iplt.scatter(cube.dim_coords[2][lon19[i]], cube.dim_coords[1][lat19[i]],color='blue')
 
     ### box pick 20-21h
     lon20 = np.array([252,252,252,252,252])
     lat20 = np.array([487,486,485,484,483])
+    tim20 = np.zeros([np.size(lon20)])
+    tim20[:] = 20.0
     for i in range(0,np.size(lon20)-1):
         iplt.scatter(cube.dim_coords[2][lon20[i]], cube.dim_coords[1][lat20[i]],color='green')
 
     ### box pick 21-22h
     lon21 = np.array([252,251,250,249,248])
     lat21 = np.array([483,483,483,483,483])
+    tim21 = np.zeros([np.size(lon21)])
+    tim21[:] = 21.0
     for i in range(0,np.size(lon21)-1):
         iplt.scatter(cube.dim_coords[2][lon21[i]], cube.dim_coords[1][lat21[i]],color='black')
 
     ### box pick 22-23h
     lon22 = np.array([248,248,248,248,248])
     lat22 = np.array([483,482,481,480,479])
+    tim22 = np.zeros([np.size(lon22)])
+    tim22[:] = 22.0
     for i in range(0,np.size(lon22)-1):
         iplt.scatter(cube.dim_coords[2][lon22[i]], cube.dim_coords[1][lat22[i]],color='red')
 
     ### box pick 23-00h
     lon23 = np.array([248,249,249,250,250])
     lat23 = np.array([479,479,478,478,477])
+    tim23 = np.zeros([np.size(lon23)])
+    tim23[:] = 23.0
     for i in range(0,np.size(lon23)-1):
         iplt.scatter(cube.dim_coords[2][lon23[i]], cube.dim_coords[1][lat23[i]],color='blue')
 
-    time = np.arange(0,24)      ### define time array
-    # lat128 = np.array([489,490,490,491,492,492,492,493,493,492,492,492,
-    #     491,490,490,489,488,488,487,487,486,485,484,483,483,483,483,483,
-    #     483,483,482,481,480,479,479,479,478,477])
+    tim_128 = np.concatenate([tim0,tim1,tim2,tim3,tim18,tim19,tim20,tim21,tim22,tim23])
+    lat_128 = np.concatenate([lat0,lat1,lat2,lat3,lat18,lat19,lat20,lat21,lat22,lat23])
+    lon_128 = np.concatenate([lon0,lon1,lon2,lon3,lon18,lon19,lon20,lon21,lon22,lon23])
+
+    print ''
+    print 'tim_128 = ' + str(tim_128.shape)
+    print 'lat_128 = ' + str(lat_128.shape)
+    print 'lon_128 = ' + str(lon_128.shape)
+    print ''
 
     # ******
     # write to csv file
