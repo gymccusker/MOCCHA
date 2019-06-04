@@ -612,7 +612,7 @@ def main():
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
     var = 'air_temperature'
-    cube = iris.load_cube(filename1, var)
+    cube = iris.load_cube(filename1)
     # data = Dataset(filename1,'r')
 
     print cube
@@ -715,7 +715,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    # map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
 
 
