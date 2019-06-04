@@ -98,91 +98,61 @@ def gridShipTrack(cube):
 
     ### 12th August 2018
 
-    # iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][489],color='red')    ### box pick 0-1h
-    # iplt.scatter(cube.dim_coords[2][253], cube.dim_coords[1][490],color='red')    ### box pick 0-1h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][490],color='red')    ### box pick 0-1h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][491],color='red')    ### box pick 0-1h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][492],color='red')    ### box pick 0-1h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='red')    ### box pick 0-1h
     ### box pick 0-1h
     lon0 = np.array([253,253,252,252,252,251])
     lat0 = np.array([489,490,490,491,492,492])
     for i in range(0,np.size(lon0)-1):
         iplt.scatter(cube.dim_coords[2][lon0[i]], cube.dim_coords[1][lat0[i]],color='red')
 
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='blue')    ### box pick 1-2h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][493],color='blue')    ### box pick 1-2h
+    ### box pick 1-2h
     lon1 = np.array([251,251])
     lat1 = np.array([492,493])
     for i in range(0,np.size(lon1)-1):
         iplt.scatter(cube.dim_coords[2][lon1[i]], cube.dim_coords[1][lat1[i]],color='blue')
 
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][493],color='green')    ### box pick 2-3h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='green')    ### box pick 2-3h
+    ### box pick 2-3h
     lon2 = np.array([251,251])
     lat2 = np.array([493,492])
     for i in range(0,np.size(lon2)-1):
         iplt.scatter(cube.dim_coords[2][lon2[i]], cube.dim_coords[1][lat2[i]],color='green')
 
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='black')    ### box pick 3-18h
+    ### box pick 3-18h
     lon3 = np.array([251])
     lat3 = np.array([492])
     for i in range(0,np.size(lon3)-1):
         iplt.scatter(cube.dim_coords[2][lon3[i]], cube.dim_coords[1][lat3[i]],color='black')
 
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][492],color='red')    ### box pick 18-19h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][491],color='red')    ### box pick 18-19h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][490],color='red')    ### box pick 18-19h
+    ### box pick 18-19h
     lon18 = np.array([251,251,251])
     lat18 = np.array([492,491,490])
     for i in range(0,np.size(lon18)-1):
         iplt.scatter(cube.dim_coords[2][lon18[i]], cube.dim_coords[1][lat18[i]],color='red')
 
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][490],color='blue')    ### box pick 19-20h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][489],color='blue')    ### box pick 19-20h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][488],color='blue')    ### box pick 19-20h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][488],color='blue')    ### box pick 19-20h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][487],color='blue')    ### box pick 19-20h
+    ### box pick 19-20h
     lon19 = np.array([251,251,251,252,252])
     lat19 = np.array([490,489,488,488,487])
     for i in range(0,np.size(lon19)-1):
         iplt.scatter(cube.dim_coords[2][lon19[i]], cube.dim_coords[1][lat19[i]],color='blue')
 
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][487],color='green')    ### box pick 20-21h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][486],color='green')    ### box pick 20-21h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][485],color='green')    ### box pick 20-21h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][484],color='green')    ### box pick 20-21h
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][483],color='green')    ### box pick 20-21h
+    ### box pick 20-21h
     lon20 = np.array([252,252,252,252,252])
     lat20 = np.array([487,486,485,484,483])
     for i in range(0,np.size(lon20)-1):
         iplt.scatter(cube.dim_coords[2][lon20[i]], cube.dim_coords[1][lat20[i]],color='green')
 
-    # iplt.scatter(cube.dim_coords[2][252], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
-    # iplt.scatter(cube.dim_coords[2][251], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
-    # iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
-    # iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][483],color='black')    ### box pick 21-22h
+    ### box pick 21-22h
     lon21 = np.array([252,251,250,249,248])
     lat21 = np.array([483,483,483,483,483])
     for i in range(0,np.size(lon21)-1):
         iplt.scatter(cube.dim_coords[2][lon21[i]], cube.dim_coords[1][lat21[i]],color='black')
 
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][483],color='red')    ### box pick 22-23h
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][482],color='red')    ### box pick 22-23h
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][481],color='red')    ### box pick 22-23h
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][480],color='red')    ### box pick 22-23h
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][479],color='red')    ### box pick 22-23h
+    ### box pick 22-23h
     lon22 = np.array([248,248,248,248,248])
     lat22 = np.array([483,482,481,480,479])
     for i in range(0,np.size(lon22)-1):
         iplt.scatter(cube.dim_coords[2][lon22[i]], cube.dim_coords[1][lat22[i]],color='red')
 
-    # iplt.scatter(cube.dim_coords[2][248], cube.dim_coords[1][479],color='blue')    ### box pick 23-00h
-    # iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][479],color='blue')    ### box pick 23-00h
-    # iplt.scatter(cube.dim_coords[2][249], cube.dim_coords[1][478],color='blue')    ### box pick 23-00h
-    # iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][478],color='blue')    ### box pick 23-00h
-    # iplt.scatter(cube.dim_coords[2][250], cube.dim_coords[1][477],color='blue')    ### box pick 23-00h
+    ### box pick 23-00h
     lon23 = np.array([248,249,249,250,250])
     lat23 = np.array([479,479,478,478,477])
     for i in range(0,np.size(lon23)-1):
