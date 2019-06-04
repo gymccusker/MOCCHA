@@ -102,7 +102,7 @@ def gridShipTrack(cube):
     lon0 = np.array([253,253,252,252,252,251])
     lat0 = np.array([489,490,490,491,492,492])
     for i in range(0,np.size(lon0)-1):
-        iplt.scatter(cube.dim_coords[2][lon0[i]], cube.dim_coords[1][lat0[i]],color='red')
+        iplt.scatter(cube.dim_coords[2][lon0[i]], cube.dim_coords[1][lat0[i]],color='yellow')
 
     ### box pick 1-2h
     lon1 = np.array([251,251])
