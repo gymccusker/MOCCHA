@@ -94,7 +94,7 @@ def gridShipTrack(cube):
 
     import iris.plot as iplt
     import pandas as pd
-    
+
     # cube.dim_coords[1].coord_system
 
     ###---------------------------------
@@ -201,7 +201,7 @@ def gridShipTrack(cube):
     timp = pd.DataFrame(tim_128)
     lonp = pd.DataFrame(lon_128)
     latp = pd.DataFrame(lat_128)
-    dat = {'Time': tim_128, 'Grid Latitude': lat_128, 'Grid Longitude': lon_128}
+    dat = {'Time': timp, 'Grid Latitude': latp, 'Grid Longitude': lonp}
     df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
     df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
     print '... finished!'
