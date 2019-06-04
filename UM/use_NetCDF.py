@@ -198,10 +198,11 @@ def gridShipTrack(cube):
     print '******'
     print 'Writing 12th Aug grid to file:'
     print ''
-    timp = pd.DataFrame(tim_128)
-    lonp = pd.DataFrame(lon_128)
-    latp = pd.DataFrame(lat_128)
-    dat = {'Time': timp, 'Grid Latitude': latp, 'Grid Longitude': lonp}
+    # timp = pd.DataFrame(tim_128)
+    # lonp = pd.DataFrame(lon_128)
+    # latp = pd.DataFrame(lat_128)
+    # dat = {'Time': timp, 'Grid Latitude': latp, 'Grid Longitude': lonp}
+    dat = [tim_128,lon_128,lat_128]
     df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
     df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
     print '... finished!'
@@ -575,10 +576,10 @@ def main():
     position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
+    out_dir = '3_12AUG_SWATH_2FCSTS/'
 
     ## 1_20160401_61DIAG_TEST/
-    ## 2_20180801_61DIAGS_TEST
+    ## 2_20180801_61DIAGS_TEST/2_30_86.625/
 
 
     # -------------------------------------------------------------
