@@ -485,7 +485,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
 
-    gridship = gridShipTrack(cube)
+    # gridship = gridShipTrack(cube)
 
             #### MID POINT: (433, 258)
 
