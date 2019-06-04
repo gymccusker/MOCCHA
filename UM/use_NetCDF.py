@@ -93,7 +93,8 @@ def inIce(data):
 def gridShipTrack(cube):
 
     import iris.plot as iplt
-
+    import pandas as pd
+    
     # cube.dim_coords[1].coord_system
 
     ###---------------------------------
