@@ -20,14 +20,35 @@ def readFile(filename):
 	# Load in data
 	###################################
 
+	dat = open(filename,'r')
 
 	###################################
-	## Read in ASCII variables to usable variables
+	## Define headers
 	###################################
 
+	columns = assignColumns(dat)
 
+	###################################
+	## Read in ASCII variables
+	###################################
+
+	###  Loop over lines and extract data
+	for line in dat:
+		print repr(line)
+		columns = line.split()
+		name = columns[2]
+		j = float(columns[3])
+    	print name, j
+
+	dat.close()
 
 	return data
+
+def assignColumns(data):
+
+    columns = ['idat','itim','vdat','vtim#','lev','P_HIST','U_HIST','V_HIST','T_HIST','Q_HIST','L_HIST','I_HIST','A_HIST','R_HIST','W_HIST','N_HIST','O_HIST']
+
+    return columns
 
 def writeNetCDF(data):
 
@@ -145,7 +166,7 @@ def main():
 	###################################
 	###################################
 
-	filename = ''
+	filename = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/working/data/ecmwf/MOCCHA_001_20180812_var'
 
 	data = readFile(filename)
 
