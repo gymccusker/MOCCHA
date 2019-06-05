@@ -90,6 +90,28 @@ def inIce(data):
 
     return inIce_index
 
+def writeoutGrid(tim, lat, lon, date):
+
+    import pandas as pd
+
+    # ******
+    # write to csv file
+    # ******
+
+    print '******'
+    print 'Writing daily grid to file:'
+    print ''
+    dat = np.zeros([len(tim), 3])
+    dat[:,0] = tim
+    dat[:,1] = lon
+    dat[:,2] = lat
+    df = pd.DataFrame(dat)
+    filename = 'AUX_DATA/' + date + '_ShipTrack_GRIDDED.csv'
+    df.to_csv(filename,  sep = " ")
+    print '... finished!'
+    print ''
+    print '******'
+
 def gridShipTrack(cube, xoffset, yoffset):
 
     import iris.plot as iplt
@@ -99,6 +121,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     ###---------------------------------
     ### 12th August 2018
     ###---------------------------------
+
+    date = '20180812'
 
     ### HOURS 0 TO 19 IN REGION WHERE BCS CAUSE PROBLEMS
 
@@ -182,36 +206,27 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon23)-1):
         iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='blue')
 
+    # ******
+    # combine index arrays
+    # ******
+
     tim_128 = np.concatenate([tim0,tim1,tim2,tim3,tim18,tim19,tim20,tim21,tim22,tim23])
     lat_128 = np.concatenate([lat0,lat1,lat2,lat3,lat18,lat19,lat20,lat21,lat22,lat23])
     lon_128 = np.concatenate([lon0,lon1,lon2,lon3,lon18,lon19,lon20,lon21,lon22,lon23])
 
-    print ''
-    print 'tim_128 = ' + str(tim_128.shape)
-    print 'lat_128 = ' + str(lat_128.shape)
-    print 'lon_128 = ' + str(lon_128.shape)
-    print ''
+    # print ''
+    # print 'tim_128 = ' + str(tim_128.shape)
+    # print 'lat_128 = ' + str(lat_128.shape)
+    # print 'lon_128 = ' + str(lon_128.shape)
+    # print ''
 
-    # ******
-    # write to csv file
-    # ******
-
-    print '******'
-    print 'Writing 12th Aug grid to file:'
-    print ''
-    dat = np.zeros([len(tim_128), 3])
-    dat[:,0] = tim_128
-    dat[:,1] = lon_128
-    dat[:,2] = lat_128
-    df = pd.DataFrame(dat)
-    df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
-    print '... finished!'
-    print ''
-    print '******'
+    out = writeoutGrid(tim_128, lat_128, lon_128, date)
 
     ###---------------------------------
     ### 13th August 2018
     ###---------------------------------
+
+    date = '20180813'
 
     ### box pick 0-1h
     lon0 = np.array([250,251,252,252])
@@ -272,6 +287,23 @@ def gridShipTrack(cube, xoffset, yoffset):
     lat23 = np.array([472,472])
     for i in range(0,np.size(lon23)-1):
         iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='black')
+
+    # ******
+    # combine index arrays
+    # ******
+
+    tim_138 = np.concatenate([tim0,tim1,tim2,tim3,tim18,tim19,tim20,tim21,tim22,tim23])
+    lat_138 = np.concatenate([lat0,lat1,lat2,lat3,lat18,lat19,lat20,lat21,lat22,lat23])
+    lon_138 = np.concatenate([lon0,lon1,lon2,lon3,lon18,lon19,lon20,lon21,lon22,lon23])
+
+    # print ''
+    # print 'tim_128 = ' + str(tim_128.shape)
+    # print 'lat_128 = ' + str(lat_128.shape)
+    # print 'lon_128 = ' + str(lon_128.shape)
+    # print ''
+
+    out = writeoutGrid(tim_138, lat_138, lon_138, date)
+
 
 def trackShip(data):
 
