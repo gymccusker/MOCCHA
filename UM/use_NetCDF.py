@@ -351,7 +351,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_138 = np.append(tim_138, tim23)
     lat_138 = np.append(lat_138, lat23)
     lon_138 = np.append(lon_138, lon23)
-    for i in range(0,np.size(lon23)-1):
+    for i in range(0,np.size(lon23)):
         iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='magenta')
 
     # print ''
