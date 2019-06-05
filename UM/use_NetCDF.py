@@ -523,15 +523,15 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    if cube[0,0].shape >= 25-1:    # ll = 240, 471
-        xoffset = -239
-        yoffset = -470
-    elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    elif cube[0,0].shape >= 500-1:
-        xoffset = 0
-        yoffset = 0
+    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+    #     xoffset = -239
+    #     yoffset = -470
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+    #     xoffset = -210
+    #     yoffset = -385
+    # elif cube[0,0].shape >= 500-1:
+    xoffset = 0
+    yoffset = 0
 
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
