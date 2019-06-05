@@ -208,17 +208,15 @@ def gridShipTrack(cube, xoffset, yoffset):
     # # dat = {'Time': timp.T, 'Grid Latitude': latp.T, 'Grid Longitude': lonp.T}
     # dat = {'Time': [tim_128], 'Grid Latitude': [lat_128], 'Grid Longitude': [lon_128]}
     # # dat = [tim_128,lon_128,lat_128]
-    # df = pd.DataFrame(dat)
-    #
-    # print dat
-    # print df
-    #
-    # df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
+
 
     dat = np.zeros([len(tim_128), 3])
     dat[:,0] = tim_128
     dat[:,1] = lon_128
     dat[:,2] = lat_128
+    df = pd.DataFrame(dat)
+    df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
+
     #
     # with open('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv', 'wb') as f:  # Just use 'w' mode in 3.x
     #     w = csv.DictWriter(f, my_dict.keys())
