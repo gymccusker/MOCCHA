@@ -402,7 +402,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon11 = np.zeros([np.size(tim11)])
     lon11[:] = 254
     lat11 = np.zeros([np.size(tim5)])
-    lat11[:] = 470
+    lat11[:] = 469
     tim_148 = np.append(tim_148, tim11)
     lat_148 = np.append(lat_148, lat11)
     lon_148 = np.append(lon_148, lon11)
@@ -415,7 +415,7 @@ def trackShip(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=11))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==14))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==15))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -580,9 +580,9 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
+    qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    qplt.outline(cube[hour,:,:])
+    # qplt.outline(cube[hour,:,:])
 
     gridship = gridShipTrack(cube, xoffset, yoffset)
 
@@ -735,7 +735,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
+    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
