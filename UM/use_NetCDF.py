@@ -311,7 +311,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     # print 'lon_128 = ' + str(lon_128.shape)
     # print ''
 
-    out = writeoutGrid(tim_138, lat_138, lon_138, date)
+    # out = writeoutGrid(tim_138, lat_138, lon_138, date)
 
 
 def trackShip(data):
