@@ -365,14 +365,14 @@ def gridShipTrack(cube, xoffset, yoffset):
 
     date = '20180814'
 
-    ### box pick 0-1h
-    tim0 = np.arange(0,5)
+    ### box pick 0-4h
+    tim0 = np.arange(0,4)
     lon0 = np.zeros([np.size(tim0)])
     lon0[:] = 255
     lat0 = np.zeros([np.size(tim0)])
     lat0[:] = 471
     for i in range(0,np.size(lon0)):
-        iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
+        iplt.scatter(cube.dim_coords[2][int(lon0[i]) + xoffset], cube.dim_coords[1][int(lat0[i]) + yoffset],color='yellow')
 
 
 def trackShip(data):
