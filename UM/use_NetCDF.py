@@ -94,9 +94,6 @@ def gridShipTrack(cube, xoffset, yoffset):
 
     import iris.plot as iplt
     import pandas as pd
-    import csv
-
-
     # cube.dim_coords[1].coord_system
 
     ###---------------------------------
@@ -202,29 +199,12 @@ def gridShipTrack(cube, xoffset, yoffset):
     print '******'
     print 'Writing 12th Aug grid to file:'
     print ''
-    # timp = pd.DataFrame(tim_128)
-    # lonp = pd.DataFrame(lon_128)
-    # latp = pd.DataFrame(lat_128)
-    # # dat = {'Time': timp.T, 'Grid Latitude': latp.T, 'Grid Longitude': lonp.T}
-    # dat = {'Time': [tim_128], 'Grid Latitude': [lat_128], 'Grid Longitude': [lon_128]}
-    # # dat = [tim_128,lon_128,lat_128]
-
-
     dat = np.zeros([len(tim_128), 3])
     dat[:,0] = tim_128
     dat[:,1] = lon_128
     dat[:,2] = lat_128
     df = pd.DataFrame(dat)
     df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
-
-    #
-    # with open('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv', 'wb') as f:  # Just use 'w' mode in 3.x
-    #     w = csv.DictWriter(f, my_dict.keys())
-    #     w.writeheader()
-    #     w.writerow(my_dict)
-
-    print dat
-
     print '... finished!'
     print ''
     print '******'
@@ -287,13 +267,15 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon18)-1):
         iplt.scatter(cube.dim_coords[2][lon18[i] + xoffset], cube.dim_coords[1][lat18[i] + yoffset],color='green')
 
+
+
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==0))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=23))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
