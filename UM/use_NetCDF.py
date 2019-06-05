@@ -115,7 +115,7 @@ def writeoutGrid(tim, lat, lon, date):
 def gridShipTrack(cube, xoffset, yoffset):
 
     import iris.plot as iplt
-    import pandas as pd
+
     # cube.dim_coords[1].coord_system
 
     ###---------------------------------
@@ -237,7 +237,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     # write out index arrays
     # ******
 
-    out = writeoutGrid(tim_128, lat_128, lon_128, date)
+    # out = writeoutGrid(tim_128, lat_128, lon_128, date)
 
     ###---------------------------------
     ### 13th August 2018
@@ -360,7 +360,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     # print 'lon_138 = ' + str(lon_138.shape)
     # print ''
 
-    out = writeoutGrid(tim_138, lat_138, lon_138, date)
+    # out = writeoutGrid(tim_138, lat_138, lon_138, date)
 
 
 def trackShip(data):
@@ -368,7 +368,7 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]>=23))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
     trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
