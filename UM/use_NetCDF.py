@@ -93,7 +93,7 @@ def inIce(data):
 def gridShipTrack(cube, xoffset, yoffset):
 
     import iris.plot as iplt
-    # import pandas as pd
+    import pandas as pd
     import csv
 
 
