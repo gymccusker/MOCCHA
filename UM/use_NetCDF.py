@@ -371,8 +371,8 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
         xoffset = 0
         yoffset = 0
 
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    # print 'xoffset = ', xoffset
+    # print 'yoffset = ', yoffset
 
     ###################################
     ## PLOT MAP
