@@ -160,13 +160,35 @@ def main():
 	##--------------------------------------------------------------------------
 	##--------------------------------------------------------------------------
 
+
+    ### CHOOSE PLATFORM (OPTIONS BELOW)
+    platform = 'DESKTOP'
+
+    ### JASMIN
+    ### LAPTOP
+    ### MONSOON
+    ### DESKTOP
+
+    if platform == 'JASMIN':
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+    if platform == 'LAPTOP':
+        root_dir = '~/MOCCHA/UM/DATA/'
+        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    if platform == 'MONSOON':
+        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    if platform == 'DESKTOP':
+        root_dir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/working/data/ecmwf/'
+        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
+
+
 	###################################
 	###################################
 	## SET FILENAME TO READ IN
 	###################################
 	###################################
 
-	filename = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/working/data/ecmwf/MOCCHA_001_20180812_var'
+	filename = root_dir + 'MOCCHA_001_20180812_var'
 
 	data = readFile(filename)
 
