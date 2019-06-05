@@ -267,7 +267,11 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon18)-1):
         iplt.scatter(cube.dim_coords[2][lon18[i] + xoffset], cube.dim_coords[1][lat18[i] + yoffset],color='green')
 
-
+    ### box pick 23-00h
+    lon23 = np.array([255,255])
+    lat23 = np.array([472,471])
+    for i in range(0,np.size(lon23)-1):
+        iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='black')
 
 def trackShip(data):
 
@@ -425,15 +429,15 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    if np.size(cube.shape) == 4:
-        iplt.pcolormesh(cube[hour,0,:,:])
-    elif np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[hour,:,:])
-        # iplt.pcolormesh(cube[hour,471:495,240:264])
-    elif np.size(cube.shape) == 2:
-        iplt.pcolormesh(cube[:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
-    plt.colorbar()
+    # if np.size(cube.shape) == 4:
+    #     iplt.pcolormesh(cube[hour,0,:,:])
+    # elif np.size(cube.shape) == 3:
+    #     iplt.pcolormesh(cube[hour,:,:])
+    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
+    # elif np.size(cube.shape) == 2:
+    #     iplt.pcolormesh(cube[:,:])
+    # plt.title(cube.standard_name + ', ' + str(cube.units))
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -442,7 +446,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    # qplt.outline(cube[hour,:,:])
+    qplt.outline(cube[hour,:,:])
 
     gridship = gridShipTrack(cube, xoffset, yoffset)
 
