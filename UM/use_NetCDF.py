@@ -99,7 +99,7 @@ def writeoutGrid(tim, lat, lon, date):
     # ******
 
     print '******'
-    print 'Writing daily grid to file:'
+    print 'Writing ' + date + ' grid to file:'
     print ''
     dat = np.zeros([len(tim), 3])
     dat[:,0] = tim
