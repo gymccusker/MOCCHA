@@ -90,25 +90,12 @@ def inIce(data):
 
     return inIce_index
 
-def gridShipTrack(cube):
+def gridShipTrack(cube, xoffset, yoffset):
 
     import iris.plot as iplt
     import pandas as pd
 
     # cube.dim_coords[1].coord_system
-
-    ###---------------------------------
-    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
-    ###---------------------------------
-    if cube[0,0].shape > 500-1:
-        xoffset = 0
-        yoffset = 0
-    elif cube[0,0].shape > 93-1:    # ll = 211, 386
-        xoffset = -211
-        yoffset = -386
-    elif cube[0,0].shape > 25-1:    # ll = 240, 471
-        xoffset = -240
-        yoffset = -471
 
     ###---------------------------------
     ### 12th August 2018
@@ -369,6 +356,19 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     import cartopy
         # from matplotlib.patches import Polygon
 
+    ###---------------------------------
+    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
+    ###---------------------------------
+    if cube[0,0].shape > 500-1:
+        xoffset = 0
+        yoffset = 0
+    elif cube[0,0].shape > 93-1:    # ll = 211, 386
+        xoffset = -211
+        yoffset = -386
+    elif cube[0,0].shape > 25-1:    # ll = 240, 471
+        xoffset = -240
+        yoffset = -471
+
     ###################################
     ## PLOT MAP
     ###################################
@@ -425,7 +425,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
         iplt.pcolormesh(cube[hour,0,:,:])
     elif np.size(cube.shape) == 3:
         # iplt.pcolormesh(cube[hour,:,:])
-        iplt.pcolormesh(cube[hour,471:495,240:264])
+        # iplt.pcolormesh(cube[hour,471:495,240:264])
     elif np.size(cube.shape) == 2:
         iplt.pcolormesh(cube[:,:])
     plt.title(cube.standard_name + ', ' + str(cube.units))
@@ -438,8 +438,9 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
+    qplt.outline(cube[hour,:,:])
 
-    gridship = gridShipTrack(cube)
+    gridship = gridShipTrack(cube, xoffset, yoffset)
 
             #### MID POINT: (433, 258)
 
@@ -587,7 +588,7 @@ def main():
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-    position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
+        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
     out_dir = '3_12AUG_SWATH_2FCSTS/'
