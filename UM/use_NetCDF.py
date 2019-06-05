@@ -204,7 +204,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     lonp = pd.DataFrame(lon_128)
     latp = pd.DataFrame(lat_128)
     # dat = {'Time': timp.T, 'Grid Latitude': latp.T, 'Grid Longitude': lonp.T}
-    dat = {'Time': [timp], 'Grid Latitude': [latp], 'Grid Longitude': [lonp]}
+    dat = {'Time': [tim_128], 'Grid Latitude': [lat_128], 'Grid Longitude': [lon_128]}
     # dat = [tim_128,lon_128,lat_128]
     df = pd.DataFrame(dat)
     df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
