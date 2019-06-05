@@ -366,12 +366,12 @@ def gridShipTrack(cube, xoffset, yoffset):
     date = '20180814'
 
     ### box pick 0-1h
-    lon0 = np.array([250,251,252,252])
-    lat0 = np.array([477,477,477,476])
-    tim0 = np.zeros([np.size(lon0)])
-    tim0[:] = 0.0
-    for i in range(0,np.size(lon0)):
-        iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
+    # lon0 = np.array([250,251,252,252])
+    # lat0 = np.array([477,477,477,476])
+    # tim0 = np.zeros([np.size(lon0)])
+    # tim0[:] = 0.0
+    # for i in range(0,np.size(lon0)):
+    #     iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
 
 
 def trackShip(data):
@@ -513,7 +513,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([0, 60, 89.5, 90], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([0, 60, 89.0, 90], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
