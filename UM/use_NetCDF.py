@@ -130,7 +130,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon0 = np.array([253,253,252,252,252,251])
     lat0 = np.array([489,490,490,491,492,492])
     tim0 = np.zeros([np.size(lon0)])
-    # for i in range(0,np.size(lon0)-1):
+    # for i in range(0,np.size(lon0)):
     #     iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
     #
     # ### box pick 1-2h
@@ -141,7 +141,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim0, tim1)
     lat_128 = np.append(lat0, lat1)
     lon_128 = np.append(lon0, lon1)
-    # for i in range(0,np.size(lon1)-1):
+    # for i in range(0,np.size(lon1)):
     #     iplt.scatter(cube.dim_coords[2][lon1[i] + xoffset], cube.dim_coords[1][lat1[i] + yoffset],color='blue')
     #
     # ### box pick 2-3h
@@ -152,7 +152,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim2)
     lat_128 = np.append(lat_128, lat2)
     lon_128 = np.append(lon_128, lon2)
-    # for i in range(0,np.size(lon2)-1):
+    # for i in range(0,np.size(lon2)):
     #     iplt.scatter(cube.dim_coords[2][lon2[i] + xoffset], cube.dim_coords[1][lat2[i] + yoffset],color='green')
     #
     # ### box pick 3-18h
@@ -164,7 +164,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim3)
     lat_128 = np.append(lat_128, lat3)
     lon_128 = np.append(lon_128, lon3)
-    # for i in range(0,np.size(lon3)-1):
+    # for i in range(0,np.size(lon3)):
     #     iplt.scatter(cube.dim_coords[2][int(lon3[i] + xoffset)], cube.dim_coords[1][int(lat3[i] + yoffset)],color='black')
     #
     # ### box pick 18-19h
@@ -175,7 +175,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim18)
     lat_128 = np.append(lat_128, lat18)
     lon_128 = np.append(lon_128, lon18)
-    # for i in range(0,np.size(lon18)-1):
+    # for i in range(0,np.size(lon18)):
     #     iplt.scatter(cube.dim_coords[2][lon18[i] + xoffset], cube.dim_coords[1][lat18[i] + yoffset],color='red')
 
     ### box pick 19-20h
@@ -186,7 +186,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim19)
     lat_128 = np.append(lat_128, lat19)
     lon_128 = np.append(lon_128, lon19)
-    for i in range(0,np.size(lon19)-1):
+    for i in range(0,np.size(lon19)):
         iplt.scatter(cube.dim_coords[2][lon19[i] + xoffset], cube.dim_coords[1][lat19[i] + yoffset],color='blue')
 
     ### box pick 20-21h
@@ -197,7 +197,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim20)
     lat_128 = np.append(lat_128, lat20)
     lon_128 = np.append(lon_128, lon20)
-    for i in range(0,np.size(lon20)-1):
+    for i in range(0,np.size(lon20)):
         iplt.scatter(cube.dim_coords[2][lon20[i] + xoffset], cube.dim_coords[1][lat20[i] + yoffset],color='green')
 
     ### box pick 21-22h
@@ -208,7 +208,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim21)
     lat_128 = np.append(lat_128, lat21)
     lon_128 = np.append(lon_128, lon21)
-    for i in range(0,np.size(lon21)-1):
+    for i in range(0,np.size(lon21)):
         iplt.scatter(cube.dim_coords[2][lon21[i] + xoffset], cube.dim_coords[1][lat21[i] + yoffset],color='black')
 
     ### box pick 22-23h
@@ -219,7 +219,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim22)
     lat_128 = np.append(lat_128, lat22)
     lon_128 = np.append(lon_128, lon22)
-    for i in range(0,np.size(lon22)-1):
+    for i in range(0,np.size(lon22)):
         iplt.scatter(cube.dim_coords[2][lon22[i] + xoffset], cube.dim_coords[1][lat22[i] + yoffset],color='red')
 
     ### box pick 23-00h
@@ -230,7 +230,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_128 = np.append(tim_128, tim23)
     lat_128 = np.append(lat_128, lat23)
     lon_128 = np.append(lon_128, lon23)
-    for i in range(0,np.size(lon23)-1):
+    for i in range(0,np.size(lon23)):
         iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='blue')
 
     # ******
@@ -250,8 +250,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     lat0 = np.array([477,477,477,476])
     tim0 = np.zeros([np.size(lon0)])
     tim0[:] = 0.0
-    for i in range(0,np.size(lon0)):
-        iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
+    # for i in range(0,np.size(lon0)):
+    #     iplt.scatter(cube.dim_coords[2][lon0[i] + xoffset], cube.dim_coords[1][lat0[i] + yoffset],color='yellow')
 
     ### box pick 1-2h    (13th aug)
     lon1 = np.array([252,253])
