@@ -360,7 +360,7 @@ def findLatLon(ship_data, cube, hour):
 
     return lat, lon
 
-def plot_cartmap(ship_data, cube, hour, filename): #, lon, lat):
+def plot_cartmap(ship_data, cube, hour): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
