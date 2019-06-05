@@ -734,7 +734,7 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
+    hour = 12
     map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
 
