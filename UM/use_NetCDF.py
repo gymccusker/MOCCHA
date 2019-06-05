@@ -90,7 +90,7 @@ def inIce(data):
 
     return inIce_index
 
-def gridShipTrack(cube, filename):
+def gridShipTrack(cube):
 
     import iris.plot as iplt
     import pandas as pd
@@ -100,6 +100,7 @@ def gridShipTrack(cube, filename):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
+    
     xoffset = 0
     yoffset = 0
 
@@ -432,7 +433,7 @@ def plot_cartmap(ship_data, cube, hour, filename): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
 
-    gridship = gridShipTrack(cube, filename)
+    gridship = gridShipTrack(cube)
 
             #### MID POINT: (433, 258)
 
@@ -724,7 +725,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour, filename1)#, lon, lat)
+    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
 
 
 
