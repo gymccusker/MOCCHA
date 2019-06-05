@@ -40,13 +40,53 @@ def readFile(filename):
 
 	return data
 
+def splitData(data_all, filename):
+
+	###################################
+	# Split up data into columns per hourly dump
+	###################################
+
+	data = {}
+	temp1 = np.arange(data_all['vtim'][0],24.0)
+	temp2 = np.arange(0.0,24.0)
+	temp3 = np.arange(0.0,data_all['vtim'][-1]+1)
+	time_array = np.append(temp1,temp2)
+	time_array = np.append(time_array,temp3)
+	time_index = np.where(np.logical_and(data_all['vtim'] == data_all['vtim'][0],data_all['vdat'] == data_all['vdat'][0]))
+	data = {'model_level': data_all['lev'][time_index], 'time': time_array}
+	pres = np.zeros([np.size(time_index),np.size(time_array)])
+	temp = np.zeros([np.size(time_index),np.size(time_array)])
+	rh = np.zeros([np.size(time_index),np.size(time_array)])
+	for i in range(0,len(time_array)):
+		time_index = np.where(np.logical_and(data_all['vtim'] == data_all['vtim'][i*137],data_all['vdat'] == data_all['vdat'][i*137]))
+		pres[:,i] = data_all['P_HIST'][time_index]
+		temp[:,i] = data_all['T_HIST'][time_index]
+		rh[:,i] = data_all['R_HIST'][time_index]
+		# data.update({'time': data_all['vtim'][time_index][0],
+		# 		'pressure': data_all['P_HIST'][time_index],
+		# 		'u_wind': data_all['U_HIST'][time_index],
+		# 		'v_wind': data_all['V_HIST'][time_index],
+		# 		'w_wind': data_all['W_HIST'][time_index],
+		# 		'temperature': data_all['T_HIST'][time_index],
+		# 		'relative_humidity': data_all['R_HIST'][time_index],
+		# 		'cloud_fraction': data_all['A_HIST'][time_index],
+		# 		'ice_mixing_ratio': data_all['I_HIST'][time_index],
+		# 		'liquid_mixing_ratio': data_all['L_HIST'][time_index],
+		# 		'vapour_mixing_ratio': data_all['Q_HIST'][time_index],
+		# 		})
+		print data['time']
+
+	data.update{'pressure': pres, 'temperature': temp, 'relative_humidity': rh}
+
+	return data
+
 def assignColumns(data):
 
     columns = ['idat','itim','vdat','vtim','lev','P_HIST','U_HIST','V_HIST','T_HIST','Q_HIST','L_HIST','I_HIST','A_HIST','R_HIST','W_HIST','N_HIST','O_HIST']
 
     return columns
 
-def writeNetCDF(data):
+def writeNetCDF(data, outfile, filename):
 
     from netCDF4 import num2date, date2num
     import time
@@ -73,7 +113,7 @@ def writeNetCDF(data):
     micro = ''
     dataset.description = desc
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
+    dataset.source = ''
     dataset.references = 'N/A'
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = ''
@@ -87,17 +127,16 @@ def writeNetCDF(data):
     ###################################
     ## Data dimensions
     ###################################
-    time = dataset.createDimension('time', np.size(cube.coord('time').points))
-    # Z = dataset.createDimension('Z', np.size(icenum1,1))
-    lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
-    lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
+    time = dataset.createDimension('time', np.size(data['time']))
+    mlevel = dataset.createDimension('model_level', np.size(data['model_level']))
+	# plevel = dataset.createDimension('pressure_level', np.size(data['P_HIST']))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### Time
     time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    time.comment = cube.coord('time').standard_name
+    time.comment = 'Hour after '
     time.units = str(cube.coord('time').units)
     time[:] = cube.aux_coords[1].points
 
@@ -174,9 +213,8 @@ def main():
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
-        root_dir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/working/data/ecmwf/'
+        root_dir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/working/data/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-
 
 	###################################
 	###################################
@@ -184,11 +222,15 @@ def main():
 	###################################
 	###################################
 
-	filename = root_dir + 'MOCCHA_001_20180812_var'
+	ascii_filename = 'ecmwf/MOCCHA_001_20180812_var'
+	filename = root_dir + ascii_filename
 
-	data = readFile(filename)
+	data_all = readFile(filename)
+	print data_all
+	data = splitData(data_all, filename)
 
-
+	nc_filename = root_dir + 'ecmwf_netcdf/' + ascii_filename[17:25] + '_oden_ecmwf' + '.nc'
+	# out = writeNetCDF(data, nc_filename)
 
     END_TIME = time.time()
     print '******'
