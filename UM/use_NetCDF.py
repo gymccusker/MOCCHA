@@ -90,7 +90,7 @@ def inIce(data):
 
     return inIce_index
 
-def gridShipTrack(cube):
+def gridShipTrack(cube, filename):
 
     import iris.plot as iplt
     import pandas as pd
@@ -347,7 +347,7 @@ def findLatLon(ship_data, cube, hour):
 
     return lat, lon
 
-def plot_cartmap(ship_data, cube, hour): #, lon, lat):
+def plot_cartmap(ship_data, cube, hour, filename): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -426,7 +426,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
 
-    gridship = gridShipTrack(cube)
+    gridship = gridShipTrack(cube, filename)
 
             #### MID POINT: (433, 258)
 
@@ -718,7 +718,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    map = plot_cartmap(ship_data, cube, hour, filename)#, lon, lat)
 
 
 
