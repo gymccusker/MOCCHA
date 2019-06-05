@@ -76,7 +76,9 @@ def splitData(data_all, filename):
 		# 		})
 		print data['time']
 
-	data.update{'pressure': pres, 'temperature': temp, 'relative_humidity': rh}
+	data.update({'pressure': pres, 'temperature': temp, 'relative_humidity': rh})
+
+	data.update({'forecast_start': str(int(data_all['idat'][0])) + ' ' + str(data_all['itim'][0])})
 
 	return data
 
@@ -136,32 +138,20 @@ def writeNetCDF(data, outfile, filename):
     ###################################
     #### Time
     time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    time.comment = 'Hour after '
-    time.units = str(cube.coord('time').units)
-    time[:] = cube.aux_coords[1].points
-
-    #### Latitude
-    lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
-    lat.comment = cube.coord('grid_latitude').standard_name
-    lat.units = str(cube.coord('grid_latitude').units)
-    lat[:] = cube.coord('grid_latitude').points
-
-    #### Longitude
-    lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
-    lon.comment = cube.coord('grid_latitude').standard_name
-    lon.units = str(cube.coord('grid_longitude').units)
-    lon[:] = cube.coord('grid_longitude').points
+    time.comment = 'Forecast started at ' + data['forecast_start']
+    time.units = 'Hour after ' + data['forecast_start']
+    time[:] = data['time']
 
     ###################################
     ###################################
     ## Create 3-d variables
     ###################################
     ###################################
-    data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
-    data.units = str(cube.units)
-    # data.comment = cube.metadata
-    data.attributes = str(cube.attributes)
-    data[:] = cube.data[:]
+    # data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
+    # data.units = str(cube.units)
+    # # data.comment = cube.metadata
+    # data.attributes = str(cube.attributes)
+    # data[:] = cube.data[:]
 
     ###################################
     ###################################
