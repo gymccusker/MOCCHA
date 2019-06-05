@@ -374,7 +374,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon0)):
         iplt.scatter(cube.dim_coords[2][int(lon0[i]) + xoffset], cube.dim_coords[1][int(lat0[i]) + yoffset],color='yellow')
 
-    ### box pick 4-5h    (13th aug)
+    ### box pick 4-5h
     lon4 = np.array([255,255,254])
     lat4 = np.array([471,470,470])
     tim4 = np.zeros([np.size(lon4)])
@@ -385,11 +385,12 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon4)):
         iplt.scatter(cube.dim_coords[2][lon4[i] + xoffset], cube.dim_coords[1][lat4[i] + yoffset],color='red')
 
-    ### box pick 5-6h    (13th aug)
-    lon5 = np.array([254])
-    lat5 = np.array([470])
-    tim5 = np.zeros([np.size(lon5)])
-    tim5[:] = 6.0
+    ### box pick 5-10h
+    tim5 = np.arange(5,10)
+    lon5 = np.zeros([np.size(tim5)])
+    lon5[:] = 254
+    lat5 = np.zeros([np.size(tim5)])
+    lat5[:] = 470
     tim_148 = np.append(tim_148, tim5)
     lat_148 = np.append(lat_148, lat5)
     lon_148 = np.append(lon_148, lon5)
@@ -401,8 +402,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=5))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==12))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=11))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==13))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
