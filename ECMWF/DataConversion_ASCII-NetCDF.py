@@ -36,7 +36,7 @@ def readFile(filename):
 	data = {}
 
 	for i in range(0,len(headers)-1):
-		data = data.update({headers[i]: dat[:,i]})
+		data.update({headers[i]: dat[:,i]})
 
 	dat.close()
 
@@ -44,7 +44,7 @@ def readFile(filename):
 
 def assignColumns(data):
 
-    columns = ['idat','itim','vdat','vtim#','lev','P_HIST','U_HIST','V_HIST','T_HIST','Q_HIST','L_HIST','I_HIST','A_HIST','R_HIST','W_HIST','N_HIST','O_HIST']
+    columns = ['idat','itim','vdat','vtim','lev','P_HIST','U_HIST','V_HIST','T_HIST','Q_HIST','L_HIST','I_HIST','A_HIST','R_HIST','W_HIST','N_HIST','O_HIST']
 
     return columns
 
