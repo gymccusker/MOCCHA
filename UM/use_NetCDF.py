@@ -506,7 +506,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
 def unrotateGrid(cube):
