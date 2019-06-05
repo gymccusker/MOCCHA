@@ -20,25 +20,23 @@ def readFile(filename):
 	# Load in data
 	###################################
 
-	dat = open(filename,'r')
+	dat = np.loadtxt(filename)
 
 	###################################
 	## Define headers
 	###################################
 
-	columns = assignColumns(dat)
+	headers = assignColumns(dat)
 
 	###################################
 	## Read in ASCII variables
 	###################################
 
-	###  Loop over lines and extract data
-	for line in dat:
-		print repr(line)
-		columns = line.split()
-		name = columns[2]
-		j = float(columns[3])
-    	print name, j
+	# ### Create dictionary to contain each variable
+	data = {}
+
+	for i in range(0,len(headers)-1):
+		data = data.update({headers[i]: dat[:,i]})
 
 	dat.close()
 
