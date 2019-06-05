@@ -305,8 +305,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_138 = np.append(tim_138, tim5)
     lat_138 = np.append(lat_138, lat5)
     lon_138 = np.append(lon_138, lon5)
-    # for i in range(0,np.size(lon5)-1):
-    #     iplt.scatter(cube.dim_coords[2][lon5[i] + xoffset], cube.dim_coords[1][lat5[i] + yoffset],color='black')
+    for i in range(0,np.size(lon5)):
+        iplt.scatter(cube.dim_coords[2][lon5[i] + xoffset], cube.dim_coords[1][lat5[i] + yoffset],color='black')
 
     ### box pick 6-17h
     tim6 = np.arange(6,17)
@@ -317,8 +317,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_138 = np.append(tim_138, tim6)
     lat_138 = np.append(lat_138, lat6)
     lon_138 = np.append(lon_138, lon6)
-    # for i in range(0,np.size(lon6)-1):
-    #     iplt.scatter(cube.dim_coords[2][int(lon6[i]) + xoffset], cube.dim_coords[1][int(lat6[i]) + yoffset],color='red')
+    for i in range(0,np.size(lon6)):
+        iplt.scatter(cube.dim_coords[2][int(lon6[i]) + xoffset], cube.dim_coords[1][int(lat6[i]) + yoffset],color='red')
 
     ### box pick 17-18h
     lon17 = np.array([255,255])
@@ -328,8 +328,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_138 = np.append(tim_138, tim17)
     lat_138 = np.append(lat_138, lat17)
     lon_138 = np.append(lon_138, lon17)
-    # for i in range(0,np.size(lon17)-1):
-    #     iplt.scatter(cube.dim_coords[2][lon17[i] + xoffset], cube.dim_coords[1][lat17[i] + yoffset],color='blue')
+    for i in range(0,np.size(lon17)):
+        iplt.scatter(cube.dim_coords[2][lon17[i] + xoffset], cube.dim_coords[1][lat17[i] + yoffset],color='blue')
 
     ### box pick 18-23h
     tim18 = np.arange(18,23)
@@ -340,8 +340,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_138 = np.append(tim_138, tim18)
     lat_138 = np.append(lat_138, lat18)
     lon_138 = np.append(lon_138, lon18)
-    # for i in range(0,np.size(lon18)-1):
-    #     iplt.scatter(cube.dim_coords[2][int(lon18[i]) + xoffset], cube.dim_coords[1][int(lat18[i]) + yoffset],color='green')
+    for i in range(0,np.size(lon18)):
+        iplt.scatter(cube.dim_coords[2][int(lon18[i]) + xoffset], cube.dim_coords[1][int(lat18[i]) + yoffset],color='green')
 
     ### box pick 23-00h
     lon23 = np.array([255,255])
