@@ -38,8 +38,6 @@ def readFile(filename):
 	for i in range(0,len(headers)-1):
 		data.update({headers[i]: dat[:,i]})
 
-	dat.close()
-
 	return data
 
 def assignColumns(data):
