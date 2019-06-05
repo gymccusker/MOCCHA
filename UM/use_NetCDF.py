@@ -100,9 +100,15 @@ def gridShipTrack(cube):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    
-    xoffset = 0
-    yoffset = 0
+    if cube[0,0].shape > 500-1:
+        xoffset = 0
+        yoffset = 0
+    elif cube[0,0].shape > 93-1:    # ll = 211, 386
+        xoffset = -211
+        yoffset = -386
+    elif cube[0,0].shape > 25-1:    # ll = 240, 471
+        xoffset = -240
+        yoffset = -471
 
     ###---------------------------------
     ### 12th August 2018
