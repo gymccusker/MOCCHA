@@ -354,11 +354,11 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon23)-1):
         iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='black')
 
-    print ''
-    print 'tim_138 = ' + str(tim_138.shape)
-    print 'lat_138 = ' + str(lat_138.shape)
-    print 'lon_138 = ' + str(lon_138.shape)
-    print ''
+    # print ''
+    # print 'tim_138 = ' + str(tim_138.shape)
+    # print 'lat_138 = ' + str(lat_138.shape)
+    # print 'lon_138 = ' + str(lon_138.shape)
+    # print ''
 
     out = writeoutGrid(tim_138, lat_138, lon_138, date)
 
