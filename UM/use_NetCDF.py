@@ -129,9 +129,9 @@ def gridShipTrack(cube, xoffset, yoffset):
     # ### box pick 3-18h
     tim3 = np.arange(3,18)
     lon3 = np.zeros([np.size(tim3)])
-    lon3[:] = int(251)
+    lon3[:] = 251
     lat3 = np.zeros([np.size(tim3)])
-    lat3[:] = int(492)
+    lat3[:] = 492
     # for i in range(0,np.size(lon3)-1):
     #     iplt.scatter(cube.dim_coords[2][int(lon3[i] + xoffset)], cube.dim_coords[1][int(lat3[i] + yoffset)],color='black')
     #
@@ -197,20 +197,20 @@ def gridShipTrack(cube, xoffset, yoffset):
     # write to csv file
     # ******
 
-    # print '******'
-    # print 'Writing 12th Aug grid to file:'
-    # print ''
-    # timp = pd.DataFrame(tim_128)
-    # lonp = pd.DataFrame(lon_128)
-    # latp = pd.DataFrame(lat_128)
-    # # dat = {'Time': timp.T, 'Grid Latitude': latp.T, 'Grid Longitude': lonp.T}
-    # dat = {'Time': timp, 'Grid Latitude': latp, 'Grid Longitude': lonp}
-    # # dat = [tim_128,lon_128,lat_128]
-    # df = pd.DataFrame(dat,columns=['Time','Latitude','Longitude'])
-    # df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
-    # print '... finished!'
-    # print ''
-    # print '******'
+    print '******'
+    print 'Writing 12th Aug grid to file:'
+    print ''
+    timp = pd.DataFrame(tim_128)
+    lonp = pd.DataFrame(lon_128)
+    latp = pd.DataFrame(lat_128)
+    # dat = {'Time': timp.T, 'Grid Latitude': latp.T, 'Grid Longitude': lonp.T}
+    dat = {'Time': [timp], 'Grid Latitude': [latp], 'Grid Longitude': [lonp]}
+    # dat = [tim_128,lon_128,lat_128]
+    df = pd.DataFrame(dat)
+    df.to_csv('AUX_DATA/12AUG_ShipTrack_GRIDDED.csv',  sep = " ")
+    print '... finished!'
+    print ''
+    print '******'
 
     ###---------------------------------
     ### 13th August 2018
