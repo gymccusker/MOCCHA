@@ -1994,7 +1994,7 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==24,data.values[:,1]==8),data.values[:,3]>=20))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==24,data.values[:,1]==8),data.values[:,3]>=0))
     trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
