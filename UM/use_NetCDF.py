@@ -2855,8 +2855,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='yellow')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='yellow')
 
     ### box pick 2-3h
     lon = np.array([267,268])
@@ -2866,8 +2866,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
 
     ### box pick 3-4h
     lon = np.array([268])
@@ -2877,8 +2877,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
 
     ### box pick 4-5h
     lon = np.array([268,269])
@@ -2888,8 +2888,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
 
     ### box pick 5-6h
     lon = np.array([269,269])
@@ -2899,8 +2899,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
 
     ### box pick 6-7h
     lon = np.array([269,270])
@@ -2910,8 +2910,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
 
     ### box pick 7-8h
     lon = np.array([270,271])
@@ -2921,8 +2921,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
 
     ### box pick 8-9h
     lon = np.array([271])
@@ -2932,8 +2932,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
 
     ### box pick 9-10h
     lon = np.array([271,272])
@@ -2943,8 +2943,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
 
     ### box pick 10-11h
     lon = np.array([272])
@@ -2954,8 +2954,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
 
     ### box pick 11-12h
     lon = np.array([272,272,273])
@@ -2965,8 +2965,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
 
     ### box pick 12-14h
     tim = np.arange(12,14)
@@ -2977,8 +2977,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='green')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='green')
 
     ### box pick 14-15h
     lon = np.array([273,274])
@@ -2988,8 +2988,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
 
     ### box pick 15-16h
     lon = np.array([274,274])
@@ -2999,8 +2999,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
 
     ### box pick 16-17h
     lon = np.array([274])
@@ -3010,8 +3010,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
 
     ### box pick 17-18h
     lon = np.array([274,275])
@@ -3021,8 +3021,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
 
     ### box pick 18-19h
     lon = np.array([275])
@@ -3032,8 +3032,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
 
     ### box pick 19-20h
     lon = np.array([275,276])
@@ -3043,8 +3043,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
 
     ### box pick 19-22h
     tim = np.arange(19,22)
@@ -3055,8 +3055,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='blue')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='blue')
 
     ### box pick 22-23h
     lon = np.array([276,277])
@@ -3066,8 +3066,8 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
-    for i in range(0,np.size(lon)):
-        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
 
     ### box pick 23-0h
     lon = np.array([277])
@@ -3077,18 +3077,166 @@ def gridShipTrack(cube, xoffset, yoffset):
     tim_308 = np.append(tim_308, tim)
     lat_308 = np.append(lat_308, lat)
     lon_308 = np.append(lon_308, lon)
+    # for i in range(0,np.size(lon)):
+    #     iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='magenta')
+
+    # out = writeoutGrid(tim_308, lat_308, lon_308, date)
+
+    ###---------------------------------
+    ### 31st August 2018
+    ###---------------------------------
+
+    date = '20180831'
+    tim_318 = np.array([])
+    lat_318 = np.array([])
+    lon_318 = np.array([])
+
+    ### box pick 0-4h
+    tim = np.arange(0,4)
+    lon = np.zeros([np.size(tim)])
+    lon[:] = 277
+    lat = np.zeros([np.size(tim)])
+    lat[:] = 471
+    tim_318 = np.append(tim_318, tim)
+    lat_318 = np.append(lat_318, lat)
+    lon_318 = np.append(lon_318, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='yellow')
+
+    ### box pick 4-5h
+    lon = np.array([277,277])
+    lat = np.array([471,472])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 4.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='red')
+
+    ### box pick 5-11h
+    tim = np.arange(5,11)
+    lon = np.zeros([np.size(tim)])
+    lon[:] = 277
+    lat = np.zeros([np.size(tim)])
+    lat[:] = 472
+    tim_318 = np.append(tim_318, tim)
+    lat_318 = np.append(lat_318, lat)
+    lon_318 = np.append(lon_318, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='blue')
+
+    ### box pick 11-12h
+    lon = np.array([277,277])
+    lat = np.array([472,471])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 11.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='green')
+
+    ### box pick 12-13h
+    lon = np.array([277,276])
+    lat = np.array([471,471])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 12.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+
+    ### box pick 13-15h
+    tim = np.arange(13,15)
+    lon = np.zeros([np.size(tim)])
+    lon[:] = 276
+    lat = np.zeros([np.size(tim)])
+    lat[:] = 471
+    tim_318 = np.append(tim_318, tim)
+    lat_318 = np.append(lat_318, lat)
+    lon_318 = np.append(lon_318, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='red')
+
+    ### box pick 15-16h
+    lon = np.array([276,275])
+    lat = np.array([471,471])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 15.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+
+    ### box pick 16-19h
+    tim = np.arange(16,19)
+    lon = np.zeros([np.size(tim)])
+    lon[:] = 275
+    lat = np.zeros([np.size(tim)])
+    lat[:] = 471
+    tim_318 = np.append(tim_318, tim)
+    lat_318 = np.append(lat_318, lat)
+    lon_318 = np.append(lon_318, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='green')
+
+    ### box pick 19-20h
+    lon = np.array([275,275])
+    lat = np.array([471,470])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 19.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='black')
+
+    ### box pick 20-22h
+    tim = np.arange(20,22)
+    lon = np.zeros([np.size(tim)])
+    lon[:] = 275
+    lat = np.zeros([np.size(tim)])
+    lat[:] = 470
+    tim_318 = np.append(tim_318, tim)
+    lat_318 = np.append(lat_318, lat)
+    lon_318 = np.append(lon_318, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='red')
+
+    ### box pick 22-23h
+    lon = np.array([275,275,274])
+    lat = np.array([470,469,469])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 22.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
+    for i in range(0,np.size(lon)):
+        iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='blue')
+
+    ### box pick 23-0h
+    lon = np.array([274,274])
+    lat = np.array([469,468])
+    tim = np.zeros([np.size(lon)])
+    tim[:] = 23.0
+    tim_308 = np.append(tim_308, tim)
+    lat_308 = np.append(lat_308, lat)
+    lon_308 = np.append(lon_308, lon)
     for i in range(0,np.size(lon)):
         iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='magenta')
 
-    out = writeoutGrid(tim_308, lat_308, lon_308, date)
+    out = writeoutGrid(tim_318, lat_318, lon_318, date)
 
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==30,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==1,data.values[:,1]==9),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
