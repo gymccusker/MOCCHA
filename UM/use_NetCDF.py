@@ -240,7 +240,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     # write out index arrays
     # ******
 
-    # out = writeoutGrid(tim_128, lat_128, lon_128, date)
+    out = writeoutGrid(tim_128, lat_128, lon_128, date)
 
     ###---------------------------------
     ### 13th August 2018
@@ -357,7 +357,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     # for i in range(0,np.size(lon23)):
     #     iplt.scatter(cube.dim_coords[2][lon23[i] + xoffset], cube.dim_coords[1][lat23[i] + yoffset],color='magenta')
 
-    # out = writeoutGrid(tim_138, lat_138, lon_138, date)
+    out = writeoutGrid(tim_138, lat_138, lon_138, date)
 
     ###---------------------------------
     ### 14th August 2018
@@ -443,13 +443,27 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon18)):
         iplt.scatter(cube.dim_coords[2][int(lon18[i]) + xoffset], cube.dim_coords[1][int(lat18[i]) + yoffset],color='red')
 
+    ## box pick 18-21h
+    tim22 = np.arange(22,24)
+    lon22 = np.zeros([np.size(tim22)])
+    lon22[:] = 253
+    lat22 = np.zeros([np.size(tim22)])
+    lat22[:] = 467
+    tim_148 = np.append(tim_148, tim22)
+    lat_148 = np.append(lat_148, lat22)
+    lon_148 = np.append(lon_148, lon22)
+    for i in range(0,np.size(lon22)):
+        iplt.scatter(cube.dim_coords[2][int(lon22[i]) + xoffset], cube.dim_coords[1][int(lat22[i]) + yoffset],color='magenta')
+
+    out = writeoutGrid(tim_148, lat_148, lon_148, date)
+
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=18))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]==22))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=22))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==15,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
