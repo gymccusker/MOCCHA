@@ -1053,9 +1053,9 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon[:] = 256
     lat = np.zeros([np.size(tim)])
     lat[:] = 469
-    tim_188 = np.append(tim_188, tim)
-    lat_188 = np.append(lat_188, lat)
-    lon_188 = np.append(lon_188, lon)
+    tim_188 = np.append(tim_198, tim)
+    lat_188 = np.append(lat_198, lat)
+    lon_188 = np.append(lon_198, lon)
     # for i in range(0,np.size(lon)):
     #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='red')
 
@@ -1076,9 +1076,9 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon[:] = 255
     lat = np.zeros([np.size(tim)])
     lat[:] = 469
-    tim_188 = np.append(tim_188, tim)
-    lat_188 = np.append(lat_188, lat)
-    lon_188 = np.append(lon_188, lon)
+    tim_188 = np.append(tim_198, tim)
+    lat_188 = np.append(lat_198, lat)
+    lon_188 = np.append(lon_198, lon)
     # for i in range(0,np.size(lon)):
     #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='green')
 
@@ -1099,9 +1099,9 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon[:] = 255
     lat = np.zeros([np.size(tim)])
     lat[:] = 470
-    tim_188 = np.append(tim_188, tim)
-    lat_188 = np.append(lat_188, lat)
-    lon_188 = np.append(lon_188, lon)
+    tim_188 = np.append(tim_198, tim)
+    lat_188 = np.append(lat_198, lat)
+    lon_188 = np.append(lon_198, lon)
     # for i in range(0,np.size(lon)):
     #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='red')
 
@@ -1122,9 +1122,9 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon[:] = 254
     lat = np.zeros([np.size(tim)])
     lat[:] = 470
-    tim_188 = np.append(tim_188, tim)
-    lat_188 = np.append(lat_188, lat)
-    lon_188 = np.append(lon_188, lon)
+    tim_198 = np.append(tim_198, tim)
+    lat_198 = np.append(lat_198, lat)
+    lon_198 = np.append(lon_198, lon)
     # for i in range(0,np.size(lon)):
     #     iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='green')
 
