@@ -3598,6 +3598,9 @@ def pullTrack(cube, grid_filename, con):
     print ''
 
     if np.size(con)>1:
+        print ''
+        print 'More than one variable constraint. Proceeding...'
+        print ''
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
@@ -3681,6 +3684,9 @@ def pullTrack(cube, grid_filename, con):
         ncube.attributes = cube.attributes
 
     else:
+        print ''
+        print 'Only one variable constraint. Proceeding...'
+        print ''
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
@@ -3775,7 +3781,7 @@ def pullTrack(cube, grid_filename, con):
     iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
 
-    return data
+    return ncube
 
 def writeNetCDF(cube, data, outfile):
 
