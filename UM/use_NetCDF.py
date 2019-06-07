@@ -3541,9 +3541,13 @@ def pullTrack(cube, grid_filename):
     #################################################################
     ## fix time index
     #################################################################
-    cubetime = np.round(cube.aux_coords[-1].points - 12.0)      ### forecast period (ignore first 12h)
-    for j in range(0,len(cubetime)-1):
-        if j <= len(cubetime):
+    cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+    print ''
+    print 'Cube times relative to forecast start:', cubetime[:-1]
+    print ''
+
+    for j in range(0,len(cubetime[:-1])-1):
+        if j <= len(cubetime[:-1]):
             itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
         else:
             ### end point
