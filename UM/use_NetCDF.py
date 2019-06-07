@@ -3548,8 +3548,10 @@ def pullTrack(cube, grid_filename):
     print ''
 
     #### create empty arrays to be filled
-    data = np.zeros([len(ilon)-1,2])
-    # time = np.zeros([len(ilon)-1,2])
+    data = np.zeros([len(cubetime)-1,2])
+
+    ### populate 0th dimension with time field
+    data[:,0] = cubetime[:,:-1]
 
     for j in range(0,len(cubetime)-1):
         if j < len(cubetime[:-1]):
@@ -3559,7 +3561,13 @@ def pullTrack(cube, grid_filename):
             itime = np.where(tim >= cubetime[-1])
         print 'For ', str(j), ', itime = ', itime
         for i in range(0, 2):
-            data[j,:] = cube[itime,:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
+            temp = cube[itime[0],:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
+            if np.size(itime)>1:
+                data[j,1] = np.nanmean(temp.data,0)     # mean over time indices
+                print 'averaging data over ', str(j),'th interval...'
+            else:
+                data[j,1] = temp.data                   # if only one index per hour
+                print 'no averaging data over ', str(j),'...'
             print data
             # grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
             # grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
