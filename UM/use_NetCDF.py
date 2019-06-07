@@ -3458,7 +3458,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     ### Plot tracks as line plot
     for i in range(0, len(ilon)-1):
-    iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
     ### Plot tracks as line plot
     # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
