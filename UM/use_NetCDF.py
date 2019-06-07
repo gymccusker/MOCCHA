@@ -3560,13 +3560,18 @@ def pullTrack(cube, grid_filename):
             ### end point (23h)
             itime = np.where(tim >= cubetime[-1])
         print 'For ', str(j), ', itime = ', itime
-        for i in range(0, 2):
-            temp = cube[itime[0],:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
-            if np.size(itime)>1:
-                data[:,i] = np.nanmean(temp.data,0)     # mean over time indices
+        dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+        for i in range(0, len(itime)):
+            if len(itime) > 1:
+                temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+            else:
+                temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+            dat[:,i] = temp.data
+            if len(itime) > 1:
+                data[:,i] = np.nanmean(dat,1)     # mean over time indices
                 print 'averaging data over ', str(j),'th interval...'
             else:
-                data[:,i] = temp.data                   # if only one index per hour
+                data[:,i] = dat                   # if only one index per hour
                 print 'no averaging data over ', str(j),'...'
         print data
             # grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
