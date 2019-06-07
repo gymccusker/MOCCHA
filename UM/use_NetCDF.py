@@ -3754,7 +3754,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'specific_humidity'
+    var = 'mass_fraction_of_cloud_liquid_water_in_air'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
