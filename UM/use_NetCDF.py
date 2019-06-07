@@ -37,6 +37,114 @@ def assignColumns(data):
 
     return columns
 
+def unrotateGrid(cube):
+    ##
+    ##      ROTATE GRID BACK TO STANDARD
+    ##
+
+    import iris.analysis.cartography as ircrt
+    import pandas as pd
+
+    ### LAM Configuration from suite u-bg610
+    dlat = 0.015714
+    dlon = 0.016334
+    frst_lat = -5.6112
+    frst_lon = 353.0345
+    pole_lat = 3.375 # UM SUITE: 37.5000
+    pole_lon = 210.0 # UM SUITE: 177.5000
+
+    rot_lat = cube.coord('grid_latitude').points
+    rot_lon = cube.coord('grid_longitude').points
+
+    rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
+
+    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
+
+    # Print to check conversion
+    print '******'
+    print 'Test of unrotated coordinate grid: '
+    print 'Rotated lon coord = ', rot_lon[250]
+    print 'Rotated lat coord = ', rot_lat[250]
+    print 'Lon = ', lon[250]
+    print 'Lat = ', lat[250]
+    print ' '
+
+    # ******
+    # write to csv file
+    # ******
+
+    # print '******'
+    # print 'Writing unrotated coordinate grid to file:'
+    # print ''
+    # lonp = pd.DataFrame(lon)
+    # latp = pd.DataFrame(lat)
+    # dat = {'Latitude': lat, 'Longitude': lon}
+    # df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
+    # df.to_csv('POSITION_UNROTATED.csv',  sep = " ")
+    # print '... finished!'
+    # print ''
+    # print '******'
+
+    return lon, lat
+
+def findLatLon(ship_data, cube, hour):
+
+    print ''
+    print 'Finding lat/lon of ship track'
+    print '...'
+
+    #################################################################
+    ## find ship track coordinates
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+
+    # -------------------------------------------------------------
+    # Define unrotated coordinate model grid
+    # -------------------------------------------------------------
+    #### the following uses iris to unrotate the coordinate grid.
+    ####    this only works with square domains (i.e. paXXX files)
+    ####    only needs to be performed once -- saved grid as .csv file
+    lon, lat = unrotateGrid(cube)
+
+    print 'findLatLon testing:'
+    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
+    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
+
+
+    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
+    print 'Ship index test'
+    print ship_index
+    # print lat[ship_index[0]
+
+
+    print 'test complete!'
+
+### Plot tracks as line plot
+# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+#          color = 'yellow', linewidth = 2,
+#          transform = ccrs.PlateCarree(), label = 'Whole',
+#          )
+# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+#          color = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(), label = 'In Ice',
+#          )
+# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+#          transform = ccrs.PlateCarree(),
+#          )
+# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+#          color = 'red', linewidth = 4,
+#          transform = ccrs.PlateCarree(), label = 'Drift',
+#          )
+
+    return lat, lon
+
 def iceDrift(data):
 
     ###################################
@@ -3269,64 +3377,6 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
-def findLatLon(ship_data, cube, hour):
-
-    print ''
-    print 'Finding lat/lon of ship track'
-    print '...'
-
-    #################################################################
-    ## find ship track coordinates
-    #################################################################
-    ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
-
-    # -------------------------------------------------------------
-    # Define unrotated coordinate model grid
-    # -------------------------------------------------------------
-    #### the following uses iris to unrotate the coordinate grid.
-    ####    this only works with square domains (i.e. paXXX files)
-    ####    only needs to be performed once -- saved grid as .csv file
-    lon, lat = unrotateGrid(cube)
-
-    print 'findLatLon testing:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
-    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
-
-
-    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
-    print 'Ship index test'
-    print ship_index
-    # print lat[ship_index[0]
-
-
-    print 'test complete!'
-
-### Plot tracks as line plot
-# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-#          color = 'yellow', linewidth = 2,
-#          transform = ccrs.PlateCarree(), label = 'Whole',
-#          )
-# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-#          color = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(), label = 'In Ice',
-#          )
-# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-#          color = 'red', linewidth = 4,
-#          transform = ccrs.PlateCarree(), label = 'Drift',
-#          )
-
-    return lat, lon
-
 def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     import iris.plot as iplt
@@ -3547,6 +3597,63 @@ def pullTrack(cube, grid_filename):
     print 'Cube times relative to forecast start:', cubetime[:-1]
     print ''
 
+    #################################################################
+    ## POPULATE NP ARRAY WITH DATA
+    #################################################################
+    # #### create empty arrays to be filled
+    # data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
+    #
+    # ### populate 0th dimension with time field
+    # # data[:,0] = cubetime[:,:-1]
+    #
+    # for j in range(0,len(cubetime)-1):
+    #     if j < len(cubetime[:-1]):
+    #         itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+    #     else:
+    #         ### end point (23h)
+    #         itime = np.where(tim >= cubetime[-1])
+    #     print 'For ', str(j), 'h, itime = ', itime
+    #     dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+    #     for i in range(0, len(itime[0])):
+    #         if np.size(itime) > 1:
+    #             print 'Starting with i = ', str(itime[0][i])
+    #             temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+    #         else:
+    #             print 'Starting with i = ', str(itime[i])
+    #             temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+    #         dat[:,i] = temp.data
+    #         if np.size(itime) > 1:
+    #             dat[dat==0] = np.nan              # set zeros to nans
+    #             data[:,j] = np.nanmean(dat,1)     # mean over time indices
+    #             print 'averaging (excluding zeros)...'
+    #         else:
+    #             data[:,j] = np.squeeze(dat)                   # if only one index per hour
+    #             print 'no averaging...'
+    # print data
+    # print 'data.shape = ', data.shape
+
+    #################################################################
+    ## FIGURES TO TEST OUTPUT
+    #################################################################
+    ### timeseries of lowest model level
+    # plt.figure(figsize=(7,5))
+    # plt.plot(cubetime[:-1],data[0:10,:])
+    # plt.show()
+
+    ### vertical profile of 1st timestep
+    # plt.figure(figsize=(7,5))
+    # plt.plot(data[:,0],cube.coord('model_level_number').points)
+    # plt.show()
+
+    ### pcolormesh of timeseries
+    # plt.figure(figsize=(7,5))
+    # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+    # plt.colorbar()
+    # plt.show()
+
+    #################################################################
+    ## CREATE CUBE
+    #################################################################
     #### create empty arrays to be filled
     data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
 
@@ -3577,38 +3684,26 @@ def pullTrack(cube, grid_filename):
                 data[:,j] = np.squeeze(dat)                   # if only one index per hour
                 print 'no averaging...'
     print data
-    print 'data.shape = ', data.shape
+
+    ntime = DimCoord(cubetime[:-1], standard_name = 'time', units = 'h')
+    model_height = DimCoord(cube.aux_coords[2].points, long_name = 'level_height', units='m')
+    ncube = Cube(np.transpose(data),
+            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+            standard_name = cube.standard_name,
+            )
+    ncube.attributes = cube.attributes
 
     #################################################################
-    ## create figure and axes instances
-    # #################################################################
-    # plt.figure(figsize=(7,5))
-    # plt.plot(cubetime[:-1],data[0:10,:])
-    # plt.show()
-
-    # plt.figure(figsize=(7,5))
-    # plt.plot(data[:,0],cube.coord('model_level_number').points)
-    # plt.show()
-
-    plt.figure(figsize=(7,5))
-    plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
-    plt.colorbar()
-    plt.show()
-
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
-    #
-    # ## set size
-    # ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
-    # iplt.scatter(grid_lon, grid_lat,color='green')
-    # plt.show()
-
-
-    #################################################################
-    ## CREATE NEW CUBE
+    ## CREATE NETCDF
     #################################################################
     ###
+
+    outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+    print 'Outfile = ', outfile
+
+    ### save cube to netcdf file
+    iris.save(ncube, outfile)
+    # out = writeNetCDF(cube, data, outfile)
 
     #### create empty arrays to be filled
     # data = np.zeros([len(ilon)-1,3])
@@ -3618,71 +3713,111 @@ def pullTrack(cube, grid_filename):
 
     # cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
 
-    # for i in range(0, 2):
-    #     latitude = DimCoord(cube.dim_coords[1][int(ilat[i] + yoffset)], standard_name='latitude', units='degrees')
-    #
-    # longitude = DimCoord(np.linspace(45, 360, 8), standard_name='longitude', units='degrees')
-    # data = Cube(np.zeros([len(ilon),3], np.float32), dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
-
     # time = tim
     # for i in range(0, len(ilon)-1):
     #     grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
     #     grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
-
-
-
     return data
 
-def unrotateGrid(cube):
-    ##
-    ##      ROTATE GRID BACK TO STANDARD
-    ##
+def writeNetCDF(cube, data, outfile):
 
-    import iris.analysis.cartography as ircrt
-    import pandas as pd
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
 
-    ### LAM Configuration from suite u-bg610
-    dlat = 0.015714
-    dlon = 0.016334
-    frst_lat = -5.6112
-    frst_lon = 353.0345
-    pole_lat = 3.375 # UM SUITE: 37.5000
-    pole_lon = 210.0 # UM SUITE: 177.5000
-
-    rot_lat = cube.coord('grid_latitude').points
-    rot_lon = cube.coord('grid_longitude').points
-
-    rot_pole = cube.coord('grid_latitude').coord_system.as_cartopy_crs()
-
-    lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
-
-    # Print to check conversion
     print '******'
-    print 'Test of unrotated coordinate grid: '
-    print 'Rotated lon coord = ', rot_lon[250]
-    print 'Rotated lat coord = ', rot_lat[250]
-    print 'Lon = ', lon[250]
-    print 'Lat = ', lat[250]
-    print ' '
+    print ''
+    print 'Writing NetCDF file:'
+    print ''
 
-    # ******
-    # write to csv file
-    # ******
+    ###################################
+    ## Open File
+    ###################################
+    dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
 
-    # print '******'
-    # print 'Writing unrotated coordinate grid to file:'
-    # print ''
-    # lonp = pd.DataFrame(lon)
-    # latp = pd.DataFrame(lat)
-    # dat = {'Latitude': lat, 'Longitude': lon}
-    # df = pd.DataFrame(dat,columns=['Latitude','Longitude'])
-    # df.to_csv('POSITION_UNROTATED.csv',  sep = " ")
-    # print '... finished!'
-    # print ''
-    # print '******'
+    print ''
+    print dataset.file_format
+    print ''
 
-    return lon, lat
+    ###################################
+    ## Global Attributes
+    ###################################
+    desc = 'Test netCDF write out'
+    micro = 'Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983)'
+    dataset.description = desc
+    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
+    dataset.references = 'N/A'
+    dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
+    dataset.comment = ''
+    dataset.institution = 'University of Leeds.'
+
+    ### IMPORT USEFUL METADATA FROM CUBE
+    # dataset.attributes = cube.attributes
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    time = dataset.createDimension('time', np.size(cube.coord('time').points))
+    # Z = dataset.createDimension('Z', np.size(icenum1,1))
+    lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
+    lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### Time
+    time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    time.comment = cube.coord('time').standard_name
+    time.units = str(cube.coord('time').units)
+    time[:] = cube.aux_coords[1].points
+
+    #### Latitude
+    lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
+    lat.comment = cube.coord('grid_latitude').standard_name
+    lat.units = str(cube.coord('grid_latitude').units)
+    lat[:] = cube.coord('grid_latitude').points
+
+    #### Longitude
+    lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
+    lon.comment = cube.coord('grid_latitude').standard_name
+    lon.units = str(cube.coord('grid_longitude').units)
+    lon[:] = cube.coord('grid_longitude').points
+
+    ###################################
+    ###################################
+    ## Create 3-d variables
+    ###################################
+    ###################################
+    data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
+    data.units = str(cube.units)
+    # data.comment = cube.metadata
+    data.attributes = str(cube.attributes)
+    data[:] = cube.data[:]
+
+    ###################################
+    ###################################
+    ## Create 4-d variables
+    ###################################
+    ###################################
+    # nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
+    # nisg.long_name = 'total ice number concentration'
+    # nisg.comment = 'Sum of ice, snow, and graupel particles'
+    # nisg.units = 'L-1'
+    # nisg[:] = ice1[:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
 
 def main():
 
@@ -3754,7 +3889,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'mass_fraction_of_cloud_liquid_water_in_air'
+    var = 'specific_humidity'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
