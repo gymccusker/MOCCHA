@@ -3542,8 +3542,8 @@ def pullTrack(cube, grid_filename):
     ## fix time index
     #################################################################
     cubetime = np.round(cube.aux_coords[-1].points - 12.0)      ### forecast period (ignore first 12h)
-    for j in range(0,len(cubetime)):
-        if j<len(cubetime):
+    for j in range(0,len(cubetime)-1):
+        if j <= len(cubetime):
             itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
         else:
             ### end point
@@ -3701,7 +3701,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pa012_r0.nc'
+    filename1 = root_dir + out_dir + 'umnsaa_pc011_r0.nc'
     print filename1
     print ''
 
@@ -3712,7 +3712,7 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var = 'surface_net_downward_shortwave_flux'
+    var = 'air_temperature'
     cube = iris.load_cube(filename1, var)
     # data = Dataset(filename1,'r')
 
