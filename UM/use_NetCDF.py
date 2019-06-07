@@ -3508,6 +3508,7 @@ def pullTrack(cube, grid_filename):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
+    import iris.plot as iplt
 
     print '******'
     print ''
@@ -3541,6 +3542,8 @@ def pullTrack(cube, grid_filename):
     ## fix time index
     #################################################################
     cubetime = cube.aux_coords[-1].points - 12.0      ### forecast period (ignore first 12h)
+    itime = np.where(np.logical_and(tim[i] >= cubetime[i], tim[i] < cubetime[i+1])
+    print itime
 
     #################################################################
     ## CREATE NEW CUBE
