@@ -3540,7 +3540,7 @@ def pullTrack(cube, grid_filename):
     #################################################################
     ## fix time index
     #################################################################
-    # cube.aux_coords[-1]       ### forecast period
+    cubetime = cube.aux_coords[-1].points - 12.0      ### forecast period (ignore first 12h)
 
     #################################################################
     ## CREATE NEW CUBE
@@ -3572,14 +3572,15 @@ def pullTrack(cube, grid_filename):
     #################################################################
     ## create figure and axes instances
     # #################################################################
-    # plt.figure(figsize=(10,9))
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    plt.figure(figsize=(10,9))
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
-    ### set size
-    # ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
-    # iplt.scatter(grid_lon, grid_lat,color='green')
+    ## set size
+    ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    iplt.scatter(grid_lon, grid_lat,color='green')
+    plt.show()
 
     return data
 
