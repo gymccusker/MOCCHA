@@ -3597,87 +3597,171 @@ def pullTrack(cube, grid_filename, con):
     print 'Cube times relative to forecast start:', cubetime[:-1]
     print ''
 
-    #################################################################
-    ## POPULATE NP ARRAY WITH DATA
-    #################################################################
-    #### create empty arrays to be filled
-    data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
+    if np_size(con)>1:
+        #################################################################
+        ## POPULATE NP ARRAY WITH DATA
+        #################################################################
+        #### create empty arrays to be filled
+        data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
 
-    ### populate 0th dimension with time field
-    # data[:,0] = cubetime[:,:-1]
+        ### populate 0th dimension with time field
+        # data[:,0] = cubetime[:,:-1]
 
-    for j in range(0,len(cubetime)-1):
-        if j < len(cubetime[:-1]):
-            itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-        else:
-            ### end point (23h)
-            itime = np.where(tim >= cubetime[-1])
-        print 'For ', str(j), 'h, itime = ', itime
-        dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
-        for i in range(0, len(itime[0])):
-            if np.size(itime) > 1:
-                print 'Starting with i = ', str(itime[0][i])
-                temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+        for j in range(0,len(cubetime)-1):
+            if j < len(cubetime[:-1]):
+                itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
             else:
-                print 'Starting with i = ', str(itime[i])
-                temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-            dat[:,i] = temp.data
-            if np.size(itime) > 1:
-                dat[dat==0] = np.nan              # set zeros to nans
-                data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                print 'averaging (excluding zeros)...'
+                ### end point (23h)
+                itime = np.where(tim >= cubetime[-1])
+            print 'For ', str(j), 'h, itime = ', itime
+            dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            for i in range(0, len(itime[0])):
+                if np.size(itime) > 1:
+                    print 'Starting with i = ', str(itime[0][i])
+                    temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                else:
+                    print 'Starting with i = ', str(itime[i])
+                    temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                dat[:,i] = temp.data
+                if np.size(itime) > 1:
+                    dat[dat==0] = np.nan              # set zeros to nans
+                    data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    print 'averaging (excluding zeros)...'
+                else:
+                    data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    print 'no averaging...'
+        print data
+        # print 'data.shape = ', data.shape
+
+        #################################################################
+        ## FIGURES TO TEST OUTPUT
+        #################################################################
+        ### timeseries of lowest model level
+        # plt.figure(figsize=(7,5))
+        # plt.plot(cubetime[:-1],data[0:10,:])
+        # plt.show()
+
+        ### vertical profile of 1st timestep
+        # plt.figure(figsize=(7,5))
+        # plt.plot(data[:,0],cube.coord('model_level_number').points)
+        # plt.show()
+
+        ### pcolormesh of timeseries
+        # plt.figure(figsize=(7,5))
+        # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+        # plt.colorbar()
+        # plt.show()
+
+        #################################################################
+        ## CREATE CUBE
+        #################################################################
+        ### ECMWF FIELD NAMES
+        # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+        #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+        #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+
+        if cube.standard_name=='air_temperature': varname = 'temperature'
+        if cube.standard_name=='specific_humidity': varname = 'q'
+        if cube.standard_name=='relative_humidity': varname = 'rh'
+        if cube.standard_name=='upward_wind': varname = 'wwind'
+        if cube.standard_name=='eastward_wind': varname = 'uwind'
+        if cube.standard_name=='northward_wind': varname = 'vwind'
+        if cube.standard_name=='air_pressure': varname = 'pressure'
+        print 'standard_name = ', cube.standard_name
+        print 'varname = ', varname
+
+        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+        model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+        ncube2 = Cube(np.transpose(data),
+                dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                standard_name = cube.standard_name,
+                units = cube.units,
+                var_name = varname,
+                )
+        ncube.attributes = cube.attributes
+
+    else:
+        #################################################################
+        ## POPULATE NP ARRAY WITH DATA
+        #################################################################
+        #### create empty arrays to be filled
+        data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
+
+        ### populate 0th dimension with time field
+        # data[:,0] = cubetime[:,:-1]
+
+        for j in range(0,len(cubetime)-1):
+            if j < len(cubetime[:-1]):
+                itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
             else:
-                data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                print 'no averaging...'
-    print data
-    # print 'data.shape = ', data.shape
+                ### end point (23h)
+                itime = np.where(tim >= cubetime[-1])
+            print 'For ', str(j), 'h, itime = ', itime
+            dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            for i in range(0, len(itime[0])):
+                if np.size(itime) > 1:
+                    print 'Starting with i = ', str(itime[0][i])
+                    temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                else:
+                    print 'Starting with i = ', str(itime[i])
+                    temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                dat[:,i] = temp.data
+                if np.size(itime) > 1:
+                    dat[dat==0] = np.nan              # set zeros to nans
+                    data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    print 'averaging (excluding zeros)...'
+                else:
+                    data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    print 'no averaging...'
+        print data
+        # print 'data.shape = ', data.shape
 
-    #################################################################
-    ## FIGURES TO TEST OUTPUT
-    #################################################################
-    ### timeseries of lowest model level
-    # plt.figure(figsize=(7,5))
-    # plt.plot(cubetime[:-1],data[0:10,:])
-    # plt.show()
+        #################################################################
+        ## FIGURES TO TEST OUTPUT
+        #################################################################
+        ### timeseries of lowest model level
+        # plt.figure(figsize=(7,5))
+        # plt.plot(cubetime[:-1],data[0:10,:])
+        # plt.show()
 
-    ### vertical profile of 1st timestep
-    # plt.figure(figsize=(7,5))
-    # plt.plot(data[:,0],cube.coord('model_level_number').points)
-    # plt.show()
+        ### vertical profile of 1st timestep
+        # plt.figure(figsize=(7,5))
+        # plt.plot(data[:,0],cube.coord('model_level_number').points)
+        # plt.show()
 
-    ### pcolormesh of timeseries
-    # plt.figure(figsize=(7,5))
-    # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
-    # plt.colorbar()
-    # plt.show()
+        ### pcolormesh of timeseries
+        # plt.figure(figsize=(7,5))
+        # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+        # plt.colorbar()
+        # plt.show()
 
-    #################################################################
-    ## CREATE CUBE
-    #################################################################
-    ### ECMWF FIELD NAMES
-    # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
-    #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
-    #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+        #################################################################
+        ## CREATE CUBE
+        #################################################################
+        ### ECMWF FIELD NAMES
+        # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+        #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+        #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
-    if cube.standard_name=='air_temperature': varname = 'temperature'
-    if cube.standard_name=='specific_humidity': varname = 'q'
-    if cube.standard_name=='relative_humidity': varname = 'rh'
-    if cube.standard_name=='upward_wind': varname = 'wwind'
-    if cube.standard_name=='eastward_wind': varname = 'uwind'
-    if cube.standard_name=='northward_wind': varname = 'vwind'
-    if cube.standard_name=='air_pressure': varname = 'pressure'
-    print 'standard_name = ', cube.standard_name
-    print 'varname = ', varname
+        if cube.standard_name=='air_temperature': varname = 'temperature'
+        if cube.standard_name=='specific_humidity': varname = 'q'
+        if cube.standard_name=='relative_humidity': varname = 'rh'
+        if cube.standard_name=='upward_wind': varname = 'wwind'
+        if cube.standard_name=='eastward_wind': varname = 'uwind'
+        if cube.standard_name=='northward_wind': varname = 'vwind'
+        if cube.standard_name=='air_pressure': varname = 'pressure'
+        print 'standard_name = ', cube.standard_name
+        print 'varname = ', varname
 
-    ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-    model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-    ncube2 = Cube(np.transpose(data),
-            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-            standard_name = cube.standard_name,
-            units = cube.units,
-            var_name = varname,
-            )
-    ncube.attributes = cube.attributes
+        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+        model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+        ncube2 = Cube(np.transpose(data),
+                dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                standard_name = cube.standard_name,
+                units = cube.units,
+                var_name = varname,
+                )
+        ncube.attributes = cube.attributes
 
     #################################################################
     ## CREATE NETCDF
@@ -3865,7 +3949,7 @@ def main():
     var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
 
-    global_con = ['specific_humidity','air_temperature']
+    # global_con = ['specific_humidity','air_temperature']
 
     #### LOAD CUBE
     if 'var_con' in locals():
