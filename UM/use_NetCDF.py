@@ -3587,7 +3587,7 @@ def pullTrack(cube, grid_filename):
     # plt.show()
 
     plt.figure(figsize=(7,5))
-    plt.plot(data[0,:],cube.coord('model_level_number').points)
+    plt.plot(data[:,0],cube.coord('model_level_number').points)
     plt.show()
     # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
     #
