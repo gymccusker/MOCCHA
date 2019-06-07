@@ -3597,7 +3597,7 @@ def pullTrack(cube, grid_filename, con):
     print 'Cube times relative to forecast start:', cubetime[:-1]
     print ''
 
-    if np_size(con)>1:
+    if np.size(con)>1:
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
