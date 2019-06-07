@@ -3548,27 +3548,27 @@ def pullTrack(cube, grid_filename):
     print ''
 
     #### create empty arrays to be filled
-    data = np.zeros([len(cubetime)-1,2])
+    data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
 
     ### populate 0th dimension with time field
-    data[:,0] = cubetime[:,:-1]
+    # data[:,0] = cubetime[:,:-1]
 
     for j in range(0,len(cubetime)-1):
         if j < len(cubetime[:-1]):
             itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
         else:
-            ### end point
+            ### end point (23h)
             itime = np.where(tim >= cubetime[-1])
         print 'For ', str(j), ', itime = ', itime
         for i in range(0, 2):
             temp = cube[itime[0],:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
             if np.size(itime)>1:
-                data[j,1] = np.nanmean(temp.data,0)     # mean over time indices
+                data[:,i] = np.nanmean(temp.data,0)     # mean over time indices
                 print 'averaging data over ', str(j),'th interval...'
             else:
-                data[j,1] = temp.data                   # if only one index per hour
+                data[:,i] = temp.data                   # if only one index per hour
                 print 'no averaging data over ', str(j),'...'
-            print data
+        print data
             # grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
             # grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
@@ -3581,10 +3581,10 @@ def pullTrack(cube, grid_filename):
     # cube = Cube(np.zeros((4, 8), np.float32),dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
 
     #### create empty arrays to be filled
-    data = np.zeros([len(ilon)-1,3])
-    time = np.zeros([len(ilon)-1,1])
-    grid_lat = np.zeros([len(ilon)-1,1])
-    grid_lon = np.zeros([len(ilon)-1,1])
+    # data = np.zeros([len(ilon)-1,3])
+    # time = np.zeros([len(ilon)-1,1])
+    # grid_lat = np.zeros([len(ilon)-1,1])
+    # grid_lon = np.zeros([len(ilon)-1,1])
 
     # cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
 
@@ -3594,10 +3594,10 @@ def pullTrack(cube, grid_filename):
     # longitude = DimCoord(np.linspace(45, 360, 8), standard_name='longitude', units='degrees')
     # data = Cube(np.zeros([len(ilon),3], np.float32), dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
 
-    time = tim
-    for i in range(0, len(ilon)-1):
-        grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
-        grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
+    # time = tim
+    # for i in range(0, len(ilon)-1):
+    #     grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
+    #     grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
 
     # #################################################################
