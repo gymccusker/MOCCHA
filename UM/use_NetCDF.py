@@ -3309,7 +3309,25 @@ def findLatLon(ship_data, cube, hour):
 
     return lat, lon
 
-def plot_cartmap(ship_data, cube, hour): #, lon, lat):
+def readGriddedTrack(grid_filename):
+
+    import pandas as pd
+
+    # print '******'
+    print ''
+    print 'Reading ' + grid_filename + ' file with pandas'
+    print ''
+
+    data = pd.read_csv(grid_filename, sep = " ")
+    values = data.values
+
+    tim = values[:,1]
+    ilat = values[:,2]
+    ilon = values[:,3]
+
+    return tim, ilat, ilon
+
+def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -3369,7 +3387,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 40, 89.5, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
@@ -3417,6 +3435,26 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # drift_index = iceDrift(ship_data)
     # inIce_index = inIce(ship_data)
     trackShip_index = trackShip(ship_data)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+
+    #################################################################
+    ## plot gridded ship track
+    #################################################################
+    ###
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
 
     ### Plot tracks as line plot
     plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
@@ -3573,6 +3611,10 @@ def main():
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
+    grid_dirname = 'AUX_DATA/'
+    date = '20180812'
+    grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
+
     print '******'
     print ''
     print 'Identifying .nc file: '
@@ -3698,7 +3740,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour)#, lon, lat)
+    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
 
