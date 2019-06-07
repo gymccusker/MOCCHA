@@ -3369,7 +3369,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 40, 89.0, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([20, 40, 89.3, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
@@ -3386,15 +3386,15 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    # if np.size(cube.shape) == 4:
-    #     iplt.pcolormesh(cube[hour,0,:,:])
-    # elif np.size(cube.shape) == 3:
-    #     iplt.pcolormesh(cube[hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube.shape) == 2:
-    #     iplt.pcolormesh(cube[:,:])
-    # plt.title(cube.standard_name + ', ' + str(cube.units))
-    # plt.colorbar()
+    if np.size(cube.shape) == 4:
+        iplt.pcolormesh(cube[hour,0,:,:])
+    elif np.size(cube.shape) == 3:
+        iplt.pcolormesh(cube[hour,:,:])
+        # iplt.pcolormesh(cube[hour,471:495,240:264])
+    elif np.size(cube.shape) == 2:
+        iplt.pcolormesh(cube[:,:])
+    plt.title(cube.standard_name + ', ' + str(cube.units))
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -3404,7 +3404,7 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[hour,450:495,220:305])          ### misc
-    qplt.outline(cube[hour,:,:])
+    # qplt.outline(cube[hour,:,:])
 
     # gridship = gridShipTrack(cube, xoffset, yoffset)
 
