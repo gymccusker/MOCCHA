@@ -3547,7 +3547,7 @@ def pullTrack(cube, grid_filename):
     print ''
 
     for j in range(0,len(cubetime[:-1])-1):
-        if j <= len(cubetime[:-1]):
+        if j < len(cubetime[:-1]):
             itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
         else:
             ### end point
@@ -3581,18 +3581,18 @@ def pullTrack(cube, grid_filename):
         grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
 
-    #################################################################
-    ## create figure and axes instances
     # #################################################################
-    plt.figure(figsize=(10,9))
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
-
-    ## set size
-    ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
-    for i in range(0, len(ilon)-1):
-        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
-    iplt.scatter(grid_lon, grid_lat,color='green')
-    plt.show()
+    # ## create figure and axes instances
+    # # #################################################################
+    # plt.figure(figsize=(10,9))
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    #
+    # ## set size
+    # ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    # for i in range(0, len(ilon)-1):
+    #     iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    # iplt.scatter(grid_lon, grid_lat,color='green')
+    # plt.show()
 
     return data
 
