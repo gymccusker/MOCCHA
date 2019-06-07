@@ -3562,7 +3562,8 @@ def pullTrack(cube, grid_filename):
         print 'For ', str(j), ', itime = ', itime
         dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
         for i in range(0, len(itime)):
-            if len(itime) > 1:
+            print 'Starting with i=', str(i)
+            if len(itime[0]) > 1:
                 temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
             else:
                 temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
