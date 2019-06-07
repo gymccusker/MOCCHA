@@ -3685,13 +3685,31 @@ def pullTrack(cube, grid_filename):
                 print 'no averaging...'
     print data
 
-    ntime = DimCoord(cubetime[:-1], standard_name = 'time', units = 'h')
-    model_height = DimCoord(cube.aux_coords[2].points, long_name = 'level_height', units='m')
+
+    if cube.standard_name=='air_temperature': varname = 'temperature'
+    if cube.standard_name=='specific_humidity': varname = 'q'
+    if cube.standard_name=='relative_humidity': varname = 'rh'
+    if cube.standard_name=='upward_wind': varname = 'wwind'
+    if cube.standard_name=='eastward_wind': varname = 'uwind'
+    if cube.standard_name=='northward_wind': varname = 'vwind'
+    if cube.standard_name=='air_pressure': varname = 'pressure'
+    print 'standard_name = ', cube.standard_name
+    print 'varname = ', varname
+
+    ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+    model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
     ncube = Cube(np.transpose(data),
             dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
             standard_name = cube.standard_name,
+            units = cube.units,
+            var_name = varname,
             )
     ncube.attributes = cube.attributes
+
+    ### ECMWF FIELD NAMES
+    field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+                'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+                'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
     #################################################################
     ## CREATE NETCDF
@@ -3704,7 +3722,6 @@ def pullTrack(cube, grid_filename):
     ### save cube to netcdf file
     iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
-
 
     return data
 
