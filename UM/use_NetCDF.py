@@ -3236,7 +3236,7 @@ def trackShip(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==0))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -3250,6 +3250,24 @@ def trackShip(data):
     print ''
 
     return trackShip_index
+
+def readGriddedTrack(grid_filename):
+
+    import pandas as pd
+
+    print '******'
+    print ''
+    print 'Reading ' + grid_filename + ' file with pandas'
+    print ''
+
+    data = pd.read_csv(grid_filename, sep = " ")
+    values = data.values
+
+    tim = values[:,1]
+    ilon = values[:,2]
+    ilat = values[:,3]
+
+    return tim, ilat, ilon
 
 def findLatLon(ship_data, cube, hour):
 
@@ -3308,24 +3326,6 @@ def findLatLon(ship_data, cube, hour):
 #          )
 
     return lat, lon
-
-def readGriddedTrack(grid_filename):
-
-    import pandas as pd
-
-    print '******'
-    print ''
-    print 'Reading ' + grid_filename + ' file with pandas'
-    print ''
-
-    data = pd.read_csv(grid_filename, sep = " ")
-    values = data.values
-
-    tim = values[:,1]
-    ilon = values[:,2]
-    ilat = values[:,3]
-
-    return tim, ilat, ilon
 
 def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
@@ -3503,6 +3503,74 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
+
+def pullTrack(cube, grid_filename):
+
+    from iris.coords import DimCoord
+    from iris.cube import Cube
+
+    print '******'
+    print ''
+    print 'Pulling gridded track from cube:'
+    print ''
+
+    ###---------------------------------
+    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
+    ###---------------------------------
+    if cube[0,0].shape >= 25-1:    # ll = 240, 471
+        xoffset = -239
+        yoffset = -470
+    elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -210
+        yoffset = -385
+    elif cube[0,0].shape >= 500-1:
+        xoffset = 0
+        yoffset = 0
+
+    print 'Because cube shape = ', str(cube[0,0].shape)
+    print 'xoffset = ', xoffset
+    print 'yoffset = ', yoffset
+
+    #################################################################
+    ## plot gridded ship track
+    #################################################################
+
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    #################################################################
+    ## fix time index
+    #################################################################
+    # cube.aux_coords[-1]       ### forecast period
+
+    #################################################################
+    ## CREATE NEW CUBE
+    #################################################################
+    ###
+
+    # cube = Cube(np.zeros((4, 8), np.float32),dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
+
+    #### create empty arrays to be filled
+    data = np.zeros([len(ilon)-1,3])
+    time = np.zeros([len(ilon)-1,1])
+    grid_lat = np.zeros([len(ilon)-1,1])
+    grid_lon = np.zeros([len(ilon)-1,1])
+
+    cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
+
+    for i in range(0, 2):
+        latitude = DimCoord(cube.dim_coords[1][int(ilat[i] + yoffset)], standard_name='latitude', units='degrees')
+
+    longitude = DimCoord(np.linspace(45, 360, 8), standard_name='longitude', units='degrees')
+    data = Cube(np.zeros([len(ilon),3], np.float32), dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
+
+    time = tim
+    for i in range(0, len(ilon)-1):
+        grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
+        grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
+        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    iplt.scatter(grid_lon, grid_lat,color='green')
+
+    return data
 
 def unrotateGrid(cube):
     ##
@@ -3730,9 +3798,14 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     hour = 0
-    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
+    # -------------------------------------------------------------
+    # Pull gridded ship track from 4D cube
+    # -------------------------------------------------------------
+
+    ncube = pullTrack(cube, grid_filename)
 
     END_TIME = time.time()
     print '******'
