@@ -3235,8 +3235,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==1,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -3321,15 +3321,15 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-    #     xoffset = -239
-    #     yoffset = -470
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #     xoffset = -210
-    #     yoffset = -385
-    # elif cube[0,0].shape >= 500-1:
-    xoffset = 0
-    yoffset = 0
+    if cube[0,0].shape >= 25-1:    # ll = 240, 471
+        xoffset = -239
+        yoffset = -470
+    elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -210
+        yoffset = -385
+    elif cube[0,0].shape >= 500-1:
+    # xoffset = 0
+    # yoffset = 0
 
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
@@ -3369,8 +3369,8 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([60, 80, 89.4, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([60, 80, 89.4, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
@@ -3403,10 +3403,10 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    qplt.outline(cube[hour,450:495,220:305])          ### misc
-    # qplt.outline(cube[hour,:,:])
+    # qplt.outline(cube[hour,450:495,220:305])          ### misc
+    qplt.outline(cube[hour,:,:])
 
-    gridship = gridShipTrack(cube, xoffset, yoffset)
+    # gridship = gridShipTrack(cube, xoffset, yoffset)
 
             #### MID POINT: (433, 258)
 
@@ -3535,7 +3535,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -3557,7 +3557,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
+    out_dir = '3_12AUG_SWATH_2FCSTS/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
