@@ -3705,18 +3705,6 @@ def pullTrack(cube, grid_filename):
     iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
 
-    #### create empty arrays to be filled
-    # data = np.zeros([len(ilon)-1,3])
-    # time = np.zeros([len(ilon)-1,1])
-    # grid_lat = np.zeros([len(ilon)-1,1])
-    # grid_lon = np.zeros([len(ilon)-1,1])
-
-    # cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
-
-    # time = tim
-    # for i in range(0, len(ilon)-1):
-    #     grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
-    #     grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
     return data
 
