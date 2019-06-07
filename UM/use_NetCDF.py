@@ -3570,8 +3570,9 @@ def pullTrack(cube, grid_filename):
                 temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
             dat[:,i] = temp.data
             if np.size(itime) > 1:
+                dat[dat==0] = np.nan              # set zeros to nans
                 data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                print 'averaging...'
+                print 'averaging (excluding zeros)...'
             else:
                 data[:,j] = np.squeeze(dat)                   # if only one index per hour
                 print 'no averaging...'
