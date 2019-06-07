@@ -3557,11 +3557,11 @@ def pullTrack(cube, grid_filename):
 
     # cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
 
-    for i in range(0, 2):
-        latitude = DimCoord(cube.dim_coords[1][int(ilat[i] + yoffset)], standard_name='latitude', units='degrees')
-
-    longitude = DimCoord(np.linspace(45, 360, 8), standard_name='longitude', units='degrees')
-    data = Cube(np.zeros([len(ilon),3], np.float32), dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
+    # for i in range(0, 2):
+    #     latitude = DimCoord(cube.dim_coords[1][int(ilat[i] + yoffset)], standard_name='latitude', units='degrees')
+    #
+    # longitude = DimCoord(np.linspace(45, 360, 8), standard_name='longitude', units='degrees')
+    # data = Cube(np.zeros([len(ilon),3], np.float32), dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
 
     time = tim
     for i in range(0, len(ilon)-1):
@@ -3571,15 +3571,15 @@ def pullTrack(cube, grid_filename):
 
     #################################################################
     ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(10,9))
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    # #################################################################
+    # plt.figure(figsize=(10,9))
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
-    for i in range(0, len(ilon)-1):
-        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
-    iplt.scatter(grid_lon, grid_lat,color='green')
+    # ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    # for i in range(0, len(ilon)-1):
+    #     iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    # iplt.scatter(grid_lon, grid_lat,color='green')
 
     return data
 
