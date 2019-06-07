@@ -3437,26 +3437,9 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     trackShip_index = trackShip(ship_data)
 
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-
-    #################################################################
-    ## plot gridded ship track
-    #################################################################
-    ###
-    tim, ilat, ilon = readGriddedTrack(grid_filename)
-
-    ### Plot tracks as line plot
+    iplt.scatter(cube.dim_coords[2][ilon + xoffset], cube.dim_coords[1][ilat + yoffset],
+            color='black',
+            )
     # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
     #          color = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(), label = 'Ship track',
@@ -3469,6 +3452,26 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(),
     #          )
+
+    #################################################################
+    ## plot gridded ship track
+    #################################################################
+    ###
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     ### Plot tracks as line plot
     # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
