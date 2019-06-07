@@ -3559,7 +3559,7 @@ def pullTrack(cube, grid_filename):
         else:
             ### end point (23h)
             itime = np.where(tim >= cubetime[-1])
-        print 'For ', str(j), ', itime = ', itime
+        print 'For ', str(j), 'h, itime = ', itime
         dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
         for i in range(0, len(itime[0])):
             if np.size(itime) > 1:
@@ -3582,10 +3582,13 @@ def pullTrack(cube, grid_filename):
     #################################################################
     ## create figure and axes instances
     # #################################################################
-    plt.figure(figsize=(10,9))
-    plt.plot(cubetime[:-1],data[0,:])
-    plt.show()
+    # plt.figure(figsize=(7,5))
+    # plt.plot(cubetime[:-1],data[0:10,:])
+    # plt.show()
 
+    plt.figure(figsize=(7,5))
+    plt.plot(data[0,:],cube.coord('model_level_number').points)
+    plt.show()
     # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
     #
     # ## set size
