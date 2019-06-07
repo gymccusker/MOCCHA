@@ -3541,10 +3541,15 @@ def pullTrack(cube, grid_filename):
     #################################################################
     ## fix time index
     #################################################################
+
     cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
     print ''
     print 'Cube times relative to forecast start:', cubetime[:-1]
     print ''
+
+    #### create empty arrays to be filled
+    data = np.zeros([len(ilon)-1,2])
+    # time = np.zeros([len(ilon)-1,2])
 
     for j in range(0,len(cubetime)-1):
         if j < len(cubetime[:-1]):
@@ -3553,6 +3558,12 @@ def pullTrack(cube, grid_filename):
             ### end point
             itime = np.where(tim >= cubetime[-1])
         print 'For ', str(j), ', itime = ', itime
+        for i in range(0, 2):
+            data[j,:] = cube[itime,:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
+            print data
+            grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
+            grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
+
 
     #################################################################
     ## CREATE NEW CUBE
