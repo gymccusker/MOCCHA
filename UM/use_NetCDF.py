@@ -3572,7 +3572,7 @@ def pullTrack(cube, grid_filename):
                 data[:,i] = np.nanmean(dat,1)     # mean over time indices
                 print 'averaging data over ', str(j),'th interval...'
             else:
-                data[:,i] = dat                   # if only one index per hour
+                data[:,i] = np.squeeze(dat)                   # if only one index per hour
                 print 'no averaging data over ', str(j),'...'
         print data
             # grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
