@@ -3561,8 +3561,8 @@ def pullTrack(cube, grid_filename):
         for i in range(0, 2):
             data[j,:] = cube[itime,:,int(ilat[i] + yoffset),int(ilon[i] + xoffset)]
             print data
-            grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
-            grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
+            # grid_lat[i] = cube.dim_coords[1][int(ilat[i] + yoffset)].points
+            # grid_lon[i] = cube.dim_coords[2][int(ilon[i] + xoffset)].points
 
 
     #################################################################
