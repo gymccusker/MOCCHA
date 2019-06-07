@@ -3555,7 +3555,7 @@ def pullTrack(cube, grid_filename):
     grid_lat = np.zeros([len(ilon)-1,1])
     grid_lon = np.zeros([len(ilon)-1,1])
 
-    cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
+    # cube.extract(iris.Constraint(grid_latitude = int(ilat[i] + yoffset)))
 
     for i in range(0, 2):
         latitude = DimCoord(cube.dim_coords[1][int(ilat[i] + yoffset)], standard_name='latitude', units='degrees')
