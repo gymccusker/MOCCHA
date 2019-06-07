@@ -3592,6 +3592,7 @@ def pullTrack(cube, grid_filename):
 
     plt.figure(figsize=(7,5))
     plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+    plt.colorbar()
     plt.show()
 
     # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
@@ -3608,8 +3609,6 @@ def pullTrack(cube, grid_filename):
     ## CREATE NEW CUBE
     #################################################################
     ###
-
-    # cube = Cube(np.zeros((4, 8), np.float32),dim_coords_and_dims=[(latitude, 0),(longitude, 1)])
 
     #### create empty arrays to be filled
     # data = np.zeros([len(ilon)-1,3])
