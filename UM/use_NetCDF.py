@@ -3561,14 +3561,14 @@ def pullTrack(cube, grid_filename):
             itime = np.where(tim >= cubetime[-1])
         print 'For ', str(j), ', itime = ', itime
         dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
-        for i in range(0, len(itime)):
-            print 'Starting with i=', str(i)
+        for i in range(0, len(itime[0])):
+            print 'Starting with i = ', str(i)
             if len(itime[0]) > 1:
                 temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
             else:
                 temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
             dat[:,i] = temp.data
-            if len(itime) > 1:
+            if len(itime[0]) > 1:
                 data[:,i] = np.nanmean(dat,1)     # mean over time indices
                 print 'averaging data over ', str(j),'th interval...'
             else:
