@@ -3761,7 +3761,7 @@ def pullTrack(cube, grid_filename, con):
 
         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
         model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-        ncube2 = Cube(np.transpose(data),
+        ncube = Cube(np.transpose(data),
                 dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
                 standard_name = cube.standard_name,
                 units = cube.units,
@@ -3777,6 +3777,9 @@ def pullTrack(cube, grid_filename, con):
     outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
     print 'Outfile = ', outfile
 
+    print ''
+    print 'Writing ncube to NetCDF file:'
+    print ''
     ### save cube to netcdf file
     iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
