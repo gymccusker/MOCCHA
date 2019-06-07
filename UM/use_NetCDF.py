@@ -3322,8 +3322,8 @@ def readGriddedTrack(grid_filename):
     values = data.values
 
     tim = values[:,1]
-    ilat = values[:,2]
-    ilon = values[:,3]
+    ilon = values[:,2]
+    ilat = values[:,3]
 
     return tim, ilat, ilon
 
@@ -3437,7 +3437,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     trackShip_index = trackShip(ship_data)
 
     ### Plot tracks as line plot
-    iplt.scatter(cube.dim_coords[2][ilon + xoffset], cube.dim_coords[1][ilat + yoffset],
+    for i in range(0, len(ilon)-1):
+    iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],
             color='black',
             )
     # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
