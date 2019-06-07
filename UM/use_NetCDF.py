@@ -3328,8 +3328,8 @@ def plot_cartmap(ship_data, cube, hour): #, lon, lat):
         xoffset = -210
         yoffset = -385
     elif cube[0,0].shape >= 500-1:
-    xoffset = 0
-    yoffset = 0
+        xoffset = 0
+        yoffset = 0
 
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
