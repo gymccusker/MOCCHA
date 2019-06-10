@@ -3935,9 +3935,9 @@ def pullTrack(cube, grid_filename, con):
 
     ### save cube to netcdf file
     print ''
-    print '(NOT) Writing fcube to NetCDF file:'
+    print 'Writing fcube to NetCDF file:'
     print ''
-    # iris.save(fcube, outfile)
+    iris.save(fcube, outfile)
     # out = writeNetCDF(cube, data, outfile)
     print fcube
 
