@@ -4138,10 +4138,12 @@ def main():
     #### LOAD CUBE
     if 'var_con' in locals():
         print 'Loading single diagnostic:'
+        print var_con
         cube1 = iris.load_cube(filename1, var_con, callback)
         con_flag = 0            # constraint flag
     elif 'global_con' in locals():
         print 'Loading multiple diagnostics:'
+        print global_con
         # cube = iris.load_cubes(filename1, global_con)
         cube = iris.load(filename1, global_con, callback)
         con_flag = 1            # constraint flag
