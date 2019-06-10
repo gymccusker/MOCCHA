@@ -3554,6 +3554,38 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
+def excludeZeros(cube, data):
+
+    print 'Checking stash list:'
+    print ''
+
+    ### list of stash items where we want to exclude zeros
+    STASH = ['m01s03i464','m01s03i220']
+
+    ### decompose stash list
+    # for i in range(0,len(con)):
+    #     m = str(STASH[i])[1:3]
+    #     s = str(STASH[i])[4:6]
+    #     i = str(STASH[i])[7:10]
+
+    str_m = "%02d" % pdxxx[0].attributes['STASH'][0]
+    str_s = "%02d" % pdxxx[0].attributes['STASH'][1]
+    str_i = "%03d" % pdxxx[0].attributes['STASH'][2]
+    stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
+
+    for i in range(0, len(STASH)):
+        if stash == STASH[i]:
+            data[data==0] = np.nan              # set zeros to nans
+            flag = 1                           # flagging if in list
+        else:
+            flag = 0                           # flagging if not in list
+
+    if flag == 1: print 'In list, so excluding zeros'
+    if flag == 0: print 'Not in list, so leaving as default'
+    print ''
+
+    return data
+
 def pullTrack(cube, grid_filename, con):
 
     from iris.coords import DimCoord
@@ -3656,10 +3688,10 @@ def pullTrack(cube, grid_filename, con):
                     if flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
-                        dat[dat==0] = np.nan              # set zeros to nans
+                        dat = excludeZeros(cube[k], dat)
                         if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
-                        print 'averaging (excluding zeros)...'
+                        print 'averaging...'
                     else:
                         if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                         if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
@@ -3694,14 +3726,14 @@ def pullTrack(cube, grid_filename, con):
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
-            if cube.standard_name=='air_temperature': varname = 'temperature'
-            if cube.standard_name=='specific_humidity': varname = 'q'
-            if cube.standard_name=='relative_humidity': varname = 'rh'
-            if cube.standard_name=='upward_wind': varname = 'wwind'
-            if cube.standard_name=='eastward_wind': varname = 'uwind'
-            if cube.standard_name=='northward_wind': varname = 'vwind'
-            if cube.standard_name=='air_pressure': varname = 'pressure'
-            print 'standard_name = ', cube.standard_name
+            if cube[k].standard_name=='air_temperature': varname = 'temperature'
+            if cube[k].standard_name=='specific_humidity': varname = 'q'
+            if cube[k].standard_name=='relative_humidity': varname = 'rh'
+            if cube[k].standard_name=='upward_wind': varname = 'wwind'
+            if cube[k].standard_name=='eastward_wind': varname = 'uwind'
+            if cube[k].standard_name=='northward_wind': varname = 'vwind'
+            if cube[k].standard_name=='air_pressure': varname = 'pressure'
+            print 'standard_name = ', cube[k].standard_name
             print 'varname = ', varname
 
             ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
@@ -3779,10 +3811,10 @@ def pullTrack(cube, grid_filename, con):
                 if flag == 1: dat[:,i] = temp.data
                 if flag == 0: dat[i] = temp.data
                 if np.size(itime) > 1:
-                    dat[dat==0] = np.nan              # set zeros to nans
+                    dat = excludeZeros(cube, dat)              # set zeros to nans
                     if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                     if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
-                    print 'averaging (excluding zeros)...'
+                    print 'averaging...'
                 else:
                     if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                     if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
@@ -3851,7 +3883,7 @@ def pullTrack(cube, grid_filename, con):
     print ''
     print '(NOT) Writing ncube to NetCDF file:'
     print ''
-    # iris.save(ncube, outfile)
+    # iris.save(fcube, outfile)
     # out = writeNetCDF(cube, data, outfile)
     print fcube
 
