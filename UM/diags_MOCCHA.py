@@ -51,13 +51,13 @@ Stash_list = { # paXXX
               'm01s00i010': 'specific_humidity',                                # th 1-70 - pc
               'm01s00i150': 'upward_air_velocity',                              # th 1-70 - pc
               'm01s00i002': 'eastward_wind',                                    # th 1-70 - pc
-              'm01s00i003': 'northward_wind',                                    # th 1-70 - pc
+              'm01s00i003': 'northward_wind',                                   # th 1-70 - pc
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',
               'm01s03i464': 'obukhov_length',
-              'm01s03i219': 'atmosphere_downward_eastward_stress',              # th 1-70
-              'm01s03i220': 'atmosphere_downward_northward_stress',             # th 1-70
+              'm01s03i219': 'atmosphere_downward_eastward_stress',              # ro 1-70
+              'm01s03i220': 'atmosphere_downward_northward_stress',             # ro 1-70
               'm01s03i473': 'turbulent_kinetic_energy',                         # ro 1-70
               'm01s00i407': 'air_pressure',                                     # ro 1-70
               'm01s03i460': 'surface_downward_eastward_stress',
