@@ -3952,7 +3952,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    filename1 = root_dir + out_dir + 'umnsaa_pc011_r0.nc'
+    filename1 = root_dir + out_dir + 'umnsaa_pd011_r0.nc'
     print filename1
     print ''
 
@@ -3963,10 +3963,10 @@ def main():
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
     print ' '
-    var_con = 'specific_humidity'
+    # var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
 
-    global_con = ['specific_humidity','air_temperature']
+    global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     #### LOAD CUBE
     if 'var_con' in locals():
