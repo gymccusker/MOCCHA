@@ -3554,7 +3554,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
-def excludeZeros(cube, data):
+def excludeZeros(cube):
 
     print ''
     print 'Checking stash list:'
@@ -3580,7 +3580,7 @@ def excludeZeros(cube, data):
 
     for i in range(0, len(STASH)):
         if stash == STASH[i]:
-            data[data==0] = np.nan              # set zeros to nans
+            # data[data==0] = np.nan              # set zeros to nans
             flag = 1                           # flagging if in list
         else:
             flag = 0                           # flagging if not in list
@@ -3589,7 +3589,7 @@ def excludeZeros(cube, data):
     if flag == 0: print 'Not in list, so not excluding zeros'
     # print ''
 
-    return data, stash
+    return flag, stash
 
 def pullTrack(cube, grid_filename, con):
 
@@ -3648,6 +3648,12 @@ def pullTrack(cube, grid_filename, con):
         ncube = Cube(np.zeros([np.size(con),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
 
         #################################################################
+        ## PROBE VARIABLE
+        #################################################################
+        ### do we want to average exluding zeros?
+        stash_flag, stash = excludeZeros(cube[k])
+
+        #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
         ### populate 0th dimension with time field
@@ -3696,7 +3702,7 @@ def pullTrack(cube, grid_filename, con):
                     if flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
-                        dat, stash = excludeZeros(cube[k], dat)
+                        if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                         if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                         print 'averaging...'
@@ -3757,8 +3763,10 @@ def pullTrack(cube, grid_filename, con):
             ncube.attributes = cube[k].attributes
         print ncube
         if k == 0:
+            print 'Assigning fcube'
             fcube = ncube
         else:
+            print 'Appending to fcube'
             fcube = np.append(fcube,ncube)
 
     else:
@@ -3775,6 +3783,12 @@ def pullTrack(cube, grid_filename, con):
         ## CREATE EMPTY CUBE
         #################################################################
         ncube = Cube(np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1]))
+
+        #################################################################
+        ## PROBE VARIABLE
+        #################################################################
+        ### do we want to average exluding zeros?
+        stash_flag, stash = excludeZeros(cube)
 
         #################################################################
         ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
@@ -3821,7 +3835,7 @@ def pullTrack(cube, grid_filename, con):
                 if flag == 1: dat[:,i] = temp.data
                 if flag == 0: dat[i] = temp.data
                 if np.size(itime) > 1:
-                    dat, stash = excludeZeros(cube, dat)              # set zeros to nans
+                    if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                     if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                     if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                     print 'averaging...'
