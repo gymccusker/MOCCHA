@@ -3777,6 +3777,8 @@ def pullTrack(cube, grid_filename, con):
                         long_name = cube[k].long_name,
                         units = cube[k].units,
                         var_name = varname,
+                        attributes = cube[k].attributes,
+                        aux_coords_and_dims = None,                         
                         )
             elif dim_flag == 0:         ### 3D VARIABLE
                 ncube = Cube(np.transpose(data),
@@ -3785,8 +3787,10 @@ def pullTrack(cube, grid_filename, con):
                         long_name = cube[k].long_name,
                         units = cube[k].units,
                         var_name = varname,
+                        attributes = cube[k].attributes,
+                        aux_coords_and_dims = None,
                         )
-            ncube.attributes = cube[k].attributes
+            # ncube.attributes = cube[k].attributes
 
             if k == 0:
                 print 'Assigning fcube'
