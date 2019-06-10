@@ -3600,14 +3600,14 @@ def assignVarname(cube, stash):
     GlobalVarList = varnames.returnWantedVarnames()
     varname = varnames.findfieldName(stash)
 
-    varname = stash
-    if cube[k].standard_name=='air_temperature': varname = 'temperature'
-    if cube[k].standard_name=='specific_humidity': varname = 'q'
-    ### if cube[k].standard_name=='relative_humidity': varname = 'rh'       ### DON'T HAVE RH
-    if cube[k].standard_name=='upward_wind': varname = 'wwind'
-    if cube[k].standard_name=='eastward_wind': varname = 'uwind'
-    if cube[k].standard_name=='northward_wind': varname = 'vwind'
-    if cube[k].standard_name=='air_pressure': varname = 'pressure'
+    # varname = stash
+    # if cube[k].standard_name=='air_temperature': varname = 'temperature'
+    # if cube[k].standard_name=='specific_humidity': varname = 'q'
+    # ### if cube[k].standard_name=='relative_humidity': varname = 'rh'       ### DON'T HAVE RH
+    # if cube[k].standard_name=='upward_wind': varname = 'wwind'
+    # if cube[k].standard_name=='eastward_wind': varname = 'uwind'
+    # if cube[k].standard_name=='northward_wind': varname = 'vwind'
+    # if cube[k].standard_name=='air_pressure': varname = 'pressure'
 
     return varname
 
