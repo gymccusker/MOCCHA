@@ -4146,7 +4146,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[0]
+    filename1 = root_dir + out_dir + names[2]
     print filename1
     print ''
 
