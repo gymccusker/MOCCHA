@@ -3714,6 +3714,10 @@ def pullTrack(cube, grid_filename, con):
                     )
             ncube[k].attributes = cube[k].attributes
         print ncube
+        if k == 0:
+            fcube = cube[k]
+        else:
+            fcube = np.append(fcube,cube[k])
 
     else:
         print ''
@@ -3832,6 +3836,8 @@ def pullTrack(cube, grid_filename, con):
                 var_name = varname,
                 )
         ncube.attributes = cube.attributes
+        ### for consistency with multi-diag option
+        fcube = ncube
 
     #################################################################
     ## CREATE NETCDF
@@ -3847,9 +3853,9 @@ def pullTrack(cube, grid_filename, con):
     print ''
     # iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
-    print ncube
+    print fcube
 
-    return ncube
+    return fcube
 
 def writeNetCDF(cube, data, outfile):
 
@@ -4196,9 +4202,9 @@ def main():
 
     #### LOAD CUBE
     if 'var_con' in locals():
-        ncube = pullTrack(cube, grid_filename, var_con)
+        fcube = pullTrack(cube, grid_filename, var_con)
     elif 'global_con' in locals():
-        ncube = pullTrack(cube, grid_filename, global_con)
+        fcube = pullTrack(cube, grid_filename, global_con)
 
 
     END_TIME = time.time()
