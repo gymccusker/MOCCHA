@@ -73,7 +73,7 @@ def returnWantedVarnames():
 
 def findfieldName(stash):
 
-    if stash in Stash_list.keys():
-        return Stash_list[stash]
+    if stash in Var_list.keys():
+        return Var_list[stash]
     else:
         return None
