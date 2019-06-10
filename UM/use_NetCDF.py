@@ -3665,7 +3665,7 @@ def pullTrack(cube, grid_filename, con):
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
-        for k in range(0,1):#np.size(cube)-1):            ### loop over number of variables
+        for k in range(0,2):#np.size(cube)-1):            ### loop over number of variables
             print ''
             print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
             print ''
