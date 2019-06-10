@@ -3759,7 +3759,7 @@ def pullTrack(cube, grid_filename, con):
         print 'standard_name = ', cube.standard_name
         print 'varname = ', varname
 
-        ntime = DimCoord(cubetime[:-1], var_name = 'time', standard_name = 'forecast_time', units = 'h')
+        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
         model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
         ncube = Cube(np.transpose(data),
                 dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
