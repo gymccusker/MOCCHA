@@ -3632,7 +3632,7 @@ def pullTrack(cube, grid_filename, con):
     ## fix time index
     #################################################################
 
-    if np.size(con)>1:
+    if np.size(cube)>1:
         print ''
         print 'More than one variable constraint. Proceeding...'
         print ''
@@ -3645,7 +3645,7 @@ def pullTrack(cube, grid_filename, con):
         #################################################################
         ## CREATE EMPTY CUBE
         #################################################################
-        ncube = Cube(np.zeros([np.size(con),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
+        ncube = Cube(np.zeros([np.size(cube),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -4143,7 +4143,6 @@ def main():
         con_flag = 0            # constraint flag
     elif 'global_con' in locals():
         print 'Loading multiple diagnostics:'
-        print stash
         # cube = iris.load_cubes(filename1, global_con)
         cube = iris.load(filename1, global_con, callback)
         con_flag = 1            # constraint flag
