@@ -3556,11 +3556,13 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
 def excludeZeros(cube, data):
 
-    print 'Checking stash list:'
     print ''
+    print 'Checking stash list:'
 
+    print 'Want to exclude zeros in the following fields:'
     ### list of stash items where we want to exclude zeros
     STASH = ['m01s03i464','m01s03i220']
+    print STASH
 
     ### decompose stash list
     # for i in range(0,len(con)):
@@ -3568,10 +3570,13 @@ def excludeZeros(cube, data):
     #     s = str(STASH[i])[4:6]
     #     i = str(STASH[i])[7:10]
 
+    print ''
+    print 'Diag is:'
     str_m = "%02d" % cube.attributes['STASH'][0]
     str_s = "%02d" % cube.attributes['STASH'][1]
     str_i = "%03d" % cube.attributes['STASH'][2]
     stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
+    print stash
 
     for i in range(0, len(STASH)):
         if stash == STASH[i]:
@@ -3584,7 +3589,7 @@ def excludeZeros(cube, data):
     if flag == 0: print 'Not in list, so leaving as default'
     print ''
 
-    return data
+    return data, stash
 
 def pullTrack(cube, grid_filename, con):
 
@@ -3688,7 +3693,7 @@ def pullTrack(cube, grid_filename, con):
                     if flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
-                        dat = excludeZeros(cube[k], dat)
+                        dat, stash = excludeZeros(cube[k], dat)
                         if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                         print 'averaging...'
@@ -3725,7 +3730,7 @@ def pullTrack(cube, grid_filename, con):
         # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
-
+            varname = stash
             if cube[k].standard_name=='air_temperature': varname = 'temperature'
             if cube[k].standard_name=='specific_humidity': varname = 'q'
             if cube[k].standard_name=='relative_humidity': varname = 'rh'
@@ -3811,7 +3816,7 @@ def pullTrack(cube, grid_filename, con):
                 if flag == 1: dat[:,i] = temp.data
                 if flag == 0: dat[i] = temp.data
                 if np.size(itime) > 1:
-                    dat = excludeZeros(cube, dat)              # set zeros to nans
+                    dat, stash = excludeZeros(cube, dat)              # set zeros to nans
                     if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                     if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                     print 'averaging...'
@@ -3849,6 +3854,7 @@ def pullTrack(cube, grid_filename, con):
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
+        varname = stash
         if cube.standard_name == 'air_temperature': varname = 'temperature'
         if cube.standard_name == 'specific_humidity': varname = 'q'
         if cube.standard_name == 'relative_humidity': varname = 'rh'
