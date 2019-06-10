@@ -3717,12 +3717,12 @@ def pullTrack(cube, grid_filename, con):
                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                        print 'averaging over itime ...'
+                        # print 'averaging over itime ...'
                         print ''
                     else:
                         if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                         if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                        print 'no averaging, itime = 1 ...'
+                        # print 'no averaging, itime = 1 ...'
                         print ''
                 # print data
         # print 'data.shape = ', data.shape
@@ -3861,11 +3861,11 @@ def pullTrack(cube, grid_filename, con):
                     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                     if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                    print 'averaging over itime...'
+                    # print 'averaging over itime...'
                 else:
                     if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                     if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                    print 'no averaging, itime = 1...'
+                    # print 'no averaging, itime = 1...'
         # print data
         # print 'data.shape = ', data.shape
 
@@ -3932,7 +3932,7 @@ def pullTrack(cube, grid_filename, con):
     pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
     nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
     print ''
-    print 'Outfile = ', outfile
+    print 'Outfile = ', nc_outfile
 
     ### save cube to netcdf file
     print ''
