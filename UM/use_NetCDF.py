@@ -3604,11 +3604,30 @@ def pullTrack(cube, grid_filename, con):
         print ''
         print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
+
+        #################################################################
+        ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
+        #################################################################
+        if np.logical_and(np.size(pdxxx[1].data,1) >= 69, np.size(pdxxx[1].data,1) < 71):
+            print 'Variable is 4D:'
+            print ''
+            #### create empty arrays to be filled
+            data = np.zeros([len(cube[1].coord('model_level_number').points),len(cubetime)-1])
+            flag = 1        ### for next loops
+            print 'data.shape = ', str(data.shape)
+            print ''
+        else:
+            print 'Variable is 3D:'
+            print ''
+            #### create empty arrays to be filled
+            data = np.zeros([len(cubetime)-1])
+            flag = 0       ### for next loops
+            print 'data.shape = ', str(data.shape)
+            print ''
+
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
-        #### create empty arrays to be filled
-        data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
 
         ### make empty cube
         ncube = Cube(np.zeros([np.size(con),len(cube.coord('model_level_number').points),len(cubetime)-1]))
@@ -3626,7 +3645,8 @@ def pullTrack(cube, grid_filename, con):
                     ### end point (23h)
                     itime = np.where(tim >= cubetime[-1])
                 print 'For ', str(j), 'h, itime = ', itime
-                dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                if flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                if flag == 0: dat = np.zeros([len(itime[0])])
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                     if np.size(itime) > 1:
                         print 'Starting with i = ', str(itime[0][i])
@@ -3634,13 +3654,16 @@ def pullTrack(cube, grid_filename, con):
                     else:
                         print 'Starting with i = ', str(itime[i])
                         temp = cube[k,j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                    dat[:,i] = np.squeeze(temp.data)
+                    if flag == 1: dat[:,i] = np.squeeze(temp.data)
+                    if flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
                         dat[dat==0] = np.nan              # set zeros to nans
-                        data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                        if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                        if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                         print 'averaging (excluding zeros)...'
                     else:
-                        data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                        if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                        if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                         print 'no averaging...'
                 print data
         # print 'data.shape = ', data.shape
@@ -3686,8 +3709,8 @@ def pullTrack(cube, grid_filename, con):
             model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
             ncube[k] = Cube(np.transpose(data),
                     dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-                    standard_name = cube.standard_name,
-                    units = cube.units,
+                    standard_name = cube[k].standard_name,
+                    units = cube[k].units,
                     var_name = varname,
                     )
             ncube[k].attributes = cube[k].attributes
@@ -3702,12 +3725,30 @@ def pullTrack(cube, grid_filename, con):
         print ''
         print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
+
+        #################################################################
+        ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
+        #################################################################
+        if np.logical_and(np.size(pdxxx[1].data,1) >= 69, np.size(pdxxx[1].data,1) < 71):
+            print 'Variable is 4D:'
+            print ''
+            #### create empty arrays to be filled
+            data = np.zeros([len(cube[1].coord('model_level_number').points),len(cubetime)-1])
+            flag = 1        ### for next loops
+            print 'data.shape = ', str(data.shape)
+            print ''
+        else:
+            print 'Variable is 3D:'
+            print ''
+            #### create empty arrays to be filled
+            data = np.zeros([len(cubetime)-1])
+            flag = 0       ### for next loops
+            print 'data.shape = ', str(data.shape)
+            print ''
+
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
-        #### create empty arrays to be filled
-        data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
-
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
@@ -3718,7 +3759,8 @@ def pullTrack(cube, grid_filename, con):
                 ### end point (23h)
                 itime = np.where(tim >= cubetime[-1])
             print 'For ', str(j), 'h, itime = ', itime
-            dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            if flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            if flag == 0: dat = np.zeros([len(itime[0])])
             for i in range(0, len(itime[0])):
                 if np.size(itime) > 1:
                     print 'Starting with i = ', str(itime[0][i])
@@ -3726,13 +3768,16 @@ def pullTrack(cube, grid_filename, con):
                 else:
                     print 'Starting with i = ', str(itime[i])
                     temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                dat[:,i] = temp.data
+                if flag == 1: dat[:,i] = temp.data
+                if flag == 0: dat[i] = temp.data
                 if np.size(itime) > 1:
                     dat[dat==0] = np.nan              # set zeros to nans
-                    data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                     print 'averaging (excluding zeros)...'
                 else:
-                    data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                     print 'no averaging...'
         print data
         # print 'data.shape = ', data.shape
