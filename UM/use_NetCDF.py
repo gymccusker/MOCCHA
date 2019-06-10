@@ -3600,10 +3600,19 @@ def pullTrack(cube, grid_filename, con):
 
     print '******'
     print ''
-    print 'What grid are we looking at?'
+    #################################################################
+    ## define output filename
+    #################################################################
+    print 'Before extraction, define outfile:'
+    pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
+    nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+    print 'Outfile = ', nc_outfile
+
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
+    print '---'
+    print 'What grid are we looking at?'
     if len(cube[0].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
@@ -3718,7 +3727,7 @@ def pullTrack(cube, grid_filename, con):
                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
                         # print 'averaging over itime ...'
-                        print ''
+                        # print ''
                     else:
                         if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                         if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
@@ -3782,11 +3791,24 @@ def pullTrack(cube, grid_filename, con):
             if k == 0:
                 print 'Assigning fcube'
                 print ''
+                iris.save(ncube, pp_outfile, append=True)
                 fcube = ncube
             else:
                 print 'Appending to fcube'
                 print ''
+                iris.save(ncube, pp_outfile, append=True)
                 fcube = np.append(fcube,ncube)
+
+            # ### save cube to netcdf file
+            # print ''
+            # print 'Writing fcube to NetCDF file:'
+            # print ''
+            # for cb in range(0,2):#np.size(cube)):
+            #     iris.save(fcube[cb], pp_outfile, append=True)
+            #     print fcube[cb]
+            # iris.save(fcube, outfile)
+            # out = writeNetCDF(cube, data, outfile)
+            # print fcube
 
         # print fcube
 
@@ -3924,26 +3946,31 @@ def pullTrack(cube, grid_filename, con):
         ### for consistency with multi-diag option
         fcube = ncube
 
+        #################################################################
+        ## CREATE NETCDF
+        #################################################################
+        ###
+
+        # pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
+        nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+        print ''
+        print 'Outfile = ', nc_outfile
+
+        ### save cube to netcdf file
+        print ''
+        print 'Writing fcube to NetCDF file:'
+        print ''
+        # for cb in range(0,2):#np.size(cube)):
+        #     iris.save(fcube[cb], pp_outfile, append=True)
+        #     print fcube[cb]
+        iris.save(fcube, nc_outfile)
+        # out = writeNetCDF(cube, data, outfile)
+        # print fcube
+
     #################################################################
     ## CREATE NETCDF
     #################################################################
     ###
-
-    pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
-    nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
-    print ''
-    print 'Outfile = ', nc_outfile
-
-    ### save cube to netcdf file
-    print ''
-    print 'Writing fcube to NetCDF file:'
-    print ''
-    for cb in range(0,2):#np.size(cube)):
-        iris.save(fcube[cb], pp_outfile, append=True)
-        print fcube[cb]
-    # iris.save(fcube, outfile)
-    # out = writeNetCDF(cube, data, outfile)
-    # print fcube
 
     # -------------------------------------------------------------
     # Convert .pp to .nc
