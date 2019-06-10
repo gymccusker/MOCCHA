@@ -3646,7 +3646,7 @@ def pullTrack(cube, grid_filename, con):
         #################################################################
         ## CREATE EMPTY CUBE
         #################################################################
-        ncube = Cube(np.zeros([np.size(cube),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
+        ncube = Cube(np.zeros([np.size(cube),70,len(cubetime)-1]))
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
