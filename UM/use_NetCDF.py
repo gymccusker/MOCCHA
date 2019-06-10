@@ -3665,7 +3665,7 @@ def pullTrack(cube, grid_filename, con):
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
-        for k in range(0,np.size(cube)-1):            ### loop over number of variables
+        for k in range(0,1):#np.size(cube)-1):            ### loop over number of variables
             print ''
             print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
             print ''
@@ -3967,10 +3967,26 @@ def pullTrack(cube, grid_filename, con):
         # out = writeNetCDF(cube, data, outfile)
         # print fcube
 
-    #################################################################
-    ## CREATE NETCDF
-    #################################################################
-    ###
+    # #################################################################
+    # ## CREATE NETCDF
+    # #################################################################
+    # ###
+    #
+    # pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
+    # nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+    # print ''
+    # print 'Outfile = ', nc_outfile
+    #
+    # ### save cube to netcdf file
+    # print ''
+    # print 'Writing fcube to NetCDF file:'
+    # print ''
+    # # for cb in range(0,2):#np.size(cube)):
+    # #     iris.save(fcube[cb], pp_outfile, append=True)
+    # #     print fcube[cb]
+    # iris.save(fcube, nc_outfile)
+    # # out = writeNetCDF(cube, data, outfile)
+    # # print fcube
 
     # -------------------------------------------------------------
     # Convert .pp to .nc
