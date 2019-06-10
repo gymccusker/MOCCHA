@@ -841,8 +841,8 @@ def main():
     ### -------------------------------------------------------------------------
     ### define output filenames
     ### -------------------------------------------------------------------------
-    # filename1 = root_dir + out_dir + 'umnsaa_pa012'
-    filename1 = root_dir + out_dir + 'umnsaa_pb012'
+    filename1 = root_dir + out_dir + 'umnsaa_pa012'
+    # filename1 = root_dir + out_dir + 'umnsaa_pb012'
     # filename1 = root_dir + out_dir + 'umnsaa_pc011'
     # filename1 = root_dir + out_dir + 'umnsaa_pd011'
     nc_filename = filename1 + '_r0.nc'
@@ -856,8 +856,8 @@ def main():
     # for i in range(11,36):      ### pcXXX and pdXXX
         res = i * 3     # how many hourly dumps in file
         str_i = "%03d" % res # file number
-        # fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
-        fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
+        fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
+        # fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pd' + str_i
 
