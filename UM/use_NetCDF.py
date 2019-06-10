@@ -3620,7 +3620,7 @@ def pullTrack(cube, grid_filename, con):
     print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
-    
+
     #################################################################
     ## load gridded ship track
     #################################################################
@@ -3702,13 +3702,13 @@ def pullTrack(cube, grid_filename, con):
                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                     if np.size(itime) > 1:
-                        print 'Processing i = ', str(itime[0][i])
-                        print '...'
+                        # print 'Processing i = ', str(itime[0][i])
+                        # print '...'
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                     else:
-                        print 'Processing i = ', str(itime[i])
-                        print '...'
+                        # print 'Processing i = ', str(itime[i])
+                        # print '...'
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
@@ -3848,11 +3848,11 @@ def pullTrack(cube, grid_filename, con):
             if dim_flag == 0: dat = np.zeros([len(itime[0])])
             for i in range(0, len(itime[0])):
                 if np.size(itime) > 1:
-                    print 'Processing i = ', str(itime[0][i])
+                    # print 'Processing i = ', str(itime[0][i])
                     if dim_flag == 1: temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                     if dim_flag == 0: temp = cube[j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                 else:
-                    print 'Processing i = ', str(itime[i])
+                    # print 'Processing i = ', str(itime[i])
                     if dim_flag == 1: temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                     if dim_flag == 0: temp = cube[j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                 if dim_flag == 1: dat[:,i] = temp.data
