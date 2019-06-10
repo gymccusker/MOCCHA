@@ -3592,24 +3592,24 @@ def excludeZeros(cube):
 
     return flag, stash
 
-def assignVarname(cube, stash):
-    '''
-    assign variable name depending on stash code
-    '''
-
-    GlobalVarList = varnames.returnWantedVarnames()
-    varname = varnames.findfieldName(stash)
-
-    # varname = stash
-    # if cube[k].standard_name=='air_temperature': varname = 'temperature'
-    # if cube[k].standard_name=='specific_humidity': varname = 'q'
-    # ### if cube[k].standard_name=='relative_humidity': varname = 'rh'       ### DON'T HAVE RH
-    # if cube[k].standard_name=='upward_wind': varname = 'wwind'
-    # if cube[k].standard_name=='eastward_wind': varname = 'uwind'
-    # if cube[k].standard_name=='northward_wind': varname = 'vwind'
-    # if cube[k].standard_name=='air_pressure': varname = 'pressure'
-
-    return varname
+# def assignVarname(cube, stash):
+#     '''
+#     assign variable name depending on stash code
+#     '''
+#
+#     GlobalVarList = varnames.returnWantedVarnames()
+#     varname = varnames.findfieldName(stash)
+#
+#     # varname = stash
+#     # if cube[k].standard_name=='air_temperature': varname = 'temperature'
+#     # if cube[k].standard_name=='specific_humidity': varname = 'q'
+#     # ### if cube[k].standard_name=='relative_humidity': varname = 'rh'       ### DON'T HAVE RH
+#     # if cube[k].standard_name=='upward_wind': varname = 'wwind'
+#     # if cube[k].standard_name=='eastward_wind': varname = 'uwind'
+#     # if cube[k].standard_name=='northward_wind': varname = 'vwind'
+#     # if cube[k].standard_name=='air_pressure': varname = 'pressure'
+#
+#     return varname
 
 def pullTrack(cube, grid_filename, con):
 
@@ -3770,7 +3770,7 @@ def pullTrack(cube, grid_filename, con):
         # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
-            varname = assignVarname(cube[k], stash)
+            varname = varnames.findfieldName(stash)
             print 'standard_name = ', cube[k].standard_name
             print 'long name = ', cube[k].long_name
             print 'varname = ', varname
@@ -3913,7 +3913,7 @@ def pullTrack(cube, grid_filename, con):
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
-        varname = assignVarname(cube, stash)
+        varname = varnames.findfieldName(stash)
         print 'standard_name = ', cube.standard_name
         print 'long name = ', cube.long_name
         print 'varname = ', varname
