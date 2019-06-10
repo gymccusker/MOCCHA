@@ -3568,9 +3568,9 @@ def excludeZeros(cube, data):
     #     s = str(STASH[i])[4:6]
     #     i = str(STASH[i])[7:10]
 
-    str_m = "%02d" % pdxxx[0].attributes['STASH'][0]
-    str_s = "%02d" % pdxxx[0].attributes['STASH'][1]
-    str_i = "%03d" % pdxxx[0].attributes['STASH'][2]
+    str_m = "%02d" % cube.attributes['STASH'][0]
+    str_s = "%02d" % cube.attributes['STASH'][1]
+    str_i = "%03d" % cube.attributes['STASH'][2]
     stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
 
     for i in range(0, len(STASH)):
