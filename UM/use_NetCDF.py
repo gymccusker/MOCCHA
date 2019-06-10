@@ -4143,7 +4143,7 @@ def main():
         con_flag = 0            # constraint flag
     elif 'global_con' in locals():
         print 'Loading multiple diagnostics:'
-        print global_con
+        print stash
         # cube = iris.load_cubes(filename1, global_con)
         cube = iris.load(filename1, global_con, callback)
         con_flag = 1            # constraint flag
