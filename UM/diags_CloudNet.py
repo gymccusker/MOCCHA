@@ -843,8 +843,8 @@ def main():
     ### -------------------------------------------------------------------------
     # filename1 = root_dir + out_dir + 'umnsaa_pa012'
     # filename1 = root_dir + out_dir + 'umnsaa_pb012'
-    filename1 = root_dir + out_dir + 'umnsaa_pc011'
-    # filename1 = root_dir + out_dir + 'umnsaa_pd011'
+    # filename1 = root_dir + out_dir + 'umnsaa_pc011'
+    filename1 = root_dir + out_dir + 'umnsaa_pd011'
     nc_filename = filename1 + '_r0.nc'
     pp_filename = filename1 + '_r0.pp'
 
@@ -858,8 +858,8 @@ def main():
         str_i = "%03d" % res # file number
         # fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
-        fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
-        # fileout = root_dir + out_dir + 'umnsaa_pd' + str_i
+        # fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
+        fileout = root_dir + out_dir + 'umnsaa_pd' + str_i
 
         # # -------------------------------------------------------------
         # # Load cubes
