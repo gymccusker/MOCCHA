@@ -3606,38 +3606,37 @@ def pullTrack(cube, grid_filename, con):
         print ''
 
         #################################################################
-        ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
+        ## CREATE EMPTY CUBE
         #################################################################
-        if np.logical_and(np.size(pdxxx[1].data,1) >= 69, np.size(pdxxx[1].data,1) < 71):
-            print 'Variable is 4D:'
-            print ''
-            #### create empty arrays to be filled
-            data = np.zeros([len(cube[1].coord('model_level_number').points),len(cubetime)-1])
-            flag = 1        ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
-        else:
-            print 'Variable is 3D:'
-            print ''
-            #### create empty arrays to be filled
-            data = np.zeros([len(cubetime)-1])
-            flag = 0       ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
+        ncube = Cube(np.zeros([np.size(con),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
-
-        ### make empty cube
-        ncube = Cube(np.zeros([np.size(con),len(cube.coord('model_level_number').points),len(cubetime)-1]))
-
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
         for k in range(0,1):            ### loop over number of variables
             print ''
             print 'k = ', k, ', so processing', con[k]
+            print ''
+            if np.logical_and(np.size(cube[k].data,1) >= 69, np.size(cube[k].data,1) < 71):
+                print 'Variable is 4D:'
+                print ''
+                #### create empty arrays to be filled
+                data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
+                ### make empty cube
+                flag = 1        ### for next loops
+                print 'data.shape = ', str(data.shape)
+                print ''
+            else:
+                print 'Variable is 3D:'
+                print ''
+                #### create empty arrays to be filled
+                data = np.zeros([len(cubetime)-1])
+                flag = 0       ### for next loops
+                print 'data.shape = ', str(data.shape)
+                print ''
             for j in range(0,len(cubetime)-1):              ### loop over time
                 if j < len(cubetime[:-1]):
                     itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
@@ -3727,13 +3726,18 @@ def pullTrack(cube, grid_filename, con):
         print ''
 
         #################################################################
+        ## CREATE EMPTY CUBE
+        #################################################################
+        ncube = Cube(np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1]))
+
+        #################################################################
         ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
         #################################################################
-        if np.logical_and(np.size(pdxxx[1].data,1) >= 69, np.size(pdxxx[1].data,1) < 71):
+        if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
             print 'Variable is 4D:'
             print ''
             #### create empty arrays to be filled
-            data = np.zeros([len(cube[1].coord('model_level_number').points),len(cubetime)-1])
+            data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
             flag = 1        ### for next loops
             print 'data.shape = ', str(data.shape)
             print ''
