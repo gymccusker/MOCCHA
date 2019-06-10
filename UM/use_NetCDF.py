@@ -4094,6 +4094,17 @@ def main():
     # 8: surface_downward_northward_stress / (Pa) (grid_latitude: 25; grid_longitude: 25)
     # 9: surface_upward_water_flux / (kg m-2 s-1) (grid_latitude: 25; grid_longitude: 25)
 
+    # 0: entrainment_rate_for_surface_mixed_layer / (unknown) (grid_latitude: 25; grid_longitude: 25)
+    # 1: entrainment_rate_for_boundary_layer / (unknown) (grid_latitude: 25; grid_longitude: 25)
+    # 2: obukhov_length / (unknown)          (grid_latitude: 25; grid_longitude: 25)
+    # 3: atmosphere_downward_eastward_stress / (Pa) (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 4: atmosphere_downward_northward_stress / (Pa) (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 5: turbulent_kinetic_energy / (unknown) (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 6: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: surface_downward_eastward_stress / (Pa) (grid_latitude: 25; grid_longitude: 25)
+    # 8: surface_downward_northward_stress / (Pa) (grid_latitude: 25; grid_longitude: 25)
+    # 9: surface_upward_water_flux / (kg m-2 s-1) (grid_latitude: 25; grid_longitude: 25)
+
     # FORECAST_PERIOD = cube1.aux_coords[1][:]
 
     # -------------------------------------------------------------
