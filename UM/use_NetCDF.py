@@ -3795,12 +3795,14 @@ def pullTrack(cube, grid_filename, con):
             if k == 0:
                 print 'Assigning fcube'
                 print ''
-
-                fcube = ncube
+                fcube = [ncube]
             else:
                 print 'Appending to fcube'
                 print ''
-                fcube = np.append(fcube,ncube)
+                fcube.append(ncube)
+
+            # str_k = "%1d" % k
+            # fcube[str_k] = ncube
 
             ### save cube to netcdf file
             print ''
