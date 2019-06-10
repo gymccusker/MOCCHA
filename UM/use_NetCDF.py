@@ -3600,17 +3600,15 @@ def pullTrack(cube, grid_filename, con):
 
     print '******'
     print ''
-    print 'Pulling gridded track from cube:'
-    print ''
-
+    print 'What grid are we looking at?'
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    if len(cube[-1].data) == 25:
+    if len(cube[0].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[-1].data) == 93:
+    elif len(cube[0].dim_coords[-1].points) == 93:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
@@ -3619,13 +3617,17 @@ def pullTrack(cube, grid_filename, con):
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[-1].data))
+    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
-
+    
     #################################################################
-    ## plot gridded ship track
+    ## load gridded ship track
     #################################################################
+    # print '******'
+    print ''
+    print 'Pulling gridded track from cube:'
+    print ''
 
     tim, ilat, ilon = readGriddedTrack(grid_filename)
 
