@@ -3648,12 +3648,6 @@ def pullTrack(cube, grid_filename, con):
         ncube = Cube(np.zeros([np.size(con),len(cube[1].coord('model_level_number').points),len(cubetime)-1]))
 
         #################################################################
-        ## PROBE VARIABLE
-        #################################################################
-        ### do we want to average exluding zeros?
-        stash_flag, stash = excludeZeros(cube[k])
-
-        #################################################################
         ## POPULATE NP ARRAY WITH DATA
         #################################################################
         ### populate 0th dimension with time field
@@ -3663,6 +3657,15 @@ def pullTrack(cube, grid_filename, con):
             print ''
             print 'k = ', k, ', so processing', con[k]
             print ''
+            #################################################################
+            ## PROBE VARIABLE
+            #################################################################
+            ### do we want to average exluding zeros?
+            stash_flag, stash = excludeZeros(cube[k])
+
+            #################################################################
+            ## CHECK DIMENSIONS
+            #################################################################
             if np.logical_and(np.size(cube[k].data,1) >= 69, np.size(cube[k].data,1) < 71):
                 print 'Variable is 4D:'
                 print ''
@@ -3680,6 +3683,10 @@ def pullTrack(cube, grid_filename, con):
                 flag = 0       ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
+
+            #################################################################
+            ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
+            #################################################################
             for j in range(0,len(cubetime)-1):              ### loop over time
                 if j < len(cubetime[:-1]):
                     itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
