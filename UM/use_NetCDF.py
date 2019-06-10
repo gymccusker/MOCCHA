@@ -3649,10 +3649,10 @@ def pullTrack(cube, grid_filename, con):
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                     if np.size(itime) > 1:
                         print 'Starting with i = ', str(itime[0][i])
-                        temp = cube[k,j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                        temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                     else:
                         print 'Starting with i = ', str(itime[i])
-                        temp = cube[k,j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                        temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                     if flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
