@@ -3749,13 +3749,13 @@ def pullTrack(cube, grid_filename, con):
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
-        if cube.standard_name=='air_temperature': varname = 'temperature'
-        if cube.standard_name=='specific_humidity': varname = 'q'
-        if cube.standard_name=='relative_humidity': varname = 'rh'
-        if cube.standard_name=='upward_wind': varname = 'wwind'
-        if cube.standard_name=='eastward_wind': varname = 'uwind'
-        if cube.standard_name=='northward_wind': varname = 'vwind'
-        if cube.standard_name=='air_pressure': varname = 'pressure'
+        if cube.standard_name == 'air_temperature': varname = 'temperature'
+        if cube.standard_name == 'specific_humidity': varname = 'q'
+        if cube.standard_name == 'relative_humidity': varname = 'rh'
+        if cube.standard_name == 'upward_wind': varname = 'wwind'
+        if cube.standard_name == 'eastward_wind': varname = 'uwind'
+        if cube.standard_name == 'northward_wind': varname = 'vwind'
+        if cube.standard_name == 'air_pressure': varname = 'pressure'
         print 'standard_name = ', cube.standard_name
         print 'varname = ', varname
 
@@ -3777,12 +3777,13 @@ def pullTrack(cube, grid_filename, con):
     outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
     print 'Outfile = ', outfile
 
-    print ''
-    print 'Writing ncube to NetCDF file:'
-    print ''
     ### save cube to netcdf file
-    iris.save(ncube, outfile)
+    print ''
+    print '(NOT) Writing ncube to NetCDF file:'
+    print ''
+    # iris.save(ncube, outfile)
     # out = writeNetCDF(cube, data, outfile)
+    print ncube
 
     return ncube
 
@@ -4021,6 +4022,34 @@ def main():
     # <iris 'Cube' of x_wind / (m s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
     # <iris 'Cube' of y_wind / (m s-1) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
 
+    # 0: m01s03i241 / (unknown)              (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 1: Turbulent mixing height after boundary layer / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 2: m01s03i360 / (unknown)              (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 3: m01s03i361 / (unknown)              (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 4: m01s03i476 / (unknown)              (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 5: cloud_area_fraction_assuming_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 6: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 7: wet_bulb_freezing_level_altitude / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 8: m01s30i461 / (unknown)              (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 9: m01s02i391 / (unknown)              (time: 2; grid_latitude: 25; grid_longitude: 25)
+    # 10: m01s02i392 / (unknown)              (time: 2; grid_latitude: 25; grid_longitude: 25)
+    # 11: air_pressure_at_sea_level / (Pa)    (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 12: air_temperature / (K)               (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 13: atmosphere_boundary_layer_thickness / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 14: dew_point_temperature / (K)         (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 15: high_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 16: low_type_cloud_area_fraction / (1)  (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 17: medium_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 18: relative_humidity / (%)             (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 19: specific_humidity / (1)             (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 20: stratiform_rainfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 21: stratiform_snowfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 22: surface_air_pressure / (Pa)         (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 23: surface_temperature / (K)           (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 24: surface_upward_latent_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 25: surface_upward_sensible_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 26: x_wind / (m s-1)                    (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 27: y_wind / (m s-1)                    (time: 3; grid_latitude: 25; grid_longitude: 25)
 
     ### pcXXX
     # <iris 'Cube' of cloud_volume_fraction_in_atmosphere_layer / (1) (time: 25; model_level_number: 70; grid_latitude: 121; grid_longitude: 56)>,
@@ -4044,6 +4073,19 @@ def main():
     # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+
+    ### pdXXX
+    # 0: m01s03i362 / (unknown)              (grid_latitude: 25; grid_longitude: 25)
+    # 1: m01s03i363 / (unknown)              (grid_latitude: 25; grid_longitude: 25)
+    # 2: m01s03i464 / (unknown)              (grid_latitude: 25; grid_longitude: 25)
+    # 3: atmosphere_downward_eastward_stress / (Pa) (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 4: atmosphere_downward_northward_stress / (Pa) (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 5: m01s03i473 / (unknown)              (model_level_number: 69; grid_latitude: 25; grid_longitude: 25)
+    # 6: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: surface_downward_eastward_stress / (Pa) (grid_latitude: 25; grid_longitude: 25)
+    # 8: surface_downward_northward_stress / (Pa) (grid_latitude: 25; grid_longitude: 25)
+    # 9: surface_upward_water_flux / (kg m-2 s-1) (grid_latitude: 25; grid_longitude: 25)
 
     # FORECAST_PERIOD = cube1.aux_coords[1][:]
 
