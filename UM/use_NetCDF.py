@@ -3607,33 +3607,39 @@ def pullTrack(cube, grid_filename, con):
         #### create empty arrays to be filled
         data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
 
+        ### make empty cube
+        ncube = Cube(np.zeros([np.size(con),len(cube.coord('model_level_number').points),len(cubetime)-1]))
+
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
-        for j in range(0,len(cubetime)-1):
-            if j < len(cubetime[:-1]):
-                itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-            else:
-                ### end point (23h)
-                itime = np.where(tim >= cubetime[-1])
-            print 'For ', str(j), 'h, itime = ', itime
-            dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
-            for i in range(0, len(itime[0])):
-                if np.size(itime) > 1:
-                    print 'Starting with i = ', str(itime[0][i])
-                    temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+        for k in range(0,1):            ### loop over number of variables
+            print ''
+            print 'k = ', k, ', so processing', con[k]
+            for j in range(0,len(cubetime)-1):              ### loop over time
+                if j < len(cubetime[:-1]):
+                    itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
                 else:
-                    print 'Starting with i = ', str(itime[i])
-                    temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                dat[:,i] = temp.data
-                if np.size(itime) > 1:
-                    dat[dat==0] = np.nan              # set zeros to nans
-                    data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                    print 'averaging (excluding zeros)...'
-                else:
-                    data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                    print 'no averaging...'
-        print data
+                    ### end point (23h)
+                    itime = np.where(tim >= cubetime[-1])
+                print 'For ', str(j), 'h, itime = ', itime
+                dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
+                    if np.size(itime) > 1:
+                        print 'Starting with i = ', str(itime[0][i])
+                        temp = cube[k,j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                    else:
+                        print 'Starting with i = ', str(itime[i])
+                        temp = cube[k,j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                    dat[:,i] = np.squeeze(temp.data)
+                    if np.size(itime) > 1:
+                        dat[dat==0] = np.nan              # set zeros to nans
+                        data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                        print 'averaging (excluding zeros)...'
+                    else:
+                        data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                        print 'no averaging...'
+                print data
         # print 'data.shape = ', data.shape
 
         #################################################################
@@ -3663,25 +3669,26 @@ def pullTrack(cube, grid_filename, con):
         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
-        if cube.standard_name=='air_temperature': varname = 'temperature'
-        if cube.standard_name=='specific_humidity': varname = 'q'
-        if cube.standard_name=='relative_humidity': varname = 'rh'
-        if cube.standard_name=='upward_wind': varname = 'wwind'
-        if cube.standard_name=='eastward_wind': varname = 'uwind'
-        if cube.standard_name=='northward_wind': varname = 'vwind'
-        if cube.standard_name=='air_pressure': varname = 'pressure'
-        print 'standard_name = ', cube.standard_name
-        print 'varname = ', varname
+            if cube.standard_name=='air_temperature': varname = 'temperature'
+            if cube.standard_name=='specific_humidity': varname = 'q'
+            if cube.standard_name=='relative_humidity': varname = 'rh'
+            if cube.standard_name=='upward_wind': varname = 'wwind'
+            if cube.standard_name=='eastward_wind': varname = 'uwind'
+            if cube.standard_name=='northward_wind': varname = 'vwind'
+            if cube.standard_name=='air_pressure': varname = 'pressure'
+            print 'standard_name = ', cube.standard_name
+            print 'varname = ', varname
 
-        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-        model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-        ncube2 = Cube(np.transpose(data),
-                dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-                standard_name = cube.standard_name,
-                units = cube.units,
-                var_name = varname,
-                )
-        ncube.attributes = cube.attributes
+            ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+            model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+            ncube[k] = Cube(np.transpose(data),
+                    dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                    standard_name = cube.standard_name,
+                    units = cube.units,
+                    var_name = varname,
+                    )
+            ncube[k].attributes = cube[k].attributes
+        print ncube
 
     else:
         print ''
@@ -3959,7 +3966,7 @@ def main():
     var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
 
-    # global_con = ['specific_humidity','air_temperature']
+    global_con = ['specific_humidity','air_temperature']
 
     #### LOAD CUBE
     if 'var_con' in locals():
