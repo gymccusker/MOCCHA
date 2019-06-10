@@ -3713,7 +3713,7 @@ def pullTrack(cube, grid_filename, con):
                     if np.size(itime) > 1:
                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                        if dim_flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
+                        if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
                         print 'averaging...'
                         print ''
                     else:
@@ -3853,7 +3853,7 @@ def pullTrack(cube, grid_filename, con):
                 if np.size(itime) > 1:
                     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                    if dim_flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
+                    if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
                     print 'averaging...'
                 else:
                     if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
