@@ -3672,7 +3672,7 @@ def pullTrack(cube, grid_filename, con):
                 #### create empty arrays to be filled
                 data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                 ### make empty cube
-                flag = 1        ### for next loops
+                dim_flag = 1        ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
             else:
@@ -3680,7 +3680,7 @@ def pullTrack(cube, grid_filename, con):
                 print ''
                 #### create empty arrays to be filled
                 data = np.zeros([len(cubetime)-1])
-                flag = 0       ### for next loops
+                dim_flag = 0       ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
 
@@ -3695,8 +3695,8 @@ def pullTrack(cube, grid_filename, con):
                     itime = np.where(tim >= cubetime[-1])
                 print ''
                 print 'For ', str(j), 'h, itime = ', itime
-                if flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
-                if flag == 0: dat = np.zeros([len(itime[0])])
+                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                if dim_flag == 0: dat = np.zeros([len(itime[0])])
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                     if np.size(itime) > 1:
                         print 'Processing i = ', str(itime[0][i])
@@ -3706,20 +3706,20 @@ def pullTrack(cube, grid_filename, con):
                         print 'Processing i = ', str(itime[i])
                         print '...'
                         temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                    if flag == 1: dat[:,i] = np.squeeze(temp.data)
-                    if flag == 0: dat[i] = np.squeeze(temp.data)
+                    if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
+                    if dim_flag == 0: dat[i] = np.squeeze(temp.data)
                     if np.size(itime) > 1:
                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                        if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                        if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
+                        if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                        if dim_flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                         print 'averaging...'
                         print ''
                     else:
-                        if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                        if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                        if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                        if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                         print 'no averaging...'
                         print ''
-                print data
+                # print data
         # print 'data.shape = ', data.shape
 
         #################################################################
@@ -3768,13 +3768,15 @@ def pullTrack(cube, grid_filename, con):
                     var_name = varname,
                     )
             ncube.attributes = cube[k].attributes
-        print ncube
-        if k == 0:
-            print 'Assigning fcube'
-            fcube = ncube
-        else:
-            print 'Appending to fcube'
-            fcube = np.append(fcube,ncube)
+
+            if k == 0:
+                print 'Assigning fcube'
+                fcube = ncube
+            else:
+                print 'Appending to fcube'
+                fcube = np.append(fcube,ncube)
+
+        print fcube
 
     else:
         print ''
@@ -3805,7 +3807,7 @@ def pullTrack(cube, grid_filename, con):
             print ''
             #### create empty arrays to be filled
             data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
-            flag = 1        ### for next loops
+            dim_flag = 1        ### for next loops
             print 'data.shape = ', str(data.shape)
             print ''
         else:
@@ -3813,7 +3815,7 @@ def pullTrack(cube, grid_filename, con):
             print ''
             #### create empty arrays to be filled
             data = np.zeros([len(cubetime)-1])
-            flag = 0       ### for next loops
+            dim_flag = 0       ### for next loops
             print 'data.shape = ', str(data.shape)
             print ''
 
@@ -3830,8 +3832,8 @@ def pullTrack(cube, grid_filename, con):
                 ### end point (23h)
                 itime = np.where(tim >= cubetime[-1])
             print 'For ', str(j), 'h, itime = ', itime
-            if flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
-            if flag == 0: dat = np.zeros([len(itime[0])])
+            if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            if dim_flag == 0: dat = np.zeros([len(itime[0])])
             for i in range(0, len(itime[0])):
                 if np.size(itime) > 1:
                     print 'Starting with i = ', str(itime[0][i])
@@ -3839,18 +3841,18 @@ def pullTrack(cube, grid_filename, con):
                 else:
                     print 'Starting with i = ', str(itime[i])
                     temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                if flag == 1: dat[:,i] = temp.data
-                if flag == 0: dat[i] = temp.data
+                if dim_flag == 1: dat[:,i] = temp.data
+                if dim_flag == 0: dat[i] = temp.data
                 if np.size(itime) > 1:
                     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                    if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                    if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
+                    if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    if dim_flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                     print 'averaging...'
                 else:
-                    if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                    if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                    if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                     print 'no averaging...'
-        print data
+        # print data
         # print 'data.shape = ', data.shape
 
         #################################################################
