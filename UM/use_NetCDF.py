@@ -3595,14 +3595,14 @@ def pullTrack(cube, grid_filename, con):
     ## fix time index
     #################################################################
 
-    cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
-    print ''
-    print 'Cube times relative to forecast start:', cubetime[:-1]
-    print ''
-
     if np.size(con)>1:
         print ''
         print 'More than one variable constraint. Proceeding...'
+        print ''
+
+        cubetime = np.round(cube[0].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+        print ''
+        print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -3696,6 +3696,11 @@ def pullTrack(cube, grid_filename, con):
     else:
         print ''
         print 'Only one variable constraint. Proceeding...'
+        print ''
+
+        cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+        print ''
+        print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
