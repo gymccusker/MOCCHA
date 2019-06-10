@@ -3655,7 +3655,7 @@ def pullTrack(cube, grid_filename, con):
 
         for k in range(0,2):            ### loop over number of variables
             print ''
-            print 'k = ', k, ', so processing', con[k]
+            print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
             print ''
             #################################################################
             ## PROBE VARIABLE
