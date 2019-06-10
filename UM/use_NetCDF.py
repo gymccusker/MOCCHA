@@ -4083,7 +4083,6 @@ def main():
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
-        position_filename = 'POSITION_UNROTATED.csv'
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -4148,7 +4147,6 @@ def main():
     print ' '
     # var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
-
     # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     #### LOAD CUBE
@@ -4297,24 +4295,6 @@ def main():
     # FORECAST_PERIOD = cube1.aux_coords[1][:]
 
     # -------------------------------------------------------------
-    # Define unrotated coordinate grid
-    # -------------------------------------------------------------
-    #### the following uses iris to unrotate the coordinate grid.
-    ####    this only works with square domains (i.e. paXXX files)
-    ####    only needs to be performed once -- saved grid as .csv file
-    # lon, lat = unrotateGrid(cube)
-
-    # hour = 0
-    # test = findLatLon(ship_data, cube, hour)
-
-    ############## DOESN'T WORK
-    #### read in saved unrotated coordinate grid
-    # position_data = readfile(position_filename)
-    # lon = position_data.values[:,2]     ### unrotated longitude
-    # lat = position_data.values[:,1]     ### unrotated latitude
-    # lon, lat = np.meshgrid(lon,lat)     ### mesh for use with model diags
-
-    # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
@@ -4323,7 +4303,7 @@ def main():
 
 
     # -------------------------------------------------------------
-    # Pull gridded ship track from 4D cube
+    # Pull gridded ship track from cube
     # -------------------------------------------------------------
 
     #### LOAD CUBE
