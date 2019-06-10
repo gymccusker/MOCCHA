@@ -14,7 +14,7 @@ Var_list = { # paXXX
               'm01s01i208': 'toa_outgoing_shortwave_flux',
                # pbXXX
               'm01s03i241': 'water_evaporation_amount',
-              'm01s03i304': 'turbulent mixing height after boundary layer',
+              'm01s03i304': 'turbulent_mixing_height_after_BL',
               'm01s03i360': 'height_of_decoupled_layer_base',
               'm01s03i361': 'height_of_stratocumulus_cloud_base',
               'm01s03i476': 'combined_boundary_layer_type',
