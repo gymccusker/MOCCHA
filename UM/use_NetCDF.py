@@ -3586,8 +3586,8 @@ def excludeZeros(cube, data):
             flag = 0                           # flagging if not in list
 
     if flag == 1: print 'In list, so excluding zeros'
-    if flag == 0: print 'Not in list, so leaving as default'
-    print ''
+    if flag == 0: print 'Not in list, so not excluding zeros'
+    # print ''
 
     return data, stash
 
@@ -3653,7 +3653,7 @@ def pullTrack(cube, grid_filename, con):
         ### populate 0th dimension with time field
         # data[:,0] = cubetime[:,:-1]
 
-        for k in range(0,1):            ### loop over number of variables
+        for k in range(0,2):            ### loop over number of variables
             print ''
             print 'k = ', k, ', so processing', con[k]
             print ''
@@ -3700,12 +3700,12 @@ def pullTrack(cube, grid_filename, con):
                         if flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if flag == 0: data[j] = np.nanmean(dat,1)     # mean over time indices
                         print 'averaging...'
-                        print '...'
+                        print ''
                     else:
                         if flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                         if flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                         print 'no averaging...'
-                        print '...'
+                        print ''
                 print data
         # print 'data.shape = ', data.shape
 
