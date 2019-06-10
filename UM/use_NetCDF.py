@@ -3758,6 +3758,7 @@ def pullTrack(cube, grid_filename, con):
             if cube[k].standard_name=='air_pressure': varname = 'pressure'
             print 'standard_name = ', cube[k].standard_name
             print 'varname = ', varname
+            print ''
 
             ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
             model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
@@ -3771,9 +3772,11 @@ def pullTrack(cube, grid_filename, con):
 
             if k == 0:
                 print 'Assigning fcube'
+                print ''
                 fcube = ncube
             else:
                 print 'Appending to fcube'
+                print ''
                 fcube = np.append(fcube,ncube)
 
         print fcube
@@ -3911,6 +3914,7 @@ def pullTrack(cube, grid_filename, con):
     ###
 
     outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+    print ''
     print 'Outfile = ', outfile
 
     ### save cube to netcdf file
@@ -4022,6 +4026,28 @@ def writeNetCDF(cube, data, outfile):
 
     return dataset
 
+def callback(cube, field, filename):
+    '''
+    rename cube diagnostics per list of wanted stash diags
+    '''
+
+    iStash = cube.attributes['STASH'].__str__()
+    if diags.findfieldName(iStash):
+        if cube.name() != diags.findfieldName(iStash):
+            cube.rename(diags.findfieldName(iStash))
+
+def makeGlobalStashList():
+    '''
+    make a list of all the stash code we want to load
+    '''
+
+    GlobalStashList = diags.returnWantedStash()
+
+    # print GlobalStashList
+    # print GlobalStashList[0]
+
+    return GlobalStashList
+
 def main():
 
     START_TIME = time.time()
@@ -4085,6 +4111,18 @@ def main():
     print filename1
     print ''
 
+    # -------------------------------------------------------------------------
+    # make global stash list and constraint
+    # -------------------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Make stash list for cube read in at ' + time.strftime("%c")
+    print ' '
+    GlobalStashList = makeGlobalStashList()
+    global_con = iris.AttributeConstraint(
+        STASH=lambda stash: str(stash) in GlobalStashList)
+            ### defines which stash variables to load - should be within a loop
+
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
@@ -4095,13 +4133,14 @@ def main():
     # var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
 
-    global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
+    # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     #### LOAD CUBE
     if 'var_con' in locals():
-        cube = iris.load_cube(filename1, var_con)
+        cube1 = iris.load_cube(filename1, var_con, callback)
     elif 'global_con' in locals():
-        cube = iris.load_cubes(filename1, global_con)
+        # cube = iris.load_cubes(filename1, global_con)
+        cube = iris.load(filename1, global_con, callback)
 
         # -------------------------------------------------------------
 
