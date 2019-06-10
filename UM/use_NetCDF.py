@@ -3778,7 +3778,7 @@ def pullTrack(cube, grid_filename, con):
                         units = cube[k].units,
                         var_name = varname,
                         attributes = cube[k].attributes,
-                        aux_coords_and_dims = None,                         
+                        aux_coords_and_dims = None,
                         )
             elif dim_flag == 0:         ### 3D VARIABLE
                 ncube = Cube(np.transpose(data),
@@ -3791,28 +3791,27 @@ def pullTrack(cube, grid_filename, con):
                         aux_coords_and_dims = None,
                         )
             # ncube.attributes = cube[k].attributes
-
+            # iris.save(ncube, pp_outfile, append=True)
             if k == 0:
                 print 'Assigning fcube'
                 print ''
-                iris.save(ncube, pp_outfile, append=True)
+
                 fcube = ncube
             else:
                 print 'Appending to fcube'
                 print ''
-                iris.save(ncube, pp_outfile, append=True)
                 fcube = np.append(fcube,ncube)
 
-            # ### save cube to netcdf file
-            # print ''
-            # print 'Writing fcube to NetCDF file:'
-            # print ''
+            ### save cube to netcdf file
+            print ''
+            print 'Writing fcube to NetCDF file:'
+            print ''
             # for cb in range(0,2):#np.size(cube)):
             #     iris.save(fcube[cb], pp_outfile, append=True)
             #     print fcube[cb]
-            # iris.save(fcube, outfile)
+            iris.save(fcube, nc_outfile)
             # out = writeNetCDF(cube, data, outfile)
-            # print fcube
+            print fcube
 
         # print fcube
 
