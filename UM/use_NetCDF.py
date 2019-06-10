@@ -3581,7 +3581,7 @@ def pullTrack(cube, grid_filename, con):
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(pdxxx[0].data))
+    print 'Because cube shape = ', str(len(cube[0].data))
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
 
