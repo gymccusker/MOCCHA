@@ -4137,10 +4137,14 @@ def main():
 
     #### LOAD CUBE
     if 'var_con' in locals():
+        print 'Loading single diagnostic:'
         cube1 = iris.load_cube(filename1, var_con, callback)
+        con_flag = 0            # constraint flag
     elif 'global_con' in locals():
+        print 'Loading multiple diagnostics:'
         # cube = iris.load_cubes(filename1, global_con)
         cube = iris.load(filename1, global_con, callback)
+        con_flag = 1            # constraint flag
 
         # -------------------------------------------------------------
 
@@ -4297,7 +4301,7 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
+    # hour = 0
     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
@@ -4306,10 +4310,8 @@ def main():
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    if 'var_con' in locals():
-        fcube = pullTrack(cube, grid_filename, var_con)
-    elif 'global_con' in locals():
-        fcube = pullTrack(cube, grid_filename, global_con)
+    if con_flag == 0: fcube = pullTrack(cube, grid_filename, var_con)
+    if con_flag == 1: fcube = pullTrack(cube, grid_filename, global_con)
 
 
     END_TIME = time.time()
