@@ -3395,7 +3395,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 93:
+    elif len(cube[0].dim_coords[-1].points) == 56:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
@@ -3630,7 +3630,7 @@ def pullTrack(cube, grid_filename, con):
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 93:
+    elif len(cube[0].dim_coords[-1].points) == 56:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
@@ -3965,9 +3965,9 @@ def pullTrack(cube, grid_filename, con):
 
     ### save cube to netcdf file
     print ''
-    print 'Writing fcube to NetCDF file:'
+    print '(NOT) Writing fcube to NetCDF file:'
     print ''
-    iris.save(fcube, nc_outfile)
+    # iris.save(fcube, nc_outfile)
     print fcube
 
     return fcube
@@ -4175,7 +4175,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[0]
+    filename1 = root_dir + out_dir + names[1]
     print filename1
     print ''
 
