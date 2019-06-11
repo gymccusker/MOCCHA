@@ -3404,8 +3404,26 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
         xoffset = 0
         yoffset = 0
 
+    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
+
+    ###################################
+    ## CHOOSE DIAGNOSTIC
+    ###################################
+    diag = 1
+
+    ### pcXXX
+    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
 
     ###################################
     ## PLOT MAP
@@ -3442,7 +3460,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 40, 89.6, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([20, 40, 89.7, 89.9], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
@@ -3459,15 +3477,15 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    if np.size(cube.shape) == 4:
-        iplt.pcolormesh(cube[hour,0,:,:])
-    elif np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[hour,:,:])
-        # iplt.pcolormesh(cube[hour,471:495,240:264])
-    elif np.size(cube.shape) == 2:
-        iplt.pcolormesh(cube[:,:])
-    plt.title(cube.standard_name + ', ' + str(cube.units))
-    plt.colorbar()
+    # if np.size(cube[diag].data.shape) == 4:
+    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
+    # elif np.size(cube[diag].data.shape) == 3:
+    #     iplt.pcolormesh(cube[diag][hour,:,:])
+    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
+    # elif np.size(cube[diag].data.shape) == 2:
+    #     iplt.pcolormesh(cube[diag][:,:])
+    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -3477,7 +3495,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[hour,450:495,220:305])          ### misc
-    # qplt.outline(cube[hour,:,:])
+    # qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube, xoffset, yoffset)
 
@@ -3506,14 +3524,14 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
              )
 
     #################################################################
-    ## plot gridded ship track
+    ## read in and plot gridded ship track
     #################################################################
-    ###
     tim, ilat, ilon = readGriddedTrack(grid_filename)
 
     ### Plot tracks as line plot
     for i in range(0, len(ilon)-1):
-        iplt.scatter(cube.dim_coords[2][int(ilon[i] + xoffset)], cube.dim_coords[1][int(ilat[i] + yoffset)],color='black')
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+
 
     ### Plot tracks as line plot
     # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
