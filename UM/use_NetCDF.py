@@ -3337,15 +3337,15 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon)):
         iplt.scatter(cube.dim_coords[2][lon[i] + xoffset], cube.dim_coords[1][lat[i] + yoffset],color='magenta')
 
-    out = writeoutGrid(tim_318, lat_318, lon_318, date)
+    # out = writeoutGrid(tim_318, lat_318, lon_318, date)
 
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==0))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==1,data.values[:,1]==9),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==2,data.values[:,1]==9),data.values[:,3]==0))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
