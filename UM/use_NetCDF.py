@@ -3495,7 +3495,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[hour,450:495,220:305])          ### misc
-    # qplt.outline(cube[diag][hour,:,:])
+    qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube, xoffset, yoffset)
 
@@ -4123,7 +4123,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
+    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
@@ -4175,7 +4175,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[2]
+    filename1 = root_dir + out_dir + names[0]
     print filename1
     print ''
 
@@ -4201,15 +4201,15 @@ def main():
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    # if con_flag == 0: fcube = pullTrack(cube, grid_filename, var_con)
-    # if con_flag == 1: fcube = pullTrack(cube, grid_filename, global_con)
+    if con_flag == 0: fcube = pullTrack(cube, grid_filename, var_con)
+    if con_flag == 1: fcube = pullTrack(cube, grid_filename, global_con)
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
-    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    # hour = 0
+    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
 
