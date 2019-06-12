@@ -187,7 +187,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    names = ['20180812_metum_oden.nc']
+    names = ['20180812_oden_metum.nc']
     filename1 = root_dir + out_dir + names[0]
     print filename1
     print ''
