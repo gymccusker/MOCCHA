@@ -30,9 +30,10 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 1
+    diag = 2
     print ''
-    print 'Diag is: ', cube[diag].long_name
+    print 'Diag is: '
+    print cube[diag]
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -44,6 +45,13 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+    ###################################
+    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+    ###################################
+
+    time = cube[diag].dim_coords[0].points
+    height = cube[diag].dim_coords[1].points
 
     ###################################
     ## PLOT MAP
@@ -76,19 +84,19 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(8,6))
+    ax = plt.gca()
 
+    # plt.plot(cube[diag].dim_coords[0].points,cube[diag][:,0].data)        # line plot
+    # plt.contourf(cube[0].data)
+    # plt.plot(cube[2][0,:].data,height);plt.show()
     #################################################################
-    ## plot UM data
+    ## plot contour timeseries
     ################################################################
-    # if np.size(cube[diag].data.shape) == 4:
-    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
-    # elif np.size(cube[diag].data.shape) == 3:
-    #     iplt.pcolormesh(cube[diag][hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
-    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
+    plt.contourf(time,height,np.transpose(cube[diag].data))
+    # plt.pcolormesh(time,height,np.transpose(cube[2].data))
+    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    plt.set_ylim([0, 3000])
+    plt.colorbar()
 
     plt.legend()
 
