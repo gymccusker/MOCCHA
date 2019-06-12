@@ -4583,7 +4583,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## CHOOSE DIAGNOSTIC
     ###################################
     diag = 1
-
+    print ''
+    print 'Diag is: ', cube[diag].long_name
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
