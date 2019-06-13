@@ -95,8 +95,8 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     plt.contourf(time,height,np.transpose(cube[diag].data))
     # plt.pcolormesh(time,height,np.transpose(cube[2].data))
     plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    ax.set_ylim([0, 3000])
     plt.colorbar()
+    ax.set_ylim([0, 3000])
 
     plt.legend()
 
