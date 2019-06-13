@@ -4997,7 +4997,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     lon = np.array([278,278])
     lat = np.array([405,404])
     tim = np.zeros([np.size(lon)])
-    tim[:] = 0.0
+    tim[:] = 12.0
     tim_109 = np.append(tim_109, tim)
     lat_109 = np.append(lat_109, lat)
     lon_109 = np.append(lon_109, lon)
