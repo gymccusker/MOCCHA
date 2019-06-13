@@ -4933,11 +4933,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    # tim, ilat, ilon = readGriddedTrack(grid_filename)
-    #
-    # ### Plot tracks as line plot
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -5541,7 +5541,7 @@ def main():
     columns = assignColumns(ship_data)
 
     grid_dirname = 'AUX_DATA/'
-    date = '20180812'
+    date = '20180830'
     grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
 
     print '******'
