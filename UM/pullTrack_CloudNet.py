@@ -5483,15 +5483,15 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon)):
         iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='magenta')
 
-    out = writeoutGrid(tim_129, lat_129, lon_129, date)
+    # out = writeoutGrid(tim_129, lat_129, lon_129, date)
 
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==9),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==30,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -5641,10 +5641,10 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    # qplt.outline(cube[diag][hour,:,:])
+    # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
+    qplt.outline(cube[diag][hour,:,:])
 
-    gridship = gridShipTrack(cube[diag], xoffset, yoffset)
+    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
             #### MID POINT: (433, 258)
 
@@ -5673,11 +5673,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    # tim, ilat, ilon = readGriddedTrack(grid_filename)
-    #
-    # ### Plot tracks as line plot
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -6242,7 +6242,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -6263,7 +6263,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
+    out_dir = '4_OPER/20180830T0000Z_TRIAL/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
@@ -6281,7 +6281,7 @@ def main():
     columns = assignColumns(ship_data)
 
     grid_dirname = 'AUX_DATA/'
-    date = '20180812'
+    date = '20180830'
     grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
 
     print '******'
