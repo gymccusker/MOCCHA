@@ -785,11 +785,12 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
+    out_dir = '4_OPER/20180830T000Z_TRIAL/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
     ## 3_12AUG_SWATH_2FCSTS/
+    ## 4_OPER/20180830T000Z_TRIAL/
 
     # -------------------------------------------------------------
     # Load ship track
@@ -841,8 +842,8 @@ def main():
     ### -------------------------------------------------------------------------
     ### define output filenames
     ### -------------------------------------------------------------------------
-    # filename1 = root_dir + out_dir + 'umnsaa_pa012'
-    filename1 = root_dir + out_dir + 'umnsaa_pb012'
+    filename1 = root_dir + out_dir + 'umnsaa_pa012'
+    # filename1 = root_dir + out_dir + 'umnsaa_pb012'
     # filename1 = root_dir + out_dir + 'umnsaa_pc011'
     # filename1 = root_dir + out_dir + 'umnsaa_pd011'
     nc_filename = filename1 + '_r0.nc'
@@ -851,13 +852,13 @@ def main():
     # print filename1
     # print ''
 
-    # for i in range(2,6):
+    ########## for i in range(2,6):
     for i in range(4,12):
     # for i in range(11,36):      ### pcXXX and pdXXX
         res = i * 3     # how many hourly dumps in file
         str_i = "%03d" % res # file number
-        # fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
-        fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
+        fileout = root_dir + out_dir + 'umnsaa_pa' + str_i
+        # fileout = root_dir + out_dir + 'umnsaa_pb' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pc' + str_i
         # fileout = root_dir + out_dir + 'umnsaa_pd' + str_i
 
