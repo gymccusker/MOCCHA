@@ -5647,7 +5647,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,0,:,:])
+    qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -6325,7 +6325,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[2]
+    filename1 = root_dir + out_dir + names[1]
     print filename1
     print ''
 
