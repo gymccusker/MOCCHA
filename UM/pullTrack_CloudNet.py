@@ -5545,6 +5545,10 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 94:
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -210
+        yoffset = -385
     else:
     # elif cube[0,0].shape >= 500-1:
         xoffset = 0
