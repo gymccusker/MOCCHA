@@ -5607,7 +5607,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([10, 50, 89.3, 89.8], crs=ccrs.PlateCarree())       ### ZOOM
+    ax.set_extent([10, 50, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
@@ -5643,7 +5643,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    qplt.outline(cube[diag][hour,0,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
