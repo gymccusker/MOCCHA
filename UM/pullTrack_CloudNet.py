@@ -4508,7 +4508,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon)):
         iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='magenta')
 
-    out = writeoutGrid(tim_069, lat_069, lon_069, date)
+    # out = writeoutGrid(tim_069, lat_069, lon_069, date)
 
 def trackShip(data):
 
@@ -4632,8 +4632,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    # ax.set_extent([45, 55, 88.8, 89.0], crs=ccrs.PlateCarree())       ### ZOOM
-    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([45, 55, 88.8, 89.0], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
@@ -4666,10 +4666,10 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
+    # qplt.outline(cube[diag][hour,:,:])
 
-    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
+    gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
             #### MID POINT: (433, 258)
 
@@ -4759,13 +4759,6 @@ def excludeZeros(cube):
     STASH = ['m01s00i012','m01s00i254']
     print STASH
 
-    ### decompose stash list
-    # for i in range(0,len(con)):
-    #     m = str(STASH[i])[1:3]
-    #     s = str(STASH[i])[4:6]
-    #     i = str(STASH[i])[7:10]
-
-    # print ''
     print 'Diag is:'
     str_m = "%02d" % cube.attributes['STASH'][0]
     str_s = "%02d" % cube.attributes['STASH'][1]
@@ -5274,7 +5267,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -5295,7 +5288,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
+    out_dir = '2_20180801_61DIAGS_TEST/2_30_86.625/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
