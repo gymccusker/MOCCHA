@@ -6303,7 +6303,7 @@ def main():
     # -------------------------------------------------------------
     # Update netCDF comments
     # -------------------------------------------------------------
-    if outfile in locals():
+    if outfile in globals():
         out = appendNetCDF(outfile)
         # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
         # os.rename(outfile, final_outfile)
