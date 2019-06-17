@@ -5759,6 +5759,45 @@ def excludeZeros(cube):
 
     return flag, stash
 
+def checkWind(data):
+
+
+    # 0.5*(tempvar1[0:len(tempvar1)-2,:,:]+tempvar1[1:len(tempvar1)-1,:,:]),0)
+
+    print ''
+    print 'Checking stash list:'
+
+    print 'Want to change gridding of the following fields:'
+    ### list of stash items where we want to change gridding (u/v wind)
+    STASH = ['m01s00i002','m01s00i003']
+    print STASH
+
+    print 'Diag is:'
+    str_m = "%02d" % cube.attributes['STASH'][0]
+    str_s = "%02d" % cube.attributes['STASH'][1]
+    str_i = "%03d" % cube.attributes['STASH'][2]
+    stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
+    print stash
+
+    for i in range(0, len(STASH)):
+        if stash == STASH[i]:
+            flag = 1                           # flagging if in list
+        else:
+            flag = 0                           # flagging if not in list
+
+    tempvar = np.zeros(data.shape)
+    if flag == 1:
+        print 'In list, so changing vertical grid'
+        tempvar[:,:-1,:,:] = 0.5*(data.data[:,:-1,:,:] + data.data[:,1:,:,:])
+    if flag == 0:
+        print 'Not in list, so not changing vertical grid'
+
+    tempvar[:,-1,:,:] = np.nan
+
+    data.data = tempvar
+
+    return data, stash
+
 def pullTrack(cube, grid_filename, con):
 
     from iris.coords import DimCoord
@@ -5836,6 +5875,9 @@ def pullTrack(cube, grid_filename, con):
             #################################################################
             ### do we want to average exluding zeros?
             stash_flag, stash = excludeZeros(cube[k])
+
+            ### do we need to re-grid?
+            cube[k], wind_stash = checkWind(cube[k])
 
             #################################################################
             ## CHECK DIMENSIONS
