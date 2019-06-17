@@ -5761,7 +5761,6 @@ def excludeZeros(cube):
 
 def checkWind(cube):
 
-
     # 0.5*(tempvar1[0:len(tempvar1)-2,:,:]+tempvar1[1:len(tempvar1)-1,:,:]),0)
 
     print ''
@@ -5789,6 +5788,8 @@ def checkWind(cube):
     if flag == 1:
         print 'In list, so changing vertical grid'
         tempvar[:,:-1,:,:] = 0.5*(cube.data[:,:-1,:,:] + cube.data[:,1:,:,:])
+        print 'Cube = ' str(cube.data[0,0:9,10,10])
+        print 'Tempvar = ' str(tempvar[0,0:9,10,10])
     if flag == 0:
         print 'Not in list, so not changing vertical grid'
 
@@ -6173,7 +6174,7 @@ def appendNetCDF(outfile):
 
     print '******'
     print ''
-    print 'Appending metadata to' + outfile
+    print 'Appending metadata to ' + outfile
     print ''
 
     ###################################
