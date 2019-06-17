@@ -5877,8 +5877,8 @@ def pullTrack(cube, grid_filename, con):
             ### do we want to average exluding zeros?
             stash_flag, stash = excludeZeros(cube[k])
 
-            ### do we need to re-grid?
-            cube[k], wind_stash = checkWind(cube[k])
+            ### do we need to re-grid?  -- DOESN'T WORK LIKE WRF, GRID NOT SPACED SAME WAY
+            # cube[k], wind_stash = checkWind(cube[k])
 
             #################################################################
             ## CHECK DIMENSIONS
