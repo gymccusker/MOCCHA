@@ -5759,7 +5759,7 @@ def excludeZeros(cube):
 
     return flag, stash
 
-def checkWind(data):
+def checkWind(cube):
 
 
     # 0.5*(tempvar1[0:len(tempvar1)-2,:,:]+tempvar1[1:len(tempvar1)-1,:,:]),0)
