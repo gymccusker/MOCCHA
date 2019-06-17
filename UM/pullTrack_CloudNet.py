@@ -5759,7 +5759,7 @@ def excludeZeros(cube):
 
     return flag, stash
 
-def pullTrack(cube, grid_filename, con):
+def pullTrack(cube, grid_filename, con, out_dir):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -6108,13 +6108,13 @@ def pullTrack(cube, grid_filename, con):
     #################################################################
     print '******'
     print 'Define outfile:'
-    pp_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.pp'
-    nc_outfile = 'DATA/OPER/' + grid_filename[9:17] + '_oden_metum.nc'
+    pp_outfile = out_dir + grid_filename[9:17] + '_oden_metum.pp'
+    nc_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
     print 'Outfile = ', nc_outfile
 
     ### save cube to netcdf file
     print ''
-    print '(NOT) Writing fcube to NetCDF file:'
+    print 'Writing fcube to NetCDF file:'
     print ''
     iris.save(fcube, nc_outfile)
     print fcube
@@ -6351,8 +6351,8 @@ def main():
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
-    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con, out_dir)
+    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con, out_dir)
 
     # -------------------------------------------------------------
     # Update netCDF comments
