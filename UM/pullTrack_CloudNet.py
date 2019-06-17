@@ -6298,15 +6298,14 @@ def main():
     #### LOAD CUBE
     if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
     if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+        ## -------------------------------------------------------------
+        ## Update netCDF comments
+        ## -------------------------------------------------------------
+    out = appendNetCDF(outfile)
+    # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
+    # os.rename(outfile, final_outfile)
 
-    print outfile
-    # -------------------------------------------------------------
-    # Update netCDF comments
-    # -------------------------------------------------------------
-    if outfile in globals():
-        out = appendNetCDF(outfile)
-        # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-        # os.rename(outfile, final_outfile)
+    # print outfile
 
     # -------------------------------------------------------------
     # Plot data (map)
