@@ -5788,8 +5788,8 @@ def checkWind(cube):
     if flag == 1:
         print 'In list, so changing vertical grid'
         tempvar[:,:-1,:,:] = 0.5*(cube.data[:,:-1,:,:] + cube.data[:,1:,:,:])
-        print 'Cube = ' str(cube.data[0,0:9,10,10])
-        print 'Tempvar = ' str(tempvar[0,0:9,10,10])
+        print 'Cube = ' + str(cube.data[0,0:9,10,10])
+        print 'Tempvar = ' + str(tempvar[0,0:9,10,10])
     if flag == 0:
         print 'Not in list, so not changing vertical grid'
 
