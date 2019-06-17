@@ -5785,18 +5785,18 @@ def checkWind(data):
         else:
             flag = 0                           # flagging if not in list
 
-    tempvar = np.zeros(data.shape)
+    tempvar = np.zeros(cube.shape)
     if flag == 1:
         print 'In list, so changing vertical grid'
-        tempvar[:,:-1,:,:] = 0.5*(data.data[:,:-1,:,:] + data.data[:,1:,:,:])
+        tempvar[:,:-1,:,:] = 0.5*(cube.data[:,:-1,:,:] + cube.data[:,1:,:,:])
     if flag == 0:
         print 'Not in list, so not changing vertical grid'
 
     tempvar[:,-1,:,:] = np.nan
 
-    data.data = tempvar
+    cube.data = tempvar
 
-    return data, stash
+    return cube, stash
 
 def pullTrack(cube, grid_filename, con):
 
@@ -6340,9 +6340,7 @@ def main():
     #### LOAD CUBE
     if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
     if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
-        ## -------------------------------------------------------------
-        ## Update netCDF comments
-        ## -------------------------------------------------------------
+    ## Update netCDF comments
     out = appendNetCDF(outfile)
     # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
     # os.rename(outfile, final_outfile)
