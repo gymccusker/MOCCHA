@@ -6295,8 +6295,8 @@ def main():
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con, out_dir)
-    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con, out_dir)
+    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
+    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
 
     # -------------------------------------------------------------
     # Update netCDF comments
