@@ -6116,12 +6116,12 @@ def pullTrack(cube, grid_filename, con):
     print ''
     print '(NOT) Writing fcube to NetCDF file:'
     print ''
-    # iris.save(fcube, nc_outfile)
+    iris.save(fcube, nc_outfile)
     print fcube
 
-    return fcube
+    return fcube, nc_outfile
 
-def writeNetCDF(cube, data, outfile):
+def appendNetCDF(outfile):
 
     from netCDF4 import num2date, date2num
     import time
@@ -6135,8 +6135,8 @@ def writeNetCDF(cube, data, outfile):
     ###################################
     ## Open File
     ###################################
-    dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
-
+    dataset =  Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
+    # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
     print ''
     print dataset.file_format
     print ''
@@ -6157,50 +6157,50 @@ def writeNetCDF(cube, data, outfile):
     ### IMPORT USEFUL METADATA FROM CUBE
     # dataset.attributes = cube.attributes
 
-    ###################################
-    ## Switch off automatic filling
-    ###################################
-    dataset.set_fill_off()
-
-    ###################################
-    ## Data dimensions
-    ###################################
-    time = dataset.createDimension('time', np.size(cube.coord('time').points))
-    # Z = dataset.createDimension('Z', np.size(icenum1,1))
-    lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
-    lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
-
-    ###################################
-    ## Dimensions variables
-    ###################################
-    #### Time
-    time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    time.comment = cube.coord('time').standard_name
-    time.units = str(cube.coord('time').units)
-    time[:] = cube.aux_coords[1].points
-
-    #### Latitude
-    lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
-    lat.comment = cube.coord('grid_latitude').standard_name
-    lat.units = str(cube.coord('grid_latitude').units)
-    lat[:] = cube.coord('grid_latitude').points
-
-    #### Longitude
-    lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
-    lon.comment = cube.coord('grid_latitude').standard_name
-    lon.units = str(cube.coord('grid_longitude').units)
-    lon[:] = cube.coord('grid_longitude').points
-
-    ###################################
-    ###################################
-    ## Create 3-d variables
-    ###################################
-    ###################################
-    data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
-    data.units = str(cube.units)
-    # data.comment = cube.metadata
-    data.attributes = str(cube.attributes)
-    data[:] = cube.data[:]
+    # ###################################
+    # ## Switch off automatic filling
+    # ###################################
+    # dataset.set_fill_off()
+    #
+    # ###################################
+    # ## Data dimensions
+    # ###################################
+    # time = dataset.createDimension('time', np.size(cube.coord('time').points))
+    # # Z = dataset.createDimension('Z', np.size(icenum1,1))
+    # lat = dataset.createDimension('grid_latitude', np.size(cube.coord('grid_latitude').points))
+    # lon = dataset.createDimension('grid_longitude', np.size(cube.coord('grid_longitude').points))
+    #
+    # ###################################
+    # ## Dimensions variables
+    # ###################################
+    # #### Time
+    # time = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    # time.comment = cube.coord('time').standard_name
+    # time.units = str(cube.coord('time').units)
+    # time[:] = cube.aux_coords[1].points
+    #
+    # #### Latitude
+    # lat = dataset.createVariable('grid_latitude', np.float32, ('grid_latitude',),fill_value='-9999')
+    # lat.comment = cube.coord('grid_latitude').standard_name
+    # lat.units = str(cube.coord('grid_latitude').units)
+    # lat[:] = cube.coord('grid_latitude').points
+    #
+    # #### Longitude
+    # lon = dataset.createVariable('grid_longitude', np.float32, ('grid_longitude',),fill_value='-9999')
+    # lon.comment = cube.coord('grid_latitude').standard_name
+    # lon.units = str(cube.coord('grid_longitude').units)
+    # lon[:] = cube.coord('grid_longitude').points
+    #
+    # ###################################
+    # ###################################
+    # ## Create 3-d variables
+    # ###################################
+    # ###################################
+    # data = dataset.createVariable(cube.standard_name, np.float32, ('time','grid_latitude','grid_longitude',),fill_value='-9999')
+    # data.units = str(cube.units)
+    # # data.comment = cube.metadata
+    # data.attributes = str(cube.attributes)
+    # data[:] = cube.data[:]
 
     ###################################
     ###################################
@@ -6351,15 +6351,20 @@ def main():
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    # if con_flag == 0: fcube = pullTrack(cube, grid_filename, var_con)
-    # if con_flag == 1: fcube = pullTrack(cube, grid_filename, global_con)
+    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
+    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+
+    # -------------------------------------------------------------
+    # Update netCDF comments
+    # -------------------------------------------------------------
+    out = appendNetCDF(outfile)
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
-    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    # hour = 0
+    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
     END_TIME = time.time()
