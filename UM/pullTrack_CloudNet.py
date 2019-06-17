@@ -6146,9 +6146,9 @@ def appendNetCDF(outfile):
     ###################################
     ## Global Attributes
     ###################################
-    desc = 'Test netCDF write out'
+    dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
     micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983)'
-    dataset.description = desc
+    dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young (G.Young1@leeds.ac.uk) using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     # dataset.references = 'N/A'
