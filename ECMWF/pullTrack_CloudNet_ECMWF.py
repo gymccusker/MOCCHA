@@ -196,16 +196,16 @@ def plot_basemap(ship_data, lats, lons):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 500000
+    dim = 600000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=88,lat_0=88,lon_0=10)
+                lat_ts=89,lat_0=89,lon_0=10)
     m.drawcoastlines()
     # m.bluemarble()
 
     # define parallels/meridians
-    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=1.,fontsize=10)
+    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,1,0,0],linewidth=1.,fontsize=10)
     m.drawmeridians(np.arange(-180.,181.,10.),labels=[0,0,0,1],linewidth=1.,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
