@@ -695,9 +695,9 @@ def main():
     # -------------------------------------------------------------
     lats = np.zeros([38])
     lons = np.zeros([38])
-    time = np.zeros([24])
+    tim = np.zeros([24])
     for i in range(0,38):
-        lats[i], lons[i], time = pullLatLon(filenames[i])
+        lats[i], lons[i], tim = pullLatLon(filenames[i])
 
     print 'Lats = ' + str(lats)
     print 'Lons = ' + str(lons)
