@@ -693,8 +693,8 @@ def main():
     # -------------------------------------------------------------
     # Pull gridded ship track from data
     # -------------------------------------------------------------
-    lats = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
-    lons = [None] * 38
+    lats = np.zeros([38])        ## 'empty' list of 38 elements. can assign index without list.append
+    lons = np.zeros([38])
     for i in range(0,38):
         lats[i], lons[i] = pullLatLon(filenames[i])
 
