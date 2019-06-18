@@ -757,7 +757,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    map = plot_basemap(ship_data, lats, lons)
+    map = plot_basemap(ship_data, lats, lons, tim)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
