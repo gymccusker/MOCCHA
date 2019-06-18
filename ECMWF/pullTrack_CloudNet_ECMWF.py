@@ -94,7 +94,7 @@ def designGrid(lats, lons, tim):
     tedge, redge = np.meshgrid(edgelats, edgelons)
 
     plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(redge, tedge,'r');
+    plt.plot(redge, tedge,'ro');
     # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     plt.show()
 
