@@ -64,27 +64,27 @@ def designGrid(lats, lons, tim):
     print 'Find mid-points between ECMWF grid points'
     print ''
 
-    bedgelats = np.zeros([38])
-    redgelons = np.zeros([38])
+    edgelats = np.zeros([38])
+    edgelons = np.zeros([38])
     for j in range(0,37):
-        if lats[j] < lats[j+1]: bedgelats[j] = (lats[j+1] + lats[j])/2.0
+        if lats[j] < lats[j+1]: edgelats[j] = (lats[j+1] + lats[j])/2.0
         elif lats[j] == lats[j+1]:
             if j < 36:
-                if lats[j] < lats[j+2]: bedgelats[j] = (lats[j+2] + lats[j])/2.0
-        if lons[j] < lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
-        if lons[j] > lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
-        elif lons[j] == lons[j+1]: redgelons[j] = lons[j]
-    bedgelats[-1] = lats[-1]
-    redgelons[-1] = lons[-1]
+                if lats[j] < lats[j+2]: edgelats[j] = (lats[j+2] + lats[j])/2.0
+        if lons[j] < lons[j+1]: edgelons[j] = (lons[j+1] + lons[j])/2.0
+        if lons[j] > lons[j+1]: edgelons[j] = (lons[j+1] + lons[j])/2.0
+        elif lons[j] == lons[j+1]: edgelons[j] = lons[j]
+    edgelats[-1] = lats[-1]
+    edgelons[-1] = lons[-1]
 
-
+    print edgelats
 
     plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(lons[bedgelats>0],bedgelats[bedgelats>0],'r^');
-    plt.plot(redgelons[redgelons>0],lats[redgelons>0],'g>');
+    plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
+    plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     plt.show()
 
-    # return edgelat, edgelon
+    return edgelats, edgelons
 
 def checkLatLon(ship_data, lats, lons, date, tim):
 
@@ -747,7 +747,7 @@ def main():
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    edgelat, edgelon = designGrid(lats, lons, tim)
+    edgelats, edgelons = designGrid(lats, lons, tim)
     # ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
