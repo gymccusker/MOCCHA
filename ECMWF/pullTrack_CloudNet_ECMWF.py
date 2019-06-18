@@ -196,8 +196,8 @@ def plot_basemap(ship_data):
     # m.bluemarble()
 
     # define parallels/meridians
-    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
-    m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
+    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=1.,fontsize=10)
+    m.drawmeridians(np.arange(-180.,181.,5.),labels=[0,0,0,1],linewidth=1.,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
     # m.drawmapboundary(fill_color='aqua')
