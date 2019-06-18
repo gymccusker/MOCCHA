@@ -772,7 +772,6 @@ def main():
 
     ### JASMIN
     ### LAPTOP
-    ### MONSOON
     ### DESKTOP
 
     if platform == 'JASMIN':
@@ -781,20 +780,9 @@ def main():
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-    if platform == 'MONSOON':
-        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
+        root_dir = '/nfs/a96/MOCCHA/working/working/data/ecmwf_ewan/moccha/ecmwf-all/2018/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
-
-    ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
-
-    ## 1_20160401_61DIAG_TEST/
-    ## 2_20180801_61DIAGS_TEST/2_30_86.625/
-    ## 3_12AUG_SWATH_2FCSTS/
-    ## 4_OPER/20180830T0000Z_TRIAL/
 
     # -------------------------------------------------------------
     # Load ship track
@@ -806,33 +794,22 @@ def main():
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    grid_dirname = 'AUX_DATA/'
-    date = '20180812'
-    grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
+    # grid_dirname = 'AUX_DATA/'
+    # date = '20180812'
+    # grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
 
     print '******'
     print ''
     print 'Identifying .nc file: '
     print ''
 
-    # -------------------------------------------------------------------------
-    # make global stash list and constraint
-    # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
-    GlobalStashList = makeGlobalStashList()
-    global_con = iris.AttributeConstraint(
-        STASH=lambda stash: str(stash) in GlobalStashList)
-            ### defines which stash variables to load - should be within a loop
 
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
     print '******'
     print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
+    print 'Begin data read in at ' + time.strftime("%c")
     print ' '
     # var_con = 'specific_humidity'
     # cube = iris.load_cube(filename1, var_con)
@@ -841,39 +818,31 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[2]
-    print filename1
+    date = '20180812'
+    base_name = date + '_moccha_ecmwf_'
+    names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
+    filenames = [None] * 38
+    for i in range(0,38):
+        id = i+1
+        str_i = "%03d" % id
+        names[i] = base_name + str_i + '.nc'
+        filenames[i] = root_dir + names[i]
+
+    print filenames[0] + ' ... ' + filenames[-1]
     print ''
 
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        print 'Loading single diagnostic:'
-        print var_con
-        cube1 = iris.load_cube(filename1, var_con, callback)
-        con_flag = 0            # constraint flag
-    elif 'global_con' in locals():
-        print 'Loading multiple diagnostics:'
-        # cube = iris.load_cubes(filename1, global_con)
-        cube = iris.load(filename1, global_con, callback)
-        con_flag = 1            # constraint flag
-
-        # -------------------------------------------------------------
-
-    print cube
-    print ''
 
     # -------------------------------------------------------------
     # Pull gridded ship track from cube
     # -------------------------------------------------------------
 
     #### LOAD CUBE
-    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
-    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
-    ## Update netCDF comments
-    out = appendNetCDF(outfile)
-    # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-    # os.rename(outfile, final_outfile)
+    # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
+    # if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+    # ## Update netCDF comments
+    # out = appendNetCDF(outfile)
+    # # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
+    # # os.rename(outfile, final_outfile)
 
     # print outfile
 
