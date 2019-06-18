@@ -209,13 +209,13 @@ def plot_basemap(ship_data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 2000000
+    dim = 1500000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
                 lat_ts=86,lat_0=86,lon_0=10)
     m.drawcoastlines()
-    m.bluemarble()
+    # m.bluemarble()
 
     # define parallels/meridians
     m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
@@ -235,7 +235,7 @@ def plot_basemap(ship_data):
     x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
 
     # Plot tracks as line plot
-    plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
+    # plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
     plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
