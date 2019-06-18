@@ -77,12 +77,14 @@ def designGrid(lats, lons, tim):
     bedgelats[-1] = lats[-1]
     redgelons[-1] = lons[-1]
 
+
+
     plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(lons,bedgelats,'r^');
-    plt.plot(redgelons,lats,'g>');
+    plt.plot(lons[bedgelats>0],bedgelats[bedgelats>0],'r^');
+    plt.plot(redgelons[redgelons>0],lats[redgelons>0],'g>');
     plt.show()
 
-    return edgelat, edgelon
+    # return edgelat, edgelon
 
 def checkLatLon(ship_data, lats, lons, date, tim):
 
