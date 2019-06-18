@@ -66,18 +66,29 @@ def designGrid(lats, lons, tim):
 
     edgelats = np.zeros([38])
     edgelons = np.zeros([38])
+    latdiff = np.zeros([38])
+    londiff = np.zeros([38])
     for j in range(0,37):
-        if lats[j] < lats[j+1]: edgelats[j] = (lats[j+1] + lats[j])/2.0
+        if lats[j] < lats[j+1]:
+            edgelats[j] = (lats[j+1] + lats[j])/2.0
+            latdiff[j] = (lats[j+1] - lats[j])/2.0
         elif lats[j] == lats[j+1]:
             if j < 36:
                 if lats[j] < lats[j+2]: edgelats[j] = (lats[j+2] + lats[j])/2.0
-        if lons[j] < lons[j+1]: edgelons[j] = (lons[j+1] + lons[j])/2.0
-        if lons[j] > lons[j+1]: edgelons[j] = (lons[j+1] + lons[j])/2.0
+        if lons[j] < lons[j+1]:
+            edgelons[j] = (lons[j+1] + lons[j])/2.0
+            londiff[j] = (lons[j+1] - lons[j])/2.0
+        if lons[j] > lons[j+1]:
+            edgelons[j] = (lons[j+1] + lons[j])/2.0
+            londiff[j] = (lons[j+1] - lons[j])/2.0
         elif lons[j] == lons[j+1]: edgelons[j] = lons[j]
     edgelats[-1] = lats[-1]
     edgelons[-1] = lons[-1]
 
     print edgelats
+    print latdiff
+    print edgelons
+    print londiff
 
     plt.plot(lons,lats,'bs',markersize=8);
     plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
