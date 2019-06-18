@@ -82,9 +82,9 @@ def designGrid(lats, lons, tim):
             edgelons[j] = (lons[j+1] + lons[j])/2.0
             londiff[j] = (lons[j+1] - lons[j])/2.0
         elif lons[j] == lons[j+1]: edgelons[j] = lons[j]
-    edgelats[-1] = lats[-1]
-    edgelons[-1] = lons[-1]
     edgelats[edgelats==0] = lats[edgelats==0] + latdiff[0]
+    edgelons[-1] = lons[-1] + (lons[-1] - edgelons[-2])
+
 
     print edgelats
     print latdiff
