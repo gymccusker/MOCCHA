@@ -688,7 +688,7 @@ def main():
     print filenames[0] + ' ... ' + filenames[-1]
     print ''
 
-
+    lat, lon = checkLatLon(ship_data, filenames)
 
     # -------------------------------------------------------------
     # Pull gridded ship track from cube
@@ -709,7 +709,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # hour = 0
-    map = plot_basemap(ship_data)
+    # map = plot_basemap(ship_data)
 
     END_TIME = time.time()
     print '******'
