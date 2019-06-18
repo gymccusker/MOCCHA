@@ -156,7 +156,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_basemap(ship_data):
+def plot_basemap(ship_data, lats, lons):
 
     from mpl_toolkits.basemap import Basemap
     from matplotlib.patches import Polygon
@@ -219,13 +219,14 @@ def plot_basemap(ship_data):
 
     ### MAP ONTO PROJECTION
     x, y = m(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7])
-    # x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
-    # x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
 
     # Plot tracks as line plot
-    plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Tracked')
-    # plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
-    # plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
+    plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
+
+    lat, lon = np.meshgrid(lats, lons)
+    x_ecmwf, y_ecmwf = m(lon, lat)
+    # Plot grid box centres as scatter plot
+    plt.scatter(x_ecmwf, y_ecmwf, color = 'blue', linewidth = 2, label = 'ECMWF')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
@@ -720,7 +721,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # hour = 0
-    # map = plot_basemap(ship_data)
+    map = plot_basemap(ship_data, lats, lons)
 
     END_TIME = time.time()
     print '******'
