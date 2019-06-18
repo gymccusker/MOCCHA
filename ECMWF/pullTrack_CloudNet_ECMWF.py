@@ -277,7 +277,7 @@ def plot_basemap(ship_data, lats, lons, tim):
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF top edges')
 
-    x_r, y_r = m(edgelons, lats)
+    x_r, y_r = m(edgelons[edgelons>0], lats[edgelons>0])
     # Plot grid box centres as scatter plot
     plt.scatter(x_r, y_r, 100,
             color = 'green', marker = '>',
