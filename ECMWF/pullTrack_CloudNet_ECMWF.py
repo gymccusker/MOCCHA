@@ -58,7 +58,7 @@ def pullLatLon(filename):
 
     return lat, lon, time
 
-def checkLatLon(ship_data, lats, lons, date):
+def checkLatLon(ship_data, lats, lons, date, tim):
 
     print ''
     print 'Finding lat/lon of ship track'
@@ -75,7 +75,7 @@ def checkLatLon(ship_data, lats, lons, date):
     print 'Ship start (lon,lat): ' + str(ship_data.values[day_ind[0][0],7]) + ', ' + str(ship_data.values[day_ind[0][0],6])
     print 'Ship end (lon,lat): ' + str(ship_data.values[day_ind[0][-1],7]) + ', ' + str(ship_data.values[day_ind[0][-1],6])
 
-    map = plot_basemap(ship_data, lats, lons)
+    map = plot_basemap(ship_data, lats, lons, tim)
 
     return day_ind
 
@@ -152,7 +152,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_basemap(ship_data, lats, lons):
+def plot_basemap(ship_data, lats, lons, tim):
 
     from mpl_toolkits.basemap import Basemap
     from matplotlib.patches import Polygon
@@ -223,7 +223,7 @@ def plot_basemap(ship_data, lats, lons):
     x_ecmwf, y_ecmwf = m(lons[0:2], lats[0:2])
     # Plot grid box centres as scatter plot
     plt.scatter(x_ecmwf, y_ecmwf, 400,
-            color = 'white', marker = 's',
+            color = tim, marker = 's',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF')
 
@@ -711,7 +711,7 @@ def main():
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
 
-    ship_ind = checkLatLon(ship_data, lats, lons, date)
+    ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
     # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
