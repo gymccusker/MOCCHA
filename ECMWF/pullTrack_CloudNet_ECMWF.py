@@ -12,7 +12,7 @@ from netCDF4 import Dataset
 import numpy as np
 # import diags_MOCCHA as diags
 # import diags_varnames as varnames
-import cartopy.crs as ccrs
+# import cartopy.crs as ccrs
 # import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
