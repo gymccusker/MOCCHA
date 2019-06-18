@@ -226,10 +226,10 @@ def plot_basemap(ship_data, lats, lons):
     # lat, lon = np.meshgrid(lats, lons)
     x_ecmwf, y_ecmwf = m(lons, lats)
     # Plot grid box centres as scatter plot
-    plt.scatter(x_ecmwf, y_ecmwf,
+    plt.scatter(x_ecmwf, y_ecmwf, 5,
             color = 'white', marker = 's',
             edgecolor = 'blue', linewidth = 2,
-            markersize = 5, label = 'ECMWF')
+            label = 'ECMWF')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
