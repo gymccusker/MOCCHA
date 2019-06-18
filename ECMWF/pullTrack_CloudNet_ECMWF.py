@@ -40,7 +40,7 @@ def assignColumns(data):
 
 def pullLatLon(filename):
 
-    from netCDF4 import dataset
+    from netCDF4 import Dataset
 
     print '*****'
     print 'Extracting lat/lon from ECMWF netCDF file'
