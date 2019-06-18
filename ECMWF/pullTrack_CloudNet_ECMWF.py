@@ -79,9 +79,9 @@ def checkLatLon(ship_data, lats, lons, date, tim):
     ship_lons = ship_data.values[day_ind,6]
 
     # for i in range(0,24):
-        for j in range(0,37):
-            ind1 = np.where(np.logical_and(ship_lats[0][i] > lats[j],ship_lats[0][i] <= lats[j+1]))
-            print ind1
+    for j in range(0,37):
+        ind1 = np.where(np.logical_and(ship_lats[0][i] > lats[j],ship_lats[0][i] <= lats[j+1]))
+        print ind1
 
     map = plot_basemap(ship_data, lats, lons, tim)
 
