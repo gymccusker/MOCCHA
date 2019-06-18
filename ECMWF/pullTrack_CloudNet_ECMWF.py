@@ -50,7 +50,6 @@ def pullLatLon(filename):
 
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
-    dx = nc.variables['horizontal_resolution'][:]
 
     print 'ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')'
 
@@ -77,7 +76,7 @@ def checkLatLon(ship_data, lats, lons, date):
 
     # map = plot_basemap(ship_data, lats, lons)
 
-    return lat, lon
+    return day_ind
 
 def iceDrift(data):
 
@@ -710,7 +709,7 @@ def main():
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
 
-    ecmwf_inds = checkLatLon(ship_data, lats, lons, date)
+    ship_ind = checkLatLon(ship_data, lats, lons, date)
 
     #### LOAD CUBE
     # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
