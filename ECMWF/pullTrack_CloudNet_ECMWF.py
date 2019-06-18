@@ -270,14 +270,19 @@ def plot_basemap(ship_data, lats, lons, tim):
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF')
 
-    x_redge, y_tedge = m(edgelons, edgelats)
+    x_t, y_t = m(lons, edgelats)
     # Plot grid box centres as scatter plot
-    plt.scatter(x_redge, y_tedge, 100,
+    plt.scatter(x_t, y_t, 100,
+            color = 'red', marker = '^',
+            edgecolor = 'blue', linewidth = 2,
+            label = 'ECMWF top edges')
+
+    x_r, y_r = m(edgelons, lats)
+    # Plot grid box centres as scatter plot
+    plt.scatter(x_r, y_r, 100,
             color = 'red', marker = '>',
             edgecolor = 'blue', linewidth = 2,
-            label = 'ECMWF mid points')
-
-
+            label = 'ECMWF right edges')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
