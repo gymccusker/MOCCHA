@@ -71,8 +71,8 @@ def checkLatLon(ship_data, lats, lons, date):
     #################################################################
     ## print ship track coordinates
     #################################################################
-    print 'Ship start (lon,lat): ' + str(ship_data.values[day_ind,7][0]) + ', ' + str(ship_data.values[day_ind,6][0])
-    print 'Ship end (lon,lat): ' + str(ship_data.values[day_ind,7][-1]) + ', ' + str(ship_data.values[day_ind,6][-1])
+    print 'Ship start (lon,lat): ' + str(ship_data.values[day_ind[0],7]) + ', ' + str(ship_data.values[day_ind[0],6])
+    print 'Ship end (lon,lat): ' + str(ship_data.values[day_ind[-1],7]) + ', ' + str(ship_data.values[day_ind[-1],6])
 
     # map = plot_basemap(ship_data, lats, lons)
 
