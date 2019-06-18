@@ -126,35 +126,13 @@ def inIce(data):
 
     return inIce_index
 
-def writeoutGrid(tim, lat, lon, date):
-
-    import pandas as pd
-
-    # ******
-    # write to csv file
-    # ******
-
-    print '******'
-    print 'Writing ' + date + ' grid to file:'
-    print ''
-    dat = np.zeros([len(tim), 3])
-    dat[:,0] = tim
-    dat[:,1] = lon
-    dat[:,2] = lat
-    df = pd.DataFrame(dat)
-    filename = 'AUX_DATA/' + date + '_ShipTrack_GRIDDED.csv'
-    df.to_csv(filename,  sep = " ")
-    print '... finished!'
-    print ''
-    print '******'
-
 def trackShip(data):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==30,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -209,11 +187,11 @@ def plot_basemap(ship_data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 1500000
+    dim = 1000000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=86,lat_0=86,lon_0=10)
+                lat_ts=87,lat_0=87,lon_0=10)
     m.drawcoastlines()
     # m.bluemarble()
 
@@ -222,22 +200,23 @@ def plot_basemap(ship_data):
     m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
-    # m.drawmapboundary(fill_color='lightgrey')
+    m.drawmapboundary(fill_color='lightgrey')
     # m.fillcontinents(color='white')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
+    # drift_index = iceDrift(ship_data)
+    # inIce_index = inIce(ship_data)
+    trackShip_index = trackShip(ship_data)
 
     ### MAP ONTO PROJECTION
-    x, y = m(ship_data.values[:,6], ship_data.values[:,7])
-    x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
-    x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
+    x, y = m(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7])
+    # x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
+    # x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
 
     # Plot tracks as line plot
-    # plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
-    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
-    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
+    plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Tracked')
+    # plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
+    # plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
