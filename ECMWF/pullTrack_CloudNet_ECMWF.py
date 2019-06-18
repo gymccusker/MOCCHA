@@ -58,6 +58,28 @@ def pullLatLon(filename):
 
     return lat, lon, time
 
+def designGrid(lats, lons, tim):
+
+    print '*****'
+    print 'Find mid-points between ECMWF grid points'
+    print ''
+
+    bedgelats = np.zeros([38])
+    redgelons = np.zeros([38])
+    for j in range(0,37):
+        if lats[j] < lats[j+1]: bedgelats[j] = (lats[j+1] + lats[j])/2.0
+        elif lats[j] == lats[j+1]:
+            if lats[j] < lats[j+2]: bedgelats[j] = (lats[j+2] + lats[j])/2.0
+        if lons[j] < lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
+        if lons[j] > lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
+        elif lons[j] == lons[j+1]: redgelons[j] = lons[j]
+    bedgelats[-1] = lats[-1]
+    redgelons[-1] = lons[-1]
+
+    plt.plot(lons,lats,'bs',markersize=8);plt.plot(lons,bedgelats,'r^');plt.plot(redgelons,lats,'g>');plt.show()
+
+    return edgelat, edgelon
+
 def checkLatLon(ship_data, lats, lons, date, tim):
 
     print ''
@@ -719,8 +741,8 @@ def main():
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-
-    ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
+    edgelat, edgelon = designGrid(lats, lons, tim)
+    # ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
     # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
