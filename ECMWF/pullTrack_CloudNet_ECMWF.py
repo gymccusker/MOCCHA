@@ -51,7 +51,9 @@ def pullLatLon(filename):
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
 
-    print 'ECMWF file at: (' + str(lat) + ', ' + str(lon) + ')'
+    print 'ECMWF file at: (' + str(lon) + ', ' + str(lat)) + ')'
+
+    nc.close()
 
     return lat, lon
 
@@ -69,11 +71,11 @@ def checkLatLon(ship_data, filenames):
     print 'findLatLon testing:'
     print 'Ship (lon,lat): ' + str(ship_data.values[ship_index,7][0]) + ', ' + str(ship_data.values[ship_index,6][0])
 
-    lat, lon = pullLatLon(filenames[0])
+    # lat, lon = pullLatLon(filenames[0])
 
-    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
-    print 'Ship index test'
-    print ship_index
+    # ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
+    # print 'Ship index test'
+    # print ship_index
     # print lat[ship_index[0]
 
 
@@ -688,7 +690,13 @@ def main():
     print filenames[0] + ' ... ' + filenames[-1]
     print ''
 
-    lat, lon = checkLatLon(ship_data, filenames)
+    # -------------------------------------------------------------
+    # Pull gridded ship track from data
+    # -------------------------------------------------------------
+    lats = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
+    lons = [None] * 38
+    for i in range(0,38):
+        lats[i], lons[i] = pullLatLon(filenames[i])
 
     # -------------------------------------------------------------
     # Pull gridded ship track from cube
