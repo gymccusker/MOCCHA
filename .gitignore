@@ -34,6 +34,7 @@
 # Figure files
 *.png
 *.svg
+ECMWF/FIGS/*
 
 # Data files
 ODEN/DATA/*
