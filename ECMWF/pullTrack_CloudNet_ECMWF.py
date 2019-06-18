@@ -189,14 +189,14 @@ def plot_basemap(ship_data, lats, lons):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     ## create figure and axes instances
-    fig = plt.figure(figsize=(6,8))
+    fig = plt.figure(figsize=(8,10))
 
     #########################################################################################################
 
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 500000
+    dim = 400000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
@@ -229,7 +229,7 @@ def plot_basemap(ship_data, lats, lons):
     plt.scatter(x_ecmwf, y_ecmwf,
             color = 'white', marker = 's',
             edgecolor = 'blue', linewidth = 2,
-            label = 'ECMWF')
+            markersize = 5, label = 'ECMWF')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
