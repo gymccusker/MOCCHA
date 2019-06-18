@@ -196,7 +196,7 @@ def plot_basemap(ship_data, lats, lons):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 1000000
+    dim = 500000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
