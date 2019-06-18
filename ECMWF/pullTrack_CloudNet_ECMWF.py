@@ -75,6 +75,8 @@ def designGrid(lats, lons, tim):
         elif lats[j] == lats[j+1]:
             if j < 36:
                 if lats[j] < lats[j+2]: edgelats[j] = (lats[j+2] + lats[j])/2.0
+        else:
+            edgelats[j] = lats[j] + latdiff[0]
         if lons[j] < lons[j+1]:
             edgelons[j] = (lons[j+1] + lons[j])/2.0
             londiff[j] = (lons[j+1] - lons[j])/2.0
