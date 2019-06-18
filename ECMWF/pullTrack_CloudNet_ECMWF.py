@@ -698,8 +698,8 @@ def main():
     for i in range(0,38):
         lats[i], lons[i] = pullLatLon(filenames[i])
 
-    print 'Lats = ' + lats
-    print 'Lons = ' + lons
+    print 'Lats = ' + str(lats)
+    print 'Lons = ' + str(lons)
 
     # -------------------------------------------------------------
     # Pull gridded ship track from cube
