@@ -170,57 +170,10 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
+def plot_basemap(ship_data):
 
-    # import iris.plot as iplt
-    # import iris.quickplot as qplt
-    # import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-        # from matplotlib.patches import Polygon
-
-    ###---------------------------------
-    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
-    ###---------------------------------
-    print 'What grid are we looking at?'
-    if len(cube[0].dim_coords[-1].points) == 25:
-    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-        xoffset = -239
-        yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 56:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 95:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    else:
-    # elif cube[0,0].shape >= 500-1:
-        xoffset = 0
-        yoffset = 0
-
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
-
-    ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    diag = 1
-    print ''
-    print 'Diag is: ', cube[diag].long_name
-    ### pcXXX
-    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    from mpl_toolkits.basemap import Basemap
+    from matplotlib.patches import Polygon
 
     ###################################
     ## PLOT MAP
@@ -228,12 +181,12 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     print '******'
     print ''
-    print 'Plotting cartopy map:'
+    print 'Plot basemap:'
     print ''
 
     ##################################################
     ##################################################
-    #### 	CARTOPY
+    #### 	BASEMAP
     ##################################################
     ##################################################
 
@@ -249,130 +202,57 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     plt.rc('legend',fontsize=SMALL_SIZE)
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
-    #################################################################
     ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(12,10))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    fig = plt.figure(figsize=(6,8))
 
-    ### set size
-    ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
-    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
+    #########################################################################################################
 
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+    ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
-    #################################################################
-    ## add geographic features/guides for reference
-    #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    # ax.set_global()
-    ax.gridlines()
+    ### MAP DIMENSIONS
+    dim = 2000000
 
-    #################################################################
-    ## plot UM data
-    ################################################################
-    # if np.size(cube[diag].data.shape) == 4:
-    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
-    # elif np.size(cube[diag].data.shape) == 3:
-    #     iplt.pcolormesh(cube[diag][hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
-    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
+    m = Basemap(width=0.75*dim,height=dim,
+                resolution='l',projection='stere',\
+                lat_ts=86,lat_0=86,lon_0=10)
+    m.drawcoastlines()
+    m.bluemarble()
 
-    #################################################################
-    ## plot UM nest
-    #################################################################
-    ### draw outline of grid
-    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
-    # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    # define parallels/meridians
+    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
+    m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
+    m.drawcoastlines(linewidth=1.)
 
-    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
+    # m.drawmapboundary(fill_color='lightgrey')
+    # m.fillcontinents(color='white')
 
-            #### MID POINT: (433, 258)
-
-    #################################################################
-    ## plot ship track
-    #################################################################
     ### DEFINE DRIFT + IN_ICE PERIODS
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
-    trackShip_index = trackShip(ship_data)
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
 
-    ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    ### MAP ONTO PROJECTION
+    x, y = m(ship_data.values[:,6], ship_data.values[:,7])
+    x_inIcePeriod, y_inIcePeriod = m(ship_data.values[inIce_index,6],ship_data.values[inIce_index,7])
+    x_driftPeriod, y_driftPeriod = m(ship_data.values[drift_index,6],ship_data.values[drift_index,7])
 
-    #################################################################
-    ## read in and plot gridded ship track
-    #################################################################
-    tim, ilat, ilon = readGriddedTrack(grid_filename)
+    # Plot tracks as line plot
+    plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
-    ### Plot tracks as line plot
-    for i in range(0, len(ilon)-1):
-        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    ###########################################
+    ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
+    ###########################################
+        # I.B.:
+        # Drift limits are:
+        # latitude   88.4502 to 89.6388
+        # longitude  4.6830 to 73.7629
+        #
+        # R.P.: original 1.5km nest -> (0, 86.625) @ 500x500
 
-
-    ### Plot tracks as line plot
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-    #          color = 'yellow', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'In Ice',
-    #          )
-    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-    #          color = 'red', linewidth = 4,
-    #          transform = ccrs.PlateCarree(), label = 'Drift',
-    #          )
-
-    #### test plotting of unrotated grid
-    # lon, lat = unrotateGrid(cube)
-
-    # plt.plot(np.nanmin(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmin(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-
+    ### ADD LEGEND
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
-
-    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
 def pullTrack(cube, grid_filename, con):
@@ -794,29 +674,21 @@ def main():
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    # grid_dirname = 'AUX_DATA/'
-    # date = '20180812'
-    # grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
-
     print '******'
     print ''
     print 'Identifying .nc file: '
     print ''
 
-
     # # -------------------------------------------------------------
-    # # Load cube
+    # # Load data
     # # -------------------------------------------------------------
     print '******'
     print ''
     print 'Begin data read in at ' + time.strftime("%c")
     print ' '
-    # var_con = 'specific_humidity'
-    # cube = iris.load_cube(filename1, var_con)
-    # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     ### -------------------------------------------------------------------------
-    ### define input filename
+    ### define input filenames
     ### -------------------------------------------------------------------------
     date = '20180812'
     base_name = date + '_moccha_ecmwf_'
@@ -830,6 +702,7 @@ def main():
 
     print filenames[0] + ' ... ' + filenames[-1]
     print ''
+
 
 
     # -------------------------------------------------------------
@@ -851,8 +724,7 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # hour = 0
-    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-
+    map = plot_basemap(ship_data)
 
     END_TIME = time.time()
     print '******'
