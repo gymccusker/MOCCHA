@@ -50,6 +50,7 @@ def pullLatLon(filename):
 
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
+    dx = nc.variables['horizontal_resolution'][:]
 
     print 'ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')'
 
@@ -57,19 +58,24 @@ def pullLatLon(filename):
 
     return lat, lon
 
-def checkLatLon(ship_data, lats, lons):
+def checkLatLon(ship_data, lats, lons, date):
 
     print ''
     print 'Finding lat/lon of ship track'
     print '...'
 
     #################################################################
-    ## find ship track coordinates
+    ## find date of interest
     #################################################################
-    ship_index = trackShip(ship_data)
-    print 'Ship (lon,lat): ' + str(ship_data.values[ship_index,7][0]) + ', ' + str(ship_data.values[ship_index,6][0])
+    day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
 
-    map = plot_basemap(ship_data, lats, lons)
+    #################################################################
+    ## print ship track coordinates
+    #################################################################
+    print 'Ship start (lon,lat): ' + str(ship_data.values[day_index,7][0]) + ', ' + str(ship_data.values[day_index,6][0])
+    print 'Ship end (lon,lat): ' + str(ship_data.values[day_index,7][-1]) + ', ' + str(ship_data.values[day_index,6][-1])
+
+    # map = plot_basemap(ship_data, lats, lons)
 
     return lat, lon
 
