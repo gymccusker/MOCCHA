@@ -51,7 +51,7 @@ def pullLatLon(filename):
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
 
-    print 'ECMWF file at: (' + str(lon) + ', ' + str(lat)) + ')'
+    print 'ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')'
 
     nc.close()
 
