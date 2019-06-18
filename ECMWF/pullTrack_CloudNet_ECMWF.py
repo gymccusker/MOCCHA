@@ -187,7 +187,7 @@ def plot_basemap(ship_data):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 300000
+    dim = 100000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
@@ -200,7 +200,7 @@ def plot_basemap(ship_data):
     m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
-    m.drawmapboundary(fill_color='aqua')
+    # m.drawmapboundary(fill_color='aqua')
     m.fillcontinents(color='coral',lake_color='aqua')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
