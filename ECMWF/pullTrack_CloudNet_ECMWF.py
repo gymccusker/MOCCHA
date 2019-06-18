@@ -57,7 +57,7 @@ def pullLatLon(filename):
 
     return lat, lon
 
-def checkLatLon(ship_data, lats, lons, filename):
+def checkLatLon(ship_data, lats, lons):
 
     print ''
     print 'Finding lat/lon of ship track'
