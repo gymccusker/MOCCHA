@@ -90,14 +90,6 @@ def designGrid(lats, lons, tim):
     # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     # plt.show()
 
-    edgelons[edgelons==0] = np.nan
-    tedge, redge = np.meshgrid(edgelats, edgelons)
-
-    plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(redge, tedge,'ro');
-    # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
-    plt.show()
-
     return edgelats, edgelons
 
 def checkLatLon(ship_data, lats, lons, date, tim):
@@ -263,6 +255,7 @@ def plot_basemap(ship_data, lats, lons, tim):
     # drift_index = iceDrift(ship_data)
     # inIce_index = inIce(ship_data)
     trackShip_index = trackShip(ship_data)
+    edgelats, edgelons = designGrid(lats, lons, tim)
 
     ### MAP ONTO PROJECTION
     x, y = m(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7])
@@ -270,13 +263,21 @@ def plot_basemap(ship_data, lats, lons, tim):
     # Plot tracks as line plot
     plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
 
-    # lat, lon = np.meshgrid(lats, lons)
     x_ecmwf, y_ecmwf = m(lons, lats)
     # Plot grid box centres as scatter plot
     plt.scatter(x_ecmwf, y_ecmwf, 400,
             color = 'white', marker = 's',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF')
+
+    x_redge, y_tedge = m(edgelons, edgelats)
+    # Plot grid box centres as scatter plot
+    plt.scatter(x_redge, y_tedge, 100,
+            color = 'red', marker = '>',
+            edgecolor = 'blue', linewidth = 2,
+            label = 'ECMWF mid points')
+
+
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
@@ -756,12 +757,12 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    # map = plot_basemap(ship_data, lats, lons)
+    map = plot_basemap(ship_data, lats, lons)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    edgelats, edgelons = designGrid(lats, lons, tim)
+    # edgelats, edgelons = designGrid(lats, lons, tim)
     # ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
