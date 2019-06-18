@@ -265,8 +265,8 @@ def plot_basemap(ship_data, lats, lons, tim):
 
     x_ecmwf, y_ecmwf = m(lons, lats)
     # Plot grid box centres as scatter plot
-    plt.scatter(x_ecmwf, y_ecmwf, 400,
-            color = 'white', marker = 's',
+    plt.scatter(x_ecmwf, y_ecmwf, 100,
+            color = 'blue', marker = 's',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF')
 
@@ -280,7 +280,7 @@ def plot_basemap(ship_data, lats, lons, tim):
     x_r, y_r = m(edgelons, lats)
     # Plot grid box centres as scatter plot
     plt.scatter(x_r, y_r, 100,
-            color = 'red', marker = '>',
+            color = 'green', marker = '>',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF right edges')
 
