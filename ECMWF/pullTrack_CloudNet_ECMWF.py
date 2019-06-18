@@ -710,7 +710,7 @@ def main():
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
 
-    ecmwf_inds = checkLatLon(ship_data, lats, lons)
+    ecmwf_inds = checkLatLon(ship_data, lats, lons, date)
 
     #### LOAD CUBE
     # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
