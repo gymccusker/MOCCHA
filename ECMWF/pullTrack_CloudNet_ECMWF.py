@@ -85,15 +85,17 @@ def designGrid(lats, lons, tim):
     edgelats[edgelats==0] = lats[edgelats==0] + latdiff[0]
     edgelons[-1] = lons[-1] + (lons[-1] - edgelons[-2])
 
+    # plt.plot(lons,lats,'bs',markersize=8);
+    # plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
+    # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
+    # plt.show()
 
-    print edgelats
-    print latdiff
-    print edgelons
-    print londiff
+    edgelons[edgelons==0] = np.nan
+    tedge, redge = np.meshgrid(edgelats, edgelons)
 
     plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
-    plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
+    plt.plot(redge, tedge,'r');
+    # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     plt.show()
 
     return edgelats, edgelons
