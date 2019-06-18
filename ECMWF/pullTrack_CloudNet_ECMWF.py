@@ -38,7 +38,24 @@ def assignColumns(data):
 
     return columns
 
-def findLatLon(ship_data, cube, hour):
+def pullLatLon(filename):
+
+    from netCDF4 import dataset
+
+    print '*****'
+    print 'Extracting lat/lon from ECMWF netCDF file'
+    print ''
+
+    nc = Dataset(filename,'r')
+
+    lat = nc.variables['latitude'][:]
+    lon = nc.variables['longitude'][:]
+
+    print 'ECMWF file at: (' + str(lat) + ', ' + str(lon) + ')'
+
+    return lat, lon
+
+def checkLatLon(ship_data, filenames):
 
     print ''
     print 'Finding lat/lon of ship track'
@@ -47,22 +64,12 @@ def findLatLon(ship_data, cube, hour):
     #################################################################
     ## find ship track coordinates
     #################################################################
-    ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
-
-    # -------------------------------------------------------------
-    # Define unrotated coordinate model grid
-    # -------------------------------------------------------------
-    #### the following uses iris to unrotate the coordinate grid.
-    ####    this only works with square domains (i.e. paXXX files)
-    ####    only needs to be performed once -- saved grid as .csv file
-    lon, lat = unrotateGrid(cube)
+    ship_index = trackShip(ship_data)
 
     print 'findLatLon testing:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
-    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
+    print 'Ship (lon,lat): ' + str(ship_data.values[ship_index,7][0]) + ', ' + str(ship_data.values[ship_index,6][0])
 
+    lat, lon = pullLatLon(filenames[0])
 
     ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
     print 'Ship index test'
@@ -197,11 +204,11 @@ def plot_basemap(ship_data):
 
     # define parallels/meridians
     m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=1.,fontsize=10)
-    m.drawmeridians(np.arange(-180.,181.,5.),labels=[0,0,0,1],linewidth=1.,fontsize=10)
+    m.drawmeridians(np.arange(-180.,181.,10.),labels=[0,0,0,1],linewidth=1.,fontsize=10)
     m.drawcoastlines(linewidth=1.)
 
     # m.drawmapboundary(fill_color='aqua')
-    m.fillcontinents(color='coral',lake_color='aqua')
+    # m.fillcontinents(color='coral',lake_color='aqua')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
     # drift_index = iceDrift(ship_data)
