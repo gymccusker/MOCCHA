@@ -57,7 +57,7 @@ def pullLatLon(filename):
 
     return lat, lon
 
-def checkLatLon(ship_data, filenames):
+def checkLatLon(ship_data, lats, lons, filename):
 
     print ''
     print 'Finding lat/lon of ship track'
@@ -67,19 +67,9 @@ def checkLatLon(ship_data, filenames):
     ## find ship track coordinates
     #################################################################
     ship_index = trackShip(ship_data)
-
-    print 'findLatLon testing:'
     print 'Ship (lon,lat): ' + str(ship_data.values[ship_index,7][0]) + ', ' + str(ship_data.values[ship_index,6][0])
 
-    # lat, lon = pullLatLon(filenames[0])
-
-    # ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
-    # print 'Ship index test'
-    # print ship_index
-    # print lat[ship_index[0]
-
-
-    print 'test complete!'
+    map = plot_basemap(ship_data, lats, lons)
 
     return lat, lon
 
@@ -141,7 +131,7 @@ def trackShip(data):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -691,13 +681,13 @@ def main():
         names[i] = base_name + str_i + '.nc'
         filenames[i] = root_dir + names[i]
 
-    print filenames[0] + ' ... ' + filenames[-1]
+    print names[0] + ' ... ' + names[-1]
     print ''
 
     # -------------------------------------------------------------
-    # Pull gridded ship track from data
+    # Find ECMWF grid
     # -------------------------------------------------------------
-    lats = np.zeros([38])        ## 'empty' list of 38 elements. can assign index without list.append
+    lats = np.zeros([38])
     lons = np.zeros([38])
     for i in range(0,38):
         lats[i], lons[i] = pullLatLon(filenames[i])
@@ -706,8 +696,15 @@ def main():
     print 'Lons = ' + str(lons)
 
     # -------------------------------------------------------------
-    # Pull gridded ship track from cube
+    # Plot data (map)
     # -------------------------------------------------------------
+    # map = plot_basemap(ship_data, lats, lons)
+
+    # -------------------------------------------------------------
+    # Pull daily gridded ship track from netCDFs
+    # -------------------------------------------------------------
+
+    ecmwf_inds = checkLatLon(ship_data, lats, lons)
 
     #### LOAD CUBE
     # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
@@ -719,12 +716,7 @@ def main():
 
     # print outfile
 
-    # -------------------------------------------------------------
-    # Plot data (map)
-    # -------------------------------------------------------------
-    ### select hour to plot
-    # hour = 0
-    map = plot_basemap(ship_data, lats, lons)
+
 
     END_TIME = time.time()
     print '******'
