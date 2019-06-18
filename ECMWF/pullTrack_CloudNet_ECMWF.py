@@ -74,7 +74,7 @@ def checkLatLon(ship_data, lats, lons, date):
     print 'Ship start (lon,lat): ' + str(ship_data.values[day_ind[0][0],7]) + ', ' + str(ship_data.values[day_ind[0][0],6])
     print 'Ship end (lon,lat): ' + str(ship_data.values[day_ind[0][-1],7]) + ', ' + str(ship_data.values[day_ind[0][-1],6])
 
-    # map = plot_basemap(ship_data, lats, lons)
+    map = plot_basemap(ship_data, lats, lons)
 
     return day_ind
 
@@ -219,7 +219,7 @@ def plot_basemap(ship_data, lats, lons):
     plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
 
     # lat, lon = np.meshgrid(lats, lons)
-    x_ecmwf, y_ecmwf = m(lons, lats)
+    x_ecmwf, y_ecmwf = m(lons[0:2], lats[0:2])
     # Plot grid box centres as scatter plot
     plt.scatter(x_ecmwf, y_ecmwf, 400,
             color = 'white', marker = 's',
