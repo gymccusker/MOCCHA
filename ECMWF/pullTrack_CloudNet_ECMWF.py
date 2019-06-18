@@ -223,8 +223,8 @@ def plot_basemap(ship_data, lats, lons):
     # Plot tracks as line plot
     plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
 
-    lat, lon = np.meshgrid(lats, lons)
-    x_ecmwf, y_ecmwf = m(lon, lat)
+    # lat, lon = np.meshgrid(lats, lons)
+    x_ecmwf, y_ecmwf = m(lons, lats)
     # Plot grid box centres as scatter plot
     plt.scatter(x_ecmwf, y_ecmwf, color = 'blue', linewidth = 2, label = 'ECMWF')
 
