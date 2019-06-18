@@ -1,6 +1,6 @@
 ##--------------------------------------------------------------------------
 ##
-##			Script to read in WRF output files, extract necessary data,
+##			Script to read in ECMWF ASCII output files, extract necessary data,
 ##			then save into new NetCDF file (reduces file size for archiving)
 ##					-- GYoung
 ##
