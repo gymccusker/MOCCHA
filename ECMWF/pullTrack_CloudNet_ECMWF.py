@@ -78,6 +78,7 @@ def checkLatLon(ship_data, lats, lons, date, tim):
     ship_lats = ship_data.values[day_ind,7]
     ship_lons = ship_data.values[day_ind,6]
 
+    i = 0
     # for i in range(0,24):
     for j in range(0,37):
         ind1 = np.where(np.logical_and(ship_lats[0][i] > lats[j],ship_lats[0][i] <= lats[j+1]))
