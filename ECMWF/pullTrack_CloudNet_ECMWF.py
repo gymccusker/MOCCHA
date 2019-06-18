@@ -64,21 +64,22 @@ def designGrid(lats, lons, tim):
     print 'Find mid-points between ECMWF grid points'
     print ''
 
-    bedgelats = np.zeros([39])
-    redgelons = np.zeros([39])
+    bedgelats = np.zeros([38])
+    redgelons = np.zeros([38])
     for j in range(0,37):
         if lats[j] < lats[j+1]: bedgelats[j] = (lats[j+1] + lats[j])/2.0
         elif lats[j] == lats[j+1]:
-            if lats[j] < lats[j+2]: bedgelats[j] = (lats[j+2] + lats[j])/2.0
+            if j < 36:
+                if lats[j] < lats[j+2]: bedgelats[j] = (lats[j+2] + lats[j])/2.0
         if lons[j] < lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
         if lons[j] > lons[j+1]: redgelons[j] = (lons[j+1] + lons[j])/2.0
         elif lons[j] == lons[j+1]: redgelons[j] = lons[j]
-    bedgelats[-1] = lats[-2]
-    redgelons[-1] = lons[-2]
+    bedgelats[-1] = lats[-1]
+    redgelons[-1] = lons[-1]
 
     plt.plot(lons,lats,'bs',markersize=8);
-    plt.plot(lons,bedgelats[:-1],'r^');
-    plt.plot(redgelons[:-1],lats,'g>');
+    plt.plot(lons,bedgelats,'r^');
+    plt.plot(redgelons,lats,'g>');
     plt.show()
 
     return edgelat, edgelon
