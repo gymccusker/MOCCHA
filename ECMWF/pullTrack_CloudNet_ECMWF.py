@@ -50,12 +50,13 @@ def pullLatLon(filename):
 
     lat = nc.variables['latitude'][:]
     lon = nc.variables['longitude'][:]
+    time = nc.variables['time'][:]
 
     print 'ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')'
 
     nc.close()
 
-    return lat, lon
+    return lat, lon, time
 
 def checkLatLon(ship_data, lats, lons, date):
 
@@ -694,8 +695,9 @@ def main():
     # -------------------------------------------------------------
     lats = np.zeros([38])
     lons = np.zeros([38])
+    time = np.zeros([24])
     for i in range(0,38):
-        lats[i], lons[i] = pullLatLon(filenames[i])
+        lats[i], lons[i], time = pullLatLon(filenames[i])
 
     print 'Lats = ' + str(lats)
     print 'Lons = ' + str(lons)
