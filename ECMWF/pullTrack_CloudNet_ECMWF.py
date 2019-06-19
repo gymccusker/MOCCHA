@@ -105,7 +105,7 @@ def designGrid(lats, lons, tim):
 
     edgelats = lats + th    # gives upper grid boundaries for latitude
 
-    plt.plot(lons,lats,'bs',markersize=8);
+    plt.plot(lons,lats,'bs');
     plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
     # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     plt.show()
@@ -782,12 +782,12 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    map = plot_basemap(ship_data, lats, lons, tim)
+    # map = plot_basemap(ship_data, lats, lons, tim)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    # edgelats, edgelons = designGrid(lats, lons, tim)
+    edgelats, edgelons = designGrid(lats, lons, tim)
     # ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
