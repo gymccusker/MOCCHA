@@ -60,35 +60,55 @@ def pullLatLon(filename):
 
 def designGrid(lats, lons, tim):
 
-    print '*****'
-    print 'Find mid-points between ECMWF grid points'
-    print ''
-
-    edgelats = np.zeros([38])
-    edgelons = np.zeros([38])
-    latdiff = np.zeros([38])
-    londiff = np.zeros([38])
-    for j in range(0,37):
-        if lats[j] < lats[j+1]:
-            edgelats[j] = (lats[j+1] + lats[j])/2.0
-            latdiff[j] = (lats[j+1] - lats[j])/2.0
-        elif lats[j] == lats[j+1]:
-            if j < 36:
-                if lats[j] < lats[j+2]: edgelats[j] = (lats[j+2] + lats[j])/2.0
-        if lons[j] < lons[j+1]:
-            edgelons[j] = (lons[j+1] + lons[j])/2.0
-            londiff[j] = (lons[j+1] - lons[j])/2.0
-        # if lons[j] > lons[j+1]:
-        #     edgelons[j] = (lons[j+1] + lons[j])/2.0
-        #     londiff[j] = (lons[j+1] - lons[j])/2.0
-        elif lons[j] == lons[j+1]: edgelons[j] = lons[j]
-    edgelats[edgelats==0] = lats[edgelats==0] + latdiff[0]
-    edgelons[-1] = lons[-1] + (lons[-1] - edgelons[-2])
+    # print '*****'
+    # print 'Find mid-points between ECMWF grid points'
+    # print ''
+    #
+    # edgelats = np.zeros([38])
+    # edgelons = np.zeros([38])
+    # latdiff = np.zeros([38])
+    # londiff = np.zeros([38])
+    # for j in range(0,37):
+    #     if lats[j] < lats[j+1]:
+    #         edgelats[j] = (lats[j+1] + lats[j])/2.0
+    #         latdiff[j] = (lats[j+1] - lats[j])/2.0
+    #     elif lats[j] == lats[j+1]:
+    #         if j < 36:
+    #             if lats[j] < lats[j+2]: edgelats[j] = (lats[j+2] + lats[j])/2.0
+    #     if lons[j] < lons[j+1]:
+    #         edgelons[j] = (lons[j+1] + lons[j])/2.0
+    #         londiff[j] = (lons[j+1] - lons[j])/2.0
+    #     # if lons[j] > lons[j+1]:
+    #     #     edgelons[j] = (lons[j+1] + lons[j])/2.0
+    #     #     londiff[j] = (lons[j+1] - lons[j])/2.0
+    #     elif lons[j] == lons[j+1]: edgelons[j] = lons[j]
+    # edgelats[edgelats==0] = lats[edgelats==0] + latdiff[0]
+    # edgelons[-1] = lons[-1] + (lons[-1] - edgelons[-2])
 
     # plt.plot(lons,lats,'bs',markersize=8);
     # plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
     # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
     # plt.show()
+
+
+    print '*****'
+    print 'Use trig to design grid:'
+    print ''
+
+    edgelats = np.zeros([38])
+    edgelons = np.zeros([38])
+
+    R_e = 6.4*10e6          # radius of the Earth
+    lat_arc = 9.0*1e3       # distance in m
+    th = lat_arc/R_e        # angle in radians
+    th = (th/np.pi)*180.0   # angle in degrees
+
+    edgelats = lats + th    # gives upper grid boundaries for latitude
+
+    plt.plot(lons,lats,'bs',markersize=8);
+    plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
+    # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
+    plt.show()
 
     return edgelats, edgelons
 
