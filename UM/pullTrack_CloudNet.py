@@ -5852,6 +5852,7 @@ def pullTrack(cube, grid_filename, con):
         print ''
 
         cubetime = np.round(cube[0].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+
         print ''
         print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
@@ -6166,7 +6167,7 @@ def pullTrack(cube, grid_filename, con):
 
     return fcube, nc_outfile
 
-def appendNetCDF(outfile):
+def appendNetCDF(outfile, date):
 
     from netCDF4 import num2date, date2num
     import time
@@ -6200,7 +6201,7 @@ def appendNetCDF(outfile):
     dataset.comment = micro + wind
     dataset.institution = 'University of Leeds.'
     # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
-    dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + str(int(outfile[6:8]) - 1) + ' 12:00:00 UTC.'
+    dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + ' UTC.'
 
     ###################################
     ## Write out file
@@ -6262,10 +6263,12 @@ def main():
 
     ### CHOSEN RUN
     out_dir = '3_12AUG_SWATH_2FCSTS/'
+    date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
     ## 3_12AUG_SWATH_2FCSTS/
+    ## 3_1AUG_SWATH_2FCSTS/
     ## 4_OPER/20180830T0000Z_TRIAL/
 
     # -------------------------------------------------------------
@@ -6277,10 +6280,6 @@ def main():
     print ''
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
-
-    grid_dirname = 'AUX_DATA/'
-    date = '20180812'
-    grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
 
     print '******'
     print ''
@@ -6299,55 +6298,59 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    # # -------------------------------------------------------------
-    # # Load cube
-    # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
-    # var_con = 'specific_humidity'
-    # cube = iris.load_cube(filename1, var_con)
-    # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
+    for date in date_dir:
+        # # -------------------------------------------------------------
+        # # Load cube
+        # # -------------------------------------------------------------
+        print '******'
+        print ''
+        print 'Begin cube read in at ' + time.strftime("%c")
+        print ' '
+        # var_con = 'specific_humidity'
+        # cube = iris.load_cube(filename1, var_con)
+        # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
-    ### -------------------------------------------------------------------------
-    ### define input filename
-    ### -------------------------------------------------------------------------
-    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + names[2]
-    print filename1
-    print ''
+        grid_dirname = 'AUX_DATA/'
+        grid_filename = grid_dirname + date[:8] + '_ShipTrack_GRIDDED.csv'
 
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        print 'Loading single diagnostic:'
-        print var_con
-        cube1 = iris.load_cube(filename1, var_con, callback)
-        con_flag = 0            # constraint flag
-    elif 'global_con' in locals():
-        print 'Loading multiple diagnostics:'
-        # cube = iris.load_cubes(filename1, global_con)
-        cube = iris.load(filename1, global_con, callback)
-        con_flag = 1            # constraint flag
+        ### -------------------------------------------------------------------------
+        ### define input filename
+        ### -------------------------------------------------------------------------
+        names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
+        filename1 = root_dir + out_dir + date + '/' + names[2]
+        print filename1
+        print ''
+
+        #### LOAD CUBE
+        if 'var_con' in locals():
+            print 'Loading single diagnostic:'
+            print var_con
+            cube1 = iris.load_cube(filename1, var_con, callback)
+            con_flag = 0            # constraint flag
+        elif 'global_con' in locals():
+            print 'Loading multiple diagnostics:'
+            # cube = iris.load_cubes(filename1, global_con)
+            cube = iris.load(filename1, global_con, callback)
+            con_flag = 1            # constraint flag
+
+            # -------------------------------------------------------------
+
+        print cube
+        print ''
 
         # -------------------------------------------------------------
+        # Pull gridded ship track from cube
+        # -------------------------------------------------------------
 
-    print cube
-    print ''
+        #### LOAD CUBE
+        if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
+        if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+        ## Update netCDF comments
+        out = appendNetCDF(outfile, date)
+        # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
+        # os.rename(outfile, final_outfile)
 
-    # -------------------------------------------------------------
-    # Pull gridded ship track from cube
-    # -------------------------------------------------------------
-
-    #### LOAD CUBE
-    if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
-    if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
-    ## Update netCDF comments
-    out = appendNetCDF(outfile)
-    # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-    # os.rename(outfile, final_outfile)
-
-    # print outfile
+        # print outfile
 
     # -------------------------------------------------------------
     # Plot data (map)
