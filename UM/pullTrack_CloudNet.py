@@ -5799,7 +5799,7 @@ def checkWind(cube):
 
     return cube, stash
 
-def pullTrack(cube, grid_filename, con):
+def pullTrack_CloudNet(cube, grid_filename, con):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -6152,9 +6152,6 @@ def pullTrack(cube, grid_filename, con):
     #################################################################
     print '******'
     print 'Define outfile:'
-    # pp_outfile = out_dir + grid_filename[9:17] + '_oden_metum.pp'
-    # nc_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-    # pp_outfile = grid_filename[9:17] + '_oden_metum.pp'
     nc_outfile = grid_filename[9:17] + '_oden_metum.nc'
     print 'Outfile = ', nc_outfile
 
@@ -6344,12 +6341,12 @@ def main():
         # -------------------------------------------------------------
 
         #### LOAD CUBE
-        if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
-        if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_con)
+        if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
+        if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
         ## Update netCDF comments
         out = appendNetCDF(outfile, date)
-        # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-        # os.rename(outfile, final_outfile)
+        final_outfile = root_dir + out_dir + grid_filename[9:17] + '_oden_metum.nc'
+        os.rename(outfile, final_outfile)
 
         # print outfile
 
