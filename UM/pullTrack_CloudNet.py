@@ -6016,7 +6016,7 @@ def pullTrack(cube, grid_filename, con):
 
         cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
         print ''
-        print 'Cube times relative to forecast start:', cubetime[:-1]
+        print 'Cube times relative to forecast start (excluding first 12H):', cubetime[:-1]
         print ''
 
         #################################################################
@@ -6201,7 +6201,7 @@ def appendNetCDF(outfile, date):
     dataset.comment = micro + wind
     dataset.institution = 'University of Leeds.'
     # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
-    dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + ' UTC.'
+    dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
 
     ###################################
     ## Write out file
