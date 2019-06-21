@@ -6345,7 +6345,7 @@ def main():
         if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
         ## Update netCDF comments
         out = appendNetCDF(outfile, date)
-        final_outfile = root_dir + out_dir + grid_filename[9:17] + '_oden_metum.nc'
+        final_outfile = root_dir + out_dir + outfile
         os.rename(outfile, final_outfile)
 
         # print outfile
