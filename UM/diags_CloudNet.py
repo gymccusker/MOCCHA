@@ -852,7 +852,7 @@ def main():
         nc_filename = filename1 + '_r0.nc'
         pp_filename = filename1 + '_r0.pp'
 
-        # print filename1
+        print filename1
         # print ''
 
         ########## for i in range(2,6):
