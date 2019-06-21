@@ -6311,7 +6311,8 @@ def main():
         # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
         grid_dirname = 'AUX_DATA/'
-        grid_filename = grid_dirname + date[:8] + '_ShipTrack_GRIDDED.csv'
+        if int(date[6:8]) < 10: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+        if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
 
         ### -------------------------------------------------------------------------
         ### define input filename
