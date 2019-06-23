@@ -776,7 +776,7 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
+        root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
