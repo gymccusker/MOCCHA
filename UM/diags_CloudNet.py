@@ -765,7 +765,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -847,8 +847,8 @@ def main():
         ### -------------------------------------------------------------------------
         # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
         # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
-        filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
-        # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
+        # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
+        filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
         nc_filename = filename1 + '_r0.nc'
         pp_filename = filename1 + '_r0.pp'
 
@@ -862,8 +862,8 @@ def main():
             str_i = "%03d" % res # file number
             # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
             # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
-            fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
-            # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
+            # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
+            fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
 
             # # -------------------------------------------------------------
             # # Load cubes
