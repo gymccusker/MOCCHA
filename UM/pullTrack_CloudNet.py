@@ -5490,8 +5490,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==20,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==30,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==31,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -5678,11 +5678,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    # tim, ilat, ilon = readGriddedTrack(grid_filename)
-    #
-    # ### Plot tracks as line plot
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -6238,7 +6238,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -6295,67 +6295,67 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    # for date in date_dir:
-    # # -------------------------------------------------------------
-    # # Load cube
-    # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
-    # var_con = 'specific_humidity'
-    # cube = iris.load_cube(filename1, var_con)
-    # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
+    for date in date_dir:
+        # # -------------------------------------------------------------
+        # # Load cube
+        # # -------------------------------------------------------------
+        print '******'
+        print ''
+        print 'Begin cube read in at ' + time.strftime("%c")
+        print ' '
+        # var_con = 'specific_humidity'
+        # cube = iris.load_cube(filename1, var_con)
+        # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
-    grid_dirname = 'AUX_DATA/'
-    if int(date[6:8]) < 10: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
-    if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+        grid_dirname = 'AUX_DATA/'
+        if int(date[6:8]) < 10: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+        if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
 
-    ### -------------------------------------------------------------------------
-    ### define input filename
-    ### -------------------------------------------------------------------------
-    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-    filename1 = root_dir + out_dir + date + '/' + names[2]
-    print filename1
-    print ''
+        ### -------------------------------------------------------------------------
+        ### define input filename
+        ### -------------------------------------------------------------------------
+        names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
+        filename1 = root_dir + out_dir + date + '/' + names[2]
+        print filename1
+        print ''
 
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        print 'Loading single diagnostic:'
-        print var_con
-        cube1 = iris.load_cube(filename1, var_con, callback)
-        con_flag = 0            # constraint flag
-    elif 'global_con' in locals():
-        print 'Loading multiple diagnostics:'
-        # cube = iris.load_cubes(filename1, global_con)
-        cube = iris.load(filename1, global_con, callback)
-        con_flag = 1            # constraint flag
+        #### LOAD CUBE
+        if 'var_con' in locals():
+            print 'Loading single diagnostic:'
+            print var_con
+            cube1 = iris.load_cube(filename1, var_con, callback)
+            con_flag = 0            # constraint flag
+        elif 'global_con' in locals():
+            print 'Loading multiple diagnostics:'
+            # cube = iris.load_cubes(filename1, global_con)
+            cube = iris.load(filename1, global_con, callback)
+            con_flag = 1            # constraint flag
+
+            # -------------------------------------------------------------
+
+        print cube
+        print ''
 
         # -------------------------------------------------------------
+        # Pull gridded ship track from cube
+        # -------------------------------------------------------------
 
-    print cube
-    print ''
+        #### LOAD CUBE
+        if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
+        if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
+        ## Update netCDF comments
+        out = appendNetCDF(outfile, date)
+        final_outfile = root_dir + out_dir + outfile
+        os.rename(outfile, final_outfile)
 
-    # -------------------------------------------------------------
-    # Pull gridded ship track from cube
-    # -------------------------------------------------------------
-
-    #### LOAD CUBE
-    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
-    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
-    ## Update netCDF comments
-    out = appendNetCDF(outfile, date)
-    final_outfile = root_dir + out_dir + outfile
-    os.rename(outfile, final_outfile)
-
-    # print outfile
+        # print outfile
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
-    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    # hour = 0
+    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
 
     END_TIME = time.time()
