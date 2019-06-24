@@ -396,7 +396,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_OPER/'
+    out_dir = '3_1AUG_SWATH_2FCSTS/20180801T0000Z/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
@@ -417,6 +417,10 @@ def main():
     print ''
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
+
+    grid_dirname = 'AUX_DATA/'
+    date = '20180801'
+    grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
@@ -441,7 +445,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    names = ['20180812_oden_metum.nc']
+    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
     filename1 = root_dir + out_dir + names[0]
     print filename1
     print ''
