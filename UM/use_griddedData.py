@@ -18,6 +18,26 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 
+def readfile(filename):
+
+    import pandas as pd
+
+    # print '******'
+    print ''
+    print 'Reading .txt file with pandas'
+    print ''
+
+    data = pd.read_csv(filename, sep = " ")
+    values = data.values
+
+    return data
+
+def assignColumns(data):
+
+    columns = ['Year', 'Month', 'Day', 'Hour', 'Minutes', 'Seconds', 'Longitude', 'Latitude']
+
+    return columns
+
 def trackShip(data):
 
     ###################################
@@ -387,6 +407,16 @@ def main():
     print ''
     print 'Identifying .nc file: '
     print ''
+
+    # -------------------------------------------------------------
+    # Load ship track
+    # -------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Load in ship track file:'
+    print ''
+    ship_data = readfile(ship_filename)
+    columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
