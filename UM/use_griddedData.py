@@ -96,7 +96,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 27
+    diag = 9
     print ''
     print 'Diag is: ', cube[diag].long_name
     ### pcXXX
@@ -446,7 +446,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    filename1 = root_dir + out_dir + names[1]
+    filename1 = root_dir + out_dir + names[3]
     print filename1
     print ''
 
