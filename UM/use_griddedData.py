@@ -164,15 +164,15 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    # if np.size(cube[diag].data.shape) == 4:
-    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
-    # elif np.size(cube[diag].data.shape) == 3:
-    #     iplt.pcolormesh(cube[diag][hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
+    if np.size(cube[diag].data.shape) == 4:
+        iplt.pcolormesh(cube[diag][hour,0,:,:])
+    elif np.size(cube[diag].data.shape) == 3:
+        iplt.pcolormesh(cube[diag][hour,:,:])
+        # iplt.pcolormesh(cube[hour,471:495,240:264])
+    elif np.size(cube[diag].data.shape) == 2:
+        iplt.pcolormesh(cube[diag][:,:])
     # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -182,7 +182,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    # qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -446,7 +446,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    filename1 = root_dir + out_dir + names[0]
+    filename1 = root_dir + out_dir + names[1]
     print filename1
     print ''
 
@@ -513,34 +513,35 @@ def main():
     # <iris 'Cube' of toa_outgoing_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
 
     ### pbXXX
-    # 0: large_scale_ice_water_path / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 1: large_scale_liquid_water_path / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 2: eastward_wind_at_10m / (m s-1)      (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 3: northward_wind_at_10m / (m s-1)     (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 4: air_temperature_at_1.5m / (K)       (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 5: specific_humidity_at_1.5m / (1)     (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 6: relative_humidity_at_1.5m / (%)     (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 7: dew_point_temperature_at_1.5m / (K) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 8: turbulent mixing height after boundary layer / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 9: height_of_decoupled_layer_base / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 10: height_of_stratocumulus_cloud_base / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 11: combined_boundary_layer_type / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 12: cloud_area_fraction_assuming_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 13: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 14: wet_bulb_freezing_level_altitude / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 15: total_column_q / (unknown)          (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 16: air_pressure_at_sea_level / (Pa)    (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 17: atmosphere_boundary_layer_thickness / (m) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 18: high_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 19: low_type_cloud_area_fraction / (1)  (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 20: medium_type_cloud_area_fraction / (1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 21: stratiform_rainfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 22: stratiform_snowfall_flux / (kg m-2 s-1) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 23: surface_air_pressure / (Pa)         (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 24: surface_temperature / (K)           (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 25: surface_upward_latent_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 26: surface_upward_sensible_heat_flux / (W m-2) (time: 3; grid_latitude: 25; grid_longitude: 25)
-    # 27: water_evaporation_amount / (unknown) (time: 3; grid_latitude: 25; grid_longitude: 25)
+    # 0: specific_humidity_at_1.5m / (1)     (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 1: cloud_area_fraction_assuming_maximum_random_overlap / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 2: cloud_area_fraction_assuming_random_overlap / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 3: air_temperature_at_1.5m / (K)       (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 4: northward_wind_at_10m / (m s-1)     (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 5: eastward_wind_at_10m / (m s-1)      (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 6: height_of_stratocumulus_cloud_base / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 7: dew_point_temperature_at_1.5m / (K) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 8: total_column_q / (1)                (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 9: turbulent mixing height after boundary layer / (m) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 10: height_of_decoupled_layer_base / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 11: combined_boundary_layer_type / (1)  (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 12: wet_bulb_freezing_level_altitude / (m) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 13: relative_humidity_at_1.5m / (%)     (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 14: large_scale_ice_water_path / (1)    (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 15: large_scale_liquid_water_path / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 16: air_pressure_at_sea_level / (Pa)    (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 17: atmosphere_boundary_layer_thickness / (m) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 18: high_type_cloud_area_fraction / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 19: low_type_cloud_area_fraction / (1)  (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 20: medium_type_cloud_area_fraction / (1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 21: stratiform_rainfall_flux / (kg m-2 s-1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 22: stratiform_snowfall_flux / (kg m-2 s-1) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 23: surface_air_pressure / (Pa)         (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 24: surface_temperature / (K)           (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 25: surface_upward_latent_heat_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 26: surface_upward_sensible_heat_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 27: water_evaporation_amount / (1)      (time: 24; grid_latitude: 94; grid_longitude: 95)
+
 
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
