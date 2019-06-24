@@ -96,7 +96,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 17
+    diag = 27
     print ''
     print 'Diag is: ', cube[diag].long_name
     ### pcXXX
@@ -148,8 +148,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
-    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
+    ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -446,7 +446,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    filename1 = root_dir + out_dir + names[0]
+    filename1 = root_dir + out_dir + names[1]
     print filename1
     print ''
 
