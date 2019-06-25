@@ -71,27 +71,27 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    # print 'What grid are we looking at?'
-    # if len(cube[0].dim_coords[-1].points) == 25:
-    # # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-    #     xoffset = -239
-    #     yoffset = -470
-    # elif len(cube[0].dim_coords[-1].points) == 56:
-    # # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #     xoffset = -210
-    #     yoffset = -385
-    # elif len(cube[0].dim_coords[-1].points) == 95:
-    # # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #     xoffset = -210
-    #     yoffset = -385
-    # else:
-    # # elif cube[0,0].shape >= 500-1:
-    #     xoffset = 0
-    #     yoffset = 0
-    #
-    # print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    # print 'xoffset = ', xoffset
-    # print 'yoffset = ', yoffset
+    print 'What grid are we looking at?'
+    if len(cube[0].dim_coords[-1].points) == 25:
+    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+        xoffset = -239
+        yoffset = -470
+    elif len(cube[0].dim_coords[-1].points) == 56:
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -210
+        yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 95:
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -210
+        yoffset = -385
+    else:
+    # elif cube[0,0].shape >= 500-1:
+        xoffset = 0
+        yoffset = 0
+
+    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
+    print 'xoffset = ', xoffset
+    print 'yoffset = ', yoffset
 
     ###################################
     ## CHOOSE DIAGNOSTIC
@@ -345,6 +345,97 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
+def plot_multicontour_TS(cube, filename): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## CHOOSE DIAGNOSTIC
+    ###################################
+    diag = 2
+    print ''
+    print 'Diag is: '
+    print cube[diag]
+    ### pcXXX
+    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+    ###################################
+    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+    ###################################
+
+    time = cube[diag].dim_coords[0].points
+    height = cube[diag].dim_coords[1].points
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting contour timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.figure(figsize=(8,6))
+    ax = plt.gca()
+
+    # plt.plot(cube[diag].dim_coords[0].points,cube[diag][:,0].data)        # line plot
+    # plt.contourf(cube[0].data)
+    # plt.plot(cube[2][0,:].data,height);plt.show()
+    #################################################################
+    ## plot contour timeseries
+    ################################################################
+    plt.contourf(time,height,np.transpose(cube[diag].data))
+    # plt.pcolormesh(time,height,np.transpose(cube[2].data))
+    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    plt.colorbar()
+    ax.set_ylim([0, 3000])
+
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    plt.show()
+
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -397,13 +488,13 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = 'TESTING/20180801T0000Z/'
+    out_dir = '4_OPER/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
     ## 3_12AUG_SWATH_2FCSTS/
-    ## 4_OPER
-    ## TESTING
+    ## 4_OPER/
+    ## TESTING/
 
     print '******'
     print ''
@@ -447,9 +538,9 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    # names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    names = ['umnsaa_pa000','umnsaa_pb000','umnsaa_pc000','umnsaa_pd000']       ### DEFAULT OUTPUT NAMES FOR TESTING
-    filename1 = root_dir + out_dir + names[0]
+    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
+    filename1 = root_dir + out_dir + names[4]
     print filename1
     print ''
 
@@ -471,17 +562,25 @@ def main():
     print ''
 
     # -------------------------------------------------------------
-    # Plot data
+    # Plot data (single timeseries)
     # -------------------------------------------------------------
     # figure = plot_contour_TS(cube, filename1)
+
+    # -------------------------------------------------------------
+    # Plot data (5x2 timeseries)
+    # -------------------------------------------------------------
+    figure = plot_multicontour_TS(cube, filename1)
 
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    hour = 0
-    figure = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    # hour = 0
+    # figure = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
+    # -------------------------------------------------------------
+    # FIN.
+    # -------------------------------------------------------------
     END_TIME = time.time()
     print '******'
     print ''
