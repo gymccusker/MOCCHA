@@ -96,7 +96,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 9
+    diag = 0
     print ''
     print 'Diag is: ', cube[diag].long_name
     ### pcXXX
@@ -396,12 +396,13 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '3_1AUG_SWATH_2FCSTS/20180801T0000Z/'
+    out_dir = 'TESTING/20180801T0000Z/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
     ## 3_12AUG_SWATH_2FCSTS/
     ## 4_OPER
+    ## TESTING
 
     print '******'
     print ''
@@ -445,8 +446,9 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    filename1 = root_dir + out_dir + names[3]
+    # names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    names = ['umnsaa_pa000','umnsaa_pb000','umnsaa_pc000','umnsaa_pd000']       ### DEFAULT OUTPUT NAMES FOR TESTING
+    filename1 = root_dir + out_dir + names[0]
     print filename1
     print ''
 
