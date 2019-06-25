@@ -71,32 +71,32 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    print 'What grid are we looking at?'
-    if len(cube[0].dim_coords[-1].points) == 25:
-    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-        xoffset = -239
-        yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 56:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 95:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    else:
-    # elif cube[0,0].shape >= 500-1:
-        xoffset = 0
-        yoffset = 0
-
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    # print 'What grid are we looking at?'
+    # if len(cube[0].dim_coords[-1].points) == 25:
+    # # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+    #     xoffset = -239
+    #     yoffset = -470
+    # elif len(cube[0].dim_coords[-1].points) == 56:
+    # # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+    #     xoffset = -210
+    #     yoffset = -385
+    # elif len(cube[0].dim_coords[-1].points) == 95:
+    # # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+    #     xoffset = -210
+    #     yoffset = -385
+    # else:
+    # # elif cube[0,0].shape >= 500-1:
+    #     xoffset = 0
+    #     yoffset = 0
+    #
+    # print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
+    # print 'xoffset = ', xoffset
+    # print 'yoffset = ', yoffset
 
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 0
+    diag = 2
     print ''
     print 'Diag is: ', cube[diag].long_name
     ### pcXXX
@@ -148,8 +148,9 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
+    ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### V LARGE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
