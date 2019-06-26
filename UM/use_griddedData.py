@@ -355,32 +355,6 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         # from matplotlib.patches import Polygon
 
     ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    diag = 2
-    print ''
-    print 'Diag is: '
-    print cube[diag]
-    ### pcXXX
-    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-
-    ###################################
-    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
-    ###################################
-
-    time = cube[diag].dim_coords[0].points
-    height = cube[diag].dim_coords[1].points
-
-    ###################################
     ## PLOT MAP
     ###################################
 
@@ -389,41 +363,68 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     print 'Plotting contour timeseries:'
     print ''
 
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
+    for i in range(0,len(cube)):
 
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
+        ###################################
+        ## CHOOSE DIAGNOSTIC
+        ###################################
+        diag = i
+        print ''
+        print 'Diag is: '
+        print cube[diag]
+        ### pcXXX
+        # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
 
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    # plt.rc('figure',titlesize=LARGE_SIZE)
+        ###################################
+        ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+        ###################################
 
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(8,6))
-    ax = plt.gca()
+        time = cube[diag].dim_coords[0].points
+        height = cube[diag].dim_coords[1].points
 
-    # plt.plot(cube[diag].dim_coords[0].points,cube[diag][:,0].data)        # line plot
-    # plt.contourf(cube[0].data)
-    # plt.plot(cube[2][0,:].data,height);plt.show()
-    #################################################################
-    ## plot contour timeseries
-    ################################################################
-    plt.contourf(time,height,np.transpose(cube[diag].data))
-    # plt.pcolormesh(time,height,np.transpose(cube[2].data))
-    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    plt.colorbar()
-    ax.set_ylim([0, 3000])
+        ##################################################
+        ##################################################
+        #### 	CARTOPY
+        ##################################################
+        ##################################################
+
+        SMALL_SIZE = 12
+        MED_SIZE = 14
+        LARGE_SIZE = 16
+
+        plt.rc('font',size=MED_SIZE)
+        plt.rc('axes',titlesize=MED_SIZE)
+        plt.rc('axes',labelsize=MED_SIZE)
+        plt.rc('xtick',labelsize=SMALL_SIZE)
+        plt.rc('ytick',labelsize=SMALL_SIZE)
+        plt.rc('legend',fontsize=SMALL_SIZE)
+        # plt.rc('figure',titlesize=LARGE_SIZE)
+
+        #################################################################
+        ## create figure and axes instances
+        #################################################################
+        plt.figure(figsize=(12,10))
+        plt.subplot(5,2,i+1)
+        ax = plt.gca()
+
+        #################################################################
+        ## plot contour timeseries
+        ################################################################
+        plt.contourf(time,height,np.transpose(cube[diag].data))
+        # plt.pcolormesh(time,height,np.transpose(cube[2].data))
+
+        plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+        plt.colorbar()
+        ax.set_ylim([0, 3000])
 
     plt.legend()
 
