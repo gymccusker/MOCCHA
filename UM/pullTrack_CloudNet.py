@@ -5607,8 +5607,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(12,10))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
     ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
@@ -5710,14 +5710,14 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
 
-    # plt.plot(np.nanmin(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmin(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmin(lon),np.nanmin(lat),
+            color='black',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmin(lon),np.nanmax(lat),
+            color='black',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmax(lon),np.nanmin(lat),
+            color='black',transform = ccrs.PlateCarree())
+    plt.plot(np.nanmax(lon),np.nanmax(lat),
+            color='black',transform = ccrs.PlateCarree())
 
     plt.legend()
 

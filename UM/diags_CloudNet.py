@@ -775,8 +775,8 @@ def main():
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
-    if platform == 'LAPTOP':    ### DOESN'T WORK ON LAPTOP
-        root_dir = '/home/gillian/MOCCHA/UM/DATA/'
+    if platform == 'LAPTOP':
+        root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -856,8 +856,8 @@ def main():
         # print ''
 
         ########## for i in range(2,6):
-        # for i in range(4,12):
-        for i in range(11,36):      ### pcXXX and pdXXX
+        for i in range(4,12):
+        # for i in range(11,36):      ### pcXXX and pdXXX
             res = i #* 3     # how many hourly dumps in file
             str_i = "%03d" % res # file number
             # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i

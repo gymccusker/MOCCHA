@@ -142,15 +142,15 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(12,10))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
-    ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### V LARGE
+    # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### V LARGE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
