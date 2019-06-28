@@ -853,15 +853,15 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + '.pp'
                 print filename
                 if os.path.exists(filename):
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
-                    nc_filename = filename + '_r0.nc'
-                    pp_filename = filename + '_r0.pp'
+                    nc_filename = filename[:-3] + '_r0.nc'
+                    pp_filename = filename[:-3] + '_r0.pp'
 
                     # print filename
                     # print ''
@@ -875,7 +875,8 @@ def main():
                         else:
                             res = i*3
                         str_i = "%03d" % res # file number
-                        fileout = root_dir + out_dir + date + stream[:-3] + str_i
+                        # fileout = root_dir + out_dir + date + stream[:-3] + str_i
+                        fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
                         # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
                         # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
                         # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
