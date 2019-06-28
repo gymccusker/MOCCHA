@@ -854,7 +854,7 @@ def main():
                 ### define output filenames
                 ### -------------------------------------------------------------------------
                 filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + '.pp'
-                print filename
+                # print filename
                 if os.path.exists(filename):
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
@@ -881,7 +881,7 @@ def main():
                         # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
                         # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
                         # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
-
+                        print fileout
                         # # -------------------------------------------------------------
                         # # Load cubes
                         # # -------------------------------------------------------------
