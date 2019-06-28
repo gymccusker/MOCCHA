@@ -853,7 +853,7 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
                 print filename
                 if os.path.exists(filename):
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
