@@ -853,7 +853,7 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + '.pp'
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
                 print filename
                 if os.path.exists(filename):
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
@@ -863,7 +863,7 @@ def main():
                     nc_filename = filename[:-3] + '_r0.nc'
                     pp_filename = filename[:-3] + '_r0.pp'
 
-                    print 'File exists, continuing:'
+                    print 'Start files exist, continuing:'
                     print ''
 
                     ### define range to loop over
