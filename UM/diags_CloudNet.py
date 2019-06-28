@@ -829,7 +829,7 @@ def main():
             ### defines which stash variables to load - should be within a loop
 
     for date in date_dir:
-        if date_dir[0][0:4] == '2018':
+        if date[0:4] == '2018':
             ## -------------------------------------------------------------------------
             ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
             ## -------------------------------------------------------------------------
