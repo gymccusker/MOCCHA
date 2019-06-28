@@ -867,8 +867,8 @@ def main():
                     # print ''
 
                     ### define range to loop over
-                    if stream[-2] == '12': looping = range(4,12)
-                    if stream[-2] == '11': looping = range(11,36)
+                    if stream[-2:] == '12': looping = range(4,12)
+                    if stream[-2:] == '11': looping = range(11,36)
                     for i in looping:
                         if np.size(looping) > 9:
                             res = i #* 3     # how many hourly dumps in file
