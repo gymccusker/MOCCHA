@@ -785,7 +785,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '3_1AUG_SWATH_2FCSTS/'
+    out_dir = '4_OPER/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -803,6 +803,13 @@ def main():
     print ''
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
+
+    # -------------------------------------------------------------
+    # Define output stream filenames to look at:
+    #           start at 012 if 3h dumps (a, b)
+    #           start at 011 if 1h dumps (c--e)
+    # -------------------------------------------------------------
+    names = ['/umnsaa_pa012','/umnsaa_pb012','/umnsaa_pc011','/umnsaa_pd011','/umnsaa_pe011']
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -822,124 +829,109 @@ def main():
             ### defines which stash variables to load - should be within a loop
 
     for date in date_dir:
+        if date_dir[0][0:4] == '2018':
+            ## -------------------------------------------------------------------------
+            ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
+            ## -------------------------------------------------------------------------
+            # print '******'
+            # print ''
+            # print 'Use fixed constraint at ' + time.strftime("%c")
+            # print ' '
+            # var_con = iris.AttributeConstraint(STASH=STASH_CODE)
 
-        ## -------------------------------------------------------------------------
-        ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
-        ## -------------------------------------------------------------------------
-        # print '******'
-        # print ''
-        # print 'Use fixed constraint at ' + time.strftime("%c")
-        # print ' '
-        # var_con = iris.AttributeConstraint(STASH=STASH_CODE)
+            ## -------------------------------------------------------------------------
+            ## Time: constrain to take data every hour
+            ## -------------------------------------------------------------------------
+            # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
 
-        ## -------------------------------------------------------------------------
-        ## Time: constrain to take data every hour
-        ## -------------------------------------------------------------------------
-        # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
-
-        print '******'
-        print ''
-        print 'Identifying .pp files: '
-        print ''
-
-        ### -------------------------------------------------------------------------
-        ### define output filenames
-        ### -------------------------------------------------------------------------
-        # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
-        # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
-        filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
-        # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
-        nc_filename = filename1 + '_r0.nc'
-        pp_filename = filename1 + '_r0.pp'
-
-        print filename1
-        # print ''
-
-        ########## for i in range(2,6):
-        for i in range(4,12):
-        # for i in range(11,36):      ### pcXXX and pdXXX
-            res = i #* 3     # how many hourly dumps in file
-            str_i = "%03d" % res # file number
-            # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
-            # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
-            fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
-            # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
-
-            # # -------------------------------------------------------------
-            # # Load cubes
-            # # -------------------------------------------------------------
             print '******'
             print ''
-            print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
-            print ' '
+            print 'Identifying .pp files: '
+            print ''
 
-            #### LOAD CUBE
-            if 'var_con' in locals():
-                cube = iris.load(fileout, var_con)
+            for stream in names:
+                ### -------------------------------------------------------------------------
+                ### define output filenames
+                ### -------------------------------------------------------------------------
+                filename = root_dir + out_dir + date + stream
+                if os.path.exists(filename):
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
+                    nc_filename = filename + '_r0.nc'
+                    pp_filename = filename + '_r0.pp'
 
-                # -------------------------------------------------------------
-                # Write out data
-                # -------------------------------------------------------------
-                print '******'
-                print ''
-                print 'Outputting fixed constraint ' + str_i + ' data:'
-                print ''
-                iris.save(cube, pp_filename, append=True)
+                    print filename
+                    # print ''
 
-            elif 'global_con' in locals():
-                cube = iris.load(fileout, global_con, callback)
+                    ### define range to loop over
+                    if stream[-2] == '12': looping = range(4,12)
+                    if stream[-2] == '11': looping = range(11,36)
+                    for i in looping:
+                        if np.size(looping) > 9:
+                            res = i #* 3     # how many hourly dumps in file
+                        else
+                            res = i*3
+                        str_i = "%03d" % res # file number
+                        fileout = root_dir + out_dir + date + stream[:-3] + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
 
-                # -------------------------------------------------------------
-                # Write out data
-                # -------------------------------------------------------------
-                print '******'
-                print ''
-                print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
-                print cube
-                print ''
-                iris.save(cube, pp_filename, append=True)
-            # cube = assignTimecoord(cube)
+                        # # -------------------------------------------------------------
+                        # # Load cubes
+                        # # -------------------------------------------------------------
+                        print '******'
+                        print ''
+                        print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
+                        print ' '
 
-            ###### IF WANTING TO EXTRACT A PROFILE...
-            #### local_cube_list = cube.extract(var_con & time_con)
+                        #### LOAD CUBE
+                        if 'var_con' in locals():
+                            cube = iris.load(fileout, var_con)
 
-            # print '---'
+                            # -------------------------------------------------------------
+                            # Write out data
+                            # -------------------------------------------------------------
+                            print '******'
+                            print ''
+                            print 'Outputting fixed constraint ' + str_i + ' data:'
+                            print ''
+                            iris.save(cube, pp_filename, append=True)
+
+                        elif 'global_con' in locals():
+                            cube = iris.load(fileout, global_con, callback)
+
+                            # -------------------------------------------------------------
+                            # Write out data
+                            # -------------------------------------------------------------
+                            print '******'
+                            print ''
+                            print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+                            print cube
+                            print ''
+                            iris.save(cube, pp_filename, append=True)
+
+
+            # -------------------------------------------------------------
+            # Convert .pp to .nc
+            # -------------------------------------------------------------
+            # print '******'
             # print ''
-            # print cube # lists all diagnostics in file
+            # print 'Converting to netCDF:'
             # print ''
+            # pp_cube = iris.load(pp_filename)
+            # iris.save(pp_cube, nc_filename)
+            # os.remove(pp_filename)
 
-            # inp = testInput(cube)
+    # -------------------------------------------------------------
+    # Plot data (map)
+    # -------------------------------------------------------------
+    # map = plot_basemap(ship_data, cube)
+    # map = plot_cartmap(ship_data, cube)
 
-            # for iStash in GlobalStashList:
-            #     STASH_TIME = time.time()
-            #     print 'Stash: ', iStash
-            #
-            #     local_stash_constrain = iris.AttributeConstraint(STASH=iStash)
-
-            # out = write4DNetCDF(cube, nc_filename)
-            # out = write3DNetCDF(cube, nc_filename)
-
-            # print '---'
-            # print ''
-            # print str_i + ' cube output complete at ' + time.strftime("%c")
-            # print ' '
-
-        # -------------------------------------------------------------
-        # Plot data (map)
-        # -------------------------------------------------------------
-        # map = plot_basemap(ship_data, cube)
-        # map = plot_cartmap(ship_data, cube)
-
-        # -------------------------------------------------------------
-        # Convert .pp to .nc
-        # -------------------------------------------------------------
-        print '******'
-        print ''
-        print 'Converting to netCDF:'
-        print ''
-        pp_cube = iris.load(pp_filename)
-        iris.save(pp_cube, nc_filename)
-        os.remove(pp_filename)
 
     END_TIME = time.time()
     print '******'
