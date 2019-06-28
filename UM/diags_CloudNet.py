@@ -871,7 +871,7 @@ def main():
                     for i in looping:
                         if np.size(looping) > 9:
                             res = i #* 3     # how many hourly dumps in file
-                        else
+                        else:
                             res = i*3
                         str_i = "%03d" % res # file number
                         fileout = root_dir + out_dir + date + stream[:-3] + str_i
