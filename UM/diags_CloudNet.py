@@ -785,7 +785,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '4_OPER/'
+    out_dir = '4_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -809,8 +809,8 @@ def main():
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['/umnsaa_pa012','/umnsaa_pb012','/umnsaa_pc011','/umnsaa_pd011','/umnsaa_pe011']
-
+    names = ['_pa012','_pb012','_pc011','_pd011','_pe011']
+    expt = out_dir[2:-1]
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Define time and Stash constraints:
@@ -853,7 +853,7 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + stream
+                filename = root_dir + out_dir + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
                 if os.path.exists(filename):
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
