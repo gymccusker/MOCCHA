@@ -930,7 +930,7 @@ def main():
                 print filename
                 if os.path.exists(filename):
                     pp_cube = iris.load(filename, global_con, callback)
-                    iris.save(cube, pp2_filename, append=True)
+                    iris.save(pp_cube, pp2_filename, append=True)
 
             # -------------------------------------------------------------
             # Convert .pp to .nc
