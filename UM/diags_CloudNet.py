@@ -928,11 +928,12 @@ def main():
                 # -------------------------------------------------------------
                 filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 print filename
-                pp_cube = iris.load(filename, global_con, callback)
-                if stream == names[0]:
-                    ncube = [pp_cube]
-                else:
-                    ncube.append(pp_cube)
+                if os.path.exists(filename):
+                    pp_cube = iris.load(filename, global_con, callback)
+                    if stream == names[0]:
+                        ncube = [pp_cube]
+                    else:
+                        ncube.append(pp_cube)
                 # os.remove(filename)
 
             # -------------------------------------------------------------
