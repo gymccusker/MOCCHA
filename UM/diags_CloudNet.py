@@ -852,7 +852,7 @@ def main():
             nc_filename = str(int(date[:-6])+1) + '_oden_metum.nc'
             print 'Output will be: ' + nc_filename
 
-            # print '******'
+            # # print '******'
             # print ''
             # print 'Identifying .pp files to read in: '
             # print ''
@@ -928,9 +928,12 @@ def main():
                 # -------------------------------------------------------------
                 filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 print filename
-                if os.path.exists(filename):
-                    pp_cube = iris.load(filename, global_con, callback)
-                    iris.save(pp_cube, pp2_filename, append=True)
+                pp_cube = iris.load(filename, global_con, callback)
+                if stream == names[0]:
+                    ncube = [pp_cube]
+                else:
+                    ncube.append(pp_cube)
+                # os.remove(filename)
 
             # -------------------------------------------------------------
             # Convert .pp to .nc
@@ -939,9 +942,9 @@ def main():
             print ''
             print 'Converting to netCDF:'
             print ''
-            pp2_cube = iris.load(pp2_filename)
-            iris.save(pp2_cube, nc_filename)
-            os.remove(pp2_filename)
+            # pp2_cube = iris.load(pp2_filename)
+            iris.save(ncube, nc_filename)
+            # os.remove(pp2_filename)
 
     # -------------------------------------------------------------
     # Plot data (map)
