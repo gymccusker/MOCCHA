@@ -6259,7 +6259,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '3_12AUG_SWATH_2FCSTS/'
+    out_dir = '4_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -6296,57 +6296,68 @@ def main():
             ### defines which stash variables to load - should be within a loop
 
     for date in date_dir:
-        # # -------------------------------------------------------------
-        # # Load cube
-        # # -------------------------------------------------------------
-        print '******'
-        print ''
-        print 'Begin cube read in at ' + time.strftime("%c")
-        print ' '
-        # var_con = 'specific_humidity'
-        # cube = iris.load_cube(filename1, var_con)
-        # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
+        if date[0:4] == '2018':
+            # # -------------------------------------------------------------
+            # # Load cube
+            # # -------------------------------------------------------------
+            print '******'
+            print ''
+            print 'Begin cube read in at ' + time.strftime("%c")
+            print ' '
+            # var_con = 'specific_humidity'
+            # cube = iris.load_cube(filename1, var_con)
+            # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
-        grid_dirname = 'AUX_DATA/'
-        if int(date[6:8]) < 10: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
-        if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+            grid_dirname = 'AUX_DATA/'
+            if int(date[6:8]) < 10: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+            if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
 
-        ### -------------------------------------------------------------------------
-        ### define input filename
-        ### -------------------------------------------------------------------------
-        names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc']
-        filename1 = root_dir + out_dir + date + '/' + names[2]
-        print filename1
-        print ''
-
-        #### LOAD CUBE
-        if 'var_con' in locals():
-            print 'Loading single diagnostic:'
-            print var_con
-            cube1 = iris.load_cube(filename1, var_con, callback)
-            con_flag = 0            # constraint flag
-        elif 'global_con' in locals():
-            print 'Loading multiple diagnostics:'
-            # cube = iris.load_cubes(filename1, global_con)
-            cube = iris.load(filename1, global_con, callback)
-            con_flag = 1            # constraint flag
-
+            ### -------------------------------------------------------------------------
+            ### define input filename
+            ### -------------------------------------------------------------------------
             # -------------------------------------------------------------
+            # Define output stream filenames to look at:
+            #           start at 012 if 3h dumps (a, b)
+            #           start at 011 if 1h dumps (c--e)
+            # -------------------------------------------------------------
+            names = ['_pa012','_pb012','_pc011','_pd011','_pe011']
+            expt = out_dir[2:-1]
 
-        print cube
-        print ''
+            for stream in names:
+                ### -------------------------------------------------------------------------
+                ### define output filenames
+                ### -------------------------------------------------------------------------
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                print 'Checking: ' + filename
+                if os.path.exists(filename):
+                    #### LOAD CUBE
+                    if 'var_con' in locals():
+                        print 'Loading single diagnostic:'
+                        print var_con
+                        cube1 = iris.load_cube(filename, var_con, callback)
+                        con_flag = 0            # constraint flag
+                    elif 'global_con' in locals():
+                        print 'Loading multiple diagnostics:'
+                        # cube = iris.load_cubes(filename1, global_con)
+                        cube = iris.load(filename, global_con, callback)
+                        con_flag = 1            # constraint flag
 
-        # -------------------------------------------------------------
-        # Pull gridded ship track from cube
-        # -------------------------------------------------------------
+                        # -------------------------------------------------------------
 
-        #### LOAD CUBE
-        if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
-        if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
-        ## Update netCDF comments
-        out = appendNetCDF(outfile, date)
-        final_outfile = root_dir + out_dir + outfile
-        os.rename(outfile, final_outfile)
+                print cube
+                print ''
+
+                # -------------------------------------------------------------
+                # Pull gridded ship track from cube
+                # -------------------------------------------------------------
+
+                #### LOAD CUBE
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
+                ## Update netCDF comments
+                out = appendNetCDF(outfile, date)
+                # final_outfile = root_dir + out_dir + outfile
+                # os.rename(outfile, final_outfile)
 
         # print outfile
 
