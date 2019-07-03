@@ -852,100 +852,100 @@ def main():
             nc_filename = str(int(date[:-6])+1) + '_oden_metum.nc'
             print 'Output will be: ' + nc_filename
 
-            # # print '******'
-            # print ''
-            # print 'Identifying .pp files to read in: '
-            # print ''
-            # for stream in names:
-            #     ### -------------------------------------------------------------------------
-            #     ### define output filenames
-            #     ### -------------------------------------------------------------------------
-            #     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-            #     print 'Checking: ' + filename
-            #     if os.path.exists(filename):
-            #         # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
-            #         # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
-            #         # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
-            #         # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
-            #         pp_filename = filename[:-3] + '_r0.pp'
-            #
-            #         print 'Start files exist, continuing:'
-            #         print ''
-            #
-            #         ### define range to loop over
-            #         if stream[-2:] == '12': looping = range(4,12)
-            #         if stream[-2:] == '11': looping = range(11,36)
-            #         for i in looping:
-            #             if np.size(looping) > 9:
-            #                 res = i #* 3     # how many hourly dumps in file
-            #             else:
-            #                 res = i*3
-            #             str_i = "%03d" % res # file number
-            #             # fileout = root_dir + out_dir + date + stream[:-3] + str_i
-            #             fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
-            #             # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
-            #             # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
-            #             # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
-            #             # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
-            #             print fileout
-            #             # # -------------------------------------------------------------
-            #             # # Load cubes
-            #             # # -------------------------------------------------------------
-            #             print '******'
-            #             print ''
-            #             print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
-            #             print ' '
-            #
-            #             #### LOAD CUBE
-            #             if 'var_con' in locals():
-            #                 cube = iris.load(fileout, var_con)
-            #
-            #                 # -------------------------------------------------------------
-            #                 # Write out data
-            #                 # -------------------------------------------------------------
-            #                 print '******'
-            #                 print ''
-            #                 print 'Outputting fixed constraint ' + str_i + ' data:'
-            #                 print ''
-            #                 iris.save(cube, pp_filename, append=True)
-            #
-            #             elif 'global_con' in locals():
-            #                 cube = iris.load(fileout, global_con, callback)
-            #
-            #                 # -------------------------------------------------------------
-            #                 # Write out data
-            #                 # -------------------------------------------------------------
-            #                 print '******'
-            #                 print ''
-            #                 print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
-            #                 print cube
-            #                 print ''
-            #                 iris.save(cube, pp_filename, append=True)
-
+            # print '******'
+            print ''
+            print 'Identifying .pp files to read in: '
+            print ''
             for stream in names:
-                # -------------------------------------------------------------
-                # Write out data
-                # -------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                print filename
+                ### -------------------------------------------------------------------------
+                ### define output filenames
+                ### -------------------------------------------------------------------------
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
+                print 'Checking: ' + filename
                 if os.path.exists(filename):
-                    pp_cube = iris.load(filename, global_con, callback)
-                    if stream == names[0]:
-                        ncube = [pp_cube]
-                    else:
-                        ncube.append(pp_cube)
-                # os.remove(filename)
-                print ncube
-            # -------------------------------------------------------------
-            # Convert .pp to .nc
-            # -------------------------------------------------------------
-            print '******'
-            print ''
-            print 'Converting to netCDF:'
-            print ''
-            # pp2_cube = iris.load(pp2_filename)
-            iris.save(ncube, nc_filename)
-            # os.remove(pp2_filename)
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
+                    # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
+                    pp_filename = filename[:-3] + '_r0.pp'
+
+                    print 'Start files exist, continuing:'
+                    print ''
+
+                    ### define range to loop over
+                    if stream[-2:] == '12': looping = range(4,12)
+                    if stream[-2:] == '11': looping = range(11,36)
+                    for i in looping:
+                        if np.size(looping) > 9:
+                            res = i #* 3     # how many hourly dumps in file
+                        else:
+                            res = i*3
+                        str_i = "%03d" % res # file number
+                        # fileout = root_dir + out_dir + date + stream[:-3] + str_i
+                        fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
+                        # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
+                        print fileout
+                        # # -------------------------------------------------------------
+                        # # Load cubes
+                        # # -------------------------------------------------------------
+                        print '******'
+                        print ''
+                        print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
+                        print ' '
+
+                        #### LOAD CUBE
+                        if 'var_con' in locals():
+                            cube = iris.load(fileout, var_con)
+
+                            # -------------------------------------------------------------
+                            # Write out data
+                            # -------------------------------------------------------------
+                            print '******'
+                            print ''
+                            print 'Outputting fixed constraint ' + str_i + ' data:'
+                            print ''
+                            iris.save(cube, pp_filename, append=True)
+
+                        elif 'global_con' in locals():
+                            cube = iris.load(fileout, global_con, callback)
+
+                            # -------------------------------------------------------------
+                            # Write out data
+                            # -------------------------------------------------------------
+                            print '******'
+                            print ''
+                            print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+                            print cube
+                            print ''
+                            iris.save(cube, pp_filename, append=True)
+
+            # for stream in names:
+            #     # -------------------------------------------------------------
+            #     # Write out data
+            #     # -------------------------------------------------------------
+            #     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+            #     print filename
+            #     if os.path.exists(filename):
+            #         pp_cube = iris.load(filename, global_con, callback)
+            #         if stream == names[0]:
+            #             ncube = [pp_cube]
+            #         else:
+            #             ncube.append(pp_cube)
+            #     # os.remove(filename)
+            #     print ncube
+            # # -------------------------------------------------------------
+            # # Convert .pp to .nc
+            # # -------------------------------------------------------------
+            # print '******'
+            # print ''
+            # print 'Converting to netCDF:'
+            # print ''
+            # # pp2_cube = iris.load(pp2_filename)
+            # iris.save(ncube, nc_filename)
+            # # os.remove(pp2_filename)
 
     # -------------------------------------------------------------
     # Plot data (map)
