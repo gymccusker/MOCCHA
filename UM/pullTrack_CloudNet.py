@@ -5799,7 +5799,7 @@ def checkWind(cube):
 
     return cube, stash
 
-def pullTrack_CloudNet(cube, grid_filename, con):
+def pullTrack_CloudNet(cube, grid_filename, con, stream):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -6152,7 +6152,7 @@ def pullTrack_CloudNet(cube, grid_filename, con):
     #################################################################
     print '******'
     print 'Define outfile:'
-    nc_outfile = grid_filename[9:17] + '_oden_metum.nc'
+    nc_outfile = grid_filename[9:17] + '_oden_metum_' + str(stream[2:3]) + '.nc'
     print 'Outfile = ', nc_outfile
 
     ### save cube to netcdf file
@@ -6320,7 +6320,7 @@ def main():
             #           start at 012 if 3h dumps (a, b)
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb012','_pc011','_pd011','_pe011']
+            names = ['_pb012','_pc011','_pd011']
             expt = out_dir[2:-1]
 
             for stream in names:
@@ -6352,8 +6352,8 @@ def main():
                 # -------------------------------------------------------------
 
                 #### LOAD CUBE
-                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con)
-                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con)
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream)
                 ## Update netCDF comments
                 out = appendNetCDF(outfile, date)
                 # final_outfile = root_dir + out_dir + outfile
