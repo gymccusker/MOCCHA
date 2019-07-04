@@ -6144,25 +6144,61 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
         fcube = ncube
 
     #################################################################
+    ## define output filename
+    #################################################################
+    print '******'
+    print 'Define pp stream outfile:'
+    pp_outfile = grid_filename[9:17] + '_oden_metum_' + str(stream[2:3]) + '.pp'
+    print 'Outfile = ', pp_outfile
+
+    ### save cube to netcdf file
+    print ''
+    print 'Writing fcube to file:'
+    print ''
+    iris.save(fcube, pp_outfile)
+    print fcube
+
+    return fcube, nc_outfile
+
+def combineNetCDF(outfiles, date):
+
+    #################################################################
     ## CREATE NETCDF
     #################################################################
-
     #################################################################
     ## define output filename
     #################################################################
     print '******'
-    print 'Define outfile:'
-    nc_outfile = grid_filename[9:17] + '_oden_metum_' + str(stream[2:3]) + '.nc'
-    print 'Outfile = ', nc_outfile
+    print 'Define .nc stream outfile:'
+    pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.pp'
+    nc_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.nc'
+    print 'Final outfile = ', nc_outfile
 
-    ### save cube to netcdf file
-    print ''
-    print 'Writing fcube to NetCDF file:'
-    print ''
-    iris.save(fcube, nc_outfile)
-    print fcube
+    #################################################################
+    ## load in each stream
+    #################################################################
+    # for n in range(len(outfiles)):
+    #     cube = iris.load(outfiles[n], global_con, callback)
+    #     if n == 1:
+    #         zcube = [cube]
+    #     else:
+    #         zube.append(cube)
 
-    return fcube, nc_outfile
+    for file in outfiles:
+        cube = iris.load(file, global_con, callback)
+        iris.save(cube, pp_outfile, append=True)
+
+    # -------------------------------------------------------------
+    # Convert .pp to .nc
+    # -------------------------------------------------------------
+    print '******'
+    print ''
+    print 'Converting to netCDF:'
+    print ''
+    pp_cube = iris.load(pp_outfile)
+    iris.save(pp_cube, nc_outfile)
+
+    return nc_outfile
 
 def appendNetCDF(outfile, date):
 
@@ -6320,12 +6356,13 @@ def main():
             #           start at 012 if 3h dumps (a, b)
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pb012','_pc011','_pd011']
+            names = ['_pb012','_pc011']
             expt = out_dir[2:-1]
+            outfiles = [] ### define list to add processed filenames to
 
             for stream in names:
                 ### -------------------------------------------------------------------------
-                ### define output filenames
+                ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                 ### -------------------------------------------------------------------------
                 filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 print 'Checking: ' + filename
@@ -6354,10 +6391,18 @@ def main():
                 #### LOAD CUBE
                 if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream)
                 if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream)
-                ## Update netCDF comments
-                out = appendNetCDF(outfile, date)
-                # final_outfile = root_dir + out_dir + outfile
-                # os.rename(outfile, final_outfile)
+                outfiles.append(outfile)
+
+            # -------------------------------------------------------------
+            # For each date, combine outfile to netCDF and append metadata
+            # -------------------------------------------------------------
+            ## Combine track-pulled pp output files to one netCDF
+            combined_outfile = combineNetCDF(outfiles, date)
+
+            ## Update netCDF comments
+            out = appendNetCDF(combined_outfile, date)
+            final_outfile = root_dir + out_dir + 'OUT/' + combined_outfile
+            os.rename(combined_outfile, final_outfile)
 
         # print outfile
 
