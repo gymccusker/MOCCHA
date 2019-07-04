@@ -468,7 +468,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -489,7 +489,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_OPER/'
+    out_dir = '4_RA2M_CON/OUT/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
@@ -512,9 +512,7 @@ def main():
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    grid_dirname = 'AUX_DATA/'
-    date = '20180801'
-    grid_filename = grid_dirname + date + '_ShipTrack_GRIDDED.csv'
+    date = '20180812'
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
@@ -539,9 +537,10 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    names = ['20180812_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-    filename1 = root_dir + out_dir + names[4]
+    filename1 = root_dir + out_dir + names[0]
     print filename1
     print ''
 
