@@ -5885,7 +5885,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
             #################################################################
             ## CHECK DIMENSIONS
             #################################################################
-            if np.logical_and(np.size(cube[k].data,1) >= 69, np.size(cube[k].data,1) < 71):
+            if np.logical_and(np.size(cube[k].data,1) > 69, np.size(cube[k].data,1) < 72):
                 print 'Variable is 4D:'
                 print ''
                 #### create empty arrays to be filled
