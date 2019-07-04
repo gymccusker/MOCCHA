@@ -437,7 +437,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    fileout = 'FIGS/' + filename1[-22:-3] + '.svg'
+    fileout = 'FIGS/' + filename[-22:-3] + '.svg'
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
