@@ -422,17 +422,22 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         plt.contourf(time,height,np.transpose(cube[diag].data))
         # plt.pcolormesh(time,height,np.transpose(cube[2].data))
 
-        # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+        plt.title(cube[diag].var_name)
         plt.colorbar()
         ax.set_ylim([0, 3000])
 
-    plt.legend()
+    plt.subplot(5,2,9)
+    plt.xlabel('Time [UTC]')
+
+    plt.subplot(5,2,10)
+    plt.xlabel('Time [UTC]')
 
     print '******'
     print ''
     print 'Finished plotting! :)'
     print ''
 
+    fileout = 'FIGS/' + filename1[-22:-3] + '.svg'
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
