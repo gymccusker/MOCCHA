@@ -926,7 +926,9 @@ def main():
                             print cube
                             print ''
                             iris.save(cube, pp_filename, append=True)
-
+                else:
+                    print 'Combined output files already exist, or the directory does not exist'
+                    print ''
             # for stream in names:
             #     # -------------------------------------------------------------
             #     # Write out data
