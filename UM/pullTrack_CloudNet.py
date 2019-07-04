@@ -6183,7 +6183,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
 
     # print fcube
 
-    return fcube, nc_outfile
+    return fcube, pp_outfile
 
 def combineNetCDF(outfiles, date):
 
