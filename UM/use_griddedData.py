@@ -363,6 +363,25 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     print 'Plotting contour timeseries:'
     print ''
 
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.figure(figsize=(12,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
     for i in range(0,len(cube)):
 
         ###################################
@@ -391,28 +410,9 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         time = cube[diag].dim_coords[0].points
         height = cube[diag].dim_coords[1].points
 
-        ##################################################
-        ##################################################
-        #### 	CARTOPY
-        ##################################################
-        ##################################################
-
-        SMALL_SIZE = 12
-        MED_SIZE = 14
-        LARGE_SIZE = 16
-
-        plt.rc('font',size=MED_SIZE)
-        plt.rc('axes',titlesize=MED_SIZE)
-        plt.rc('axes',labelsize=MED_SIZE)
-        plt.rc('xtick',labelsize=SMALL_SIZE)
-        plt.rc('ytick',labelsize=SMALL_SIZE)
-        plt.rc('legend',fontsize=SMALL_SIZE)
-        # plt.rc('figure',titlesize=LARGE_SIZE)
-
         #################################################################
         ## create figure and axes instances
         #################################################################
-        plt.figure(figsize=(12,10))
         plt.subplot(5,2,i+1)
         ax = plt.gca()
 
