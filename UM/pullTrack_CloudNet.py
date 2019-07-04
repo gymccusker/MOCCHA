@@ -6146,6 +6146,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
     #################################################################
     ## define output filename
     #################################################################
+    print 'fcube = '
+    print fcube
     print '******'
     print 'Define pp stream outfile:'
     pp_outfile = grid_filename[9:17] + '_oden_metum_' + str(stream[2:3]) + '.pp'
@@ -6156,7 +6158,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
     print 'Writing fcube to file:'
     print ''
     iris.save(fcube, pp_outfile)
-    print fcube
+    # print fcube
 
     return fcube, nc_outfile
 
