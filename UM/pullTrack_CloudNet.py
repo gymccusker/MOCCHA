@@ -5804,6 +5804,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
     from iris.coords import DimCoord
     from iris.cube import Cube
     import iris.plot as iplt
+    import pandas as pd
 
     print '******'
     print ''
@@ -6157,7 +6158,29 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
     print ''
     print 'Writing fcube to file:'
     print ''
-    iris.save(fcube, pp_outfile)
+    if stream == '_pc011':
+        iris.save(fcube, pp_outfile)
+    else:
+        iris.save(fcube, pp_outfile, append=True)
+    # elif stream == '_pb012':
+    #     # ******
+    #     # write to csv file since 1D
+    #     # ******
+    #     print '******'
+    #     print 'Writing ' + stream[1:] + ' to .csv file since 1D:'
+    #     print ''
+    #     dat = np.zeros([len(cubeb[0][:,0,0].data), len(fcube)])
+    #     for i in range(len(fcube)):
+    #         dat[:,0] =
+    #         dat[:,1] = lon
+    #         dat[:,2] = lat
+    #         df = pd.DataFrame(dat)
+    #         filename = 'AUX_DATA/' + date + '_ShipTrack_GRIDDED.csv'
+    #         df.to_csv(filename,  sep = " ")
+    #         print '... finished!'
+    #         print ''
+    #         print '******'
+
     # print fcube
 
     return fcube, nc_outfile
@@ -6358,7 +6381,7 @@ def main():
             #           start at 012 if 3h dumps (a, b)
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pb012','_pc011']
+            names = ['_pc011','_pb012']         ### pc first to create file, then append pb
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
@@ -6389,7 +6412,6 @@ def main():
                 # -------------------------------------------------------------
                 # Pull gridded ship track from cube
                 # -------------------------------------------------------------
-
                 #### LOAD CUBE
                 if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream)
                 if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream)
