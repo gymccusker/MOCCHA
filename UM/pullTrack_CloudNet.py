@@ -6272,7 +6272,7 @@ def combineNetCDF(date, cube, nc_outfile):
     # time_mid.units = ['seconds since ' + year + '-' + month + '-' + day + ' 00:00:00']
     # time_mid.long_name = 'Mid_point_of_time_bin'
 
-    ### test Appending
+    ### test appending
     diag = 0
 
     ###################################
@@ -6486,7 +6486,7 @@ def main():
                 #     if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
                 #     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
-                if stream == '_pb011':
+                if stream == '_pb012':
                     ### -------------------------------------------------------------------------
                     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                     ### -------------------------------------------------------------------------
