@@ -5799,7 +5799,7 @@ def checkWind(cube):
 
     return cube, stash
 
-def pullTrack_CloudNet(cube, grid_filename, con, stream):
+def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -6483,8 +6483,8 @@ def main():
                 # Pull gridded ship track from cube
                 # -------------------------------------------------------------
                 #### LOAD CUBE
-                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream)
-                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream)
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, date, var_con, stream, date)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, date, global_con, stream, date)
                 # outfiles.append(outfile)
 
             # -------------------------------------------------------------
