@@ -6455,7 +6455,39 @@ def main():
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
-            for stream in names:
+            if stream == '_pc011':
+                ### -------------------------------------------------------------------------
+                ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
+                ### -------------------------------------------------------------------------
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                print 'Checking: ' + filename
+                if os.path.exists(filename):
+                    #### LOAD CUBE
+                    if 'var_con' in locals():
+                        print 'Loading single diagnostic:'
+                        print var_con
+                        cube1 = iris.load_cube(filename, var_con, callback)
+                        con_flag = 0            # constraint flag
+                    elif 'global_con' in locals():
+                        print 'Loading multiple diagnostics:'
+                        # cube = iris.load_cubes(filename1, global_con)
+                        cube = iris.load(filename, global_con, callback)
+                        con_flag = 1            # constraint flag
+
+                        # -------------------------------------------------------------
+
+                print cube
+                print ''
+
+                # -------------------------------------------------------------
+                # Pull gridded ship track from cube
+                # -------------------------------------------------------------
+                #### LOAD CUBE
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                # outfiles.append(outfile)
+
+            elif stream == '_pb011':
                 ### -------------------------------------------------------------------------
                 ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                 ### -------------------------------------------------------------------------
