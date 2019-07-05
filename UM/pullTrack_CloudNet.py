@@ -6262,31 +6262,46 @@ def combineNetCDF(date, cube, outfile):
     ###################################
     ## Data dimensions
     # ###################################
-    # time_mid = dataset.createDimension('Time_mid', np.size(nc1.variables['Time_mid']))
+    forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points))
 
     ###################################
     ## Dimensions variables
     ###################################
-    #### Time_mid
-    # time_mid = dataset.createVariable('Time_mid', np.float64, ('Time_mid',),fill_value='-9999')
-    # time_mid.scale_factor = float(1)
-    # time_mid.add_offset = float(0)
-    # time_mid.comment = 'None'
-    # time_mid.units = ['seconds since ' + year + '-' + month + '-' + day + ' 00:00:00']
-    # time_mid.long_name = 'Mid_point_of_time_bin'
+    #### forecast_period
+    period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
+    period.scale_factor = float(1)
+    period.add_offset = float(0)
+    period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
+    period.units = str(cube[0].aux_coords[1].units)
+    period.long_name = 'forecast_period'
+    period[:] = cube[0].aux_coords[1].points
 
-    ### test appending
-    diag = 0
+    #### forecast_period
+    time = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    time.scale_factor = float(1)
+    time.add_offset = float(0)
+    time.comment = 'Note this is different from forecast_period. Data are on the hour mark.'
+    time.units = str(cube[3].aux_coords[1].units)
+    time.long_name = 'forecast_time'
+    time[:] = cube[3].aux_coords[1].points
+
+    # ### test appending
+    # diag = 0
 
     ###################################
     ## Create DIAGNOSTICS
     ###################################
-    nc_all = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
-    nc_all.scale_factor = float(1)
-    nc_all.add_offset = float(0)
-    nc_all.units = cube[diag].units
-    nc_all.long_name = cube[diag].long_name
-    nc_all[:] = cube[diag].data
+    for diag in range(len(cube)):
+        if diag == 0 || diag == 1:
+            dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
+        else:
+            dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
+        dat.scale_factor = float(1)
+        dat.add_offset = float(0)
+        dat.units = str(cube[diag].units)
+        dat.long_name = cube[diag].long_name
+        dat[:] = cube[diag].data
 
     ###################################
     ## Write out file
