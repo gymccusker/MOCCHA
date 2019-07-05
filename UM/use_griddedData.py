@@ -382,8 +382,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.rc('legend',fontsize=SMALL_SIZE)
     plt.figure(figsize=(12,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.93, left = 0.07,
-            hspace = 0.3, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.05,
+            hspace = 0.4, wspace = 0.1)
 
     for i in range(0,len(cube)):
 
@@ -448,15 +448,27 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
             plt.set_cmap(mpl_cm.viridis)
 
         ### title and axes properties
-        plt.title(cube[diag].var_name)
+        if cube[diag].var_name[0] == 'q':
+            plt.title(cube[diag].var_name + ' [g/kg]')
+        else:
+            plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
         plt.colorbar()
         ax.set_ylim([0, 3000])
 
+    ### global plot properties
     plt.subplot(5,2,9)
     plt.xlabel('Time [UTC]')
-
+    plt.ylabel('Z [m]')
     plt.subplot(5,2,10)
     plt.xlabel('Time [UTC]')
+    plt.subplot(5,2,1)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,3)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,5)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,7)
+    plt.ylabel('Z [m]')
 
     print '******'
     print ''
