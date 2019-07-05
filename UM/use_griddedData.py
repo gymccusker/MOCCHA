@@ -382,8 +382,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.rc('legend',fontsize=SMALL_SIZE)
     plt.figure(figsize=(12,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.9, left = 0.1,
-            hspace = 0.25, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.93, left = 0.07,
+            hspace = 0.3, wspace = 0.1)
 
     for i in range(0,len(cube)):
 
@@ -425,6 +425,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         # plt.contourf(time,height,np.transpose(cube[diag].data))
         plt.pcolormesh(time,height,np.transpose(cube[diag].data))
         if cube[diag].var_name == 'wwind': plt.set_cmap(mpl_cm.RdBu_r)
+        if cube[diag].var_name == 'uwind': plt.set_cmap(mpl_cm.RdBu_r)
+        if cube[diag].var_name == 'vwind': plt.set_cmap(mpl_cm.RdBu_r)
 
         plt.title(cube[diag].var_name)
         plt.colorbar()
