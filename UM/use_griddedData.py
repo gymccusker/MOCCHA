@@ -420,10 +420,24 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         ax = plt.gca()
 
         #################################################################
-        ## plot contour timeseries
-        ################################################################
+        ## data corrections
+        #################################################################
+        ### if mass mixing ratio, *1e3 to change to g/kg
+        if cube[diag].var_name[0] == 'q':
+            data = np.transpose(cube[diag].data*1e3)
+        else:
+            data = np.transpose(cube[diag].data)
+
+        #################################################################
+        ## plot timeseries
+        #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        plt.pcolormesh(time,height,np.transpose(cube[diag].data))
+        plt.pcolormesh(time,height,data)
+
+        #################################################################
+        ## set plot properties
+        #################################################################
+        ### colormaps:
         if cube[diag].var_name == 'wwind':
             plt.set_cmap(mpl_cm.RdBu_r)
         elif cube[diag].var_name == 'uwind':
@@ -432,6 +446,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
             plt.set_cmap(mpl_cm.RdBu_r)
         else:
             plt.set_cmap(mpl_cm.viridis)
+
+        ### title and axes properties
         plt.title(cube[diag].var_name)
         plt.colorbar()
         ax.set_ylim([0, 3000])
