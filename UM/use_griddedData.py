@@ -424,10 +424,14 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         ################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
         plt.pcolormesh(time,height,np.transpose(cube[diag].data))
-        if cube[diag].var_name == 'wwind': plt.set_cmap(mpl_cm.RdBu_r)
-        if cube[diag].var_name == 'uwind': plt.set_cmap(mpl_cm.RdBu_r)
-        if cube[diag].var_name == 'vwind': plt.set_cmap(mpl_cm.RdBu_r)
-
+        if cube[diag].var_name == 'wwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        elif cube[diag].var_name == 'uwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        elif cube[diag].var_name == 'vwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        else:
+            plt.set_cmap(mpl_cm.viridis)
         plt.title(cube[diag].var_name)
         plt.colorbar()
         ax.set_ylim([0, 3000])
