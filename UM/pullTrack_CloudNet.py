@@ -6423,10 +6423,10 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    # for date in date_dir:
-    ### just do first date:
-    if date == date_dir[0]:
-        if date[0:4] == '2018':
+    for date in date_dir:
+        ### just do first date:
+        if date == date_dir[0]:
+        # if date[0:4] == '2018':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
