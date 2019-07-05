@@ -6293,7 +6293,7 @@ def combineNetCDF(date, cube, outfile):
     ## Create DIAGNOSTICS
     ###################################
     for diag in range(len(cube)):
-        if diag == 0 || diag == 1:
+        if diag == 0 or diag == 1:
             dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
         else:
             dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
