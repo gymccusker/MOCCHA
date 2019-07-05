@@ -6162,11 +6162,11 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     if stream == '_pc011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
-        print 'Stream = ' + stream + ', so making netCDF file'
+        print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
         nc_outfile = writeNetCDF(date, fcube)
     else:
-        print 'Stream = ' + stream + ', so appending to existing netCDF file'
+        print 'Stream = ' + stream[1:] + ', so appending to existing netCDF file'
         print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
@@ -6196,7 +6196,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
     # print fcube
 
-    return fcube, pp_outfile
+    return fcube, nc_outfile
 
 def writeNetCDF(date, cube):
 
@@ -6490,7 +6490,7 @@ def main():
             # -------------------------------------------------------------
             # For each date, append metadata to netCDF
             # -------------------------------------------------------------
-            out = appendMetaNetCDF(nc_outfile, date)
+            out = appendMetaNetCDF(outfile, date)
             # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
             # os.rename(nc_outfile, final_outfile)
 
