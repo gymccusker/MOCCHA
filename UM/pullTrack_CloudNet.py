@@ -6260,9 +6260,6 @@ def combineNetCDF(date, cube, nc_outfile):
     ## Data dimensions
     # ###################################
     # time_mid = dataset.createDimension('Time_mid', np.size(nc1.variables['Time_mid']))
-    # time_edge = dataset.createDimension('Time_edge', np.size(nc1.variables['Time_edge']))
-    # size_mid = dataset.createDimension('Size_mid', np.size(nc1.variables['Size_mid']))
-    # size_edge = dataset.createDimension('Size_edge', np.size(nc1.variables['Size_edge']))
 
     ###################################
     ## Dimensions variables
@@ -6275,18 +6272,18 @@ def combineNetCDF(date, cube, nc_outfile):
     # time_mid.units = ['seconds since ' + year + '-' + month + '-' + day + ' 00:00:00']
     # time_mid.long_name = 'Mid_point_of_time_bin'
 
+    ### test Appending
+    diag = 0
 
     ###################################
-    ## Create number concentrations
+    ## Create DIAGNOSTICS
     ###################################
-    #### NC_All
-    # nc_all = dataset.createVariable('NC_All', np.float64, ('Time_mid',),fill_value='-9999')
-    # nc_all.scale_factor = float(1)
-    # nc_all.add_offset = float(0)
-    # nc_all.comment = 'Particles in contact with the edge of the sample array have been rejected. Sum of small and low, medium, and high irregularity particle categories.'
-    # nc_all.units = 'L-1'
-    # nc_all.long_name = 'Total_number_concentration_of_particles'
-    # nc_all[:] = nc1.variables['NC_S'][:] + nc1.variables['NC_LI'][:] + nc1.variables['NC_MI'][:] + nc1.variables['NC_HI'][:]
+    nc_all = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
+    nc_all.scale_factor = float(1)
+    nc_all.add_offset = float(0)
+    nc_all.units = cube[diag].units
+    nc_all.long_name = cube[diag].long_name
+    nc_all[:] = cube[diag].data
 
     ###################################
     ## Write out file
@@ -6426,7 +6423,9 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    for date in date_dir:
+    # for date in date_dir:
+    ### just do first date:
+    if date == date_dir[0]:
         if date[0:4] == '2018':
             # # -------------------------------------------------------------
             # # Load cube
