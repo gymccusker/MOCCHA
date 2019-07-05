@@ -6483,8 +6483,8 @@ def main():
                 # Pull gridded ship track from cube
                 # -------------------------------------------------------------
                 #### LOAD CUBE
-                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, date, var_con, stream, date)
-                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, date, global_con, stream, date)
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                 # outfiles.append(outfile)
 
             # -------------------------------------------------------------
