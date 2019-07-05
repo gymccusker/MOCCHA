@@ -6289,6 +6289,16 @@ def combineNetCDF(date, cube, outfile):
     # ### test appending
     # diag = 0
 
+    # Error message to fix:
+    #        6263     ## Data dimensions
+    #    6264     # ###################################
+    # -> 6265     forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
+    #    6266     forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
+    #    6267
+    #
+    # IndexError: tuple index out of range
+
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
