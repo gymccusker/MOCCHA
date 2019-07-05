@@ -6263,7 +6263,7 @@ def combineNetCDF(date, cube, outfile):
     ## Data dimensions
     # ###################################
     forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
-    forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points))
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
 
     ###################################
     ## Dimensions variables
@@ -6275,7 +6275,7 @@ def combineNetCDF(date, cube, outfile):
     period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
     period.units = str(cube[0].aux_coords[1].units)
     period.long_name = 'forecast_period'
-    period[:] = cube[0].aux_coords[1].points
+    period[:] = cube[0].aux_coords[1].points - 12.0
 
     #### forecast_period
     time = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
