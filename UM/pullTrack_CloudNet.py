@@ -6284,7 +6284,7 @@ def combineNetCDF(date, cube, outfile):
     time.comment = 'Note this is different from forecast_period. Data are on the hour mark.'
     time.units = str(cube[3].aux_coords[1].units)
     time.long_name = 'forecast_time'
-    time[:] = cube[3].aux_coords[1].points
+    time[:] = cube[3].aux_coords[1].points - 12.0
 
     # ### test appending
     # diag = 0
