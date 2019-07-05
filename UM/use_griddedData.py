@@ -558,8 +558,6 @@ def main():
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    date = '20180812'
-
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
@@ -584,11 +582,13 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    names = ['20180812_oden_metum.nc']
+    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-    filename1 = root_dir + out_dir + names[0]
+    filename1 = root_dir + out_dir + names[1]
     print filename1
     print ''
+
+    date = names[1][0:8]
 
     #### LOAD CUBE
     if 'var_con' in locals():
