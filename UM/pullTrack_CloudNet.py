@@ -6150,18 +6150,31 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
     print 'fcube = '
     print fcube
     print '******'
-    print 'Define pp stream outfile:'
-    pp_outfile = grid_filename[9:17] + '_oden_metum_' + str(stream[2:3]) + '.pp'
-    print 'Outfile = ', pp_outfile
+    # print 'Define pp stream outfile:'
+    # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
+    nc_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.nc'
+    # print 'Outfile = ', pp_outfile
 
     ### save cube to netcdf file
     print ''
     print 'Writing fcube to file:'
     print ''
     if stream == '_pc011':
-        iris.save(fcube, pp_outfile)
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pc stream (using Iris cubes)
+        print 'Stream = ' + stream + ', so making netCDF file'
+        print ''
+        nc_outfile = writeNetCDF(date, fcube)
     else:
-        iris.save(fcube, pp_outfile, append=True)
+        print 'Stream = ' + stream + ', so appending to existing netCDF file'
+        print ''
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        out = combineNetCDF(date, fcube, nc_outfile)
+
+
+    #     iris.save(fcube, pp_outfile, append=True)
     # elif stream == '_pb012':
     #     # ******
     #     # write to csv file since 1D
@@ -6185,7 +6198,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream):
 
     return fcube, pp_outfile
 
-def combineNetCDF(outfiles, date):
+def writeNetCDF(date, cube):
 
     #################################################################
     ## CREATE NETCDF
@@ -6195,24 +6208,13 @@ def combineNetCDF(outfiles, date):
     #################################################################
     print '******'
     print 'Define .nc stream outfile:'
-    pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.pp'
     nc_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.nc'
     print 'Final outfile = ', nc_outfile
 
     #################################################################
     ## load in each stream
     #################################################################
-    # for n in range(len(outfiles)):
-    #     cube = iris.load(outfiles[n], global_con, callback)
-    #     if n == 1:
-    #         zcube = [cube]
-    #     else:
-    #         zube.append(cube)
-
-    for file in outfiles:
-        cube = iris.load(file, global_con, callback)
-        iris.save(cube, pp_outfile, append=True)
-
+    ### USE IRIS TO SAVE OUT PC CUBE TO NETCDF (CREATING NEW FILE):
     # -------------------------------------------------------------
     # Convert .pp to .nc
     # -------------------------------------------------------------
@@ -6220,12 +6222,80 @@ def combineNetCDF(outfiles, date):
     print ''
     print 'Converting to netCDF:'
     print ''
-    pp_cube = iris.load(pp_outfile)
-    iris.save(pp_cube, nc_outfile)
+    # cube = iris.load(outfile[0], global_con, callback)
+    iris.save(cube, nc_outfile)
 
     return nc_outfile
 
-def appendNetCDF(outfile, date):
+def combineNetCDF(date, cube, nc_outfile):
+    #################################################################
+    ## Append 1D timeseries data (PB) to newly created netCDF
+    #################################################################
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    print 'Appending 1D data to ' + nc_outfile
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset = Dataset(nc_outfile, 'a', format ='NETCDF4_CLASSIC')
+    print ''
+    print dataset.file_format
+    print ''
+
+    print cube
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    # ###################################
+    # time_mid = dataset.createDimension('Time_mid', np.size(nc1.variables['Time_mid']))
+    # time_edge = dataset.createDimension('Time_edge', np.size(nc1.variables['Time_edge']))
+    # size_mid = dataset.createDimension('Size_mid', np.size(nc1.variables['Size_mid']))
+    # size_edge = dataset.createDimension('Size_edge', np.size(nc1.variables['Size_edge']))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### Time_mid
+    # time_mid = dataset.createVariable('Time_mid', np.float64, ('Time_mid',),fill_value='-9999')
+    # time_mid.scale_factor = float(1)
+    # time_mid.add_offset = float(0)
+    # time_mid.comment = 'None'
+    # time_mid.units = ['seconds since ' + year + '-' + month + '-' + day + ' 00:00:00']
+    # time_mid.long_name = 'Mid_point_of_time_bin'
+
+
+    ###################################
+    ## Create number concentrations
+    ###################################
+    #### NC_All
+    # nc_all = dataset.createVariable('NC_All', np.float64, ('Time_mid',),fill_value='-9999')
+    # nc_all.scale_factor = float(1)
+    # nc_all.add_offset = float(0)
+    # nc_all.comment = 'Particles in contact with the edge of the sample array have been rejected. Sum of small and low, medium, and high irregularity particle categories.'
+    # nc_all.units = 'L-1'
+    # nc_all.long_name = 'Total_number_concentration_of_particles'
+    # nc_all[:] = nc1.variables['NC_S'][:] + nc1.variables['NC_LI'][:] + nc1.variables['NC_MI'][:] + nc1.variables['NC_HI'][:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+def appendMetaNetCDF(outfile, date):
 
     from netCDF4 import num2date, date2num
     import time
@@ -6415,18 +6485,14 @@ def main():
                 #### LOAD CUBE
                 if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream)
                 if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream)
-                outfiles.append(outfile)
+                # outfiles.append(outfile)
 
             # -------------------------------------------------------------
-            # For each date, combine outfile to netCDF and append metadata
+            # For each date, append metadata to netCDF
             # -------------------------------------------------------------
-            ## Combine track-pulled pp output files to one netCDF
-            combined_outfile = combineNetCDF(outfiles, date)
-
-            ## Update netCDF comments
-            out = appendNetCDF(combined_outfile, date)
-            final_outfile = root_dir + out_dir + 'OUT/' + combined_outfile
-            os.rename(combined_outfile, final_outfile)
+            out = appendMetaNetCDF(nc_outfile, date)
+            # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+            # os.rename(nc_outfile, final_outfile)
 
         # print outfile
 
@@ -6436,7 +6502,6 @@ def main():
     ### select hour to plot
     # hour = 0
     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-
 
     END_TIME = time.time()
     print '******'
