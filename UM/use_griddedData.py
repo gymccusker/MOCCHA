@@ -427,15 +427,15 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
 
         ### if mass mixing ratio, *1e3 to change to g/kg
         if cube[diag].var_name[0] == 'q':
-            data = np.transpose(cube[diag].data[:,ind]*1e3)
+            data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
         else:
-            data = np.transpose(cube[diag].data[:,ind])
+            data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
 
         #################################################################
         ## plot timeseries
         #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        plt.pcolormesh(time, height, data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
         #################################################################
         ## set plot properties
