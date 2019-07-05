@@ -6171,7 +6171,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        out = combineNetCDF(date, fcube, nc_outfile)
+        out, boutfile = combineNetCDF(date, fcube, nc_outfile)
 
 
     #     iris.save(fcube, pp_outfile, append=True)
@@ -6227,7 +6227,7 @@ def writeNetCDF(date, cube):
 
     return nc_outfile
 
-def combineNetCDF(date, cube, nc_outfile):
+def combineNetCDF(date, cube, outfile):
     #################################################################
     ## Append 1D timeseries data (PB) to newly created netCDF
     #################################################################
@@ -6236,15 +6236,18 @@ def combineNetCDF(date, cube, nc_outfile):
     import time
     from datetime import datetime, timedelta
 
+    boutfile = outfile[:-3] + '_b.nc'
+
     print '******'
     print ''
-    print 'Appending 1D data to ' + nc_outfile
+    # print 'Appending 1D data to ' + outfile
+    print 'Writing 1D data to ' + boutfile
     print ''
 
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(nc_outfile, 'r+')
+    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
@@ -6290,7 +6293,7 @@ def combineNetCDF(date, cube, nc_outfile):
     ###################################
     dataset.close()
 
-    return dataset
+    return dataset, boutfile
 
 def appendMetaNetCDF(outfile, date):
 
