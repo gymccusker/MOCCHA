@@ -382,7 +382,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.rc('legend',fontsize=SMALL_SIZE)
     plt.figure(figsize=(12,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.05,
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
     for i in range(0,len(cube)):
