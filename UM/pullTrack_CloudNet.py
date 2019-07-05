@@ -6244,7 +6244,7 @@ def combineNetCDF(date, cube, nc_outfile):
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(nc_outfile, 'a', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(nc_outfile, 'r+', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
