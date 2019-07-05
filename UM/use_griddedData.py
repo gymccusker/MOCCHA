@@ -352,6 +352,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
+    import matplotlib.cm as mpl_cm
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -382,7 +383,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.figure(figsize=(12,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.9, left = 0.1,
-            hspace = 0.1, wspace = 0.1)
+            hspace = 0.25, wspace = 0.1)
 
     for i in range(0,len(cube)):
 
@@ -421,8 +422,9 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         #################################################################
         ## plot contour timeseries
         ################################################################
-        plt.contourf(time,height,np.transpose(cube[diag].data))
-        # plt.pcolormesh(time,height,np.transpose(cube[2].data))
+        # plt.contourf(time,height,np.transpose(cube[diag].data))
+        plt.pcolormesh(time,height,np.transpose(cube[diag].data))
+        if cube[diag].var_name == 'wwind': plt.set_cmap(mpl_cm.RdBu_r)
 
         plt.title(cube[diag].var_name)
         plt.colorbar()
