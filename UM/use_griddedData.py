@@ -582,13 +582,13 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc']
+    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-    filename1 = root_dir + out_dir + names[1]
+    filename1 = root_dir + out_dir + names[2]
     print filename1
     print ''
 
-    date = names[1][0:8]
+    # date = names[1][0:8]
 
     #### LOAD CUBE
     if 'var_con' in locals():
