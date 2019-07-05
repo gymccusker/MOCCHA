@@ -6519,12 +6519,12 @@ def main():
                     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     # outfiles.append(outfile)
 
-            # -------------------------------------------------------------
-            # For each date, append metadata to netCDF
-            # -------------------------------------------------------------
-            out = appendMetaNetCDF(outfile, date)
-            # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-            # os.rename(nc_outfile, final_outfile)
+                    # -------------------------------------------------------------
+                    # For each date, append metadata to netCDF
+                    # -------------------------------------------------------------
+                    out = appendMetaNetCDF(outfile, date)
+                    # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                    # os.rename(nc_outfile, final_outfile)
 
         # print outfile
 
