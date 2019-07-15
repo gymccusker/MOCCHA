@@ -6349,7 +6349,7 @@ def appendMetaNetCDF(outfile, date):
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young (G.Young1@leeds.ac.uk) using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
-    # dataset.references = 'N/A'
+    dataset.references = 'Rose suite ID: u-bg610'
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = micro + wind
     dataset.institution = 'University of Leeds.'
