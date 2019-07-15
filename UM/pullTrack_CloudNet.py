@@ -5710,14 +5710,14 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
 
-    plt.plot(np.nanmin(lon),np.nanmin(lat),
-            color='black',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmin(lon),np.nanmax(lat),
-            color='black',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmax(lon),np.nanmin(lat),
-            color='black',transform = ccrs.PlateCarree())
-    plt.plot(np.nanmax(lon),np.nanmax(lat),
-            color='black',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmin(lon),np.nanmin(lat),
+    #         color='black',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmin(lon),np.nanmax(lat),
+    #         color='black',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmax(lon),np.nanmin(lat),
+    #         color='black',transform = ccrs.PlateCarree())
+    # plt.plot(np.nanmax(lon),np.nanmax(lat),
+    #         color='black',transform = ccrs.PlateCarree())
 
     plt.legend()
 
