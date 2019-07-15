@@ -6553,14 +6553,14 @@ def main():
                     # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                     # # os.rename(nc_outfile, final_outfile)
 
-                # print outfile
+                    # print outfile
 
-                # -------------------------------------------------------------
-                # Plot data (map)
-                # -------------------------------------------------------------
-                ### select hour to plot
-                hour = 0
-                map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                    # -------------------------------------------------------------
+                    # Plot data (map)
+                    # -------------------------------------------------------------
+                    ### select hour to plot
+                    hour = 0
+                    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
     END_TIME = time.time()
     print '******'
