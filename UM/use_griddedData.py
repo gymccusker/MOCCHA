@@ -596,10 +596,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         ### if mass mixing ratio, *1e3 to change to g/kg
         if data.keys()[diag][0] == 'q':
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-            print 'transposed for plotting' + str(dat.shape)
+            # print 'transposed for plotting' + str(dat.shape)
         else:
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-            print 'transposed for plotting' + str(dat.shape)
+            # print 'transposed for plotting' + str(dat.shape)
 
         #################################################################
         ## plot timeseries
