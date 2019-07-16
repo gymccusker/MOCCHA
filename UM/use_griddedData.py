@@ -612,6 +612,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         # plt.contourf(time,height,np.transpose(cube[diag].data))
         if data.keys()[diag] == 'temperature':
             plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
+        elif data.keys()[diag] == 'pressure':
+            plt.pcolormesh(timem, height, dat, vmin = 50000, vmax = np.nanmax(dat))
         else:
             plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
         #################################################################
@@ -624,10 +626,16 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             plt.set_cmap(mpl_cm.RdBu_r)
         elif data.keys()[diag] == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif data.keys()[diag][0] == 'q':
-            plt.set_cmap(mpl_cm.Blues)
+        # elif data.keys()[diag][0] == 'q':
+        #     plt.set_cmap(mpl_cm.Blues)
         else:
             plt.set_cmap(mpl_cm.viridis)
+
+        plt.title(title)
+        plt.colorbar()
+        ax.set_ylim([0, 5000])
+        if month_flag == 8: ax.set_xlim([15.0, 31.0])
+        if month_flag == 9: ax.set_xlim([1.0, 15.0])
 
         print ''
         print 'Zero out any data from missing files:'
@@ -638,17 +646,14 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             # nans[nans == 0] = np.nan
             plt.pcolormesh(mtime, height, nans)
 
-        plt.title(title)
-        plt.colorbar()
-        ax.set_ylim([0, 5000])
-        if month_flag == 8: ax.set_xlim([15.0, 31.0])
-
     ### global plot properties
     plt.subplot(5,2,9)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
     plt.ylabel('Z [m]')
     plt.subplot(5,2,10)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
     plt.subplot(5,2,1)
     plt.ylabel('Z [m]')
     plt.subplot(5,2,3)
@@ -664,6 +669,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
     print ''
 
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
+    if month_flag == 9: fileout = 'FIGS/201809_oden_metum.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -763,17 +769,18 @@ def main():
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
     names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
             '20180818_oden_metum.nc','20180819_oden_metum.nc','20180821_oden_metum.nc',
-            '20180822_oden_metum.nc']
+            '20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc']
 
     missing_files = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180817_oden_metum.nc',
-            '20180820_oden_metum.nc']
+            '20180820_oden_metum.nc','20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc',
+            '20180828_oden_metum.nc','20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 1
 
     if combine == 0:
-        filename1 = root_dir + out_dir + names[1]
+        filename1 = root_dir + out_dir + names[-1]
         print filename1
         print ''
 
