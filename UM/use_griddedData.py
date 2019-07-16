@@ -539,7 +539,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
 
     print '******'
     print ''
@@ -595,12 +595,10 @@ def main():
             print 'Loading single diagnostic:'
             print var_con
             cube1 = iris.load_cube(filename1, var_con, callback)
-            con_flag = 0            # constraint flag
         elif 'global_con' in locals():
             print 'Loading multiple diagnostics:'
             # cube = iris.load_cubes(filename1, global_con)
             cube = iris.load(filename1, global_con, callback)
-            con_flag = 1            # constraint flag
 
             # -------------------------------------------------------------
 
@@ -611,6 +609,26 @@ def main():
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
         figure = plot_multicontour_TS(cube, filename1)
+
+    else:
+        for date in names:
+            filename = root_dir + out_dir + date
+            print filename
+            print ''
+
+            print 'Loading multiple diagnostics:'
+            cube = iris.load(filename, global_con, callback)
+
+            # -------------------------------------------------------------
+
+            print cube
+            print ''
+
+            # -------------------------------------------------------------
+            # Plot data (5x2 timeseries)
+            # -------------------------------------------------------------
+            figure = plot_multicontour_TS(cube, filename)
+
 
 
     # -------------------------------------------------------------
