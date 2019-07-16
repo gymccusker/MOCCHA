@@ -534,8 +534,6 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         print 'Diag is: '
         print data.keys()[diag]
 
-        if data.keys()[diag] == 'time':
-            continue
         ### pcXXX - CUBE
         # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
         # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -552,7 +550,6 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
         ###################################
 
-        # time = data['time']
         if data.keys()[diag] == 'radr_refl':
             height = cube[0].dim_coords[1].points
             title = cube[0].var_name + ' [dBz]'
@@ -623,12 +620,6 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         else:
             plt.set_cmap(mpl_cm.viridis)
 
-        ### title and axes properties
-        # if data.keys()[diag][0] == 'q':
-        #     plt.title(cube[diag].var_name + ' [g/kg]')
-        # else:
-        #     for j in range(0,len(cube)):
-        #         if cube[j].var_name == data.keys()[diag]: plt.title(cube[j].var_name + ' [' + str(cube[j].units) + ']')
         plt.title(title)
         plt.colorbar()
         ax.set_ylim([0, 5000])
