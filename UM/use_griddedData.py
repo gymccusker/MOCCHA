@@ -423,7 +423,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         ## data corrections
         #################################################################
         ### set height limit to consider
-        ind = np.where(height<3000)
+        ind = np.where(height<5000)
 
         ### if mass mixing ratio, *1e3 to change to g/kg
         if cube[diag].var_name[0] == 'q':
@@ -435,7 +435,10 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         ## plot timeseries
         #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+        if cube[diag].var_name == 'temperature':
+            plt.pcolormesh(time, height[ind], data, vmin = 260, vmax = np.nanmax(data))
+        else:
+            plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
         #################################################################
         ## set plot properties
@@ -458,7 +461,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         else:
             plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
         plt.colorbar()
-        ax.set_ylim([0, 3000])
+        ax.set_ylim([0, 5000])
 
     ### global plot properties
     plt.subplot(5,2,9)
@@ -484,7 +487,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.savefig(fileout)
     plt.show()
 
-def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
+def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -607,8 +610,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         ## plot timeseries
         #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
-
+        if data.keys()[diag] == 'temperature':
+            plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
+        else:
+            plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
         #################################################################
         ## set plot properties
         #################################################################
@@ -624,10 +629,19 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
         else:
             plt.set_cmap(mpl_cm.viridis)
 
+        print ''
+        print 'Zero out any data from missing files:'
+        print ''
+        for mfile in missing_files:
+            mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+            nans = np.zeros([len(height),len(mtime)])
+            # nans[nans == 0] = np.nan
+            plt.pcolormesh(mtime, height, nans)
+
         plt.title(title)
         plt.colorbar()
         ax.set_ylim([0, 5000])
-        ax.set_xlim([15.0, 18.0])
+        if month_flag == 8: ax.set_xlim([15.0, 31.0])
 
     ### global plot properties
     plt.subplot(5,2,9)
@@ -708,9 +722,6 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
-    ## Flag for individual file or monthly:
-    combine = 1
-
     print '******'
     print ''
     print 'Identifying .nc file: '
@@ -750,11 +761,19 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc','20180817_oden_metum.nc']
+    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            '20180818_oden_metum.nc','20180819_oden_metum.nc','20180821_oden_metum.nc',
+            '20180822_oden_metum.nc']
+
+    missing_files = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180817_oden_metum.nc',
+            '20180820_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
+    ## Flag for individual file or monthly:
+    combine = 1
+
     if combine == 0:
-        filename1 = root_dir + out_dir + names[3]
+        filename1 = root_dir + out_dir + names[1]
         print filename1
         print ''
 
@@ -813,7 +832,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
