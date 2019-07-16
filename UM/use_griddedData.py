@@ -482,6 +482,143 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.savefig(fileout)
     plt.show()
 
+def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting contour timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.figure(figsize=(12,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    for i in range(0,len(cube)):
+
+        ###################################
+        ## CHOOSE DIAGNOSTIC
+        ###################################
+        diag = i
+        print ''
+        print 'Diag is: '
+        print cube[diag]
+        ### pcXXX
+        # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+        ###################################
+        ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+        ###################################
+
+        time = cube[diag].dim_coords[0].points
+        height = cube[diag].dim_coords[1].points
+
+        #################################################################
+        ## create figure and axes instances
+        #################################################################
+        plt.subplot(5,2,i+1)
+        ax = plt.gca()
+
+        #################################################################
+        ## data corrections
+        #################################################################
+        ### set height limit to consider
+        ind = np.where(height<3000)
+
+        ### if mass mixing ratio, *1e3 to change to g/kg
+        if cube[diag].var_name[0] == 'q':
+            data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+        else:
+            data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+
+        #################################################################
+        ## plot timeseries
+        #################################################################
+        # plt.contourf(time,height,np.transpose(cube[diag].data))
+        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+
+        #################################################################
+        ## set plot properties
+        #################################################################
+        ### colormaps:
+        if cube[diag].var_name == 'wwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        elif cube[diag].var_name == 'uwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        elif cube[diag].var_name == 'vwind':
+            plt.set_cmap(mpl_cm.RdBu_r)
+        else:
+            plt.set_cmap(mpl_cm.viridis)
+
+        ### title and axes properties
+        if cube[diag].var_name[0] == 'q':
+            plt.title(cube[diag].var_name + ' [g/kg]')
+        else:
+            plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
+        plt.colorbar()
+        ax.set_ylim([0, 3000])
+
+    ### global plot properties
+    plt.subplot(5,2,9)
+    plt.xlabel('Time [UTC]')
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,10)
+    plt.xlabel('Time [UTC]')
+    plt.subplot(5,2,1)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,3)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,5)
+    plt.ylabel('Z [m]')
+    plt.subplot(5,2,7)
+    plt.ylabel('Z [m]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    fileout = 'FIGS/' + filename[-22:-3] + '.png'
+    plt.savefig(fileout)
+    plt.show()
+
 
 def callback(cube, field, filename):
     '''
@@ -611,24 +748,42 @@ def main():
         figure = plot_multicontour_TS(cube, filename1)
 
     else:
-        for date in names:
-            filename = root_dir + out_dir + date
+        for i in range(1,len(names)):
+            month_flag = 0
+            filename = root_dir + out_dir + names[i]
             print filename
             print ''
 
             print 'Loading multiple diagnostics:'
             cube = iris.load(filename, global_con, callback)
 
-            # -------------------------------------------------------------
-
             print cube
             print ''
 
-            # -------------------------------------------------------------
-            # Plot data (5x2 timeseries)
-            # -------------------------------------------------------------
-            figure = plot_multicontour_TS(cube, filename)
+            if i == 1:
+                data = {}
+                data['time'] = []
+                data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                for j in range(0,len(cube)):
+                    data[cube[j].var_name] = cube[j].data
+                # print data[cube[0].var_name]
+            else:
+                data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+                # print data
+                for j in range(0,len(cube)):
+                    data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
 
+            print 'Data dict = ' + data['radr_refl'].shape
+
+        # -------------------------------------------------------------
+        # Plot combined data (5x2 timeseries)
+        # -------------------------------------------------------------
+        figure = plot_multicontour_multidate_TS(data, month_flag)
+
+        # -------------------------------------------------------------
+        # Plot data (5x2 monthly timeseries)
+        # -------------------------------------------------------------
+        # figure = plot_multicontour_TS(cube, filename)
 
 
     # -------------------------------------------------------------
