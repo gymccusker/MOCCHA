@@ -447,6 +447,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
             plt.set_cmap(mpl_cm.RdBu_r)
         elif cube[diag].var_name == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
+        elif cube[diag].var_name[0] == 'q':
+            plt.set_cmap(mpl_cm.Blues)
         else:
             plt.set_cmap(mpl_cm.viridis)
 
@@ -617,6 +619,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
             plt.set_cmap(mpl_cm.RdBu_r)
         elif data.keys()[diag] == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
+        elif data.keys()[diag][0] == 'q':
+            plt.set_cmap(mpl_cm.Blues)
         else:
             plt.set_cmap(mpl_cm.viridis)
 
@@ -648,7 +652,6 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
     plt.savefig(fileout)
     plt.show()
-
 
 def callback(cube, field, filename):
     '''
