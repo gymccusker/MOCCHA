@@ -482,7 +482,7 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     plt.savefig(fileout)
     plt.show()
 
-def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
+def plot_multicontour_multidate_TS(timem, data, cube, month_flag): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -498,7 +498,7 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
 
     print '******'
     print ''
-    print 'Plotting contour timeseries:'
+    print 'Plotting combined contour timeseries:'
     print ''
 
     ##################################################
@@ -522,7 +522,9 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
-    for i in range(0,len(cube)):
+    print data.keys()
+
+    for i in range(0,len(data.keys())):
 
         ###################################
         ## CHOOSE DIAGNOSTIC
@@ -530,8 +532,11 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
         diag = i
         print ''
         print 'Diag is: '
-        print cube[diag]
-        ### pcXXX
+        print data.keys()[diag]
+
+        if data.keys()[diag] == 'time':
+            continue
+        ### pcXXX - CUBE
         # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
         # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
         # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -547,8 +552,37 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
         ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
         ###################################
 
-        time = cube[diag].dim_coords[0].points
-        height = cube[diag].dim_coords[1].points
+        # time = data['time']
+        if data.keys()[diag] == 'radr_refl':
+            height = cube[0].dim_coords[1].points
+            title = cube[0].var_name + ' [dBz]'
+        elif data.keys()[diag] == 'pressure':
+            height = cube[1].dim_coords[1].points
+            title = cube[1].var_name + ' [' + str(cube[1].units) + ']'
+        elif data.keys()[diag] == 'temperature':
+            height = cube[2].dim_coords[1].points
+            title = cube[2].var_name + ' [' + str(cube[2].units) + ']'
+        elif data.keys()[diag] == 'uwind':
+            height = cube[3].dim_coords[1].points
+            title = cube[3].var_name + ' [' + str(cube[3].units) + ']'
+        elif data.keys()[diag] == 'cloud_fraction':
+            height = cube[4].dim_coords[1].points
+            title = cube[4].var_name + ' [' + str(cube[4].units) + ']'
+        elif data.keys()[diag] == 'qice':
+            height = cube[5].dim_coords[1].points
+            title = cube[5].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'qliq':
+            height = cube[6].dim_coords[1].points
+            title = cube[6].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'vwind':
+            height = cube[7].dim_coords[1].points
+            title = cube[7].var_name + ' [' + str(cube[7].units) + ']'
+        elif data.keys()[diag] == 'q':
+            height = cube[8].dim_coords[1].points
+            title = cube[8].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'wwind':
+            height = cube[9].dim_coords[1].points
+            title = cube[9].var_name + ' [' + str(cube[9].units) + ']'
 
         #################################################################
         ## create figure and axes instances
@@ -560,47 +594,52 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
         ## data corrections
         #################################################################
         ### set height limit to consider
-        ind = np.where(height<3000)
+        # ind = np.where(height<5000)
 
         ### if mass mixing ratio, *1e3 to change to g/kg
-        if cube[diag].var_name[0] == 'q':
-            data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+        if data.keys()[diag][0] == 'q':
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+            print 'transposed for plotting' + str(dat.shape)
         else:
-            data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+            print 'transposed for plotting' + str(dat.shape)
 
         #################################################################
         ## plot timeseries
         #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+        plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
 
         #################################################################
         ## set plot properties
         #################################################################
         ### colormaps:
-        if cube[diag].var_name == 'wwind':
+        if data.keys()[diag] == 'wwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif cube[diag].var_name == 'uwind':
+        elif data.keys()[diag] == 'uwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif cube[diag].var_name == 'vwind':
+        elif data.keys()[diag] == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
         else:
             plt.set_cmap(mpl_cm.viridis)
 
         ### title and axes properties
-        if cube[diag].var_name[0] == 'q':
-            plt.title(cube[diag].var_name + ' [g/kg]')
-        else:
-            plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
+        # if data.keys()[diag][0] == 'q':
+        #     plt.title(cube[diag].var_name + ' [g/kg]')
+        # else:
+        #     for j in range(0,len(cube)):
+        #         if cube[j].var_name == data.keys()[diag]: plt.title(cube[j].var_name + ' [' + str(cube[j].units) + ']')
+        plt.title(title)
         plt.colorbar()
-        ax.set_ylim([0, 3000])
+        ax.set_ylim([0, 5000])
+        ax.set_xlim([15.0, 18.0])
 
     ### global plot properties
     plt.subplot(5,2,9)
-    plt.xlabel('Time [UTC]')
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
     plt.ylabel('Z [m]')
     plt.subplot(5,2,10)
-    plt.xlabel('Time [UTC]')
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
     plt.subplot(5,2,1)
     plt.ylabel('Z [m]')
     plt.subplot(5,2,3)
@@ -615,7 +654,7 @@ def plot_multicontour_multidate_TS(data, month_flag): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    fileout = 'FIGS/' + filename[-22:-3] + '.png'
+    if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -749,7 +788,7 @@ def main():
 
     else:
         for i in range(1,len(names)):
-            month_flag = 0
+            month_flag = 8
             filename = root_dir + out_dir + names[i]
             print filename
             print ''
@@ -762,23 +801,26 @@ def main():
 
             if i == 1:
                 data = {}
-                data['time'] = []
-                data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                # data['time'] = []
+                # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube)):
                     data[cube[j].var_name] = cube[j].data
                 # print data[cube[0].var_name]
             else:
-                data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+                # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+                timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 # print data
                 for j in range(0,len(cube)):
                     data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
 
-            print 'Data dict = ' + data['radr_refl'].shape
+            print 'Data dict = ' + str(data['radr_refl'].shape)
 
         # -------------------------------------------------------------
         # Plot combined data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_multidate_TS(data, month_flag)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag)
+                    ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
