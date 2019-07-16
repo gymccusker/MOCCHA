@@ -514,7 +514,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -524,9 +524,13 @@ def main():
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        ### CHOSEN RUN
+        out_dir = '4_RA2M_CON/OUT/'
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        ### CHOSEN RUN
+        out_dir = '4_RA2M_CON/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -534,14 +538,8 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
-    ### CHOSEN RUN
-    out_dir = '4_RA2M_CON/OUT/'
-
-    ## 1_20160401_61DIAG_TEST/
-    ## 2_20180801_61DIAGS_TEST/2_30_86.625/
-    ## 3_12AUG_SWATH_2FCSTS/
-    ## 4_OPER/
-    ## TESTING/
+    ## Flag for individual file or monthly:
+    combine = 0
 
     print '******'
     print ''
@@ -584,39 +582,41 @@ def main():
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
     names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc','20180817_oden_metum.nc']
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-    filename1 = root_dir + out_dir + names[3]
-    print filename1
-    print ''
 
-    # date = names[1][0:8]
+    if combine == 0:
+        filename1 = root_dir + out_dir + names[3]
+        print filename1
+        print ''
 
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        print 'Loading single diagnostic:'
-        print var_con
-        cube1 = iris.load_cube(filename1, var_con, callback)
-        con_flag = 0            # constraint flag
-    elif 'global_con' in locals():
-        print 'Loading multiple diagnostics:'
-        # cube = iris.load_cubes(filename1, global_con)
-        cube = iris.load(filename1, global_con, callback)
-        con_flag = 1            # constraint flag
+        # date = names[1][0:8]
+
+        #### LOAD CUBE
+        if 'var_con' in locals():
+            print 'Loading single diagnostic:'
+            print var_con
+            cube1 = iris.load_cube(filename1, var_con, callback)
+            con_flag = 0            # constraint flag
+        elif 'global_con' in locals():
+            print 'Loading multiple diagnostics:'
+            # cube = iris.load_cubes(filename1, global_con)
+            cube = iris.load(filename1, global_con, callback)
+            con_flag = 1            # constraint flag
+
+            # -------------------------------------------------------------
+
+        print cube
+        print ''
 
         # -------------------------------------------------------------
+        # Plot data (5x2 timeseries)
+        # -------------------------------------------------------------
+        figure = plot_multicontour_TS(cube, filename1)
 
-    print cube
-    print ''
 
     # -------------------------------------------------------------
     # Plot data (single timeseries)
     # -------------------------------------------------------------
     # figure = plot_contour_TS(cube, filename1)
-
-    # -------------------------------------------------------------
-    # Plot data (5x2 timeseries)
-    # -------------------------------------------------------------
-    figure = plot_multicontour_TS(cube, filename1)
-
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
