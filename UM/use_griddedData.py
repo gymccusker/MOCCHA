@@ -437,6 +437,12 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
         # plt.contourf(time,height,np.transpose(cube[diag].data))
         if cube[diag].var_name == 'temperature':
             plt.pcolormesh(time, height[ind], data, vmin = 260, vmax = np.nanmax(data))
+        elif cube[diag].var_name == 'uwind':
+            plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+        elif cube[diag].var_name == 'vwind':
+            plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+        elif cube[diag].var_name == 'wwind':
+            plt.pcolormesh(time, height[ind], data, vmin = -0.1, vmax = 0.1)
         else:
             plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
@@ -450,8 +456,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
             plt.set_cmap(mpl_cm.RdBu_r)
         elif cube[diag].var_name == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif cube[diag].var_name[0] == 'q':
-            plt.set_cmap(mpl_cm.Blues)
+        # elif cube[diag].var_name[0] == 'q':
+        #     plt.set_cmap(mpl_cm.Blues)
         else:
             plt.set_cmap(mpl_cm.viridis)
 
@@ -614,6 +620,12 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
         elif data.keys()[diag] == 'pressure':
             plt.pcolormesh(timem, height, dat, vmin = 50000, vmax = np.nanmax(dat))
+        elif data.keys()[diag] == 'uwind':
+            plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+        elif data.keys()[diag] == 'vwind':
+            plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+        elif data.keys()[diag] == 'wwind':
+            plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
         else:
             plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
         #################################################################
@@ -793,7 +805,7 @@ def main():
     month_flag = 8
 
     if combine == 0:
-        filename1 = root_dir + out_dir + names[-3]
+        filename1 = root_dir + out_dir + names[-4]
         print filename1
         print ''
 
