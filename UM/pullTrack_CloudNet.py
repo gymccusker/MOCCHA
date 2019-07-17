@@ -6334,7 +6334,7 @@ def appendMetaNetCDF(outfile, date):
     ###################################
     ## Open File
     ###################################
-    dataset =  Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
     # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
     print ''
     print dataset.file_format
