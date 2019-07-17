@@ -522,7 +522,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
     plt.rc('xtick',labelsize=SMALL_SIZE)
     plt.rc('ytick',labelsize=SMALL_SIZE)
     plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(12,10))
+    plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
@@ -773,7 +773,8 @@ def main():
             '20180826_oden_metum.nc','20180827_oden_metum.nc','20180830_oden_metum.nc',
             '20180831_oden_metum.nc']
 
-    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc']
+    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
+            '20180905_oden_metum.nc','20180906_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc','20180813_oden_metum.nc','20180814_oden_metum.nc','20180817_oden_metum.nc',
             '20180820_oden_metum.nc','20180825_oden_metum.nc','20180828_oden_metum.nc','20180829_oden_metum.nc']
