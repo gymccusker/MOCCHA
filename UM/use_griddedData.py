@@ -626,6 +626,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
         elif data.keys()[diag] == 'wwind':
             plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
+        elif data.keys()[diag] == 'qice':
+            plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
         else:
             plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
         #################################################################
@@ -646,7 +648,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         plt.title(title)
         plt.colorbar()
         ax.set_ylim([0, 5000])
-        if month_flag == 8: ax.set_xlim([15.0, 31.0])
+        if month_flag == 8: ax.set_xlim([12.0, 31.0])
         if month_flag == 9: ax.set_xlim([1.0, 15.0])
 
         print ''
@@ -798,11 +800,11 @@ def main():
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[-4]
