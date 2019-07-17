@@ -6518,6 +6518,13 @@ def main():
                     if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
                     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
+                     #-------------------------------------------------------------
+                     # For each date, append metadata to netCDF
+                     # -------------------------------------------------------------
+                     out = appendMetaNetCDF(outfile, date)
+                        # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                        # # os.rename(nc_outfile, final_outfile)
+
                 # if stream == '_pb012':
                 #     ### -------------------------------------------------------------------------
                 #     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
