@@ -767,18 +767,29 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    names = ['20180812_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+    Aug_names = ['20180815_oden_metum.nc','20180816_oden_metum.nc',
             '20180818_oden_metum.nc','20180819_oden_metum.nc','20180821_oden_metum.nc',
             '20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180826_oden_metum.nc','20180827_oden_metum.nc']
+            '20180826_oden_metum.nc','20180827_oden_metum.nc','20180830_oden_metum.nc',
+            '20180831_oden_metum.nc']
 
-    missing_files = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180817_oden_metum.nc',
-            '20180820_oden_metum.nc','20180825_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
+    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc']
+
+    Aug_missing_files = ['20180812_oden_metum.nc','20180813_oden_metum.nc','20180814_oden_metum.nc','20180817_oden_metum.nc',
+            '20180820_oden_metum.nc','20180825_oden_metum.nc','20180828_oden_metum.nc','20180829_oden_metum.nc']
+
+    Sep_missing_files = ['20180908_oden_metum.nc','20180909_oden_metum.nc','20180910_oden_metum.nc',
+            '20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc','20180914_oden_metum.nc']
+
+
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
+    ## Choose month:
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[-1]
@@ -808,8 +819,7 @@ def main():
         figure = plot_multicontour_TS(cube, filename1)
 
     else:
-        for i in range(1,len(names)):
-            month_flag = 8
+        for i in range(0,len(names)):
             filename = root_dir + out_dir + names[i]
             print filename
             print ''
@@ -820,7 +830,7 @@ def main():
             print cube
             print ''
 
-            if i == 1:
+            if i == 0:
                 data = {}
                 # data['time'] = []
                 # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
