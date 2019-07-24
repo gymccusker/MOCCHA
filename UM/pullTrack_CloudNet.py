@@ -5799,6 +5799,25 @@ def checkWind(cube):
 
     return cube, stash
 
+def fixHeight(data, cube):
+
+    print '******'
+    print ''
+    print 'Adjusting height to common vertical grid...'
+    print ''
+
+    # height = cube[1].aux_coords[2].points.data       ### 71 levels
+
+    # np.round(cube.aux_coords[2][0].points)
+    if np.size(data,1) == 70:
+        ### making 70 levels into 71 for common grid
+        cubedata = np.zeros([24,71])
+        cubedata[:,1:] = data
+        cubedata[:,0] = np.nan
+
+
+    return height, cubedata
+
 def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
     from iris.coords import DimCoord
@@ -5977,7 +5996,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
             ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
             if dim_flag == 1:         ### 4D VARIABLE
-                model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                # comdata = fixHeight(data)
                 ncube = Cube(np.transpose(data),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
                         standard_name = cube[k].standard_name,
@@ -6521,7 +6541,7 @@ def main():
                      #-------------------------------------------------------------
                      # For each date, append metadata to netCDF
                      # -------------------------------------------------------------
-                     out = appendMetaNetCDF(outfile, date)
+                    out = appendMetaNetCDF(outfile, date)
                         # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         # # os.rename(nc_outfile, final_outfile)
 
