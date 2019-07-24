@@ -6373,14 +6373,15 @@ def appendMetaNetCDF(outfile, date):
     ## Global Attributes
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
+    revision = 'Revision no. 0.'
     micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
-    wind = 'U wind component evaluated at the mid-points of the left/right grid faces; V components at the mid-points of the upper/lower grid faces. Use appropriate height coordinate with these variables. '
+    wind = 'U and V wind components interpolated on to common vertical grid.'
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young (G.Young1@leeds.ac.uk) using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'Rose suite ID: u-bg610'
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
-    dataset.comment = micro + wind
+    dataset.comment = revision + micro + wind
     dataset.institution = 'University of Leeds.'
     # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
