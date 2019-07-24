@@ -5816,10 +5816,11 @@ def fixHeight(data, cube):
     elif np.round(cube.aux_coords[2][0].points) == 2:
         ### interpolating to n71 common grid
         ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
-        temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data)
         cubedata = np.zeros([71,24])
-        cubedata[1:,:] = temp
-        cubedata[0,:] = np.nan
+        for i in range(0,24):
+            temp[:,i] = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+            cubedata[1:,i] = temp[:,i]
+            cubedata[0,i] = np.nan
     else:
         cubedata = data
 
