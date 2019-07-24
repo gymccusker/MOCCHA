@@ -5816,13 +5816,14 @@ def fixHeight(data, cube):
     elif np.round(cube.aux_coords[2][0].points) == 2:
         ### interpolating to n71 common grid
         ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
+        temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data)
         cubedata = np.zeros([24,71])
-        cubedata[:,1:] = data
+        cubedata[:,1:] = temp
         cubedata[:,0] = np.nan
     else:
         cubedata = data
 
-    return height, cubedata
+    return cubedata
 
 def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
@@ -6002,9 +6003,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
 
             ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
             if dim_flag == 1:         ### 4D VARIABLE
-                model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                # comdata = fixHeight(data)
-                ncube = Cube(np.transpose(data),
+                model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                comdata = fixHeight(data, cube[k])
+                ncube = Cube(np.transpose(comdata),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
                         standard_name = cube[k].standard_name,
                         long_name = cube[k].long_name,
@@ -6151,6 +6152,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
         if dim_flag == 1:             ### 4D VARIABLE
             model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+            comdata = fixHeight(data, cube)
             ncube = Cube(np.transpose(data),
                     dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
                     standard_name = cube.standard_name,
@@ -6479,9 +6481,9 @@ def main():
 
     for date in date_dir:
         ### just do first date:
-        ### if date == date_dir[0]:
-        if date[0:4] == '2018':
-        # if date[0:8] == '20180816':
+        if date == date_dir[0]:
+        # if date[0:4] == '2018':
+        # if date[0:8] == '20180813':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
