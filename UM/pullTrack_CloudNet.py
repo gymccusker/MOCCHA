@@ -6552,8 +6552,8 @@ def main():
                      # For each date, append metadata to netCDF
                      # -------------------------------------------------------------
                     out = appendMetaNetCDF(outfile, date)
-                        # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                        # # os.rename(nc_outfile, final_outfile)
+                        ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                        ### os.rename(nc_outfile, final_outfile)
 
                 # if stream == '_pb012':
                 #     ### -------------------------------------------------------------------------
