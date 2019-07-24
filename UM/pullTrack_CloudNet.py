@@ -5818,8 +5818,8 @@ def fixHeight(data, cube):
         ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
         cubedata = np.zeros([71,24])
         for i in range(0,24):
-            temp[:,i] = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
-            cubedata[1:,i] = temp[:,i]
+            temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+            cubedata[1:,i] = temp
             cubedata[0,i] = np.nan
     else:
         cubedata = data
