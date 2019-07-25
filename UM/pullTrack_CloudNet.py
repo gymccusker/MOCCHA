@@ -6234,20 +6234,20 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Data dimensions
     # ###################################
-    forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
+    # forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
     # forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
-    period.scale_factor = float(1)
-    period.add_offset = float(0)
-    period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    period.units = str(cube[-1].aux_coords[1].units)
-    period.long_name = 'forecast_period'
-    period[:] = np.round(cube[-1].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+    # period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
+    # period.scale_factor = float(1)
+    # period.add_offset = float(0)
+    # period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
+    # period.units = str(cube[-1].aux_coords[1].units)
+    # period.long_name = 'forecast_period'
+    # period[:] = range(25)      ### forecast period (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -6520,8 +6520,6 @@ def main():
                     # Pull gridded ship track from cube
                     # -------------------------------------------------------------
                     #### LOAD CUBE
-                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     # outfiles.append(outfile)
 
                     ##-------------------------------------------------------------
