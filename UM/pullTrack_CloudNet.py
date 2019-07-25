@@ -6520,7 +6520,9 @@ def main():
                     # Pull gridded ship track from cube
                     # -------------------------------------------------------------
                     #### LOAD CUBE
-                    # outfiles.append(outfile)
+                    ### LOAD CUBE
+                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
                     ##-------------------------------------------------------------
                     ##Plot data (map)
