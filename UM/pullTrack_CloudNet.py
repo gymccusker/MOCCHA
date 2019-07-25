@@ -6290,29 +6290,29 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Data dimensions
     # ###################################
-    forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
+    # forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
     # forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
-    period.scale_factor = float(1)
-    period.add_offset = float(0)
-    period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    period.units = str(cube[0].aux_coords[1].units)
-    period.long_name = 'forecast_period'
-    period[:] = cube[0].aux_coords[1].points - 12.0
+    # period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
+    # period.scale_factor = float(1)
+    # period.add_offset = float(0)
+    # period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
+    # period.units = str(cube[0].aux_coords[1].units)
+    # period.long_name = 'forecast_period'
+    # period[:] = cube[0].aux_coords[1].points - 12.0
 
     ###################################
     ## Create DIAGNOSTICS
     ###################################
     for diag in range(len(cube)):
-        if diag == 0 or diag == 1:
-            dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
-        else:
-            dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
+        # if diag == 0 or diag == 1:
+        #     dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
+        # else:
+        dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[diag].units)
