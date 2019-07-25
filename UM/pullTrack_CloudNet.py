@@ -6139,8 +6139,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print ''
         nc_outfile = writeNetCDF(date, fcube)
     else:
-        print 'Stream = ' + stream[1:] + ', so appending to existing netCDF file'
-        print 'NEXT TIME'
+        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
+        print '***file will be merged later***'
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -6201,7 +6201,7 @@ def writeNetCDF(date, cube):
 
 def combineNetCDF(cube, outfile):
     #################################################################
-    ## Append 1D timeseries data (PB) to newly created netCDF
+    ## Write 1D timeseries data (PB) to newly created netCDF
     #################################################################
 
     from netCDF4 import num2date, date2num
@@ -6212,14 +6212,14 @@ def combineNetCDF(cube, outfile):
 
     print '******'
     print ''
-    print 'Appending 1D data to ' + outfile
-    # print 'Writing 1D data to ' + boutfile
+    # print 'Appending 1D data to ' + outfile
+    print 'Writing 1D data to ' + boutfile
     print ''
 
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
@@ -6234,20 +6234,20 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Data dimensions
     # ###################################
-    # forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
-    # forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
+    # forecast_period = dataset.createDimension('forecast_period', 24)
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    # period = dataset.createVariable('forecast_period', np.float64, ('forecast_period',), fill_value='-9999')
-    # period.scale_factor = float(1)
-    # period.add_offset = float(0)
-    # period.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    # period.units = str(cube[-1].aux_coords[1].units)
-    # period.long_name = 'forecast_period'
-    # period[:] = range(25)      ### forecast period (ignore first 12h)
+    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    # timem.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
+    timem.units = str(cube[-1].aux_coords[1].units)
+    timem.long_name = 'forecast_time'
+    timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
