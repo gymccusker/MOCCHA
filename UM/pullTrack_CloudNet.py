@@ -88,64 +88,6 @@ def unrotateGrid(cube):
 
     return lon, lat
 
-def findLatLon(ship_data, cube, hour):
-
-    print ''
-    print 'Finding lat/lon of ship track'
-    print '...'
-
-    #################################################################
-    ## find ship track coordinates
-    #################################################################
-    ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
-
-    # -------------------------------------------------------------
-    # Define unrotated coordinate model grid
-    # -------------------------------------------------------------
-    #### the following uses iris to unrotate the coordinate grid.
-    ####    this only works with square domains (i.e. paXXX files)
-    ####    only needs to be performed once -- saved grid as .csv file
-    lon, lat = unrotateGrid(cube)
-
-    print 'findLatLon testing:'
-    print 'Ship (lon,lat): ' + str(ship_data.values[drift_index,7][0]) + ', ' + str(ship_data.values[drift_index,6][0])
-    print 'Model unrotated [max, median], (lat,lon): ' + str(np.max(lat)) + ', ' + str(np.median(lon))
-
-
-    ship_index = np.where(np.logical_and(np.greater_equal(lat[:],ship_data.values[drift_index,7][0]), np.less_equal(lat[:],ship_data.values[drift_index,7][1])))
-    print 'Ship index test'
-    print ship_index
-    # print lat[ship_index[0]
-
-
-    print 'test complete!'
-
-### Plot tracks as line plot
-# plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-#          color = 'yellow', linewidth = 2,
-#          transform = ccrs.PlateCarree(), label = 'Whole',
-#          )
-# plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-#          color = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(), label = 'In Ice',
-#          )
-# plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-#          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-#          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-#          transform = ccrs.PlateCarree(),
-#          )
-# plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-#          color = 'red', linewidth = 4,
-#          transform = ccrs.PlateCarree(), label = 'Drift',
-#          )
-
-    return lat, lon
-
 def iceDrift(data):
 
     ###################################
@@ -5490,8 +5432,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==17,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==18,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==9),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==9),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -5678,11 +5620,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    tim, ilat, ilon = readGriddedTrack(grid_filename)
-
-    ### Plot tracks as line plot
-    for i in range(0, len(ilon)-1):
-        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    # tim, ilat, ilon = readGriddedTrack(grid_filename)
+    #
+    # ### Plot tracks as line plot
+    # for i in range(0, len(ilon)-1):
+    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -5706,6 +5648,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #          color = 'red', linewidth = 4,
     #          transform = ccrs.PlateCarree(), label = 'Drift',
     #          )
+
+
 
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
@@ -6350,9 +6294,9 @@ def appendMetaNetCDF(outfile, date):
     ## Global Attributes
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
-    revision = 'Revision no. 0.'
+    revision = 'Revision no. 0. '
     micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
-    wind = 'U and V wind components interpolated on to common vertical grid.'
+    wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young (G.Young1@leeds.ac.uk) using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
@@ -6438,7 +6382,7 @@ def main():
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
     ## 3_12AUG_SWATH_2FCSTS/
     ## 3_1AUG_SWATH_2FCSTS/
-    ## 4_OPER/20180830T0000Z_TRIAL/
+    ## 4_RA2M_CON
 
     # -------------------------------------------------------------
     # Load ship track
@@ -6469,8 +6413,8 @@ def main():
 
     for date in date_dir:
         ### just do first date:
-        if date == date_dir[0]:
-        # if date[0:4] == '2018':
+        # if date == date_dir[0]:
+        if date[0:4] == '2018':
         # if date[0:8] == '20180813':
             # # -------------------------------------------------------------
             # # Load cube
@@ -6527,16 +6471,16 @@ def main():
                     print cube
                     print ''
 
-                    # -------------------------------------------------------------
-                    # Pull gridded ship track from cube
-                    # -------------------------------------------------------------
+                    ## -------------------------------------------------------------
+                    ## Pull gridded ship track from cube
+                    ## -------------------------------------------------------------
                     ### LOAD CUBE
                     if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
                     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
-                    #-------------------------------------------------------------
-                    # For each date, append metadata to netCDF
-                    # -------------------------------------------------------------
+                    ##-------------------------------------------------------------
+                    ## For each date, append metadata to netCDF
+                    ## -------------------------------------------------------------
                     out = appendMetaNetCDF(outfile, date)
                         ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         ### os.rename(nc_outfile, final_outfile)
@@ -6576,25 +6520,16 @@ def main():
                 #     # Pull gridded ship track from cube
                 #     # -------------------------------------------------------------
                 #     #### LOAD CUBE
-                #     if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                #     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    ## outfiles.append(outfile)
-
-                    # -------------------------------------------------------------
-                    # Plot data (map)
-                    # -------------------------------------------------------------
-                    ### select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-
-                # # -------------------------------------------------------------
-                # # For each date, append metadata to netCDF
-                # # -------------------------------------------------------------
-                # out = appendMetaNetCDF(outfile, date)
-                # # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                # # # os.rename(nc_outfile, final_outfile)
+                #     # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                #     # if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                #     # outfiles.append(outfile)
                 #
-                # # print outfile
+                #     ##-------------------------------------------------------------
+                #     ##Plot data (map)
+                #     ##-------------------------------------------------------------
+                #     ## select hour to plot
+                #     hour = 0
+                #     map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
     END_TIME = time.time()
     print '******'
