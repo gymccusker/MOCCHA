@@ -6498,7 +6498,7 @@ def main():
             #           start at 012 if 3h dumps (a, b)
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pc011','_pb012']         ### pc first to create file, then append pb
+            names = ['_pc011','_pb009']         ### pc first to create file, then append pb
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
@@ -6541,7 +6541,14 @@ def main():
                         ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         ### os.rename(nc_outfile, final_outfile)
 
-                if stream == '_pb012':
+                    # -------------------------------------------------------------
+                    # Plot data (map)
+                    # -------------------------------------------------------------
+                    ### select hour to plot
+                    # hour = 0
+                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+
+                if stream == '_pb009':
                     ### -------------------------------------------------------------------------
                     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                     ### -------------------------------------------------------------------------
@@ -6573,6 +6580,13 @@ def main():
                     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     ## outfiles.append(outfile)
 
+                    # -------------------------------------------------------------
+                    # Plot data (map)
+                    # -------------------------------------------------------------
+                    ### select hour to plot
+                    # hour = 0
+                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+
                 # -------------------------------------------------------------
                 # For each date, append metadata to netCDF
                 # -------------------------------------------------------------
@@ -6581,13 +6595,6 @@ def main():
                 # # os.rename(nc_outfile, final_outfile)
 
                 # print outfile
-
-                # -------------------------------------------------------------
-                # Plot data (map)
-                # -------------------------------------------------------------
-                ### select hour to plot
-                # hour = 0
-                # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
     END_TIME = time.time()
     print '******'
