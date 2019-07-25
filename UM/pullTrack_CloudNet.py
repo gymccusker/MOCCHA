@@ -5917,7 +5917,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                 print ''
                 #### create empty arrays to be filled
                 data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
-                ### make empty cube
+                ### make dimension flag
                 dim_flag = 1        ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
@@ -6200,8 +6200,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        #out, boutfile = combineNetCDF(date, fcube, nc_outfile)
-            ### DOESN;T WORK, PERMISSIONS ISSUE
+        out = combineNetCDF(fcube, nc_outfile)
 
     #     iris.save(fcube, pp_outfile, append=True)
     # elif stream == '_pb012':
@@ -6256,7 +6255,7 @@ def writeNetCDF(date, cube):
 
     return nc_outfile
 
-def combineNetCDF(date, cube, outfile):
+def combineNetCDF(cube, outfile):
     #################################################################
     ## Append 1D timeseries data (PB) to newly created netCDF
     #################################################################
@@ -6265,18 +6264,18 @@ def combineNetCDF(date, cube, outfile):
     import time
     from datetime import datetime, timedelta
 
-    boutfile = outfile[:-3] + '_b.nc'
+    # boutfile = outfile[:-3] + '_b.nc'
 
     print '******'
     print ''
-    # print 'Appending 1D data to ' + outfile
-    print 'Writing 1D data to ' + boutfile
+    print 'Appending 1D data to ' + outfile
+    # print 'Writing 1D data to ' + boutfile
     print ''
 
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
@@ -6292,7 +6291,7 @@ def combineNetCDF(date, cube, outfile):
     ## Data dimensions
     # ###################################
     forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
-    forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
+    # forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
 
     ###################################
     ## Dimensions variables
@@ -6305,28 +6304,6 @@ def combineNetCDF(date, cube, outfile):
     period.units = str(cube[0].aux_coords[1].units)
     period.long_name = 'forecast_period'
     period[:] = cube[0].aux_coords[1].points - 12.0
-
-    #### forecast_period
-    time = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
-    time.scale_factor = float(1)
-    time.add_offset = float(0)
-    time.comment = 'Note this is different from forecast_period. Data are on the hour mark.'
-    time.units = str(cube[3].aux_coords[1].units)
-    time.long_name = 'forecast_time'
-    time[:] = cube[3].aux_coords[1].points - 12.0
-
-    # ### test appending
-    # diag = 0
-
-    # Error message to fix:
-    #        6263     ## Data dimensions
-    #    6264     # ###################################
-    # -> 6265     forecast_period = dataset.createDimension('forecast_period', np.size(cube[0].aux_coords[1].points))
-    #    6266     forecast_time = dataset.createDimension('forecast_time', np.size(cube[3].aux_coords[1].points[:-1]))
-    #    6267
-    #
-    # IndexError: tuple index out of range
-
 
     ###################################
     ## Create DIAGNOSTICS
@@ -6343,11 +6320,20 @@ def combineNetCDF(date, cube, outfile):
         dat[:] = cube[diag].data
 
     ###################################
+    ## Additional variables
+    ###################################
+    #### Model resolution
+    res = dataset.createVariable('horizontal_gridsize', np.float32, fill_value='-9999')
+    res.comment = 'Horizontal grid size of nested region.'
+    res.units = 'km'
+    res[:] = 1.5
+
+    ###################################
     ## Write out file
     ###################################
     dataset.close()
 
-    return dataset, boutfile
+    return dataset
 
 def appendMetaNetCDF(outfile, date):
 
@@ -6484,8 +6470,8 @@ def main():
     for date in date_dir:
         ### just do first date:
         # if date == date_dir[0]:
-        if date[0:4] == '2018':
-        # if date[0:8] == '20180813':
+        # if date[0:4] == '2018':
+        if date[0:8] == '20180813':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
@@ -6551,57 +6537,57 @@ def main():
                      #-------------------------------------------------------------
                      # For each date, append metadata to netCDF
                      # -------------------------------------------------------------
-                    out = appendMetaNetCDF(outfile, date)
+                     # out = appendMetaNetCDF(outfile, date)
                         ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         ### os.rename(nc_outfile, final_outfile)
 
-                # if stream == '_pb012':
-                #     ### -------------------------------------------------------------------------
-                #     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
-                #     ### -------------------------------------------------------------------------
-                #     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                #     print 'Checking: ' + filename
-                #     if os.path.exists(filename):
-                #         #### LOAD CUBE
-                #         if 'var_con' in locals():
-                #             print 'Loading single diagnostic:'
-                #             print var_con
-                #             cube1 = iris.load_cube(filename, var_con, callback)
-                #             con_flag = 0            # constraint flag
-                #         elif 'global_con' in locals():
-                #             print 'Loading multiple diagnostics:'
-                #             # cube = iris.load_cubes(filename1, global_con)
-                #             cube = iris.load(filename, global_con, callback)
-                #             con_flag = 1            # constraint flag
-                #
-                #             # -------------------------------------------------------------
-                #
-                #     print cube
-                #     print ''
-                #
-                #     # -------------------------------------------------------------
-                #     # Pull gridded ship track from cube
-                #     # -------------------------------------------------------------
-                #     #### LOAD CUBE
-                #     # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                #     # if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                #     ## outfiles.append(outfile)
-                #
-                #     # -------------------------------------------------------------
-                #     # For each date, append metadata to netCDF
-                #     # -------------------------------------------------------------
-                #     # out = appendMetaNetCDF(outfile, date)
-                #     # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                #     # # os.rename(nc_outfile, final_outfile)
-                #
-                #     # print outfile
-                #
-                #     # -------------------------------------------------------------
-                #     # Plot data (map)
-                #     # -------------------------------------------------------------
-                #     ### select hour to plot
-                #     hour = 0
-                #     map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                if stream == '_pb012':
+                    ### -------------------------------------------------------------------------
+                    ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
+                    ### -------------------------------------------------------------------------
+                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    print 'Checking: ' + filename
+                    if os.path.exists(filename):
+                        #### LOAD CUBE
+                        if 'var_con' in locals():
+                            print 'Loading single diagnostic:'
+                            print var_con
+                            cube1 = iris.load_cube(filename, var_con, callback)
+                            con_flag = 0            # constraint flag
+                        elif 'global_con' in locals():
+                            print 'Loading multiple diagnostics:'
+                            # cube = iris.load_cubes(filename1, global_con)
+                            cube = iris.load(filename, global_con, callback)
+                            con_flag = 1            # constraint flag
+
+                            # -------------------------------------------------------------
+
+                    print cube
+                    print ''
+
+                    # -------------------------------------------------------------
+                    # Pull gridded ship track from cube
+                    # -------------------------------------------------------------
+                    #### LOAD CUBE
+                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    ## outfiles.append(outfile)
+
+                # -------------------------------------------------------------
+                # For each date, append metadata to netCDF
+                # -------------------------------------------------------------
+                out = appendMetaNetCDF(outfile, date)
+                # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                # # os.rename(nc_outfile, final_outfile)
+
+                # print outfile
+
+                # -------------------------------------------------------------
+                # Plot data (map)
+                # -------------------------------------------------------------
+                ### select hour to plot
+                # hour = 0
+                # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
     END_TIME = time.time()
     print '******'
