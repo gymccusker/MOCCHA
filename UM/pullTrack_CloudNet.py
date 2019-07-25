@@ -6245,7 +6245,7 @@ def combineNetCDF(cube, outfile):
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
     # timem.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    timem.units = str(cube[-1].aux_coords[1].units)
+    timem.units = 'Hours since 0000 UTC.'
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
