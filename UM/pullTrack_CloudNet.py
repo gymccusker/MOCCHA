@@ -6484,8 +6484,8 @@ def main():
             # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
             grid_dirname = 'AUX_DATA/'
-            if int(date[6:8]) <= 9: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
-            if int(date[6:8]) >= 10: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+            if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+            if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
 
             ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
             if date == '20180831T1200Z': grid_filename = grid_dirname + '/20180901_ShipTrack_GRIDDED.csv'
