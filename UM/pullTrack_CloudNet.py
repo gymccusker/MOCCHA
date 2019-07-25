@@ -6320,15 +6320,6 @@ def combineNetCDF(cube, outfile):
         dat[:] = cube[diag].data
 
     ###################################
-    ## Additional variables
-    ###################################
-    #### Model resolution
-    res = dataset.createVariable('horizontal_gridsize', np.float32, fill_value='-9999')
-    res.comment = 'Horizontal grid size of nested region.'
-    res.units = 'km'
-    res[:] = 1.5
-
-    ###################################
     ## Write out file
     ###################################
     dataset.close()
@@ -6371,6 +6362,15 @@ def appendMetaNetCDF(outfile, date):
     dataset.institution = 'University of Leeds.'
     # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
+
+    ###################################
+    ## Additional variables
+    ###################################
+    #### Model resolution
+    res = dataset.createVariable('horizontal_gridsize', np.float32, fill_value='-9999')
+    res.comment = 'Horizontal grid size of nested region.'
+    res.units = 'km'
+    res[:] = 1.5
 
     ###################################
     ## Write out file
