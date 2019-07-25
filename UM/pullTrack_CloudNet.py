@@ -5879,7 +5879,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'More than one variable constraint. Proceeding...'
         print ''
 
-        cubetime = np.round(cube[0].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+        cubetime = np.round(cube[-1].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
 
         print ''
         print 'Cube times relative to forecast start:', cubetime[:-1]
@@ -6312,7 +6312,7 @@ def combineNetCDF(cube, outfile):
         # if diag == 0 or diag == 1:
         #     dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
         # else:
-        dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',),fill_value='-9999')
+        dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[diag].units)
