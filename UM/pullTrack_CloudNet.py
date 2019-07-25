@@ -6534,10 +6534,10 @@ def main():
                     if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
                     if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
-                     #-------------------------------------------------------------
-                     # For each date, append metadata to netCDF
-                     # -------------------------------------------------------------
-                     # out = appendMetaNetCDF(outfile, date)
+                    #-------------------------------------------------------------
+                    # For each date, append metadata to netCDF
+                    # -------------------------------------------------------------
+                    out = appendMetaNetCDF(outfile, date)
                         ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         ### os.rename(nc_outfile, final_outfile)
 
@@ -6587,14 +6587,14 @@ def main():
                     # hour = 0
                     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
-                # -------------------------------------------------------------
-                # For each date, append metadata to netCDF
-                # -------------------------------------------------------------
-                out = appendMetaNetCDF(outfile, date)
-                # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                # # os.rename(nc_outfile, final_outfile)
-
-                # print outfile
+                # # -------------------------------------------------------------
+                # # For each date, append metadata to netCDF
+                # # -------------------------------------------------------------
+                # out = appendMetaNetCDF(outfile, date)
+                # # # final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                # # # os.rename(nc_outfile, final_outfile)
+                #
+                # # print outfile
 
     END_TIME = time.time()
     print '******'
