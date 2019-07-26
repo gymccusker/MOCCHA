@@ -6522,8 +6522,8 @@ def main():
 
     for date in date_dir:
         ### just do first date:
-        if date == date_dir[0]:
-        # if date[0:4] == '2018':
+        # if date == date_dir[0]:
+        if date[0:4] == '2018':
         # if date[0:8] == '20180813':
             # # -------------------------------------------------------------
             # # Load cube
