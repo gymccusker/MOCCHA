@@ -6140,34 +6140,12 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         nc_outfile = writeNetCDF(date, fcube)
     else:
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
-        print '***file will be merged later***'
+        print '***file will be merged to outfile later***'
         print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
         out = combineNetCDF(fcube, nc_outfile)
-
-    #     iris.save(fcube, pp_outfile, append=True)
-    # elif stream == '_pb012':
-    #     # ******
-    #     # write to csv file since 1D
-    #     # ******
-    #     print '******'
-    #     print 'Writing ' + stream[1:] + ' to .csv file since 1D:'
-    #     print ''
-    #     dat = np.zeros([len(cubeb[0][:,0,0].data), len(fcube)])
-    #     for i in range(len(fcube)):
-    #         dat[:,0] =
-    #         dat[:,1] = lon
-    #         dat[:,2] = lat
-    #         df = pd.DataFrame(dat)
-    #         filename = 'AUX_DATA/' + date + '_ShipTrack_GRIDDED.csv'
-    #         df.to_csv(filename,  sep = " ")
-    #         print '... finished!'
-    #         print ''
-    #         print '******'
-
-    # print fcube
 
     return fcube, nc_outfile
 
