@@ -6198,7 +6198,7 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(boutfile, 'r', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
@@ -6245,7 +6245,7 @@ def combineNetCDF(cube, outfile):
     #     dat[:] = cube[diag].data
 
             ### LOOP DOESN'T SEEM TO WORK. DATA NOT WRITTEN TO FILE.
-            
+
     ###################################
     ## Write pbXXX stream diagnostics
     ###################################
