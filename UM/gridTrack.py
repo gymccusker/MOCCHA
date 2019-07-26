@@ -5878,10 +5878,10 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 56:
+    elif len(cube[0].dim_coords[-1].points) == 21:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
+        xoffset = -254
+        yoffset = -374
     elif len(cube[0].dim_coords[-1].points) == 94:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -211
@@ -6015,11 +6015,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    # tim, ilat, ilon = readGriddedTrack(grid_filename)
-    #
-    # ### Plot tracks as line plot
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -6122,6 +6122,7 @@ def main():
     ### CHOSEN RUN
     out_dir = '4_RA2M_CON/'
     # date_dir = os.listdir(root_dir + out_dir)
+    date_dir = '20180913T1200Z/'
 
     ## 1_20160401_61DIAG_TEST/
     ## 2_20180801_61DIAGS_TEST/2_30_86.625/
@@ -6176,12 +6177,13 @@ def main():
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
     names = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc',
-            '20180812_oden_metum.nc', 'pb_test_output.nc', 'pa_test_output.nc']
+            '20180812_oden_metum.nc', 'pb_test_output.nc', 'pa_test_output.nc',
+            '20180913T1200Z_HighArctic_1p5km_RA2M_CON_pb009_r0.pp']
     # expt = out_dir[2:-1]
     outfiles = [] ### define list to add processed filenames to
 
     grid_dirname = 'AUX_DATA/'
-    grid_filename = grid_dirname + '20180909_ShipTrack_GRIDDED.csv'
+    grid_filename = grid_dirname + '20180914_ShipTrack_GRIDDED.csv'
 
     ### -------------------------------------------------------------------------
     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
