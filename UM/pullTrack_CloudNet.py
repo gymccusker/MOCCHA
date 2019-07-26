@@ -6141,6 +6141,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     else:
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
         print '***file will be merged later***'
+        print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -6253,6 +6254,8 @@ def combineNetCDF(cube, outfile):
     ## Create DIAGNOSTICS
     ###################################
     for diag in range(len(cube)):
+        print 'Diag = ' + str(diag)
+        print cube[diag]
         # if diag == 0 or diag == 1:
         #     dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
         # else:
@@ -6260,7 +6263,7 @@ def combineNetCDF(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[diag].units)
-        dat.long_name = cube[diag].long_name
+        # dat.long_name = cube[diag].long_name
         dat[:] = cube[diag].data
 
     ###################################
