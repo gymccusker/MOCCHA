@@ -5820,7 +5820,7 @@ def gridShipTrack(cube, xoffset, yoffset):
     for i in range(0,np.size(lon)):
         iplt.scatter(cube.dim_coords[2][int(lon[i]) + xoffset], cube.dim_coords[1][int(lat[i]) + yoffset],color='magenta')
 
-    out = writeoutGrid(tim_149, lat_149, lon_149, date)
+    # out = writeoutGrid(tim_149, lat_149, lon_149, date)
 
 def trackShip(data):
 
