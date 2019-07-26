@@ -6198,7 +6198,7 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(boutfile, 'r', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
@@ -6361,7 +6361,7 @@ def appendMetaNetCDF(outfile, date):
     ###################################
     boutfile = outfile[:-3] + '_b.nc'
 
-    nc = Dataset(boutfile, 'w')
+    nc = Dataset(boutfile, 'r')
 
     ###################################
     ## Append pbXXX stream diagnostics
