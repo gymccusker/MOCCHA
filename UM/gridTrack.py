@@ -6188,7 +6188,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
     ### -------------------------------------------------------------------------
-    filename = root_dir + out_dir + names[-1]
+    filename = root_dir + out_dir + date_dir + names[-1]
     print 'Checking: ' + filename
     if os.path.exists(filename):
         #### LOAD CUBE
