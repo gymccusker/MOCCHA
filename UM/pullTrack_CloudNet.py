@@ -6320,6 +6320,75 @@ def appendMetaNetCDF(outfile, date):
     res[:] = 1.5
 
     ###################################
+    ## Open pbXXX netCDF file
+    ###################################
+    boutfile = outfile[:-3] + '_b.nc'
+
+    nc = Dataset(boutfile, 'w')
+
+    ###################################
+    ## Append pbXXX stream diagnostics
+    ###################################
+    print 'Appending IWP:'
+    print '---'
+    iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
+    iwp.scale_factor = float(1)
+    iwp.add_offset = float(0)
+    iwp.units = 'kg m-2'
+    iwp.long_name = 'large_scale_ice_water_path'
+    iwp[:] = nc.variables['IWP'][:]
+
+    print 'Appending LWP:'
+    print '---'
+    lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
+    lwp.scale_factor = float(1)
+    lwp.add_offset = float(0)
+    lwp.units = 'kg m-2'
+    lwp.long_name = 'large_scale_liquid_water_path'
+    lwp[:] = nc.variables['LWP'][:]
+
+    print 'Appending rainfall_flux:'
+    print '---'
+    rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    rain.scale_factor = float(1)
+    rain.add_offset = float(0)
+    rain.units = 'kg m-2 s-1'
+    rain.long_name = 'stratiform_rainfall_flux'
+    rain[:] = nc.variables['rainfall_flux'][:]
+
+    print 'Appending snowfall_flux:'
+    print '---'
+    snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    snow.scale_factor = float(1)
+    snow.add_offset = float(0)
+    snow.units = 'kg m-2 s-1'
+    snow.long_name = 'stratiform_snowfall_flux'
+    snow[:] = nc.variables['snowfall_flux'][:]
+
+    print 'Appending surface_pressure:'
+    print '---'
+    sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
+    sfc_pressure.scale_factor = float(1)
+    sfc_pressure.add_offset = float(0)
+    sfc_pressure.units = 'Pa'
+    sfc_pressure.long_name = 'surface_pressure'
+    sfc_pressure[:] = nc.variables['sfc_pressure'][:]
+
+    print 'Appending surface_temperature:'
+    print '---'
+    sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
+    sfc_temperature.scale_factor = float(1)
+    sfc_temperature.add_offset = float(0)
+    sfc_temperature.units = 'K'
+    sfc_temperature.long_name = 'surface_temperature'
+    sfc_temperature[:] = nc.variables['sfc_temperature'][:]
+
+    ###################################
+    ## Close read-only pbXXX file
+    ###################################
+    nc.close()
+
+    ###################################
     ## Write out file
     ###################################
     dataset.close()
@@ -6484,7 +6553,7 @@ def main():
                     ##-------------------------------------------------------------
                     ## For each date, append metadata to netCDF
                     ## -------------------------------------------------------------
-                    out = appendMetaNetCDF(outfile, date)
+                    # out = appendMetaNetCDF(outfile, date)
                         ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                         ### os.rename(nc_outfile, final_outfile)
 
@@ -6533,6 +6602,13 @@ def main():
                     ## select hour to plot
                     # hour = 0
                     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+
+        ##-------------------------------------------------------------
+        ## For each date, append metadata to netCDF
+        ## -------------------------------------------------------------
+        out = appendMetaNetCDF(outfile, date)
+            ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+            ### os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print '******'
