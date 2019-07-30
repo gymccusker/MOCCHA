@@ -718,7 +718,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -800,7 +800,7 @@ def main():
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
     names = Aug_names
     missing_files = Aug_missing_files
