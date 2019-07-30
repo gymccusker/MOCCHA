@@ -98,17 +98,27 @@ def designGrid(lats, lons, tim):
     edgelats = np.zeros([38])
     edgelons = np.zeros([38])
 
+    print 'Latitude: th = (arc_m / R_e) * 180/(pi)'
+    print ''
     R_e = 6.4*10e6          # radius of the Earth
     lat_arc = 9.0*1e3       # distance in m
-    th = lat_arc/R_e        # angle in radians
-    th = (th/np.pi)*180.0   # angle in degrees
+    th1 = lat_arc/R_e        # angle in radians
+    th1 = (th1/np.pi)*180.0   # angle in degrees
 
-    edgelats = lats + th    # gives upper grid boundaries for latitude
+    edgelats = lats + th1    # gives upper grid boundaries for latitude
 
-    plt.plot(lons,lats,'bs');
-    plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
+    print 'Longitude: '
+    print '(needs to account for latitude)'
+    print ''
+
+    lon_arc = 9.0*1e3
+    th2 = lat_arc/R_e        # angle in radians
+    th2 = (th1/np.pi)*180.0   # angle in degrees
+
+    # plt.plot(lons,lats,'bs');
+    # plt.plot(lons[edgelats>0],edgelats[edgelats>0],'r^');
     # plt.plot(edgelons[edgelons>0],lats[edgelons>0],'g>');
-    plt.show()
+    # plt.show()
 
     return edgelats, edgelons
 
@@ -199,8 +209,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==9),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==15,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==15,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -255,7 +265,7 @@ def plot_basemap(ship_data, lats, lons, tim):
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 300000
+    dim = 500000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
@@ -281,25 +291,25 @@ def plot_basemap(ship_data, lats, lons, tim):
     x, y = m(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7])
 
     # Plot tracks as line plot
-    plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
+    # plt.plot(x, y, color = 'darkorange', linewidth = 2, label = 'Ship track')
 
     x_ecmwf, y_ecmwf = m(lons, lats)
     # Plot grid box centres as scatter plot
-    plt.scatter(x_ecmwf, y_ecmwf, 100,
+    plt.scatter(x_ecmwf, y_ecmwf, 10,
             color = 'blue', marker = 's',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF')
 
     x_t, y_t = m(lons, edgelats)
     # Plot grid box centres as scatter plot
-    plt.scatter(x_t, y_t, 100,
+    plt.scatter(x_t, y_t, 10,
             color = 'red', marker = '^',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF top edges')
 
     x_r, y_r = m(edgelons[edgelons>0], lats[edgelons>0])
     # Plot grid box centres as scatter plot
-    plt.scatter(x_r, y_r, 100,
+    plt.scatter(x_r, y_r, 10,
             color = 'green', marker = '>',
             edgecolor = 'blue', linewidth = 2,
             label = 'ECMWF right edges')
@@ -782,12 +792,12 @@ def main():
     # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    # map = plot_basemap(ship_data, lats, lons, tim)
+    map = plot_basemap(ship_data, lats, lons, tim)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    edgelats, edgelons = designGrid(lats, lons, tim)
+    # edgelats, edgelons = designGrid(lats, lons, tim)
     # ship_ind = checkLatLon(ship_data, lats, lons, date, tim)
 
     #### LOAD CUBE
