@@ -436,7 +436,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     #         label = 'Gridded data',
     #         transform = ccrs.PlateCarree())
 
-    plt.scatter(data['lons'][:], data['lats'][:], c = data['pressure'][:,0,0],
+    plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
             label = 'Grid mid points',
             transform = ccrs.PlateCarree())
 
@@ -450,25 +450,32 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
             if data['ulat'][j] == data['lats'][i]:
                 data['nb_lats'][i] = nblats[j]
 
-    # print data['nb_lats'].shape
-    # print data['nb_lats'][:]
-    # print data['ulat'][:]
-
     plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
             label = 'northern bounds',
             transform = ccrs.PlateCarree())
 
-    # ll = np.zeros([np.size(nblats)])
-    # ll[:] = np.nanmin(data['lons'])
-    # plt.scatter(ll, nblats, c = 'red',
-    #         label = 'northern bounds',
-    #         transform = ccrs.PlateCarree())
+    rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
+    data['rb_lons'] = np.zeros([np.size(data['lons'][:-1])])
+    data['rb_lons'][0:9] = rblons[0:9]
+    data['rb_lons'][9] = rblons[8]
+    data['rb_lons'][10:12] = rblons[10:12]
+    data['rb_lons'][12] = rblons[11]
+    data['rb_lons'][13] = rblons[13]
+    data['rb_lons'][14] = rblons[13]
+    data['rb_lons'][15:18] = rblons[15:18]
+    data['rb_lons'][18] = data['lons'][17] + ((data['lons'][18] - data['lons'][17]) / 2.0)
+    data['rb_lons'][19:21] = rblons[19]
+    data['rb_lons'][21:27] = rblons[21:27]
+    data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
+    data['rb_lons'][28:] = rblons[28:]
+    data['rb_lons'][35] = rblons[34]
+    # print 'rblons = ' + str(rblons[18])
+    # print 'data[rb_lons] = ' + str(data['rb_lons'][18])
+    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+            label = 'eastern bounds',
+            transform = ccrs.PlateCarree())
 
-    # rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
-    # plt.scatter(rblons, data['lats'][0:-1], c = 'black',
-            # label = 'RH bounds',
-            # transform = ccrs.PlateCarree())
-
+            # rblons[17:21]
     #################################################################
     ## plot ship track
     #################################################################
@@ -478,40 +485,40 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     trackShip_index = trackShip(ship_data, date)
 
     ## Plot tracks as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-             color = 'yellow', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+    #          color = 'yellow', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
+             color = 'yellow', linewidth = 2,
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
 
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+    #          color = 'blue', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+    #          'k^', markerfacecolor = 'blue', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+    #          'kv', markerfacecolor = 'blue', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
 
     plt.legend()
 
