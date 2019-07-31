@@ -12,7 +12,7 @@ from netCDF4 import Dataset
 import numpy as np
 # import diags_MOCCHA as diags
 # import diags_varnames as varnames
-import cartopy.crs as ccrs
+# import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
@@ -328,6 +328,154 @@ def plot_basemap(ship_data, lats, lons, tim):
     plt.legend()
 
     plt.show()
+
+def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## CHOOSE DIAGNOSTIC
+    ###################################
+    diag = 1
+    print ''
+    print 'Diag is: ', cube[diag].long_name
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting cartopy map:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.figure(figsize=(12,10))
+    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+
+    ### set size
+    ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
+
+    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+
+    #################################################################
+    ## add geographic features/guides for reference
+    #################################################################
+    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    # ax.set_global()
+    ax.gridlines()
+
+    #################################################################
+    ## plot UM data
+    ################################################################
+    # if np.size(cube[diag].data.shape) == 4:
+    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
+    # elif np.size(cube[diag].data.shape) == 3:
+    #     iplt.pcolormesh(cube[diag][hour,:,:])
+    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
+    # elif np.size(cube[diag].data.shape) == 2:
+    #     iplt.pcolormesh(cube[diag][:,:])
+    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    # plt.colorbar()
+
+    #################################################################
+    ## plot UM nest
+    #################################################################
+    ### draw outline of grid
+    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
+    # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
+    # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
+    # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
+    qplt.outline(cube[diag][hour,:,:])
+
+    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
+
+            #### MID POINT: (433, 258)
+
+    #################################################################
+    ## plot ship track
+    #################################################################
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    # drift_index = iceDrift(ship_data)
+    # inIce_index = inIce(ship_data)
+    trackShip_index = trackShip(ship_data)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+
+    ## Plot tracks as line plot
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+             color = 'yellow', linewidth = 2,
+             transform = ccrs.PlateCarree(), label = 'Whole',
+             )
+    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+             color = 'red', linewidth = 4,
+             transform = ccrs.PlateCarree(), label = 'Drift',
+             )
+
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting cartopy map! :)'
+    print ''
+
+    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    plt.show()
+
 
 def pullTrack(cube, grid_filename, con):
 
@@ -672,46 +820,32 @@ def pullTrack(cube, grid_filename, con):
 
     return fcube, nc_outfile
 
-def appendNetCDF(outfile):
+def readCube(filenames):
 
-    from netCDF4 import num2date, date2num
-    import time
-    from datetime import datetime, timedelta
+    ### LOOP OVER FILENAMES TO EXTRACT DIAGNOSTIC OVER ALL GRIDBOXES
 
-    print '******'
-    print ''
-    print 'Appending metadata to ' + outfile
-    print ''
+    diag = 24
+    print 'Diag will be ' + cube[diag].var_name
+    data = {}
+    dat = np.zeros([25,137,1,1])
+    name = filenames[0]
+    # for name in filenames:
+    cube = iris.load(name)
+    tims = cube[diag].dim_coords[0].points
+    hgts = cube[35].data
+    lats = cube[40].data
+    lons = cube[41].data
+    if np.sum(cube[diag].shape) > 24:        # if 2D diagnostic
+        mlevs = cube[diag].dim_coords[1].points
+    dat[:,:,0,:] = lats
+    dat[:,:,:,0] = lons
+    for t in range(len(tims)):
+        dat[t,:,:,:] = tims[t]
+        for k in range(np.size(hgts,1)):
+            dat[:,k,:,:] = cube[diag].data[t,k]
+    data[cube[diag].var_name] = dat
 
-    ###################################
-    ## Open File
-    ###################################
-    dataset =  Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
-    # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
-    print ''
-    print dataset.file_format
-    print ''
-
-    ###################################
-    ## Global Attributes
-    ###################################
-    dataset.title = 'ECMWF Model single-site output during MOCCHA'
-    dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
-    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> from NetCDF generated from original data by Ewan O''Connor <ewan.oconnor@fmi.fi> using cnmodel2nc on cloudnet.fmi.fi.'
-    dataset.source = 'ECMWF Integrated Forecast System (IFS)'
-    # dataset.references = 'N/A'
-    dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
-    dataset.comment = micro + wind
-    dataset.institution = 'University of Leeds/FMI.'
-    # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
-    dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + str(int(outfile[6:8]) - 1) + ' 12:00:00 UTC.'
-
-    ###################################
-    ## Write out file
-    ###################################
-    dataset.close()
-
-    return dataset
+    return data
 
 def main():
 
@@ -790,9 +924,19 @@ def main():
     print 'Lons = ' + str(lons)
 
     # -------------------------------------------------------------
+    # Extract diagnostic with Iris
+    # -------------------------------------------------------------
+    data = readCube(filenames[0:1])
+
+    # -------------------------------------------------------------
     # Plot data (map)
     # -------------------------------------------------------------
-    map = plot_basemap(ship_data, lats, lons, tim)
+    # map = plot_basemap(ship_data, lats, lons, tim)
+
+    # -------------------------------------------------------------
+    # Plot data (cartopy map)
+    # -------------------------------------------------------------
+    # map = plot_cartmap(ship_data, lats, lons, tim)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
