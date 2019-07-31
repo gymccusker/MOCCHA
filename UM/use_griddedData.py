@@ -954,9 +954,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[0]
@@ -1030,7 +1030,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
