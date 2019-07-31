@@ -204,13 +204,13 @@ def inIce(data):
 
     return inIce_index
 
-def trackShip(data):
+def trackShip(data, date):
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==1,data.values[:,1]==9),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==2,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -329,7 +329,7 @@ def plot_basemap(ship_data, lats, lons, tim):
 
     plt.show()
 
-def plot_cartmap(ship_data, data): #, lon, lat):
+def plot_cartmap(ship_data, data, date): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -376,13 +376,13 @@ def plot_cartmap(ship_data, data): #, lon, lat):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(12,10))
-    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
@@ -407,7 +407,7 @@ def plot_cartmap(ship_data, data): #, lon, lat):
     #     iplt.pcolormesh(cube[diag][:,:])
     # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
     # plt.colorbar()
-    plt.pcolormesh(data['lats'][:],data['lons'][:],data['pressure'][:,0,0])
+    # plt.pcolormesh(data['lats'][:],data['lons'][:],data['pressure'][:,0,0])
 
     #################################################################
     ## plot UM nest
@@ -419,31 +419,40 @@ def plot_cartmap(ship_data, data): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
     # qplt.outline(cube[diag][hour,:,:])
 
-    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
-            #### MID POINT: (433, 258)
+
+    lats, lons = np.meshgrid(data['lats'][:], data['lons'][:])
+
+    # plt.scatter(lons, lats, c = 'red',
+    #         label = 'meshgrid',
+    #         transform = ccrs.PlateCarree())
+    #
+    # lats[0:20,0:10] = np.nan
+    # plt.scatter(lons, lats, c = 'black',
+    #         label = 'meshgrid',
+    #         transform = ccrs.PlateCarree())
+
+    plt.pcolor(lons, lats, data['pressure'][:,0,0],
+            label = 'Gridded data',
+            transform = ccrs.PlateCarree())
+
+    plt.scatter(data['lons'][:], data['lats'][:], c = data['pressure'][:,0,0],
+            label = 'Grid mid points',
+            transform = ccrs.PlateCarree())
+
+
+    # rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
+    # plt.scatter(rblons, data['lats'][0:-1], c = 'black',
+            # label = 'RH bounds',
+            # transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot ship track
     #################################################################
     ### DEFINE DRIFT + IN_ICE PERIODS
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
-    trackShip_index = trackShip(ship_data)
-
-    ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'blue', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+    trackShip_index = trackShip(ship_data, date)
 
     ## Plot tracks as line plot
     plt.plot(ship_data.values[:,6], ship_data.values[:,7],
@@ -467,6 +476,20 @@ def plot_cartmap(ship_data, data): #, lon, lat):
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
 
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'blue', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+
     plt.legend()
 
     print '******'
@@ -476,7 +499,6 @@ def plot_cartmap(ship_data, data): #, lon, lat):
 
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
-
 
 def pullTrack(cube, grid_filename, con):
 
@@ -888,10 +910,10 @@ def ReadWriteDaily(filenames, date):
     nc_outfile = date + '_oden_ecmwf_n38.nc'
 
     ### write to combined netCDF file
-    # data = writeNetCDF(nc_outfile, data, date)
+    data = writeNetCDF(nc_outfile, data, date)
 
     ### append metadata to combined netCDF file
-    # data = appendNetCDF(nc_outfile, date)
+    data = appendNetCDF(nc_outfile, date)
 
     return data, nc_outfile
 
@@ -1014,7 +1036,6 @@ def writeNetCDF(outfile, data, date):
     dataset.close()
 
     return dataset
-
 
 def appendMetaNetCDF(outfile, date):
 
@@ -1146,7 +1167,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    # map = plot_cartmap(ship_data, data)
+    map = plot_cartmap(ship_data, data, date)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
