@@ -562,35 +562,35 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         ###################################
 
         if data.keys()[diag] == 'radr_refl':
-            height = cube[0].dim_coords[1].points
-            title = cube[0].var_name + ' [dBz]'
-        elif data.keys()[diag] == 'pressure':
-            height = cube[1].dim_coords[1].points
-            title = cube[1].var_name + ' [' + str(cube[1].units) + ']'
-        elif data.keys()[diag] == 'temperature':
-            height = cube[2].dim_coords[1].points
-            title = cube[2].var_name + ' [' + str(cube[2].units) + ']'
-        elif data.keys()[diag] == 'uwind':
-            height = cube[3].dim_coords[1].points
-            title = cube[3].var_name + ' [' + str(cube[3].units) + ']'
-        elif data.keys()[diag] == 'cloud_fraction':
-            height = cube[4].dim_coords[1].points
-            title = cube[4].var_name + ' [' + str(cube[4].units) + ']'
-        elif data.keys()[diag] == 'qice':
             height = cube[5].dim_coords[1].points
-            title = cube[5].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'qliq':
-            height = cube[6].dim_coords[1].points
-            title = cube[6].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'vwind':
-            height = cube[7].dim_coords[1].points
-            title = cube[7].var_name + ' [' + str(cube[7].units) + ']'
-        elif data.keys()[diag] == 'q':
+            title = cube[5].var_name + ' [dBz]'
+        elif data.keys()[diag] == 'pressure':
             height = cube[8].dim_coords[1].points
-            title = cube[8].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'wwind':
+            title = cube[8].var_name + ' [' + str(cube[1].units) + ']'
+        elif data.keys()[diag] == 'temperature':
             height = cube[9].dim_coords[1].points
-            title = cube[9].var_name + ' [' + str(cube[9].units) + ']'
+            title = cube[9].var_name + ' [' + str(cube[2].units) + ']'
+        elif data.keys()[diag] == 'uwind':
+            height = cube[10].dim_coords[1].points
+            title = cube[10].var_name + ' [' + str(cube[3].units) + ']'
+        elif data.keys()[diag] == 'cloud_fraction':
+            height = cube[11].dim_coords[1].points
+            title = cube[11].var_name + ' [' + str(cube[4].units) + ']'
+        elif data.keys()[diag] == 'qice':
+            height = cube[12].dim_coords[1].points
+            title = cube[12].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'qliq':
+            height = cube[13].dim_coords[1].points
+            title = cube[13].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'vwind':
+            height = cube[14].dim_coords[1].points
+            title = cube[14].var_name + ' [' + str(cube[7].units) + ']'
+        elif data.keys()[diag] == 'q':
+            height = cube[15].dim_coords[1].points
+            title = cube[15].var_name + ' [g/kg]'
+        elif data.keys()[diag] == 'wwind':
+            height = cube[16].dim_coords[1].points
+            title = cube[16].var_name + ' [' + str(cube[9].units) + ']'
 
         #################################################################
         ## create figure and axes instances
@@ -648,7 +648,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         plt.title(title)
         plt.colorbar()
         ax.set_ylim([0, 5000])
-        if month_flag == 8: ax.set_xlim([12.0, 31.0])
+        if month_flag == 8: ax.set_xlim([13.0, 31.0])
         if month_flag == 9: ax.set_xlim([1.0, 15.0])
 
         print ''
@@ -684,7 +684,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
 
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
     if month_flag == 9: fileout = 'FIGS/201809_oden_metum.png'
-    plt.savefig(fileout)
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def callback(cube, field, filename):
@@ -718,7 +718,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -728,19 +728,18 @@ def main():
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
-        ### CHOSEN RUN
-        out_dir = '4_RA2M_CON/OUT_R0/'
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-        ### CHOSEN RUN
-        out_dir = '4_RA2M_CON/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
+
+    ### CHOSEN RUN
+    out_dir = '4_RA2M_CON/OUT_R0/'
 
     print '******'
     print ''
@@ -783,15 +782,15 @@ def main():
     tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
     Aug_names = ['20180813_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc','20180817_oden_metum.nc',
             '20180818_oden_metum.nc','20180819_oden_metum.nc','20180821_oden_metum.nc',
-            '20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
+            '20180822_oden_metum.nc','20180823_oden_metum.nc','20180826_oden_metum.nc',
+            '20180827_oden_metum.nc','20180828_oden_metum.nc','20180829_oden_metum.nc',
+            '20180830_oden_metum.nc','20180831_oden_metum.nc']
 
     Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
             '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc','20180814_oden_metum.nc',
-            '20180820_oden_metum.nc','20180825_oden_metum.nc']
+            '20180820_oden_metum.nc','20180824_oden_metum.nc','20180825_oden_metum.nc']
 
     Sep_missing_files = ['20180908_oden_metum.nc','20180909_oden_metum.nc','20180910_oden_metum.nc',
             '20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc','20180914_oden_metum.nc']
@@ -840,7 +839,7 @@ def main():
             print ''
 
             print 'Loading multiple diagnostics:'
-            cube = iris.load(filename, global_con, callback)
+            cube = iris.load(filename)#, global_con, callback)
 
             print cube
             print ''
@@ -851,16 +850,24 @@ def main():
                 # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube)):
-                    data[cube[j].var_name] = cube[j].data
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube[j].data.shape) <= 24:
+                        continue
+                    else:
+                        data[cube[j].var_name] = cube[j].data
                 # print data[cube[0].var_name]
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 # print data
                 for j in range(0,len(cube)):
-                    data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube[j].data.shape) <= 24:
+                        continue
+                    else:
+                        data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
 
-            print 'Data dict = ' + str(data['radr_refl'].shape)
+            # print 'Data dict = ' + str(data['radr_refl'].shape)
 
         # -------------------------------------------------------------
         # Plot combined data (5x2 timeseries)
