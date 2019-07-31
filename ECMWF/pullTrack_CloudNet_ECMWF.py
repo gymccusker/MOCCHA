@@ -421,7 +421,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
 
 
 
-    lats, lons = np.meshgrid(data['lats'][:], data['lons'][:])
+    lats, lons = np.meshgrid(data['ulat'][:], data['ulon'][:])
 
     # plt.scatter(lons, lats, c = 'red',
     #         label = 'meshgrid',
@@ -432,14 +432,37 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     #         label = 'meshgrid',
     #         transform = ccrs.PlateCarree())
 
-    plt.pcolor(lons, lats, data['pressure'][:,0,0],
-            label = 'Gridded data',
-            transform = ccrs.PlateCarree())
+    # plt.pcolor(lons, lats, data['pressure'][:,0,0],
+    #         label = 'Gridded data',
+    #         transform = ccrs.PlateCarree())
 
     plt.scatter(data['lons'][:], data['lats'][:], c = data['pressure'][:,0,0],
             label = 'Grid mid points',
             transform = ccrs.PlateCarree())
 
+    nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
+    data['nb_lats'] = np.zeros([np.size(data['lats'][:])])
+    print 'Northern boundary array has shape: ' + str(np.size(nblats))
+    for j in range(0,len(nblats)):
+        # print 'j = ' + str(j)
+        for i in range(0,len(data['lats'][:])):
+            # print 'i = ' + str(i)
+            if data['ulat'][j] == data['lats'][i]:
+                data['nb_lats'][i] = nblats[j]
+
+    # print data['nb_lats'].shape
+    # print data['nb_lats'][:]
+    # print data['ulat'][:]
+
+    plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
+            label = 'northern bounds',
+            transform = ccrs.PlateCarree())
+
+    # ll = np.zeros([np.size(nblats)])
+    # ll[:] = np.nanmin(data['lons'])
+    # plt.scatter(ll, nblats, c = 'red',
+    #         label = 'northern bounds',
+    #         transform = ccrs.PlateCarree())
 
     # rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
     # plt.scatter(rblons, data['lats'][0:-1], c = 'black',
@@ -874,9 +897,12 @@ def readCube(name):
 
     # print data.keys()
 
-    return data
+    return data, cube, diag
 
 def ReadWriteDaily(filenames, date):
+
+    from iris.coords import DimCoord
+    from iris.cube import Cube
 
     '''
      function to read in each lat/lon ECMWF IFS (netCDF) file with Iris then
@@ -894,96 +920,140 @@ def ReadWriteDaily(filenames, date):
     for name in filenames:
         i = i + 1
         print 'i = ' + str(i)
-        dat = readCube(name)
+        dat, cube, diag = readCube(name)
         # print dat
         data['pressure'][i, :, :] = dat['pressure'][:, :]
         data['hgts'][i, :, :] = dat['hgts'][:, :]
         data['lats'][i] = dat['lats']
         data['lons'][i] = dat['lons']
+    data['tims'][:] = dat['tims'][:]
+    data['mlevs'][:] = dat['mlevs'][:]
 
-    print data['pressure'][:,0,0]
-    print data['lats'][:]
-    print data['lons'][:]
-    # print data['lats'][:]
-    print data.keys()
+    #################################################################
+    ## CREATE EMPTY CUBE
+    #################################################################
+    ncube = Cube(np.zeros([38,25,137]))
+
+    data['ulat'] = np.zeros([np.size(np.unique(data['lats'][:]))])
+    data['ulat'][:] = np.unique(data['lats'][:])
+    data['ulon'] = np.zeros([np.size(np.unique(data['lons'][:]))])
+    data['ulon'][:] = np.unique(data['lons'][:])
+    mlats, mlons = np.meshgrid(data['ulat'][:], data['ulon'][:])
+
+    ntime = DimCoord(data['tims'][:], var_name = 'time', standard_name = 'time', units='hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00')
+    level = DimCoord(data['mlevs'][:], var_name = 'level', standard_name = 'model_level_number', units='m')
+    lats = DimCoord(data['ulat'][:], var_name = 'latitude', standard_name = 'latitude', units='degrees_N')
+    lons = DimCoord(data['ulon'][:], var_name = 'longitude', standard_name = 'longitude', units='degrees_E')
+    # ncube = Cube(data['pressure'][:,:,:],
+    #         dim_coords_and_dims=[(lats, 0), (ntime, 1), (level, 2)],
+            # standard_name = cube.standard_name,
+            # long_name = cube.long_name,
+            # units = cube.units,
+            # var_name = varname,
+            # attributes = cube.attributes,
+            # aux_coords_and_dims = None,
+            # )
 
     nc_outfile = date + '_oden_ecmwf_n38.nc'
+    # iris.save(ncube, nc_outfile)
 
     ### write to combined netCDF file
-    data = writeNetCDF(nc_outfile, data, date)
+    # data = writeNetCDF(nc_outfile, data, date, cube)
 
     ### append metadata to combined netCDF file
-    data = appendNetCDF(nc_outfile, date)
+    # data = appendMetaNetCDF(nc_outfile, date)
 
     return data, nc_outfile
 
-def writeNetCDF(outfile, data, date):
+# def writeNetCDF(outfile, data, date, cube):
+
+    # from iris.coords import DimCoord
+    # from iris.cube import Cube
+    # import iris.plot as iplt
+    #
+    # #################################################################
+    # ## CREATE EMPTY CUBE
+    # #################################################################
+    # ncube = Cube(np.zeros([38,25,137]))
+    #
+    # ntime = DimCoord(data['tims'][:], var_name = 'time', standard_name = 'forecast_time', units='hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00')
+    # level = DimCoord(data['mlevs'][:], var_name = 'level', standard_name = 'model_level_number', units='m')
+    # ncube = Cube(data['pressure'],
+    #         dim_coords_and_dims=[(lats, 0), (level, 1), (ntime, 2)],
+    #         standard_name = cube.standard_name,
+    #         long_name = cube.long_name,
+    #         units = cube.units,
+    #         var_name = varname,
+    #         attributes = cube.attributes,
+    #         aux_coords_and_dims = None,
+    #         )
+
 
     ###################################
     ## Open new netCDF file
     ###################################
 
-    dataset = Dataset(outfile, 'w')
+    # dataset = Dataset(outfile, 'w')
 
     ###################################
     ## Data dimensions
     ###################################
-    tim = dataset.createDimension('time', np.size(data['tims'][:]))
-    Z = dataset.createDimension('level', np.size(data['mlevs']))
-    lat = dataset.createDimension('latitude', np.size(data['lats'][:]))
-    lon = dataset.createDimension('longitude', np.size(data['lons'][:]))
-
-    ###################################
-    ## Dimensions variables
-    ###################################
-    #### Time
-    print 'Writing time:'
-    print '---'
-    tim = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    tim.units = 'hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
-    tim.long_name = 'Hours UTC'
-    tim.standard_name = 'time'
-    tim[:] = data['tims'][:]
-
-    #### Z
-    print 'Writing model levels:'
-    print '---'
-    mlevs = dataset.createVariable('level', np.int16, ('level',),fill_value='-9999')
-    mlevs.units = '1'
-    mlevs.long_name = 'Model level'
-    mlevs.positive = 'down'
-    mlevs.standard_name = 'model_level_number'
-    mlevs[:] = data['mlevs'][:]
-
-    #### Latitude
-    print 'Writing latitudes:'
-    print '---'
-    lats = dataset.createVariable('latitude', np.float32, ('latitude',),fill_value='-9999')
-    lats.units = 'degrees_N'
-    lats.long_name = 'Latitude of model grid point'
-    lats.standard_name = 'latitude'
-    lats[:] = data['lats'][:]
-
-    #### Longitude
-    print 'Writing longitudes:'
-    print '---'
-    lons = dataset.createVariable('longitude', np.float32, ('longitude',),fill_value='-9999')
-    lons.units = 'degrees_E'
-    lons.long_name = 'Longitude of model grid point'
-    lons.standard_name = 'longitude'
-    lons[:] = data['lons'][:]
+    # tim = dataset.createDimension('time', np.size(data['tims'][:]))
+    # Z = dataset.createDimension('level', np.size(data['mlevs']))
+    # lat = dataset.createDimension('latitude', np.size(data['lats'][:]))
+    # lon = dataset.createDimension('longitude', np.size(data['lons'][:]))
+    #
+    # ###################################
+    # ## Dimensions variables
+    # ###################################
+    # #### Time
+    # print 'Writing time:'
+    # print '---'
+    # tim = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    # tim.units = 'hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
+    # tim.long_name = 'Hours UTC'
+    # tim.standard_name = 'time'
+    # tim[:] = data['tims'][:]
+    #
+    # #### Z
+    # print 'Writing model levels:'
+    # print '---'
+    # mlevs = dataset.createVariable('level', np.int16, ('level',),fill_value='-9999')
+    # mlevs.units = '1'
+    # mlevs.long_name = 'Model level'
+    # mlevs.positive = 'down'
+    # mlevs.standard_name = 'model_level_number'
+    # mlevs[:] = data['mlevs'][:]
+    #
+    # #### Latitude
+    # print 'Writing latitudes:'
+    # print '---'
+    # lats = dataset.createVariable('latitude', np.float32, ('latitude',),fill_value='-9999')
+    # lats.units = 'degrees_N'
+    # lats.long_name = 'Latitude of model grid point'
+    # lats.standard_name = 'latitude'
+    # lats[:] = data['lats'][:]
+    #
+    # #### Longitude
+    # print 'Writing longitudes:'
+    # print '---'
+    # lons = dataset.createVariable('longitude', np.float32, ('longitude',),fill_value='-9999')
+    # lons.units = 'degrees_E'
+    # lons.long_name = 'Longitude of model grid point'
+    # lons.standard_name = 'longitude'
+    # lons[:] = data['lons'][:]
 
     ###################################
     ## Writing out Cloudnet diagnostics
     ###################################
-    print 'Writing pressure:'
-    print '---'
-    pres = dataset.createVariable('pressure', np.float64, ('latitude','time','level'), fill_value='-9999')
-    pres.scale_factor = float(1)
-    pres.add_offset = float(0)
-    pres.units = 'Pa'
-    pres.long_name = 'air_pressure'
-    pres[:,:] = data['pressure'][:,:]
+    # print 'Writing pressure:'
+    # print '---'
+    # pres = dataset.createVariable('pressure', np.float64, ('latitude','time','level'), fill_value='-9999')
+    # pres.scale_factor = float(1)
+    # pres.add_offset = float(0)
+    # pres.units = 'Pa'
+    # pres.long_name = 'air_pressure'
+    # pres[:,:] = data['pressure'][:,:]
 
     # print 'Appending LWP:'
     # print '---'
@@ -1033,9 +1103,9 @@ def writeNetCDF(outfile, data, date):
     ###################################
     ## Write out file
     ###################################
-    dataset.close()
-
-    return dataset
+    # dataset.close()
+    #
+    # return dataset
 
 def appendMetaNetCDF(outfile, date):
 
