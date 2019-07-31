@@ -854,6 +854,209 @@ def readCube(name):
 
     return data
 
+def ReadWriteDaily(filenames, date):
+
+    '''
+     function to read in each lat/lon ECMWF IFS (netCDF) file with Iris then
+     output required diagnostics for Cloudnet into a new netCDF
+    '''
+
+    i = -1
+    data = {}
+    data['pressure'] = np.zeros([38,25,137])
+    data['hgts'] = np.zeros([38,25,137])
+    data['tims'] = np.zeros([25])
+    data['lats'] = np.zeros([38])
+    data['lons'] = np.zeros([38])
+    data['mlevs'] = np.zeros([137])
+    for name in filenames:
+        i = i + 1
+        print 'i = ' + str(i)
+        dat = readCube(name)
+        # print dat
+        data['pressure'][i, :, :] = dat['pressure'][:, :]
+        data['hgts'][i, :, :] = dat['hgts'][:, :]
+        data['lats'][i] = dat['lats']
+        data['lons'][i] = dat['lons']
+
+    print data['pressure'][:,0,0]
+    print data['lats'][:]
+    print data['lons'][:]
+    # print data['lats'][:]
+    print data.keys()
+
+    nc_outfile = date + '_oden_ecmwf_n38.nc'
+
+    ### write to combined netCDF file
+    # data = writeNetCDF(nc_outfile, data, date)
+
+    ### append metadata to combined netCDF file
+    # data = appendNetCDF(nc_outfile, date)
+
+    return data, nc_outfile
+
+def writeNetCDF(outfile, data, date):
+
+    ###################################
+    ## Open new netCDF file
+    ###################################
+
+    dataset = Dataset(outfile, 'w')
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    tim = dataset.createDimension('time', np.size(data['tims'][:]))
+    Z = dataset.createDimension('level', np.size(data['mlevs']))
+    lat = dataset.createDimension('latitude', np.size(data['lats'][:]))
+    lon = dataset.createDimension('longitude', np.size(data['lons'][:]))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### Time
+    print 'Writing time:'
+    print '---'
+    tim = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
+    tim.units = 'hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
+    tim.long_name = 'Hours UTC'
+    tim.standard_name = 'time'
+    tim[:] = data['tims'][:]
+
+    #### Z
+    print 'Writing model levels:'
+    print '---'
+    mlevs = dataset.createVariable('level', np.int16, ('level',),fill_value='-9999')
+    mlevs.units = '1'
+    mlevs.long_name = 'Model level'
+    mlevs.positive = 'down'
+    mlevs.standard_name = 'model_level_number'
+    mlevs[:] = data['mlevs'][:]
+
+    #### Latitude
+    print 'Writing latitudes:'
+    print '---'
+    lats = dataset.createVariable('latitude', np.float32, ('latitude',),fill_value='-9999')
+    lats.units = 'degrees_N'
+    lats.long_name = 'Latitude of model grid point'
+    lats.standard_name = 'latitude'
+    lats[:] = data['lats'][:]
+
+    #### Longitude
+    print 'Writing longitudes:'
+    print '---'
+    lons = dataset.createVariable('longitude', np.float32, ('longitude',),fill_value='-9999')
+    lons.units = 'degrees_E'
+    lons.long_name = 'Longitude of model grid point'
+    lons.standard_name = 'longitude'
+    lons[:] = data['lons'][:]
+
+    ###################################
+    ## Writing out Cloudnet diagnostics
+    ###################################
+    print 'Writing pressure:'
+    print '---'
+    pres = dataset.createVariable('pressure', np.float64, ('latitude','time','level'), fill_value='-9999')
+    pres.scale_factor = float(1)
+    pres.add_offset = float(0)
+    pres.units = 'Pa'
+    pres.long_name = 'air_pressure'
+    pres[:,:] = data['pressure'][:,:]
+
+    # print 'Appending LWP:'
+    # print '---'
+    # lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
+    # lwp.scale_factor = float(1)
+    # lwp.add_offset = float(0)
+    # lwp.units = 'kg m-2'
+    # lwp.long_name = 'large_scale_liquid_water_path'
+    # lwp[:] = nc.variables['LWP'][:]
+    #
+    # print 'Appending rainfall_flux:'
+    # print '---'
+    # rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # rain.scale_factor = float(1)
+    # rain.add_offset = float(0)
+    # rain.units = 'kg m-2 s-1'
+    # rain.long_name = 'stratiform_rainfall_flux'
+    # rain[:] = nc.variables['rainfall_flux'][:]
+    #
+    # print 'Appending snowfall_flux:'
+    # print '---'
+    # snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # snow.scale_factor = float(1)
+    # snow.add_offset = float(0)
+    # snow.units = 'kg m-2 s-1'
+    # snow.long_name = 'stratiform_snowfall_flux'
+    # snow[:] = nc.variables['snowfall_flux'][:]
+    #
+    # print 'Appending surface_pressure:'
+    # print '---'
+    # sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_pressure.scale_factor = float(1)
+    # sfc_pressure.add_offset = float(0)
+    # sfc_pressure.units = 'Pa'
+    # sfc_pressure.long_name = 'surface_pressure'
+    # sfc_pressure[:] = nc.variables['sfc_pressure'][:]
+    #
+    # print 'Appending surface_temperature:'
+    # print '---'
+    # sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_temperature.scale_factor = float(1)
+    # sfc_temperature.add_offset = float(0)
+    # sfc_temperature.units = 'K'
+    # sfc_temperature.long_name = 'surface_temperature'
+    # sfc_temperature[:] = nc.variables['sfc_temperature'][:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+
+def appendMetaNetCDF(outfile, date):
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    print 'Appending metadata to ' + outfile
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
+    # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
+    print ''
+    print dataset.file_format
+    print ''
+
+    ###################################
+    ## Global Attributes
+    ###################################
+    dataset.conventions = 'CF-1.0'
+    dataset.title = 'ECMWF Model single-site output during MOCCHA'
+    dataset.location = 'MOCCHA'
+    # dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
+    dataset.description = 'Hourly data combined from n=38 files into 1 daily file.'
+    dataset.history = 'ke 5.6.2019 14.09.20 +0300 - NetCDF generated from original data by Ewan O''Connor <ewan.oconnor@fmi.fi> using cnmodel2nc on cloudnet.fmi.fi. Combined from n=38 lat/lon files at ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
+    dataset.source = 'ECMWF Integrated Forecast System (IFS)'
+    dataset.references = ''
+    dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
+    dataset.comment = ''
+    dataset.institution = 'European Centre for Medium-Range Weather Forecasting.'
+    # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
+    dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
+
+    dataset.close()
+
+    return dataset
+
 def main():
 
     START_TIME = time.time()
@@ -931,31 +1134,9 @@ def main():
     print 'Lons = ' + str(lons)
 
     # -------------------------------------------------------------
-    # Extract diagnostic with Iris
+    # Extract each position file with Iris and write to combined netCDF
     # -------------------------------------------------------------
-    i = -1
-    data = {}
-    data['pressure'] = np.zeros([38,25,137])
-    data['hgts'] = np.zeros([38,25,137])
-    data['tims'] = np.zeros([25])
-    data['lats'] = np.zeros([38])
-    data['lons'] = np.zeros([38])
-    data['mlevs'] = np.zeros([137])
-    for name in filenames:
-        i = i + 1
-        print 'i = ' + str(i)
-        dat = readCube(name)
-        # print dat
-        data['pressure'][i, :, :] = dat['pressure'][:, :]
-        data['hgts'][i, :, :] = dat['hgts'][:, :]
-        data['lats'][i] = dat['lats']
-        data['lons'][i] = dat['lons']
-
-    print data['pressure'][:,0,0]
-    print data['lats'][:]
-    print data['lons'][:]
-    # print data['lats'][:]
-    print data.keys()
+    data, outfile = ReadWriteDaily(filenames, date)
 
     # -------------------------------------------------------------
     # Plot data (map)
@@ -965,7 +1146,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    map = plot_cartmap(ship_data, data)
+    # map = plot_cartmap(ship_data, data)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
