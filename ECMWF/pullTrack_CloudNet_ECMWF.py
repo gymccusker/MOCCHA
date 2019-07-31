@@ -12,8 +12,8 @@ from netCDF4 import Dataset
 import numpy as np
 # import diags_MOCCHA as diags
 # import diags_varnames as varnames
-# import cartopy.crs as ccrs
-# import iris
+import cartopy.crs as ccrs
+import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
@@ -209,8 +209,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==15,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==1,data.values[:,1]==9),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==2,data.values[:,1]==9),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -722,18 +722,18 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'DESKTOP'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        root_dir = '/home/gillian/MOCCHA/ECMWF/DATA/'
+        ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/data/ecmwf_ewan/moccha/ecmwf-all/2018/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
@@ -764,7 +764,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180914'
+    date = '20180901'
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
