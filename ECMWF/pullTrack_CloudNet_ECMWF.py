@@ -329,7 +329,7 @@ def plot_basemap(ship_data, lats, lons, tim):
 
     plt.show()
 
-def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
+def plot_cartmap(ship_data, data): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -341,9 +341,9 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 1
+    # diag = 1
     print ''
-    print 'Diag is: ', cube[diag].long_name
+    print 'Available diags are: ', data.keys()
 
     ###################################
     ## PLOT MAP
@@ -407,6 +407,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #     iplt.pcolormesh(cube[diag][:,:])
     # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
     # plt.colorbar()
+    plt.pcolormesh(data['lats'][:],data['lons'][:],data['pressure'][:,0,0])
 
     #################################################################
     ## plot UM nest
@@ -416,7 +417,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    # qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -820,30 +821,36 @@ def pullTrack(cube, grid_filename, con):
 
     return fcube, nc_outfile
 
-def readCube(filenames):
+def readCube(name):
 
     ### LOOP OVER FILENAMES TO EXTRACT DIAGNOSTIC OVER ALL GRIDBOXES
 
+    print 'Filename to load is: ' + name
+
     diag = 24
-    print 'Diag will be ' + cube[diag].var_name
+
     data = {}
-    dat = np.zeros([25,137,1,1])
-    name = filenames[0]
-    # for name in filenames:
+    dat = np.zeros([25,137])
     cube = iris.load(name)
+    print 'Diag will be ' + cube[diag].var_name
     tims = cube[diag].dim_coords[0].points
     hgts = cube[35].data
     lats = cube[40].data
     lons = cube[41].data
     if np.sum(cube[diag].shape) > 24:        # if 2D diagnostic
         mlevs = cube[diag].dim_coords[1].points
-    dat[:,:,0,:] = lats
-    dat[:,:,:,0] = lons
     for t in range(len(tims)):
-        dat[t,:,:,:] = tims[t]
+        dat[t,:] = tims[t]
         for k in range(np.size(hgts,1)):
-            dat[:,k,:,:] = cube[diag].data[t,k]
+            dat[:,k] = cube[diag].data[t,k]
     data[cube[diag].var_name] = dat
+    data['lats'] = lats
+    data['lons'] = lons
+    data['tims'] = tims
+    data['hgts'] = hgts
+    data['mlevs'] = mlevs
+
+    # print data.keys()
 
     return data
 
@@ -908,7 +915,7 @@ def main():
         names[i] = base_name + str_i + '.nc'
         filenames[i] = root_dir + names[i]
 
-    print names[0] + ' ... ' + names[-1]
+    print filenames[0] + ' ... ' + filenames[-1]
     print ''
 
     # -------------------------------------------------------------
@@ -926,7 +933,29 @@ def main():
     # -------------------------------------------------------------
     # Extract diagnostic with Iris
     # -------------------------------------------------------------
-    data = readCube(filenames[0:1])
+    i = -1
+    data = {}
+    data['pressure'] = np.zeros([38,25,137])
+    data['hgts'] = np.zeros([38,25,137])
+    data['tims'] = np.zeros([25])
+    data['lats'] = np.zeros([38])
+    data['lons'] = np.zeros([38])
+    data['mlevs'] = np.zeros([137])
+    for name in filenames:
+        i = i + 1
+        print 'i = ' + str(i)
+        dat = readCube(name)
+        # print dat
+        data['pressure'][i, :, :] = dat['pressure'][:, :]
+        data['hgts'][i, :, :] = dat['hgts'][:, :]
+        data['lats'][i] = dat['lats']
+        data['lons'][i] = dat['lons']
+
+    print data['pressure'][:,0,0]
+    print data['lats'][:]
+    print data['lons'][:]
+    # print data['lats'][:]
+    print data.keys()
 
     # -------------------------------------------------------------
     # Plot data (map)
@@ -936,7 +965,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    # map = plot_cartmap(ship_data, lats, lons, tim)
+    map = plot_cartmap(ship_data, data)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
@@ -953,8 +982,6 @@ def main():
     # # os.rename(outfile, final_outfile)
 
     # print outfile
-
-
 
     END_TIME = time.time()
     print '******'
