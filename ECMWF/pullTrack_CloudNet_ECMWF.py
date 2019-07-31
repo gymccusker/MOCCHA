@@ -469,8 +469,6 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
     data['rb_lons'][28:] = rblons[28:]
     data['rb_lons'][35] = rblons[34]
-    # print 'rblons = ' + str(rblons[18])
-    # print 'data[rb_lons] = ' + str(data['rb_lons'][18])
     plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
             label = 'eastern bounds',
             transform = ccrs.PlateCarree())
