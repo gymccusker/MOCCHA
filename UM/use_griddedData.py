@@ -954,9 +954,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[0]
