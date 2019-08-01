@@ -105,9 +105,9 @@ def designGrid(data):
     ### make grid of unique latitude and longitude points
     lats, lons = np.meshgrid(data['ulat'][:], data['ulon'][:])
     ### plot grid midpoints from file
-    # plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
-    #         label = 'Grid mid points',
-    #         transform = ccrs.PlateCarree())
+    plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
+            label = 'Grid mid points',
+            transform = ccrs.PlateCarree())
 
     ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
@@ -120,9 +120,9 @@ def designGrid(data):
             if data['ulat'][j] == data['lats'][i]:
                 data['nb_lats'][i] = nblats[j]
 
-    # plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
-    #         label = 'northern bounds',
-    #         transform = ccrs.PlateCarree())
+    plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
+            label = 'northern bounds',
+            transform = ccrs.PlateCarree())
 
     ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
@@ -140,9 +140,9 @@ def designGrid(data):
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
     data['rb_lons'][28:] = rblons[28:]
     data['rb_lons'][35] = rblons[34]
-    # plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
-    #         label = 'eastern bounds',
-    #         transform = ccrs.PlateCarree())
+    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+            label = 'eastern bounds',
+            transform = ccrs.PlateCarree())
 
     return data
 
@@ -175,9 +175,15 @@ def checkLatLon(ship_data, date, data):
 
     ### find where in grid ship track pt n1 is closest to
     # t = 0
-    # print 'Finding where n0 ship pt is between lat gpt centre and northern boundary:'
-    # ind = np.where(np.logical_and(ship_lats[t] >= lats, ship_lats[t] <= data['nb_lats'][:]))
-    # print ind
+    print 'Finding where n0 ship pt is between lat gpt centre and northern boundary:'
+    ind = {}
+    for i in range(0, len(data['ulat'])-1):
+         ind[i] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][i],ship_lats[0][:] <= data['ulat'][i+1]))
+         # if ind[i][0].size == 0:
+         #     continue
+         # else:
+         #     index = ind[t][0]      ### only works if it's within one grid box!!!
+    # print index
 
     # map = plot_basemap(ship_data, lats, lons, tim)
 
@@ -502,7 +508,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    # plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
 
     return data
@@ -916,6 +922,7 @@ def main():
 
     ### temporary data save for development/debugging
     np.save('working_data', data)
+    ### load with data = np.load('working_data.npy').item())
 
     END_TIME = time.time()
     print '******'
