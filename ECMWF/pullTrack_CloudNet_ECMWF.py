@@ -181,6 +181,13 @@ def designGrid(data):
     data['lb_lons'][22] = data['rb_lons'][21]; data['rb_lons'][22] = data['lons'][22] + (data['lons'][22] - data['rb_lons'][21])
     data['lb_lons'][23] = data['lons'][23] - (data['rb_lons'][23] - data['lons'][23])
     data['lb_lons'][24:28] = data['rb_lons'][23:27]
+    data['lb_lons'][28] = data['lons'][28] - (data['rb_lons'][28] - data['lons'][28])
+    data['lb_lons'][29] = data['rb_lons'][28]; data['rb_lons'][29] = data['lons'][29] + (data['lons'][29] - data['rb_lons'][28])
+    data['lb_lons'][30] = data['lons'][30] - (data['rb_lons'][30] - data['lons'][30])
+    data['lb_lons'][31:35] = data['rb_lons'][30:34]
+    data['lb_lons'][35] = data['rb_lons'][34]; data['rb_lons'][35] = data['lons'][35] + (data['lons'][35] - data['rb_lons'][34])
+    data['lb_lons'][36] = data['lons'][36] - (data['rb_lons'][36] - data['lons'][36])
+    # data['lb_lons'][37] = data['rb_lons'][36]; data['rb_lons'][37] = data['lons'][37] + (data['lons'][37] - data['rb_lons'][36])
 
     ###---------------------------------------------------------------------------------
     ### plot longitude boundaries
@@ -558,7 +565,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
+    plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
 
     return data
