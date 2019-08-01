@@ -442,6 +442,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
             label = 'northern bounds',
             transform = ccrs.PlateCarree())
 
+    ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
     data['rb_lons'] = np.zeros([np.size(data['lons'][:-1])])
     data['rb_lons'][0:9] = rblons[0:9]
