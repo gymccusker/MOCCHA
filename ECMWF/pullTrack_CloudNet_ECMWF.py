@@ -274,7 +274,7 @@ def checkLatLon(ship_data, date, data):
     ### extract t=0 gpts
     t = 0
     temp = {}
-    for j in range(0, len(data['sb_lats'])-1):
+    for j in range(0, len(data['nb_lats'])-1):
             for i in range(0, len(data['rb_lons'])-1):
                 for h in range(0, len(data['ship_ind'][i,j][0])):
                     if data['ship_ind'][i,j][0][h] == t:
