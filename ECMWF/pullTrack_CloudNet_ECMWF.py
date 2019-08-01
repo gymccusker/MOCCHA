@@ -177,12 +177,13 @@ def checkLatLon(ship_data, date, data):
     # t = 0
     print 'Finding where n0 ship pt is between lat gpt centre and northern boundary:'
     ind = {}
-    for i in range(0, len(data['ulat'])-1):
-         ind[i] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][i],ship_lats[0][:] <= data['ulat'][i+1]))
-         # if ind[i][0].size == 0:
-         #     continue
-         # else:
-         #     index = ind[t][0]      ### only works if it's within one grid box!!!
+    index = {}
+    for j in range(0, len(data['ulat'])-1):
+         ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
+         if ind[i][0].size == 0:
+             continue
+         else:
+             index = ind[t][0]      ### only works if it's within one grid box!!!
     # print index
 
     # map = plot_basemap(ship_data, lats, lons, tim)
