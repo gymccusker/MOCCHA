@@ -275,7 +275,6 @@ def checkLatLon(ship_data, date, data):
     for i in range(0, len(data['rb_lons'])-1):
         print i
         for h in range(0,25):
-            
             data['latlon_ind'][i] = np.where(np.logical_and(ship_lons[0][data['lat_ind'][i][0][h]] >= data['lb_lons'][i], ship_lons[0][data['lat_ind'][i][0][h]] < data['rb_lons'][i]))
 
     # ship_lons[0][data['lat_ind'][18][0][0:5]]
