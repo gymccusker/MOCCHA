@@ -420,26 +420,14 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     # qplt.outline(cube[diag][hour,:,:])
 
 
-
+    ### make grid of unique latitude and longitude points
     lats, lons = np.meshgrid(data['ulat'][:], data['ulon'][:])
-
-    # plt.scatter(lons, lats, c = 'red',
-    #         label = 'meshgrid',
-    #         transform = ccrs.PlateCarree())
-    #
-    # lats[0:20,0:10] = np.nan
-    # plt.scatter(lons, lats, c = 'black',
-    #         label = 'meshgrid',
-    #         transform = ccrs.PlateCarree())
-
-    # plt.pcolor(lons, lats, data['pressure'][:,0,0],
-    #         label = 'Gridded data',
-    #         transform = ccrs.PlateCarree())
-
+    ### plot grid midpoints from file
     plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
             label = 'Grid mid points',
             transform = ccrs.PlateCarree())
 
+    ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
     data['nb_lats'] = np.zeros([np.size(data['lats'][:])])
     print 'Northern boundary array has shape: ' + str(np.size(nblats))
@@ -505,18 +493,18 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
              )
 
     ### Plot tracks as line plot
-    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-    #          color = 'blue', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-    #          'k^', markerfacecolor = 'blue', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-    #          'kv', markerfacecolor = 'blue', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'green', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'green', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'green', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     plt.legend()
 
@@ -545,7 +533,7 @@ def pullTrack(cube, grid_filename, con):
     print 'Pulling gridded track from netCDF:'
     print ''
 
-    tim, ilat, ilon = readGriddedTrack(grid_filename)
+    # tim, ilat, ilon = readGriddedTrack(grid_filename)
 
     #################################################################
     ## fix time index
