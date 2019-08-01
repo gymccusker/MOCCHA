@@ -105,9 +105,9 @@ def designGrid(data):
     ### make grid of unique latitude and longitude points
     lats, lons = np.meshgrid(data['ulat'][:], data['ulon'][:])
     ### plot grid midpoints from file
-    plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
-            label = 'Grid mid points',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
+    #         label = 'Grid mid points',
+    #         transform = ccrs.PlateCarree())
 
     ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
@@ -120,9 +120,9 @@ def designGrid(data):
             if data['ulat'][j] == data['lats'][i]:
                 data['nb_lats'][i] = nblats[j]
 
-    plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
-            label = 'northern bounds',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
+    #         label = 'northern bounds',
+    #         transform = ccrs.PlateCarree())
 
     ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
@@ -140,41 +140,48 @@ def designGrid(data):
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
     data['rb_lons'][28:] = rblons[28:]
     data['rb_lons'][35] = rblons[34]
-    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
-            label = 'eastern bounds',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+    #         label = 'eastern bounds',
+    #         transform = ccrs.PlateCarree())
 
     return data
 
-def checkLatLon(ship_data, lats, lons, date, tim):
+def checkLatLon(ship_data, date, data):
 
     print ''
     print 'Finding lat/lon of ship track'
     print '...'
 
+    lats = data['lats'][:]
+    lons = data['lons'][:]
+    tims = data['tims'][:]
+
     #################################################################
     ## find date of interest
     #################################################################
-    day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
+    data['day_ind'] = np.array([])
+    data['day_ind'] = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
+    print 'Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts '
+    print data['day_ind'][0]
 
     #################################################################
     ## print ship track coordinates
     #################################################################
-    print 'Ship start (lon,lat): ' + str(ship_data.values[day_ind[0][0],7]) + ', ' + str(ship_data.values[day_ind[0][0],6])
-    print 'Ship end (lon,lat): ' + str(ship_data.values[day_ind[0][-1],7]) + ', ' + str(ship_data.values[day_ind[0][-1],6])
+    print 'Ship start (lon,lat): ' + str(ship_data.values[data['day_ind'][0][0],7]) + ', ' + str(ship_data.values[data['day_ind'][0][0],6])
+    print 'Ship end (lon,lat): ' + str(ship_data.values[data['day_ind'][0][-1],7]) + ', ' + str(ship_data.values[data['day_ind'][0][-1],6])
 
-    ship_lats = ship_data.values[day_ind,7]
-    ship_lons = ship_data.values[day_ind,6]
+    ship_lats = ship_data.values[data['day_ind'],7]
+    ship_lons = ship_data.values[data['day_ind'],6]
 
-    i = 0
-    # for i in range(0,24):
-    for j in range(0,37):
-        ind1 = np.where(np.logical_and(ship_lats[0][i] > lats[j],ship_lats[0][i] <= lats[j+1]))
-        print ind1
+    ### find where in grid ship track pt n1 is closest to
+    # t = 0
+    # print 'Finding where n0 ship pt is between lat gpt centre and northern boundary:'
+    # ind = np.where(np.logical_and(ship_lats[t] >= lats, ship_lats[t] <= data['nb_lats'][:]))
+    # print ind
 
     # map = plot_basemap(ship_data, lats, lons, tim)
 
-    return ind1
+    return data
 
 def iceDrift(data):
 
@@ -508,16 +515,24 @@ def pullTrack(ship_data, data, date):
 
     print '******'
     print ''
+    #################################################################
+    ## design grid boundaries
+    #################################################################
+    # print '******'
+    print ''
+    print 'Designing grid boundaries:'
+    print ''
+    data = designGrid(data)
 
     #################################################################
-    ## load gridded ship track
+    ## check position of ship track
     #################################################################
     # print '******'
     print ''
     print 'Pulling gridded track from netCDF:'
     print ''
 
-    day_index = checkLatLon(ship_data, data['lats'][:], data['lons'][:], date, data['tims'][:])
+    day_index = checkLatLon(ship_data, date, data)
 
     return data
 
@@ -554,7 +569,7 @@ def readCube(name):
 
     return data, cube, diag
 
-def ReadWriteDaily(filenames, date):
+def readDaily(filenames, date):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -882,7 +897,7 @@ def main():
     # -------------------------------------------------------------
     # Extract each position file with Iris and write to combined netCDF
     # -------------------------------------------------------------
-    data, outfile = ReadWriteDaily(filenames, date)
+    data, outfile = readDaily(filenames, date)
 
     # -------------------------------------------------------------
     # Plot data (map)
@@ -892,22 +907,15 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    # data = plot_cartmap(ship_data, data, date)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
     data = pullTrack(ship_data, data, date)
 
-    #### LOAD CUBE
-    # if con_flag == 0: fcube, outfile = pullTrack(cube, grid_filename, var_con)
-    # if con_flag == 1: fcube, outfile = pullTrack(cube, grid_filename, global_cons)
-    # ## Update netCDF comments
-    # out = appendNetCDF(outfile)
-    # # final_outfile = out_dir + grid_filename[9:17] + '_oden_metum.nc'
-    # # os.rename(outfile, final_outfile)
-
-    # print outfile
+    ### temporary data save for development/debugging
+    np.save('working_data', data)
 
     END_TIME = time.time()
     print '******'
