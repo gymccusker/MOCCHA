@@ -115,9 +115,9 @@ def designGrid(data):
 
     ###---------------------------------------------------------------------------------
     ### plot grid midpoints from file
-    plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
-            label = 'Grid mid points',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
+    #         label = 'Grid mid points',
+    #         transform = ccrs.PlateCarree())
 
     ###---------------------------------------------------------------------------------
     ### find northern boundaries of gridpoints
@@ -131,9 +131,9 @@ def designGrid(data):
             if data['ulat'][j] == data['lats'][i]:
                 data['nb_lats'][i] = nblats[j]
 
-    plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
-            label = 'northern bounds',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
+    #         label = 'northern bounds',
+    #         transform = ccrs.PlateCarree())
 
     ###---------------------------------------------------------------------------------
     ### find eastern boundaries of gridpoints
@@ -191,12 +191,12 @@ def designGrid(data):
 
     ###---------------------------------------------------------------------------------
     ### plot longitude boundaries
-    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
-            label = 'eastern bounds',
-            transform = ccrs.PlateCarree())
-    plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
-            label = 'western bounds',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+    #         label = 'eastern bounds',
+    #         transform = ccrs.PlateCarree())
+    # plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
+    #         label = 'western bounds',
+    #         transform = ccrs.PlateCarree())
 
     return data
 
@@ -216,7 +216,7 @@ def checkLatLon(ship_data, date, data):
     data['day_ind'] = np.array([])
     data['day_ind'] = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
     print 'Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts '
-    print data['day_ind'][0]
+    # print data['day_ind'][0]
 
     #################################################################
     ## print ship track coordinates
@@ -232,9 +232,21 @@ def checkLatLon(ship_data, date, data):
     print 'Finding where ship pt is between two unique latitudes:'
     ind = {}
     index = {}
-    for j in range(0, len(data['ulat'])-1):
-         ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
+    # for j in range(0, len(data['ulat'])-1):
+    #     ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
 
+    # print ind
+
+    ind2 = {}
+    # for i in range(0, len(data['rb_lons'])-1):
+        ind2[i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] <= data['rb_lons'][i]))
+
+    ship_ind = {}
+    for j in range(0, len(data['ulat'])-1):
+            for i in range(0, len(data['rb_lons'])-1):
+                ship_ind[i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
+                ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]),
+                ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] <= data['rb_lons'][i]))
 
          # if ind[i][0].size == 0:
          #     continue
@@ -970,12 +982,12 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    # data = plot_cartmap(ship_data, data, date)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    # data = pullTrack(ship_data, data, date)
+    data = pullTrack(ship_data, data, date)
 
     ### temporary data save for development/debugging
     np.save('working_data', data)
