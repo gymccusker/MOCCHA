@@ -109,7 +109,7 @@ def designGrid(data):
     #         label = 'Unique grid',
     #         transform = ccrs.PlateCarree())
     #
-    # plt.scatter(lons[0,:], lats[0,:], c = 'purple',#data['pressure'][:,0,0],
+    # plt.scatter(data['lons'][29], data['ulat'][15], c = 'purple',#data['pressure'][:,0,0],
     #         label = 'testing',
     #         transform = ccrs.PlateCarree())
 
@@ -123,14 +123,28 @@ def designGrid(data):
     ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
     data['nb_lats'] = np.zeros([np.size(data['lats'][:])])
-    print 'Northern boundary array has shape: ' + str(np.size(nblats))
+    # print 'Northern boundary array has shape: ' + str(np.size(nblats))
     for j in range(0,len(nblats)):
         # print 'j = ' + str(j)
         for i in range(0,len(data['lats'][:])):
             # print 'i = ' + str(i)
             if data['ulat'][j] == data['lats'][i]:
                 data['nb_lats'][i] = nblats[j]
+    data['nb_lats'][-2:] = 90.0
 
+    ###---------------------------------------------------------------------------------
+    ### find southern boundaries of gridpoints
+    data['sb_lats'] = np.zeros([np.size(data['lats'][:])])
+    # for j in range(0,len(data['nb_lats'])-1):
+    data['sb_lats'][:] = data['lats'][:] - (data['nb_lats'][:] - data['lats'][:])
+    data['sb_lats'][-2:] = data['nb_lats'][-3]
+        # if data['ulat'][j] == data['lats'][i]:
+        #     data['nb_lats'][i] = nblats[j]
+
+    # plt.scatter(data['lons'][:], data['sb_lats'][:], c = 'pink',
+    #         label = 'southern bounds',
+    #         transform = ccrs.PlateCarree())
+    #
     # plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
     #         label = 'northern bounds',
     #         transform = ccrs.PlateCarree())
@@ -163,7 +177,7 @@ def designGrid(data):
     # data['lb_lons'][3:5] = data['lons'][2:4]
     data['lb_lons'][5] = data['rb_lons'][5]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
     data['lb_lons'][6] = data['lons'][6] - (data['rb_lons'][6] - data['lons'][6])
-    data['lb_lons'][7] = data['lons'][6]# data['rb_lons'][7]; data['rb_lons'][7] = data['lons'][7] + (data['lons'][7] - data['rb_lons'][7])
+    data['lb_lons'][7] = data['lons'][6]; data['rb_lons'][7] = data['lons'][7] + (data['lons'][7] - data['rb_lons'][7])
     data['lb_lons'][8] = data['lons'][8] - (data['rb_lons'][8] - data['lons'][8])
     data['lb_lons'][9] = data['rb_lons'][9]; data['rb_lons'][9] = data['lons'][9] + (data['lons'][9] - data['rb_lons'][9])
     data['lb_lons'][10] = data['lons'][10] - (data['rb_lons'][10] - data['lons'][10])
@@ -198,6 +212,8 @@ def designGrid(data):
     #         label = 'western bounds',
     #         transform = ccrs.PlateCarree())
 
+    print 'All boundaries loaded :)'
+
     return data
 
 def checkLatLon(ship_data, date, data):
@@ -229,33 +245,42 @@ def checkLatLon(ship_data, date, data):
 
     ### find where in grid ship track pt n1 is closest to
     # t = 0
-    print 'Finding where ship pt is between two unique latitudes:'
-    ind = {}
-    index = {}
+    # print 'Finding where ship pt is between two unique latitudes:'
+    # ind = {}
+    # index = {}
     # for j in range(0, len(data['ulat'])-1):
     #     ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
 
     # print ind
 
-    ind2 = {}
-    # for i in range(0, len(data['rb_lons'])-1):
-        ind2[i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] <= data['rb_lons'][i]))
+    # ind2 = {}
+    # # for i in range(0, len(data['rb_lons'])-1):
+    #     ind2[i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] <= data['rb_lons'][i]))
 
-    ship_ind = {}
-    for j in range(0, len(data['ulat'])-1):
+
+    ### find which hours are spent in which grid boxes
+    data['ship_ind'] = {}
+    for j in range(0, len(data['nb_lats'])):
             for i in range(0, len(data['rb_lons'])-1):
-                ship_ind[i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
-                ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]),
-                ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] <= data['rb_lons'][i]))
+                data['ship_ind'][i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
+                ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]),
+                ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
 
-         # if ind[i][0].size == 0:
-         #     continue
-         # else:
-         #     index = ind[t][0]      ### only works if it's within one grid box!!!
-    # print index
+    print ''
+    print 'Ship indices defined: know which hours are spent in which grid boxes'
+    print ''
 
-    # map = plot_basemap(ship_data, lats, lons, tim)
-
+    print 'Extracting position for t=0'
+    ### extract t=0 gpts
+    t = 0
+    temp = {}
+    for j in range(0, len(data['sb_lats'])-1):
+            for i in range(0, len(data['rb_lons'])-1):
+                for h in range(0, len(data['ship_ind'][i,j][0])):
+                    if data['ship_ind'][i,j][0][h] == t:
+                        temp = [i, j]; print temp
+                    else:
+                        continue
     return data
 
 def iceDrift(data):
@@ -526,6 +551,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     # qplt.outline(cube[diag][hour,:,:])
 
     data = designGrid(data)
+
     #################################################################
     ## plot ship track
     #################################################################
@@ -577,7 +603,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
+    # plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
 
     return data
@@ -594,7 +620,7 @@ def pullTrack(ship_data, data, date):
     ## design grid boundaries
     #################################################################
     # print '******'
-    print ''
+    # print ''
     print 'Designing grid boundaries:'
     print ''
     data = designGrid(data)
@@ -602,12 +628,12 @@ def pullTrack(ship_data, data, date):
     #################################################################
     ## check position of ship track
     #################################################################
-    # print '******'
+    print '******'
     print ''
-    print 'Pulling gridded track from netCDF:'
+    print 'Pulling gridded track from ship lat/lon:'
     print ''
 
-    day_index = checkLatLon(ship_data, date, data)
+    data = checkLatLon(ship_data, date, data)
 
     return data
 
