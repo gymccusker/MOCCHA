@@ -769,11 +769,11 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
             dat = data[data.keys()[diag]].data*1e3
             title = cube[3].var_name + ' [g/m2]'
         elif data.keys()[diag] == 'rainfall_flux':
-            dat = data[data.keys()[diag]].data*1e3
-            title = cube[6].var_name + ' [g/m2]'
+            dat = data[data.keys()[diag]].data*3600
+            title = cube[6].var_name + ' [mm/hr]'
         elif data.keys()[diag] == 'snowfall_flux':
-            dat = data[data.keys()[diag]].data*1e3
-            title = cube[7].var_name + ' [g/m2]'
+            dat = data[data.keys()[diag]].data*3600
+            title = cube[7].var_name + ' [mm/hr]'
 
         #################################################################
         ## create figure and axes instances
@@ -954,9 +954,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[0]
