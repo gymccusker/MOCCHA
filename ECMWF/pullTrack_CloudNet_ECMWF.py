@@ -259,12 +259,26 @@ def checkLatLon(ship_data, date, data):
 
 
     ### find which hours are spent in which grid boxes
-    data['ship_ind'] = {}
+    # data['ship_ind'] = {}
+    # for j in range(0, len(data['nb_lats'])):
+    #         for i in range(0, len(data['rb_lons'])-1):
+    #             data['ship_ind'][i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
+    #             ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]),
+    #             ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
+
+    data['lat_ind'] = {}
     for j in range(0, len(data['nb_lats'])):
-            for i in range(0, len(data['rb_lons'])-1):
-                data['ship_ind'][i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
-                ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]),
-                ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
+        data['lat_ind'][j] = np.where(np.logical_and(ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]))
+        print 'found matching latitudes...'
+
+    data['latlon_ind'] = {}
+    for i in range(0, len(data['rb_lons'])-1):
+        print i
+        for h in range(0,25):
+            
+            data['latlon_ind'][i] = np.where(np.logical_and(ship_lons[0][data['lat_ind'][i][0][h]] >= data['lb_lons'][i], ship_lons[0][data['lat_ind'][i][0][h]] < data['rb_lons'][i]))
+
+    # ship_lons[0][data['lat_ind'][18][0][0:5]]
 
     print ''
     print 'Ship indices defined: know which hours are spent in which grid boxes'
