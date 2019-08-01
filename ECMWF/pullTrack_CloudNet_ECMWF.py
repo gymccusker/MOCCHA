@@ -104,11 +104,22 @@ def designGrid(data):
 
     ### make grid of unique latitude and longitude points
     lats, lons = np.meshgrid(data['ulat'][:], data['ulon'][:])
+
+    # plt.scatter(lons, lats, c = 'lightgrey',#data['pressure'][:,0,0],
+    #         label = 'Unique grid',
+    #         transform = ccrs.PlateCarree())
+    #
+    # plt.scatter(lons[0,:], lats[0,:], c = 'purple',#data['pressure'][:,0,0],
+    #         label = 'testing',
+    #         transform = ccrs.PlateCarree())
+
+    ###---------------------------------------------------------------------------------
     ### plot grid midpoints from file
     plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
             label = 'Grid mid points',
             transform = ccrs.PlateCarree())
 
+    ###---------------------------------------------------------------------------------
     ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
     data['nb_lats'] = np.zeros([np.size(data['lats'][:])])
@@ -124,6 +135,7 @@ def designGrid(data):
             label = 'northern bounds',
             transform = ccrs.PlateCarree())
 
+    ###---------------------------------------------------------------------------------
     ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
     data['rb_lons'] = np.zeros([np.size(data['lons'][:-1])])
@@ -140,8 +152,43 @@ def designGrid(data):
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
     data['rb_lons'][28:] = rblons[28:]
     data['rb_lons'][35] = rblons[34]
+
+    ###---------------------------------------------------------------------------------
+    ### find western boundaries of gridpoints
+    data['lb_lons'] = np.zeros([np.size(data['lons'][:-1])])
+    data['lb_lons'][0:1] = data['lons'][0] - (data['rb_lons'][0] - data['lons'][0])
+    data['lb_lons'][1] = data['lons'][0]
+    data['lb_lons'][2] = data['rb_lons'][1]
+    data['lb_lons'][3:5] = data['rb_lons'][2:4]
+    # data['lb_lons'][3:5] = data['lons'][2:4]
+    data['lb_lons'][5] = data['rb_lons'][5]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
+    data['lb_lons'][6] = data['lons'][6] - (data['rb_lons'][6] - data['lons'][6])
+    data['lb_lons'][7] = data['lons'][6]# data['rb_lons'][7]; data['rb_lons'][7] = data['lons'][7] + (data['lons'][7] - data['rb_lons'][7])
+    data['lb_lons'][8] = data['lons'][8] - (data['rb_lons'][8] - data['lons'][8])
+    data['lb_lons'][9] = data['rb_lons'][9]; data['rb_lons'][9] = data['lons'][9] + (data['lons'][9] - data['rb_lons'][9])
+    data['lb_lons'][10] = data['lons'][10] - (data['rb_lons'][10] - data['lons'][10])
+    data['lb_lons'][11] = data['lons'][11] - (data['rb_lons'][11] - data['lons'][11])
+    data['lb_lons'][12] = data['rb_lons'][12]; data['rb_lons'][12] = data['lons'][12] + (data['lons'][12] - data['rb_lons'][12])
+    data['lb_lons'][13] = data['lons'][13] - (data['rb_lons'][13] - data['lons'][13])
+    data['lb_lons'][14] = data['rb_lons'][14]; data['rb_lons'][14] = data['lons'][14] + (data['lons'][14] - data['rb_lons'][14])
+    data['lb_lons'][15] = data['lons'][15] - (data['rb_lons'][15] - data['lons'][15])
+    data['lb_lons'][16] = data['lons'][15]; data['rb_lons'][16] = data['lons'][16] + (data['lons'][16] - data['rb_lons'][16])
+    data['lb_lons'][17] = data['lons'][17] - (data['rb_lons'][17] - data['lons'][17])
+    data['lb_lons'][18] = data['lons'][17]; data['rb_lons'][18] = data['lons'][18] + (data['lons'][18] - data['rb_lons'][18])
+    data['lb_lons'][19] = data['lons'][19] - (data['rb_lons'][19] - data['lons'][19])
+    data['lb_lons'][20] = data['rb_lons'][19]
+    data['lb_lons'][21] = data['lons'][21] - (data['rb_lons'][21] - data['lons'][21])
+    data['lb_lons'][22] = data['rb_lons'][21]; data['rb_lons'][22] = data['lons'][22] + (data['lons'][22] - data['rb_lons'][21])
+    data['lb_lons'][23] = data['lons'][23] - (data['rb_lons'][23] - data['lons'][23])
+    data['lb_lons'][24:28] = data['rb_lons'][23:27]
+
+    ###---------------------------------------------------------------------------------
+    ### plot longitude boundaries
     plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
             label = 'eastern bounds',
+            transform = ccrs.PlateCarree())
+    plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
+            label = 'western bounds',
             transform = ccrs.PlateCarree())
 
     return data
@@ -175,15 +222,17 @@ def checkLatLon(ship_data, date, data):
 
     ### find where in grid ship track pt n1 is closest to
     # t = 0
-    print 'Finding where n0 ship pt is between lat gpt centre and northern boundary:'
+    print 'Finding where ship pt is between two unique latitudes:'
     ind = {}
     index = {}
     for j in range(0, len(data['ulat'])-1):
          ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
-         if ind[i][0].size == 0:
-             continue
-         else:
-             index = ind[t][0]      ### only works if it's within one grid box!!!
+
+
+         # if ind[i][0].size == 0:
+         #     continue
+         # else:
+         #     index = ind[t][0]      ### only works if it's within one grid box!!!
     # print index
 
     # map = plot_basemap(ship_data, lats, lons, tim)
@@ -914,12 +963,12 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    # data = plot_cartmap(ship_data, data, date)
+    data = plot_cartmap(ship_data, data, date)
 
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    data = pullTrack(ship_data, data, date)
+    # data = pullTrack(ship_data, data, date)
 
     ### temporary data save for development/debugging
     np.save('working_data', data)
