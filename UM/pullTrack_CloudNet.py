@@ -6158,7 +6158,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        out = writePB_Cloudnet(fcube, nc_outfile)
+        # out = writePB_Cloudnet(fcube, nc_outfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
     elif stream == '_pa012':
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
         print '***file is merged to outfile later***'
@@ -6166,7 +6166,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        out = writePA_Analysis(fcube, nc_outfile)
+        # out = writePA_Analysis(fcube, nc_outfile)
+        print 'Successfully made it to pa012 write out loop!'
 
     return fcube, nc_outfile
 
