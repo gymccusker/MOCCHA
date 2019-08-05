@@ -28,6 +28,8 @@ Var_list = { # paXXX
               'm01s03i236': 'temp_1.5m',
               'm01s03i025': 'bl_depth',
               'm01s03i250': 'dew_point_temperature_at_1.5m',
+              'm01s03i247': 'vis_1.5m',
+              'm01s03i248': 'fogfrac_1.5m',
               'm01s09i205': 'high_cloud',
               'm01s09i203': 'low_cloud',
               'm01s09i204': 'medium_cloud',
