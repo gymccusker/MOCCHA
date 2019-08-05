@@ -6380,8 +6380,8 @@ def writePA_Analysis(cube, outfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    # timem.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    timem.units = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
@@ -6391,7 +6391,7 @@ def writePA_Analysis(cube, outfile):
     ###################################
     ## Write paXXX stream diagnostics
     ###################################
-    for d in range(0,len(cube)-1):
+    for d in range(0,len(cube)):
         print 'Writing ' + cube[d].var_name
         print ''
         dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
