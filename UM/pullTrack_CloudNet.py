@@ -6359,8 +6359,8 @@ def writePA_Analysis(cube, outfile):
     print dataset.file_format
     print ''
 
-    print cube
-    print cube[0].dim_coords
+    # print cube
+    # print cube[0].dim_coords
 
     ###################################
     ## Switch off automatic filling
