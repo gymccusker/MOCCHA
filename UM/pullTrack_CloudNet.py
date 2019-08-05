@@ -5858,6 +5858,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             #################################################################
             cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
 
+                    #### will need to add code for dealing with forecast_period
+                    ####    i.e. 1.00016 hrs past 0000 UTC
+                    ####     will need to concatenate from next day's file?
+
             # print ''
             # print 'Cube times relative to forecast start:', cubetime[:-1]
             # print ''
