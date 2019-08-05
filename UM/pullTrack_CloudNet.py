@@ -5843,11 +5843,15 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             ## if our diagnostics are 3-hourly, ignore
             #################################################################
             if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
-                diag_flag = 1       ## for use later
+                print cube[k].standard_name
+                print 'Diagnostic is 3-hourly, break from loop'
                 break
             else:
-                continue        ## only executed if inner loop did NOT break
-            break           ## only executed if inner loop DID break
+                print cube[k].standard_name
+                print 'Diagnostic is 1-hourly, pull ship track...'
+                ok = True        ## only executed if inner loop did NOT break
+
+            if not ok: break           ## only executed if inner loop DID break
 
             #################################################################
             ## make hourly time array
