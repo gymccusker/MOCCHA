@@ -6163,6 +6163,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
+
         nc_outfile = writeNetCDF(date, fcube)
 
     elif stream == '_pb009':
