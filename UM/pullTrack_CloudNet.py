@@ -5823,16 +5823,14 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'More than one variable constraint. Proceeding...'
         print ''
 
-        cubetime = np.round(cube[-1].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
-
         print ''
         print 'Cube times relative to forecast start:', cubetime[:-1]
         print ''
 
         #################################################################
-        ## CREATE EMPTY CUBE
+        ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
         #################################################################
-        ncube = Cube(np.zeros([np.size(cube),70,len(cubetime)-1]))
+        ncube = Cube(np.zeros([np.size(cube),70,len(24)-1]))
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -5844,6 +5842,21 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             print ''
             print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
             print ''
+
+            #################################################################
+            ## if our diagnostics are 3-hourly, ignore
+            #################################################################
+            if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
+                break
+            else:
+                continue        ## only executed if inner loop did NOT break
+            break           ## only executed if inner loop DID break
+
+            #################################################################
+            ## make hourly time array
+            #################################################################
+            cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+
             #################################################################
             ## PROBE VARIABLE
             #################################################################
@@ -6138,14 +6151,22 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
         nc_outfile = writeNetCDF(date, fcube)
-    else:
+    elif stream == '_pb009':
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
-        print '***file will be merged to outfile later***'
+        print '***file is merged to outfile later***'
         print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        out = combineNetCDF(fcube, nc_outfile)
+        out = writePB_Cloudnet(fcube, nc_outfile)
+    elif stream == '_pa012':
+        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
+        print '***file is merged to outfile later***'
+        print ''
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        out = writePA_Analysis(fcube, nc_outfile)
 
     return fcube, nc_outfile
 
@@ -6178,9 +6199,9 @@ def writeNetCDF(date, cube):
 
     return nc_outfile
 
-def combineNetCDF(cube, outfile):
+def writePB_Cloudnet(cube, outfile):
     #################################################################
-    ## Write 1D timeseries data (PB) to newly created netCDF
+    ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
 
     from netCDF4 import num2date, date2num
@@ -6231,21 +6252,123 @@ def combineNetCDF(cube, outfile):
     ###################################
     ## Create DIAGNOSTICS
     ###################################
-    # for diag in range(len(cube)):
-    #     print 'Diag = ' + str(diag)
-    #     print cube[diag]
-    #     # if diag == 0 or diag == 1:
-    #     #     dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_period',),fill_value='-9999')
-    #     # else:
-    #     dat = dataset.createVariable(cube[diag].var_name, np.float64, ('forecast_time',), fill_value='-9999')
-    #     dat.scale_factor = float(1)
-    #     dat.add_offset = float(0)
-    #     dat.units = str(cube[diag].units)
-    #     # dat.long_name = cube[diag].long_name
-    #     dat[:] = cube[diag].data
+    ###################################
+    ## Write pbXXX stream diagnostics
+    ###################################
+    print 'Writing IWP:'
+    print '---'
+    iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
+    iwp.scale_factor = float(1)
+    iwp.add_offset = float(0)
+    iwp.units = 'kg m-2'
+    iwp.long_name = 'large_scale_ice_water_path'
+    iwp[:] = cube[0].data
 
-            ### LOOP DOESN'T SEEM TO WORK. DATA NOT WRITTEN TO FILE.
+    print 'Writing LWP:'
+    print '---'
+    lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
+    lwp.scale_factor = float(1)
+    lwp.add_offset = float(0)
+    lwp.units = 'kg m-2'
+    lwp.long_name = 'large_scale_liquid_water_path'
+    lwp[:] = cube[1].data
 
+    print 'Writing rainfall_flux:'
+    print '---'
+    rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    rain.scale_factor = float(1)
+    rain.add_offset = float(0)
+    rain.units = 'kg m-2 s-1'
+    rain.long_name = 'stratiform_rainfall_flux'
+    rain[:] = cube[2].data
+
+    print 'Writing snowfall_flux:'
+    print '---'
+    snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    snow.scale_factor = float(1)
+    snow.add_offset = float(0)
+    snow.units = 'kg m-2 s-1'
+    snow.long_name = 'stratiform_snowfall_flux'
+    snow[:] = cube[3].data
+
+    print 'Writing surface_pressure:'
+    print '---'
+    sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
+    sfc_pressure.scale_factor = float(1)
+    sfc_pressure.add_offset = float(0)
+    sfc_pressure.units = 'Pa'
+    sfc_pressure.long_name = 'surface_pressure'
+    sfc_pressure[:] = cube[4].data
+
+    print 'Writing surface_temperature:'
+    print '---'
+    sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
+    sfc_temperature.scale_factor = float(1)
+    sfc_temperature.add_offset = float(0)
+    sfc_temperature.units = 'K'
+    sfc_temperature.long_name = 'surface_temperature'
+    sfc_temperature[:] = cube[5].data
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+def writePA_Analysis(cube, outfile):
+    #################################################################
+    ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
+    #################################################################
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    aoutfile = outfile[:-3] + '_a.nc'
+
+    print '******'
+    print ''
+    # print 'Appending 1D data to ' + outfile
+    print 'Writing 1D data to ' + aoutfile
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
+    print ''
+    print dataset.file_format
+    print ''
+
+    print cube
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    # ###################################
+    # forecast_period = dataset.createDimension('forecast_period', 24)
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[0].points))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    # timem.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
+    timem.units = 'Hours since 0000 UTC.'
+    timem.long_name = 'forecast_time'
+    timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
     ###################################
     ## Write pbXXX stream diagnostics
     ###################################
@@ -6556,6 +6679,44 @@ def main():
             outfiles = [] ### define list to add processed filenames to
 
             for stream in names:
+                if stream == '_pa012':
+                    ### -------------------------------------------------------------------------
+                    ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
+                    ### -------------------------------------------------------------------------
+                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    print 'Checking: ' + filename
+                    if os.path.exists(filename):
+                        #### LOAD CUBE
+                        if 'var_con' in locals():
+                            print 'Loading single diagnostic:'
+                            print var_con
+                            cube1 = iris.load_cube(filename, var_con, callback)
+                            con_flag = 0            # constraint flag
+                        elif 'global_con' in locals():
+                            print 'Loading multiple diagnostics:'
+                            # cube = iris.load_cubes(filename1, global_con)
+                            cube = iris.load(filename, global_con, callback)
+                            con_flag = 1            # constraint flag
+
+                            # -------------------------------------------------------------
+
+                    print cube
+                    print ''
+
+                    # -------------------------------------------------------------
+                    # Pull gridded ship track from cube
+                    # -------------------------------------------------------------
+                    #### LOAD CUBE
+                    ### LOAD CUBE
+                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+
+                    ##-------------------------------------------------------------
+                    ##Plot data (map)
+                    ##-------------------------------------------------------------
+                    ## select hour to plot
+                    # hour = 0
+                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
                 if stream == '_pb009':
                     ### -------------------------------------------------------------------------
                     ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
