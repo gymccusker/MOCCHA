@@ -6176,8 +6176,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        # out = writePA_Analysis(fcube, nc_outfile)
-        print 'Successfully made it to pa012 write out loop!'
+        out = writePA_Analysis(fcube, nc_outfile)
 
     return fcube, nc_outfile
 
@@ -6347,12 +6346,13 @@ def writePA_Analysis(cube, outfile):
     ###################################
     ## Open File
     ###################################
-    dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
+    dataset = Dataset(aoutfile, 'w', format ='NETCDF4_CLASSIC')
     print ''
     print dataset.file_format
     print ''
 
     print cube
+    print cube[0].dim_coords
 
     ###################################
     ## Switch off automatic filling
@@ -6381,61 +6381,61 @@ def writePA_Analysis(cube, outfile):
     ## Create DIAGNOSTICS
     ###################################
     ###################################
-    ## Write pbXXX stream diagnostics
+    ## Write paXXX stream diagnostics
     ###################################
-    print 'Writing IWP:'
-    print '---'
-    iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
-    iwp.scale_factor = float(1)
-    iwp.add_offset = float(0)
-    iwp.units = 'kg m-2'
-    iwp.long_name = 'large_scale_ice_water_path'
-    iwp[:] = cube[0].data
-
-    print 'Writing LWP:'
-    print '---'
-    lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
-    lwp.scale_factor = float(1)
-    lwp.add_offset = float(0)
-    lwp.units = 'kg m-2'
-    lwp.long_name = 'large_scale_liquid_water_path'
-    lwp[:] = cube[1].data
-
-    print 'Writing rainfall_flux:'
-    print '---'
-    rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    rain.scale_factor = float(1)
-    rain.add_offset = float(0)
-    rain.units = 'kg m-2 s-1'
-    rain.long_name = 'stratiform_rainfall_flux'
-    rain[:] = cube[2].data
-
-    print 'Writing snowfall_flux:'
-    print '---'
-    snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    snow.scale_factor = float(1)
-    snow.add_offset = float(0)
-    snow.units = 'kg m-2 s-1'
-    snow.long_name = 'stratiform_snowfall_flux'
-    snow[:] = cube[3].data
-
-    print 'Writing surface_pressure:'
-    print '---'
-    sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_pressure.scale_factor = float(1)
-    sfc_pressure.add_offset = float(0)
-    sfc_pressure.units = 'Pa'
-    sfc_pressure.long_name = 'surface_pressure'
-    sfc_pressure[:] = cube[4].data
-
-    print 'Writing surface_temperature:'
-    print '---'
-    sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_temperature.scale_factor = float(1)
-    sfc_temperature.add_offset = float(0)
-    sfc_temperature.units = 'K'
-    sfc_temperature.long_name = 'surface_temperature'
-    sfc_temperature[:] = cube[5].data
+    # print 'Writing IWP:'
+    # print '---'
+    # iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
+    # iwp.scale_factor = float(1)
+    # iwp.add_offset = float(0)
+    # iwp.units = 'kg m-2'
+    # iwp.long_name = 'large_scale_ice_water_path'
+    # iwp[:] = cube[0].data
+    #
+    # print 'Writing LWP:'
+    # print '---'
+    # lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
+    # lwp.scale_factor = float(1)
+    # lwp.add_offset = float(0)
+    # lwp.units = 'kg m-2'
+    # lwp.long_name = 'large_scale_liquid_water_path'
+    # lwp[:] = cube[1].data
+    #
+    # print 'Writing rainfall_flux:'
+    # print '---'
+    # rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # rain.scale_factor = float(1)
+    # rain.add_offset = float(0)
+    # rain.units = 'kg m-2 s-1'
+    # rain.long_name = 'stratiform_rainfall_flux'
+    # rain[:] = cube[2].data
+    #
+    # print 'Writing snowfall_flux:'
+    # print '---'
+    # snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # snow.scale_factor = float(1)
+    # snow.add_offset = float(0)
+    # snow.units = 'kg m-2 s-1'
+    # snow.long_name = 'stratiform_snowfall_flux'
+    # snow[:] = cube[3].data
+    #
+    # print 'Writing surface_pressure:'
+    # print '---'
+    # sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_pressure.scale_factor = float(1)
+    # sfc_pressure.add_offset = float(0)
+    # sfc_pressure.units = 'Pa'
+    # sfc_pressure.long_name = 'surface_pressure'
+    # sfc_pressure[:] = cube[4].data
+    #
+    # print 'Writing surface_temperature:'
+    # print '---'
+    # sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_temperature.scale_factor = float(1)
+    # sfc_temperature.add_offset = float(0)
+    # sfc_temperature.units = 'K'
+    # sfc_temperature.long_name = 'surface_temperature'
+    # sfc_temperature[:] = cube[5].data
 
     ###################################
     ## Write out file
