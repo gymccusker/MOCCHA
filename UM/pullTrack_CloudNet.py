@@ -5843,6 +5843,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             ## if our diagnostics are 3-hourly, ignore
             #################################################################
             if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
+                diag_flag = 1       ## for use later
                 break
             else:
                 continue        ## only executed if inner loop did NOT break
@@ -6133,9 +6134,6 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     #################################################################
     ## define output filename
     #################################################################
-    print 'fcube = '
-    print fcube
-    print '******'
     # print 'Define pp stream outfile:'
     # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
     nc_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.nc'
@@ -6148,10 +6146,16 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     if stream == '_pc011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
+        print 'fcube = '
+        print fcube
+        print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
         nc_outfile = writeNetCDF(date, fcube)
     elif stream == '_pb009':
+        print 'fcube = '
+        print fcube
+        print '******'
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
         print '***file is merged to outfile later***'
         print ''
