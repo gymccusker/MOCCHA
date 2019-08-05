@@ -6685,7 +6685,7 @@ def main():
             #           start at 012 if 3h dumps (a, b)
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pc011']         ### pc first to create file, then append pb
+            names = ['_pa012']#,'_pb009','_pc011']         ### pc first to create file, then append pb
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
