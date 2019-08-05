@@ -5891,7 +5891,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                 print 'Variable is 3D:'
                 print ''
                 #### create empty arrays to be filled
-                data = np.zeros([len(cubetime)-1])
+                if stream == '_pb009': data = np.zeros([len(cubetime)-1])
+                if stream == '_pa012': data = np.zeros([len(cubetime)])
                 dim_flag = 0       ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
