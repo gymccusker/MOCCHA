@@ -6398,7 +6398,7 @@ def writePA_Analysis(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
-        dat.standard_name = cube[d].standard_name
+        # dat.standard_name = str(cube[d].standard_name)
         dat[:] = cube[d].data
 
     # print 'Writing IWP:'
