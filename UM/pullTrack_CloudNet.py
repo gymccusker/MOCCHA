@@ -5849,18 +5849,18 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             else:
                 print cube[k].standard_name
                 print 'Diagnostic is 1-hourly, pull ship track...'
-                ok = True        ## only executed if inner loop did NOT break
+                ok = True
 
-            if not ok: break           ## only executed if inner loop DID break
+            if not ok: break
 
             #################################################################
             ## make hourly time array
             #################################################################
             cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
 
-            print ''
-            print 'Cube times relative to forecast start:', cubetime[:-1]
-            print ''
+            # print ''
+            # print 'Cube times relative to forecast start:', cubetime[:-1]
+            # print ''
 
             #################################################################
             ## PROBE VARIABLE
@@ -5901,7 +5901,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                 else:
                     ### end point (23h)
                     itime = np.where(tim >= cubetime[-1])
-                print ''
+                # print ''
                 print 'For ', str(j), 'h, itime = ', itime
                 if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
@@ -6156,6 +6156,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
         nc_outfile = writeNetCDF(date, fcube)
+
     elif stream == '_pb009':
         print 'fcube = '
         print fcube
@@ -6166,7 +6167,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
-        # out = writePB_Cloudnet(fcube, nc_outfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+        out = writePB_Cloudnet(fcube, nc_outfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+
     elif stream == '_pa012':
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
         print '***file is merged to outfile later***'
@@ -6688,134 +6690,52 @@ def main():
             outfiles = [] ### define list to add processed filenames to
 
             for stream in names:
-                if stream == '_pa012':
-                    ### -------------------------------------------------------------------------
-                    ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
-                    ### -------------------------------------------------------------------------
-                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    print 'Checking: ' + filename
-                    if os.path.exists(filename):
-                        #### LOAD CUBE
-                        if 'var_con' in locals():
-                            print 'Loading single diagnostic:'
-                            print var_con
-                            cube1 = iris.load_cube(filename, var_con, callback)
-                            con_flag = 0            # constraint flag
-                        elif 'global_con' in locals():
-                            print 'Loading multiple diagnostics:'
-                            # cube = iris.load_cubes(filename1, global_con)
-                            cube = iris.load(filename, global_con, callback)
-                            con_flag = 1            # constraint flag
-
-                            # -------------------------------------------------------------
-
-                    print cube
-                    print ''
-
-                    # -------------------------------------------------------------
-                    # Pull gridded ship track from cube
-                    # -------------------------------------------------------------
+                ### -------------------------------------------------------------------------
+                ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
+                ### -------------------------------------------------------------------------
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                print 'Checking: ' + filename
+                if os.path.exists(filename):
                     #### LOAD CUBE
-                    ### LOAD CUBE
-                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    if 'var_con' in locals():
+                        print 'Loading single diagnostic:'
+                        print var_con
+                        cube1 = iris.load_cube(filename, var_con, callback)
+                        con_flag = 0            # constraint flag
+                    elif 'global_con' in locals():
+                        print 'Loading multiple diagnostics:'
+                        # cube = iris.load_cubes(filename1, global_con)
+                        cube = iris.load(filename, global_con, callback)
+                        con_flag = 1            # constraint flag
 
-                    ##-------------------------------------------------------------
-                    ##Plot data (map)
-                    ##-------------------------------------------------------------
-                    ## select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-                if stream == '_pb009':
-                    ### -------------------------------------------------------------------------
-                    ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
-                    ### -------------------------------------------------------------------------
-                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    print 'Checking: ' + filename
-                    if os.path.exists(filename):
-                        #### LOAD CUBE
-                        if 'var_con' in locals():
-                            print 'Loading single diagnostic:'
-                            print var_con
-                            cube1 = iris.load_cube(filename, var_con, callback)
-                            con_flag = 0            # constraint flag
-                        elif 'global_con' in locals():
-                            print 'Loading multiple diagnostics:'
-                            # cube = iris.load_cubes(filename1, global_con)
-                            cube = iris.load(filename, global_con, callback)
-                            con_flag = 1            # constraint flag
+                        # -------------------------------------------------------------
 
-                            # -------------------------------------------------------------
+                print cube
+                print ''
 
-                    print cube
-                    print ''
+                # -------------------------------------------------------------
+                # Pull gridded ship track from cube
+                # -------------------------------------------------------------
+                #### LOAD CUBE
+                ### LOAD CUBE
+                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
-                    # -------------------------------------------------------------
-                    # Pull gridded ship track from cube
-                    # -------------------------------------------------------------
-                    #### LOAD CUBE
-                    ### LOAD CUBE
-                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                ##-------------------------------------------------------------
+                ##Plot data (map)
+                ##-------------------------------------------------------------
+                ## select hour to plot
+                # hour = 0
+                # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
-                    ##-------------------------------------------------------------
-                    ##Plot data (map)
-                    ##-------------------------------------------------------------
-                    ## select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-
-                if stream == '_pc011':
-                    ### -------------------------------------------------------------------------
-                    ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
-                    ### -------------------------------------------------------------------------
-                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    print 'Checking: ' + filename
-                    if os.path.exists(filename):
-                        #### LOAD CUBE
-                        if 'var_con' in locals():
-                            print 'Loading single diagnostic:'
-                            print var_con
-                            cube1 = iris.load_cube(filename, var_con, callback)
-                            con_flag = 0            # constraint flag
-                        elif 'global_con' in locals():
-                            print 'Loading multiple diagnostics:'
-                            # cube = iris.load_cubes(filename1, global_con)
-                            cube = iris.load(filename, global_con, callback)
-                            con_flag = 1            # constraint flag
-
-                            # -------------------------------------------------------------
-
-                    print cube
-                    print ''
-
-                    ## -------------------------------------------------------------
-                    ## Pull gridded ship track from cube
-                    ## -------------------------------------------------------------
-                    ### LOAD CUBE
-                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-
-                    ##-------------------------------------------------------------
-                    ## For each date, append metadata to netCDF
-                    ## -------------------------------------------------------------
-                    # out = appendMetaNetCDF(outfile, date)
-                        ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                        ### os.rename(nc_outfile, final_outfile)
-
-                    # -------------------------------------------------------------
-                    # Plot data (map)
-                    # -------------------------------------------------------------
-                    ### select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
-
-                    ##-------------------------------------------------------------
-                    ## For each date, append metadata to netCDF
-                    ## -------------------------------------------------------------
-                    out = appendMetaNetCDF(outfile, date)
-                        ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                        ### os.rename(nc_outfile, final_outfile)
+            if stream == '_pc011':
+                ##-------------------------------------------------------------
+                ## For each date, append metadata to netCDF
+                ## -------------------------------------------------------------
+                print 'stream = ' + stream + ', so appending metadata'
+                out = appendMetaNetCDF(outfile, date)
+                    ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                    ### os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print '******'
