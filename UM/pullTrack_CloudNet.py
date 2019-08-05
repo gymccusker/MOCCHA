@@ -6388,12 +6388,12 @@ def writePA_Analysis(cube, outfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)-1):
-        print 'Writing' + cube[d].var_name
+        print 'Writing ' + cube[d].var_name
         print ''
         dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
-        dat.units = cube[d].units
+        dat.units = str(cube[d].units)
         dat.standard_name = cube[d].standard_name
         dat[:] = cube[d].data
 
