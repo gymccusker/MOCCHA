@@ -5823,10 +5823,6 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'More than one variable constraint. Proceeding...'
         print ''
 
-        print ''
-        print 'Cube times relative to forecast start:', cubetime[:-1]
-        print ''
-
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
         #################################################################
@@ -5856,6 +5852,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             ## make hourly time array
             #################################################################
             cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+
+            print ''
+            print 'Cube times relative to forecast start:', cubetime[:-1]
+            print ''
 
             #################################################################
             ## PROBE VARIABLE
