@@ -5826,7 +5826,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
         #################################################################
-        ncube = Cube(np.zeros([np.size(cube),70,len(24)-1]))
+        ncube = Cube(np.zeros([np.size(cube),70,24]))
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
