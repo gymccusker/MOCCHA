@@ -6487,7 +6487,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
 
     print 'Appending pbXXX diagnostics:'
     print '---'
-    for d in range(0,len(ncB.variables)-1):
+    for d in range(0,len(ncB.variables)):
         if ncB.variables.keys()[d] == 'forecast_time': continue
         if not ncB.variables.keys()[d] in dataset.variables.keys():
             print 'Writing ' + ncB.variables.keys()[d]
@@ -6519,7 +6519,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     print 'Appending paXXX diagnostics:'
     print '---'
-    for d in range(0,len(ncA.variables)-1):
+    for d in range(0,len(ncA.variables)):
         if ncA.variables.keys()[d] == 'forecast_time': continue
         if not ncA.variables.keys()[d] in dataset.variables.keys():
             print 'Writing ' + ncA.variables.keys()[d]
