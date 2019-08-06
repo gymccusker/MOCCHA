@@ -6485,9 +6485,6 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ## Append pbXXX stream diagnostics
     ###################################
 
-    ###################################
-    ## Write pbXXX stream diagnostics
-    ###################################
     print 'Appending pbXXX diagnostics:'
     print '---'
     for d in range(0,len(ncB.variables)-1):
@@ -6511,7 +6508,14 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ncB.close()
 
     ###################################
-    ## Write paXXX stream diagnostics
+    ## Open pbXXX netCDF file
+    ###################################
+    aoutfile = outfile[:-3] + '_a.nc'
+
+    ncA = Dataset(aoutfile, 'r')
+
+    ###################################
+    ## Append paXXX stream diagnostics
     ###################################
     print 'Appending paXXX diagnostics:'
     print '---'
