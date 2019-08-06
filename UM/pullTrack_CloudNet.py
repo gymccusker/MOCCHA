@@ -6444,7 +6444,7 @@ def appendMetaNetCDF(outfile, date):
     ## Global Attributes
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
-    revision = 'Revision no. 0. '
+    revision = 'Revision no. 1. '
     micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
     wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
@@ -6461,10 +6461,10 @@ def appendMetaNetCDF(outfile, date):
     ## Additional variables
     ###################################
     #### Model resolution
-    res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
-    res.comment = 'Horizontal grid size of nested region.'
-    res.units = 'km'
-    res[:] = 1.5
+    # res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+    # res.comment = 'Horizontal grid size of nested region.'
+    # res.units = 'km'
+    # res[:] = 1.5
 
     ###################################
     ## Open pbXXX netCDF file
