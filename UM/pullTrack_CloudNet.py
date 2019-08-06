@@ -6448,7 +6448,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ## Global Attributes
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
-    revision = 'Revision no. 1. '
+    revision = 'Revision no. 0. '
     if out_dir[2:6] == 'RA2M':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
     else:
