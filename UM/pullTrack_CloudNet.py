@@ -6447,7 +6447,10 @@ def appendMetaNetCDF(outfile, date):
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
     revision = 'Revision no. 1. '
-    micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
+    if out_dir[2:6] == 'RA2M':
+        micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
+    else:
+        micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
@@ -6464,7 +6467,7 @@ def appendMetaNetCDF(outfile, date):
     ###################################
     #### Model resolution
     if 'horizontal_resolution' in nc.variables.keys():
-        continue
+        break
     else:
         res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
         res.comment = 'Horizontal grid size of nested region.'
@@ -6735,7 +6738,7 @@ def main():
                 ## For each date, append metadata to netCDF
                 ## -------------------------------------------------------------
                 print 'stream = ' + stream + ', so appending pa, pb, and metadata'
-                out = appendMetaNetCDF(outfile, date)
+                out = appendMetaNetCDF(outfile, date, out_dir)
                     ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                     ### os.rename(nc_outfile, final_outfile)
 
