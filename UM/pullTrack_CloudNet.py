@@ -6677,6 +6677,7 @@ def main():
                 filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
+                    exist_flag = 1
                     #### LOAD CUBE
                     if 'var_con' in locals():
                         print 'Loading single diagnostic:'
@@ -6708,18 +6709,22 @@ def main():
                     ## select hour to plot
                     # hour = 0
                     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                else:
+                    print '****File does not exist****'
+                    # exist_flag = 0
 
                 if stream == '_pc011':
-                    ##-------------------------------------------------------------
-                    ## For each date, append metadata to netCDF
-                    ## -------------------------------------------------------------
-                    print '******'
-                    print ''
-                    print 'stream = ' + stream + ', so appending pa, pb, and metadata'
-                    print ''
-                    out = appendMetaNetCDF(outfile, date, out_dir)
-                        ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                        ### os.rename(nc_outfile, final_outfile)
+                    if exist_flag = 1
+                        ##-------------------------------------------------------------
+                        ## For each date, append metadata to netCDF
+                        ## -------------------------------------------------------------
+                        print '******'
+                        print ''
+                        print 'stream = ' + stream + ', so appending pa, pb, and metadata'
+                        print ''
+                        out = appendMetaNetCDF(outfile, date, out_dir)
+                            ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                            ### os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print '******'
