@@ -751,29 +751,44 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         # <iris 'Cube' of surface_pressure / (Pa) (time: 24)>,
         # <iris 'Cube' of stratiform_rainfall_flux / (kg m-2 s-1) (time: 24)>,
         # <iris 'Cube' of stratiform_snowfall_flux / (kg m-2 s-1) (time: 24)>,
+        # 0: height_of_stratocumulus_cloud_base / (unknown) (forecast_time: 24)
+        # 1: height_of_decoupled_layer_base / (unknown) (forecast_time: 24)
+        # 2: combined_boundary_layer_type / (unknown) (forecast_time: 24)
+        # 3: total_column_q / (unknown)          (forecast_time: 24)
+        # 4: air_temperature_at_1.5m / (K)       (forecast_time: 24)
+        # 5: atmosphere_boundary_layer_thickness / (m) (forecast_time: 24)
+        # 6: high_type_cloud_area_fraction / (1) (forecast_time: 24)
+        # 7: low_type_cloud_area_fraction / (1)  (forecast_time: 24)
+        # 8: medium_type_cloud_area_fraction / (1) (forecast_time: 24)
+        # 9: surface_upward_latent_heat_flux / (W m-2) (forecast_time: 24)
+        # 10: surface_upward_sensible_heat_flux / (W m-2) (forecast_time: 24)
+        # 11: water_evaporation_amount / (unknown) (forecast_time: 24)
+        # 0: surface_net_LW_radiation / (W m-2)  (forecast_time: 24)
+        # 1: surface_net_SW_radiation / (W m-2)  (forecast_time: 24)
 
         ###################################
         ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
         ###################################
 
-        if data.keys()[diag] == 'LWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = cube[0].var_name + ' [g/m2]'
-        elif data.keys()[diag] == 'sfc_pressure':
-            dat = data[data.keys()[diag]].data/1e2
-            title = cube[4].var_name + ' [hPa]'
-        elif data.keys()[diag] == 'sfc_temperature':
-            dat = data[data.keys()[diag]].data
-            title = cube[2].var_name + ' [' + str(cube[2].units) + ']'
-        elif data.keys()[diag] == 'IWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = cube[3].var_name + ' [g/m2]'
-        elif data.keys()[diag] == 'rainfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = cube[6].var_name + ' [mm/hr]'
-        elif data.keys()[diag] == 'snowfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = cube[7].var_name + ' [mm/hr]'
+        for j in range(0,len(cube)):
+            if data.keys()[diag] == 'LWP':
+                dat = data[data.keys()[diag]].data*1e3
+                title = cube[j].var_name + ' [g/m2]'
+            elif data.keys()[diag] == 'sfc_pressure':
+                dat = data[data.keys()[diag]].data/1e2
+                title = cube[j].var_name + ' [hPa]'
+            elif data.keys()[diag] == 'sfc_temperature':
+                dat = data[data.keys()[diag]].data
+                title = cube[j].var_name + ' [' + str(cube[2].units) + ']'
+            elif data.keys()[diag] == 'IWP':
+                dat = data[data.keys()[diag]].data*1e3
+                title = cube[j].var_name + ' [g/m2]'
+            elif data.keys()[diag] == 'rainfall_flux':
+                dat = data[data.keys()[diag]].data*3600
+                title = cube[j].var_name + ' [mm/hr]'
+            elif data.keys()[diag] == 'snowfall_flux':
+                dat = data[data.keys()[diag]].data*3600
+                title = cube[j].var_name + ' [mm/hr]'
 
         #################################################################
         ## create figure and axes instances
