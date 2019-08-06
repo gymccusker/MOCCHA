@@ -6286,6 +6286,7 @@ def writePB_Cloudnet(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
+        dat.STASH = str(cube[d].attributes['STASH'])
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
         dat[:] = cube[d].data
@@ -6415,6 +6416,7 @@ def writePA_Analysis(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
+        dat.STASH = str(cube[d].attributes['STASH'])
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
         dat[:] = cube[d].data
@@ -6498,6 +6500,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+            dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
             if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
             if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
@@ -6530,6 +6533,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+            dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
             if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
             if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
