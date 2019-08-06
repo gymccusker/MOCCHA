@@ -6704,29 +6704,29 @@ def main():
 
                         # -------------------------------------------------------------
 
-                print cube
-                print ''
+                    # print cube
+                    # print ''
 
-                # -------------------------------------------------------------
-                # Pull gridded ship track from cube
-                # -------------------------------------------------------------
-                #### LOAD CUBE
-                ### LOAD CUBE
-                if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
-                if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # -------------------------------------------------------------
+                    # Pull gridded ship track from cube
+                    # -------------------------------------------------------------
+                    #### LOAD CUBE
+                    ### LOAD CUBE
+                    if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
 
-                ##-------------------------------------------------------------
-                ##Plot data (map)
-                ##-------------------------------------------------------------
-                ## select hour to plot
-                # hour = 0
-                # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                    ##-------------------------------------------------------------
+                    ##Plot data (map)
+                    ##-------------------------------------------------------------
+                    ## select hour to plot
+                    # hour = 0
+                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
             if stream == '_pc011':
                 ##-------------------------------------------------------------
                 ## For each date, append metadata to netCDF
                 ## -------------------------------------------------------------
-                print 'stream = ' + stream + ', so appending metadata'
+                print 'stream = ' + stream + ', so appending pa, pb, and metadata'
                 out = appendMetaNetCDF(outfile, date)
                     ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                     ### os.rename(nc_outfile, final_outfile)
