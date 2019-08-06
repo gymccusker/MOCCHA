@@ -6468,7 +6468,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ## Additional variables
     ###################################
     #### Model resolution
-    if not 'horizontal_resolution' in nc.variables.keys():
+    if not 'horizontal_resolution' in dataset.variables.keys():
         res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
         res.comment = 'Horizontal grid size of nested region.'
         res.units = 'km'
