@@ -6162,6 +6162,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## First, make netCDF with pc stream (using Iris cubes)
         print 'fcube = '
         print fcube
+        print ''
         print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
@@ -6172,6 +6173,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     elif stream == '_pb009':
         print 'fcube = '
         print fcube
+        print ''
         print '******'
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
         print '***file is merged to outfile later***'
@@ -6444,9 +6446,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
     # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
-    print ''
-    print dataset.file_format
-    print ''
+    # print ''
+    # print dataset.file_format
+    # print ''
 
     ###################################
     ## Global Attributes
@@ -6716,8 +6718,9 @@ def main():
                     # hour = 0
                     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
                 else:
+                    print ''
                     print '****File does not exist****'
-                    # exist_flag = 0
+                    print ''
 
                 if stream == '_pc011':
                     if exist_flag == 1:
