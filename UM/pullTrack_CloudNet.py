@@ -6496,9 +6496,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
-            if getattr(ncB.variables[ncB.variables.keys()[-4]],'standard_name', None):
+            if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
-            if getattr(ncB.variables[ncB.variables.keys()[-4]],'long_name', None):
+            if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
                 dat.long_name = str(ncB.variables[ncB.variables.keys()[d]].long_name)
             dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
 
@@ -6528,9 +6528,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
-            if getattr(ncA.variables[ncA.variables.keys()[-4]],'standard_name', None):
+            if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
-            if getattr(ncA.variables[ncA.variables.keys()[-4]],'long_name', None):
+            if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
                 dat.long_name = str(ncA.variables[ncA.variables.keys()[d]].long_name)
             dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
 
