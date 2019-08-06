@@ -27,6 +27,10 @@ Stash_list = { # paXXX
               'm01s16i222': 'air_pressure_at_sea_level',                        ## swath and full nest
               'm01s03i236': 'air_temperature_at_1.5m',                          ## swath and full nest
               'm01s03i025': 'atmosphere_boundary_layer_thickness',
+              'm01s03i025': 'bl_depth',
+              'm01s03i250': 'dew_point_temperature_at_1.5m',
+              'm01s03i247': 'visibility_in_air_at_1.5m',
+              'm01s03i248': 'fog_area_fraction_at_1.5m',              
               'm01s03i250': 'dew_point_temperature_at_1.5m',                    ## swath and full nest
               'm01s09i205': 'high_type_cloud_area_fraction',
               'm01s09i203': 'low_type_cloud_area_fraction',
