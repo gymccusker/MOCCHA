@@ -6424,7 +6424,7 @@ def writePA_Analysis(cube, outfile):
 
     return dataset
 
-def appendMetaNetCDF(outfile, date):
+def appendMetaNetCDF(outfile, date, out_dir):
 
     from netCDF4 import num2date, date2num
     import time
