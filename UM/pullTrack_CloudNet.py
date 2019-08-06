@@ -6284,7 +6284,8 @@ def writePB_Cloudnet(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
-        # dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
         dat[:] = cube[d].data
 
     # print 'Writing IWP:'
@@ -6412,7 +6413,8 @@ def writePA_Analysis(cube, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
-        # dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
         dat[:] = cube[d].data
 
     ###################################
@@ -6466,9 +6468,7 @@ def appendMetaNetCDF(outfile, date):
     ## Additional variables
     ###################################
     #### Model resolution
-    if 'horizontal_resolution' in nc.variables.keys():
-        break
-    else:
+    if not 'horizontal_resolution' in nc.variables.keys():
         res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
         res.comment = 'Horizontal grid size of nested region.'
         res.units = 'km'
@@ -6494,9 +6494,7 @@ def appendMetaNetCDF(outfile, date):
         print 'Writing ' + ncB.variables.keys()[d]
         print ''
         if ncB.variables.keys()[d] == 'forecast_time': continue
-        if ncB.variables.keys()[d] in nc.variables.keys():
-            continue
-        else:
+        if not ncB.variables.keys()[d] in nc.variables.keys():
             dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
