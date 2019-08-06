@@ -6164,9 +6164,11 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
         if os.path.exists(nc_outfile):
-            continue       # if PC outfile already exists, combine other stream data
+            # if PC outfile already exists, combine other stream data
+            continue
         else:
-            nc_outfile = writeNetCDF(date, fcube)           # write new PC outfile
+            # write new PC outfile
+            nc_outfile = writeNetCDF(date, fcube)
 
     elif stream == '_pb009':
         print 'fcube = '
@@ -6680,7 +6682,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009']#,'_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012','_pb009','_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
