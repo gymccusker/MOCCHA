@@ -6714,7 +6714,7 @@ def main():
                     # exist_flag = 0
 
                 if stream == '_pc011':
-                    if exist_flag = 1
+                    if exist_flag == 1
                         ##-------------------------------------------------------------
                         ## For each date, append metadata to netCDF
                         ## -------------------------------------------------------------
