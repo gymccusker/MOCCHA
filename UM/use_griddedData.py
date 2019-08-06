@@ -906,7 +906,8 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_RA2M_CON/OUT_R0/'
+    # out_dir = '4_RA2M_CON/OUT_R0/'
+    out_dir = '../GITHUB/UM/'
 
     print '******'
     print ''
