@@ -6461,10 +6461,13 @@ def appendMetaNetCDF(outfile, date):
     ## Additional variables
     ###################################
     #### Model resolution
-    # res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
-    # res.comment = 'Horizontal grid size of nested region.'
-    # res.units = 'km'
-    # res[:] = 1.5
+    if 'horizontal_resolution' in nc.variables.keys():
+        continue
+    else:
+        res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+        res.comment = 'Horizontal grid size of nested region.'
+        res.units = 'km'
+        res[:] = 1.5
 
     ###################################
     ## Open pbXXX netCDF file
@@ -6486,12 +6489,15 @@ def appendMetaNetCDF(outfile, date):
         print 'Writing ' + ncB.variables.keys()[d]
         print ''
         if ncB.variables.keys()[d] == 'forecast_time': continue
-        dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
-        dat.scale_factor = float(1)
-        dat.add_offset = float(0)
-        dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
-        # dat.standard_name = str(cube[d].standard_name)
-        dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
+        if ncB.variables.keys()[d] in nc.variables.keys():
+            continue
+        else:
+            dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+            # dat.standard_name = str(cube[d].standard_name)
+            dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
 
     # print 'Appending IWP:'
     # print '---'
