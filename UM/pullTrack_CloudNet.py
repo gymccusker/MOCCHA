@@ -6163,8 +6163,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
-
-        nc_outfile = writeNetCDF(date, fcube)
+        if os.path.exists(nc_outfile):
+            continue       # if PC outfile already exists, combine other stream data
+        else:
+            nc_outfile = writeNetCDF(date, fcube)           # write new PC outfile
 
     elif stream == '_pb009':
         print 'fcube = '
@@ -6263,8 +6265,8 @@ def writePB_Cloudnet(cube, outfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    # timem.comment = 'Note this is different from forecast_time. Data are at a fraction past the hour mark.'
-    timem.units = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
@@ -6447,7 +6449,7 @@ def appendMetaNetCDF(outfile, date):
     micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
     wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
-    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young (G.Young1@leeds.ac.uk) using Python (Iris).'
+    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'Rose suite ID: u-bg610'
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
@@ -6470,69 +6472,86 @@ def appendMetaNetCDF(outfile, date):
     ###################################
     boutfile = outfile[:-3] + '_b.nc'
 
-    nc = Dataset(boutfile, 'r')
+    ncB = Dataset(boutfile, 'r')
 
     ###################################
     ## Append pbXXX stream diagnostics
     ###################################
-    print 'Appending IWP:'
-    print '---'
-    iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
-    iwp.scale_factor = float(1)
-    iwp.add_offset = float(0)
-    iwp.units = 'kg m-2'
-    iwp.long_name = 'large_scale_ice_water_path'
-    iwp[:] = nc.variables['IWP'][:]
 
-    print 'Appending LWP:'
+    ###################################
+    ## Write pbXXX stream diagnostics
+    ###################################
+    print 'Appending pbXXX diagnostics:'
     print '---'
-    lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
-    lwp.scale_factor = float(1)
-    lwp.add_offset = float(0)
-    lwp.units = 'kg m-2'
-    lwp.long_name = 'large_scale_liquid_water_path'
-    lwp[:] = nc.variables['LWP'][:]
+    for d in range(0,len(ncB.variables)-1):
+        print 'Writing ' + ncB.variables.keys()[d]
+        print ''
+        if ncB.variables.keys()[d] == 'forecast_time': continue
+        dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+        dat.scale_factor = float(1)
+        dat.add_offset = float(0)
+        dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+        # dat.standard_name = str(cube[d].standard_name)
+        dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
 
-    print 'Appending rainfall_flux:'
-    print '---'
-    rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    rain.scale_factor = float(1)
-    rain.add_offset = float(0)
-    rain.units = 'kg m-2 s-1'
-    rain.long_name = 'stratiform_rainfall_flux'
-    rain[:] = nc.variables['rainfall_flux'][:]
-
-    print 'Appending snowfall_flux:'
-    print '---'
-    snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    snow.scale_factor = float(1)
-    snow.add_offset = float(0)
-    snow.units = 'kg m-2 s-1'
-    snow.long_name = 'stratiform_snowfall_flux'
-    snow[:] = nc.variables['snowfall_flux'][:]
-
-    print 'Appending surface_pressure:'
-    print '---'
-    sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_pressure.scale_factor = float(1)
-    sfc_pressure.add_offset = float(0)
-    sfc_pressure.units = 'Pa'
-    sfc_pressure.long_name = 'surface_pressure'
-    sfc_pressure[:] = nc.variables['sfc_pressure'][:]
-
-    print 'Appending surface_temperature:'
-    print '---'
-    sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_temperature.scale_factor = float(1)
-    sfc_temperature.add_offset = float(0)
-    sfc_temperature.units = 'K'
-    sfc_temperature.long_name = 'surface_temperature'
-    sfc_temperature[:] = nc.variables['sfc_temperature'][:]
+    # print 'Appending IWP:'
+    # print '---'
+    # iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
+    # iwp.scale_factor = float(1)
+    # iwp.add_offset = float(0)
+    # iwp.units = 'kg m-2'
+    # iwp.long_name = 'large_scale_ice_water_path'
+    # iwp[:] = nc.variables['IWP'][:]
+    #
+    # print 'Appending LWP:'
+    # print '---'
+    # lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
+    # lwp.scale_factor = float(1)
+    # lwp.add_offset = float(0)
+    # lwp.units = 'kg m-2'
+    # lwp.long_name = 'large_scale_liquid_water_path'
+    # lwp[:] = nc.variables['LWP'][:]
+    #
+    # print 'Appending rainfall_flux:'
+    # print '---'
+    # rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # rain.scale_factor = float(1)
+    # rain.add_offset = float(0)
+    # rain.units = 'kg m-2 s-1'
+    # rain.long_name = 'stratiform_rainfall_flux'
+    # rain[:] = nc.variables['rainfall_flux'][:]
+    #
+    # print 'Appending snowfall_flux:'
+    # print '---'
+    # snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
+    # snow.scale_factor = float(1)
+    # snow.add_offset = float(0)
+    # snow.units = 'kg m-2 s-1'
+    # snow.long_name = 'stratiform_snowfall_flux'
+    # snow[:] = nc.variables['snowfall_flux'][:]
+    #
+    # print 'Appending surface_pressure:'
+    # print '---'
+    # sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_pressure.scale_factor = float(1)
+    # sfc_pressure.add_offset = float(0)
+    # sfc_pressure.units = 'Pa'
+    # sfc_pressure.long_name = 'surface_pressure'
+    # sfc_pressure[:] = nc.variables['sfc_pressure'][:]
+    #
+    # print 'Appending surface_temperature:'
+    # print '---'
+    # sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
+    # sfc_temperature.scale_factor = float(1)
+    # sfc_temperature.add_offset = float(0)
+    # sfc_temperature.units = 'K'
+    # sfc_temperature.long_name = 'surface_temperature'
+    # sfc_temperature[:] = nc.variables['sfc_temperature'][:]
 
     ###################################
     ## Close read-only pbXXX file
     ###################################
-    nc.close()
+    ncB.close()
 
     ###################################
     ## Write out file
@@ -6658,9 +6677,10 @@ def main():
             # -------------------------------------------------------------
             # Define output stream filenames to look at:
             #           start at 012 if 3h dumps (a, b)
+            #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009']#,'_pc011']         ### pc first to create file, then append pb
+            names = ['_pa012','_pb009']#,'_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[2:-1]
             outfiles = [] ### define list to add processed filenames to
 
