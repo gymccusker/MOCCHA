@@ -885,7 +885,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -1045,14 +1045,14 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot (3x2 timeseries)
         # -------------------------------------------------------------
         figure = plot_line_TS(timem, data1d, cube, month_flag, missing_files)
-                    ### doesn't matter which cube, just needed for dim_coords
+                    ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
