@@ -6491,75 +6491,45 @@ def appendMetaNetCDF(outfile, date, out_dir):
     print 'Appending pbXXX diagnostics:'
     print '---'
     for d in range(0,len(ncB.variables)-1):
-        print 'Writing ' + ncB.variables.keys()[d]
-        print ''
         if ncB.variables.keys()[d] == 'forecast_time': continue
         if not ncB.variables.keys()[d] in dataset.variables.keys():
+            print 'Writing ' + ncB.variables.keys()[d]
+            print ''
             dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
-            # dat.standard_name = str(cube[d].standard_name)
+            if getattr(ncB.variables[ncB.variables.keys()[-4]],'standard_name', None): dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
+            if getattr(ncB.variables[ncB.variables.keys()[-4]],'long_name', None): dat.long_name = str(ncB.variables[ncB.variables.keys()[d]].long_name)
             dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
-
-    # print 'Appending IWP:'
-    # print '---'
-    # iwp = dataset.createVariable('IWP', np.float64, ('forecast_time',), fill_value='-9999')
-    # iwp.scale_factor = float(1)
-    # iwp.add_offset = float(0)
-    # iwp.units = 'kg m-2'
-    # iwp.long_name = 'large_scale_ice_water_path'
-    # iwp[:] = nc.variables['IWP'][:]
-    #
-    # print 'Appending LWP:'
-    # print '---'
-    # lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
-    # lwp.scale_factor = float(1)
-    # lwp.add_offset = float(0)
-    # lwp.units = 'kg m-2'
-    # lwp.long_name = 'large_scale_liquid_water_path'
-    # lwp[:] = nc.variables['LWP'][:]
-    #
-    # print 'Appending rainfall_flux:'
-    # print '---'
-    # rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    # rain.scale_factor = float(1)
-    # rain.add_offset = float(0)
-    # rain.units = 'kg m-2 s-1'
-    # rain.long_name = 'stratiform_rainfall_flux'
-    # rain[:] = nc.variables['rainfall_flux'][:]
-    #
-    # print 'Appending snowfall_flux:'
-    # print '---'
-    # snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    # snow.scale_factor = float(1)
-    # snow.add_offset = float(0)
-    # snow.units = 'kg m-2 s-1'
-    # snow.long_name = 'stratiform_snowfall_flux'
-    # snow[:] = nc.variables['snowfall_flux'][:]
-    #
-    # print 'Appending surface_pressure:'
-    # print '---'
-    # sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
-    # sfc_pressure.scale_factor = float(1)
-    # sfc_pressure.add_offset = float(0)
-    # sfc_pressure.units = 'Pa'
-    # sfc_pressure.long_name = 'surface_pressure'
-    # sfc_pressure[:] = nc.variables['sfc_pressure'][:]
-    #
-    # print 'Appending surface_temperature:'
-    # print '---'
-    # sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
-    # sfc_temperature.scale_factor = float(1)
-    # sfc_temperature.add_offset = float(0)
-    # sfc_temperature.units = 'K'
-    # sfc_temperature.long_name = 'surface_temperature'
-    # sfc_temperature[:] = nc.variables['sfc_temperature'][:]
 
     ###################################
     ## Close read-only pbXXX file
     ###################################
     ncB.close()
+
+    ###################################
+    ## Write paXXX stream diagnostics
+    ###################################
+    print 'Appending paXXX diagnostics:'
+    print '---'
+    for d in range(0,len(ncA.variables)-1):
+        if ncA.variables.keys()[d] == 'forecast_time': continue
+        if not ncA.variables.keys()[d] in dataset.variables.keys():
+            print 'Writing ' + ncA.variables.keys()[d]
+            print ''
+            dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+            if getattr(ncA.variables[ncA.variables.keys()[-4]],'standard_name', None): dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
+            if getattr(ncA.variables[ncA.variables.keys()[-4]],'long_name', None): dat.long_name = str(ncA.variables[ncA.variables.keys()[d]].long_name)
+            dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
+
+    ###################################
+    ## Close read-only pbXXX file
+    ###################################
+    ncA.close()
 
     ###################################
     ## Write out file
