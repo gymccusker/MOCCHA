@@ -6709,14 +6709,17 @@ def main():
                     # hour = 0
                     # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
 
-            if stream == '_pc011':
-                ##-------------------------------------------------------------
-                ## For each date, append metadata to netCDF
-                ## -------------------------------------------------------------
-                print 'stream = ' + stream + ', so appending pa, pb, and metadata'
-                out = appendMetaNetCDF(outfile, date, out_dir)
-                    ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                    ### os.rename(nc_outfile, final_outfile)
+                if stream == '_pc011':
+                    ##-------------------------------------------------------------
+                    ## For each date, append metadata to netCDF
+                    ## -------------------------------------------------------------
+                    print '******'
+                    print ''
+                    print 'stream = ' + stream + ', so appending pa, pb, and metadata'
+                    print ''
+                    out = appendMetaNetCDF(outfile, date, out_dir)
+                        ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                        ### os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print '******'
