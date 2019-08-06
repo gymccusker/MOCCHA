@@ -1010,7 +1010,7 @@ def main():
             print 'Loading multiple diagnostics:'
             cube = iris.load(filename)#, global_con, callback)
 
-            print cube
+            print 'i = ' + str(i)
             print ''
 
             if i == 0:
@@ -1034,6 +1034,7 @@ def main():
                 # print data
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    print 'j = ' + str(j)
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube[j].data.shape) == 24:
