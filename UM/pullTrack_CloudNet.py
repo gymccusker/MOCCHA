@@ -6163,12 +6163,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file'
         print ''
-        if os.path.exists(nc_outfile):
+        if not os.path.exists(nc_outfile): nc_outfile = writeNetCDF(date, fcube)
             # if PC outfile already exists, combine other stream data
-            break
-        else:
-            # write new PC outfile
-            nc_outfile = writeNetCDF(date, fcube)
+            # if PC outfile doesn't exist, write new
 
     elif stream == '_pb009':
         print 'fcube = '
