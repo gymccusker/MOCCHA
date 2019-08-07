@@ -122,28 +122,35 @@ def plotmap(data):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     ## create figure and axes instances
-    fig = plt.figure(figsize=(6,8))
+    fig = plt.figure(figsize=(8.27, 11.69), dpi=300)
 
     #########################################################################################################
 
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 2550000
+    dim = 2500000
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
                 lat_ts=86,lat_0=86,lon_0=0)
     m.drawcoastlines()
-    m.bluemarble()
+    # m.bluemarble()
 
     # define parallels/meridians
-    m.drawparallels(np.arange(-90.,-60.,2.),labels=[1,0,0,0],linewidth=0.8,fontsize=10)
-    m.drawmeridians(np.arange(-180.,181.,20.),labels=[0,0,0,1],linewidth=0.8,fontsize=10)
+    # m.drawparallels(np.arange(50.,91.,2.),color='k')
+    # m.drawmeridians(np.arange(-180.,181.,10.),color='k')
+
+    parallels = np.arange(0.,90,2.)
+    # labels = [left,right,top,bottom]
+    m.drawparallels(parallels,labels=[False,False,False,False])
+    meridians = np.arange(10.,351.,20.)
+    m.drawmeridians(meridians,labels=[True,False,False,True])
+
     m.drawcoastlines(linewidth=1.)
 
     # m.drawmapboundary(fill_color='lightgrey')
-    # m.fillcontinents(color='white')
+    m.fillcontinents(color='lightgrey')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
@@ -155,8 +162,8 @@ def plotmap(data):
     x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
 
     # Plot tracks as line plot
-    plt.plot(x, y, color = 'yellow', linewidth = 2, label = 'Whole')
-    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'darkorange', linewidth = 3, label = 'In Ice')
+    plt.plot(x, y, '--', color = 'pink', linewidth = 2, label = 'Whole')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 3, label = 'In Ice')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
 
     ###########################################
@@ -169,35 +176,35 @@ def plotmap(data):
         # R.P. original (0, 86.625) @ 500x500
 
     ### SWATH
-    lats = np.arange(80.9998,89.9998,0.09)
-    lons = np.arange(3.0,76.0,0.73)
-    x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
-
-    ### NEST (input)
-    grx = float(5600)
-    gry = float(700)
-    centlon = float(39.5)
-    centlat = float(85.275)
-    latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
-    lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
-    x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
+    # lats = np.arange(80.9998,89.9998,0.09)
+    # lons = np.arange(3.0,76.0,0.73)
+    # x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
+    #
+    # ### NEST (input)
+    # grx = float(5600)
+    # gry = float(700)
+    # centlon = float(39.5)
+    # centlat = float(85.275)
+    # latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
+    # lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
+    # x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     # draw swath
-    pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
-                  facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
-    plt.gca().add_patch(pols)
+    # pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
+    #               facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
+    # plt.gca().add_patch(pols)
 
     # draw nest
-    poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
-                  facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
-    plt.gca().add_patch(poln)
+    # poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
+    #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
+    # plt.gca().add_patch(poln)
 
     ### ADD LEGEND
     plt.legend()
 
-    plt.title('MOCCHA ship track')
+    # plt.title('MOCCHA ship track')
 
-    # plt.savefig('FIGS/ShipTrack_wNest_wSwath.png',dpi=300)
+    plt.savefig('FIGS/HighArctic_vPOSTER.svg',dpi=100)
     plt.show()
 
 def main():
@@ -207,24 +214,33 @@ def main():
     print 'Start: ' + time.strftime("%c")
     print ''
 
-    ####    UM DIRECTORY ON JASMIN
-    # root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-    # out_dir = '2_20180801_61DIAGS_TEST/'
+    ### CHOOSE PLATFORM (OPTIONS BELOW)
+    platform = 'LAPTOP'
 
+    ### JASMIN
+    ### LAPTOP
+    ### MONSOON
+    ### DESKTOP
 
-    #### FILENAME - DEPENDS ON PLATFORM
-    ## LEEDS
-    # filename = '/nfs/see-fs-02_users/eargy/MOCCHA/gillian/ship/2018_shipposition_1hour.txt'
-
-    ## JASMIN
-    filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+    if platform == 'JASMIN':
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+    if platform == 'LAPTOP':
+        root_dir = '~/MOCCHA/UM/DATA/'
+        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    if platform == 'MONSOON':
+        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    if platform == 'DESKTOP':
+        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
+        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
+        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     #### CODE NOT WORKING
     # seaice_rootdir = '/nfs/see-fs-02_users/eargy/MOCCHA/parent/data/seaice/AMSR2/'
     # seaice_file = 'asi-AMSR2-n6250-20180801-v5.hdf'
     # seaice_path = seaice_rootdir + seaice_file
 
-    data, values = readfile(filename)
+    data, values = readfile(ship_filename)
 
     columns = assignColumns(data)
 
