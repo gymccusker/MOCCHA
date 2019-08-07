@@ -793,9 +793,7 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
             dat = data[data.keys()[diag]].data*3600
             title = str(data.keys()[diag]) + ' [mm/hr]'
 
-        # for j in range(0,len(cube)):
-        #         if str(cube[j].var_name) == 'LWP': title = cube[j].var_name + ' [g/m2]'
-        #         if str(cube[j].var_name) == 'sfc_pressure': title = cube[j].var_name + ' [hPa]'
+            ### needs fixing from here
 
             #################################################################
             ## create figure and axes instances
