@@ -38,13 +38,66 @@ def assignColumns(data):
 
     return columns
 
-def trackShip(data):
+def iceDrift(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+
+    print '******'
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
+    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
+    print ''
+
+    return drift_index
+
+def inIce(data):
+
+    ###################################
+    ## DEFINE IN ICE PERIOD
+    ###################################
+    # Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
+    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
+    # inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==20,data.values[:,1]==9),data.values[:,3]==1))
+    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
+    # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
+    # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
+    inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
+
+    print '******'
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print ''
+    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
+    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
+    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
+    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
+    print ''
+
+    return inIce_index
+
+def trackShip(data, date):
+
+    ###################################
+    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
+    ###################################
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -59,7 +112,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
+def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -142,8 +195,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(12,10))
-    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
@@ -151,6 +204,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
     # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### V LARGE
+    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### POSTER
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -165,15 +219,15 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## plot UM data
     ################################################################
-    if np.size(cube[diag].data.shape) == 4:
-        iplt.pcolormesh(cube[diag][hour,0,:,:])
-    elif np.size(cube[diag].data.shape) == 3:
-        iplt.pcolormesh(cube[diag][hour,:,:])
-        # iplt.pcolormesh(cube[hour,471:495,240:264])
-    elif np.size(cube[diag].data.shape) == 2:
-        iplt.pcolormesh(cube[diag][:,:])
-    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    plt.colorbar()
+    # if np.size(cube[diag].data.shape) == 4:
+    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
+    # elif np.size(cube[diag].data.shape) == 3:
+    #     iplt.pcolormesh(cube[diag][hour,:,:])
+    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
+    # elif np.size(cube[diag].data.shape) == 2:
+    #     iplt.pcolormesh(cube[diag][:,:])
+    # # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -193,45 +247,45 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## plot ship track
     #################################################################
     ### DEFINE DRIFT + IN_ICE PERIODS
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
-    trackShip_index = trackShip(ship_data)
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
+    trackShip_index = trackShip(ship_data, date)
 
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-
-    ### Plot tracks as line plot
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-    #          color = 'yellow', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
     #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
     #          )
-    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
     #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(),
     #          )
-    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
     #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(),
     #          )
-    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-    #          color = 'red', linewidth = 4,
-    #          transform = ccrs.PlateCarree(), label = 'Drift',
-    #          )
+
+    ### Plot full track as line plot
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+             color = 'yellow', linewidth = 2,
+             transform = ccrs.PlateCarree(), label = 'Whole',
+             )
+    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+             color = 'red', linewidth = 4,
+             transform = ccrs.PlateCarree(), label = 'Drift',
+             )
 
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
@@ -1174,21 +1228,19 @@ def main():
     month_flag = 9
 
     if combine == 0:
-        filename1 = root_dir + out_dir + names[0]
-        print filename1
+        filename = root_dir + out_dir + names[0]
+        print filename
         print ''
-
-        # date = names[1][0:8]
 
         #### LOAD CUBE
         if 'var_con' in locals():
             print 'Loading single diagnostic:'
             print var_con
-            cube1 = iris.load_cube(filename1)#, var_con, callback)
+            cube1 = iris.load_cube(filename)#, var_con, callback)
         elif 'global_con' in locals():
             print 'Loading multiple diagnostics:'
             # cube = iris.load_cubes(filename1, global_con)
-            cube = iris.load(filename1)#, global_con, callback)
+            cube = iris.load(filename)#, global_con, callback)
 
             # -------------------------------------------------------------
 
@@ -1198,7 +1250,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename1)
+        # figure = plot_multicontour_TS(cube, filename)
 
     else:
         for i in range(0,len(names)):
@@ -1246,8 +1298,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # np.save('working_data',data)
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
@@ -1273,8 +1324,9 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    # hour = 0
-    # figure = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+    date = filename[-22:-14]
+    hour = 0
+    figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
