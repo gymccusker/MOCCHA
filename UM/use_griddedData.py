@@ -728,11 +728,14 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
     plt.rc('legend',fontsize=SMALL_SIZE)
     plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
     print data.keys()
     # [u'LWP', u'sfc_temperature', u'IWP', u'sfc_pressure', u'rainfall_flux', u'snowfall_flux']
+
+    l = -1
+    jindex = 0
 
     for i in range(0,len(data.keys())):
 
@@ -744,27 +747,28 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         print 'Diag is: '
         print data.keys()[diag]
 
-        ### pbXXX - CUBE
-        # <iris 'Cube' of large_scale_liquid_water_path / (kg m-2) (time: 24)>,
-        # <iris 'Cube' of surface_temperature / (K) (time: 24)>,
-        # <iris 'Cube' of large_scale_ice_water_path / (kg m-2) (time: 24)>,
-        # <iris 'Cube' of surface_pressure / (Pa) (time: 24)>,
-        # <iris 'Cube' of stratiform_rainfall_flux / (kg m-2 s-1) (time: 24)>,
-        # <iris 'Cube' of stratiform_snowfall_flux / (kg m-2 s-1) (time: 24)>,
-        # 0: height_of_stratocumulus_cloud_base / (unknown) (forecast_time: 24)
-        # 1: height_of_decoupled_layer_base / (unknown) (forecast_time: 24)
-        # 2: combined_boundary_layer_type / (unknown) (forecast_time: 24)
-        # 3: total_column_q / (unknown)          (forecast_time: 24)
-        # 4: air_temperature_at_1.5m / (K)       (forecast_time: 24)
-        # 5: atmosphere_boundary_layer_thickness / (m) (forecast_time: 24)
-        # 6: high_type_cloud_area_fraction / (1) (forecast_time: 24)
-        # 7: low_type_cloud_area_fraction / (1)  (forecast_time: 24)
-        # 8: medium_type_cloud_area_fraction / (1) (forecast_time: 24)
-        # 9: surface_upward_latent_heat_flux / (W m-2) (forecast_time: 24)
-        # 10: surface_upward_sensible_heat_flux / (W m-2) (forecast_time: 24)
-        # 11: water_evaporation_amount / (unknown) (forecast_time: 24)
-        # 0: surface_net_LW_radiation / (W m-2)  (forecast_time: 24)
-        # 1: surface_net_SW_radiation / (W m-2)  (forecast_time: 24)
+        # [u'vis_1.5m',
+        #  u'surface_net_LW_radiation',
+        #  u'bl_type',
+        #  u'fogfrac_1.5m',
+        #  u'surface_net_SW_radiation',
+        #  u'temp_1.5m',
+        #  u'snowfall_flux',
+        #  u'h_sc_cloud_base',
+        #  u'h_decoupled_layer_base',
+        #  u'latent_heat_flux',
+        #  u'high_cloud',
+        #  u'sfc_temperature',
+        #  u'IWP',
+        #  u'total_column_q',
+        #  u'bl_depth',
+        #  u'LWP',
+        #  u'rh_1.5m',
+        #  u'medium_cloud',
+        #  u'sensible_heat_flux',
+        #  u'sfc_pressure',
+        #  u'rainfall_flux',
+        #  u'low_cloud']
 
         ###################################
         ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
@@ -774,60 +778,61 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
             if data.keys()[diag] == 'LWP':
                 dat = data[data.keys()[diag]].data*1e3
                 title = cube[j].var_name + ' [g/m2]'
+                l = l + 1
+                jindex = 1
             elif data.keys()[diag] == 'sfc_pressure':
                 dat = data[data.keys()[diag]].data/1e2
                 title = cube[j].var_name + ' [hPa]'
+                l = l + 1
+                jindex = 1
             elif data.keys()[diag] == 'sfc_temperature':
                 dat = data[data.keys()[diag]].data
                 title = cube[j].var_name + ' [' + str(cube[2].units) + ']'
+                l = l + 1
+                jindex = 1
             elif data.keys()[diag] == 'IWP':
                 dat = data[data.keys()[diag]].data*1e3
                 title = cube[j].var_name + ' [g/m2]'
+                l = l + 1
+                jindex = 1
             elif data.keys()[diag] == 'rainfall_flux':
                 dat = data[data.keys()[diag]].data*3600
                 title = cube[j].var_name + ' [mm/hr]'
+                l = l + 1
+                jindex = 1
             elif data.keys()[diag] == 'snowfall_flux':
                 dat = data[data.keys()[diag]].data*3600
                 title = cube[j].var_name + ' [mm/hr]'
+                l = l + 1
+                jindex = 1
 
-        #################################################################
-        ## create figure and axes instances
-        #################################################################
-        plt.subplot(3,2,i+1)
-        ax = plt.gca()
+            #################################################################
+            ## create figure and axes instances
+            #################################################################
+            if jindex == 1:
+                plt.subplot(3,2,l+1)
+                print 'l = ' + str(l)
+                print title
+                ax = plt.gca()
 
-        #################################################################
-        ## plot timeseries
-        #################################################################
+                #################################################################
+                ## plot timeseries
+                #################################################################
 
-        plt.plot(timem, dat)
-        plt.ylim([np.nanmin(dat),np.nanmax(dat)])
-        plt.title(title)
+                plt.plot(timem, dat)
+                plt.ylim([np.nanmin(dat),np.nanmax(dat)])
+                plt.title(title)
 
-        if month_flag == 8: ax.set_xlim([13.0, 31.0])
-        if month_flag == 9: ax.set_xlim([1.0, 15.0])
+                if month_flag == 8: ax.set_xlim([13.0, 31.0])
+                if month_flag == 9: ax.set_xlim([1.0, 15.0])
 
-        print ''
-        print 'Zero out any data from missing files:'
-        print ''
-        for mfile in missing_files:
-            mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-            # print timem
-            # print mtime
-            # ind1 = np.where(timem >= mtime[0]-0.125)
-            # ymask = np.array(dat[ind1[0][2]], dat[ind1[0][3]])
-            # xmask = np.array(timem[ind1[0][2]], timem[ind1[0][3]])
-
-            # print ind1
-            # print mtime[0]
-            # print timem[ind1[0][2]], timem[ind1[0][3]]
-            # timem <= mtime[-1])+0.125)
-            # mask = np.interp(dat[ind1[0][2]], dat[ind1[0][3]])
-
-            nans = ax.get_ylim()
-            # plt.plot(mtime, mask, 'w')
-            # ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'white')
-            ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+                print ''
+                print 'Zero out any data from missing files:'
+                print ''
+                for mfile in missing_files:
+                    mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                    nans = ax.get_ylim()
+                    ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
     ### global plot properties
     plt.subplot(3,2,5)
@@ -851,7 +856,7 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
 
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1D.png'
     if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1D.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def callback(cube, field, filename):
@@ -885,7 +890,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -906,8 +911,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    # out_dir = '4_RA2M_CON/OUT_R0/'
-    out_dir = '../GITHUB/UM/'
+    out_dir = '4_RA2M_CON/OUT_R0/papbpc_combined/'
 
     print '******'
     print ''
@@ -1053,6 +1057,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot (3x2 timeseries)
         # -------------------------------------------------------------
+        # np.save('working_data', data1d)
         figure = plot_line_TS(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
