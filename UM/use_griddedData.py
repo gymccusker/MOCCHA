@@ -539,12 +539,14 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
 
     print data.keys()
 
-    for i in range(0,len(data.keys())):
+    l = -1
 
+    # for i in range(0,len(data.keys())):
+    for diag in range(0,len(data.keys())):
         ###################################
         ## CHOOSE DIAGNOSTIC
         ###################################
-        diag = i
+        # diag = i
         print ''
         print 'Diag is: '
         print data.keys()[diag]
@@ -565,104 +567,107 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
         ###################################
 
+        ### the following works for now, but could do with finding an easier
+        ###         way to index cube by string
+        for j in range(0,len(cube)):
+            if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
+
+        dat = []
+
+        ### set diag-specific titles
         if str(data.keys()[diag]) == 'radr_refl':
-            height = cube[5].dim_coords[1].points
-            title = cube[5].var_name + ' [dBz]'
-        elif str(data.keys()[diag]) == 'pressure':
-            height = cube[8].dim_coords[1].points
-            title = cube[8].var_name + ' [' + str(cube[8].units) + ']'
-        elif str(data.keys()[diag]) == 'temperature':
-            height = cube[9].dim_coords[1].points
-            title = cube[9].var_name + ' [' + str(cube[9].units) + ']'
-        elif str(data.keys()[diag]) == 'uwind':
-            height = cube[10].dim_coords[1].points
-            title = cube[10].var_name + ' [' + str(cube[10].units) + ']'
-        elif str(data.keys()[diag]) == 'cloud_fraction':
-            height = cube[11].dim_coords[1].points
-            title = cube[11].var_name + ' [' + str(cube[11].units) + ']'
-        elif str(data.keys()[diag]) == 'qice':
-            height = cube[12].dim_coords[1].points
-            title = cube[12].var_name + ' [g/kg]'
-        elif str(data.keys()[diag]) == 'qliq':
-            height = cube[13].dim_coords[1].points
-            title = cube[13].var_name + ' [g/kg]'
-        elif str(data.keys()[diag]) == 'vwind':
-            height = cube[14].dim_coords[1].points
-            title = cube[14].var_name + ' [' + str(cube[14].units) + ']'
-        elif str(data.keys()[diag] == 'q'):
-            height = cube[15].dim_coords[1].points
-            title = cube[15].var_name + ' [g/kg]'
-        elif str(data.keys()[diag]) == 'wwind':
-            height = cube[16].dim_coords[1].points
-            title = cube[16].var_name + ' [' + str(cube[16].units) + ']'
-
-        #################################################################
-        ## create figure and axes instances
-        #################################################################
-        plt.subplot(5,2,i+1)
-        ax = plt.gca()
-
-        #################################################################
-        ## data corrections
-        #################################################################
-        ### set height limit to consider
-        # ind = np.where(height<5000)
-
-        ### if mass mixing ratio, *1e3 to change to g/kg
-        if str(data.keys()[diag][0]) == 'q':
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-            # print 'transposed for plotting' + str(dat.shape)
-        else:
+            title = str(data.keys()[diag]) + ' [dBz]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-            # print 'transposed for plotting' + str(dat.shape)
-
-        #################################################################
-        ## plot timeseries
-        #################################################################
-        # plt.contourf(time,height,np.transpose(cube[diag].data))
-        if str(data.keys()[diag]) == 'temperature':
-            plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
         elif str(data.keys()[diag]) == 'pressure':
-            plt.pcolormesh(timem, height, dat, vmin = 50000, vmax = np.nanmax(dat))
+            title = str(data.keys()[diag]) + ' [hPa]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data/1e2))
+        elif str(data.keys()[diag]) == 'temperature':
+            title = str(data.keys()[diag]) + ' [K]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
         elif str(data.keys()[diag]) == 'uwind':
-            plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-        elif str(data.keys()[diag]) == 'vwind':
-            plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-        elif str(data.keys()[diag]) == 'wwind':
-            plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
+            title = str(data.keys()[diag]) + ' [m/s]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == 'cloud_fraction':
+            title = str(data.keys()[diag]) + ' []'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
         elif str(data.keys()[diag]) == 'qice':
-            plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
-        else:
-            plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
-        #################################################################
-        ## set plot properties
-        #################################################################
-        ### colormaps:
-        if str(data.keys()[diag]) == 'wwind':
-            plt.set_cmap(mpl_cm.RdBu_r)
-        elif str(data.keys()[diag]) == 'uwind':
-            plt.set_cmap(mpl_cm.RdBu_r)
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == 'qliq':
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
         elif str(data.keys()[diag]) == 'vwind':
-            plt.set_cmap(mpl_cm.RdBu_r)
-        # elif str(data.keys()[diag][0]) == 'q':
-        #     plt.set_cmap(mpl_cm.Blues)
-        else:
-            plt.set_cmap(mpl_cm.viridis)
+            title = str(data.keys()[diag]) + ' [m/s]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag] == 'q'):
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == 'wwind':
+            title = str(data.keys()[diag]) + ' [m/s]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
 
-        plt.title(title)
-        plt.colorbar()
-        ax.set_ylim([0, 5000])
-        if month_flag == 8: ax.set_xlim([13.0, 31.0])
-        if month_flag == 9: ax.set_xlim([1.0, 15.0])
+        print title
+        print ''
 
-        print ''
-        print 'Zero out any data from missing files:'
-        print ''
-        for mfile in missing_files:
-            mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-            nans = np.zeros([len(height),len(mtime)])
-            # nans[nans == 0] = np.nan
-            plt.pcolormesh(mtime, height, nans)
+        if len(dat) > 0:
+            print 'Plotting since len(dat)>0'
+            print ''
+
+            l = l + 1 ## increment index for positive data association
+            print 'l = ' +  str(l)
+            #################################################################
+            ## create figure and axes instances
+            #################################################################
+            plt.subplot(5,2,l+1)
+            ax = plt.gca()
+
+            #################################################################
+            ## plot timeseries
+            #################################################################
+            # plt.contourf(time,height,np.transpose(cube[diag].data))
+            if str(data.keys()[diag]) == 'temperature':
+                plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
+            elif str(data.keys()[diag]) == 'pressure':
+                plt.pcolormesh(timem, height, dat, vmin = 500, vmax = np.nanmax(dat))
+            elif str(data.keys()[diag]) == 'uwind':
+                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+            elif str(data.keys()[diag]) == 'vwind':
+                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+            elif str(data.keys()[diag]) == 'wwind':
+                plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
+            elif str(data.keys()[diag]) == 'qice':
+                plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
+            else:
+                plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
+            #################################################################
+            ## set plot properties
+            #################################################################
+            ### colormaps:
+            if str(data.keys()[diag]) == 'wwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag]) == 'uwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag]) == 'vwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag][0]) == 'q':
+                plt.set_cmap(mpl_cm.Blues)
+            else:
+                plt.set_cmap(mpl_cm.viridis)
+
+            plt.title(title)
+            plt.colorbar()
+            ax.set_ylim([0, 5000])
+            if month_flag == 8: ax.set_xlim([13.0, 31.0])
+            if month_flag == 9: ax.set_xlim([1.0, 15.0])
+
+            print ''
+            print 'Zero out any data from missing files:'
+            print ''
+            for mfile in missing_files:
+                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                nans = np.zeros([len(height),len(mtime)])
+                # nans[nans == 0] = np.nan
+                plt.pcolormesh(mtime, height, nans)
 
     ### global plot properties
     plt.subplot(5,2,9)
@@ -688,7 +693,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
 
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
     if month_flag == 9: fileout = 'FIGS/201809_oden_metum.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
@@ -905,8 +910,6 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
     print data.keys()
 
     l = -1
-    jindex = 0
-
     for diag in range(0,len(data.keys())):
 
         ###################################
@@ -999,7 +1002,7 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
         if len(dat) > 0:
             l = l + 1 ## increment index for positive data association
             plt.subplot(5,3,l+1)
-            print 'l = ' + str(l)
+            # print 'l = ' + str(l)
             print title
             ax = plt.gca()
 
