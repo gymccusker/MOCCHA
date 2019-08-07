@@ -737,12 +737,11 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
     l = -1
     jindex = 0
 
-    for i in range(0,len(data.keys())):
+    for diag in range(0,len(data.keys())):
 
         ###################################
         ## CHOOSE DIAGNOSTIC
         ###################################
-        diag = i
         print ''
         print 'Diag is: '
         print data.keys()[diag]
@@ -774,37 +773,29 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
         ###################################
 
-        for j in range(0,len(cube)):
-            if data.keys()[diag] == 'LWP':
-                dat = data[data.keys()[diag]].data*1e3
-                title = cube[j].var_name + ' [g/m2]'
-                l = l + 1
-                jindex = 1
-            elif data.keys()[diag] == 'sfc_pressure':
-                dat = data[data.keys()[diag]].data/1e2
-                title = cube[j].var_name + ' [hPa]'
-                l = l + 1
-                jindex = 1
-            elif data.keys()[diag] == 'sfc_temperature':
-                dat = data[data.keys()[diag]].data
-                title = cube[j].var_name + ' [' + str(cube[2].units) + ']'
-                l = l + 1
-                jindex = 1
-            elif data.keys()[diag] == 'IWP':
-                dat = data[data.keys()[diag]].data*1e3
-                title = cube[j].var_name + ' [g/m2]'
-                l = l + 1
-                jindex = 1
-            elif data.keys()[diag] == 'rainfall_flux':
-                dat = data[data.keys()[diag]].data*3600
-                title = cube[j].var_name + ' [mm/hr]'
-                l = l + 1
-                jindex = 1
-            elif data.keys()[diag] == 'snowfall_flux':
-                dat = data[data.keys()[diag]].data*3600
-                title = cube[j].var_name + ' [mm/hr]'
-                l = l + 1
-                jindex = 1
+        dat = np.zeros(len(data[data.keys()[diag]]))
+        if data.keys()[diag] == 'LWP':
+            dat = data[data.keys()[diag]].data*1e3
+            title = str(data.keys()[diag]) + ' [g/m2]'
+        elif data.keys()[diag] == 'sfc_pressure':
+            dat = data[data.keys()[diag]].data/1e2
+            title = str(data.keys()[diag]) + ' [hPa]'
+        elif data.keys()[diag] == 'sfc_temperature':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [' + str(cube[2].units) + ']'
+        elif data.keys()[diag] == 'IWP':
+            dat = data[data.keys()[diag]].data*1e3
+            title = str(data.keys()[diag]) + ' [g/m2]'
+        elif data.keys()[diag] == 'rainfall_flux':
+            dat = data[data.keys()[diag]].data*3600
+            title = str(data.keys()[diag]) + ' [mm/hr]'
+        elif data.keys()[diag] == 'snowfall_flux':
+            dat = data[data.keys()[diag]].data*3600
+            title = str(data.keys()[diag]) + ' [mm/hr]'
+
+        # for j in range(0,len(cube)):
+        #         if str(cube[j].var_name) == 'LWP': title = cube[j].var_name + ' [g/m2]'
+        #         if str(cube[j].var_name) == 'sfc_pressure': title = cube[j].var_name + ' [hPa]'
 
             #################################################################
             ## create figure and axes instances
