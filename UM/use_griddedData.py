@@ -432,6 +432,8 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
                 ### if mass mixing ratio, *1e3 to change to g/kg
                 if cube[diag].var_name[0] == 'q':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                elif cube[diag].var_name == 'pressure':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
                 else:
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
 
@@ -460,14 +462,16 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
                     plt.set_cmap(mpl_cm.RdBu_r)
                 elif cube[diag].var_name == 'vwind':
                     plt.set_cmap(mpl_cm.RdBu_r)
-                # elif cube[diag].var_name[0] == 'q':
-                #     plt.set_cmap(mpl_cm.Blues)
+                elif cube[diag].var_name[0] == 'q':
+                    plt.set_cmap(mpl_cm.Blues)
                 else:
                     plt.set_cmap(mpl_cm.viridis)
 
                 ### title and axes properties
                 if cube[diag].var_name[0] == 'q':
                     plt.title(cube[diag].var_name + ' [g/kg]')
+                elif cube[diag].var_name == 'pressure':
+                    plt.title(cube[diag].var_name + ' [hPa]')
                 else:
                     plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
                 plt.colorbar()
@@ -635,7 +639,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             elif str(data.keys()[diag]) == 'vwind':
                 plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
             elif str(data.keys()[diag]) == 'wwind':
-                plt.pcolormesh(timem, height, dat, vmin = -0.2, vmax = 0.2)
+                plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
             elif str(data.keys()[diag]) == 'qice':
                 plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
             else:
@@ -1163,11 +1167,11 @@ def main():
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 1
+    combine = 0
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[0]
