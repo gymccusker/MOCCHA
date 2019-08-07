@@ -587,6 +587,12 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         elif str(data.keys()[diag]) == 'uwind':
             title = str(data.keys()[diag]) + ' [m/s]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == 'wwind':
+            title = str(data.keys()[diag]) + ' [m/s]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == 'vwind':
+            title = str(data.keys()[diag]) + ' [m/s]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
         elif str(data.keys()[diag]) == 'cloud_fraction':
             title = str(data.keys()[diag]) + ' []'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
@@ -596,15 +602,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         elif str(data.keys()[diag]) == 'qliq':
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == 'vwind':
-            title = str(data.keys()[diag]) + ' [m/s]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
         elif str(data.keys()[diag] == 'q'):
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == 'wwind':
-            title = str(data.keys()[diag]) + ' [m/s]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+
 
         print title
         print ''
@@ -634,7 +635,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             elif str(data.keys()[diag]) == 'vwind':
                 plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
             elif str(data.keys()[diag]) == 'wwind':
-                plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
+                plt.pcolormesh(timem, height, dat, vmin = -0.2, vmax = 0.2)
             elif str(data.keys()[diag]) == 'qice':
                 plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
             else:
@@ -664,10 +665,13 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             print 'Zero out any data from missing files:'
             print ''
             for mfile in missing_files:
+                # mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                # nans = np.zeros([len(height),len(mtime)])
+                # # nans[nans == 0] = np.nan
+                # plt.pcolormesh(mtime, height, nans)
                 mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                nans = np.zeros([len(height),len(mtime)])
-                # nans[nans == 0] = np.nan
-                plt.pcolormesh(mtime, height, nans)
+                nans = ax.get_ylim()
+                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
     ### global plot properties
     plt.subplot(5,2,9)
@@ -693,7 +697,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
 
     if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
     if month_flag == 9: fileout = 'FIGS/201809_oden_metum.png'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
