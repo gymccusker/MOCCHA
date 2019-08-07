@@ -141,11 +141,11 @@ def plotmap(data):
     # m.drawparallels(np.arange(50.,91.,2.),color='k')
     # m.drawmeridians(np.arange(-180.,181.,10.),color='k')
 
-    parallels = np.arange(0.,90,2.)
-    # labels = [left,right,top,bottom]
-    m.drawparallels(parallels,labels=[False,False,False,False])
+    parallels = np.arange(0.,90,5.)
+    # # labels = [left,right,top,bottom]
+    m.drawparallels(parallels,labels=[False,False,False,False], color = 'grey')
     meridians = np.arange(10.,351.,20.)
-    m.drawmeridians(meridians,labels=[True,False,False,True])
+    m.drawmeridians(meridians,labels=[False,False,False,False], color = 'grey')
 
     m.drawcoastlines(linewidth=1.)
 
