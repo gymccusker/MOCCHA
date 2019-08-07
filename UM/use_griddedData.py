@@ -565,34 +565,34 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
         ###################################
 
-        if data.keys()[diag] == 'radr_refl':
+        if str(data.keys()[diag]) == 'radr_refl':
             height = cube[5].dim_coords[1].points
             title = cube[5].var_name + ' [dBz]'
-        elif data.keys()[diag] == 'pressure':
+        elif str(data.keys()[diag]) == 'pressure':
             height = cube[8].dim_coords[1].points
             title = cube[8].var_name + ' [' + str(cube[8].units) + ']'
-        elif data.keys()[diag] == 'temperature':
+        elif str(data.keys()[diag]) == 'temperature':
             height = cube[9].dim_coords[1].points
             title = cube[9].var_name + ' [' + str(cube[9].units) + ']'
-        elif data.keys()[diag] == 'uwind':
+        elif str(data.keys()[diag]) == 'uwind':
             height = cube[10].dim_coords[1].points
             title = cube[10].var_name + ' [' + str(cube[10].units) + ']'
-        elif data.keys()[diag] == 'cloud_fraction':
+        elif str(data.keys()[diag]) == 'cloud_fraction':
             height = cube[11].dim_coords[1].points
             title = cube[11].var_name + ' [' + str(cube[11].units) + ']'
-        elif data.keys()[diag] == 'qice':
+        elif str(data.keys()[diag]) == 'qice':
             height = cube[12].dim_coords[1].points
             title = cube[12].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'qliq':
+        elif str(data.keys()[diag]) == 'qliq':
             height = cube[13].dim_coords[1].points
             title = cube[13].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'vwind':
+        elif str(data.keys()[diag]) == 'vwind':
             height = cube[14].dim_coords[1].points
             title = cube[14].var_name + ' [' + str(cube[14].units) + ']'
-        elif data.keys()[diag] == 'q':
+        elif str(data.keys()[diag] == 'q'):
             height = cube[15].dim_coords[1].points
             title = cube[15].var_name + ' [g/kg]'
-        elif data.keys()[diag] == 'wwind':
+        elif str(data.keys()[diag]) == 'wwind':
             height = cube[16].dim_coords[1].points
             title = cube[16].var_name + ' [' + str(cube[16].units) + ']'
 
@@ -609,7 +609,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         # ind = np.where(height<5000)
 
         ### if mass mixing ratio, *1e3 to change to g/kg
-        if data.keys()[diag][0] == 'q':
+        if str(data.keys()[diag][0]) == 'q':
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
             # print 'transposed for plotting' + str(dat.shape)
         else:
@@ -620,17 +620,17 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         ## plot timeseries
         #################################################################
         # plt.contourf(time,height,np.transpose(cube[diag].data))
-        if data.keys()[diag] == 'temperature':
+        if str(data.keys()[diag]) == 'temperature':
             plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
-        elif data.keys()[diag] == 'pressure':
+        elif str(data.keys()[diag]) == 'pressure':
             plt.pcolormesh(timem, height, dat, vmin = 50000, vmax = np.nanmax(dat))
-        elif data.keys()[diag] == 'uwind':
+        elif str(data.keys()[diag]) == 'uwind':
             plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-        elif data.keys()[diag] == 'vwind':
+        elif str(data.keys()[diag]) == 'vwind':
             plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-        elif data.keys()[diag] == 'wwind':
+        elif str(data.keys()[diag]) == 'wwind':
             plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
-        elif data.keys()[diag] == 'qice':
+        elif str(data.keys()[diag]) == 'qice':
             plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
         else:
             plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
@@ -638,13 +638,13 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
         ## set plot properties
         #################################################################
         ### colormaps:
-        if data.keys()[diag] == 'wwind':
+        if str(data.keys()[diag]) == 'wwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif data.keys()[diag] == 'uwind':
+        elif str(data.keys()[diag]) == 'uwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        elif data.keys()[diag] == 'vwind':
+        elif str(data.keys()[diag]) == 'vwind':
             plt.set_cmap(mpl_cm.RdBu_r)
-        # elif data.keys()[diag][0] == 'q':
+        # elif str(data.keys()[diag][0]) == 'q':
         #     plt.set_cmap(mpl_cm.Blues)
         else:
             plt.set_cmap(mpl_cm.viridis)
@@ -1158,9 +1158,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8
 
     if combine == 0:
         filename1 = root_dir + out_dir + names[0]
@@ -1235,18 +1235,17 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        # np.save('working_data',data)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # np.save('working_data', data1d)
         # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        # np.save('working_data', data1d)
-        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
+        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
