@@ -773,7 +773,8 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
         ###################################
 
-        dat = np.zeros(len(data[data.keys()[diag]]))
+        dat = []#np.zeros(len(data[data.keys()[diag]]))
+
         if data.keys()[diag] == 'LWP':
             dat = data[data.keys()[diag]].data*1e3
             title = str(data.keys()[diag]) + ' [g/m2]'
@@ -792,8 +793,6 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         elif data.keys()[diag] == 'snowfall_flux':
             dat = data[data.keys()[diag]].data*3600
             title = str(data.keys()[diag]) + ' [mm/hr]'
-
-            ### needs fixing from here
 
             #################################################################
             ## create figure and axes instances
@@ -1003,7 +1002,7 @@ def main():
             print 'Loading multiple diagnostics:'
             cube = iris.load(filename)#, global_con, callback)
 
-            print 'i = ' + str(i)
+            # print 'i = ' + str(i)
             print ''
 
             if i == 0:
@@ -1027,7 +1026,7 @@ def main():
                 # print data
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    print 'j = ' + str(j)
+                    # print 'j = ' + str(j)
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube[j].data.shape) == 24:
