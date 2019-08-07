@@ -62,18 +62,18 @@ def inIce(data):
     ###################################
     ## DEFINE IN ICE PERIOD
     ###################################
-    # Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
-    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
-    # inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
+    Aug_inIce = np.where(np.logical_and(data.values[:,2]>=3,data.values[:,1]==8))
+    Sep_inIce = np.where(np.logical_and(data.values[:,2]<20,data.values[:,1]==9))
+    inIce_index = np.arange(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
-    # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
-    # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
-    # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
-    inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
+    # Aug_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=12,data.values[:,1]==8),data.values[:,3]>=0))
+    # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8),data.values[:,3]>=0))
+    # # Sep_inIce = np.where(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9))
+    # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
+    # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
     print '******'
     print ''
@@ -119,6 +119,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     import iris.analysis.cartography
     import cartopy.crs as ccrs
     import cartopy
+    import matplotlib.path as mpath
         # from matplotlib.patches import Polygon
 
     ###---------------------------------
@@ -194,27 +195,39 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(12,10))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    plt.figure(figsize=(8,12), dpi=300)
+    ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
-    # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### V LARGE
-    ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### POSTER
+    # ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())    ### V LARGE
+    ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
+    # ax.set_global()
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
     #################################################################
     ## add geographic features/guides for reference
     #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    ax.add_feature(cartopy.feature.OCEAN, color='white', zorder=0)
+    ax.add_feature(cartopy.feature.LAND, color='lightgrey', zorder=0, edgecolor='black')
+    ax.add_feature(cartopy.feature.COASTLINE)
     # ax.set_global()
     ax.gridlines()
+
+    # # Compute a circle in axes coordinates, which we can use as a boundary
+    # # for the map. We can pan/zoom as much as we like - the boundary will be
+    # # permanently circular.
+    # theta = np.linspace(0, 2*np.pi, 100)
+    # center, radius = [0.5, 0.5], 0.5
+    # verts = np.vstack([np.sin(theta), np.cos(theta)]).T
+    # circle = mpath.Path(verts * radius + center)
+    #
+    # ax.set_boundary(circle, transform=ax.transAxes)
 
     #################################################################
     ## plot UM data
@@ -266,20 +279,20 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #          )
 
     ### Plot full track as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-             color = 'yellow', linewidth = 2,
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
+             color = 'pink', linewidth = 2,
              transform = ccrs.PlateCarree(), label = 'Whole',
              )
     plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'darkorange', linewidth = 3,
+             color = 'palevioletred', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'In Ice',
              )
     plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             'k^', markerfacecolor = 'palevioletred', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
     plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             'kv', markerfacecolor = 'palevioletred', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
@@ -306,7 +319,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
 
 def plot_contour_TS(cube, filename): #, lon, lat):
