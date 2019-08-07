@@ -810,8 +810,8 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
             dat = data[data.keys()[diag]].data
             title = str(data.keys()[diag]) + ' []'
         elif str(data.keys()[diag]) == 'vis_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [?]'
+            dat = data[data.keys()[diag]].data/1.0e3
+            title = str(data.keys()[diag]) + ' [km]'
 
         # str(data.keys()[0][-4:])
 
@@ -897,13 +897,12 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
     plt.rc('xtick',labelsize=SMALL_SIZE)
     plt.rc('ytick',labelsize=SMALL_SIZE)
     plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(16,12))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.1,
-            hspace = 0.4, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+            hspace = 0.4, wspace = 0.15)
 
     print data.keys()
-    # [u'LWP', u'sfc_temperature', u'IWP', u'sfc_pressure', u'rainfall_flux', u'snowfall_flux']
 
     l = -1
     jindex = 0
@@ -946,52 +945,60 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
 
         dat = []
 
-        # if str(data.keys()[diag]) == 'LWP':
-        #     dat = data[data.keys()[diag]].data*1e3
-        #     title = str(data.keys()[diag]) + ' [g/m2]'
-        # elif str(data.keys()[diag]) == 'IWP':
-        #     dat = data[data.keys()[diag]].data*1e3
-        #     title = str(data.keys()[diag]) + ' [g/m2]'
-        # elif str(data.keys()[diag]) == 'rainfall_flux':
-        #     dat = data[data.keys()[diag]].data*3600
-        #     title = str(data.keys()[diag]) + ' [mm/hr]'
-        # elif str(data.keys()[diag]) == 'snowfall_flux':
-        #     dat = data[data.keys()[diag]].data*3600
-        #     title = str(data.keys()[diag]) + ' [mm/hr]'
+        if str(data.keys()[diag]) == 'LWP':
+            dat = data[data.keys()[diag]].data*1e3
+            title = str(data.keys()[diag]) + ' [g/m2]'
+        elif str(data.keys()[diag]) == 'IWP':
+            dat = data[data.keys()[diag]].data*1e3
+            title = str(data.keys()[diag]) + ' [g/m2]'
+        elif str(data.keys()[diag]) == 'total_column_q':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [kg/m2]'
 
-        if str(data.keys()[diag]) == 'sfc_temperature':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [K]'
-        elif str(data.keys()[diag]) == 'sfc_pressure':
-            dat = data[data.keys()[diag]].data/1e2
-            title = str(data.keys()[diag]) + ' [hPa]'
-        elif str(data.keys()[diag]) == 'rh_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [%]'
-        elif str(data.keys()[diag]) == 'temp_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [K]'
-        elif str(data.keys()[diag]) == 'surface_net_SW_radiation':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-        elif str(data.keys()[diag]) == 'surface_net_LW_radiation':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-        elif str(data.keys()[diag]) == 'fogfrac_1.5m':
+        elif str(data.keys()[diag]) == 'rainfall_flux':
+            dat = data[data.keys()[diag]].data*3600
+            title = str(data.keys()[diag]) + ' [mm/hr]'
+        elif str(data.keys()[diag]) == 'snowfall_flux':
+            dat = data[data.keys()[diag]].data*3600
+            title = str(data.keys()[diag]) + ' [mm/hr]'
+
+        elif str(data.keys()[diag]) == 'bl_type':
             dat = data[data.keys()[diag]].data
             title = str(data.keys()[diag]) + ' []'
-        elif str(data.keys()[diag]) == 'vis_1.5m':
+        elif str(data.keys()[diag]) == 'bl_depth':
             dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [?]'
+            title = str(data.keys()[diag]) + ' []'
 
-        # str(data.keys()[0][-4:])
+        elif str(data.keys()[diag]) == 'latent_heat_flux':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [W/m2]'
+        elif str(data.keys()[diag]) == 'sensible_heat_flux':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [W/m2]'
+
+        elif str(data.keys()[diag]) == 'high_cloud':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' []'
+        elif str(data.keys()[diag]) == 'medium_cloud':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' []'
+        elif str(data.keys()[diag]) == 'low_cloud':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' []'
+
+        elif str(data.keys()[diag]) == 'h_sc_cloud_base':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [m]'
+        elif str(data.keys()[diag]) == 'h_decoupled_layer_base':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [m]'
 
         #################################################################
         ## create figure and axes instances
         #################################################################
         if len(dat) > 0:
             l = l + 1 ## increment index for positive data association
-            plt.subplot(4,2,l+1)
+            plt.subplot(5,3,l+1)
             print 'l = ' + str(l)
             print title
             ax = plt.gca()
@@ -1016,10 +1023,13 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
                 ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
     ### global plot properties
-    plt.subplot(4,2,7)
+    plt.subplot(5,3,12)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    plt.subplot(4,2,8)
+    plt.subplot(5,3,13)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    plt.subplot(5,3,14)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
 
