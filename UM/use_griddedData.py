@@ -746,26 +746,26 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         print 'Diag is: '
         print data.keys()[diag]
 
-        # [u'vis_1.5m',
-        #  u'surface_net_LW_radiation',
+                                            # [u'vis_1.5m',
+                                            #  u'surface_net_LW_radiation',
         #  u'bl_type',
-        #  u'fogfrac_1.5m',
-        #  u'surface_net_SW_radiation',
-        #  u'temp_1.5m',
+                                            #  u'fogfrac_1.5m',
+                                            #  u'surface_net_SW_radiation',
+                                            #  u'temp_1.5m',
         #  u'snowfall_flux',
         #  u'h_sc_cloud_base',
         #  u'h_decoupled_layer_base',
         #  u'latent_heat_flux',
         #  u'high_cloud',
-        #  u'sfc_temperature',
+                                            #  u'sfc_temperature',
         #  u'IWP',
         #  u'total_column_q',
         #  u'bl_depth',
         #  u'LWP',
-        #  u'rh_1.5m',
+                                            #  u'rh_1.5m',
         #  u'medium_cloud',
         #  u'sensible_heat_flux',
-        #  u'sfc_pressure',
+                                            #  u'sfc_pressure',
         #  u'rainfall_flux',
         #  u'low_cloud']
 
@@ -773,77 +773,92 @@ def plot_line_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
         ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
         ###################################
 
-        dat = []#np.zeros(len(data[data.keys()[diag]]))
+        dat = []
 
-        if data.keys()[diag] == 'LWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = str(data.keys()[diag]) + ' [g/m2]'
-        elif data.keys()[diag] == 'sfc_pressure':
+        # if str(data.keys()[diag]) == 'LWP':
+        #     dat = data[data.keys()[diag]].data*1e3
+        #     title = str(data.keys()[diag]) + ' [g/m2]'
+        # elif str(data.keys()[diag]) == 'IWP':
+        #     dat = data[data.keys()[diag]].data*1e3
+        #     title = str(data.keys()[diag]) + ' [g/m2]'
+        # elif str(data.keys()[diag]) == 'rainfall_flux':
+        #     dat = data[data.keys()[diag]].data*3600
+        #     title = str(data.keys()[diag]) + ' [mm/hr]'
+        # elif str(data.keys()[diag]) == 'snowfall_flux':
+        #     dat = data[data.keys()[diag]].data*3600
+        #     title = str(data.keys()[diag]) + ' [mm/hr]'
+
+        if str(data.keys()[diag]) == 'sfc_temperature':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [K]'
+        elif str(data.keys()[diag]) == 'sfc_pressure':
             dat = data[data.keys()[diag]].data/1e2
             title = str(data.keys()[diag]) + ' [hPa]'
-        elif data.keys()[diag] == 'sfc_temperature':
+        elif str(data.keys()[diag]) == 'rh_1.5m':
             dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [' + str(cube[2].units) + ']'
-        elif data.keys()[diag] == 'IWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = str(data.keys()[diag]) + ' [g/m2]'
-        elif data.keys()[diag] == 'rainfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = str(data.keys()[diag]) + ' [mm/hr]'
-        elif data.keys()[diag] == 'snowfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = str(data.keys()[diag]) + ' [mm/hr]'
+            title = str(data.keys()[diag]) + ' [%]'
+        elif str(data.keys()[diag]) == 'temp_1.5m':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [K]'
+        elif str(data.keys()[diag]) == 'surface_net_SW_radiation':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [W/m2]'
+        elif str(data.keys()[diag]) == 'surface_net_LW_radiation':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [W/m2]'
+        elif str(data.keys()[diag]) == 'fogfrac_1.5m':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' []'
+        elif str(data.keys()[diag]) == 'vis_1.5m':
+            dat = data[data.keys()[diag]].data
+            title = str(data.keys()[diag]) + ' [?]'
+
+        # str(data.keys()[0][-4:])
+
+        #################################################################
+        ## create figure and axes instances
+        #################################################################
+        if len(dat) > 0:
+            l = l + 1 ## increment index for positive data association
+            plt.subplot(4,2,l+1)
+            print 'l = ' + str(l)
+            print title
+            ax = plt.gca()
 
             #################################################################
-            ## create figure and axes instances
+            ## plot timeseries
             #################################################################
-            if jindex == 1:
-                plt.subplot(3,2,l+1)
-                print 'l = ' + str(l)
-                print title
-                ax = plt.gca()
 
-                #################################################################
-                ## plot timeseries
-                #################################################################
+            plt.plot(timem, dat)
+            plt.ylim([np.nanmin(dat),np.nanmax(dat)])
+            plt.title(title)
 
-                plt.plot(timem, dat)
-                plt.ylim([np.nanmin(dat),np.nanmax(dat)])
-                plt.title(title)
+            if month_flag == 8: ax.set_xlim([13.0, 31.0])
+            if month_flag == 9: ax.set_xlim([1.0, 15.0])
 
-                if month_flag == 8: ax.set_xlim([13.0, 31.0])
-                if month_flag == 9: ax.set_xlim([1.0, 15.0])
-
-                print ''
-                print 'Zero out any data from missing files:'
-                print ''
-                for mfile in missing_files:
-                    mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                    nans = ax.get_ylim()
-                    ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+            print ''
+            print 'Zero out any data from missing files:'
+            print ''
+            for mfile in missing_files:
+                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                nans = ax.get_ylim()
+                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
     ### global plot properties
-    plt.subplot(3,2,5)
+    plt.subplot(4,2,7)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    # plt.ylabel('Z [m]')
-    plt.subplot(3,2,6)
+    plt.subplot(4,2,8)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    # plt.subplot(3,2,1)
-    # plt.ylabel('Z [m]')
-    # plt.subplot(3,2,3)
-    # plt.ylabel('Z [m]')
-    # plt.subplot(3,2,5)
-    # plt.ylabel('Z [m]')
 
     print '******'
     print ''
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1D.png'
-    if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1D.png'
+    if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Da.png'
+    if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Da.png'
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
