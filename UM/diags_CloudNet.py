@@ -927,9 +927,13 @@ def main():
                             print cube
                             print ''
                             iris.save(cube, pp_filename, append=True)
+                            #### remove file to keep directory tidy
+                            print 'Directory clean up: removing ' + fileout 
+                            os.remove(fileout)
                 else:
                     print 'Combined output files already exist, or the directory does not exist'
                     print ''
+
             # for stream in names:
             #     # -------------------------------------------------------------
             #     # Write out data
