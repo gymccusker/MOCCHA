@@ -5892,9 +5892,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                 print ''
                 #### create empty arrays to be filled
                 if stream == '_pb009':
-                    if cube[k].long_name = 'large_scale_ice_water_path':
+                    if cube[k].long_name == 'large_scale_ice_water_path':
                         data = np.zeros([len(cubetime)])
-                    elif cube[k].long_name = 'large_scale_liquid_water_path':
+                    elif cube[k].long_name == 'large_scale_liquid_water_path':
                         data = np.zeros([len(cubetime)])
                     else:
                         data = np.zeros([len(cubetime)-1])
