@@ -1241,7 +1241,7 @@ def main():
     month_flag = 9
 
     if combine == 0:
-        filename = root_dir + out_dir + names[-7]
+        filename = root_dir + out_dir + names[0]
         print filename
         print ''
 
