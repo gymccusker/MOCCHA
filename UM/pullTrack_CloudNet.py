@@ -6196,7 +6196,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '***file is merged to outfile later***'
         print ''
         eoutfile = nc_outfile[:-3] + '_e.nc'
-        if not os.path.exists(eoutfile): out = writeNetCDF(date, fcube, eoutfile)
+        if not os.path.exists(eoutfile): out = writePE_CASIM(fcube, eoutfile)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6448,6 +6448,90 @@ def writePA_Analysis(cube, aoutfile):
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
         dat[:] = cube[d].data
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+def writePE_CASIM(cube, eoutfile):
+    #################################################################
+    ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
+    #################################################################
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    # print 'Appending 1D data to ' + outfile
+    print 'Writing 3D data to ' + eoutfile
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset = Dataset(eoutfile, 'w', format ='NETCDF4_CLASSIC')
+    print ''
+    print dataset.file_format
+    print ''
+
+    # print cube
+    # print cube[0].dim_coords
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    # ###################################
+    # forecast_period = dataset.createDimension('forecast_period', 24)
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[0].points))
+    height = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[1].points))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
+    timem.long_name = 'forecast_time'
+    timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
+
+    #### height
+    height = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = ''
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = cube[0].dim_coords[1].points      ### forecast time (ignore first 12h)
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    ###################################
+    ## Write paXXX stream diagnostics
+    ###################################
+    for d in range(0,len(cube)):
+        print 'Writing ' + cube[d].var_name
+        print ''
+        dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
+        dat.scale_factor = float(1)
+        dat.add_offset = float(0)
+        dat.units = str(cube[d].units)
+        dat.STASH = str(cube[d].attributes['STASH'])
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+        dat[:,:] = cube[d].data
 
     ###################################
     ## Write out file
