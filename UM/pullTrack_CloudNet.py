@@ -6539,7 +6539,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ncB.close()
 
     ###################################
-    ## Open pbXXX netCDF file
+    ## Open paXXX netCDF file
     ###################################
     aoutfile = outfile[:-3] + '_a.nc'
 
@@ -6567,9 +6567,44 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
 
     ###################################
-    ## Close read-only pbXXX file
+    ## Close read-only paXXX file
     ###################################
     ncA.close()
+
+    ###################################
+    ## Open peXXX netCDF file
+    ###################################
+    eoutfile = outfile[:-3] + '_e.nc'
+
+    if os.path.exists(eoutfile):
+        ncE = Dataset(eoutfile, 'r')
+
+        ###################################
+        ## Append paXXX stream diagnostics
+        ###################################
+        print 'Appending peXXX diagnostics:'
+        print '---'
+        for d in range(0,len(ncE.variables)):
+            if ncE.variables.keys()[d] == 'forecast_time': continue
+            if not ncE.variables.keys()[d] in dataset.variables.keys():
+                print 'Writing ' + ncE.variables.keys()[d]
+                print ''
+                dat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                dat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
+                dat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
+                if getattr(ncE.variables[ncE.variables.keys()[d]],'standard_name', None):
+                    dat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
+                if getattr(ncE.variables[ncE.variables.keys()[d]],'long_name', None):
+                    dat.long_name = str(ncE.variables[ncE.variables.keys()[d]].long_name)
+                dat[:] = ncE.variables[ncE.variables.keys()[d]][:]
+
+        ###################################
+        ## Close read-only paXXX file
+        ###################################
+        ncE.close()
+
 
     ###################################
     ## Write out file
