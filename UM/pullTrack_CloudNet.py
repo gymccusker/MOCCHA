@@ -5692,14 +5692,16 @@ def excludeZeros(cube):
     print stash
 
     for i in range(0, len(STASH)):
-        if stash == STASH[i]:
+        if STASH[i] == stash:
             # data[data==0] = np.nan              # set zeros to nans
             flag = 1                           # flagging if in list
+            print 'In list, so excluding zeros'
         else:
             flag = 0                           # flagging if not in list
+            print 'Not in list, so not excluding zeros'
 
-    if flag == 1: print 'In list, so excluding zeros'
-    if flag == 0: print 'Not in list, so not excluding zeros'
+    # if flag == 1:
+    # if flag == 0:
     # print ''
 
     return flag, stash
