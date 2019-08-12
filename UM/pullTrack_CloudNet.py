@@ -5696,6 +5696,7 @@ def excludeZeros(cube):
             # data[data==0] = np.nan              # set zeros to nans
             flag = 1                           # flagging if in list
             print 'In list, so excluding zeros'
+            break
         else:
             flag = 0                           # flagging if not in list
             print 'Not in list, so not excluding zeros'
