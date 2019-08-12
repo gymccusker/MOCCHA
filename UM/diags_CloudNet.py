@@ -798,6 +798,7 @@ def main():
     # Extract from MASS with:
     # -------------------------------------------------------------
     #### moo select stash_extract_CloudNet.p2 moose:crum/u-bg610/apm.pp 4_RA2M_CON/20180811T1200Z/
+    #### moo select stash_extract_CASIM.p5 moose:crum/u-bl616/apm.pp 5_CASIM1/20180901T1200Z/
 
     # -------------------------------------------------------------
     # Load ship track
