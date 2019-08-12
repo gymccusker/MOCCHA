@@ -66,13 +66,13 @@ Var_list = { # paXXX
               'm01s03i461': 'surface_downward_northward_stress',
               'm01s03i223': 'surface_upward_water_flux',
               # peXXX -- CASIM MICROPHYSICS
-              'm01s00i075': 'qnliq'
-              'm01s00i076': 'qnrain'
-              'm01s00i078': 'qnice'
-              'm01s00i079': 'qnsnow'
-              'm01s00i081': 'qngraup'
-              'm01s00i271': 'qprisice'
-              'm01s00i273': 'qgraup'
+              'm01s00i075': 'qnliq',
+              'm01s00i076': 'qnrain',
+              'm01s00i078': 'qnice',
+              'm01s00i079': 'qnsnow',
+              'm01s00i081': 'qngraup',
+              'm01s00i271': 'qprisice',
+              'm01s00i273': 'qgraup',
               'm01s00i272': 'qrain'
               }
 
