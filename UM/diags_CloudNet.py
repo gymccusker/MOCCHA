@@ -874,6 +874,7 @@ def main():
                     # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
                     pp_filename = filename[:-3] + '_r0.pp'
 
+                    print '---'
                     print 'Start files exist, continuing:'
                     print ''
 
@@ -929,6 +930,7 @@ def main():
                             iris.save(cube, pp_filename, append=True)
                             #### remove file to keep directory tidy
                             print 'Directory clean up: removing ' + fileout
+                            print ''
                             os.remove(fileout)
                 else:
                     print 'Combined output files already exist, or the directory does not exist'
