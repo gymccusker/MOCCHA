@@ -6865,8 +6865,25 @@ def main():
                     # -------------------------------------------------------------
                     #### LOAD CUBE
                     ### LOAD CUBE
-                    # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    aoutfile = nc_outfile[:-3] + '_a.nc'
+                    boutfile = nc_outfile[:-3] + '_b.nc'
+                    eoutfile = nc_outfile[:-3] + '_e.nc'
+                    if os.path.exists(nc_outfile):
+                        break
+                    if stream == '_pa012':
+                        if not os.path.exists(aoutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pb009':
+                        if not os.path.exists(boutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pe011':
+                        if not os.path.exists(eoutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pc011':
+                        if not os.path.exists(nc_outfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    else:
+                        print 'Valid stream not found.'
+
                     # if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
 
                     ##-------------------------------------------------------------
                     ##Plot data (map)
