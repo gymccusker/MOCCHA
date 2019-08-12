@@ -6695,7 +6695,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
                     dat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'long_name', None):
                     dat.long_name = str(ncE.variables[ncE.variables.keys()[d]].long_name)
-                dat[:] = ncE.variables[ncE.variables.keys()[d]][:]
+                dat[:,:] = ncE.variables[ncE.variables.keys()[d]][:,:]
 
         ###################################
         ## Close read-only paXXX file
