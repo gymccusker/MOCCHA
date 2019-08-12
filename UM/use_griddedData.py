@@ -1221,14 +1221,14 @@ def main():
             '20180830_oden_metum.nc','20180831_oden_metum.nc']
 
     Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc',
+            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
             '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc','20180814_oden_metum.nc',
             '20180824_oden_metum.nc']
 
-    Sep_missing_files = ['20180908_oden_metum.nc']
+    Sep_missing_files = []
 
 
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -1236,9 +1236,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 0
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
         filename = root_dir + out_dir + names[-7]
