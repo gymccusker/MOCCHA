@@ -6869,8 +6869,6 @@ def main():
                     aoutfile = nc_outfile[:-3] + '_a.nc'
                     boutfile = nc_outfile[:-3] + '_b.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
-                    if os.path.exists(nc_outfile):
-                        break
                     if stream == '_pa012':
                         if not os.path.exists(aoutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pb009':
