@@ -785,7 +785,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '4_RA2M_CON/'
+    out_dir = '5_CASIM1/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -793,6 +793,8 @@ def main():
     ## 3_12AUG_SWATH_2FCSTS/
     ## 3_1AUG_SWATH_2FCSTS/
     ## 4_OPER/20180830T0000Z_TRIAL/
+    ## 4_RA2M_CON/
+    ## 5_CASIM1/
 
     # -------------------------------------------------------------
     # Extract from MASS with:
