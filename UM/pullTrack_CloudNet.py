@@ -6529,7 +6529,10 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
-            dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+            if getattr(ncB.variables[ncB.variables.keys()[d]],'units', None):
+                dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+            else:
+                dat.units = 'unknown'
             dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
             if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
@@ -6562,7 +6565,10 @@ def appendMetaNetCDF(outfile, date, out_dir):
             dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
-            dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+            if getattr(ncA.variables[ncA.variables.keys()[d]],'units', None):
+                dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+            else:
+                dat.units = 'unknown'
             dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
             if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
@@ -6596,7 +6602,10 @@ def appendMetaNetCDF(outfile, date, out_dir):
                 dat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
-                dat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
+                if getattr(ncE.variables[ncE.variables.keys()[d]],'units', None):
+                    dat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
+                else:
+                    dat.units = 'unknown'
                 dat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'standard_name', None):
                     dat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
