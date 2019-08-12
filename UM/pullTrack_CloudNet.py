@@ -6175,9 +6175,24 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print fcube
         print ''
         print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file'
+        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
         print ''
-        if not os.path.exists(nc_outfile): nc_outfile = writeNetCDF(date, fcube)
+        if not os.path.exists(nc_outfile): out = writeNetCDF(date, fcube, nc_outfile)
+            # if PC outfile already exists, combine other stream data
+            # if PC outfile doesn't exist, write new
+
+    if stream == '_pe011':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pc stream (using Iris cubes)
+        print 'fcube = '
+        print fcube
+        print ''
+        print '******'
+        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
+        print '***file is merged to outfile later***'
+        print ''
+        eoutfile = nc_outfile[:-3] + '_e.nc'
+        if not os.path.exists(eoutfile): out = writeNetCDF(date, fcube, eoutfile)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6186,28 +6201,28 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print fcube
         print ''
         print '******'
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
+        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
         print '***file is merged to outfile later***'
         print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
         boutfile = nc_outfile[:-3] + '_b.nc'
-        if not os.path.exists(boutfile): out = writePB_Cloudnet(fcube, nc_outfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+        if not os.path.exists(boutfile): out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream == '_pa012':
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file'
+        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
         print '***file is merged to outfile later***'
         print ''
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
         aoutfile = nc_outfile[:-3] + '_a.nc'
-        if not os.path.exists(aoutfile): out = writePA_Analysis(fcube, nc_outfile)
+        if not os.path.exists(aoutfile): out = writePA_Analysis(fcube, aoutfile)
 
     return fcube, nc_outfile
 
-def writeNetCDF(date, cube):
+def writeNetCDF(date, cube, nc_outfile):
 
     #################################################################
     ## CREATE NETCDF
@@ -6217,8 +6232,8 @@ def writeNetCDF(date, cube):
     #################################################################
     print '******'
     print 'Define .nc stream outfile:'
-    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-    print 'Final outfile = ', nc_outfile
+    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+    print 'Outfile will be = ', nc_outfile
 
     #################################################################
     ## load in each stream
@@ -6236,7 +6251,7 @@ def writeNetCDF(date, cube):
 
     return nc_outfile
 
-def writePB_Cloudnet(cube, outfile):
+def writePB_Cloudnet(cube, boutfile):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
@@ -6244,8 +6259,6 @@ def writePB_Cloudnet(cube, outfile):
     from netCDF4 import num2date, date2num
     import time
     from datetime import datetime, timedelta
-
-    boutfile = outfile[:-3] + '_b.nc'
 
     print '******'
     print ''
@@ -6365,7 +6378,7 @@ def writePB_Cloudnet(cube, outfile):
 
     return dataset
 
-def writePA_Analysis(cube, outfile):
+def writePA_Analysis(cube, aoutfile):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
@@ -6373,8 +6386,6 @@ def writePA_Analysis(cube, outfile):
     from netCDF4 import num2date, date2num
     import time
     from datetime import datetime, timedelta
-
-    aoutfile = outfile[:-3] + '_a.nc'
 
     print '******'
     print ''
@@ -6687,7 +6698,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012','_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[10:-1]
             outfiles = [] ### define list to add processed filenames to
 
@@ -6742,7 +6753,7 @@ def main():
                         ## -------------------------------------------------------------
                         print '******'
                         print ''
-                        print 'stream = ' + stream + ', so appending pa, pb, and metadata'
+                        print 'stream = ' + stream + ', so appending pa, pb, pe (if present), and metadata'
                         print ''
                         out = appendMetaNetCDF(outfile, date, out_dir)
                             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
