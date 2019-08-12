@@ -6466,15 +6466,17 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
     revision = 'Revision no. 0. '
-    if out_dir[2:6] == 'RA2M':
+    if out_dir[2:9] == 'u-bg610':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
+    elif out_dir[2:9] == 'u-bl616':
+        micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Shipway (2015); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. No aerosol processing. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
-    dataset.references = 'Rose suite ID: u-bg610'
+    dataset.references = 'Rose suite ID: ' + out_dir[2:9]
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = revision + micro + wind
     dataset.institution = 'University of Leeds.'
