@@ -1173,7 +1173,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_RA2M_CON/OUT_R0/papbpc_combined/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R0/papbpc_combined/'
 
     print '******'
     print ''
@@ -1236,12 +1236,12 @@ def main():
     ## Flag for individual file or monthly:
     combine = 0
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8
 
     if combine == 0:
-        filename = root_dir + out_dir + names[0]
+        filename = root_dir + out_dir + names[-7]
         print filename
         print ''
 
@@ -1263,7 +1263,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename)
+        figure = plot_multicontour_TS(cube, filename)
 
     else:
         for i in range(0,len(names)):
@@ -1311,16 +1311,16 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
+        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
+        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
@@ -1337,9 +1337,9 @@ def main():
     # Plot data (map)
     # -------------------------------------------------------------
     ### select hour to plot
-    date = filename[-22:-14]
-    hour = 0
-    figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+    # date = filename[-22:-14]
+    # hour = 0
+    # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
