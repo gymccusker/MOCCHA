@@ -6492,7 +6492,7 @@ def writePE_CASIM(cube, eoutfile):
     # ###################################
     # forecast_period = dataset.createDimension('forecast_period', 24)
     forecast_time = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[0].points))
-    height = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[1].points))
+    height = dataset.createDimension('height', np.size(cube[0].dim_coords[1].points))
 
     ###################################
     ## Dimensions variables
