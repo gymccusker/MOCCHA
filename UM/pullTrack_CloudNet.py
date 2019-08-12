@@ -5980,7 +5980,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             else:
                 if cube[k].long_name == 'large_scale_ice_water_path':
                     ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                elif if cube[k].long_name == 'large_scale_ice_water_path':
+                elif if cube[k].long_name == 'large_scale_liquid_water_path':
                     ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 else:
                     ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
