@@ -6217,7 +6217,7 @@ def writeNetCDF(date, cube):
     #################################################################
     print '******'
     print 'Define .nc stream outfile:'
-    nc_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum.nc'
+    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
     print 'Final outfile = ', nc_outfile
 
     #################################################################
