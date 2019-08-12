@@ -6665,7 +6665,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/'
+    out_dir = '5_u-bl616_RA2M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -6673,6 +6673,7 @@ def main():
     ## 3_12AUG_SWATH_2FCSTS/
     ## 3_1AUG_SWATH_2FCSTS/
     ## 4_u-bg610_RA2M_CON/
+    ## 5_u-bl616_RA2M_CASIM/
 
     # -------------------------------------------------------------
     # Load ship track
