@@ -64,7 +64,17 @@ Stash_list = { # paXXX
               'm01s00i407': 'air_pressure',                                     # ro 1-70
               'm01s03i460': 'surface_downward_eastward_stress',
               'm01s03i461': 'surface_downward_northward_stress',
-              'm01s03i223': 'surface_upward_water_flux'
+              'm01s03i223': 'surface_upward_water_flux',
+              # peXXX -- CASIM MICROPHYSICS
+              'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
+              'm01s00i076': 'number_concentration_of_rain_in_air',
+              'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
+              'm01s00i079': 'number_concentration_of_snow_crystals_in_air',
+              'm01s00i081': 'number_concentration_of_graupel_in_air',
+              'm01s00i271': 'mass_fraction_of_pristine_cloud_ice_in_air',
+              'm01s00i273': 'mass_fraction_of_graupel_in_air',
+              'm01s00i272': 'mass_fraction_of_rain_in_air'
+
               # 'm01s03i476': 'atmosphere_boundary_layer_type',
               # 'm01s00i025': 'atmosphere_boundary_layer_thickness',
               # 'm01s03i202': 'downward_heat_flux_in_soil',
