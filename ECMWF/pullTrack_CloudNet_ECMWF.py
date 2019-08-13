@@ -267,35 +267,66 @@ def checkLatLon(ship_data, date, data):
     #             ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
 
     ### find where the ship's latitude fits within a grid box
-    data['lat_ind'] = {}
-    for j in range(0, len(data['nb_lats'])):
-        data['lat_ind'][j] = np.where(np.logical_and(ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]))
-        print 'found matching latitudes...'
+    # data['lat_ind'] = {}
+    # for j in range(0, len(data['nb_lats'])):
+    #     data['lat_ind'][j] = np.where(np.logical_and(ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]))
+    #     print 'found matching latitudes...'
+    #
+    # templat = ship_lats[0][data['lat_ind']]
+    # templon = ship_lons[0][data['lat_ind']]
 
     ### find where the ship's longitude fits within a grid box
-    data['lon_ind'] = {}
-    for i in range(0, len(data['rb_lons'])-1):
-        print i
-        # for h in range(0,25):
-        data['lon_ind'][i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] < data['rb_lons'][i]))
+    # data['lon_ind'] = {}
+    # for i in range(0, len(data['rb_lons'])-1):
+    #     print i
+    #     # for h in range(0,25):
+    #     data['lon_ind'][i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] < data['rb_lons'][i]))
+
+    # data['latlon_ind'] = {}
+    # for i in range(0, len(data['rb_lons'])-1):
+    #     print i
+    #     # for h in range(0,25):
+    #     data['latlon_ind'][i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] < data['rb_lons'][i]))
 
     # ship_lons[0][data['lat_ind'][18][0][0:5]]
 
-    print ''
-    print 'Ship indices defined: know which hours are spent in which grid boxes'
-    print ''
+    #
+    # for i in range(0,len(data['lat_ind'])):
+    #     for j in range(0,len(data['lon_ind'])):
+    #         np.where(np.logical_and(ship_lons[0][data['lat_ind'][i]] >= data['lb_lons'][j],ship_lons[0][data['lat_ind'][i]] < data['rb_lons'][j]), data['ship_ind'])
 
-    print 'Extracting position for t=0'
-    ## extract t=0 gpts
-    t = 0
-    temp = {}
-    for j in range(0, len(data['nb_lats'])-1):
-            for i in range(0, len(data['rb_lons'])-1):
-                for h in range(0, len(data['ship_ind'][i,j][0])):
-                    if data['ship_ind'][i,j][0][h] == t:
-                        temp = [i, j]; print temp
-                    else:
-                        continue
+    # print ''
+    # print 'Ship indices defined: know which hours are spent in which grid boxes'
+    # print ''
+    #
+    # print 'Extracting position for t=0'
+    # ## extract t=0 gpts
+    # t = 0
+    # temp = {}
+    # for j in range(0, len(data['nb_lats'])-1):
+    #         for i in range(0, len(data['rb_lons'])-1):
+    #             for h in range(0, len(data['ship_ind'][i,j][0])):
+    #                 if data['ship_ind'][i,j][0][h] == t:
+    #                     temp = [i, j]; print temp
+    #                 else:
+    #                     continue
+
+    hours = np.arange(0,25)
+    for h in range(0,10):
+        # works for hour = 0
+        print ''
+        print 'hour = ' + str(h)
+        for j in range(0,len(data['sb_lats'])):
+            if np.logical_and(ship_lats[0][h] >= data['sb_lats'][j], ship_lats[0][h] < data['nb_lats'][j]):
+                print 'j=' + str(j)
+                temp = j
+                templat = lats[j]
+                if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
+                    print 'lons match at j=' + str(j)
+                    templon = lons[j]
+
+
+
     return data
 
 def iceDrift(data):
