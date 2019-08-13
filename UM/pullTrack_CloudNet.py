@@ -6224,7 +6224,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         aoutfile = nc_outfile[:-3] + '_a.nc'
         if not os.path.exists(aoutfile): out = writePA_Analysis(fcube, aoutfile)
 
-    return fcube, nc_outfile
+    return nc_outfile
 
 def writeNetCDF(date, cube, nc_outfile):
 
