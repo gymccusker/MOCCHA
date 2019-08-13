@@ -6683,19 +6683,19 @@ def appendMetaNetCDF(outfile, date, out_dir):
             if not ncE.variables.keys()[d] in dataset.variables.keys():
                 print 'Writing ' + ncE.variables.keys()[d]
                 print ''
-                dat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
-                dat.scale_factor = float(1)
-                dat.add_offset = float(0)
+                daat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                daat.scale_factor = float(1)
+                daat.add_offset = float(0)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'units', None):
-                    dat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
+                    daat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
                 else:
-                    dat.units = 'unknown'
-                dat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
+                    daat.units = 'unknown'
+                daat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'standard_name', None):
-                    dat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
+                    daat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'long_name', None):
-                    dat.long_name = str(ncE.variables[ncE.variables.keys()[d]].long_name)
-                dat[:,:] = ncE.variables[ncE.variables.keys()[d]][:,:]
+                    daat.long_name = str(ncE.variables[ncE.variables.keys()[d]].long_name)
+                daat[:,:] = ncE.variables[ncE.variables.keys()[d]][:,:]
 
         ###################################
         ## Close read-only paXXX file
