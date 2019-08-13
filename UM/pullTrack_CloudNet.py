@@ -6625,7 +6625,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
                 dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
             else:
                 dat.units = 'unknown'
-            dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
+            if getattr(ncB.variables[ncB.variables.keys()[d]],'STASH', None):
+                dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
             if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
             if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
@@ -6661,7 +6662,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
                 dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
             else:
                 dat.units = 'unknown'
-            dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
+            if getattr(ncA.variables[ncA.variables.keys()[d]],'STASH', None):
+                dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
             if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
                 dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
             if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
@@ -6698,7 +6700,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
                     daat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
                 else:
                     daat.units = 'unknown'
-                daat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
+                if getattr(ncE.variables[ncE.variables.keys()[d]],'STASH', None):
+                    daat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'standard_name', None):
                     daat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
                 if getattr(ncE.variables[ncE.variables.keys()[d]],'long_name', None):
