@@ -6605,75 +6605,77 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     boutfile = outfile[:-3] + '_b.nc'
 
-    ncB = Dataset(boutfile, 'r')
+    if os.path.exists(boutfile):
+        ncB = Dataset(boutfile, 'r')
 
-    ###################################
-    ## Append pbXXX stream diagnostics
-    ###################################
+        ###################################
+        ## Append pbXXX stream diagnostics
+        ###################################
 
-    print 'Appending pbXXX diagnostics:'
-    print '---'
-    for d in range(0,len(ncB.variables)):
-        if ncB.variables.keys()[d] == 'forecast_time': continue
-        if not ncB.variables.keys()[d] in dataset.variables.keys():
-            print 'Writing ' + ncB.variables.keys()[d]
-            print ''
-            dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
-            dat.scale_factor = float(1)
-            dat.add_offset = float(0)
-            if getattr(ncB.variables[ncB.variables.keys()[d]],'units', None):
-                dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
-            else:
-                dat.units = 'unknown'
-            if getattr(ncB.variables[ncB.variables.keys()[d]],'STASH', None):
-                dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
-            if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
-                dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
-            if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
-                dat.long_name = str(ncB.variables[ncB.variables.keys()[d]].long_name)
-            dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
+        print 'Appending pbXXX diagnostics:'
+        print '---'
+        for d in range(0,len(ncB.variables)):
+            if ncB.variables.keys()[d] == 'forecast_time': continue
+            if not ncB.variables.keys()[d] in dataset.variables.keys():
+                print 'Writing ' + ncB.variables.keys()[d]
+                print ''
+                dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if getattr(ncB.variables[ncB.variables.keys()[d]],'units', None):
+                    dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+                else:
+                    dat.units = 'unknown'
+                if getattr(ncB.variables[ncB.variables.keys()[d]],'STASH', None):
+                    dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
+                if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
+                    dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
+                if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
+                    dat.long_name = str(ncB.variables[ncB.variables.keys()[d]].long_name)
+                dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
 
-    ###################################
-    ## Close read-only pbXXX file
-    ###################################
-    ncB.close()
+        ###################################
+        ## Close read-only pbXXX file
+        ###################################
+        ncB.close()
 
     ###################################
     ## Open paXXX netCDF file
     ###################################
     aoutfile = outfile[:-3] + '_a.nc'
 
-    ncA = Dataset(aoutfile, 'r')
+    if os.path.exists(aoutfile):
+        ncA = Dataset(aoutfile, 'r')
 
-    ###################################
-    ## Append paXXX stream diagnostics
-    ###################################
-    print 'Appending paXXX diagnostics:'
-    print '---'
-    for d in range(0,len(ncA.variables)):
-        if ncA.variables.keys()[d] == 'forecast_time': continue
-        if not ncA.variables.keys()[d] in dataset.variables.keys():
-            print 'Writing ' + ncA.variables.keys()[d]
-            print ''
-            dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
-            dat.scale_factor = float(1)
-            dat.add_offset = float(0)
-            if getattr(ncA.variables[ncA.variables.keys()[d]],'units', None):
-                dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
-            else:
-                dat.units = 'unknown'
-            if getattr(ncA.variables[ncA.variables.keys()[d]],'STASH', None):
-                dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
-            if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
-                dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
-            if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
-                dat.long_name = str(ncA.variables[ncA.variables.keys()[d]].long_name)
-            dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
+        ###################################
+        ## Append paXXX stream diagnostics
+        ###################################
+        print 'Appending paXXX diagnostics:'
+        print '---'
+        for d in range(0,len(ncA.variables)):
+            if ncA.variables.keys()[d] == 'forecast_time': continue
+            if not ncA.variables.keys()[d] in dataset.variables.keys():
+                print 'Writing ' + ncA.variables.keys()[d]
+                print ''
+                dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if getattr(ncA.variables[ncA.variables.keys()[d]],'units', None):
+                    dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+                else:
+                    dat.units = 'unknown'
+                if getattr(ncA.variables[ncA.variables.keys()[d]],'STASH', None):
+                    dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
+                if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
+                    dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
+                if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
+                    dat.long_name = str(ncA.variables[ncA.variables.keys()[d]].long_name)
+                dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
 
-    ###################################
-    ## Close read-only paXXX file
-    ###################################
-    ncA.close()
+        ###################################
+        ## Close read-only paXXX file
+        ###################################
+        ncA.close()
 
     ###################################
     ## Open peXXX netCDF file
