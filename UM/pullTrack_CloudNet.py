@@ -6878,13 +6878,21 @@ def main():
                     boutfile = nc_outfile[:-3] + '_b.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
                     if stream == '_pa012':
-                        if not os.path.exists(aoutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                        if not os.path.exists(aoutfile):
+                            print aoutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pb009':
-                        if not os.path.exists(boutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                        if not os.path.exists(boutfile):
+                            print boutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pe011':
-                        if not os.path.exists(eoutfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                        if not os.path.exists(eoutfile):
+                            print eoutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pc011':
-                        if not os.path.exists(nc_outfile): outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                        if not os.path.exists(nc_outfile):
+                            print nc_outfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     else:
                         print 'Valid stream not found.'
 
