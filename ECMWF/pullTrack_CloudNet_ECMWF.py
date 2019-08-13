@@ -266,6 +266,7 @@ def checkLatLon(ship_data, date, data):
     #             ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]),
     #             ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
 
+    ### find where the ship's latitude fits within a grid box
     data['lat_ind'] = {}
     for j in range(0, len(data['nb_lats'])):
         data['lat_ind'][j] = np.where(np.logical_and(ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]))
@@ -941,7 +942,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
