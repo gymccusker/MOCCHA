@@ -6181,7 +6181,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '******'
         print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
         print ''
-        if not os.path.exists(nc_outfile): out = writeNetCDF(date, fcube, nc_outfile)
+        if not os.path.exists(nc_outfile):
+            if 'fcube' in locals():
+                out = writeNetCDF(date, fcube, nc_outfile)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6196,7 +6198,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         print '***file is merged to outfile later***'
         print ''
         eoutfile = nc_outfile[:-3] + '_e.nc'
-        if not os.path.exists(eoutfile): out = writePE_CASIM(fcube, eoutfile)
+        if not os.path.exists(eoutfile):
+            if 'fcube' in locals():
+                out = writePE_CASIM(fcube, eoutfile)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6212,7 +6216,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
         boutfile = nc_outfile[:-3] + '_b.nc'
-        if not os.path.exists(boutfile): out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+        if not os.path.exists(boutfile):
+            if 'fcube' in locals():
+                out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream == '_pa012':
         print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
@@ -6222,7 +6228,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
         aoutfile = nc_outfile[:-3] + '_a.nc'
-        if not os.path.exists(aoutfile): out = writePA_Analysis(fcube, aoutfile)
+        if not os.path.exists(aoutfile):
+            if 'fcube' in locals():
+                out = writePA_Analysis(fcube, aoutfile)
 
     return nc_outfile
 
