@@ -230,11 +230,11 @@ def checkLatLon(ship_data, date, data):
         print 'hour = ' + str(h)
         for j in range(0,len(data['sb_lats'])):
             if np.logical_and(ship_lats[0][h] >= data['sb_lats'][j], ship_lats[0][h] < data['nb_lats'][j]):
-                print 'j=' + str(j)
+                # print 'j=' + str(j)
                 temp = j
                 templat = lats[j]
                 if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
-                    print 'lons match at j=' + str(j)
+                    print 'lats and lons match at j = ' + str(j)
                     templon = lons[j]
                     data['ship_lons'][h] = lons[j]
                     data['ship_hour'][h] = hours[h]
