@@ -225,11 +225,11 @@ def checkLatLon(ship_data, date, data):
     data['ship_lats'] = np.zeros(24)
     data['ship_hour'] = np.zeros(24)
     hours = np.arange(0,24)
+    jflag = np.zeros(24)
     for h in hours:
         # works for hour = 0
         print ''
         print 'hour = ' + str(h)
-        jflag = 0
         for j in range(0,len(data['sb_lats'])):
             if np.logical_and(ship_lats[0][h] >= data['sb_lats'][j], ship_lats[0][h] < data['nb_lats'][j]):
                 # print 'j=' + str(j)
@@ -237,8 +237,8 @@ def checkLatLon(ship_data, date, data):
                 # templat = lats[j]
                 if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
                     print 'lats and lons match at j = ' + str(j)
-                    jflag = jflag + 1
-                    print jflag
+                    jflag[h] = jflag[h] + 1
+                    print jflag[h]
                     # templon = lons[j]
                     data['ship_lons'][h] = lons[j]
                     data['ship_hour'][h] = hours[h]
@@ -248,19 +248,24 @@ def checkLatLon(ship_data, date, data):
         # if data['ship_lats'][h] == 0: data['ship_lats'][h] = data['ship_lats'][h-1]
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
-    print ''
-    print 'Check where grid is crossed:'
-    print ''
-    latcross_flag = 0
-    loncross_flag = 0
-    ### want to compare two hourly points though (i.e. between 0h and 1h where was the ship)
-    for h in range(0, len(hours)-1):
-        if data['ship_lats'][h] != data['ship_lats'][h+1]:
-            latcross_flag = 1
-            print 'lat grid crossed at h = ' + str(h)
-        if data['ship_lons'][h] != data['ship_lons'][h+1]:
-            loncross_flag = 1
-            print 'lon grid crossed at h = ' + str(h)
+        data['jflag'] = jflag
+        print ''
+        print 'Check flag for where grid is crossed:'
+        # print jflag
+        print ''
+        ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
+        if h > 0:
+            if jflag[h] > jflag[h-1]:
+                # print 'Grid crossed at h = ' + str(h)
+                grid_crossed = h
+
+    print 'Grid crossed at h = ' + str(grid_crossed)
+        # if data['ship_lats'][h] != data['ship_lats'][h+1]:
+        #     latcross_flag = 1
+        #     print 'lat grid crossed at h = ' + str(h)
+        # if data['ship_lons'][h] != data['ship_lons'][h+1]:
+        #     loncross_flag = 1
+        #     print 'lon grid crossed at h = ' + str(h)
 
 
     return data
@@ -322,8 +327,8 @@ def trackShip(data, date):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=7))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:])),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==11))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -1028,7 +1033,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    # data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print '******'
