@@ -6879,6 +6879,7 @@ def main():
                     #### LOAD CUBE
                     ### LOAD CUBE
                     nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
                     aoutfile = nc_outfile[:-3] + '_a.nc'
                     boutfile = nc_outfile[:-3] + '_b.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
