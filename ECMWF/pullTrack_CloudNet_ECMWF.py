@@ -145,7 +145,8 @@ def designGrid(data):
     data['rb_lons'][12] = rblons[11]
     data['rb_lons'][13] = rblons[13]
     data['rb_lons'][14] = rblons[13]
-    data['rb_lons'][15:18] = rblons[15:18]
+    data['rb_lons'][15:17] = rblons[15:17]
+    data['rb_lons'][17] = rblons[17] + 1.0
     data['rb_lons'][18] = data['lons'][17] + ((data['lons'][18] - data['lons'][17]) / 2.0)
     data['rb_lons'][19:21] = rblons[19]
     data['rb_lons'][21:27] = rblons[21:27]
@@ -248,25 +249,25 @@ def checkLatLon(ship_data, date, data):
         # if data['ship_lats'][h] == 0: data['ship_lats'][h] = data['ship_lats'][h-1]
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
+        ### want to increment jflag if h is different gpt than h-1
+        if h > 0:
+            if data['ship_lons'][h] != data['ship_lons'][h-1]:
+                print 'lat/lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
+                if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
+
         data['jflag'] = jflag
         print ''
-        print 'Check flag for where grid is crossed:'
-        # print jflag
+        print 'Check flag for where more than one grid point is crossed during an hour:'
+        print jflag
         print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
             if jflag[h] > jflag[h-1]:
-                # print 'Grid crossed at h = ' + str(h)
+                print 'Grid crossed at h = ' + str(h)
                 grid_crossed = h
 
-    print 'Grid crossed at h = ' + str(grid_crossed)
-        # if data['ship_lats'][h] != data['ship_lats'][h+1]:
-        #     latcross_flag = 1
-        #     print 'lat grid crossed at h = ' + str(h)
-        # if data['ship_lons'][h] != data['ship_lons'][h+1]:
-        #     loncross_flag = 1
-        #     print 'lon grid crossed at h = ' + str(h)
 
+    # print 'Grid crossed at h = ' + str(grid_crossed)
 
     return data
 
@@ -1033,7 +1034,7 @@ def main():
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    # data = plot_cartmap(ship_data, data, date)
+    data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print '******'
