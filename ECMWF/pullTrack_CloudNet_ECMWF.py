@@ -255,14 +255,14 @@ def checkLatLon(ship_data, date, data):
                 print 'lat/lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
             if data['ship_lons'][h] == data['ship_lons'][h-1]:
-                print 'reset jflag at h = ' + str(h-1)
+                # print 'reset jflag at h = ' + str(h-1)
                 if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
 
 
         data['jflag'] = jflag
-        print ''
-        print 'Check flag for where more than one grid point is crossed during an hour:'
-        # print jflag
+        # print ''
+        # print 'Check flag for where more than one grid point is crossed during an hour:'
+        # # print jflag
         print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
