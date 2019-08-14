@@ -252,17 +252,22 @@ def checkLatLon(ship_data, date, data):
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
-                print 'lat/lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
+                print 'lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
             if data['ship_lons'][h] == data['ship_lons'][h-1]:
                 # print 'reset jflag at h = ' + str(h-1)
                 if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
-
+            if data['ship_lats'][h] != data['ship_lats'][h-1]:
+                print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
+                if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
+            # if data['ship_lats'][h] == data['ship_lats'][h-1]:
+                # print 'reset jflag at h = ' + str(h-1)
+                # if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
 
         data['jflag'] = jflag
         # print ''
         # print 'Check flag for where more than one grid point is crossed during an hour:'
-        # # print jflag
+        print jflag
         print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
@@ -569,9 +574,9 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     #################################################################
     ## plot gridded ship track
     #################################################################
-    # plt.scatter(data['ship_lons'][:], data['ship_lats'][:], c = 'orange',
-    #         label = 'gridded track',
-    #         transform = ccrs.PlateCarree())
+    plt.scatter(data['ship_lons'][:], data['ship_lats'][:], c = 'yellow',
+            label = 'gridded track',
+            transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot ship track
@@ -991,7 +996,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180901'
+    date = '20180903'
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
