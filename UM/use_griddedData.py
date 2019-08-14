@@ -1173,7 +1173,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R0/papbpc_combined/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 
     print '******'
     print ''
@@ -1234,11 +1234,11 @@ def main():
     # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8
 
     if combine == 0:
         filename = root_dir + out_dir + names[0]
