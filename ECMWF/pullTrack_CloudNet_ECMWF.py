@@ -114,12 +114,6 @@ def designGrid(data):
     #         transform = ccrs.PlateCarree())
 
     ###---------------------------------------------------------------------------------
-    ### plot grid midpoints from file
-    # plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
-    #         label = 'Grid mid points',
-    #         transform = ccrs.PlateCarree())
-
-    ###---------------------------------------------------------------------------------
     ### find northern boundaries of gridpoints
     nblats = ((data['ulat'][1:] - data['ulat'][0:-1]) / 2.0) + data['ulat'][0:-1]       ## northern bounds for latitude
     data['nb_lats'] = np.zeros([np.size(data['lats'][:])])
@@ -140,14 +134,6 @@ def designGrid(data):
     data['sb_lats'][-2:] = data['nb_lats'][-3]
         # if data['ulat'][j] == data['lats'][i]:
         #     data['nb_lats'][i] = nblats[j]
-
-    # plt.scatter(data['lons'][:], data['sb_lats'][:], c = 'pink',
-    #         label = 'southern bounds',
-    #         transform = ccrs.PlateCarree())
-    #
-    # plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
-    #         label = 'northern bounds',
-    #         transform = ccrs.PlateCarree())
 
     ###---------------------------------------------------------------------------------
     ### find eastern boundaries of gridpoints
@@ -202,15 +188,6 @@ def designGrid(data):
     data['lb_lons'][35] = data['rb_lons'][34]; data['rb_lons'][35] = data['lons'][35] + (data['lons'][35] - data['rb_lons'][34])
     data['lb_lons'][36] = data['lons'][36] - (data['rb_lons'][36] - data['lons'][36])
     # data['lb_lons'][37] = data['rb_lons'][36]; data['rb_lons'][37] = data['lons'][37] + (data['lons'][37] - data['rb_lons'][36])
-
-    ###---------------------------------------------------------------------------------
-    ### plot longitude boundaries
-    # plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
-    #         label = 'eastern bounds',
-    #         transform = ccrs.PlateCarree())
-    # plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
-    #         label = 'western bounds',
-    #         transform = ccrs.PlateCarree())
 
     print 'All boundaries loaded :)'
 
@@ -311,8 +288,11 @@ def checkLatLon(ship_data, date, data):
     #                 else:
     #                     continue
 
-    hours = np.arange(0,25)
-    for h in range(0,10):
+    data['ship_lons'] = np.zeros(24)
+    data['ship_lats'] = np.zeros(24)
+    data['ship_hour'] = np.zeros(24)
+    hours = np.arange(0,24)
+    for h in hours:
         # works for hour = 0
         print ''
         print 'hour = ' + str(h)
@@ -324,8 +304,9 @@ def checkLatLon(ship_data, date, data):
                 if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
                     print 'lons match at j=' + str(j)
                     templon = lons[j]
-
-
+                    data['ship_lons'][h] = lons[j]
+                    data['ship_hour'][h] = hours[h]
+                    data['ship_lats'][h] = lats[j]
 
     return data
 
@@ -587,16 +568,45 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     # plt.pcolormesh(data['lats'][:],data['lons'][:],data['pressure'][:,0,0])
 
     #################################################################
-    ## plot UM nest
+    ## design ECMWF grid
     #################################################################
-    ### draw outline of grid
-    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
-    # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    # qplt.outline(cube[diag][hour,:,:])
 
-    data = designGrid(data)
+    # data = designGrid(data)
+
+    ###---------------------------------------------------------------------------------
+    ### plot grid midpoints
+    ###---------------------------------------------------------------------------------
+    plt.scatter(data['lons'][:], data['lats'][:], c = 'black',#data['pressure'][:,0,0],
+            label = 'Grid mid points',
+            transform = ccrs.PlateCarree())
+
+    ###---------------------------------------------------------------------------------
+    ### plot latitude boundaries
+    ###---------------------------------------------------------------------------------
+    plt.scatter(data['lons'][:], data['sb_lats'][:], c = 'pink',
+            label = 'southern bounds',
+            transform = ccrs.PlateCarree())
+
+    plt.scatter(data['lons'][:], data['nb_lats'][:], c = 'red',
+            label = 'northern bounds',
+            transform = ccrs.PlateCarree())
+
+    ###---------------------------------------------------------------------------------
+    ### plot longitude boundaries
+    ###---------------------------------------------------------------------------------
+    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+            label = 'eastern bounds',
+            transform = ccrs.PlateCarree())
+    plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
+            label = 'western bounds',
+            transform = ccrs.PlateCarree())
+
+    #################################################################
+    ## plot gridded ship track
+    #################################################################
+    plt.scatter(data['ship_lons'][:], data['ship_lats'][0:-1], c = 'yellow',
+            label = 'gridded track',
+            transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot ship track
@@ -649,7 +659,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    # plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
+    plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
 
     return data
@@ -1052,11 +1062,6 @@ def main():
     # map = plot_basemap(ship_data, lats, lons, tim)
 
     # -------------------------------------------------------------
-    # Plot data (cartopy map)
-    # -------------------------------------------------------------
-    # data = plot_cartmap(ship_data, data, date)
-
-    # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
     data = pullTrack(ship_data, data, date)
@@ -1064,6 +1069,11 @@ def main():
     ### temporary data save for development/debugging
     np.save('working_data', data)
     ### load with data = np.load('working_data.npy').item())
+
+    # -------------------------------------------------------------
+    # Plot data (cartopy map)
+    # -------------------------------------------------------------
+    data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print '******'
