@@ -202,10 +202,10 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
     # ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())    ### V LARGE
-    ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
+    # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
     # ax.set_global()
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
@@ -247,7 +247,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
+    qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
     # qplt.outline(cube[diag][hour,:,:])
@@ -319,7 +319,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     print 'Finished plotting cartopy map! :)'
     print ''
 
-    plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
+    # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
 
 def plot_contour_TS(cube, filename): #, lon, lat):
@@ -1175,6 +1175,8 @@ def main():
     ### CHOSEN RUN
     out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 
+    ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+
     print '******'
     print ''
     print 'Identifying .nc file: '
@@ -1311,16 +1313,16 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
+        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
+        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
@@ -1338,8 +1340,8 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # date = filename[-22:-14]
-    # hour = 0
-    # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+    hour = 0
+    figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
