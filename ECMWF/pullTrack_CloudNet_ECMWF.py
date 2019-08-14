@@ -239,7 +239,7 @@ def checkLatLon(ship_data, date, data):
                 if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
                     print 'lats and lons match at j = ' + str(j)
                     jflag[h] = jflag[h] + 1
-                    print jflag[h]
+                    # print jflag[h]
                     # templon = lons[j]
                     data['ship_lons'][h] = lons[j]
                     data['ship_hour'][h] = hours[h]
@@ -254,16 +254,20 @@ def checkLatLon(ship_data, date, data):
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
                 print 'lat/lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
+            if data['ship_lons'][h] == data['ship_lons'][h-1]:
+                print 'reset jflag at h = ' + str(h-1)
+                if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
+
 
         data['jflag'] = jflag
         print ''
         print 'Check flag for where more than one grid point is crossed during an hour:'
-        print jflag
+        # print jflag
         print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
             if jflag[h] > jflag[h-1]:
-                print 'Grid crossed at h = ' + str(h)
+                print 'Grid crossed at h = ' + str(h-1)
                 grid_crossed = h
 
 
