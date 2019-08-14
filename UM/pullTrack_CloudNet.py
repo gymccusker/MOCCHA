@@ -6925,7 +6925,7 @@ def main():
                         print 'stream = ' + stream + ', so appending pa, pb, pe (if present), and metadata'
                         print ''
                         # outfile = '20180902_oden_metum.nc'
-                        out = appendMetaNetCDF(outfile, date, out_dir)
+                        out = appendMetaNetCDF(nc_outfile, date, out_dir)
                             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                             ### os.rename(nc_outfile, final_outfile)
 
