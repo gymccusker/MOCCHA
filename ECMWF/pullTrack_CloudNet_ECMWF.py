@@ -220,74 +220,6 @@ def checkLatLon(ship_data, date, data):
     ship_lats = ship_data.values[data['day_ind'],7]
     ship_lons = ship_data.values[data['day_ind'],6]
 
-    ### find where in grid ship track pt n1 is closest to
-    # t = 0
-    # print 'Finding where ship pt is between two unique latitudes:'
-    # ind = {}
-    # index = {}
-    # for j in range(0, len(data['ulat'])-1):
-    #     ind[j] = np.where(np.logical_and(ship_lats[0][:] >= data['ulat'][j],ship_lats[0][:] <= data['ulat'][j+1]))
-
-    # print ind
-
-    # ind2 = {}
-    # # for i in range(0, len(data['rb_lons'])-1):
-    #     ind2[i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] <= data['rb_lons'][i]))
-
-
-    ### find which hours are spent in which grid boxes
-    # data['ship_ind'] = {}
-    # for j in range(0, len(data['nb_lats'])):
-    #         for i in range(0, len(data['rb_lons'])-1):
-    #             data['ship_ind'][i, j] = np.where(np.logical_and(np.logical_and(np.logical_and(
-    #             ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]),
-    #             ship_lons[0][:] >= data['lb_lons'][i]), ship_lons[0][:] < data['rb_lons'][i]))
-
-    ### find where the ship's latitude fits within a grid box
-    # data['lat_ind'] = {}
-    # for j in range(0, len(data['nb_lats'])):
-    #     data['lat_ind'][j] = np.where(np.logical_and(ship_lats[0][:] >= data['sb_lats'][j], ship_lats[0][:] < data['nb_lats'][j]))
-    #     print 'found matching latitudes...'
-    #
-    # templat = ship_lats[0][data['lat_ind']]
-    # templon = ship_lons[0][data['lat_ind']]
-
-    ### find where the ship's longitude fits within a grid box
-    # data['lon_ind'] = {}
-    # for i in range(0, len(data['rb_lons'])-1):
-    #     print i
-    #     # for h in range(0,25):
-    #     data['lon_ind'][i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] < data['rb_lons'][i]))
-
-    # data['latlon_ind'] = {}
-    # for i in range(0, len(data['rb_lons'])-1):
-    #     print i
-    #     # for h in range(0,25):
-    #     data['latlon_ind'][i] = np.where(np.logical_and(ship_lons[0][:] >= data['lb_lons'][i], ship_lons[0][:] < data['rb_lons'][i]))
-
-    # ship_lons[0][data['lat_ind'][18][0][0:5]]
-
-    #
-    # for i in range(0,len(data['lat_ind'])):
-    #     for j in range(0,len(data['lon_ind'])):
-    #         np.where(np.logical_and(ship_lons[0][data['lat_ind'][i]] >= data['lb_lons'][j],ship_lons[0][data['lat_ind'][i]] < data['rb_lons'][j]), data['ship_ind'])
-
-    # print ''
-    # print 'Ship indices defined: know which hours are spent in which grid boxes'
-    # print ''
-    #
-    # print 'Extracting position for t=0'
-    # ## extract t=0 gpts
-    # t = 0
-    # temp = {}
-    # for j in range(0, len(data['nb_lats'])-1):
-    #         for i in range(0, len(data['rb_lons'])-1):
-    #             for h in range(0, len(data['ship_ind'][i,j][0])):
-    #                 if data['ship_ind'][i,j][0][h] == t:
-    #                     temp = [i, j]; print temp
-    #                 else:
-    #                     continue
-
     data['ship_lons'] = np.zeros(24)
     data['ship_lats'] = np.zeros(24)
     data['ship_hour'] = np.zeros(24)
@@ -307,6 +239,10 @@ def checkLatLon(ship_data, date, data):
                     data['ship_lons'][h] = lons[j]
                     data['ship_hour'][h] = hours[h]
                     data['ship_lats'][h] = lats[j]
+
+        # if data['ship_lons'][h] == 0: data['ship_lons'][h] = data['ship_lons'][h-1]
+        # if data['ship_lats'][h] == 0: data['ship_lats'][h] = data['ship_lats'][h-1]
+        if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
     return data
 
@@ -604,7 +540,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     #################################################################
     ## plot gridded ship track
     #################################################################
-    plt.scatter(data['ship_lons'][:], data['ship_lats'][0:-1], c = 'yellow',
+    plt.scatter(data['ship_lons'][:], data['ship_lats'][:], c = 'orange',
             label = 'gridded track',
             transform = ccrs.PlateCarree())
 
