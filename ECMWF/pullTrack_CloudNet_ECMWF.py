@@ -224,6 +224,8 @@ def checkLatLon(ship_data, date, data):
     ### compare hourly lat-lon with ECMWF grid
     data['ship_lons'] = np.zeros(24)
     data['ship_lats'] = np.zeros(24)
+    data['ship_lon_ind'] = np.zeros(24)
+    data['ship_lat_ind'] = np.zeros(24)
     data['ship_hour'] = np.zeros(24)
     hours = np.arange(0,24)
     jflag = np.zeros(24)
