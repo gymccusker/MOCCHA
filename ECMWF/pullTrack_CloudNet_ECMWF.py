@@ -245,8 +245,6 @@ def checkLatLon(ship_data, date, data):
                     data['ship_hour'][h] = hours[h]
                     data['ship_lats'][h] = lats[j]
 
-        # if data['ship_lons'][h] == 0: data['ship_lons'][h] = data['ship_lons'][h-1]
-        # if data['ship_lats'][h] == 0: data['ship_lats'][h] = data['ship_lats'][h-1]
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
         ### want to increment jflag if h is different gpt than h-1
@@ -260,13 +258,8 @@ def checkLatLon(ship_data, date, data):
             if data['ship_lats'][h] != data['ship_lats'][h-1]:
                 print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
-            # if data['ship_lats'][h] == data['ship_lats'][h-1]:
-                # print 'reset jflag at h = ' + str(h-1)
-                # if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
 
-        data['jflag'] = jflag
-        # print ''
-        # print 'Check flag for where more than one grid point is crossed during an hour:'
+        data['jflag'] = jflag       ### so jflag is written out for testing
         print jflag
         print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
@@ -274,9 +267,6 @@ def checkLatLon(ship_data, date, data):
             if jflag[h] > jflag[h-1]:
                 print 'Grid crossed at h = ' + str(h-1)
                 grid_crossed = h
-
-
-    # print 'Grid crossed at h = ' + str(grid_crossed)
 
     return data
 
