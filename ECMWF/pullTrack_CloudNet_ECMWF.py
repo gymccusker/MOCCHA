@@ -244,6 +244,8 @@ def checkLatLon(ship_data, date, data):
                     data['ship_lons'][h] = lons[j]
                     data['ship_hour'][h] = hours[h]
                     data['ship_lats'][h] = lats[j]
+                    data['ship_lon_ind'][h] = j         # define grid point indices for use later
+                    data['ship_lat_ind'][h] = j
 
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
