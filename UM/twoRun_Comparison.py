@@ -1208,13 +1208,13 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    # # -------------------------------------------------------------
-    # # Load cube
-    # # -------------------------------------------------------------
+    ### -------------------------------------------------------------
+    ### Load cube
+    ### -------------------------------------------------------------
     print '******'
     print ''
     print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
+    print ''
 
     ### -------------------------------------------------------------------------
     ### define input filename
@@ -1235,7 +1235,6 @@ def main():
             '20180824_oden_metum.nc']
 
     Sep_missing_files = []
-
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -1262,7 +1261,7 @@ def main():
             # cube = iris.load_cubes(filename1, global_con)
             cube = iris.load(filename)#, global_con, callback)
 
-            # -------------------------------------------------------------
+        # -------------------------------------------------------------
 
         print cube
         print ''
