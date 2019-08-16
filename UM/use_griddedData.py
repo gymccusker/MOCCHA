@@ -239,7 +239,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #     iplt.pcolormesh(cube[diag][hour,:,:])
     #     # iplt.pcolormesh(cube[hour,471:495,240:264])
     # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
+    iplt.pcolormesh(cube[diag][290:370,150:230])
     # # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
     # plt.colorbar()
 
@@ -251,7 +251,9 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][290:370,150:230])
+    # qplt.outline(cube[diag][290:370,150:230])
+
+
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
