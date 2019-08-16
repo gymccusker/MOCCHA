@@ -1240,7 +1240,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '5_u-bl616_RA2M_CASIM/OUT_R0/'
+    out_dir = 'TESTING/domain_tests/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
