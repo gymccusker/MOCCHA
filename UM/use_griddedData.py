@@ -1152,7 +1152,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -1173,8 +1173,9 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir = 'TESTING/domain_tests/'
 
+    ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 
     print '******'
@@ -1233,12 +1234,12 @@ def main():
     Sep_missing_files = []
 
 
-    # names = ['umnsaa_pa000.nc','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
+    names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 1
+    combine = 0
     ## Choose month:
-    names = Aug_names
+    # names = Aug_names
     missing_files = Aug_missing_files
     month_flag = 8
 
@@ -1265,7 +1266,15 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename)
+        # figure = plot_multicontour_TS(cube, filename)
+
+        # -------------------------------------------------------------
+        # Plot data (map)
+        # -------------------------------------------------------------
+        ### select hour to plot
+        date = '20180814'
+        hour = 0
+        figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     else:
         for i in range(0,len(names)):
