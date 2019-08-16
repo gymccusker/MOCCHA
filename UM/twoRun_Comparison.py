@@ -1174,7 +1174,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '5_u-bl616_RA2M_CASIM/OUT_R0/papbpc_combined/'
+    out_dir2 = '5_u-bl616_RA2M_CASIM/OUT_R0/'
 
     # out_dir = '5_u-bl616_RA2M_CASIM/'
     # date_dir = os.listdir(root_dir + out_dir)
