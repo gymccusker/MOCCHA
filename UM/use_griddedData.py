@@ -451,7 +451,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
-    j = -1
+    l = -1
     for i in range(0,len(cube)):
         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
         if np.sum(cube[i].data.shape) > 24:
@@ -463,6 +463,10 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 print ''
                 print 'Diag is: '
                 print cube[diag]
+
+                ### define empty array for cube data
+                data = []
+
                 ### pcXXX
                 # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
                 # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -490,108 +494,104 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 # else:
                 #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
 
-                if cube[diag].var_name == 'temperature':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-                elif cube[diag].var_name == 'qice':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
-                    title = cube[diag].var_name + ' [g/kg]'
-                    j = j + 1
-                elif cube[diag].var_name == 'qliq':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
-                    title = cube[diag].var_name + ' [g/kg]'
-                    j = j + 1
-                elif cube[diag].var_name == 'q':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
-                    title = cube[diag].var_name + ' [g/kg]'
-                    j = j + 1
-                elif cube[diag].var_name == 'pressure':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
-                    title = cube[diag].var_name + ' [hPa]'
-                    j = j + 1
-                elif cube[diag].var_name == 'uwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-                elif cube[diag].var_name == 'wwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-                elif cube[diag].var_name == 'radr_refl':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-                elif cube[diag].var_name == 'cloud_fraction':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-                elif cube[diag].var_name == 'vwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                    j = j + 1
-
-                #################################################################
-                ## create figure and axes instances
-                #################################################################
-                plt.subplot(5,2,j+1)
-                ax = plt.gca()
-
                 #################################################################
                 ## data corrections
                 #################################################################
                 ### set height limit to consider
                 ind = np.where(height<5000)
 
-                #################################################################
-                ## plot timeseries
-                #################################################################
-                # plt.contourf(time,height,np.transpose(cube[diag].data))
                 if cube[diag].var_name == 'temperature':
-                    plt.pcolormesh(time, height[ind], data, vmin = 260, vmax = np.nanmax(data))
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                elif cube[diag].var_name == 'qice':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                elif cube[diag].var_name == 'qliq':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                elif cube[diag].var_name == 'q':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                elif cube[diag].var_name == 'pressure':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
+                    title = cube[diag].var_name + ' [hPa]'
                 elif cube[diag].var_name == 'uwind':
-                    plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
-                elif cube[diag].var_name == 'vwind':
-                    plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'wwind':
-                    plt.pcolormesh(time, height[ind], data, vmin = -0.1, vmax = 0.1)
-                else:
-                    plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
-
-                #################################################################
-                ## set plot properties
-                #################################################################
-                ### colormaps:
-                if cube[diag].var_name == 'wwind':
-                    plt.set_cmap(mpl_cm.RdBu_r)
-                elif cube[diag].var_name == 'uwind':
-                    plt.set_cmap(mpl_cm.RdBu_r)
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                elif cube[diag].var_name == 'radr_refl':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                elif cube[diag].var_name == 'cloud_fraction':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'vwind':
-                    plt.set_cmap(mpl_cm.RdBu_r)
-                elif cube[diag].var_name[0] == 'q':
-                    plt.set_cmap(mpl_cm.Blues)
-                else:
-                    plt.set_cmap(mpl_cm.viridis)
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
 
-                ### title and axes properties
-                plt.title(title)
-                plt.colorbar()
-                ax.set_ylim([0, 5000])
+                #################################################################
+                ## create figure and axes instances
+                #################################################################
+                if len(data) > 0:
+                    l = l + 1 ## increment index for positive data association
 
-    ### global plot properties
-    plt.subplot(5,2,9)
-    plt.xlabel('Time [UTC]')
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,10)
-    plt.xlabel('Time [UTC]')
-    plt.subplot(5,2,1)
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,3)
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,5)
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,7)
-    plt.ylabel('Z [m]')
+                    print 'l = ' + str(l)
+                    print title
+
+                    plt.subplot(5,2,l+1)
+                    ax = plt.gca()
+
+                    #################################################################
+                    ## plot timeseries
+                    #################################################################
+                    # plt.contourf(time,height,np.transpose(cube[diag].data))
+                    if cube[diag].var_name == 'temperature':
+                        plt.pcolormesh(time, height[ind], data, vmin = 260, vmax = np.nanmax(data))
+                    elif cube[diag].var_name == 'uwind':
+                        plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+                    elif cube[diag].var_name == 'vwind':
+                        plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+                    elif cube[diag].var_name == 'wwind':
+                        plt.pcolormesh(time, height[ind], data, vmin = -0.1, vmax = 0.1)
+                    else:
+                        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+
+                    #################################################################
+                    ## set plot properties
+                    #################################################################
+                    ### colormaps:
+                    if cube[diag].var_name == 'wwind':
+                        plt.set_cmap(mpl_cm.RdBu_r)
+                    elif cube[diag].var_name == 'uwind':
+                        plt.set_cmap(mpl_cm.RdBu_r)
+                    elif cube[diag].var_name == 'vwind':
+                        plt.set_cmap(mpl_cm.RdBu_r)
+                    elif cube[diag].var_name[0] == 'q':
+                        plt.set_cmap(mpl_cm.Blues)
+                    else:
+                        plt.set_cmap(mpl_cm.viridis)
+
+                    ### title and axes properties
+                    plt.title(title)
+                    plt.colorbar()
+                    ax.set_ylim([0, 5000])
+
+                    ### global plot properties
+                    plt.subplot(5,2,9)
+                    plt.xlabel('Time [UTC]')
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,10)
+                    plt.xlabel('Time [UTC]')
+                    plt.subplot(5,2,1)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,3)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,5)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,7)
+                    plt.ylabel('Z [m]')
 
     print '******'
     print ''
