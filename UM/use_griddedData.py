@@ -4,7 +4,6 @@
 ###
 ###
 
-
 import time
 import datetime
 import numpy as np
@@ -412,7 +411,7 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
-def plot_multicontour_TS(cube, filename): #, lon, lat):
+def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -564,7 +563,10 @@ def plot_multicontour_TS(cube, filename): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    fileout = 'FIGS/' + filename[-22:-3] + '.png'
+    if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+        fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
+    elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+        fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -766,8 +768,16 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == 8: fileout = 'FIGS/201808_oden_metum.png'
-    if month_flag == 9: fileout = 'FIGS/201809_oden_metum.png'
+    if month_flag == 8:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum.png'
+    if month_flag == 9:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -937,8 +947,18 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Da.png'
-    if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Da.png'
+    if month_flag == 8:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Da.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Da.png'
+    if month_flag == 9:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
+    # if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Da.png'
+    # if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Da.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1116,8 +1136,18 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Db.png'
-    if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Db.png'
+    if month_flag == 8:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Db.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Db.png'
+    if month_flag == 9:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Db.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Db.png'
+    # if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Db.png'
+    # if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Db.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1173,10 +1203,11 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir = '5_u-bl616_RA2M_CASIM/OUT_R0/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
+    ### 5_u-bl616_RA2M_CASIM/OUT_R0/
 
     print '******'
     print ''
@@ -1267,7 +1298,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename)
+        figure = plot_multicontour_TS(cube, filename, out_dir)
 
         # -------------------------------------------------------------
         # Plot data (map)
@@ -1323,22 +1354,22 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files)
+        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files)
+        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename)
+        # figure = plot_multicontour_TS(cube, filename, out_dir)
 
 
     # -------------------------------------------------------------
@@ -1350,8 +1381,8 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # date = filename[-22:-14]
-    hour = 0
-    figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+    # hour = 0
+    # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
