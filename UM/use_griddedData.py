@@ -548,7 +548,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     #################################################################
                     # plt.contourf(time,height,np.transpose(cube[diag].data))
                     if cube[diag].var_name == 'temperature':
-                        plt.pcolormesh(time, height[ind], data, vmin = 260, vmax = np.nanmax(data))
+                        plt.pcolormesh(time, height[ind], data, vmin = 250, vmax = np.nanmax(data))
                     elif cube[diag].var_name == 'uwind':
                         plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'vwind':
@@ -598,11 +598,11 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    # if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #     fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
-    # elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #     fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
-    # plt.savefig(fileout, dpi=300)
+    if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+        fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
+    elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+        fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
@@ -1310,7 +1310,7 @@ def main():
     month_flag = 9
 
     if combine == 0:
-        name = '20180901_oden_metum.nc'
+        name = '20180902_oden_metum.nc'
         filename = root_dir + out_dir + name #names[0]
         print filename
         print ''
