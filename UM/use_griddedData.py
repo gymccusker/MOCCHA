@@ -92,12 +92,13 @@ def inIce(data):
     return inIce_index
 
 def trackShip(data, date):
-
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]==1))
+    # trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
+    # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -195,7 +196,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(8,12), dpi=300)
+    plt.figure(figsize=(6,8))#, dpi=300)
     ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
     # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
@@ -250,7 +251,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][:,:])
+    qplt.outline(cube[diag][290:370,150:230])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -265,40 +266,40 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     trackShip_index = trackShip(ship_data, date)
 
     ### Plot tracks as line plot
-    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     ### Plot full track as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
-             color = 'pink', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
-             transform = ccrs.PlateCarree(), label = 'Drift',
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
+    #          color = 'pink', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+    #          color = 'red', linewidth = 4,
+    #          transform = ccrs.PlateCarree(), label = 'Drift',
+    #          )
 
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
@@ -1301,18 +1302,18 @@ def main():
     Sep_missing_files = []
 
 
-    # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
+    names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 0
     ## Choose month:
-    names = Sep_names
+    # names = Sep_names
     missing_files = Sep_missing_files
     month_flag = 9
 
     if combine == 0:
-        name = '20180902_oden_metum.nc'
-        filename = root_dir + out_dir + name #names[0]
+        # name = '20180902_oden_metum.nc'
+        filename = root_dir + out_dir + names[0]
         print filename
         print ''
 
@@ -1334,15 +1335,15 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename, out_dir)
+        # figure = plot_multicontour_TS(cube, filename, out_dir)
 
         # -------------------------------------------------------------
         # Plot data (map)
         # -------------------------------------------------------------
         ### select hour to plot
-        # date = '20180814'
-        # hour = 0
-        # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+        date = '20180814'
+        hour = 0
+        figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     else:
         for i in range(0,len(names)):
