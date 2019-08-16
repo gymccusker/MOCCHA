@@ -455,7 +455,6 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     for i in range(0,len(cube)):
         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
         if np.sum(cube[i].data.shape) > 24:
-                j = j + 1
 
                 ###################################
                 ## CHOOSE DIAGNOSTIC
@@ -483,6 +482,55 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 time = cube[diag].dim_coords[0].points
                 height = cube[diag].dim_coords[1].points
 
+                ### if mass mixing ratio, *1e3 to change to g/kg
+                # if cube[diag].var_name[0] == 'q':
+                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                # elif cube[diag].var_name == 'pressure':
+                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
+                # else:
+                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+
+                if cube[diag].var_name == 'temperature':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+                elif cube[diag].var_name == 'qice':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                    j = j + 1
+                elif cube[diag].var_name == 'qliq':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                    j = j + 1
+                elif cube[diag].var_name == 'q':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    title = cube[diag].var_name + ' [g/kg]'
+                    j = j + 1
+                elif cube[diag].var_name == 'pressure':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
+                    title = cube[diag].var_name + ' [hPa]'
+                    j = j + 1
+                elif cube[diag].var_name == 'uwind':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+                elif cube[diag].var_name == 'wwind':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+                elif cube[diag].var_name == 'radr_refl':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+                elif cube[diag].var_name == 'cloud_fraction':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+                elif cube[diag].var_name == 'vwind':
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    j = j + 1
+
                 #################################################################
                 ## create figure and axes instances
                 #################################################################
@@ -494,14 +542,6 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 #################################################################
                 ### set height limit to consider
                 ind = np.where(height<5000)
-
-                ### if mass mixing ratio, *1e3 to change to g/kg
-                if cube[diag].var_name[0] == 'q':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
-                elif cube[diag].var_name == 'pressure':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
-                else:
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
 
                 #################################################################
                 ## plot timeseries
@@ -534,12 +574,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     plt.set_cmap(mpl_cm.viridis)
 
                 ### title and axes properties
-                if cube[diag].var_name[0] == 'q':
-                    plt.title(cube[diag].var_name + ' [g/kg]')
-                elif cube[diag].var_name == 'pressure':
-                    plt.title(cube[diag].var_name + ' [hPa]')
-                else:
-                    plt.title(cube[diag].var_name + ' [' + str(cube[diag].units) + ']')
+                plt.title(title)
                 plt.colorbar()
                 ax.set_ylim([0, 5000])
 
@@ -563,11 +598,11 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-        fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
-    elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-        fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
-    plt.savefig(fileout, dpi=300)
+    # if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #     fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
+    # elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #     fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
@@ -1182,7 +1217,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
