@@ -1173,10 +1173,10 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = 'TESTING/domain_tests/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 
     ### TESTING/domain_tests/umnsaa_pa000
-    ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
 
     print '******'
     print ''
@@ -1234,17 +1234,18 @@ def main():
     Sep_missing_files = []
 
 
-    names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
+    # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 0
     ## Choose month:
-    # names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9
 
     if combine == 0:
-        filename = root_dir + out_dir + names[0]
+        name = '20180901_oden_metum.nc'
+        filename = root_dir + out_dir + name #names[0]
         print filename
         print ''
 
@@ -1266,15 +1267,15 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename)
+        figure = plot_multicontour_TS(cube, filename)
 
         # -------------------------------------------------------------
         # Plot data (map)
         # -------------------------------------------------------------
         ### select hour to plot
-        date = '20180814'
-        hour = 0
-        figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+        # date = '20180814'
+        # hour = 0
+        # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     else:
         for i in range(0,len(names)):
