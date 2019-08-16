@@ -1152,7 +1152,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -1353,8 +1353,8 @@ def main():
     # -------------------------------------------------------------
     ### select hour to plot
     # date = filename[-22:-14]
-    hour = 0
-    figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+    # hour = 0
+    # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
