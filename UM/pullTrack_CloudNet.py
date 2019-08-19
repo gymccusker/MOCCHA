@@ -5491,6 +5491,14 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -211
         yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 81:          ### 14th and 24th August
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -211
+        yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 380:
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -211
+        yoffset = -385
     else:
     # elif cube[0,0].shape >= 500-1:
         xoffset = 0
@@ -5604,27 +5612,27 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     trackShip_index = trackShip(ship_data)
 
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
 
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    # tim, ilat, ilon = readGriddedTrack(grid_filename)
-    #
-    # ### Plot tracks as line plot
-    # for i in range(0, len(ilon)-1):
-    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+    ### Plot tracks as line plot
+    for i in range(0, len(ilon)-1):
+        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
@@ -6776,7 +6784,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '5_u-bl616_RA2M_CASIM/'
+    out_dir = '4_u-bg610_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -6816,8 +6824,8 @@ def main():
     for date in date_dir:
         ### just do first date:
         # if date == date_dir[0]:
-        if date[0:4] == '2018':
-        # if date[0:8] == '20180813':
+        # if date[0:4] == '2018':
+        if date[0:8] == '20180813':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
@@ -6877,31 +6885,30 @@ def main():
                     # -------------------------------------------------------------
                     # Pull gridded ship track from cube
                     # -------------------------------------------------------------
-                    #### LOAD CUBE
-                    ### LOAD CUBE
-                    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-                    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
-                    aoutfile = nc_outfile[:-3] + '_a.nc'
-                    boutfile = nc_outfile[:-3] + '_b.nc'
-                    eoutfile = nc_outfile[:-3] + '_e.nc'
-                    if stream == '_pa012':
-                        if not os.path.exists(aoutfile):
-                            print aoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    elif stream == '_pb009':
-                        if not os.path.exists(boutfile):
-                            print boutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    elif stream == '_pe011':
-                        if not os.path.exists(eoutfile):
-                            print eoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    elif stream == '_pc011':
-                        if not os.path.exists(nc_outfile):
-                            print nc_outfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    else:
-                        print 'Valid stream not found.'
+                    # ### LOAD CUBE
+                    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+                    # aoutfile = nc_outfile[:-3] + '_a.nc'
+                    # boutfile = nc_outfile[:-3] + '_b.nc'
+                    # eoutfile = nc_outfile[:-3] + '_e.nc'
+                    # if stream == '_pa012':
+                    #     if not os.path.exists(aoutfile):
+                    #         print aoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pb009':
+                    #     if not os.path.exists(boutfile):
+                    #         print boutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pe011':
+                    #     if not os.path.exists(eoutfile):
+                    #         print eoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pc011':
+                    #     if not os.path.exists(nc_outfile):
+                    #         print nc_outfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # else:
+                    #     print 'Valid stream not found.'
 
                     # if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
@@ -6910,8 +6917,8 @@ def main():
                     ##Plot data (map)
                     ##-------------------------------------------------------------
                     ## select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                    hour = 0
+                    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
                 else:
                     print ''
                     print '****File does not exist****'
