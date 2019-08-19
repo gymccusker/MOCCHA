@@ -6863,8 +6863,8 @@ def main():
     for date in date_dir:
         ### just do first date:
         # if date == date_dir[0]:
-        # if date[0:4] == '2018':
-        if date[0:8] == '20180823':
+        if date[0:4] == '2018':
+        # if date[0:8] == '20180823':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
@@ -6892,7 +6892,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012']#,'_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012','_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[10:-1]
             outfiles = [] ### define list to add processed filenames to
 
@@ -6925,40 +6925,40 @@ def main():
                     # -------------------------------------------------------------
                     # Pull gridded ship track from cube
                     # -------------------------------------------------------------
-                    # ### LOAD CUBE
-                    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-                    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
-                    # aoutfile = nc_outfile[:-3] + '_a.nc'
-                    # boutfile = nc_outfile[:-3] + '_b.nc'
-                    # eoutfile = nc_outfile[:-3] + '_e.nc'
-                    # if stream == '_pa012':
-                    #     if not os.path.exists(aoutfile):
-                    #         print aoutfile + ' does not exist, so pulling ship track...'
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    # elif stream == '_pb009':
-                    #     if not os.path.exists(boutfile):
-                    #         print boutfile + ' does not exist, so pulling ship track...'
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    # elif stream == '_pe011':
-                    #     if not os.path.exists(eoutfile):
-                    #         print eoutfile + ' does not exist, so pulling ship track...'
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    # elif stream == '_pc011':
-                    #     if not os.path.exists(nc_outfile):
-                    #         print nc_outfile + ' does not exist, so pulling ship track...'
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    # else:
-                    #     print 'Valid stream not found.'
+                    ### LOAD CUBE
+                    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+                    aoutfile = nc_outfile[:-3] + '_a.nc'
+                    boutfile = nc_outfile[:-3] + '_b.nc'
+                    eoutfile = nc_outfile[:-3] + '_e.nc'
+                    if stream == '_pa012':
+                        if not os.path.exists(aoutfile):
+                            print aoutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pb009':
+                        if not os.path.exists(boutfile):
+                            print boutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pe011':
+                        if not os.path.exists(eoutfile):
+                            print eoutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pc011':
+                        if not os.path.exists(nc_outfile):
+                            print nc_outfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    else:
+                        print 'Valid stream not found.'
 
-                    # if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    # if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
+                    ### if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    ### if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
 
                     ##-------------------------------------------------------------
                     ##Plot data (map)
                     ##-------------------------------------------------------------
                     ## select hour to plot
-                    hour = 0
-                    map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
+                    # hour = 0
+                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
                 else:
                     print ''
                     print '****File does not exist****'
