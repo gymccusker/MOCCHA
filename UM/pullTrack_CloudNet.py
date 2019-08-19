@@ -5493,12 +5493,12 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
         yoffset = -385
     elif len(cube[0].dim_coords[-1].points) == 81:          ### 14th and 24th August
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -211
-        yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 380:
+        xoffset = -120
+        yoffset = -120
+    elif len(cube[0].dim_coords[-1].points) == 380:         ### needs checked
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -211
-        yoffset = -385
+        xoffset = -120
+        yoffset = -120
     else:
     # elif cube[0,0].shape >= 500-1:
         xoffset = 0
@@ -5656,7 +5656,6 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #          color = 'red', linewidth = 4,
     #          transform = ccrs.PlateCarree(), label = 'Drift',
     #          )
-
 
 
     #### test plotting of unrotated grid
