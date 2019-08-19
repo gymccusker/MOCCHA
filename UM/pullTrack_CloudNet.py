@@ -5432,8 +5432,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==12,data.values[:,1]==9),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==13,data.values[:,1]==9),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==26,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -5475,45 +5475,46 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     import cartopy
         # from matplotlib.patches import Polygon
 
+    ###################################
+    ## CHOOSE DIAGNOSTIC
+    ###################################
+    diag = 5
+    print ''
+    print 'Diag is: ', cube[diag].long_name
+    print ''
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
     print 'What grid are we looking at?'
-    if len(cube[0].dim_coords[-1].points) == 25:
+    if len(cube[diag].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 56:
+    elif len(cube[diag].dim_coords[-1].points) == 56:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 94:
+    elif len(cube[diag].dim_coords[-1].points) == 94:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -211
         yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 81:          ### 14th and 24th August
+    elif len(cube[diag].dim_coords[-1].points) == 81:          ### 14th and 24th August
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -120
-        yoffset = -120
-    elif len(cube[0].dim_coords[-1].points) == 380:         ### needs checked
+        xoffset = -209
+        yoffset = -399
+    elif len(cube[diag].dim_coords[-1].points) == 380:         ### needs checked
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -120
-        yoffset = -120
+        xoffset = -60
+        yoffset = -110
     else:
     # elif cube[0,0].shape >= 500-1:
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
+    print 'Because cube shape = ', str(len(cube[diag].dim_coords[-1].points))
     print 'xoffset = ', xoffset
     print 'yoffset = ', yoffset
 
-    ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    diag = 1
-    print ''
-    print 'Diag is: ', cube[diag].long_name
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -5556,14 +5557,14 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(12,10))
-    ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    plt.figure(figsize=(6,8))
+    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
+    # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([0, 60, 87.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
 
     ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
@@ -5597,7 +5598,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][hour,:,:])
+    qplt.outline(cube[diag][0,:,:])          ### 14th/24th swath
+    # qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -5612,18 +5614,18 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     trackShip_index = trackShip(ship_data)
 
     ### Plot tracks as line plot
-    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     #################################################################
     ## read in and plot gridded ship track
@@ -5798,14 +5800,22 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 21:
+    elif len(cube[0].dim_coords[-1].points) == 56:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -254
-        yoffset = -374
+        xoffset = -210
+        yoffset = -385
     elif len(cube[0].dim_coords[-1].points) == 94:
-    # elif cube[0,0].shape >= 93-1:    # ll = 212, 386
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -211
         yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 81:          ### 14th and 24th August
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -209
+        yoffset = -399
+    elif len(cube[0].dim_coords[-1].points) == 380:         ### needs checked
+    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+        xoffset = -60
+        yoffset = -110
     else:
     # elif cube[0,0].shape >= 500-1:
         xoffset = 0
@@ -5849,6 +5859,36 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             print ''
             print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
             print ''
+
+            ###---------------------------------
+            ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
+            ###---------------------------------
+            print 'Double-checking grid:'
+            if len(cube[k].dim_coords[-1].points) == 25:
+            # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+                xoffset = -239
+                yoffset = -470
+            elif len(cube[k].dim_coords[-1].points) == 56:
+            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                xoffset = -210
+                yoffset = -385
+            elif len(cube[k].dim_coords[-1].points) == 94:
+            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                xoffset = -211
+                yoffset = -385
+            elif len(cube[k].dim_coords[-1].points) == 81:          ### 14th and 24th August
+            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                xoffset = -209
+                yoffset = -399
+            elif len(cube[k].dim_coords[-1].points) == 380:         ### needs checked
+            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                xoffset = -60
+                yoffset = -110
+            else:
+            # elif cube[0,0].shape >= 500-1:
+                xoffset = 0
+                yoffset = 0
+            print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
 
             #################################################################
             ## if our diagnostics are 3-hourly, ignore
@@ -6762,7 +6802,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -6773,8 +6813,8 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        root_dir = '/home/gillian/MOCCHA/UM/DATA/'
+        ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -6824,7 +6864,7 @@ def main():
         ### just do first date:
         # if date == date_dir[0]:
         # if date[0:4] == '2018':
-        if date[0:8] == '20180813':
+        if date[0:8] == '20180823':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
@@ -6852,7 +6892,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012']#,'_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[10:-1]
             outfiles = [] ### define list to add processed filenames to
 
@@ -6860,7 +6900,8 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                filename = root_dir + out_dir + date + '/' + date + '_paXXX.nc'
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
                     exist_flag = 1
