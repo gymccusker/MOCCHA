@@ -801,6 +801,7 @@ def main():
     # -------------------------------------------------------------
     #### moo select stash_extract_CloudNet.p2 moose:crum/u-bg610/apm.pp 4_u-bg610_RA2M_CON/20180811T1200Z/
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bl616/apm.pp 5_u-bl616_RA2M_CASIM/20180901T1200Z/
+    #### moo select stash_extract_CASIM.p5 moose:crum/u-bl961/apm.pp 6_u-bl961_FNdrop_RA2M_CASIM/20180831T1200Z/
 
     # -------------------------------------------------------------
     # Load ship track
