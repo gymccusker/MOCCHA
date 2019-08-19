@@ -6900,8 +6900,8 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                 ### -------------------------------------------------------------------------
-                # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                filename = root_dir + out_dir + date + '/' + date + '_paXXX.nc'
+                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                # filename = root_dir + out_dir + date + '/' + date + '_paXXX.nc'
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
                     exist_flag = 1
