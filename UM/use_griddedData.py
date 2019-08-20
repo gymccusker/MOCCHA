@@ -1092,7 +1092,6 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-
 def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
 
     import iris.plot as iplt
