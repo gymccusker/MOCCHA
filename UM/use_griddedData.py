@@ -797,6 +797,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             ax.set_ylim([0, 5000])
             if month_flag == 8: ax.set_xlim([13.0, 31.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
+            if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -814,10 +815,12 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.subplot(5,2,9)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
     plt.subplot(5,2,10)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
     plt.subplot(5,2,1)
     plt.ylabel('Z [m]')
     plt.subplot(5,2,3)
@@ -842,6 +845,11 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum.png'
+    if month_flag == -1:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1236,6 +1244,7 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
 
             if month_flag == 8: ax.set_xlim([13.0, 31.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
+            if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -1249,9 +1258,11 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.subplot(4,2,7)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
     plt.subplot(4,2,8)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
 
     print '******'
     print ''
@@ -1268,8 +1279,11 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
             fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
-    # if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Da.png'
-    # if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Da.png'
+    if month_flag == -1:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1423,6 +1437,7 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
 
             if month_flag == 8: ax.set_xlim([13.0, 31.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
+            if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -1436,12 +1451,15 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.subplot(5,3,12)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
     plt.subplot(5,3,13)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
     plt.subplot(5,3,14)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
 
     print '******'
     print ''
@@ -1458,8 +1476,11 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
             fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Db.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Db.png'
-    # if month_flag == 8: fileout = 'FIGS/201808_oden_metum_1Db.png'
-    # if month_flag == 9: fileout = 'FIGS/201809_oden_metum_1Db.png'
+    if month_flag == -1:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Db.png'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Db.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1515,7 +1536,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '5_u-bl616_RA2M_CASIM/OUT_R0/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1567,23 +1588,36 @@ def main():
             '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
 
     Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc']
+            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
+            '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
+            '20180913_oden_metum.nc','20180914_oden_metum.nc']
+
+    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
+            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
-    Sep_missing_files = ['20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
-    '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
-    '20180913_oden_metum.nc','20180914_oden_metum.nc']
+    Sep_missing_files = []
 
+    moccha_missing_files = []
+
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9
+    names = moccha_names
+    missing_files = moccha_missing_files
+    month_flag = -1
 
     if combine == 0:
         # name = '20180902_oden_metum.nc'
@@ -1636,7 +1670,11 @@ def main():
                 data1d = {}
                 # data['time'] = []
                 # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                if month_flag == -1:
+                    timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
+                else:
+                    timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
@@ -1648,7 +1686,10 @@ def main():
                 # print data[cube[0].var_name]
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
-                timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+                if month_flag == -1:
+                    timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
+                else:
+                    timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 # print data
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
@@ -1666,23 +1707,23 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined CASIM column data (4x3 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
+        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
+        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
