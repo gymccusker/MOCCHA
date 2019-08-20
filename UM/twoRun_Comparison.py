@@ -92,12 +92,13 @@ def inIce(data):
     return inIce_index
 
 def trackShip(data, date):
-
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]==1))
+    # trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
+    # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -195,7 +196,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(8,12), dpi=300)
+    plt.figure(figsize=(6,8))#, dpi=300)
     ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
     # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
@@ -238,7 +239,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     #     iplt.pcolormesh(cube[diag][hour,:,:])
     #     # iplt.pcolormesh(cube[hour,471:495,240:264])
     # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
+    iplt.pcolormesh(cube[diag][290:370,150:230])
     # # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
     # plt.colorbar()
 
@@ -250,7 +251,9 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][:,:])
+    # qplt.outline(cube[diag][290:370,150:230])
+
+
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
 
@@ -265,40 +268,40 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     trackShip_index = trackShip(ship_data, date)
 
     ### Plot tracks as line plot
-    # plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
 
     ### Plot full track as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
-             color = 'pink', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
-             transform = ccrs.PlateCarree(), label = 'Drift',
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
+    #          color = 'pink', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+    #          color = 'red', linewidth = 4,
+    #          transform = ccrs.PlateCarree(), label = 'Drift',
+    #          )
 
     #### test plotting of unrotated grid
     # lon, lat = unrotateGrid(cube)
@@ -606,7 +609,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files): #, lon, lat):
+def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -682,46 +685,71 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
             if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
 
         dat = []
+        print 'dat = ' + str(len(dat))
 
         ### set diag-specific titles
-        if str(data.keys()[diag]) == 'radr_refl':
+        if str(data.keys()[diag]) == "radr_refl":
             title = str(data.keys()[diag]) + ' [dBz]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'pressure':
+        elif str(data.keys()[diag]) == "pressure":
             title = str(data.keys()[diag]) + ' [hPa]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data/1e2))
-        elif str(data.keys()[diag]) == 'temperature':
+        elif str(data.keys()[diag]) == "temperature":
             title = str(data.keys()[diag]) + ' [K]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'uwind':
+        elif str(data.keys()[diag]) == "uwind":
             title = str(data.keys()[diag]) + ' [m/s]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'wwind':
+        elif str(data.keys()[diag]) == "wwind":
             title = str(data.keys()[diag]) + ' [m/s]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'vwind':
+        elif str(data.keys()[diag]) == "vwind":
             title = str(data.keys()[diag]) + ' [m/s]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'cloud_fraction':
+        elif str(data.keys()[diag]) == "cloud_fraction":
             title = str(data.keys()[diag]) + ' []'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == 'qice':
+        elif str(data.keys()[diag]) == "qice":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == 'qliq':
+        elif str(data.keys()[diag]) == "qliq":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag] == 'q'):
+        elif str(data.keys()[diag]) == "qnrain":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qnsnow":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qnice":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qprisice":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qnliq":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qngraup":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qrain":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "qgraup":
+            casim_flag = 1
+            dat = []
+        elif str(data.keys()[diag]) == "q":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
 
-
-        print title
+        print 'dat = ' + str(len(dat))
         print ''
 
         if len(dat) > 0:
             print 'Plotting since len(dat)>0'
             print ''
+            print title
 
             l = l + 1 ## increment index for positive data association
             print 'l = ' +  str(l)
@@ -817,7 +845,255 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files)
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
+def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined contour timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.figure(figsize=(15,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    print data.keys()
+
+    l = -1
+
+    # for i in range(0,len(data.keys())):
+    for diag in range(0,len(data.keys())):
+        ###################################
+        ## CHOOSE DIAGNOSTIC
+        ###################################
+        # diag = i
+        print ''
+        print 'Diag = '  + str(diag)
+        print data.keys()[diag]
+
+        ### pcXXX - CUBE
+        # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+        # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+        ###################################
+        ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+        ###################################
+
+        ### the following works for now, but could do with finding an easier
+        ###         way to index cube by string
+        for j in range(0,len(cube)):
+            if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
+
+        dat = []
+        print 'dat = ' + str(len(dat))
+
+        ### set diag-specific titles
+        if str(data.keys()[diag]) == "radr_refl":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "pressure":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "temperature":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "uwind":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "wwind":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "vwind":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "cloud_fraction":
+            casim_flag = 0
+            dat = []
+        elif str(data.keys()[diag]) == "qice":
+            casim_flag = 0
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "qliq":
+            casim_flag = 0
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "qnrain":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == "qnsnow":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == "qnice":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == "qprisice":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "qnliq":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == "qngraup":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
+        elif str(data.keys()[diag]) == "qrain":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "qgraup":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "q":
+            casim_flag = 1
+            title = str(data.keys()[diag]) + ' [g/kg]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+
+        print 'dat = ' + str(len(dat))
+        # print ''
+
+        if len(dat) > 0:
+            print 'Plotting since len(dat)>0'
+            # print ''
+            print title
+
+            l = l + 1 ## increment index for positive data association
+            print 'l = ' +  str(l)
+            #################################################################
+            ## create figure and axes instances
+            #################################################################
+            plt.subplot(4,3,l+1)
+            ax = plt.gca()
+
+            #################################################################
+            ## plot timeseries
+            #################################################################
+            # plt.contourf(time,height,np.transpose(cube[diag].data))
+            if str(data.keys()[diag]) == 'temperature':
+                plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
+            elif str(data.keys()[diag]) == 'pressure':
+                plt.pcolormesh(timem, height, dat, vmin = 500, vmax = np.nanmax(dat))
+            elif str(data.keys()[diag]) == 'uwind':
+                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+            elif str(data.keys()[diag]) == 'vwind':
+                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
+            elif str(data.keys()[diag]) == 'wwind':
+                plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
+            elif str(data.keys()[diag]) == 'qice':
+                plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
+            else:
+                plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
+            #################################################################
+            ## set plot properties
+            #################################################################
+            ### colormaps:
+            if str(data.keys()[diag]) == 'wwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag]) == 'uwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag]) == 'vwind':
+                plt.set_cmap(mpl_cm.RdBu_r)
+            elif str(data.keys()[diag][0]) == 'q':
+                plt.set_cmap(mpl_cm.Blues)
+            else:
+                plt.set_cmap(mpl_cm.viridis)
+
+            plt.title(title)
+            plt.colorbar()
+            ax.set_ylim([0, 5000])
+            if month_flag == 8: ax.set_xlim([13.0, 31.0])
+            if month_flag == 9: ax.set_xlim([1.0, 15.0])
+
+            # print ''
+            print 'Zero out any data from missing files:'
+            # print ''
+            for mfile in missing_files:
+                # mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                # nans = np.zeros([len(height),len(mtime)])
+                # # nans[nans == 0] = np.nan
+                # plt.pcolormesh(mtime, height, nans)
+                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                nans = ax.get_ylim()
+                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+
+    ### global plot properties
+    plt.subplot(4,3,9)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    plt.subplot(4,3,10)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    plt.ylabel('Z [m]')
+    plt.subplot(4,3,11)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    plt.subplot(4,3,1)
+    plt.ylabel('Z [m]')
+    plt.subplot(4,3,4)
+    plt.ylabel('Z [m]')
+    plt.subplot(4,3,7)
+    plt.ylabel('Z [m]')
+    plt.subplot(4,3,11)
+    plt.ylabel('Z [m]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == 8:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_casim.png'
+            plt.savefig(fileout, dpi=300)
+    if month_flag == 9:
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_casim.png'
+            plt.savefig(fileout, dpi=300)
+    plt.show()
+
+
+def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -998,7 +1274,7 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
+def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1142,7 +1418,8 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files): #, lon, lat):
             #################################################################
 
             plt.plot(timem, dat)
-            plt.ylim([np.nanmin(dat),np.nanmax(dat)])
+            if np.logical_or(np.nanmin(dat) != np.nan, np.nanmax(dat) != np.nan):
+                plt.ylim([np.nanmin(dat),np.nanmax(dat)])
             plt.title(title)
 
             if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1283,36 +1560,35 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc','20180817_oden_metum.nc',
-            '20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc','20180821_oden_metum.nc',
-            '20180822_oden_metum.nc','20180823_oden_metum.nc','20180825_oden_metum.nc','20180826_oden_metum.nc',
-            '20180827_oden_metum.nc','20180828_oden_metum.nc','20180829_oden_metum.nc',
-            '20180830_oden_metum.nc','20180831_oden_metum.nc']
+    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    Aug_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
 
     Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
-            '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
-            '20180913_oden_metum.nc','20180914_oden_metum.nc']
+            '20180905_oden_metum.nc']
 
-    Aug_missing_files = ['20180812_oden_metum.nc','20180814_oden_metum.nc',
-            '20180824_oden_metum.nc']
+    Aug_missing_files = ['20180812_oden_metum.nc']
 
-    Sep_missing_files = []
+    Sep_missing_files = ['20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
+    '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
+    '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
     names = Sep_names
     missing_files = Sep_missing_files
     month_flag = 9
 
     if combine == 0:
-        name = '20180902_oden_metum.nc'
-        filename = root_dir + out_dir + name #names[0]
+        # name = '20180902_oden_metum.nc'
+        filename = root_dir + out_dir + names[0]
         print filename
         print ''
 
@@ -1334,7 +1610,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename, out_dir)
+        # figure = plot_multicontour_TS(cube, filename, out_dir)
 
         # -------------------------------------------------------------
         # Plot data (map)
@@ -1390,7 +1666,15 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
+        # np.save('working_data', data)
         # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+                    ### doesn't matter which cube, just needed for dim_coords
+
+        # -------------------------------------------------------------
+        # Plot combined CASIM column data (4x3 timeseries)
+        # -------------------------------------------------------------
+        # np.save('working_data', data)
+        figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
@@ -1407,18 +1691,6 @@ def main():
         # -------------------------------------------------------------
         # figure = plot_multicontour_TS(cube, filename, out_dir)
 
-
-    # -------------------------------------------------------------
-    # Plot data (single timeseries)
-    # -------------------------------------------------------------
-    # figure = plot_contour_TS(cube, filename1)
-    # -------------------------------------------------------------
-    # Plot data (map)
-    # -------------------------------------------------------------
-    ### select hour to plot
-    # date = filename[-22:-14]
-    # hour = 0
-    # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
 
     # -------------------------------------------------------------
     # FIN.
