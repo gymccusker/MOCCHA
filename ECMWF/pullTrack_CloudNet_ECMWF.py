@@ -880,7 +880,7 @@ def writeNetCDF(data, date, outfile):
     ###################################
     ## Write out diagnostics
     ###################################
-    for d in range(0,3):#len(cube)):
+    for d in range(0,1):#len(cube)):
         print 'Writing ' + cube[d].var_name
         print ''
         if np.size(cube[d].shape) == 0:
