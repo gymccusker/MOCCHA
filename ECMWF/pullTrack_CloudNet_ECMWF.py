@@ -816,8 +816,10 @@ def writeNetCDF(data, date, outfile):
     ###################################
     ## Data dimensions
     ###################################
-    time = dataset.createDimension('time', np.size(cube[0].dim_coords[0].points))
-    nlev = dataset.createDimension('model_level_number', np.size(cube[1].dim_coords[1].points))
+    timem = dataset.createDimension('time', np.size(cube[0].dim_coords[0].points))
+    level = dataset.createDimension('model_level_number', np.size(cube[1].dim_coords[1].points))
+    flevel = dataset.createDimension('model_flux_level', np.size(cube[3].dim_coords[1].points))
+    freq = dataset.createDimension('frequency', np.size(cube[2].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
@@ -844,7 +846,7 @@ def writeNetCDF(data, date, outfile):
     level[:] = cube[1].dim_coords[1].points
 
     #### flux model level
-    # flevel = dataset.createVariable('flux_level', np.float64, ('flux_level',), fill_value='-9999')
+    # flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
     # flevel.scale_factor = float(1)
     # flevel.add_offset = float(0)
     # flevel.comment = ''
@@ -854,14 +856,14 @@ def writeNetCDF(data, date, outfile):
     # flevel[:] = cube[3].dim_coords[1].points
 
     #### flux model level
-    # flevel = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
-    # flevel.scale_factor = float(1)
-    # flevel.add_offset = float(0)
-    # flevel.comment = ''
-    # flevel.units = 'GHz'
-    # flevel.long_name = 'microwave_frequency'
-    # flevel.missing_value = -999.0
-    # flevel[:] = cube[2].dim_coords[0].points
+    # freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    # freq.scale_factor = float(1)
+    # freq.add_offset = float(0)
+    # freq.comment = ''
+    # freq.units = 'GHz'
+    # freq.long_name = 'microwave_frequency'
+    # freq.missing_value = -999.0
+    # freq[:] = cube[2].dim_coords[0].points
 
 
     ###################################
@@ -880,25 +882,42 @@ def writeNetCDF(data, date, outfile):
         ###################################
         ## Write out diagnostics
         ###################################
-        for d in range(0,1):#len(cube)):
-            print 'Writing ' + cube[d].var_name
+        for d in range(0,5):#len(cube)):
             print ''
-            if np.size(cube[d].shape) == 0:
-                dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
-                dat[:] = cube[d].data
-            elif np.size(cube[d].shape) == 1:
-                print 'Diagnostic is 1D, so writing hour = ' + str(h)
-                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
-                dat[h] = cube[d].data[h]
-            elif np.size(cube[d].shape) == 2:
-                if cube[d].var_name in fluxes:
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
-                else:
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
-                dat[h,:] = cube[d].data[h,:]
-            elif np.size(cube[d].shape) == 3:
-                dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
-                dat[:,h,:] = cube[d].data[:,h,:]
+            print 'Writing ' + cube[d].var_name
+            if h == 0:
+                if np.size(cube[d].shape) == 0:
+                    print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
+                    dat[:] = cube[d].data
+                elif np.size(cube[d].shape) == 1:
+                    print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
+                    dat[h] = cube[d].data[h]
+                elif np.size(cube[d].shape) == 2:
+                    print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                    if cube[d].var_name in fluxes:
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
+                    else:
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
+                    dat[h,:] = cube[d].data[h,:]
+                elif np.size(cube[d].shape) == 3:
+                    print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
+                    dat[:,h,:] = cube[d].data[:,h,:]
+            else:
+                if np.size(cube[d].shape) == 0:
+                    print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                    dat[:] = cube[d].data
+                elif np.size(cube[d].shape) == 1:
+                    print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                    dat[h] = cube[d].data[h]
+                elif np.size(cube[d].shape) == 2:
+                    print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                    dat[h,:] = cube[d].data[h,:]
+                elif np.size(cube[d].shape) == 3:
+                    print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                    dat[:,h,:] = cube[d].data[:,h,:]
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
