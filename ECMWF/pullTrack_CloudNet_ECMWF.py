@@ -257,13 +257,13 @@ def checkLatLon(ship_data, date, data):
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
                 print 'lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
-                if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
+                if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
             if data['ship_lons'][h] == data['ship_lons'][h-1]:
                 # print 'reset jflag at h = ' + str(h-1)
-                if jflag[h] != 1: jflag[h] = 1         # manually increment flag if not already done so
+                if jflag[h-1] != 1: jflag[h-1] = 1         # manually increment flag if not already done so
             if data['ship_lats'][h] != data['ship_lats'][h-1]:
                 print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
-                if jflag[h] != 2: jflag[h] = 2         # manually increment flag if not already done so
+                if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
 
         data['jflag'] = jflag       ### so jflag is written out for testing
         print jflag
@@ -271,7 +271,7 @@ def checkLatLon(ship_data, date, data):
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
             if jflag[h] > jflag[h-1]:
-                print 'Grid crossed at h = ' + str(h-1)
+                print 'Grid crossed at h = ' + str(h)
                 grid_crossed = h
 
     return data
@@ -634,7 +634,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
 
     return data
 
-def pullTrack(ship_data, data, date):
+def pullTrack(ship_data, data, date, outfile):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -656,10 +656,19 @@ def pullTrack(ship_data, data, date):
     #################################################################
     print '******'
     print ''
-    print 'Pulling gridded track from ship lat/lon:'
+    print 'Gridding from ship lat/lon:'
     print ''
 
     data = checkLatLon(ship_data, date, data)
+
+    #################################################################
+    ## check position of ship track
+    #################################################################
+    print '******'
+    print ''
+    print 'Write out hourly gridded EC IFS data:'
+    print ''
+    outfile = writeNetCDF(data, date, outfile)
 
     return data
 
@@ -751,7 +760,7 @@ def readDaily(filenames, date):
             # aux_coords_and_dims = None,
             # )
 
-    nc_outfile = date + '_oden_ecmwf_n38.nc'
+    # nc_outfile = date + '_oden_ecmwf_n38.nc'
     # iris.save(ncube, nc_outfile)
 
     ### write to combined netCDF file
@@ -760,7 +769,7 @@ def readDaily(filenames, date):
     ### append metadata to combined netCDF file
     # data = appendMetaNetCDF(nc_outfile, date)
 
-    return data, nc_outfile
+    return data
 
 def writeNetCDF(outfile, data, date, cube):
 
@@ -771,20 +780,19 @@ def writeNetCDF(outfile, data, date, cube):
     #################################################################
     ## CREATE EMPTY CUBE
     #################################################################
-    ncube = Cube(np.zeros([38,25,137]))
-
-    ntime = DimCoord(data['tims'][:], var_name = 'time', standard_name = 'forecast_time', units='hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00')
-    level = DimCoord(data['mlevs'][:], var_name = 'level', standard_name = 'model_level_number', units='m')
-    ncube = Cube(data['pressure'],
-            dim_coords_and_dims=[(lats, 0), (level, 1), (ntime, 2)],
-            standard_name = cube.standard_name,
-            long_name = cube.long_name,
-            units = cube.units,
-            var_name = varname,
-            attributes = cube.attributes,
-            aux_coords_and_dims = None,
-            )
-
+    # ncube = Cube(np.zeros([38,25,137]))
+    #
+    # ntime = DimCoord(data['tims'][:], var_name = 'time', standard_name = 'forecast_time', units='hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00')
+    # level = DimCoord(data['mlevs'][:], var_name = 'level', standard_name = 'model_level_number', units='m')
+    # ncube = Cube(data['pressure'],
+    #         dim_coords_and_dims=[(lats, 0), (level, 1), (ntime, 2)],
+    #         standard_name = cube.standard_name,
+    #         long_name = cube.long_name,
+    #         units = cube.units,
+    #         var_name = varname,
+    #         attributes = cube.attributes,
+    #         aux_coords_and_dims = None,
+    #         )
 
     ##################################
     # Open new netCDF file
@@ -792,110 +800,108 @@ def writeNetCDF(outfile, data, date, cube):
 
     dataset = Dataset(outfile, 'w')
 
-    ##################################
-    # Data dimensions
-    ##################################
-    tim = dataset.createDimension('time', np.size(data['tims'][:]))
-    Z = dataset.createDimension('level', np.size(data['mlevs']))
-    lat = dataset.createDimension('latitude', np.size(data['lats'][:]))
-    lon = dataset.createDimension('longitude', np.size(data['lons'][:]))
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    #### load in a cube to define dimensions
+    ###################################
+    cube = iris.load('DATA/' + date + '_moccha_ecmwf_001.nc')
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    time = dataset.createDimension('time', np.size(cube[0].dim_coords[0].points))
+    nlev = dataset.createDimension('model_level_number', np.size(cube[1].dim_coords[1].points))
 
     ###################################
     ## Dimensions variables
     ###################################
-    #### Time
-    print 'Writing time:'
-    print '---'
-    tim = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999')
-    tim.units = 'hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
-    tim.long_name = 'Hours UTC'
-    tim.standard_name = 'time'
-    tim[:] = data['tims'][:]
+    #### forecast_period
+    timem = dataset.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    timem.comment = 'Hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00.'
+    timem.units = 'hours'
+    timem.long_name = 'hours_UTC'
+    timem.standard_name = 'time'
+    timem[:] = cube[0].dim_coords[0].points
 
-    #### Z
-    print 'Writing model levels:'
-    print '---'
-    mlevs = dataset.createVariable('level', np.int16, ('level',),fill_value='-9999')
-    mlevs.units = '1'
-    mlevs.long_name = 'Model level'
-    mlevs.positive = 'down'
-    mlevs.standard_name = 'model_level_number'
-    mlevs[:] = data['mlevs'][:]
+    #### model level
+    level = dataset.createVariable('level', np.float64, ('model_level_number',), fill_value='-9999')
+    level.scale_factor = float(1)
+    level.add_offset = float(0)
+    level.comment = ''
+    level.units = '1'
+    level.long_name = 'model_level'
+    level.standard_name = 'model_level_number'
+    level.positive = 'down'
+    level[:] = cube[1].dim_coords[1].points
 
-    #### Latitude
-    print 'Writing latitudes:'
-    print '---'
-    lats = dataset.createVariable('latitude', np.float32, ('latitude',),fill_value='-9999')
-    lats.units = 'degrees_N'
-    lats.long_name = 'Latitude of model grid point'
-    lats.standard_name = 'latitude'
-    lats[:] = data['lats'][:]
+    #### flux model level
+    flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel.scale_factor = float(1)
+    flevel.add_offset = float(0)
+    flevel.comment = ''
+    flevel.units = '1'
+    flevel.long_name = 'model_flux_level'
+    flevel.positive = 'down'
+    flevel[:] = cube[3].dim_coords[1].points
 
-    #### Longitude
-    print 'Writing longitudes:'
-    print '---'
-    lons = dataset.createVariable('longitude', np.float32, ('longitude',),fill_value='-9999')
-    lons.units = 'degrees_E'
-    lons.long_name = 'Longitude of model grid point'
-    lons.standard_name = 'longitude'
-    lons[:] = data['lons'][:]
+    #### flux model level
+    flevel = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    flevel.scale_factor = float(1)
+    flevel.add_offset = float(0)
+    flevel.comment = ''
+    flevel.units = 'GHz'
+    flevel.long_name = 'microwave_frequency'
+    flevel.missing_value = -999.0
+    flevel[:] = cube[2].dim_coords[0].points
+
+
+    ###################################
+    ## Set fluxes to distinguish from model_level diags
+    ###################################
+    fluxes = ['flx_net_sw','flx_net_lw','flx_ls_snow','flx_ls_rain','flx_turb_mom_v',
+    'flx_turb_mom_u','flx_conv_snow','flx_conv_rain','flx_height','flx_turb_moist','flx_down_sens_heat']
 
     ##################################
-    # Writing out Cloudnet diagnostics
+    # Loop over hours to load in appropriate file
     ##################################
-    print 'Writing pressure:'
-    print '---'
-    pres = dataset.createVariable('pressure', np.float64, ('latitude','time','level'), fill_value='-9999')
-    pres.scale_factor = float(1)
-    pres.add_offset = float(0)
-    pres.units = 'Pa'
-    pres.long_name = 'air_pressure'
-    pres[:,:] = data['pressure'][:,:]
 
-    print 'Appending LWP:'
-    print '---'
-    lwp = dataset.createVariable('LWP', np.float64, ('forecast_time',), fill_value='-9999')
-    lwp.scale_factor = float(1)
-    lwp.add_offset = float(0)
-    lwp.units = 'kg m-2'
-    lwp.long_name = 'large_scale_liquid_water_path'
-    lwp[:] = nc.variables['LWP'][:]
+    for h in range(0,1):
+        cube = iris.load('DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc')
 
-    print 'Appending rainfall_flux:'
-    print '---'
-    rain = dataset.createVariable('rainfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    rain.scale_factor = float(1)
-    rain.add_offset = float(0)
-    rain.units = 'kg m-2 s-1'
-    rain.long_name = 'stratiform_rainfall_flux'
-    rain[:] = nc.variables['rainfall_flux'][:]
-
-    print 'Appending snowfall_flux:'
-    print '---'
-    snow = dataset.createVariable('snowfall_flux', np.float64, ('forecast_time',), fill_value='-9999')
-    snow.scale_factor = float(1)
-    snow.add_offset = float(0)
-    snow.units = 'kg m-2 s-1'
-    snow.long_name = 'stratiform_snowfall_flux'
-    snow[:] = nc.variables['snowfall_flux'][:]
-
-    print 'Appending surface_pressure:'
-    print '---'
-    sfc_pressure = dataset.createVariable('sfc_pressure', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_pressure.scale_factor = float(1)
-    sfc_pressure.add_offset = float(0)
-    sfc_pressure.units = 'Pa'
-    sfc_pressure.long_name = 'surface_pressure'
-    sfc_pressure[:] = nc.variables['sfc_pressure'][:]
-
-    print 'Appending surface_temperature:'
-    print '---'
-    sfc_temperature = dataset.createVariable('sfc_temperature', np.float64, ('forecast_time',), fill_value='-9999')
-    sfc_temperature.scale_factor = float(1)
-    sfc_temperature.add_offset = float(0)
-    sfc_temperature.units = 'K'
-    sfc_temperature.long_name = 'surface_temperature'
-    sfc_temperature[:] = nc.variables['sfc_temperature'][:]
+    ###################################
+    ## Write out diagnostics
+    ###################################
+    for d in range(0,len(cube)):
+        print 'Writing ' + cube[d].var_name
+        print ''
+        if np.size(cube[d].shape) == 0:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, (,), fill_value='-9999')
+            dat[:] = cube[d].data
+        elif np.size(cube[d].shape) == 1:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
+            dat[h] = cube[d].data[h]
+        elif np.size(cube[d].shape) == 2:
+            if cube[d].var_name in fluxes:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
+            else:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
+            dat[h,:] = cube[d].data[h,:]
+        elif np.size(cube[d].shape) == 3:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
+            dat[:,h,:] = cube[d].data[:,h,:]
+        dat.scale_factor = float(1)
+        dat.add_offset = float(0)
+        dat.units = str(cube[d].units)
+        dat.STASH = str(cube[d].attributes['STASH'])
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+        dat[:,:] = cube[d].data
 
     ##################################
     # Write out file
@@ -996,7 +1002,8 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180813'
+    date = '20180901'
+    outfile = date + '_oden_ecmwf.nc'
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
@@ -1024,7 +1031,7 @@ def main():
     # -------------------------------------------------------------
     # Extract each position file with Iris and write to combined netCDF
     # -------------------------------------------------------------
-    data, outfile = readDaily(filenames, date)
+    data = readDaily(filenames, date)
 
     # -------------------------------------------------------------
     # Plot data (map)
@@ -1034,7 +1041,7 @@ def main():
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
-    data = pullTrack(ship_data, data, date)
+    data = pullTrack(ship_data, data, date, outfile)
 
     ### temporary data save for development/debugging
     np.save('working_data', data)
