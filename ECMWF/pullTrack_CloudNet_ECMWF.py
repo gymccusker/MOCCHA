@@ -159,7 +159,7 @@ def designGrid(data):
 
     ###---------------------------------------------------------------------------------
     ### find western boundaries of gridpoints
-    data['lb_lons'] = np.zeros([np.size(data['lons'][:-1])])
+    data['lb_lons'] = np.zeros([np.size(data['lons'][:])])
     data['lb_lons'][0:1] = data['lons'][0] - (data['rb_lons'][0] - data['lons'][0])
     data['lb_lons'][1] = data['lons'][0]
     data['lb_lons'][2] = data['rb_lons'][1]
@@ -192,7 +192,7 @@ def designGrid(data):
     data['lb_lons'][31:35] = data['rb_lons'][30:34]
     data['lb_lons'][35] = data['rb_lons'][34]; data['rb_lons'][35] = data['lons'][35] + (data['lons'][35] - data['rb_lons'][34])
     data['lb_lons'][36] = data['lons'][36] - (data['rb_lons'][36] - data['lons'][36])
-    # data['lb_lons'][37] = data['rb_lons'][36]; data['rb_lons'][37] = data['lons'][37] + (data['lons'][37] - data['rb_lons'][36])
+    data['lb_lons'][37] = data['rb_lons'][36]#; data['rb_lons'][37] = data['lons'][37] + (data['lons'][37] - data['rb_lons'][36])
 
     print 'All boundaries loaded :)'
 
@@ -567,9 +567,9 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     plt.scatter(data['rb_lons'][:], data['lats'][:], c = 'blue',
             label = 'eastern bounds',
             transform = ccrs.PlateCarree())
-    # plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
-    #         label = 'western bounds',
-    #         transform = ccrs.PlateCarree())
+    plt.scatter(data['lb_lons'][:], data['lats'][:], c = 'purple',
+            label = 'western bounds',
+            transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot gridded ship track
