@@ -771,7 +771,7 @@ def readDaily(filenames, date):
 
     return data
 
-def writeNetCDF(outfile, data, date):
+def writeNetCDF(data, date, outfile):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -911,7 +911,7 @@ def writeNetCDF(outfile, data, date):
     ##################################
     dataset.close()
 
-    return dataset
+    return outfile
 
 def appendMetaNetCDF(outfile, date):
 
