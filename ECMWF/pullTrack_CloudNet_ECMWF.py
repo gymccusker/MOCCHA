@@ -887,10 +887,10 @@ def writeNetCDF(data, date, outfile):
     for d in range(0,4):#len(cube)):
         for h in range(0,24):
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
+            print ''
             print 'Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h])
             print 'So loading ' + file + ' only '
             cube = iris.load(file)
-            print ''
             print 'Writing ' + cube[d].var_name
             if h == 0:
                 if np.size(cube[d].shape) == 0:
