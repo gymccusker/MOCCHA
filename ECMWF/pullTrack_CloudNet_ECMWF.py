@@ -163,7 +163,7 @@ def designGrid(data):
     data['lb_lons'][3] = data['rb_lons'][2]
     data['lb_lons'][4] = data['lons'][3]
     # data['lb_lons'][3:5] = data['lons'][2:4]
-    data['lb_lons'][5] = data['rb_lons'][5]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
+    data['lb_lons'][5] = data['lons'][4]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
     data['lb_lons'][6] = data['lons'][6] - (data['rb_lons'][6] - data['lons'][6])
     data['lb_lons'][7] = data['lons'][6]; data['rb_lons'][7] = data['lons'][7] + (data['lons'][7] - data['rb_lons'][7])
     data['lb_lons'][8] = data['lons'][8] - (data['rb_lons'][8] - data['lons'][8])
@@ -989,7 +989,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180912'
+    date = '20180911'
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
