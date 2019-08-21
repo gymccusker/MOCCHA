@@ -897,13 +897,15 @@ def writeNetCDF(data, date, outfile):
                 elif np.size(cube[d].shape) == 2:
                     print 'Diagnostic is 2D, so writing hour = ' + str(h)
                     if cube[d].var_name in fluxes:
-                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
+                        print 'Diagnostic is on flux levels.'
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
                     else:
-                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
+                        print 'Diagnostic is on model levels.'
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
                     dat[h,:] = cube[d].data[h,:]
                 elif np.size(cube[d].shape) == 3:
                     print 'Diagnostic is 3D, so writing hour = ' + str(h)
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
                     dat[:,h,:] = cube[d].data[:,h,:]
             else:
                 if np.size(cube[d].shape) == 0:
