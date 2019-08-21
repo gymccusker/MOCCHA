@@ -877,35 +877,36 @@ def writeNetCDF(data, date, outfile):
     for h in range(0,1):
         cube = iris.load('DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc')
 
-    ###################################
-    ## Write out diagnostics
-    ###################################
-    for d in range(0,1):#len(cube)):
-        print 'Writing ' + cube[d].var_name
-        print ''
-        if np.size(cube[d].shape) == 0:
-            dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
-            dat[:] = cube[d].data
-        elif np.size(cube[d].shape) == 1:
-            dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
-            dat[h] = cube[d].data[h]
-        elif np.size(cube[d].shape) == 2:
-            if cube[d].var_name in fluxes:
-                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
-            else:
-                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
-            dat[h,:] = cube[d].data[h,:]
-        elif np.size(cube[d].shape) == 3:
-            dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
-            dat[:,h,:] = cube[d].data[:,h,:]
-        dat.scale_factor = float(1)
-        dat.add_offset = float(0)
-        dat.units = str(cube[d].units)
-        # dat.attributes = cube[d].attributes
-        # dat.STASH = str(cube[d].attributes['STASH'])
-        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
-        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-        # dat[:,:] = cube[d].data
+        ###################################
+        ## Write out diagnostics
+        ###################################
+        for d in range(0,1):#len(cube)):
+            print 'Writing ' + cube[d].var_name
+            print ''
+            if np.size(cube[d].shape) == 0:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
+                dat[:] = cube[d].data
+            elif np.size(cube[d].shape) == 1:
+                print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
+                dat[h] = cube[d].data[h]
+            elif np.size(cube[d].shape) == 2:
+                if cube[d].var_name in fluxes:
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','flux_level',), fill_value='-9999')
+                else:
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','level',), fill_value='-9999')
+                dat[h,:] = cube[d].data[h,:]
+            elif np.size(cube[d].shape) == 3:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','level',), fill_value='-9999')
+                dat[:,h,:] = cube[d].data[:,h,:]
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = str(cube[d].units)
+            # dat.attributes = cube[d].attributes
+            # dat.STASH = str(cube[d].attributes['STASH'])
+            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+            # dat[:,:] = cube[d].data
 
     ##################################
     # Write out file
