@@ -771,11 +771,14 @@ def readDaily(filenames, date):
 
     return data
 
-def writeNetCDF(outfile, data, date, cube):
+def writeNetCDF(outfile, data, date):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
     import iris.plot as iplt
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
 
     #################################################################
     ## CREATE EMPTY CUBE
@@ -877,11 +880,11 @@ def writeNetCDF(outfile, data, date, cube):
     ###################################
     ## Write out diagnostics
     ###################################
-    for d in range(0,len(cube)):
+    for d in range(0,1):#len(cube)):
         print 'Writing ' + cube[d].var_name
         print ''
         if np.size(cube[d].shape) == 0:
-            dat = dataset.createVariable(cube[d].var_name, np.float64, (,), fill_value='-9999')
+            dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
             dat[:] = cube[d].data
         elif np.size(cube[d].shape) == 1:
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
@@ -960,7 +963,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -1004,6 +1007,7 @@ def main():
     ### -------------------------------------------------------------------------
     date = '20180901'
     outfile = date + '_oden_ecmwf.nc'
+    print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
@@ -1044,13 +1048,13 @@ def main():
     data = pullTrack(ship_data, data, date, outfile)
 
     ### temporary data save for development/debugging
-    np.save('working_data', data)
+    # np.save('working_data', data)
     ### load with data = np.load('working_data.npy').item())
 
     # -------------------------------------------------------------
     # Plot data (cartopy map)
     # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    # data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print '******'
