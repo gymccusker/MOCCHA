@@ -881,17 +881,18 @@ def writeNetCDF(data, date, outfile):
     fluxes = ['flx_net_sw','flx_net_lw','flx_ls_snow','flx_ls_rain','flx_turb_mom_v',
     'flx_turb_mom_u','flx_conv_snow','flx_conv_rain','flx_height','flx_turb_moist','flx_down_sens_heat']
 
-    ##################################
-    # Loop over hours to load in appropriate file
-    ##################################
+    ###################################
+    ## Loop over diagnostics
+    ###################################
 
-    for h in range(0,1):
-        cube = iris.load('DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc')
-
-        ###################################
-        ## Write out diagnostics
-        ###################################
-        for d in range(0,len(cube)):
+    ###################################
+    ## Write out diagnostics
+    ###################################
+    for d in range(0,len(cube)):
+        for h in range(0,24):
+            file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
+            print 'Loading ' + file + '... '
+            cube = iris.load(file)
             print ''
             print 'Writing ' + cube[d].var_name
             if h == 0:
@@ -899,6 +900,7 @@ def writeNetCDF(data, date, outfile):
                     print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
                     dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
                     dat[:] = cube[d].data
+                    break
                 elif np.size(cube[d].shape) == 1:
                     print 'Diagnostic is 1D, so writing hour = ' + str(h)
                     dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
@@ -932,11 +934,70 @@ def writeNetCDF(data, date, outfile):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
-            # dat.attributes = cube[d].attributes
-            # dat.STASH = str(cube[d].attributes['STASH'])
-            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
-            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-            # dat[:,:] = cube[d].data
+        # dat.attributes = cube[d].attributes
+        # dat.STASH = str(cube[d].attributes['STASH'])
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+        # dat[:,:] = cube[d].data
+
+
+    ##################################
+    # Loop over hours to load in appropriate file
+    ##################################
+
+    # for h in range(0,3):
+    #     cube = iris.load('DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc')
+    #
+    #     ###################################
+    #     ## Write out diagnostics
+    #     ###################################
+    #     for d in range(0,len(cube)):
+    #         print ''
+    #         print 'Writing ' + cube[d].var_name
+    #         if h == 0:
+    #             if np.size(cube[d].shape) == 0:
+    #                 print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+    #                 dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
+    #                 dat[:] = cube[d].data
+    #             elif np.size(cube[d].shape) == 1:
+    #                 print 'Diagnostic is 1D, so writing hour = ' + str(h)
+    #                 dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
+    #                 dat[h] = cube[d].data[h]
+    #             elif np.size(cube[d].shape) == 2:
+    #                 print 'Diagnostic is 2D, so writing hour = ' + str(h)
+    #                 if cube[d].var_name in fluxes:
+    #                     print 'Diagnostic is on flux levels.'
+    #                     dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
+    #                 else:
+    #                     print 'Diagnostic is on model levels.'
+    #                     dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
+    #                 dat[h,:] = cube[d].data[h,:]
+    #             elif np.size(cube[d].shape) == 3:
+    #                 print 'Diagnostic is 3D, so writing hour = ' + str(h)
+    #                 dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
+    #                 dat[:,h,:] = cube[d].data[:,h,:]
+    #         else:
+    #             if np.size(cube[d].shape) == 0:
+    #                 print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+    #                 dat[:] = cube[d].data
+    #             elif np.size(cube[d].shape) == 1:
+    #                 print 'Diagnostic is 1D, so writing hour = ' + str(h)
+    #                 dat[h] = cube[d].data[h]
+    #             elif np.size(cube[d].shape) == 2:
+    #                 print 'Diagnostic is 2D, so writing hour = ' + str(h)
+    #                 dat = dataset.variable[cube[d].var_name][:]
+    #                 dat[h,:] = cube[d].data[h,:]
+    #             elif np.size(cube[d].shape) == 3:
+    #                 print 'Diagnostic is 3D, so writing hour = ' + str(h)
+    #                 dat[:,h,:] = cube[d].data[:,h,:]
+    #         dat.scale_factor = float(1)
+    #         dat.add_offset = float(0)
+    #         dat.units = str(cube[d].units)
+    #         # dat.attributes = cube[d].attributes
+    #         # dat.STASH = str(cube[d].attributes['STASH'])
+    #         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+    #         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+    #         # dat[:,:] = cube[d].data
 
     ##################################
     # Write out file
@@ -1055,14 +1116,14 @@ def main():
     # -------------------------------------------------------------
     # Find ECMWF grid
     # -------------------------------------------------------------
-    lats = np.zeros([38])
-    lons = np.zeros([38])
-    tim = np.zeros([24])
-    for i in range(0,38):
-        lats[i], lons[i], tim = pullLatLon(filenames[i])
-
-    print 'Lats = ' + str(lats)
-    print 'Lons = ' + str(lons)
+    # lats = np.zeros([38])
+    # lons = np.zeros([38])
+    # tim = np.zeros([24])
+    # for i in range(0,38):
+    #     lats[i], lons[i], tim = pullLatLon(filenames[i])
+    #
+    # print 'Lats = ' + str(lats)
+    # print 'Lons = ' + str(lons)
 
     # -------------------------------------------------------------
     # Extract each position file with Iris and write to combined netCDF
