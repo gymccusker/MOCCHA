@@ -138,7 +138,9 @@ def designGrid(data):
     ###---------------------------------------------------------------------------------
     ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
-    data['rb_lons'] = np.zeros([np.size(data['lons'][:-1])])
+    print 'rblons = ' + str(rblons.shape)
+    print 'lons = ' + str(np.size(data['lons'][:]))
+    data['rb_lons'] = np.zeros([np.size(data['lons'][:])])
     data['rb_lons'][0:9] = rblons[0:9]
     data['rb_lons'][9] = rblons[8]
     data['rb_lons'][10:12] = rblons[10:12]
@@ -151,8 +153,9 @@ def designGrid(data):
     data['rb_lons'][19:21] = rblons[19]
     data['rb_lons'][21:27] = rblons[21:27]
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
-    data['rb_lons'][28:] = rblons[28:]
-    data['rb_lons'][35] = rblons[34]
+    data['rb_lons'][28:35] = rblons[28:35]
+    data['rb_lons'][36] = data['lons'][36] + ((data['lons'][37] - data['lons'][36]) / 2.0) #rblons[34]
+    data['rb_lons'][37] = data['lons'][33]#data['lons'][37] + (rblons[35] - data['lons'][3])/2.0
 
     ###---------------------------------------------------------------------------------
     ### find western boundaries of gridpoints
@@ -561,12 +564,12 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     ###---------------------------------------------------------------------------------
     ### plot longitude boundaries
     ###---------------------------------------------------------------------------------
-    plt.scatter(data['rb_lons'][:], data['lats'][0:-1], c = 'blue',
+    plt.scatter(data['rb_lons'][:], data['lats'][:], c = 'blue',
             label = 'eastern bounds',
             transform = ccrs.PlateCarree())
-    plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
-            label = 'western bounds',
-            transform = ccrs.PlateCarree())
+    # plt.scatter(data['lb_lons'][:], data['lats'][0:-1], c = 'purple',
+    #         label = 'western bounds',
+    #         transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot gridded ship track
