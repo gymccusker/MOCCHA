@@ -662,13 +662,22 @@ def pullTrack(ship_data, data, date, outfile):
     data = checkLatLon(ship_data, date, data)
 
     #################################################################
-    ## check position of ship track
+    ## write out data
     #################################################################
     print '******'
     print ''
     print 'Write out hourly gridded EC IFS data:'
     print ''
-    outfile = writeNetCDF(data, date, outfile)
+    out = writeNetCDF(data, date, outfile)
+
+    #################################################################
+    ## append metadata
+    #################################################################
+    print '******'
+    print ''
+    print 'Appending metadata:'
+    print ''
+    out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -846,24 +855,24 @@ def writeNetCDF(data, date, outfile):
     level[:] = cube[1].dim_coords[1].points
 
     #### flux model level
-    # flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
-    # flevel.scale_factor = float(1)
-    # flevel.add_offset = float(0)
-    # flevel.comment = ''
-    # flevel.units = '1'
-    # flevel.long_name = 'model_flux_level'
-    # flevel.positive = 'down'
-    # flevel[:] = cube[3].dim_coords[1].points
+    flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel.scale_factor = float(1)
+    flevel.add_offset = float(0)
+    flevel.comment = ''
+    flevel.units = '1'
+    flevel.long_name = 'model_flux_level'
+    flevel.positive = 'down'
+    flevel[:] = cube[3].dim_coords[1].points
 
     #### flux model level
-    # freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
-    # freq.scale_factor = float(1)
-    # freq.add_offset = float(0)
-    # freq.comment = ''
-    # freq.units = 'GHz'
-    # freq.long_name = 'microwave_frequency'
-    # freq.missing_value = -999.0
-    # freq[:] = cube[2].dim_coords[0].points
+    freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    freq.scale_factor = float(1)
+    freq.add_offset = float(0)
+    freq.comment = ''
+    freq.units = 'GHz'
+    freq.long_name = 'microwave_frequency'
+    freq.missing_value = -999.0
+    freq[:] = cube[2].dim_coords[0].points
 
 
     ###################################
@@ -882,7 +891,7 @@ def writeNetCDF(data, date, outfile):
         ###################################
         ## Write out diagnostics
         ###################################
-        for d in range(0,5):#len(cube)):
+        for d in range(0,len(cube)):
             print ''
             print 'Writing ' + cube[d].var_name
             if h == 0:
@@ -934,7 +943,7 @@ def writeNetCDF(data, date, outfile):
     ##################################
     dataset.close()
 
-    return outfile
+    return dataset
 
 def appendMetaNetCDF(outfile, date):
 
@@ -964,11 +973,11 @@ def appendMetaNetCDF(outfile, date):
     dataset.location = 'MOCCHA'
     # dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
     dataset.description = 'Hourly data combined from n=38 files into 1 daily file.'
-    dataset.history = 'ke 5.6.2019 14.09.20 +0300 - NetCDF generated from original data by Ewan O''Connor <ewan.oconnor@fmi.fi> using cnmodel2nc on cloudnet.fmi.fi. Combined from n=38 lat/lon files at ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
+    dataset.history = 'ke 5.6.2019 14.09.20 +0300 - NetCDF generated from original data by Ewan O''Connor <ewan.oconnor@fmi.fi> using cnmodel2nc on cloudnet.fmi.fi. Combined from n=38 lat/lon files at ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris and netCDF4).'
     dataset.source = 'ECMWF Integrated Forecast System (IFS)'
-    dataset.references = ''
+    # dataset.references = ''
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
-    dataset.comment = ''
+    # dataset.comment = ''
     dataset.institution = 'European Centre for Medium-Range Weather Forecasting.'
     # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00'
