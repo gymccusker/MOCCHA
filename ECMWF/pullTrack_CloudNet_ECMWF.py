@@ -844,24 +844,24 @@ def writeNetCDF(data, date, outfile):
     level[:] = cube[1].dim_coords[1].points
 
     #### flux model level
-    flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
-    flevel.scale_factor = float(1)
-    flevel.add_offset = float(0)
-    flevel.comment = ''
-    flevel.units = '1'
-    flevel.long_name = 'model_flux_level'
-    flevel.positive = 'down'
-    flevel[:] = cube[3].dim_coords[1].points
+    # flevel = dataset.createVariable('flux_level', np.float64, ('flux_level',), fill_value='-9999')
+    # flevel.scale_factor = float(1)
+    # flevel.add_offset = float(0)
+    # flevel.comment = ''
+    # flevel.units = '1'
+    # flevel.long_name = 'model_flux_level'
+    # flevel.positive = 'down'
+    # flevel[:] = cube[3].dim_coords[1].points
 
     #### flux model level
-    flevel = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
-    flevel.scale_factor = float(1)
-    flevel.add_offset = float(0)
-    flevel.comment = ''
-    flevel.units = 'GHz'
-    flevel.long_name = 'microwave_frequency'
-    flevel.missing_value = -999.0
-    flevel[:] = cube[2].dim_coords[0].points
+    # flevel = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    # flevel.scale_factor = float(1)
+    # flevel.add_offset = float(0)
+    # flevel.comment = ''
+    # flevel.units = 'GHz'
+    # flevel.long_name = 'microwave_frequency'
+    # flevel.missing_value = -999.0
+    # flevel[:] = cube[2].dim_coords[0].points
 
 
     ###################################
@@ -880,7 +880,7 @@ def writeNetCDF(data, date, outfile):
     ###################################
     ## Write out diagnostics
     ###################################
-    for d in range(0,1):#len(cube)):
+    for d in range(0,3):#len(cube)):
         print 'Writing ' + cube[d].var_name
         print ''
         if np.size(cube[d].shape) == 0:
@@ -901,10 +901,11 @@ def writeNetCDF(data, date, outfile):
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
-        dat.STASH = str(cube[d].attributes['STASH'])
+        # dat.attributes = cube[d].attributes
+        # dat.STASH = str(cube[d].attributes['STASH'])
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-        dat[:,:] = cube[d].data
+        # dat[:,:] = cube[d].data
 
     ##################################
     # Write out file
@@ -963,7 +964,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
