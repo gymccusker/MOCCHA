@@ -160,7 +160,8 @@ def designGrid(data):
     data['lb_lons'][0:1] = data['lons'][0] - (data['rb_lons'][0] - data['lons'][0])
     data['lb_lons'][1] = data['lons'][0]
     data['lb_lons'][2] = data['rb_lons'][1]
-    data['lb_lons'][3:5] = data['rb_lons'][2:4]
+    data['lb_lons'][3] = data['rb_lons'][2]
+    data['lb_lons'][4] = data['lons'][3]
     # data['lb_lons'][3:5] = data['lons'][2:4]
     data['lb_lons'][5] = data['rb_lons'][5]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
     data['lb_lons'][6] = data['lons'][6] - (data['rb_lons'][6] - data['lons'][6])
