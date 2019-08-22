@@ -458,7 +458,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     l = -1
     for i in range(0,len(cube)):
         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-        if np.sum(cube[i].data.shape) > 24:
+        if np.sum(cube[i].data.shape) > 30:     # ignores microwave frequency diagnostics
 
                 ###################################
                 ## CHOOSE DIAGNOSTIC
@@ -471,32 +471,12 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 ### define empty array for cube data
                 data = []
 
-                ### pcXXX
-                # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-                # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-
                 ###################################
                 ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
                 ###################################
 
                 time = cube[diag].dim_coords[0].points
                 height = cube[diag].dim_coords[1].points
-
-                ### if mass mixing ratio, *1e3 to change to g/kg
-                # if cube[diag].var_name[0] == 'q':
-                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
-                # elif cube[diag].var_name == 'pressure':
-                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
-                # else:
-                #     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
 
                 #################################################################
                 ## data corrections
@@ -1597,7 +1577,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename, out_dir)
+        figure = plot_multicontour_TS(cube, filename, out_dir)
 
         # -------------------------------------------------------------
         # Plot data (map)
@@ -1674,10 +1654,10 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
