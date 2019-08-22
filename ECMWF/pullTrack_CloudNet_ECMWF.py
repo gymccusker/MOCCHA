@@ -948,16 +948,20 @@ def writeNetCDF(data, date, outfile):
                 else:
                     if np.size(cube[d].shape) == 0:
                         print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
-                        dat[:] = cube[d].data
+                        # dat[:] = cube[d].data
+                        dat[:] = np.nanmean([cube1[d].data,cube2[d].data])
                     elif np.size(cube[d].shape) == 1:
                         print 'Diagnostic is 1D, so writing hour = ' + str(h)
-                        dat[h] = cube[d].data[h]
+                        # dat[h] = cube[d].data[h]
+                        dat[h] = np.nanmean([cube1[d].data[h],cube2[d].data[h]])
                     elif np.size(cube[d].shape) == 2:
                         print 'Diagnostic is 2D, so writing hour = ' + str(h)
-                        dat[h,:] = cube[d].data[h,:]
+                        # dat[h,:] = cube[d].data[h,:]
+                        dat[h,:] = np.nanmean([cube1[d].data[h,:],cube2[d].data[h,:]],0)
                     elif np.size(cube[d].shape) == 3:
                         print 'Diagnostic is 3D, so writing hour = ' + str(h)
-                        dat[:,h,:] = cube[d].data[:,h,:]
+                        # dat[:,h,:] = cube[d].data[:,h,:]
+                        dat[:,h,:] = np.nanmean([cube[d].data[:,h,:],cube2[d].data[:,h,:]],1)
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
