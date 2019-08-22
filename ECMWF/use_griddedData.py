@@ -474,43 +474,43 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 ###################################
 
                 time = cube[diag].dim_coords[0].points
-                height = cube[diag].dim_coords[1].points
+                height = cube[diag].dim_coords[1].points #cube[37].data
 
                 #################################################################
                 ## data corrections
                 #################################################################
                 ### set height limit to consider
-                ind = np.where(height<5000)
+                # ind = np.where(height<5000)
 
                 if cube[diag].var_name == 'temperature':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                elif cube[diag].var_name == 'qice':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                elif cube[diag].var_name == 'qi':
+                    data = np.transpose(np.squeeze(cube[diag].data*1e3))
                     title = cube[diag].var_name + ' [g/kg]'
-                elif cube[diag].var_name == 'qliq':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                elif cube[diag].var_name == 'ql':
+                    data = np.transpose(np.squeeze(cube[diag].data*1e3))
                     title = cube[diag].var_name + ' [g/kg]'
                 elif cube[diag].var_name == 'q':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e3))
+                    data = np.transpose(np.squeeze(cube[diag].data*1e3))
                     title = cube[diag].var_name + ' [g/kg]'
                 elif cube[diag].var_name == 'pressure':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]/1e2))
+                    data = np.transpose(np.squeeze(cube[diag].data/1e2))
                     title = cube[diag].var_name + ' [hPa]'
                 elif cube[diag].var_name == 'uwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'wwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'radr_refl':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'cloud_fraction':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'vwind':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
 
                 #################################################################
@@ -530,15 +530,15 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     #################################################################
                     # plt.contourf(time,height,np.transpose(cube[diag].data))
                     if cube[diag].var_name == 'temperature':
-                        plt.pcolormesh(time, height[ind], data, vmin = 250, vmax = np.nanmax(data))
+                        plt.pcolormesh(time, height, data, vmin = 250, vmax = np.nanmax(data))
                     elif cube[diag].var_name == 'uwind':
-                        plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+                        plt.pcolormesh(time, height, data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'vwind':
-                        plt.pcolormesh(time, height[ind], data, vmin = -20, vmax = 20)
+                        plt.pcolormesh(time, height, data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'wwind':
-                        plt.pcolormesh(time, height[ind], data, vmin = -0.1, vmax = 0.1)
+                        plt.pcolormesh(time, height, data, vmin = -0.1, vmax = 0.1)
                     else:
-                        plt.pcolormesh(time, height[ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+                        plt.pcolormesh(time, height, data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
                     #################################################################
                     ## set plot properties
@@ -558,22 +558,23 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     ### title and axes properties
                     plt.title(title)
                     plt.colorbar()
-                    ax.set_ylim([0, 5000])
+                    plt.gca().invert_yaxis()
+                    # ax.set_ylim([0, 5000])
 
                     ### global plot properties
-                    plt.subplot(5,2,9)
-                    plt.xlabel('Time [UTC]')
-                    plt.ylabel('Z [m]')
-                    plt.subplot(5,2,10)
-                    plt.xlabel('Time [UTC]')
-                    plt.subplot(5,2,1)
-                    plt.ylabel('Z [m]')
-                    plt.subplot(5,2,3)
-                    plt.ylabel('Z [m]')
-                    plt.subplot(5,2,5)
-                    plt.ylabel('Z [m]')
-                    plt.subplot(5,2,7)
-                    plt.ylabel('Z [m]')
+                    # plt.subplot(5,2,9)
+                    # plt.xlabel('Time [UTC]')
+                    # plt.ylabel('Z [m]')
+                    # plt.subplot(5,2,10)
+                    # plt.xlabel('Time [UTC]')
+                    # plt.subplot(5,2,1)
+                    # plt.ylabel('Z [m]')
+                    # plt.subplot(5,2,3)
+                    # plt.ylabel('Z [m]')
+                    # plt.subplot(5,2,5)
+                    # plt.ylabel('Z [m]')
+                    # plt.subplot(5,2,7)
+                    # plt.ylabel('Z [m]')
 
     print '******'
     print ''
