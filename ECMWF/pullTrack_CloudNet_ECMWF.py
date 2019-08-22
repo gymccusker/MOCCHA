@@ -803,15 +803,15 @@ def writeNetCDF(data, date, outfile):
     ###################################
     #### load in a cube to define dimensions
     ###################################
-    cube1 = iris.load('DATA/' + date + '_moccha_ecmwf_001.nc')
+    cube0 = iris.load('DATA/' + date + '_moccha_ecmwf_001.nc')
 
     ###################################
     ## Data dimensions
     ###################################
-    timem = dataset.createDimension('time', np.size(cube1[0].dim_coords[0].points))
-    level = dataset.createDimension('model_level_number', np.size(cube1[1].dim_coords[1].points))
-    flevel = dataset.createDimension('model_flux_level', np.size(cube1[3].dim_coords[1].points))
-    freq = dataset.createDimension('frequency', np.size(cube1[2].dim_coords[0].points))
+    timem = dataset.createDimension('time', np.size(cube0[0].dim_coords[0].points))
+    level = dataset.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
+    flevel = dataset.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
+    freq = dataset.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
@@ -824,7 +824,7 @@ def writeNetCDF(data, date, outfile):
     timem.units = 'hours'
     timem.long_name = 'hours_UTC'
     timem.standard_name = 'time'
-    timem[:] = cube1[0].dim_coords[0].points
+    timem[:] = cube0[0].dim_coords[0].points
 
     #### model level
     level = dataset.createVariable('level', np.float64, ('model_level_number',), fill_value='-9999')
@@ -835,7 +835,7 @@ def writeNetCDF(data, date, outfile):
     level.long_name = 'model_level'
     level.standard_name = 'model_level_number'
     level.positive = 'down'
-    level[:] = cube1[1].dim_coords[1].points
+    level[:] = cube0[1].dim_coords[1].points
 
     #### flux model level
     flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
@@ -845,7 +845,7 @@ def writeNetCDF(data, date, outfile):
     flevel.units = '1'
     flevel.long_name = 'model_flux_level'
     flevel.positive = 'down'
-    flevel[:] = cube1[3].dim_coords[1].points
+    flevel[:] = cube0[3].dim_coords[1].points
 
     #### frequency
     freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
@@ -855,7 +855,7 @@ def writeNetCDF(data, date, outfile):
     freq.units = 'GHz'
     freq.long_name = 'microwave_frequency'
     freq.missing_value = -999.0
-    freq[:] = cube1[2].dim_coords[0].points
+    freq[:] = cube0[2].dim_coords[0].points
 
 
     ###################################
