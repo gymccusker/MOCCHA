@@ -537,6 +537,8 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'wwind':
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -0.1, vmax = 0.1)
+                    elif cube[diag].var_name == 'pressure':
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 500, vmax = 1000)
                     else:
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
@@ -558,24 +560,24 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     ### title and axes properties
                     plt.title(title)
                     plt.colorbar()
-                    # ax.set_ylim([100, 137])
+                    ax.set_ylim([0, 5000])
                     # plt.gca().invert_yaxis()
 
 
                     ### global plot properties
-                    # plt.subplot(5,2,9)
-                    # plt.xlabel('Time [UTC]')
-                    # plt.ylabel('Z [m]')
-                    # plt.subplot(5,2,10)
-                    # plt.xlabel('Time [UTC]')
-                    # plt.subplot(5,2,1)
-                    # plt.ylabel('Z [m]')
-                    # plt.subplot(5,2,3)
-                    # plt.ylabel('Z [m]')
-                    # plt.subplot(5,2,5)
-                    # plt.ylabel('Z [m]')
-                    # plt.subplot(5,2,7)
-                    # plt.ylabel('Z [m]')
+                    plt.subplot(5,2,9)
+                    plt.xlabel('Time [UTC]')
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,10)
+                    plt.xlabel('Time [UTC]')
+                    plt.subplot(5,2,1)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,3)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,5)
+                    plt.ylabel('Z [m]')
+                    plt.subplot(5,2,7)
+                    plt.ylabel('Z [m]')
 
     print '******'
     print ''
