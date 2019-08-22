@@ -1614,7 +1614,7 @@ def main():
             print ''
 
             print 'Loading multiple diagnostics:'
-            cube = iris.load(filename)#, global_con, callback)
+            cube = iris.load(filename)
 
             # print 'i = ' + str(i)
             print ''
