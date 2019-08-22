@@ -1518,7 +1518,7 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_ecmwf.nc']
-    Aug_names = ['20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
+    Aug_names = ['20180814_oden_ecmwf.nc','20180816_oden_ecmwf.nc']#,
             '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
             '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
             '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
@@ -1538,7 +1538,7 @@ def main():
             '20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
             '20180914_oden_ecmwf.nc']
 
-    Aug_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc']
+    Aug_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180815_oden_ecmwf.nc']
 
     Sep_missing_files = ['20180904_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
