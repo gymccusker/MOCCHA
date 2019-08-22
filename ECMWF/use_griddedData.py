@@ -817,20 +817,11 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     print ''
 
     if month_flag == 8:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_ecmwf.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_ecmwf.png'
+        fileout = 'FIGS/201808_oden_ecmwf.png'
     if month_flag == 9:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_ecmwf.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_ecmwf.png'
+        fileout = 'FIGS/201809_oden_ecmwf.png'
     if month_flag == -1:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf.png'
+        fileout = 'FIGS/moccha_oden_ecmwf.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
