@@ -867,7 +867,7 @@ def writeNetCDF(data, date, outfile):
     ###################################
     ## Loop over diagnostics
     ###################################
-    for d in range(0,len(cube)):
+    for d in range(0,len(cube0)):
         for h in range(0,24):
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
             print ''
@@ -965,8 +965,8 @@ def writeNetCDF(data, date, outfile):
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
-        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
-        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
 
     ##################################
     # Loop over hours to load in appropriate file
