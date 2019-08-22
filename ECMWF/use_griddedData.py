@@ -1526,17 +1526,11 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-    if platform == 'MONSOON':
-        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
-    if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
-        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
+        root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir = 'DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
