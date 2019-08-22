@@ -837,19 +837,19 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
 
     if month_flag == 8:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_ecmwf.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_ecmwf.png'
     if month_flag == 9:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_ecmwf.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_ecmwf.png'
     if month_flag == -1:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1092,11 +1092,11 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
 
     if month_flag == 8:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_casim.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_ecmwf_casim.png'
             plt.savefig(fileout, dpi=300)
     if month_flag == 9:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_casim.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_ecmwf_casim.png'
             plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1271,19 +1271,19 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
 
     if month_flag == 8:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_ecmwf_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_ecmwf_1Da.png'
     if month_flag == 9:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_ecmwf_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_ecmwf_1Da.png'
     if month_flag == -1:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf_1Da.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1468,19 +1468,19 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
 
     if month_flag == 8:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_ecmwf_1Db.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_ecmwf_1Db.png'
     if month_flag == 9:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_ecmwf_1Db.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_ecmwf_1Db.png'
     if month_flag == -1:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf_1Db.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf_1Db.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1540,29 +1540,29 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
+    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_ecmwf.nc']
+    Aug_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
+            '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
+            '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
+            '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
+            '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
-    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
-            '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
-            '20180913_oden_metum.nc','20180914_oden_metum.nc']
+    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
+            '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
+            '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
+            '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
-    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+    moccha_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
+            '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
+            '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
+            '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
+            '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc','20180901_oden_ecmwf.nc',
+            '20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc','20180905_oden_ecmwf.nc',
+            '20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc','20180909_oden_ecmwf.nc',
+            '20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
+            '20180914_oden_ecmwf.nc']
 
-    Aug_missing_files = ['20180812_oden_metum.nc']
+    Aug_missing_files = ['20180812_oden_ecmwf.nc']
 
     Sep_missing_files = []
 
@@ -1580,7 +1580,7 @@ def main():
     month_flag = -1
 
     if combine == 0:
-        # name = '20180902_oden_metum.nc'
+        # name = '20180902_oden_ecmwf.nc'
         filename = root_dir + out_dir + names[0]
         print filename
         print ''
