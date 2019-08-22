@@ -921,10 +921,12 @@ def writeNetCDF(data, date, outfile):
                 print 'Loading ' + file + '...'
                 cube1 = iris.load(file)
                 if cube1[d].var_name in qfields:
+                    print 'Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...'
                     cube1[d].data[cube1[d].data == 0.0] = np.nan
                 print 'Loading ' + file2 + '...'
                 cube2 = iris.load(file2)
                 if cube2[d].var_name in qfields:
+                    print 'Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...'
                     cube2[d].data[cube2[d].data == 0.0] = np.nan
                 print 'Averaging ' + cube1[d].var_name
                 if h == 0:
