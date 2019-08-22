@@ -870,6 +870,7 @@ def writeNetCDF(data, date, outfile):
     ## Loop over diagnostics
     ###################################
     for d in range(0,len(cube0)):
+        print ''
         print '**** New diagnostic loop ****'
         for h in range(0,24):
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
