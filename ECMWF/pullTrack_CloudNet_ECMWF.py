@@ -1135,7 +1135,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180814'
+    date = '20180819'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
