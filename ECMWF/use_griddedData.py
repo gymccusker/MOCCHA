@@ -10,8 +10,6 @@ import datetime
 import numpy as np
 from netCDF4 import Dataset
 import numpy as np
-import diags_MOCCHA as diags
-import diags_varnames as varnames
 import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
@@ -582,10 +580,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-        fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
-    elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-        fileout = 'FIGS/' + out_dir[:19] + filename[-22:-3] + '.png'
+    fileout = 'FIGS/' + filename[-22:-3] + '.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1488,7 +1483,7 @@ def main():
         ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = 'DATA/'
+    out_dir = 'OUT/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1569,7 +1564,7 @@ def main():
         #### LOAD CUBE
         # -------------------------------------------------------------
         print 'Loading multiple diagnostics:'
-        cube = iris.load(filename
+        cube = iris.load(filename)
 
         print cube
         print ''
