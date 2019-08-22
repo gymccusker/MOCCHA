@@ -663,7 +663,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         ### the following works for now, but could do with finding an easier
         ###         way to index cube by string
         for j in range(0,len(cube)):
-            if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
+            if cube[j].var_name == 'ql': height = cube[37].data[0,:]#cube[j].dim_coords[1].points
 
         dat = []
         print 'dat = ' + str(len(dat))
@@ -690,10 +690,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         elif str(data.keys()[diag]) == "cloud_fraction":
             title = str(data.keys()[diag]) + ' []'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "qice":
+        elif str(data.keys()[diag]) == "qi":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == "qliq":
+        elif str(data.keys()[diag]) == "ql":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
         elif str(data.keys()[diag]) == "qnrain":
@@ -723,6 +723,9 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         elif str(data.keys()[diag]) == "q":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
+        elif str(data.keys()[diag]) == "rh":
+            title = str(data.keys()[diag]) + ' [%]'
+            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e2))
 
         print 'dat = ' + str(len(dat))
         print ''
@@ -756,6 +759,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
                 plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
             elif str(data.keys()[diag]) == 'qice':
                 plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
+            elif str(data.keys()[diag]) == 'rh':
+                plt.pcolormesh(timem, height, dat, vmin = 50, vmax = 100)
             else:
                 plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
             #################################################################
@@ -1519,10 +1524,10 @@ def main():
             '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
             '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
-    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
-            '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
-            '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
-            '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
+    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc']#,'20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
+            # '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
+            # '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
+            # '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
     moccha_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
             '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
@@ -1545,7 +1550,7 @@ def main():
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
     names = Sep_names
     missing_files = Sep_missing_files
