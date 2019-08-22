@@ -504,7 +504,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
                 elif cube[diag].var_name == 'rh':
-                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
+                    data = np.transpose(np.squeeze(cube[diag].data[:,ind]*1e2))
                     title = cube[diag].var_name + ' [%]'
                 elif cube[diag].var_name == 'cloud_fraction':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
