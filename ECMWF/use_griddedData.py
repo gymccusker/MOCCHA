@@ -568,7 +568,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     plt.subplot(5,2,9)
                     plt.xlabel('Time [UTC]')
                     plt.ylabel('Z [m]')
-                    plt.subplot(5,2,10)
+                    plt.subplot(5,2,8)
                     plt.xlabel('Time [UTC]')
                     plt.subplot(5,2,1)
                     plt.ylabel('Z [m]')
