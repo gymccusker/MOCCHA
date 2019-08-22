@@ -1525,8 +1525,8 @@ def main():
             '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
     Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc',
-            '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc']#,
-            # '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
+            '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
+            '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc']#,'20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
             # '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
     moccha_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
