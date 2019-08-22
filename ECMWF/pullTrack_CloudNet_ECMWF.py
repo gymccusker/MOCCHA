@@ -941,7 +941,7 @@ def writeNetCDF(data, date, outfile):
                     if np.size(cube1[d].shape) == 0:
                         print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
                         dat = dataset.createVariable(cube1[d].var_name, np.float64, fill_value='-9999')
-                        dat[:] = np.nanmean([cube1[d].data,cube2[d].data)
+                        dat[:] = np.nanmean([cube1[d].data,cube2[d].data])
                         break
                     elif np.size(cube1[d].shape) == 1:
                         print 'Diagnostic is 1D, so writing hour = ' + str(h)
