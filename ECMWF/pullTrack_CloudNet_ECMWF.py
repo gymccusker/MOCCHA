@@ -827,7 +827,7 @@ def writeNetCDF(data, date, outfile):
     timem[:] = cube0[0].dim_coords[0].points
 
     #### model level
-    level = dataset.createVariable('level', np.float64, ('model_level_number',), fill_value='-9999')
+    level = dataset.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
     level.scale_factor = float(1)
     level.add_offset = float(0)
     level.comment = ''
@@ -838,7 +838,7 @@ def writeNetCDF(data, date, outfile):
     level[:] = cube0[1].dim_coords[1].points
 
     #### flux model level
-    flevel = dataset.createVariable('flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel = dataset.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
     flevel.scale_factor = float(1)
     flevel.add_offset = float(0)
     flevel.comment = ''
