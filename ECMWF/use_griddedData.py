@@ -1573,11 +1573,11 @@ def main():
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 1
+    combine = 0
     ## Choose month:
-    names = moccha_names
-    missing_files = moccha_missing_files
-    month_flag = -1
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9         ### -1 to plot as DOY
 
     if combine == 0:
         # name = '20180902_oden_ecmwf.nc'
