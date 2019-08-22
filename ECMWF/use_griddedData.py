@@ -540,7 +540,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     elif cube[diag].var_name == 'pressure':
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 500, vmax = 1000)
                     elif cube[diag].var_name == 'rh':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 70, vmax = 100)
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 50, vmax = 100)
                     else:
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
