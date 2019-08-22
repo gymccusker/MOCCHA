@@ -1585,17 +1585,11 @@ def main():
         print filename
         print ''
 
+        # -------------------------------------------------------------
         #### LOAD CUBE
-        if 'var_con' in locals():
-            print 'Loading single diagnostic:'
-            print var_con
-            cube1 = iris.load_cube(filename)#, var_con, callback)
-        elif 'global_con' in locals():
-            print 'Loading multiple diagnostics:'
-            # cube = iris.load_cubes(filename1, global_con)
-            cube = iris.load(filename)#, global_con, callback)
-
-            # -------------------------------------------------------------
+        # -------------------------------------------------------------
+        print 'Loading multiple diagnostics:'
+        cube = iris.load(filename
 
         print cube
         print ''
