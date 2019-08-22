@@ -789,23 +789,6 @@ def writeNetCDF(data, date, outfile):
     import time
     from datetime import datetime, timedelta
 
-    #################################################################
-    ## CREATE EMPTY CUBE
-    #################################################################
-    # ncube = Cube(np.zeros([38,25,137]))
-    #
-    # ntime = DimCoord(data['tims'][:], var_name = 'time', standard_name = 'forecast_time', units='hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00')
-    # level = DimCoord(data['mlevs'][:], var_name = 'level', standard_name = 'model_level_number', units='m')
-    # ncube = Cube(data['pressure'],
-    #         dim_coords_and_dims=[(lats, 0), (level, 1), (ntime, 2)],
-    #         standard_name = cube.standard_name,
-    #         long_name = cube.long_name,
-    #         units = cube.units,
-    #         var_name = varname,
-    #         attributes = cube.attributes,
-    #         aux_coords_and_dims = None,
-    #         )
-
     ##################################
     # Open new netCDF file
     ##################################
@@ -962,19 +945,19 @@ def writeNetCDF(data, date, outfile):
                         dat = dataset.createVariable(cube1[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
                         # dat[:,h,:] = cube1[d].data[:,h,:]
                         dat[:,h,:] = np.nanmean([cube[d].data[:,h,:],cube2[d].data[:,h,:]],1)
-                # else:
-                #     if np.size(cube[d].shape) == 0:
-                #         print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
-                #         dat[:] = cube[d].data
-                #     elif np.size(cube[d].shape) == 1:
-                #         print 'Diagnostic is 1D, so writing hour = ' + str(h)
-                #         dat[h] = cube[d].data[h]
-                #     elif np.size(cube[d].shape) == 2:
-                #         print 'Diagnostic is 2D, so writing hour = ' + str(h)
-                #         dat[h,:] = cube[d].data[h,:]
-                #     elif np.size(cube[d].shape) == 3:
-                #         print 'Diagnostic is 3D, so writing hour = ' + str(h)
-                #         dat[:,h,:] = cube[d].data[:,h,:]
+                else:
+                    if np.size(cube[d].shape) == 0:
+                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        dat[:] = cube[d].data
+                    elif np.size(cube[d].shape) == 1:
+                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        dat[h] = cube[d].data[h]
+                    elif np.size(cube[d].shape) == 2:
+                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        dat[h,:] = cube[d].data[h,:]
+                    elif np.size(cube[d].shape) == 3:
+                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        dat[:,h,:] = cube[d].data[:,h,:]
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
