@@ -1562,7 +1562,7 @@ def main():
 
     if combine == 0:
         # name = '20180902_oden_ecmwf.nc'
-        filename = root_dir + out_dir + names[0]
+        filename = root_dir + out_dir + names[1]
         print filename
         print ''
 
