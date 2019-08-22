@@ -503,9 +503,9 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 elif cube[diag].var_name == 'wwind':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
-                elif cube[diag].var_name == 'radr_refl':
+                elif cube[diag].var_name == 'rh':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
-                    title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
+                    title = cube[diag].var_name + ' [%]'
                 elif cube[diag].var_name == 'cloud_fraction':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
@@ -539,6 +539,8 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -0.1, vmax = 0.1)
                     elif cube[diag].var_name == 'pressure':
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 500, vmax = 1000)
+                    elif cube[diag].var_name == 'rh':
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 70, vmax = 100)
                     else:
                         plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
@@ -568,7 +570,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     plt.subplot(5,2,9)
                     plt.xlabel('Time [UTC]')
                     plt.ylabel('Z [m]')
-                    plt.subplot(5,2,8)
+                    plt.subplot(5,2,10)
                     plt.xlabel('Time [UTC]')
                     plt.subplot(5,2,1)
                     plt.ylabel('Z [m]')
