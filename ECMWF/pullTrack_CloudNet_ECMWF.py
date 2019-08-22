@@ -889,45 +889,46 @@ def writeNetCDF(data, date, outfile):
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
             print ''
             print 'Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h])
-            print 'So loading ' + file + ' only '
-            cube = iris.load(file)
-            print 'Writing ' + cube[d].var_name
-            if h == 0:
-                if np.size(cube[d].shape) == 0:
-                    print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
-                    dat[:] = cube[d].data
-                    break
-                elif np.size(cube[d].shape) == 1:
-                    print 'Diagnostic is 1D, so writing hour = ' + str(h)
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
-                    dat[h] = cube[d].data[h]
-                elif np.size(cube[d].shape) == 2:
-                    print 'Diagnostic is 2D, so writing hour = ' + str(h)
-                    if cube[d].var_name in fluxes:
-                        print 'Diagnostic is on flux levels.'
-                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
-                    else:
-                        print 'Diagnostic is on model levels.'
-                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
-                    dat[h,:] = cube[d].data[h,:]
-                elif np.size(cube[d].shape) == 3:
-                    print 'Diagnostic is 3D, so writing hour = ' + str(h)
-                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
-                    dat[:,h,:] = cube[d].data[:,h,:]
-            else:
-                if np.size(cube[d].shape) == 0:
-                    print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
-                    dat[:] = cube[d].data
-                elif np.size(cube[d].shape) == 1:
-                    print 'Diagnostic is 1D, so writing hour = ' + str(h)
-                    dat[h] = cube[d].data[h]
-                elif np.size(cube[d].shape) == 2:
-                    print 'Diagnostic is 2D, so writing hour = ' + str(h)
-                    dat[h,:] = cube[d].data[h,:]
-                elif np.size(cube[d].shape) == 3:
-                    print 'Diagnostic is 3D, so writing hour = ' + str(h)
-                    dat[:,h,:] = cube[d].data[:,h,:]
+            if data['jflag'][h] == 1:
+                print 'So loading ' + file + ' only '
+                cube = iris.load(file)
+                print 'Writing ' + cube[d].var_name
+                if h == 0:
+                    if np.size(cube[d].shape) == 0:
+                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
+                        dat[:] = cube[d].data
+                        break
+                    elif np.size(cube[d].shape) == 1:
+                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
+                        dat[h] = cube[d].data[h]
+                    elif np.size(cube[d].shape) == 2:
+                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        if cube[d].var_name in fluxes:
+                            print 'Diagnostic is on flux levels.'
+                            dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
+                        else:
+                            print 'Diagnostic is on model levels.'
+                            dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
+                        dat[h,:] = cube[d].data[h,:]
+                    elif np.size(cube[d].shape) == 3:
+                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
+                        dat[:,h,:] = cube[d].data[:,h,:]
+                else:
+                    if np.size(cube[d].shape) == 0:
+                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        dat[:] = cube[d].data
+                    elif np.size(cube[d].shape) == 1:
+                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        dat[h] = cube[d].data[h]
+                    elif np.size(cube[d].shape) == 2:
+                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        dat[h,:] = cube[d].data[h,:]
+                    elif np.size(cube[d].shape) == 3:
+                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        dat[:,h,:] = cube[d].data[:,h,:]
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
