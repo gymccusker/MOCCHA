@@ -530,15 +530,15 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     #################################################################
                     # plt.contourf(time,height,np.transpose(cube[diag].data))
                     if cube[diag].var_name == 'temperature':
-                        plt.pcolormesh(time, height[0,ind], data, vmin = 250, vmax = np.nanmax(data))
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 250, vmax = np.nanmax(data))
                     elif cube[diag].var_name == 'uwind':
-                        plt.pcolormesh(time, height[0,ind], data, vmin = -20, vmax = 20)
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'vwind':
-                        plt.pcolormesh(time, height[0,ind], data, vmin = -20, vmax = 20)
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'wwind':
-                        plt.pcolormesh(time, height[0,ind], data, vmin = -0.1, vmax = 0.1)
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -0.1, vmax = 0.1)
                     else:
-                        plt.pcolormesh(time, height[0,ind], data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
                     #################################################################
                     ## set plot properties
