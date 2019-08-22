@@ -864,6 +864,8 @@ def writeNetCDF(data, date, outfile):
     fluxes = ['flx_net_sw','flx_net_lw','flx_ls_snow','flx_ls_rain','flx_turb_mom_v',
     'flx_turb_mom_u','flx_conv_snow','flx_conv_rain','flx_height','flx_turb_moist','flx_down_sens_heat']
 
+    qfields = ['qi','ql']
+
     ###################################
     ## Loop over diagnostics
     ###################################
@@ -917,8 +919,12 @@ def writeNetCDF(data, date, outfile):
                 print 'So averaging between ' + file + ' and ' + file2
                 print 'Loading ' + file + '...'
                 cube1 = iris.load(file)
+                if cube1[d].var_name in qfields:
+                    cube1[d].data[cube1[d].data == 0.0] = np.nan
                 print 'Loading ' + file2 + '...'
                 cube2 = iris.load(file2)
+                if cube2[d].var_name in qfields:
+                    cube2[d].data[cube2[d].data == 0.0] = np.nan
                 print 'Averaging ' + cube1[d].var_name
                 if h == 0:
                     if np.size(cube1[d].shape) == 0:
