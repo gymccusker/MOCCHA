@@ -781,8 +781,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             plt.title(title)
             plt.colorbar()
             ax.set_ylim([0, 5000])
-            if month_flag == 8: ax.set_xlim([13.0, 31.0])
-            if month_flag == 9: ax.set_xlim([1.0, 15.0])
+            if month_flag == 8: ax.set_xlim([13.0, 32.0])
+            if month_flag == 9: ax.set_xlim([1.0, 16.0])
             if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
             print ''
@@ -1528,22 +1528,22 @@ def main():
             '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
             '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc']
 
-    moccha_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
-            '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
-            '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
+    moccha_names = ['20180814_oden_ecmwf.nc','20180816_oden_ecmwf.nc','20180818_oden_ecmwf.nc',
+            '20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc','20180821_oden_ecmwf.nc',
+            '20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
             '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
-            '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc','20180901_oden_ecmwf.nc',
-            '20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc','20180905_oden_ecmwf.nc',
-            '20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc','20180909_oden_ecmwf.nc',
-            '20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
-            '20180914_oden_ecmwf.nc']
+            '20180829_oden_ecmwf.nc','20180831_oden_ecmwf.nc','20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc',
+            '20180903_oden_ecmwf.nc','20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc',
+            '20180908_oden_ecmwf.nc','20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc']
 
     Aug_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180817_oden_ecmwf.nc',
             '20180830_oden_ecmwf.nc']
 
     Sep_missing_files = ['20180904_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
-    moccha_missing_files = []
+    moccha_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180817_oden_ecmwf.nc',
+            '20180830_oden_ecmwf.nc','20180904_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
+            '20180914_oden_ecmwf.nc']
 
     doy = np.arange(225,259)        ## set DOY for full moccha figures
 
