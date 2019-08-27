@@ -660,7 +660,8 @@ def pullTrack(ship_data, data, date, outfile):
     print ''
 
     data = checkLatLon(ship_data, date, data)
-
+    np.save('working_data', data)
+    
     #################################################################
     ## write out data
     #################################################################
@@ -917,6 +918,8 @@ def writeNetCDF(data, date, outfile):
                         print 'Diagnostic is 3D, so writing hour = ' + str(h)
                         dat[:,h,:] = cube[d].data[:,h,:]
             elif data['jflag'][h] == 2:
+                print 'h = ' + str(int(data['ship_ind'][h]))
+                print 'h+1 = ' + str(int(data['ship_ind'][h+1]))
                 file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1])).zfill(3) + '.nc'
                 print 'So averaging between ' + file + ' and ' + file2
                 print 'Loading ' + file + '...'
@@ -1135,7 +1138,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180831'
+    date = '20180830'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
