@@ -782,7 +782,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             plt.colorbar()
             ax.set_ylim([0, 5000])
             if month_flag == 8: ax.set_xlim([13.0, 32.0])
-            if month_flag == 9: ax.set_xlim([1.0, 16.0])
+            if month_flag == 9: ax.set_xlim([1.0, 15.0])
             if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
             print ''
