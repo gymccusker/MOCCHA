@@ -661,7 +661,7 @@ def pullTrack(ship_data, data, date, outfile):
 
     data = checkLatLon(ship_data, date, data)
     np.save('working_data', data)
-    
+
     #################################################################
     ## write out data
     #################################################################
@@ -1138,7 +1138,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180830'
+    date = '20180904'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
