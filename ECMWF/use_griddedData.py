@@ -1524,7 +1524,7 @@ def main():
             '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
             '20180829_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
-    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc',
+    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
             '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
             '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc']
 
@@ -1539,7 +1539,7 @@ def main():
     Aug_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180817_oden_ecmwf.nc',
             '20180830_oden_ecmwf.nc']
 
-    Sep_missing_files = ['20180904_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
+    Sep_missing_files = ['20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
     moccha_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180817_oden_ecmwf.nc',
             '20180830_oden_ecmwf.nc','20180904_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
