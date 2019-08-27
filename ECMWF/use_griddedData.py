@@ -1552,9 +1552,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8         ### -1 to plot as DOY
+    names = Sep_names
+    missing_files = Sep_missing_files
+    month_flag = 9         ### -1 to plot as DOY
 
     if combine == 0:
         # name = '20180902_oden_ecmwf.nc'
