@@ -681,20 +681,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    # print '******'
-    # print ''
-    # print 'Write out hourly gridded EC IFS data:'
-    # print ''
-    # out = writeNetCDF(data, date, outfile)
+    print '******'
+    print ''
+    print 'Write out hourly gridded EC IFS data:'
+    print ''
+    out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    # print '******'
-    # print ''
-    # print 'Appending metadata:'
-    # print ''
-    # out = appendMetaNetCDF(outfile, date)
+    print '******'
+    print ''
+    print 'Appending metadata:'
+    print ''
+    out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -890,7 +890,8 @@ def writeNetCDF(data, date, outfile):
         print ''
         print '**** New diagnostic loop ****'
         for h in range(0,24):
-            file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h])).zfill(3) + '.nc'
+            #### increment ship_ind by 1 to change from python counting (from 0) to 1-38
+            file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
             print ''
             print 'Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h])
             if data['jflag'][h] == 1:
@@ -936,7 +937,7 @@ def writeNetCDF(data, date, outfile):
             elif data['jflag'][h] == 2:
                 print 'h = ' + str(int(data['ship_ind'][h]))
                 print 'h+1 = ' + str(int(data['ship_ind'][h+1]))
-                file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1])).zfill(3) + '.nc'
+                file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1]) + 1).zfill(3) + '.nc'
                 print 'So averaging between ' + file + ' and ' + file2
                 print 'Loading ' + file + '...'
                 cube1 = iris.load(file)
