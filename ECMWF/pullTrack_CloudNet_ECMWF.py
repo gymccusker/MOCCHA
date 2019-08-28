@@ -676,20 +676,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    # print '******'
-    # print ''
-    # print 'Write out hourly gridded EC IFS data:'
-    # print ''
-    # out = writeNetCDF(data, date, outfile)
+    print '******'
+    print ''
+    print 'Write out hourly gridded EC IFS data:'
+    print ''
+    out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    # print '******'
-    # print ''
-    # print 'Appending metadata:'
-    # print ''
-    # out = appendMetaNetCDF(outfile, date)
+    print '******'
+    print ''
+    print 'Appending metadata:'
+    print ''
+    out = appendMetaNetCDF(outfile, date)
 
     return data
 
