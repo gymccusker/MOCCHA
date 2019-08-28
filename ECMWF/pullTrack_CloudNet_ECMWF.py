@@ -132,6 +132,7 @@ def designGrid(data):
     # for j in range(0,len(data['nb_lats'])-1):
     data['sb_lats'][:] = data['lats'][:] - (data['nb_lats'][:] - data['lats'][:])
     data['sb_lats'][-2:] = data['nb_lats'][-3]
+    data['sb_lats'][26] = data['nb_lats'][19]
         # if data['ulat'][j] == data['lats'][i]:
         #     data['nb_lats'][i] = nblats[j]
 
@@ -153,7 +154,8 @@ def designGrid(data):
     data['rb_lons'][15:17] = rblons[15:17]
     data['rb_lons'][17] = rblons[17] + 1.0
     data['rb_lons'][18] = data['lons'][17] + ((data['lons'][18] - data['lons'][17]) / 2.0)
-    data['rb_lons'][19:21] = rblons[19]
+    data['rb_lons'][19] = rblons[19]
+    data['rb_lons'][20] = data['lons'][27]
     data['rb_lons'][21:27] = rblons[21:27]
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
     data['rb_lons'][28:35] = rblons[28:35]
