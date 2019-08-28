@@ -1485,7 +1485,7 @@ def main():
         ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = 'OUT/'
+    out_dir = 'OUT2/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
