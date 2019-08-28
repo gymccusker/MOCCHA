@@ -237,6 +237,7 @@ def checkLatLon(ship_data, date, data):
     data['ship_lons'] = np.zeros(24)
     data['ship_lats'] = np.zeros(24)
     data['ship_ind'] = np.zeros(24)
+    data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
     data['ship_hour'] = np.zeros(24)
     hours = np.arange(0,24)
     jflag = np.zeros(24)
@@ -274,16 +275,20 @@ def checkLatLon(ship_data, date, data):
                 if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
 
         data['jflag'] = jflag       ### so jflag is written out for testing
-        print jflag
-        print ''
+        # print jflag
+        # print ''
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
             if jflag[h] > jflag[h-1]:
                 print 'Grid crossed at h = ' + str(h)
                 grid_crossed = h
+
+
     print ''
     print 'Ship indices are:'
     print data['ship_ind']
+    print 'Final jflag is: '
+    print data['jflag']
 
     return data
 
@@ -676,20 +681,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    print '******'
-    print ''
-    print 'Write out hourly gridded EC IFS data:'
-    print ''
-    out = writeNetCDF(data, date, outfile)
+    # print '******'
+    # print ''
+    # print 'Write out hourly gridded EC IFS data:'
+    # print ''
+    # out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    print '******'
-    print ''
-    print 'Appending metadata:'
-    print ''
-    out = appendMetaNetCDF(outfile, date)
+    # print '******'
+    # print ''
+    # print 'Appending metadata:'
+    # print ''
+    # out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1149,7 +1154,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180830'
+    date = '20180914'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
