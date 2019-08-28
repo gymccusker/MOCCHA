@@ -141,7 +141,9 @@ def designGrid(data):
     print 'rblons = ' + str(rblons.shape)
     print 'lons = ' + str(np.size(data['lons'][:]))
     data['rb_lons'] = np.zeros([np.size(data['lons'][:])])
-    data['rb_lons'][0:9] = rblons[0:9]
+    data['rb_lons'][0:2] = rblons[0:2]
+    data['rb_lons'][2] = data['lons'][3]
+    data['rb_lons'][3:9] = rblons[3:9]
     data['rb_lons'][9] = rblons[8]
     data['rb_lons'][10] = data['lons'][9]
     data['rb_lons'][11:12] = rblons[11:12]
@@ -164,7 +166,7 @@ def designGrid(data):
     data['lb_lons'][0:1] = data['lons'][0] - (data['rb_lons'][0] - data['lons'][0])
     data['lb_lons'][1] = data['lons'][0]
     data['lb_lons'][2] = data['rb_lons'][1]
-    data['lb_lons'][3] = data['rb_lons'][2]
+    data['lb_lons'][3] = rblons[2]
     data['lb_lons'][4] = data['lons'][3]
     # data['lb_lons'][3:5] = data['lons'][2:4]
     data['lb_lons'][5] = data['lons'][4]; data['rb_lons'][5] = data['lons'][5] + (data['lons'][5] - data['rb_lons'][5])
@@ -669,20 +671,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    print '******'
-    print ''
-    print 'Write out hourly gridded EC IFS data:'
-    print ''
-    out = writeNetCDF(data, date, outfile)
-
-    #################################################################
-    ## append metadata
-    #################################################################
-    print '******'
-    print ''
-    print 'Appending metadata:'
-    print ''
-    out = appendMetaNetCDF(outfile, date)
+    # print '******'
+    # print ''
+    # print 'Write out hourly gridded EC IFS data:'
+    # print ''
+    # out = writeNetCDF(data, date, outfile)
+    #
+    # #################################################################
+    # ## append metadata
+    # #################################################################
+    # print '******'
+    # print ''
+    # print 'Appending metadata:'
+    # print ''
+    # out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1142,7 +1144,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180904'
+    date = '20180912'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
