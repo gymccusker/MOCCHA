@@ -133,7 +133,7 @@ def designGrid(data):
     data['sb_lats'][:] = data['lats'][:] - (data['nb_lats'][:] - data['lats'][:])
     data['sb_lats'][-2:] = data['nb_lats'][-3]
     data['sb_lats'][26] = data['nb_lats'][19]       ### hard fix for 20180817 and 20180815(?) forecasts
-    data['nb_lats'][21] = data['nb_lats'][21] + 1.0
+    data['nb_lats'][21] = data['sb_lats'][29]# + 1.0
         # if data['ulat'][j] == data['lats'][i]:
         #     data['nb_lats'][i] = nblats[j]
 
