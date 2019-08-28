@@ -783,7 +783,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             ax.set_ylim([0, 5000])
             if month_flag == 8: ax.set_xlim([13.0, 32.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([226.0, 257.0])
+            if month_flag == -1: ax.set_xlim([226.0, 258.0])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -1544,7 +1544,7 @@ def main():
 
     moccha_missing_files = ['20180812_oden_ecmwf.nc','20180813_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
-    doy = np.arange(226,258)        ## set DOY for full moccha figures
+    doy = np.arange(226,259)        ## set DOY for full moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
