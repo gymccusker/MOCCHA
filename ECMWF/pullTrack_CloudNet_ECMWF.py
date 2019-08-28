@@ -143,7 +143,8 @@ def designGrid(data):
     print 'rblons = ' + str(rblons.shape)
     print 'lons = ' + str(np.size(data['lons'][:]))
     data['rb_lons'] = np.zeros([np.size(data['lons'][:])])
-    data['rb_lons'][0:2] = rblons[0:2]
+    data['rb_lons'][0] = data['lons'][1]
+    data['rb_lons'][1] = rblons[1]
     data['rb_lons'][2] = data['lons'][3]
     data['rb_lons'][3:9] = rblons[3:9]
     data['rb_lons'][9] = rblons[8]
@@ -282,7 +283,6 @@ def checkLatLon(ship_data, date, data):
             if jflag[h] > jflag[h-1]:
                 print 'Grid crossed at h = ' + str(h)
                 grid_crossed = h
-
 
     print ''
     print 'Ship indices are:'
