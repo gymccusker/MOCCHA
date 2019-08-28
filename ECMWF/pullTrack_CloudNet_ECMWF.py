@@ -133,6 +133,7 @@ def designGrid(data):
     data['sb_lats'][:] = data['lats'][:] - (data['nb_lats'][:] - data['lats'][:])
     data['sb_lats'][-2:] = data['nb_lats'][-3]
     data['sb_lats'][26] = data['nb_lats'][19]       ### hard fix for 20180817 and 20180815(?) forecasts
+    data['nb_lats'][21] = data['nb_lats'][21] + 1.0
         # if data['ulat'][j] == data['lats'][i]:
         #     data['nb_lats'][i] = nblats[j]
 
@@ -158,7 +159,9 @@ def designGrid(data):
     data['rb_lons'][20] = data['lons'][27]
     data['rb_lons'][21:27] = rblons[21:27]
     data['rb_lons'][27] = data['lons'][27] + (rblons[27] - data['lons'][27])/2.0
-    data['rb_lons'][28:35] = rblons[28:35]
+    data['rb_lons'][28] = rblons[28]
+    data['rb_lons'][29] = rblons[29]
+    data['rb_lons'][30:35] = rblons[30:35]
     data['rb_lons'][36] = data['lons'][36] + ((data['lons'][37] - data['lons'][36]) / 2.0) #rblons[34]
     data['rb_lons'][37] = data['lons'][33]#data['lons'][37] + (rblons[35] - data['lons'][3])/2.0
 
@@ -673,20 +676,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    print '******'
-    print ''
-    print 'Write out hourly gridded EC IFS data:'
-    print ''
-    out = writeNetCDF(data, date, outfile)
+    # print '******'
+    # print ''
+    # print 'Write out hourly gridded EC IFS data:'
+    # print ''
+    # out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    print '******'
-    print ''
-    print 'Appending metadata:'
-    print ''
-    out = appendMetaNetCDF(outfile, date)
+    # print '******'
+    # print ''
+    # print 'Appending metadata:'
+    # print ''
+    # out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1146,7 +1149,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180817'
+    date = '20180830'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
