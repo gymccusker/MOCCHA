@@ -132,7 +132,7 @@ def designGrid(data):
     # for j in range(0,len(data['nb_lats'])-1):
     data['sb_lats'][:] = data['lats'][:] - (data['nb_lats'][:] - data['lats'][:])
     data['sb_lats'][-2:] = data['nb_lats'][-3]
-    data['sb_lats'][26] = data['nb_lats'][19]
+    data['sb_lats'][26] = data['nb_lats'][19]       ### hard fix for 20180817 and 20180815(?) forecasts
         # if data['ulat'][j] == data['lats'][i]:
         #     data['nb_lats'][i] = nblats[j]
 
@@ -673,20 +673,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    # print '******'
-    # print ''
-    # print 'Write out hourly gridded EC IFS data:'
-    # print ''
-    # out = writeNetCDF(data, date, outfile)
+    print '******'
+    print ''
+    print 'Write out hourly gridded EC IFS data:'
+    print ''
+    out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    # print '******'
-    # print ''
-    # print 'Appending metadata:'
-    # print ''
-    # out = appendMetaNetCDF(outfile, date)
+    print '******'
+    print ''
+    print 'Appending metadata:'
+    print ''
+    out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1146,7 +1146,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180815'
+    date = '20180817'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
