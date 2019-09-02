@@ -5904,7 +5904,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             #         ok = False
             else:
                 print cube[k].standard_name
-                if xoffset != 0:
+                if int(xoffset) != 0:
                     print 'Diagnostic is 1-hourly, pull ship track...'
                     ok = True
 
