@@ -68,8 +68,8 @@ Var_list = { # paXXX
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'qnliq',
               'm01s00i078': 'qnice',
-              'm01s00i083': 'actsolliq',
-              'm01s00i086': 'actsolice',
+              # 'm01s00i083': 'actsolliq',
+              # 'm01s00i086': 'actsolice',
               'm01s00i267': 'liquid_cloud_fraction',
               'm01s00i268': 'ice_cloud_fraction'
               }

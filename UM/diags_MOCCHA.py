@@ -68,8 +68,8 @@ Stash_list = { # paXXX
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
               'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
-              'm01s00i083': 'activated_soluable_aerosol_in_liquid',
-              'm01s00i086': 'activated_soluable_aerosol_in_ice',
+              # 'm01s00i083': 'activated_soluable_aerosol_in_liquid',
+              # 'm01s00i086': 'activated_soluable_aerosol_in_ice',
               'm01s00i267': 'large_scale_liquid_cloud_area_fraction',
               'm01s00i268': 'large_scale_ice_cloud_area_fraction'
 
