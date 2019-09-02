@@ -5896,6 +5896,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
                 print cube[k].standard_name
                 print 'Diagnostic is 3-hourly, break from loop'
+                ok = False
                 break
             elif len(np.round(cube[k].coord('forecast_period').points)) > 10:
                 if xoffset == 0:
