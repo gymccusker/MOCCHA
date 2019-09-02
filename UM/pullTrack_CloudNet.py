@@ -6628,7 +6628,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     if out_dir[2:9] == 'u-bg610':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
         revision = 'Revision no. 1. '
-    elif out_dir[2:9] == 'u-bl616':
+    elif out_dir[2:9] == 'u-bl661':
         micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Shipway (2015); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. No aerosol processing. '
         revision = 'Revision no. 0. '
     else:
