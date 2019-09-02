@@ -482,6 +482,11 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 ### set height limit to consider
                 ind = np.where(height[0,:]<5000)
 
+                # cube[diag].data
+                # for k in range(0,len(height)):
+                #     for t in range(0,len(time)):
+                #         if cube[diag].data.mask[t,k] == True: cube[diag].data[t,k] = np.nan
+
                 if cube[diag].var_name == 'temperature':
                     data = np.transpose(np.squeeze(cube[diag].data[:,ind]))
                     title = cube[diag].var_name + ' [' + str(cube[diag].units) + ']'
@@ -522,6 +527,8 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     print 'l = ' + str(l)
                     print title
 
+
+
                     plt.subplot(5,2,l+1)
                     ax = plt.gca()
 
@@ -530,19 +537,21 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     #################################################################
                     # plt.contourf(time,height,np.transpose(cube[diag].data))
                     if cube[diag].var_name == 'temperature':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 250, vmax = np.nanmax(data))
+                        contour_levels = np.arange(250,np.nanmax(data),2)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, contour_levels)
+                        # plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 250, vmax = np.nanmax(data))
                     elif cube[diag].var_name == 'uwind':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'vwind':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = -20, vmax = 20)
                     elif cube[diag].var_name == 'wwind':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = -0.1, vmax = 0.1)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = -0.1, vmax = 0.1)
                     elif cube[diag].var_name == 'pressure':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 500, vmax = 1000)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = 500, vmax = 1000)
                     elif cube[diag].var_name == 'rh':
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = 50, vmax = 100)
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = 50, vmax = 100)
                     else:
-                        plt.pcolormesh(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
+                        plt.contourf(time, np.squeeze(height[0,ind]), data, vmin = np.nanmin(data), vmax = np.nanmax(data))
 
                     #################################################################
                     ## set plot properties
