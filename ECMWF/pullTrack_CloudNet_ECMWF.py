@@ -681,20 +681,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    # print '******'
-    # print ''
-    # print 'Write out hourly gridded EC IFS data:'
-    # print ''
-    # out = writeNetCDF(data, date, outfile)
+    print '******'
+    print ''
+    print 'Write out hourly gridded EC IFS data:'
+    print ''
+    out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    # print '******'
-    # print ''
-    # print 'Appending metadata:'
-    # print ''
-    # out = appendMetaNetCDF(outfile, date)
+    print '******'
+    print ''
+    print 'Appending metadata:'
+    print ''
+    out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1123,7 +1123,7 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/ECMWF/DATA/'
+        root_dir = '/home/gillian/MOCCHA/ECMWF/DATA/20180904_new/'
         ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/data/ecmwf_ewan/moccha/ecmwf-all/2018/'
