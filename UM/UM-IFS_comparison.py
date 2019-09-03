@@ -1585,11 +1585,11 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_']
+    Aug_names = ['20180813_oden_','20180814_oden_']#,'20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_']
 
     Sep_names = ['20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_',
             '20180905_oden_','20180906_oden_','20180907_oden_','20180908_oden_',
@@ -1616,7 +1616,7 @@ def main():
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
-    combine = 0
+    combine = 1
     ## Choose month:
     names = Aug_names
     missing_files = Aug_missing_files
@@ -1636,7 +1636,7 @@ def main():
         print '...'
         print 'Loading IFS diagnostics:'
         cube_ifs = iris.load(filename_ifs)#, global_con, callback)
-            # -------------------------------------------------------------
+        # -------------------------------------------------------------
 
         print cube_um
         print ''
@@ -1645,51 +1645,58 @@ def main():
 
     else:
         for i in range(0,len(names)):
-            filename = root_dir + out_dir + names[i]
-            print filename
+            filename_um = um_root_dir + out_dir1 + names[i] + 'metum.nc'
+            filename_ifs = ifs_root_dir + out_dir2 + names[i] + 'ecmwf.nc'
+            print filename_um
+            print filename_ifs
             print ''
 
-            print 'Loading multiple diagnostics:'
-            cube = iris.load(filename)#, global_con, callback)
-
+            #### LOAD CUBE
+            print 'Loading UM diagnostics:'
+            cube_um = iris.load(filename_um)#, global_con, callback)
+            print '...'
+            print 'Loading IFS diagnostics:'
+            cube_ifs = iris.load(filename_ifs)#, global_con, callback)
+            print '...'
+            # -------------------------------------------------------------
             # print 'i = ' + str(i)
             print ''
 
             if i == 0:
-                data = {}
-                data1d = {}
+                data_um = {}
+                data1d_um = {}
                 # data['time'] = []
                 # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 if month_flag == -1:
-                    timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
+                    time_um = doy[i] + ((cube_um[0].dim_coords[0].points)/24.0)
                 else:
-                    timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                for j in range(0,len(cube)):
+                    time_um = float(filename_um[-16:-14]) + ((cube_um[0].dim_coords[0].points)/24.0)
+                for j in range(0,len(cube_um)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.sum(cube_um[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) == 24:  # 1d timeseries only
-                        data1d[cube[j].var_name] = cube[j].data
+                    elif np.sum(cube_um[j].data.shape) == 24:  # 1d timeseries only
+                        data1d_um[cube_um[j].var_name] = cube_um[j].data
                     else:                                   # 2d column data
-                        data[cube[j].var_name] = cube[j].data
+                        data_um[cube_um[j].var_name] = cube_um[j].data
                 # print data[cube[0].var_name]
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
-                    timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
+                    time_um = np.append(time_um, doy[i] + ((cube_um[0].dim_coords[0].points)/24.0))
                 else:
-                    timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+                    time_um = np.append(time_um,float(filename_um[-16:-14]) + ((cube_um[0].dim_coords[0].points)/24.0))
                 # print data
-                for j in range(0,len(cube)):
+                for j in range(0,len(cube_um)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.sum(cube_um[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) == 24:
-                        data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
+                    elif np.sum(cube_um[j].data.shape) == 24:
+                        data1d_um[cube_um[j].var_name] = np.append(data1d_um[cube_um[j].var_name].data,cube_um[j].data)
                     else:
-                        data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
+                        data_um[cube_um[j].var_name] = np.append(data_um[cube_um[j].var_name].data,cube_um[j].data,0)
 
             # print 'Data dict = ' + str(data['radr_refl'].shape)
 
