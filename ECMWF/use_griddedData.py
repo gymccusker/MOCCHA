@@ -593,7 +593,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     print 'Finished plotting! :)'
     print ''
 
-    fileout = 'FIGS/' + filename[-22:-3] + '.png'
+    fileout = '../FIGS/ECMWF/' + filename[-22:-3] + '.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -829,11 +829,11 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     print ''
 
     if month_flag == 8:
-        fileout = 'FIGS/201808_oden_ecmwf.png'
+        fileout = '../FIGS/ECMWF/201808_oden_ecmwf.png'
     if month_flag == 9:
-        fileout = 'FIGS/201809_oden_ecmwf.png'
+        fileout = '../FIGS/ECMWF/201809_oden_ecmwf.png'
     if month_flag == -1:
-        fileout = 'FIGS/moccha_oden_ecmwf.png'
+        fileout = '../FIGS/ECMWF/moccha_oden_ecmwf.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1492,7 +1492,7 @@ def main():
         ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = 'OUT/'
+    out_dir = 'OUT2/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1558,9 +1558,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9         ### -1 to plot as DOY
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8         ### -1 to plot as DOY
 
     if combine == 0:
         name = '20180813_oden_ecmwf.nc'
