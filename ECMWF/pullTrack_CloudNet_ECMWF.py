@@ -263,6 +263,19 @@ def checkLatLon(ship_data, date, data):
 
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
+        ### hard code h = 2 and 3 for 20180813 (out-of-grid)
+        if data['date'][:] == '20180813':
+            if h == 2:
+                data['ship_ind'][h] = data['ship_ind'][1]
+                data['ship_lons'][h] = data['ship_lons'][1]
+                data['ship_lats'][h] = data['ship_lats'][1]
+                # jflag[h] = 1
+            elif h == 3:
+                data['ship_ind'][h] = data['ship_ind'][1]
+                data['ship_lons'][h] = data['ship_lons'][1]
+                data['ship_lats'][h] = data['ship_lats'][1]
+                # jflag[h] = 2
+
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
@@ -275,18 +288,6 @@ def checkLatLon(ship_data, date, data):
                 print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
 
-        if data['date'][:] == '20180813':
-            if h == 2:
-                data['ship_ind'][h] = data['ship_ind'][1]
-                data['ship_lons'][h] = data['ship_lons'][1]
-                data['ship_lats'][h] = data['ship_lats'][1]
-                jflag = 1
-            elif h == 3:
-                data['ship_ind'][h] = data['ship_ind'][1]
-                data['ship_lons'][h] = data['ship_lons'][1]
-                data['ship_lats'][h] = data['ship_lats'][1]
-                jflag = 2
-
         data['jflag'] = jflag       ### so jflag is written out for testing
         # print jflag
         # print ''
@@ -295,6 +296,11 @@ def checkLatLon(ship_data, date, data):
             if jflag[h] > jflag[h-1]:
                 print 'Grid crossed at h = ' + str(h)
                 grid_crossed = h
+
+    ### hard code 20180813 jflags out of loop so as to not confuse algorithm
+    if data['date'][:] == '20180813':
+        data['jflag'][2] = 1
+        data['jflag'][3] = 2
 
     print ''
     print 'Ship indices are:'
