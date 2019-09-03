@@ -1517,6 +1517,8 @@ def main():
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
 
+    ### only works on laptop for now
+
     ### JASMIN
     ### LAPTOP
     ### MONSOON
@@ -1526,7 +1528,8 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
+        um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
+        ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -1707,7 +1710,7 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
@@ -1720,10 +1723,10 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
