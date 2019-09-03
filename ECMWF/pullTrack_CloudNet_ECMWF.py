@@ -861,7 +861,7 @@ def writeNetCDF(data, date, outfile):
     ###################################
     ## Data dimensions
     ###################################
-    timem = dataset.createDimension('time', np.size(cube0[0].dim_coords[0].points))
+    timem = dataset.createDimension('time', np.size(cube0[0].dim_coords[0].points) - 1)
     level = dataset.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
     flevel = dataset.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
     freq = dataset.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
@@ -877,7 +877,7 @@ def writeNetCDF(data, date, outfile):
     timem.units = 'hours'
     timem.long_name = 'hours_UTC'
     timem.standard_name = 'time'
-    timem[:] = cube0[0].dim_coords[0].points
+    timem[:] = cube0[0].dim_coords[0].points[:-1]
 
     #### model level
     level = dataset.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
