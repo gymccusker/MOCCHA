@@ -265,7 +265,9 @@ def checkLatLon(ship_data, date, data):
 
         if data['date'][:] = '20180813':
             if np.logical_or(h >= 2, h <= 3):
-
+                data['ship_ind'][h] = data['ship_ind'][1]
+                data['ship_lons'][h] = data['ship_lons'][1]
+                data['ship_lats'][h] = data['ship_lats'][1]
 
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
