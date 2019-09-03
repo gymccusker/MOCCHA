@@ -1560,7 +1560,7 @@ def main():
     ## Choose month:
     names = Aug_names
     missing_files = Aug_missing_files
-    month_flag = 9         ### -1 to plot as DOY
+    month_flag = 8         ### -1 to plot as DOY
 
     if combine == 0:
         name = '20180813_oden_ecmwf.nc'
