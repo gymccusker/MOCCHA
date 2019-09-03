@@ -298,7 +298,7 @@ def iceDrift(data):
     ## Define ice drift period
     ###################################
 
-    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=13,data.values[:,1]==8))
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
@@ -681,20 +681,20 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    print '******'
-    print ''
-    print 'Write out hourly gridded EC IFS data:'
-    print ''
-    out = writeNetCDF(data, date, outfile)
+    # print '******'
+    # print ''
+    # print 'Write out hourly gridded EC IFS data:'
+    # print ''
+    # out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    print '******'
-    print ''
-    print 'Appending metadata:'
-    print ''
-    out = appendMetaNetCDF(outfile, date)
+    # print '******'
+    # print ''
+    # print 'Appending metadata:'
+    # print ''
+    # out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -1172,7 +1172,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180904'
+    date = '20180814'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
