@@ -263,6 +263,10 @@ def checkLatLon(ship_data, date, data):
 
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
+        if data['date'][:] = '20180813':
+            if np.logical_or(h >= 2, h <= 3):
+
+
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
@@ -743,6 +747,7 @@ def readDaily(filenames, date):
 
     i = -1
     data = {}
+    data['date'] = date
     data['pressure'] = np.zeros([38,25,137])
     data['hgts'] = np.zeros([38,25,137])
     data['tims'] = np.zeros([25])
@@ -1172,7 +1177,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180814'
+    date = '20180813'
     outfile = date + '_oden_ecmwf.nc'
     print 'Outfile will be: ' + outfile
     base_name = date + '_moccha_ecmwf_'
