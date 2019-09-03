@@ -1100,7 +1100,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
+def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1140,119 +1140,85 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
-    print data.keys()
-    # [u'LWP', u'sfc_temperature', u'IWP', u'sfc_pressure', u'rainfall_flux', u'snowfall_flux']
+    # print data1d_um.keys()
 
-    l = -1
-    jindex = 0
+    # UM -> IFS comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. sfc_temperature -> sfc_temperature         ### nope, doesn't exist
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
 
-    for diag in range(0,len(data.keys())):
+    ###################################
+    ## CHOOSE DIAGNOSTIC
+    ###################################
+    # print ''
+    # print 'Diag is: '
+    # print data1d_um.keys()[]
 
-        ###################################
-        ## CHOOSE DIAGNOSTIC
-        ###################################
-        print ''
-        print 'Diag is: '
-        print data.keys()[diag]
+    ###################################
+    ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
+    ###################################
 
-                                            # [u'vis_1.5m',
-                                            #  u'surface_net_LW_radiation',
-        #  u'bl_type',
-                                            #  u'fogfrac_1.5m',
-                                            #  u'surface_net_SW_radiation',
-                                            #  u'temp_1.5m',
-        #  u'snowfall_flux',
-        #  u'h_sc_cloud_base',
-        #  u'h_decoupled_layer_base',
-        #  u'latent_heat_flux',
-        #  u'high_cloud',
-                                            #  u'sfc_temperature',
-        #  u'IWP',
-        #  u'total_column_q',
-        #  u'bl_depth',
-        #  u'LWP',
-                                            #  u'rh_1.5m',
-        #  u'medium_cloud',
-        #  u'sensible_heat_flux',
-                                            #  u'sfc_pressure',
-        #  u'rainfall_flux',
-        #  u'low_cloud']
+    dat = []
 
-        ###################################
-        ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
-        ###################################
+    # if str(data1d_um.keys()[diag]) == 'sfc_temperature':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' [K]'
+    # elif str(data1d_um.keys()[diag]) == 'sfc_pressure':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data/1e2
+    #     title = str(data1d_um.keys()[diag]) + ' [hPa]'
+    # elif str(data1d_um.keys()[diag]) == 'rh_1.5m':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' [%]'
+    # elif str(data1d_um.keys()[diag]) == 'temp_1.5m':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' [K]'
+    # elif str(data1d_um.keys()[diag]) == 'surface_net_SW_radiation':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' [W/m2]'
+    # elif str(data1d_um.keys()[diag]) == 'surface_net_LW_radiation':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' [W/m2]'
+    # elif str(data1d_um.keys()[diag]) == 'fogfrac_1.5m':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data
+    #     title = str(data1d_um.keys()[diag]) + ' []'
+    # elif str(data1d_um.keys()[diag]) == 'vis_1.5m':
+    #     dat = data1d_um[data1d_um.keys()[diag]].data/1.0e3
+    #     title = str(data1d_um.keys()[diag]) + ' [km]'
 
-        dat = []
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.subplot(3,3,1)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['sfc_pressure'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data)
+    plt.title('sfc_pressure [Pa]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-        # if str(data.keys()[diag]) == 'LWP':
-        #     dat = data[data.keys()[diag]].data*1e3
-        #     title = str(data.keys()[diag]) + ' [g/m2]'
-        # elif str(data.keys()[diag]) == 'IWP':
-        #     dat = data[data.keys()[diag]].data*1e3
-        #     title = str(data.keys()[diag]) + ' [g/m2]'
-        # elif str(data.keys()[diag]) == 'rainfall_flux':
-        #     dat = data[data.keys()[diag]].data*3600
-        #     title = str(data.keys()[diag]) + ' [mm/hr]'
-        # elif str(data.keys()[diag]) == 'snowfall_flux':
-        #     dat = data[data.keys()[diag]].data*3600
-        #     title = str(data.keys()[diag]) + ' [mm/hr]'
+    plt.subplot(3,3,2)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['bl_depth'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
+    plt.title('BL depth [m]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-        if str(data.keys()[diag]) == 'sfc_temperature':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [K]'
-        elif str(data.keys()[diag]) == 'sfc_pressure':
-            dat = data[data.keys()[diag]].data/1e2
-            title = str(data.keys()[diag]) + ' [hPa]'
-        elif str(data.keys()[diag]) == 'rh_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [%]'
-        elif str(data.keys()[diag]) == 'temp_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [K]'
-        elif str(data.keys()[diag]) == 'surface_net_SW_radiation':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-        elif str(data.keys()[diag]) == 'surface_net_LW_radiation':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-        elif str(data.keys()[diag]) == 'fogfrac_1.5m':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-        elif str(data.keys()[diag]) == 'vis_1.5m':
-            dat = data[data.keys()[diag]].data/1.0e3
-            title = str(data.keys()[diag]) + ' [km]'
-
-        # str(data.keys()[0][-4:])
-
-        #################################################################
-        ## create figure and axes instances
-        #################################################################
-        if len(dat) > 0:
-            l = l + 1 ## increment index for positive data association
-            plt.subplot(4,2,l+1)
-            print 'l = ' + str(l)
-            print title
-            ax = plt.gca()
-
-            #################################################################
-            ## plot timeseries
-            #################################################################
-
-            plt.plot(timem, dat)
-            plt.ylim([np.nanmin(dat),np.nanmax(dat)])
-            plt.title(title)
-
-            if month_flag == 8: ax.set_xlim([13.0, 31.0])
-            if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
-            print ''
-            print 'Zero out any data from missing files:'
-            print ''
-            for mfile in missing_files:
-                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                nans = ax.get_ylim()
-                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+    print ''
+    print 'Zero out any data from missing files:'
+    print ''
+    for mfile in missing_files:
+        mtime = float(mfile[6:8]) + ((cube_um[0].dim_coords[0].points)/24.0)
+        nans = ax.get_ylim()
+        ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
     ### global plot properties
     plt.subplot(4,2,7)
@@ -1269,22 +1235,22 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == 8:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Da.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Da.png'
-    if month_flag == 9:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
-    if month_flag == -1:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
-    plt.savefig(fileout, dpi=300)
+    # if month_flag == 8:
+    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #         fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Da.png'
+    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #         fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Da.png'
+    # if month_flag == 9:
+    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #         fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
+    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #         fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
+    # if month_flag == -1:
+    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #         fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
+    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #         fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
@@ -1663,11 +1629,11 @@ def main():
             print ''
 
             if i == 0:
+                ## ------------------
+                #### UM
+                ## ------------------
                 data_um = {}
                 data1d_um = {}
-                # data['time'] = []
-                # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 if month_flag == -1:
                     time_um = doy[i] + ((cube_um[0].dim_coords[0].points)/24.0)
                 else:
@@ -1680,25 +1646,52 @@ def main():
                         data1d_um[cube_um[j].var_name] = cube_um[j].data
                     else:                                   # 2d column data
                         data_um[cube_um[j].var_name] = cube_um[j].data
-                # print data[cube[0].var_name]
+                ## ------------------
+                #### IFS
+                ## ------------------
+                data_ifs = {}
+                data1d_ifs = {}
+                if month_flag == -1:
+                    time_ifs = doy[i] + ((cube_ifs[0].dim_coords[0].points)/24.0)
+                else:
+                    time_ifs = float(filename_ifs[-16:-14]) + ((cube_ifs[0].dim_coords[0].points)/24.0)
+                for j in range(0,len(cube_ifs)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube_ifs[j].data.shape) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.sum(cube_ifs[j].data.shape) == 24:  # 1d timeseries only
+                        data1d_ifs[cube_ifs[j].var_name] = cube_ifs[j].data
+                    else:                                   # 2d column data
+                        data_ifs[cube_ifs[j].var_name] = cube_ifs[j].data
             else:
-                # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
                     time_um = np.append(time_um, doy[i] + ((cube_um[0].dim_coords[0].points)/24.0))
+                    time_ifs = np.append(time_ifs, doy[i] + ((cube_ifs[0].dim_coords[0].points)/24.0))
                 else:
                     time_um = np.append(time_um,float(filename_um[-16:-14]) + ((cube_um[0].dim_coords[0].points)/24.0))
-                # print data
+                    time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((cube_ifs[0].dim_coords[0].points)/24.0))
+                ## ------------------
+                #### UM
+                ## ------------------
                 for j in range(0,len(cube_um)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
                     if np.sum(cube_um[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube_um[j].data.shape) == 24:
                         data1d_um[cube_um[j].var_name] = np.append(data1d_um[cube_um[j].var_name].data,cube_um[j].data)
                     else:
                         data_um[cube_um[j].var_name] = np.append(data_um[cube_um[j].var_name].data,cube_um[j].data,0)
-
-            # print 'Data dict = ' + str(data['radr_refl'].shape)
+                ## ------------------
+                #### IFS
+                ## ------------------
+                for j in range(0,len(cube_ifs)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube_ifs[j].data.shape) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.sum(cube_ifs[j].data.shape) == 24:
+                        data1d_ifs[cube_ifs[j].var_name] = np.append(data1d_ifs[cube_ifs[j].var_name].data,cube_ifs[j].data)
+                    else:
+                        data_ifs[cube_ifs[j].var_name] = np.append(data_ifs[cube_ifs[j].var_name].data,cube_ifs[j].data,0)
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
@@ -1717,7 +1710,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
+        figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir1)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
@@ -1741,23 +1734,14 @@ def main():
     #### DIAGNOSTICS TO CHOOSE FROM:
 
     # UM -> IFS comparisons:
-    #
     # 1. snowfall_flux -> sfc_ls_snow
-    #
     # 2. rainfall_flux -> sfc_ls_rain
-    #
     # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    #
     # 4. latent_heat_flux -> flx_turb_moist
-    #
     # 5. bl_depth -> sfc_bl_height
-    #
     # 6. sfc_pressure -> sfc_pressure
-    #
     # 7. sfc_temperature -> sfc_temperature
-    #
     # 8. surface_net_LW_radiation -> sfc_net_lw
-    #
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
 if __name__ == '__main__':
