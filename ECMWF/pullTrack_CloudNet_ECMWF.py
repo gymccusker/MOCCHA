@@ -263,12 +263,6 @@ def checkLatLon(ship_data, date, data):
 
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
-        if data['date'][:] == '20180813':
-            if np.logical_or(h >= 2, h <= 3):
-                data['ship_ind'][h] = data['ship_ind'][1]
-                data['ship_lons'][h] = data['ship_lons'][1]
-                data['ship_lats'][h] = data['ship_lats'][1]
-
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
@@ -280,6 +274,18 @@ def checkLatLon(ship_data, date, data):
             if data['ship_lats'][h] != data['ship_lats'][h-1]:
                 print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
                 if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
+
+        if data['date'][:] == '20180813':
+            if h == 2:
+                data['ship_ind'][h] = data['ship_ind'][1]
+                data['ship_lons'][h] = data['ship_lons'][1]
+                data['ship_lats'][h] = data['ship_lats'][1]
+                jflag = 1
+            elif h == 3:
+                data['ship_ind'][h] = data['ship_ind'][1]
+                data['ship_lons'][h] = data['ship_lons'][1]
+                data['ship_lats'][h] = data['ship_lats'][1]
+                jflag = 2
 
         data['jflag'] = jflag       ### so jflag is written out for testing
         # print jflag
