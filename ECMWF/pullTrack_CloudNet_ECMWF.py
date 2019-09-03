@@ -263,7 +263,7 @@ def checkLatLon(ship_data, date, data):
 
         if data['ship_hour'][h] == 0: data['ship_hour'][h] = h
 
-        if data['date'][:] = '20180813':
+        if data['date'][:] == '20180813':
             if np.logical_or(h >= 2, h <= 3):
                 data['ship_ind'][h] = data['ship_ind'][1]
                 data['ship_lons'][h] = data['ship_lons'][1]
