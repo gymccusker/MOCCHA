@@ -8,6 +8,7 @@
 import time
 import datetime
 import numpy as np
+import pandas as pd
 from netCDF4 import Dataset
 import numpy as np
 import diags_MOCCHA as diags
@@ -1100,7 +1101,8 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir1): #, lon, lat):
+def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+        missing_files, out_dir1, cube_obs): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1140,7 +1142,13 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.15)
 
-    # print data1d_um.keys()
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    datenums = cube_obs[0].dim_coords[0].points
+    timestamps_obs = pd.to_datetime(datenums-719529, unit='D')
+    # timestamps_um = pd.to_datetime(time_um, unit='D')
+
 
     # UM -> IFS comparisons:
     # 1. snowfall_flux -> sfc_ls_snow
@@ -1178,6 +1186,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
+    data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
     plt.subplot(3,2,3)
     ax = plt.gca()
     plt.plot(time_ifs, zeros,'k--')
@@ -1188,25 +1197,35 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,2,4)
-    ax = plt.gca()
-    plt.plot(time_ifs, zeros,'k--')
-    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
-    plt.title('surface_net_LW_radiation [W/m2]')
-    if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
-    # plt.subplot(3,3,5)
+    # plt.subplot(3,2,4)
     # ax = plt.gca()
-    # plt.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
-    # plt.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
-    # plt.title('near-sfc_temperature [K]')
-    # plt.legend()
+    # plt.plot(time_ifs, zeros,'k--')
+    # plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
+    # plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
+    # plt.title('surface_net_LW_radiation [W/m2]')
     # if month_flag == 8: ax.set_xlim([13.0, 31.0])
     # if month_flag == 9: ax.set_xlim([1.0, 15.0])
     # if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,2,4)
+    ax1 = plt.gca()
+    # ax2 = ax1.twiny()
+    ax1.plot(timestamps_obs.dayofyear,cube_obs[0].data,'k', label = 'ship')
+    # ax2.set_ylim([255, 280])
+    ax1.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
+    ax1.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
+    ax1.set_ylim([255, 280])
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    if month_flag == 8:
+        ax1.set_xlim([13.0, 31.0])
+        # ax2.set_xlim([13.0, 31.0])
+    if month_flag == 9:
+        ax1.set_xlim([1.0, 15.0])
+        # ax2.set_xlim([1.0, 15.0])
+    if month_flag == -1:
+        ax1.set_xlim([225.0, 258.0])
+        # ax2.set_xlim([225.0, 258.0])
 
     # plt.subplot(3,3,6)
     # ax = plt.gca()
@@ -1536,6 +1555,7 @@ def main():
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -1547,6 +1567,7 @@ def main():
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir2 = 'OUT2/'
+    out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1566,6 +1587,14 @@ def main():
     print ''
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
+
+    # -------------------------------------------------------------
+    # Load observations
+    # -------------------------------------------------------------
+    print 'Loading observations:'
+    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian.nc'
+    cube_obs = iris.load(filename_obs)#, global_con, callback)
+    print '...'
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
@@ -1602,14 +1631,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = ['20180813_oden_','20180814_oden_']#,'20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1643,6 +1672,7 @@ def main():
         print 'Loading IFS diagnostics:'
         cube_ifs = iris.load(filename_ifs)#, global_con, callback)
         # -------------------------------------------------------------
+        print '...'
 
         print cube_um
         print ''
@@ -1750,7 +1780,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir1)
+        figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+                    missing_files, out_dir1, cube_obs)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
