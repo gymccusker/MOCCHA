@@ -1145,11 +1145,27 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     #################################################################
     ## sort out observations' timestamp
     #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
     datenums_temp = cube_obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
-    # timestamps_um = pd.to_datetime(time_um, unit='D')
 
+    datenums_tice = cube_obs[4].dim_coords[0].points
+    timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
+    time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
+
+    datenums_radice = cube_obs[1].dim_coords[0].points
+    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
+    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
     # UM -> IFS comparisons:
     # 1. snowfall_flux -> sfc_ls_snow
@@ -1179,18 +1195,31 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
     plt.subplot(3,2,2)
-    ax = plt.gca()
-    plt.plot(time_um, data1d_um['bl_depth'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
-    plt.title('BL_depth [m]')
-    if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    # ax = plt.gca()
+    # plt.plot(time_um, data1d_um['bl_depth'].data)
+    # plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
+    # plt.title('BL_depth [m]')
+    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    # if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    ax1 = plt.gca()
+    ax1.plot(time_temp,cube_obs[0].data,'k', label = 'ship')
+    ax1.plot(time_tice,cube_obs[4].data, color = 'grey', label = 'sea ice')
+    ax1.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
+    ax1.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
+    ax1.set_ylim([255, 280])
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
+    if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax1.set_xlim([225.0, 258.0])
 
     data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
+
     plt.subplot(3,2,3)
     ax = plt.gca()
-    plt.plot(time_ifs, zeros,'k--')
+    plt.plot(time_ifs, zeros,'r--')
+    plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'grey', label = 'sea ice')
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_net_sw'].data)
     plt.title('surface_net_SW_radiation [W/m2]')
@@ -1198,35 +1227,16 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    # plt.subplot(3,2,4)
-    # ax = plt.gca()
-    # plt.plot(time_ifs, zeros,'k--')
-    # plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
-    # plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
-    # plt.title('surface_net_LW_radiation [W/m2]')
-    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    # if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
     plt.subplot(3,2,4)
-    ax1 = plt.gca()
-    # ax2 = ax1.twiny()
-    ax1.plot(time_temp,cube_obs[0].data,'k', label = 'ship')
-    # ax2.set_ylim([255, 280])
-    ax1.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
-    ax1.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
-    ax1.set_ylim([255, 280])
-    plt.title('near-sfc_temperature [K]')
-    plt.legend()
-    if month_flag == 8:
-        ax1.set_xlim([13.0, 31.0])
-        # ax2.set_xlim([13.0, 31.0])
-    if month_flag == 9:
-        ax1.set_xlim([1.0, 15.0])
-        # ax2.set_xlim([1.0, 15.0])
-    if month_flag == -1:
-        ax1.set_xlim([225.0, 258.0])
-        # ax2.set_xlim([225.0, 258.0])
+    ax = plt.gca()
+    plt.plot(time_ifs, zeros,'k--')
+    plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'grey', label = 'sea ice')
+    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
+    plt.title('surface_net_LW_radiation [W/m2]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
     # plt.subplot(3,3,6)
     # ax = plt.gca()
@@ -1249,7 +1259,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,5)
     ax = plt.gca()
-    plt.plot(time_ifs, zeros,'k--')
+    plt.plot(time_ifs, zeros,'r--')
     plt.plot(time_um, data1d_um['sensible_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_sens_heat_flx'].data * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
@@ -1259,7 +1269,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,6)
     ax = plt.gca()
-    plt.plot(time_ifs, zeros,'k--')
+    plt.plot(time_ifs, zeros,'r--')
     plt.plot(time_um, data1d_um['latent_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_lat_heat_flx'].data * -1.0)
     plt.title('latent_heat_flux [W/m2]')
@@ -1632,14 +1642,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_']#,'20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
