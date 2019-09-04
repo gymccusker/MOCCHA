@@ -1132,10 +1132,10 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
     plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(12,10))
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.15)
@@ -1152,6 +1152,9 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     # 7. temp_1.5m -> sfc_temp_2m
     # 8. surface_net_LW_radiation -> sfc_net_lw
     # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    ### for reference in figures
+    zeros = np.zeros(len(time_ifs))
 
     #################################################################
     ## create figure and axes instances
@@ -1177,6 +1180,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,3)
     ax = plt.gca()
+    plt.plot(time_ifs, zeros,'k--')
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_net_sw'].data)
     plt.title('surface_net_SW_radiation [W/m2]')
@@ -1186,6 +1190,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,4)
     ax = plt.gca()
+    plt.plot(time_ifs, zeros,'k--')
     plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
     plt.title('surface_net_LW_radiation [W/m2]')
@@ -1224,6 +1229,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,5)
     ax = plt.gca()
+    plt.plot(time_ifs, zeros,'k--')
     plt.plot(time_um, data1d_um['sensible_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_sens_heat_flx'].data * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
@@ -1233,6 +1239,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
     plt.subplot(3,2,6)
     ax = plt.gca()
+    plt.plot(time_ifs, zeros,'k--')
     plt.plot(time_um, data1d_um['latent_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_lat_heat_flx'].data * -1.0)
     plt.title('latent_heat_flux [W/m2]')
@@ -1268,22 +1275,22 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     print 'Finished plotting! :)'
     print ''
 
-    # if month_flag == 8:
-    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #         fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Da.png'
-    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #         fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Da.png'
-    # if month_flag == 9:
-    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #         fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Da.png'
-    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #         fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
-    # if month_flag == -1:
-    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #         fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
-    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #         fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
-    # plt.savefig(fileout, dpi=300)
+    if month_flag == 8:
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_1Da.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_1Da.png'
+    if month_flag == 9:
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_1Da.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_1Da.png'
+    if month_flag == -1:
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_ecmwf_1Da.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_ecmwf_1Da.png'
+    plt.savefig(fileout, dpi=400)
     plt.show()
 
 def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
