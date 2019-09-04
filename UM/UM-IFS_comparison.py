@@ -1145,8 +1145,9 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     #################################################################
     ## sort out observations' timestamp
     #################################################################
-    datenums = cube_obs[0].dim_coords[0].points
-    timestamps_obs = pd.to_datetime(datenums-719529, unit='D')
+    datenums_temp = cube_obs[0].dim_coords[0].points
+    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
     # timestamps_um = pd.to_datetime(time_um, unit='D')
 
 
@@ -1210,7 +1211,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.subplot(3,2,4)
     ax1 = plt.gca()
     # ax2 = ax1.twiny()
-    ax1.plot(timestamps_obs.dayofyear,cube_obs[0].data,'k', label = 'ship')
+    ax1.plot(time_temp,cube_obs[0].data,'k', label = 'ship')
     # ax2.set_ylim([255, 280])
     ax1.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
     ax1.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
