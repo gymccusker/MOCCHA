@@ -1100,7 +1100,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir): #, lon, lat):
+def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag, missing_files, out_dir1): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
