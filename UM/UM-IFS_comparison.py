@@ -1149,83 +1149,119 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     # 4. latent_heat_flux -> flx_turb_moist
     # 5. bl_depth -> sfc_bl_height
     # 6. sfc_pressure -> sfc_pressure
-    # 7. sfc_temperature -> sfc_temperature         ### nope, doesn't exist
+    # 7. temp_1.5m -> sfc_temp_2m
     # 8. surface_net_LW_radiation -> sfc_net_lw
     # 9. surface_net_SW_radiation -> sfc_net_sw
-
-    ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    # print ''
-    # print 'Diag is: '
-    # print data1d_um.keys()[]
-
-    ###################################
-    ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
-    ###################################
-
-    dat = []
-
-    # if str(data1d_um.keys()[diag]) == 'sfc_temperature':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' [K]'
-    # elif str(data1d_um.keys()[diag]) == 'sfc_pressure':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data/1e2
-    #     title = str(data1d_um.keys()[diag]) + ' [hPa]'
-    # elif str(data1d_um.keys()[diag]) == 'rh_1.5m':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' [%]'
-    # elif str(data1d_um.keys()[diag]) == 'temp_1.5m':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' [K]'
-    # elif str(data1d_um.keys()[diag]) == 'surface_net_SW_radiation':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' [W/m2]'
-    # elif str(data1d_um.keys()[diag]) == 'surface_net_LW_radiation':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' [W/m2]'
-    # elif str(data1d_um.keys()[diag]) == 'fogfrac_1.5m':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data
-    #     title = str(data1d_um.keys()[diag]) + ' []'
-    # elif str(data1d_um.keys()[diag]) == 'vis_1.5m':
-    #     dat = data1d_um[data1d_um.keys()[diag]].data/1.0e3
-    #     title = str(data1d_um.keys()[diag]) + ' [km]'
 
     #################################################################
     ## create figure and axes instances
     #################################################################
     plt.subplot(3,3,1)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['sfc_pressure'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data)
+    plt.plot(time_um, data1d_um['sfc_pressure'].data, label = 'UM')
+    plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data, label = 'IFS')
     plt.title('sfc_pressure [Pa]')
+    plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
     plt.subplot(3,3,2)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['bl_depth'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
-    plt.title('BL depth [m]')
+    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
+    plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    print ''
-    print 'Zero out any data from missing files:'
-    print ''
-    for mfile in missing_files:
-        mtime = float(mfile[6:8]) + ((cube_um[0].dim_coords[0].points)/24.0)
-        nans = ax.get_ylim()
-        ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+    plt.subplot(3,3,3)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_net_sw'].data)
+    plt.title('surface_net_SW_radiation [W/m2]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,4)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['bl_depth'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
+    plt.title('BL_depth [m]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,5)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
+    plt.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,6)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['snowfall_flux'].data * 60.0)
+    plt.plot(time_ifs, data1d_ifs['sfc_ls_snow'].data)
+    plt.title('sfc_snow_amount [kg/m2]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,7)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['rainfall_flux'].data  * 60.0)
+    plt.plot(time_ifs, data1d_ifs['sfc_ls_rain'].data)
+    plt.title('sfc_rain_amount [kg/m2]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,8)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['sensible_heat_flux'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_down_sens_heat_flx'].data * -1.0)
+    plt.title('sensible_heat_flux [W/m2]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,3,9)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['latent_heat_flux'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_down_lat_heat_flx'].data * -1.0)
+    plt.title('latent_heat_flux [W/m2]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    # print ''
+    # print 'Zero out any data from missing files:'
+    # print ''
+    # for mfile in missing_files:
+    #     mtime = float(mfile[6:8]) + ((cube_um[0].dim_coords[0].points)/24.0)
+    #     nans = ax.get_ylim()
+    #     ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+
 
     ### global plot properties
-    plt.subplot(4,2,7)
+    plt.subplot(3,3,7)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(4,2,8)
+    plt.subplot(3,3,8)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
+    plt.subplot(3,3,9)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
@@ -1551,11 +1587,11 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_','20180814_oden_']#,'20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_','20180831_oden_']
+    Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_']
 
     Sep_names = ['20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_',
             '20180905_oden_','20180906_oden_','20180907_oden_','20180908_oden_',
