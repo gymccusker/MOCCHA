@@ -1360,7 +1360,7 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(18,7))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.15)
@@ -1382,7 +1382,7 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.subplot(3,2,2)
+
     ax = plt.gca()
     plt.plot(time_um, data1d_um['bl_depth'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
