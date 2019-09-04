@@ -1324,7 +1324,8 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
+def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+        missing_files, out_dir1, cube_obs): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1356,147 +1357,45 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
     plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(16,12))
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.15)
 
-    print data.keys()
+    # UM -> IFS comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
 
-    l = -1
-    for diag in range(0,len(data.keys())):
+    ### for reference in figures
+    zeros = np.zeros(len(time_ifs))
 
-        ###################################
-        ## CHOOSE DIAGNOSTIC
-        ###################################
-        print ''
-        print 'Diag is: '
-        print data.keys()[diag]
-
-                                            # [u'vis_1.5m',
-                                            #  u'surface_net_LW_radiation',
-        #  u'bl_type',
-                                            #  u'fogfrac_1.5m',
-                                            #  u'surface_net_SW_radiation',
-                                            #  u'temp_1.5m',
-        #  u'snowfall_flux',
-        #  u'h_sc_cloud_base',
-        #  u'h_decoupled_layer_base',
-        #  u'latent_heat_flux',
-        #  u'high_cloud',
-                                            #  u'sfc_temperature',
-        #  u'IWP',
-        #  u'total_column_q',
-        #  u'bl_depth',
-        #  u'LWP',
-                                            #  u'rh_1.5m',
-        #  u'medium_cloud',
-        #  u'sensible_heat_flux',
-                                            #  u'sfc_pressure',
-        #  u'rainfall_flux',
-        #  u'low_cloud']
-
-        ###################################
-        ## DEFINE DIMENSIONS COORDS/UNITS DEPENDING ON DIAG
-        ###################################
-
-        dat = []
-
-        if str(data.keys()[diag]) == 'LWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = str(data.keys()[diag]) + ' [g/m2]'
-        elif str(data.keys()[diag]) == 'IWP':
-            dat = data[data.keys()[diag]].data*1e3
-            title = str(data.keys()[diag]) + ' [g/m2]'
-        elif str(data.keys()[diag]) == 'total_column_q':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [kg/m2]'
-
-        elif str(data.keys()[diag]) == 'rainfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = str(data.keys()[diag]) + ' [mm/hr]'
-        elif str(data.keys()[diag]) == 'snowfall_flux':
-            dat = data[data.keys()[diag]].data*3600
-            title = str(data.keys()[diag]) + ' [mm/hr]'
-
-        elif str(data.keys()[diag]) == 'bl_type':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-        elif str(data.keys()[diag]) == 'bl_depth':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-
-        elif str(data.keys()[diag]) == 'latent_heat_flux':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-        elif str(data.keys()[diag]) == 'sensible_heat_flux':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [W/m2]'
-
-        elif str(data.keys()[diag]) == 'high_cloud':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-        elif str(data.keys()[diag]) == 'medium_cloud':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-        elif str(data.keys()[diag]) == 'low_cloud':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' []'
-
-        elif str(data.keys()[diag]) == 'h_sc_cloud_base':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [m]'
-        elif str(data.keys()[diag]) == 'h_decoupled_layer_base':
-            dat = data[data.keys()[diag]].data
-            title = str(data.keys()[diag]) + ' [m]'
-
-        #################################################################
-        ## create figure and axes instances
-        #################################################################
-        if len(dat) > 0:
-            l = l + 1 ## increment index for positive data association
-            plt.subplot(5,3,l+1)
-            # print 'l = ' + str(l)
-            print title
-            ax = plt.gca()
-
-            #################################################################
-            ## plot timeseries
-            #################################################################
-
-            plt.plot(timem, dat)
-            if np.logical_or(np.nanmin(dat) != np.nan, np.nanmax(dat) != np.nan):
-                plt.ylim([np.nanmin(dat),np.nanmax(dat)])
-            plt.title(title)
-
-            if month_flag == 8: ax.set_xlim([13.0, 31.0])
-            if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
-            print ''
-            print 'Zero out any data from missing files:'
-            print ''
-            for mfile in missing_files:
-                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                nans = ax.get_ylim()
-                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
-
-    ### global plot properties
-    plt.subplot(5,3,12)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(5,3,13)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(5,3,14)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.subplot(3,2,2)
+    ax = plt.gca()
+    plt.plot(time_um, data1d_um['bl_depth'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
+    plt.title('BL_depth [m]')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([225.0, 258.0])
+        plt.xlabel('Day of year')
 
     print '******'
     print ''
@@ -1504,21 +1403,21 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     print ''
 
     if month_flag == 8:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201808_oden_metum_1Db.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201808_oden_metum_1Db.png'
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_BLDepth.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_BLDepth.png'
     if month_flag == 9:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:21] + '201809_oden_metum_1Db.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Db.png'
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_BLDepth.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLDepth.png'
     if month_flag == -1:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Db.png'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Db.png'
-    plt.savefig(fileout, dpi=300)
+        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_ecmwf_BLDepth.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_ecmwf_BLDepth.png'
+    plt.savefig(fileout, dpi=400)
     plt.show()
 
 def callback(cube, field, filename):
@@ -1792,12 +1691,11 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
-                    missing_files, out_dir1, cube_obs)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
+        # figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+        #             missing_files, out_dir1, cube_obs)
 
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
+        figure = plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+                    missing_files, out_dir1, cube_obs)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
