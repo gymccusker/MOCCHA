@@ -1351,8 +1351,8 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
+    MED_SIZE = 16
+    LARGE_SIZE = 18
 
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
@@ -1360,7 +1360,7 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(8,5))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
     #         hspace = 0.4, wspace = 0.15)
@@ -1384,8 +1384,9 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['bl_depth'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
+    plt.plot(time_um, data1d_um['bl_depth'].data, label = 'UM')
+    plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data, label = 'IFS')
+    plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
