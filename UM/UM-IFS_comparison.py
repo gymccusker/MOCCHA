@@ -1360,7 +1360,7 @@ def plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_if
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(18,7))
+    plt.figure(figsize=(8,6))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
     #         hspace = 0.4, wspace = 0.15)
