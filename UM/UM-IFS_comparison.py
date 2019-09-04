@@ -1161,9 +1161,9 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['sfc_pressure'].data, label = 'UM')
-    plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data, label = 'IFS')
-    plt.title('sfc_pressure [Pa]')
+    plt.plot(time_um, data1d_um['sfc_pressure'].data/1e2, label = 'UM')
+    plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data/1e2, label = 'IFS')
+    plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
