@@ -1135,10 +1135,10 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.rc('xtick',labelsize=SMALL_SIZE)
     plt.rc('ytick',labelsize=SMALL_SIZE)
     plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(12,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.9, left = 0.1,
-            hspace = 0.4, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+            hspace = 0.4, wspace = 0.15)
 
     # print data1d_um.keys()
 
@@ -1156,7 +1156,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.subplot(3,3,1)
+    plt.subplot(3,2,1)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['sfc_pressure'].data, label = 'UM')
     plt.plot(time_ifs, data1d_ifs['sfc_pressure'].data, label = 'IFS')
@@ -1166,25 +1166,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,2)
-    ax = plt.gca()
-    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
-    plt.title('surface_net_LW_radiation [W/m2]')
-    if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
-    plt.subplot(3,3,3)
-    ax = plt.gca()
-    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data)
-    plt.plot(time_ifs, data1d_ifs['sfc_net_sw'].data)
-    plt.title('surface_net_SW_radiation [W/m2]')
-    if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
-
-    plt.subplot(3,3,4)
+    plt.subplot(3,2,2)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['bl_depth'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data)
@@ -1193,52 +1175,67 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,5)
+    plt.subplot(3,2,3)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
-    plt.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
-    plt.title('near-sfc_temperature [K]')
-    plt.legend()
+    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_net_sw'].data)
+    plt.title('surface_net_SW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,6)
+    plt.subplot(3,2,4)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['snowfall_flux'].data * 60.0)
-    plt.plot(time_ifs, data1d_ifs['sfc_ls_snow'].data)
-    plt.title('sfc_snow_amount [kg/m2]')
-    plt.legend()
+    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
+    plt.plot(time_ifs, data1d_ifs['sfc_net_lw'].data)
+    plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,7)
-    ax = plt.gca()
-    plt.plot(time_um, data1d_um['rainfall_flux'].data  * 60.0)
-    plt.plot(time_ifs, data1d_ifs['sfc_ls_rain'].data)
-    plt.title('sfc_rain_amount [kg/m2]')
-    plt.legend()
-    if month_flag == 8: ax.set_xlim([13.0, 31.0])
-    if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    # plt.subplot(3,3,5)
+    # ax = plt.gca()
+    # plt.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
+    # plt.plot(time_ifs, data1d_ifs['sfc_temp_2m'].data, label = '2m')
+    # plt.title('near-sfc_temperature [K]')
+    # plt.legend()
+    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    # if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,8)
+    # plt.subplot(3,3,6)
+    # ax = plt.gca()
+    # plt.plot(time_um, data1d_um['snowfall_flux'].data)
+    # plt.plot(time_ifs, data1d_ifs['sfc_ls_snow'].data)
+    # plt.title('sfc_snow_amount [kg/m2]')
+    # plt.legend()
+    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    # if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    # plt.subplot(3,3,7)
+    # ax = plt.gca()
+    # plt.plot(time_um, data1d_um['rainfall_flux'].data)
+    # plt.plot(time_ifs, data1d_ifs['sfc_ls_rain'].data)
+    # plt.title('sfc_rain_amount [kg/m2]')
+    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    # if month_flag == -1: ax.set_xlim([225.0, 258.0])
+
+    plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['sensible_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_sens_heat_flx'].data * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
-    plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-    plt.subplot(3,3,9)
+    plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['latent_heat_flux'].data)
     plt.plot(time_ifs, data1d_ifs['sfc_down_lat_heat_flx'].data * -1.0)
     plt.title('latent_heat_flux [W/m2]')
-    plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([225.0, 258.0])
@@ -1253,15 +1250,15 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
 
 
     ### global plot properties
-    plt.subplot(3,3,7)
+    # plt.subplot(3,2,4)
+    # if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    # if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    # if month_flag == -1: plt.xlabel('Day of year')
+    plt.subplot(3,2,5)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(3,3,8)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(3,3,9)
+    plt.subplot(3,2,6)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
@@ -1620,9 +1617,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8
+    names = moccha_names
+    missing_files = moccha_missing_files
+    month_flag = -1
 
     if combine == 0:
         name = '20180813_oden_'
