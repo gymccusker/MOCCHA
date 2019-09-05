@@ -790,7 +790,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             ax.set_ylim([0, 5000])
             if month_flag == 8: ax.set_xlim([13.0, 32.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([226.0, 258.0])
+            if month_flag == -1: ax.set_xlim([225.0, 257.0])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -800,7 +800,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
                 # nans = np.zeros([len(height),len(mtime)])
                 # # nans[nans == 0] = np.nan
                 # plt.pcolormesh(mtime, height, nans)
-                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
+                mtime = np.arange(247,249,0.1)    ### change all 20180904 points (doy = 247) to nans
                 nans = ax.get_ylim()
                 ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
@@ -1551,7 +1551,7 @@ def main():
 
     moccha_missing_files = ['20180812_oden_ecmwf.nc','20180904_oden_ecmwf.nc']
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(225,258)        ## set DOY for full moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
