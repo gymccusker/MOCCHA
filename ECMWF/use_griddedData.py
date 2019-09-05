@@ -1531,7 +1531,7 @@ def main():
             '20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc','20180829_oden_ecmwf.nc',
             '20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
-    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc',
+    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
             '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
             '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
             '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
@@ -1551,16 +1551,16 @@ def main():
 
     moccha_missing_files = ['20180812_oden_ecmwf.nc','20180904_oden_ecmwf.nc']
 
-    doy = np.arange(226,259)        ## set DOY for full moccha figures
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Sep_names
-    missing_files = Sep_missing_files
-    month_flag = 9         ### -1 to plot as DOY
+    names = moccha_names
+    missing_files = moccha_missing_files
+    month_flag = -1         ### -1 to plot as DOY
 
     if combine == 0:
         name = '20180813_oden_ecmwf.nc'
@@ -1624,7 +1624,10 @@ def main():
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
-                    timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
+                    if doy[i] == 247:       ### don't load data from 20180904
+                        continue
+                    else:
+                        timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 # print data
