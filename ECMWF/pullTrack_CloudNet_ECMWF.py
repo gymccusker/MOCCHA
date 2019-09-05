@@ -925,7 +925,7 @@ def writeNetCDF(data, date, outfile):
     for d in range(0,len(cube0)):
         print ''
         print '**** New diagnostic loop ****'
-        for h in range(0,24):
+        for h in range(0,25):
             #### increment ship_ind by 1 to change from python counting (from 0) to 1-38
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
             print ''
