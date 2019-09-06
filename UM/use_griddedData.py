@@ -1524,27 +1524,30 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
     #         hspace = 0.4, wspace = 0.15)
 
-    # UM -> IFS comparisons:
-    # 1. snowfall_flux -> sfc_ls_snow
-    # 2. rainfall_flux -> sfc_ls_rain
-    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    # 4. latent_heat_flux -> flx_turb_moist
-    # 5. bl_depth -> sfc_bl_height
-    # 6. sfc_pressure -> sfc_pressure
-    # 7. temp_1.5m -> sfc_temp_2m
-    # 8. surface_net_LW_radiation -> sfc_net_lw
-    # 9. surface_net_SW_radiation -> sfc_net_sw
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
 
-    ### for reference in figures
-    # zeros = np.zeros(len(time))
+    datenums_temp = cube_obs[0].dim_coords[0].points
+    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
     #################################################################
     ## create figure and axes instances
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['bl_depth'].data, label = 'UM')
-    # plt.plot(time_ifs, data1d_ifs['sfc_bl_height'].data, label = 'IFS')
+    plt.plot(time_um, data1d_um['bl_depth'].data, color = 'r', label = 'model')
+    ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
     plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
