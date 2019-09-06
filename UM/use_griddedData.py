@@ -1536,7 +1536,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
     ### for reference in figures
-    zeros = np.zeros(len(time_ifs))
+    # zeros = np.zeros(len(time))
 
     #################################################################
     ## create figure and axes instances
@@ -1563,19 +1563,19 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     print ''
 
     if month_flag == 8:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:21] + '201808_oden_metum_temp.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:19] + '201808_oden_metum_temp.png'
     if month_flag == 9:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:21] + '201809_oden_metum_temp.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
     if month_flag == -1:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
