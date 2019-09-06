@@ -1548,7 +1548,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
 
     ax = plt.gca()
     plt.plot(time_um, data1d_um['bl_depth'].data, color = 'r', label = 'model')
-    ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
+    plt.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
     plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
