@@ -1485,7 +1485,7 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, cube_obs): #, lon, lat):
+def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1558,7 +1558,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
         ax.set_xlim([1.0, 15.0])
         plt.xlabel('Day of month [Sep]')
     if month_flag == -1:
-        ax.set_xlim([225.0, 258.0])
+        ax.set_xlim([doy[0],doy[-1]])
         plt.xlabel('Day of year')
 
     print '******'
@@ -1703,15 +1703,16 @@ def main():
             '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
-    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
+    moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            # '20180829_oden_metum.nc','20180830_oden_metum.nc',
+            '20180831_oden_metum.nc','20180901_oden_metum.nc',
             '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+            '20180906_oden_metum.nc']#,'20180907_oden_metum.nc'',20180908_oden_metum.nc','20180909_oden_metum.nc',
+            # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            # '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
@@ -1841,7 +1842,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs)
+        figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
