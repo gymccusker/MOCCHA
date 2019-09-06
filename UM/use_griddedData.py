@@ -1550,7 +1550,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'MetUM')
     plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'Observations')
     plt.legend()
-    plt.title('Temperature [K]')
+    plt.title('Temperature_at_1.5m [K]')
     plt.ylim([260,275])
     # plt.grid('on')
     if month_flag == 8:
@@ -1987,8 +1987,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
