@@ -1547,10 +1547,10 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['bl_depth'].data, color = 'r', label = 'model')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'model')
     plt.plot(time_temp,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
     plt.legend()
-    plt.title('BL_depth [m]')
+    plt.title('Temperature [K]')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1594,7 +1594,7 @@ def callback(cube, field, filename):
     if diags.findfieldName(iStash):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
-
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
 def makeGlobalStashList():
     '''
     make a list of all the stash code we want to load
@@ -1719,7 +1719,8 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(244,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
