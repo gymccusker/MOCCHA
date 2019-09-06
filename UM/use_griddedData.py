@@ -1538,7 +1538,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = cube_obs[0].dim_coords[0].points
+    datenums_temp = cube_obs[4].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
@@ -1548,7 +1548,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
 
     ax = plt.gca()
     plt.plot(time_um, data1d_um['bl_depth'].data, color = 'r', label = 'model')
-    plt.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
+    plt.plot(time_temp,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
     plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
