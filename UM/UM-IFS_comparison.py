@@ -1504,7 +1504,7 @@ def main():
     # Load observations
     # -------------------------------------------------------------
     print 'Loading observations:'
-    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian.nc'
+    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wIceTemp.nc'
     cube_obs = iris.load(filename_obs)#, global_con, callback)
     print '...'
 
