@@ -1582,7 +1582,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp.svg'
     plt.savefig(fileout, dpi=600)
     plt.show()
 
