@@ -1521,9 +1521,9 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(8,5))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-    #         hspace = 0.4, wspace = 0.15)
+    plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
 
     #################################################################
     ## sort out observations' timestamp
@@ -1538,7 +1538,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = cube_obs[4].dim_coords[0].points
+    datenums_temp = cube_obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
@@ -1548,9 +1548,11 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
 
     ax = plt.gca()
     plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'model')
-    plt.plot(time_temp,cube_obs[4].data + 273.16, color = 'black', label = 'measurements')
+    plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'measurements')
     plt.legend()
     plt.title('Temperature [K]')
+    plt.ylim([260,275])
+    # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1706,9 +1708,9 @@ def main():
     moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
             # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
             # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            # '20180829_oden_metum.nc','20180830_oden_metum.nc',
-            '20180831_oden_metum.nc','20180901_oden_metum.nc',
+            # '20180825_oden_metum.nc','20180826_oden_metum.nc',
+            '20180827_oden_metum.nc','20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
             '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
             '20180906_oden_metum.nc']#,'20180907_oden_metum.nc'',20180908_oden_metum.nc','20180909_oden_metum.nc',
             # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
@@ -1721,7 +1723,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
-    doy = np.arange(244,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
