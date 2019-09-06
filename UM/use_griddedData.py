@@ -1583,7 +1583,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp.png'
-    plt.savefig(fileout, dpi=400)
+    plt.savefig(fileout, dpi=600)
     plt.show()
 
 def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
