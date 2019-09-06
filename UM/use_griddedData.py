@@ -1547,8 +1547,8 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'model')
-    plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'measurements')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'MetUM')
+    plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [K]')
     plt.ylim([260,275])
