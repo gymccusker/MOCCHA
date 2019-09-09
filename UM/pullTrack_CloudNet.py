@@ -6846,7 +6846,7 @@ def main():
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
 
     #### run with nohup:
-    #### nohup python2.7 pullTrack_CloudNet.py &
+    #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bm410_pullTrack_CloudNet.out &
 
     # -------------------------------------------------------------
     # Load ship track
