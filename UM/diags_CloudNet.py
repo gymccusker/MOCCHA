@@ -795,8 +795,8 @@ def main():
     ## 4_OPER/20180830T0000Z_TRIAL/
     ## 4_u-bg610_RA2M_CON/
     ## 5_u-bl616_RA2M_CASIM/
-    ## 5_u-bl661_RA1M_CASIM/            # 200/cc accum mode aerosol
-    ## 6_u-bm410_RA1M_CASIM/            # 100/cc accum mode aerosol
+    ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
+    ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
 
     # -------------------------------------------------------------
     # Extract from MASS with:
