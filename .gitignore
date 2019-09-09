@@ -46,3 +46,6 @@ UM/DATA/*
 
 # Compiled files
 *.pyc
+
+# ERA5 grib files
+ERA5/*
