@@ -807,7 +807,7 @@ def main():
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bm410/apm.pp 6_u-bm410_RA1M_CASIM/20180905T1200Z/
 
     ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
-    #### nohup python2.7 diags_CloudNet.py &
+    #### nohup python2.7 diags_CloudNet.py > nohup_u-bl661_diags_CloudNet.out &
 
     # -------------------------------------------------------------
     # Load ship track
