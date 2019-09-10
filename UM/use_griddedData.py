@@ -1723,7 +1723,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
     #         fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
     if month_flag == -1:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_SW+LW.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
