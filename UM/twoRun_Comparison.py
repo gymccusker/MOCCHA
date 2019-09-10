@@ -1404,17 +1404,19 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     print ''
 
     if month_flag == 8:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_BLDepth.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_BLDepth.png'
     if month_flag == 9:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_BLDepth.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLDepth.png'
     if month_flag == -1:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLDepth.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLDepth.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_BLDepth.png'
