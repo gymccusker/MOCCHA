@@ -1517,7 +1517,7 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = 'Default')
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'b', label = 'New')
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = 'New')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
