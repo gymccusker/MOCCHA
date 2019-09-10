@@ -1325,7 +1325,7 @@ def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, m
     plt.show()
 
 def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, cube_obs): #, lon, lat):
+        missing_files, out_dir1, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1395,7 +1395,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
         ax.set_xlim([1.0, 15.0])
         plt.xlabel('Day of month [Sep]')
     if month_flag == -1:
-        ax.set_xlim([225.0, 258.0])
+        ax.set_xlim([doy[0],doy[-1]])
         plt.xlabel('Day of year')
 
     print '******'
@@ -1543,14 +1543,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_',
+            '20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1558,7 +1559,8 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    # doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -1696,7 +1698,7 @@ def main():
         #             missing_files, out_dir1, cube_obs)
 
         figure = plot_line_BLDepth(time_um1, time_um2, data1d_um, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, cube_obs)
+                    missing_files, out_dir1, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
