@@ -1582,10 +1582,10 @@ def main():
         print ''
 
         #### LOAD CUBE
-        print 'Loading UM diagnostics:'
+        print 'Loading first run diagnostics:'
         cube_um1 = iris.load(filename_um1)#, global_con, callback)
         print '...'
-        print 'Loading um2 diagnostics:'
+        print 'Loading second run diagnostics:'
         cube_um2 = iris.load(filename_um2)#, global_con, callback)
         # -------------------------------------------------------------
         print '...'
@@ -1699,7 +1699,7 @@ def main():
         # figure = plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs)
 
-        figure = plot_line_BLDepth(time_um1, time_um2, data1d_um, data1d_um2, cube_um1, cube_um2, month_flag,
+        figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, cube_obs, doy)
 
         # -------------------------------------------------------------
