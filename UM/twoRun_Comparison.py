@@ -1101,8 +1101,8 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, month_flag,
-        missing_files, out_dir1, cube_obs): #, lon, lat):
+def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        missing_files, out_dir1, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1186,13 +1186,13 @@ def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, m
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['sfc_pressure'].data/1e2, label = 'UM')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'um2')
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     plt.subplot(3,2,2)
     # ax = plt.gca()
@@ -1205,39 +1205,41 @@ def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, m
     ax1 = plt.gca()
     # ax1.plot(time_temp,cube_obs[0].data,'k', label = 'obs: ship')
     ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(time_um, data1d_um['temp_1.5m'].data, label = '1.5m')
-    ax1.plot(time_um2, data1d_um2['sfc_temp_2m'].data, label = '2m')
+    ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, label = '1.5m')
+    ax1.plot(time_um2, data1d_um2['temp_1.5m'].data)#, label = '2m')
     ax1.set_ylim([255, 280])
     plt.title('near-sfc_temperature [K]')
     plt.legend()
     if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
     if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax1.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
-    data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
+    data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
+    data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um2['sfc_net_sw'].data, label = 'um2')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-200')
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
 
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data)
-    plt.plot(time_um2, data1d_um2['sfc_net_lw'].data)
+    plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data)
+    plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data)
     plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     # plt.subplot(3,3,6)
     # ax = plt.gca()
@@ -1261,22 +1263,22 @@ def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, m
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'r--')
-    plt.plot(time_um, data1d_um['sensible_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['sfc_down_sens_heat_flx'].data * -1.0)
+    plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data)
+    plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data)# * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'r--')
-    plt.plot(time_um, data1d_um['latent_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['sfc_down_lat_heat_flx'].data * -1.0)
+    plt.plot(time_um1, data1d_um1['latent_heat_flux'].data)
+    plt.plot(time_um2, data1d_um2['latent_heat_flux'].data)# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     # print ''
     # print 'Zero out any data from missing files:'
@@ -1307,20 +1309,22 @@ def plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, m
     print ''
 
     if month_flag == 8:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_1Da.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_TS.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_1Da.png'
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_TS.png'
     if month_flag == 9:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_1Da.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_TS.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_1Da.png'
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_ecmwf_1Da.png'
+        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_TS.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_TS.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_ecmwf_1Da.png'
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
 
@@ -1604,10 +1608,10 @@ def main():
             print ''
 
             #### LOAD CUBE
-            print 'Loading UM diagnostics:'
+            print 'Loading first run diagnostics:'
             cube_um1 = iris.load(filename_um1)#, global_con, callback)
             print '...'
-            print 'Loading um2 diagnostics:'
+            print 'Loading second run diagnostics:'
             cube_um2 = iris.load(filename_um2)#, global_con, callback)
             print '...'
             # -------------------------------------------------------------
@@ -1696,11 +1700,11 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um, time_um2, data1d_um, data1d_um2, cube_um, cube_um2, month_flag,
-        #             missing_files, out_dir1, cube_obs)
-
-        figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, cube_obs, doy)
+
+        # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
