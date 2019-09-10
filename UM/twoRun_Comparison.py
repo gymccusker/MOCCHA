@@ -1187,7 +1187,7 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.subplot(3,2,1)
     ax = plt.gca()
     plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-100')
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1207,7 +1207,7 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, label = '1.5m')
     ax1.plot(time_um2, data1d_um2['temp_1.5m'].data)#, label = '2m')
-    ax1.set_ylim([255, 280])
+    # ax1.set_ylim([255, 280])
     plt.title('near-sfc_temperature [K]')
     plt.legend()
     if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
@@ -1389,7 +1389,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
 
     ax = plt.gca()
     plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-200')
+    plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-100')
     plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
@@ -1635,7 +1635,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -1704,11 +1704,11 @@ def main():
     moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
             # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_','20180831_oden_',
-            '20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_']#,'20180903_oden_','20180904_oden_','20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
@@ -1718,7 +1718,8 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(244,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(244,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,247)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
