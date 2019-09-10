@@ -1428,7 +1428,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.show()
 
 def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-    month_flag, missing_files, out_dir1, cube_obs, doy): #, lon, lat):
+    month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1568,12 +1568,13 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
     #         fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
     if month_flag == -1:
-        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
+        if out_dir2[:18] == '6_u-bm410_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_tempoC_SW.png'
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+        if out_dir2[:18] == '5_u-bl661_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-100_tempoC_SW.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
+    print 'Saving as: ' + fileout
     plt.savefig(fileout, dpi=400)
     plt.show()
 
@@ -1858,7 +1859,7 @@ def main():
         #             missing_files, out_dir1, cube_obs, doy)
 
         figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-            month_flag, missing_files, out_dir1, cube_obs, doy)
+            month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
