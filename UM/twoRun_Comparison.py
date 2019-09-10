@@ -1427,6 +1427,156 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
+def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
+    month_flag, missing_files, out_dir1, cube_obs, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined 1d timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 18
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(8,9))
+    plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
+
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    datenums_temp = cube_obs[0].dim_coords[0].points
+    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+
+    datenums_radice = cube_obs[1].dim_coords[0].points
+    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
+    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+
+    plt.subplot(211)
+    ax = plt.gca()
+    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = 'Default')
+    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = 'New')
+    plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
+    plt.legend()
+    plt.title('Temperature [$^{o}C$]')
+    plt.ylim([260 - 273,275 - 273])
+    # plt.grid('on')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        # plt.xlabel('Day of year')
+
+    plt.subplot(2,1,2)
+    ax = plt.gca()
+    data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
+    data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = 'Default')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'b', label = 'New')
+    plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
+    # plt.legend()
+    plt.title('Net SW radiation [W/m2]')
+    # plt.ylim([260,275])
+    # plt.grid('on')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        plt.xlabel('Day of year')
+
+    # plt.subplot(3,1,3)
+    # ax = plt.gca()
+    # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
+    # plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data, color = 'r', label = 'MetUM')
+    # plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
+    # # plt.legend()
+    # plt.title('Net SW radiation [W/m2]')
+    # # plt.ylim([260,275])
+    # # plt.grid('on')
+    # if month_flag == 8:
+    #     ax.set_xlim([13.0, 31.0])
+    #     plt.xlabel('Day of month [Aug]')
+    # if month_flag == 9:
+    #     ax.set_xlim([1.0, 15.0])
+    #     plt.xlabel('Day of month [Sep]')
+    # if month_flag == -1:
+    #     ax.set_xlim([doy[0],doy[-1]])
+    #     plt.xlabel('Day of year')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    # if month_flag == 8:
+    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #         fileout = '../FIGS/UM/' + out_dir[:21] + '201808_oden_metum_temp.png'
+    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #         fileout = '../FIGS/UM/' + out_dir[:19] + '201808_oden_metum_temp.png'
+    # if month_flag == 9:
+    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+    #         fileout = '../FIGS/UM/' + out_dir[:21] + '201809_oden_metum_temp.png'
+    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+    #         fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
+    if month_flag == -1:
+        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_tempoC_SW.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-100_tempoC_SW.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
+    plt.savefig(fileout, dpi=400)
+    plt.show()
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -1700,11 +1850,14 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, cube_obs, doy)
+        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
+
+        figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
+            month_flag, missing_files, out_dir1, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
