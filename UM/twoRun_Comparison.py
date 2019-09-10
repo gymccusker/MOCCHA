@@ -1323,8 +1323,8 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_TS.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_TS.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
+        # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
+        #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
 
