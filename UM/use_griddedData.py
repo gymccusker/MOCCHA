@@ -1547,11 +1547,11 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'MetUM')
-    plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'Observations')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'MetUM')
+    plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
-    plt.title('Temperature_at_1.5m [K]')
-    plt.ylim([260,275])
+    plt.title('Temperature_at_1.5m [$^{o}C$]')
+    plt.ylim([260 - 273,275 - 273])
     # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
@@ -1582,7 +1582,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp.svg'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp_degC.png'
     plt.savefig(fileout, dpi=600)
     plt.show()
 
@@ -1651,13 +1651,13 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     ## create figure and axes instances
     #################################################################
 
-    plt.subplot(311)
+    plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data, color = 'r', label = 'MetUM')
-    plt.plot(time_temp,cube_obs[0].data, color = 'black', label = 'Observations')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'MetUM')
+    plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
-    plt.title('Temperature [K]')
-    plt.ylim([260,275])
+    plt.title('Temperature [$^{o}C$]')
+    plt.ylim([260 - 273,275 - 273])
     # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
@@ -1669,7 +1669,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
         ax.set_xlim([doy[0],doy[-1]])
         # plt.xlabel('Day of year')
 
-    plt.subplot(3,1,2)
+    plt.subplot(2,1,2)
     ax = plt.gca()
     data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'r', label = 'MetUM')
@@ -1686,26 +1686,26 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
         plt.xlabel('Day of month [Sep]')
     if month_flag == -1:
         ax.set_xlim([doy[0],doy[-1]])
-        # plt.xlabel('Day of year')
-
-    plt.subplot(3,1,3)
-    ax = plt.gca()
-    data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
-    plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data, color = 'r', label = 'MetUM')
-    plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
-    # plt.legend()
-    plt.title('Net SW radiation [W/m2]')
-    # plt.ylim([260,275])
-    # plt.grid('on')
-    if month_flag == 8:
-        ax.set_xlim([13.0, 31.0])
-        plt.xlabel('Day of month [Aug]')
-    if month_flag == 9:
-        ax.set_xlim([1.0, 15.0])
-        plt.xlabel('Day of month [Sep]')
-    if month_flag == -1:
-        ax.set_xlim([doy[0],doy[-1]])
         plt.xlabel('Day of year')
+
+    # plt.subplot(3,1,3)
+    # ax = plt.gca()
+    # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
+    # plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data, color = 'r', label = 'MetUM')
+    # plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
+    # # plt.legend()
+    # plt.title('Net SW radiation [W/m2]')
+    # # plt.ylim([260,275])
+    # # plt.grid('on')
+    # if month_flag == 8:
+    #     ax.set_xlim([13.0, 31.0])
+    #     plt.xlabel('Day of month [Aug]')
+    # if month_flag == 9:
+    #     ax.set_xlim([1.0, 15.0])
+    #     plt.xlabel('Day of month [Sep]')
+    # if month_flag == -1:
+    #     ax.set_xlim([doy[0],doy[-1]])
+    #     plt.xlabel('Day of year')
 
     print '******'
     print ''
@@ -1726,7 +1726,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_SW+LW.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_SW+LW.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
 
@@ -1987,8 +1987,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        # figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
