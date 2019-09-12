@@ -1637,7 +1637,7 @@ def main():
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
-    out_dir3 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir4 = '6_u-bm410_RA1M_CASIM/OUT/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1792,6 +1792,8 @@ def main():
                 data1d_um1 = {}
                 data_um2 = {}
                 data1d_um2 = {}
+                data_um3 = {}
+                data1d_um3 = {}
                 if month_flag == -1:
                     time_um1 = doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0)
                     time_um2 = doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0)
