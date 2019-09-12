@@ -1637,6 +1637,7 @@ def main():
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
+    out_dir3 = '6_u-bm410_RA1M_CASIM/OUT/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1734,6 +1735,7 @@ def main():
         name = '20180813_oden_'
         filename_um1 = um_root_dir + out_dir1 + name + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + name+ 'metum.nc'
+        filename_um3 = um_root_dir + out_dir4 + name+ 'metum.nc'
         print filename_um1
         print filename_um2
         print ''
@@ -1744,6 +1746,9 @@ def main():
         print '...'
         print 'Loading second run diagnostics:'
         cube_um2 = iris.load(filename_um2)#, global_con, callback)
+        print '...'
+        print 'Loading third run diagnostics:'
+        cube_um3 = iris.load(filename_um3)#, global_con, callback)
         # -------------------------------------------------------------
         print '...'
 
@@ -1751,13 +1756,18 @@ def main():
         print ''
         print cube_um2
         print ''
+        print cube_um3
+        print ''
+
 
     else:
         for i in range(0,len(names)):
             filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
             filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
+            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
             print filename_um1
             print filename_um2
+            print filename_um3
             print ''
 
             #### LOAD CUBE
@@ -1766,6 +1776,9 @@ def main():
             print '...'
             print 'Loading second run diagnostics:'
             cube_um2 = iris.load(filename_um2)#, global_con, callback)
+            print '...'
+            print 'Loading third run diagnostics:'
+            cube_um3 = iris.load(filename_um3)#, global_con, callback)
             print '...'
             # -------------------------------------------------------------
             # print 'i = ' + str(i)
@@ -1777,10 +1790,16 @@ def main():
                 ## ------------------
                 data_um1 = {}
                 data1d_um1 = {}
+                data_um2 = {}
+                data1d_um2 = {}
                 if month_flag == -1:
                     time_um1 = doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0)
+                    time_um2 = doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0)
+                    time_um3 = doy[i] + ((cube_um3[0].dim_coords[0].points)/24.0)
                 else:
                     time_um1 = float(filename_um1[-16:-14]) + ((cube_um1[0].dim_coords[0].points)/24.0)
+                    time_um2 = float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0)
+                    time_um3 = float(filename_um3[-16:-14]) + ((cube_um3[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube_um1)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
@@ -1792,12 +1811,6 @@ def main():
                 ## ------------------
                 #### um2
                 ## ------------------
-                data_um2 = {}
-                data1d_um2 = {}
-                if month_flag == -1:
-                    time_um2 = doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0)
-                else:
-                    time_um2 = float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube_um2)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
@@ -1806,13 +1819,27 @@ def main():
                         data1d_um2[cube_um2[j].var_name] = cube_um2[j].data
                     else:                                   # 2d column data
                         data_um2[cube_um2[j].var_name] = cube_um2[j].data
+                ## ------------------
+                #### um3
+                ## ------------------
+                for j in range(0,len(cube_um3)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.sum(cube_um3[j].data.shape) == 24:  # 1d timeseries only
+                        data1d_um3[cube_um3[j].var_name] = cube_um3[j].data
+                    else:                                   # 2d column data
+                        data_um3[cube_um3[j].var_name] = cube_um3[j].data
+
             else:
                 if month_flag == -1:
                     time_um1 = np.append(time_um1, doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0))
                     time_um2 = np.append(time_um2, doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0))
+                    time_um3 = np.append(time_um3, doy[i] + ((cube_um3[0].dim_coords[0].points)/24.0))
                 else:
                     time_um1 = np.append(time_um1,float(filename_um1[-16:-14]) + ((cube_um1[0].dim_coords[0].points)/24.0))
                     time_um2 = np.append(time_um2,float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0))
+                    time_um3 = np.append(time_um3,float(filename_um3[-16:-14]) + ((cube_um3[0].dim_coords[0].points)/24.0))
                 ## ------------------
                 #### UM
                 ## ------------------
@@ -1835,6 +1862,18 @@ def main():
                         data1d_um2[cube_um2[j].var_name] = np.append(data1d_um2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
                         data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data,0)
+                ## ------------------
+                #### um3
+                ## ------------------
+                for j in range(0,len(cube_um3)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.sum(cube_um3[j].data.shape) == 24:
+                        data1d_um3[cube_um3[j].var_name] = np.append(data1d_um3[cube_um3[j].var_name].data,cube_um3[j].data)
+                    else:
+                        data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data,0)
+
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
@@ -1859,8 +1898,8 @@ def main():
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
 
-        figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-            month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
+        #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
