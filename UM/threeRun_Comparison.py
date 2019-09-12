@@ -1101,8 +1101,8 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+            missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1310,7 +1310,10 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
 
     if month_flag == 8:
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_TS.png'
+            if out_dir4 in locals():
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir4[:9] + '201808_oden_metum_TS.png'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_TS.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_TS.png'
     if month_flag == 9:
@@ -1320,7 +1323,10 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_TS.png'
+            if 'out_dir4' in locals():
+                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + 'oden_metum_casim-100_200_TSa.png'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_TS.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_TS.png'
         # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
@@ -1635,9 +1641,9 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
-    out_dir4 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir4 = '5_u-bl661_RA1M_CASIM/OUT/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1894,8 +1900,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
