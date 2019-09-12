@@ -1187,7 +1187,8 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,1)
     ax = plt.gca()
     plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-100')
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
+    plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = 'CASIM-100')
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1207,6 +1208,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, label = '1.5m')
     ax1.plot(time_um2, data1d_um2['temp_1.5m'].data)#, label = '2m')
+    ax1.plot(time_um3, data1d_um3['temp_1.5m'].data)#, label = '2m')
     # ax1.set_ylim([255, 280])
     plt.title('near-sfc_temperature [K]')
     plt.legend()
@@ -1216,6 +1218,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
+    data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -1223,6 +1226,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
     plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
     plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-200')
+    plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, label = 'CASIM-100')
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1236,6 +1240,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'obs: ice')
     plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data)
     plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data)
+    plt.plot(time_um3, data1d_um3['surface_net_LW_radiation'].data)
     plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1265,6 +1270,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data)
     plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data)# * -1.0)
+    plt.plot(time_um3, data1d_um3['sensible_heat_flux'].data)# * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1275,6 +1281,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_um1, data1d_um1['latent_heat_flux'].data)
     plt.plot(time_um2, data1d_um2['latent_heat_flux'].data)# * -1.0)
+    plt.plot(time_um3, data1d_um3['latent_heat_flux'].data)# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1908,6 +1915,13 @@ def main():
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
+
+        data_um1['time'] = time_um1
+        data_um2['time'] = time_um2
+        data_um3['time'] = time_um3
+        np.save('working_data1', data_um1)
+        np.save('working_data2', data_um2)
+        np.save('working_data3', data_um3)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
