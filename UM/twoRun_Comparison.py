@@ -1328,7 +1328,7 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
             missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
@@ -1384,6 +1384,14 @@ def plot_BL_profiles(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    height1 = cube_um1[22].dim_coords[1].points
+    height2 = cube_um2[25].dim_coords[1].points
+
+    plt.subplot(211)
+    plt.pcolormesh(time_um1, height1, np.transpose(np.squeeze(data_um1[data_um1.keys()[diag]].data)))
 
 
     print '******'
@@ -1953,8 +1961,8 @@ def main():
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BL_profiles(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+        figure = plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
