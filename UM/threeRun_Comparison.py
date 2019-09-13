@@ -1728,7 +1728,7 @@ def main():
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        # um2_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
@@ -1740,9 +1740,9 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
-    out_dir4 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir4 = 'OUT2/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1840,7 +1840,7 @@ def main():
         name = '20180813_oden_'
         filename_um1 = um_root_dir + out_dir1 + name + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + name+ 'metum.nc'
-        filename_um3 = um_root_dir + out_dir4 + name+ 'metum.nc'
+        filename_um3 = misc_root_dir + out_dir4 + name+ 'metum.nc'
         print filename_um1
         print filename_um2
         print ''
@@ -1999,8 +1999,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
@@ -2008,8 +2008,8 @@ def main():
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         data_um1['time'] = time_um1
         data_um2['time'] = time_um2
