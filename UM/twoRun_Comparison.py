@@ -1328,7 +1328,7 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
             missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
@@ -1345,7 +1345,7 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
 
     print '******'
     print ''
-    print 'Plotting BL profile comparisons:'
+    print 'Plotting cloud fractions comparisons:'
     print ''
 
     ##################################################
@@ -1355,7 +1355,7 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 16
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1364,10 +1364,10 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(11,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-            hspace = 0.4, wspace = 0.15)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+    #         hspace = 0.4, wspace = 0.15)
 
     #################################################################
     ## sort out observations' timestamp
@@ -1394,8 +1394,16 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
     plt.subplot(211)
     plt.pcolormesh(time_um1, height1, dat)
     plt.ylim([0, 5000])
+    plt.ylabel('Z [m]')
+    plt.title('Operational microphysics scheme')
 
-
+    dat = np.transpose(np.squeeze(data_um2['cloud_fraction'].data))
+    plt.subplot(212)
+    plt.pcolormesh(time_um2, height2, dat)
+    plt.ylim([0, 5000])
+    plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+    plt.title('CASIM scheme w/100/cc accumulation mode aerosol particles, const profile')
 
     print '******'
     print ''
@@ -1422,10 +1430,10 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_TS.png'
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_CloudFraction.svg'
         # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
-    plt.savefig(fileout, dpi=400)
+    plt.savefig(fileout, dpi=600)
     plt.show()
 
 
@@ -1964,7 +1972,7 @@ def main():
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        figure = plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
