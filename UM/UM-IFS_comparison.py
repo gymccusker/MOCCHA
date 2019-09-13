@@ -1102,7 +1102,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
     plt.show()
 
 def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
-        missing_files, out_dir1, cube_obs): #, lon, lat):
+        missing_files, out_dir1, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1192,7 +1192,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     plt.subplot(3,2,2)
     # ax = plt.gca()
@@ -1212,7 +1212,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.legend()
     if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
     if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax1.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax1.set_xlim([doy[0],doy[-1]])
 
     data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
 
@@ -1226,7 +1226,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     plt.subplot(3,2,4)
     ax = plt.gca()
@@ -1237,7 +1237,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     # plt.subplot(3,3,6)
     # ax = plt.gca()
@@ -1266,7 +1266,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     plt.subplot(3,2,6)
     ax = plt.gca()
@@ -1276,7 +1276,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
     plt.title('latent_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
-    if month_flag == -1: ax.set_xlim([225.0, 258.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
     # print ''
     # print 'Zero out any data from missing files:'
@@ -1317,7 +1317,7 @@ def plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, m
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_1Da.png'
     if month_flag == -1:
-        if out_dir1[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir1[0:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_ecmwf_1Da.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_ecmwf_1Da.png'
@@ -1477,13 +1477,13 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir1 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir2 = 'OUT2/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
-    ### 5_u-bl616_RA2M_CASIM/OUT_R0/
+    ### 5_u-bl661_RA1M_CASIM/OUT/
 
     print '******'
     print ''
@@ -1543,14 +1543,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1558,7 +1559,8 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    # doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(240,251)        ## 10-day subset
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -1692,11 +1694,11 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
-        #             missing_files, out_dir1, cube_obs)
+        figure = plot_line_TSa(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+                    missing_files, out_dir1, cube_obs, doy)
 
-        figure = plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
-                    missing_files, out_dir1, cube_obs)
+        # figure = plot_line_BLDepth(time_um, time_ifs, data1d_um, data1d_ifs, cube_um, cube_ifs, month_flag,
+        #             missing_files, out_dir1, cube_obs)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
