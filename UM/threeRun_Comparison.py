@@ -1221,7 +1221,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
+    if out_dir4 != 'OUT2/': data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -1852,10 +1852,15 @@ def main():
     if combine == 0:
         name = '20180813_oden_'
         filename_um1 = um_root_dir + out_dir1 + name + 'metum.nc'
-        filename_um2 = um_root_dir + out_dir2 + name+ 'metum.nc'
-        filename_um3 = misc_root_dir + out_dir4 + name+ 'metum.nc'
+        filename_um2 = um_root_dir + out_dir2 + name + 'metum.nc'
+        if out_dir4 == 'OUT2/':
+            print '***IFS being compared***'
+            filename_um3 = misc_root_dir + out_dir4 + name + 'ecmwf.nc'
+        else:
+            filename_um3 = misc_root_dir + out_dir4 + name + 'metum.nc'
         print filename_um1
         print filename_um2
+        print filename_um3
         print ''
 
         #### LOAD CUBE
@@ -1882,7 +1887,11 @@ def main():
         for i in range(0,len(names)):
             filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
             filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            if out_dir4 == 'OUT2/':
+                print '***IFS being compared***'
+                filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
+            else:
+                filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
             print filename_um1
             print filename_um2
             print filename_um3
