@@ -1390,8 +1390,11 @@ def plot_BL_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2,
     height1 = cube_um1[22].dim_coords[1].points
     height2 = cube_um2[25].dim_coords[1].points
 
+    dat = np.transpose(np.squeeze(data_um1['cloud_fraction'].data))
     plt.subplot(211)
-    plt.pcolormesh(time_um1, height1, np.transpose(np.squeeze(data_um1['cloud_fraction'].data)))
+    plt.pcolormesh(time_um1, height1, dat)
+    plt.ylim([0, 5000])
+
 
 
     print '******'
