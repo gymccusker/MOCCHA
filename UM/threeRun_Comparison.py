@@ -1192,8 +1192,8 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'CASIM-100')
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'UM')
     if ifs_flag == True:
         plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = 'IFS')
     else:
@@ -1225,7 +1225,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     plt.subplot(3,2,3)
     ax = plt.gca()
-    plt.plot(time_um2, zeros,'r--')
+    plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
     plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
     plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-100')
@@ -1242,7 +1242,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     plt.subplot(3,2,4)
     ax = plt.gca()
-    plt.plot(time_um2, zeros,'r--')
+    plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'obs: ice')
     plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data)
     plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data)
@@ -1276,7 +1276,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     plt.subplot(3,2,5)
     ax = plt.gca()
-    plt.plot(time_um2, zeros,'r--')
+    plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data)
     plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data)# * -1.0)
     if ifs_flag == True:
@@ -1290,7 +1290,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     plt.subplot(3,2,6)
     ax = plt.gca()
-    plt.plot(time_um2, zeros,'r--')
+    plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_um1, data1d_um1['latent_heat_flux'].data)
     plt.plot(time_um2, data1d_um2['latent_heat_flux'].data)# * -1.0)
     if ifs_flag == True:
@@ -1344,6 +1344,16 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
+        if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
+            if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
+                if out_dir4 == 'OUT2/':
+                    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.png'
+                else:
+                    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
+            elif np.logical_and(out_dir2[:9] == '4_u-bg410', out_dir4 == 'OUT2/'):
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
                 fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
@@ -1749,10 +1759,10 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir1 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir2 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir3 = 'MET_DATA/'
-    out_dir4 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir4 = 'OUT2/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1822,9 +1832,9 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_']#,'20180830_oden_','20180831_oden_','20180901_oden_',
-            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
@@ -1834,7 +1844,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(244,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
     doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -2018,8 +2028,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
@@ -2027,8 +2037,8 @@ def main():
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         data_um1['time'] = time_um1
         data_um2['time'] = time_um2
