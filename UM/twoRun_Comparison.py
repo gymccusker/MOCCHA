@@ -1186,13 +1186,13 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    if out_dir1 == '4_u-bg610':
+    if out_dir1[:9] == '4_u-bg610':
         plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
-    elif out_dir1 == '5_u-bl661':
+    elif out_dir1[:9] == '5_u-bl661':
         plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    if out_dir2 == '5_u-bl661':
+    if out_dir2[:9] == '5_u-bl661':
         plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    elif out_dir2 == '6_u-bm410':
+    elif out_dir2[:9] == '6_u-bm410':
         plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
     plt.title('sfc_pressure [hPa]')
     plt.legend()
@@ -2093,11 +2093,11 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
-
-        figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
+
+        # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
