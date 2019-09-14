@@ -1554,7 +1554,7 @@ def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, m
     plt.show()
 
 def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, cube_obs, doy): #, lon, lat):
+        missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2085,7 +2085,7 @@ def main():
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, cube_obs, doy)
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
