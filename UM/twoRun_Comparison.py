@@ -1399,27 +1399,45 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     height2 = cube_um2[25].dim_coords[1].points
 
     plt.subplot(121)
+
     dat1 = np.transpose(np.squeeze(data_um1['temperature'].data))
-    plt.plot(dat1[:,13], height1, label = 'Oper')
+    if out_dir1[:9] == '4_u-bg610':
+        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'UM')
+    elif out_dir1[:9] == '5_u-bl661':
+        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'CASIM-100')
+
     dat2 = np.transpose(np.squeeze(data_um2['temperature'].data))
-    plt.plot(dat2[:,13], height2, label = 'CASIM-100')
+    if out_dir2[:9] == '5_u-bl661':
+        plt.plot(np.nanmean(dat2[:,L],1), height2, label = 'CASIM-100')
+    if out_dir2[:9] == '6_u-bm410':
+        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-200')
+
     plt.ylim([0, 1000])
     plt.xlim([263,271])
     plt.xlabel('Temperature [K]')
     plt.ylabel('Z [m]')
-    plt.title('28-Aug-2019 1300 UTC')
+    plt.title('28-Aug-2019')
     plt.legend()
 
     plt.subplot(122)
+
     dat1 = np.transpose(np.squeeze(data_um1['q'].data)*float(1e3))
-    plt.plot(dat1[:,13], height1, label = 'Oper')
+    if out_dir1[:9] == '4_u-bg410':
+        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'UM')
+    elif out_dir1[:9] == '5_u-bl661':
+        plt.plot(np.nanmean(dat1[:,13],1), height1, label = 'CASIM-100')
+
     dat2 = np.transpose(np.squeeze(data_um2['q'].data)*float(1e3))
-    plt.plot(dat2[:,13], height2, label = 'CASIM-100')
+    if out_dir1[:9] == '5_u-bl661':
+        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-100')
+    if out_dir1[:9] == '6_u-bm410':
+        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-200')
+
     plt.ylim([0, 1000])
     plt.xlim([1.8,3])
     plt.xlabel('Specific humidity [g/kg]')
     # plt.ylabel('Z [m]')
-    plt.title('28-Aug-2019 1300 UTC')
+    plt.title('28-Aug-2019')
     plt.legend()
 
     print '******'
