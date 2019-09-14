@@ -1768,7 +1768,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '5_u-bl661_RA1M_CASIM/OUT/'
-    out_dir2 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT2/'
 
@@ -1852,7 +1852,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,247)        ## set DOY for subset of moccha figures
     doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
