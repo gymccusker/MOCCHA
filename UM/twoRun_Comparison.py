@@ -1591,8 +1591,8 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(8,5))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-    #         hspace = 0.4, wspace = 0.15)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
 
     # UM -> um2 comparisons:
     # 1. snowfall_flux -> sfc_ls_snow
@@ -1613,8 +1613,14 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     #################################################################
 
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-100')
+    if out_dir1[:9] == 'u-bg610':
+        plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'UM')
+    elif out_dir1[:9] == 'u-bl661':
+        plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'CASIM-100')
+    if out_dir2[:9] == 'u-bl661':
+        plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-100')
+    if out_dir2[:9] == 'u-bm410':
+        plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-200')
     plt.legend()
     plt.title('BL_depth [m]')
     if month_flag == 8:
@@ -1646,7 +1652,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
         if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLDepth.png'
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
+            if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
                 fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim_BLDepth.png'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLDepth.png'
@@ -1946,8 +1952,8 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(244,251)        ## set DOY for subset of moccha figures
-    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,243)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
