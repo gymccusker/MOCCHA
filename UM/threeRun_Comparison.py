@@ -1411,7 +1411,6 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
 
-
     print '******'
     print ''
     print 'Finished plotting! :)'
@@ -1431,13 +1430,11 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
-        if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-            if 'out_dir4' in locals():
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + 'oden_metum_casim-100_200_BLprofiles.png'
+        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
+            if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
+                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_BLprofiles.png'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
-        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_TS.png'
         # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
     plt.savefig(fileout, dpi=400)
@@ -2021,8 +2018,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        # figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
@@ -2030,8 +2027,8 @@ def main():
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+        figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
         data_um1['time'] = time_um1
         data_um2['time'] = time_um2
