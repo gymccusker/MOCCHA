@@ -1859,8 +1859,8 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir1 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -1931,9 +1931,9 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            '20180829_oden_']#,'20180830_oden_','20180831_oden_','20180901_oden_',
+            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
