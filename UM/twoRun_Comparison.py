@@ -1973,6 +1973,67 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
+
+def plot_ThetaE_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+            missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+
+    '''
+    Function calculates equivalent potential temperature
+    '''
+
+    L_vap = 2.5e6    # J/kg
+    L_sub = 2.836e6  # J/kg
+    cp = 1004.6      # J/kg.K
+
+    if out_dir1[:9] == '4_u-bg610':
+        height = cube_um1[22].dim_coords[1].points
+    else:
+        height = cube_um2[25].dim_coords[1].points
+
+    print 'Calculating theta:'
+    data_um1['theta'] = {}
+    data_um2['theta'] = {}
+    data_um1['theta'] = np.zeros([len(time_um1),len(height)])
+    data_um2['theta'] = np.zeros([len(time_um2),len(height)])
+    for k in range(0,len(height)):
+        data_um1['theta'][:,k] = data_um1['temperature'][:,k] * np.power(1e5 / data_um1['pressure'][:,k], 0.2854)
+        data_um2['theta'][:,k] = data_um2['temperature'][:,k] * np.power(1e5 / data_um2['pressure'][:,k], 0.2854)
+
+    print 'Calculating theta_e:'
+    data_um1['theta_e'] = {}
+    data_um2['theta_e'] = {}
+    data_um1['theta_e'] = np.zeros([len(time_um1),len(height)])
+    data_um2['theta_e'] = np.zeros([len(time_um2),len(height)])
+    for k in range(0,len(height)):
+        data_um1['theta_e'][:,k] = data_um1['theta'][:,k] + ((data_um1['theta'][:,k] * L_vap * data_um1['q'][:,k]) / (cp * data_um1['temperature'][:,k]))
+        data_um2['theta_e'][:,k] = data_um2['theta'][:,k] + ((data_um2['theta'][:,k] * L_vap * data_um2['q'][:,k]) / (cp * data_um2['temperature'][:,k]))
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 18
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(6,5))
+    plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.2,
+            hspace = 0.4, wspace = 0.15)
+
+    # plt.plot(data_um1['theta'][46,:], height, label = '1/Theta')#; plt.show()
+    plt.plot(data_um1['theta_e'][46,:], height, label = '1/Theta_e');
+    # plt.plot(data_um2['theta'][46,:], height, label = '2/Theta')#; plt.show()
+    plt.plot(data_um2['theta_e'][46,:], height, label = '2/Theta_e');
+    plt.legend()
+    plt.ylim([0,1000])
+    plt.xlim([280,283])
+    plt.ylabel('Z [m]')
+    plt.xlabel('$\Theta_{e}$ [K]')
+    plt.show()
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -2101,7 +2162,7 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_','20180830_oden_']#,'20180831_oden_','20180901_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_']#,'20180901_oden_',
             # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
@@ -2113,7 +2174,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(240,244)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,245)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -2248,8 +2309,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
@@ -2264,6 +2325,9 @@ def main():
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+
+        figure = plot_ThetaE_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
