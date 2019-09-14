@@ -1402,15 +1402,15 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
 
     dat1 = np.transpose(np.squeeze(data_um1['temperature'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['temperature'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
     plt.xlim([267,273])
@@ -1424,15 +1424,15 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     dat1 = np.transpose(np.squeeze(data_um1['q'].data)*float(1e3))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['q'].data)*float(1e3))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
     plt.xlim([2.5,3.5])
@@ -1537,43 +1537,42 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
 
     dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['qnliq'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
-    # plt.xlim([267,273])
+    plt.xlim([0,2e8])
     plt.xlabel('N_drop [/kg]')
     plt.ylabel('Z [m]')
-    plt.title('30-Aug-2019 1400 UTC')
+    plt.title('29-Aug-2019 2300 UTC')
     plt.legend()
 
     plt.subplot(122)
 
-    dat1 = np.transpose(np.squeeze(data_um1['qnice'].data)*float(1e3))
+    dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,61], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
 
-    dat2 = np.transpose(np.squeeze(data_um2['qnice'].data)*float(1e3))
+    dat2 = np.transpose(np.squeeze(data_um2['qnice'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,61], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
-    # plt.xlim([2.5,3.5])
+    plt.xlim([0,7e3])
     plt.xlabel('N_ice [/kg]')
-    # plt.ylabel('Z [m]')
-    plt.title('30-Aug-2019 1400 UTC')
+    plt.title('29-Aug-2019 2300 UTC')
     plt.legend()
 
     print '******'
