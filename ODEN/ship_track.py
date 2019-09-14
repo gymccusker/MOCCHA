@@ -60,6 +60,24 @@ def iceDrift(data):
 
     return drift_index
 
+def periodHighlight(data):
+
+    ###################################
+    ## Define ice drift period
+    ###################################
+
+    Aug_highlight = np.where(np.logical_and(data.values[:,2]>=28,data.values[:,1]==8))
+    Sep_highlight = np.where(np.logical_and(np.logical_and(data.values[:,2]<=30,data.values[:,1]==8),data.values[:,3]<=23))
+    highlight = np.arange(Aug_highlight[0][0],Sep_highlight[0][-1])
+
+    print ''
+    # print 'Aug drift: ' + str(data.values[Aug_highlight[0][0],0:3]) + ' - ' + str(data.values[Aug_highlight[0][-1],0:3])
+    # print 'Sep drift: ' + str(data.values[Sep_highlight[0][0],0:3]) + ' - ' + str(data.values[Sep_highlight[0][-1],0:3])
+    print 'Whole drift: ' + str(data.values[highlight[0],0:4]) + ' - ' + str(data.values[highlight[-1],0:4])
+    print ''
+
+    return highlight
+
 def inIce(data):
 
     ###################################
@@ -154,17 +172,20 @@ def plotmap(data):
 
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
+    highlight_index = periodHighlight(data)
     inIce_index = inIce(data)
 
     ### MAP ONTO PROJECTION
     x, y = m(data.values[:,6], data.values[:,7])
     x_inIcePeriod, y_inIcePeriod = m(data.values[inIce_index,6],data.values[inIce_index,7])
     x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
+    x_highlightPeriod, y_highlightPeriod = m(data.values[highlight_index,6],data.values[highlight_index,7])
 
     # Plot tracks as line plot
     plt.plot(x, y, '--', color = 'pink', linewidth = 2, label = 'Whole')
     plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 3, label = 'In Ice')
-    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 4, label = 'Drift')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 3, label = 'Drift')
+    plt.plot(x_highlightPeriod, y_highlightPeriod, color = 'purple', linewidth = 4, label = 'Case examples')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
