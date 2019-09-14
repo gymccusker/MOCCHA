@@ -1192,10 +1192,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'UM')
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, linewidth = 3, label = 'CASIM-100')
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, color = 'red', label = 'UM')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = 'IFS')
+        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'grey', label = 'IFS')
     else:
         plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = 'CASIM-200')
     plt.title('sfc_pressure [hPa]')
@@ -1207,10 +1207,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, label = '1.5m')
-    ax1.plot(time_um2, data1d_um2['temp_1.5m'].data)#, label = '2m')
+    ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, linewidth = 3, label = '1.5m')
+    ax1.plot(time_um2, data1d_um2['temp_1.5m'].data, color = 'red')#, label = '2m')
     if ifs_flag == True:
-        ax1.plot(time_um3, data1d_um3['sfc_temp_2m'].data, label = '2m')
+        ax1.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'grey', label = '2m')
     else:
         ax1.plot(time_um3, data1d_um3['temp_1.5m'].data)#, label = '2m')
     plt.title('near-sfc_temperature [K]')
@@ -1227,12 +1227,12 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, linewidth = 3)
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'red')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, label = 'IFS')
+        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, color = 'grey')
     else:
-        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, label = 'CASIM-200')
+        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data)
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1244,10 +1244,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data)
-    plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data)
+    plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data, linewidth = 3)
+    plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data, color = 'red')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_lw'].data)
+        plt.plot(time_um3, data1d_um3['sfc_net_lw'].data, color = 'grey')
     else:
         plt.plot(time_um3, data1d_um3['surface_net_LW_radiation'].data)
     plt.title('surface_net_LW_radiation [W/m2]')
@@ -1277,10 +1277,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
-    plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data)# * -1.0)
+    plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data, linewidth = 3)
+    plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data, color = 'red')# * -1.0)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_down_sens_heat_flx'].data * -1.0)
+        plt.plot(time_um3, data1d_um3['sfc_down_sens_heat_flx'].data * -1.0, color = 'grey')
     else:
         plt.plot(time_um3, data1d_um3['sensible_heat_flux'].data)# * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
@@ -1291,10 +1291,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
-    plt.plot(time_um1, data1d_um1['latent_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['latent_heat_flux'].data)# * -1.0)
+    plt.plot(time_um1, data1d_um1['latent_heat_flux'].data, linewidth = 3)
+    plt.plot(time_um2, data1d_um2['latent_heat_flux'].data, color = 'red')# * -1.0)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_down_lat_heat_flx'].data * -1.0)
+        plt.plot(time_um3, data1d_um3['sfc_down_lat_heat_flx'].data * -1.0, color = 'grey')
     else:
         plt.plot(time_um3, data1d_um3['latent_heat_flux'].data)# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
@@ -1350,10 +1350,11 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
                     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.png'
                 else:
                     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
-            elif np.logical_and(out_dir2[:9] == '4_u-bg410', out_dir4 == 'OUT2/'):
-                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
+            elif out_dir2[:9] == '4_u-bg410':
+                if out_dir4 == 'OUT2/':
+                    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
             else:
-                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.png'
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.svg'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
                 fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
