@@ -1402,42 +1402,42 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
 
     dat1 = np.transpose(np.squeeze(data_um1['temperature'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'UM')
+        plt.plot(dat1[:,13], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'CASIM-100')
+        plt.plot(dat1[:,13], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['temperature'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(np.nanmean(dat2[:,L],1), height2, label = 'CASIM-100')
+        plt.plot(dat2[:,13], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-200')
+        plt.plot(dat2[:,13], height2, linewidth = 3, label = 'CASIM-200')
 
-    plt.ylim([0, 1000])
-    plt.xlim([263,271])
+    plt.ylim([0, 3000])
+    plt.xlim([255,271])
     plt.xlabel('Temperature [K]')
     plt.ylabel('Z [m]')
-    plt.title('28-Aug-2019')
+    plt.title('28-Aug-2019 1400 UTC')
     plt.legend()
 
     plt.subplot(122)
 
     dat1 = np.transpose(np.squeeze(data_um1['q'].data)*float(1e3))
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(np.nanmean(dat1[:,:],1), height1, label = 'UM')
+        plt.plot(dat1[:,13], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(np.nanmean(dat1[:,13],1), height1, label = 'CASIM-100')
+        plt.plot(dat1[:,13], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['q'].data)*float(1e3))
-    if out_dir1[:9] == '5_u-bl661':
-        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-100')
-    if out_dir1[:9] == '6_u-bm410':
-        plt.plot(np.nanmean(dat2[:,:],1), height2, label = 'CASIM-200')
+    if out_dir2[:9] == '5_u-bl661':
+        plt.plot(dat2[:,13], height2, linewidth = 3, label = 'CASIM-100')
+    if out_dir2[:9] == '6_u-bm410':
+        plt.plot(dat2[:,13], height2, linewidth = 3, label = 'CASIM-200')
 
-    plt.ylim([0, 1000])
-    plt.xlim([1.8,3])
+    plt.ylim([0, 3000])
+    plt.xlim([1,3])
     plt.xlabel('Specific humidity [g/kg]')
     # plt.ylabel('Z [m]')
-    plt.title('28-Aug-2019')
+    plt.title('28-Aug-2019 1400 UTC')
     plt.legend()
 
     print '******'
@@ -1460,10 +1460,9 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-            if 'out_dir4' in locals():
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + 'oden_metum_casim-100_200_BLprofiles.png'
-            else:
-                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
+            fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim-100_200_BLprofiles.png'
+        else:
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_BLprofiles.svg'
         # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
@@ -1569,7 +1568,7 @@ def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, m
     if month_flag == -1:
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
             if 'out_dir4' in locals():
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + 'oden_metum_casim-100_200_BLprofiles.png'
+                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_BLprofiles.png'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
@@ -1966,7 +1965,7 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_']#,'20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180829_oden_','20180830_oden_']#,'20180831_oden_','20180901_oden_',
             # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
@@ -1978,7 +1977,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(240,243)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,244)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -2113,8 +2112,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    # missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
