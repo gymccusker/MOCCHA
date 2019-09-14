@@ -1646,7 +1646,10 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
         if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLDepth.png'
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-100_BLDepth.png'
+            if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim_BLDepth.png'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLDepth.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_BLDepth.png'
     plt.savefig(fileout, dpi=400)
@@ -2081,8 +2084,8 @@ def main():
         # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, cube_obs, doy)
+        figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, cube_obs, doy)
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
@@ -2090,8 +2093,8 @@ def main():
         # figure = plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
