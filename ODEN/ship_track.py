@@ -67,7 +67,7 @@ def periodHighlight(data):
     ###################################
 
     Aug_highlight = np.where(np.logical_and(data.values[:,2]>=28,data.values[:,1]==8))
-    Sep_highlight = np.where(np.logical_and(np.logical_and(data.values[:,2]<=30,data.values[:,1]==8),data.values[:,3]<=23))
+    Sep_highlight = np.where(np.logical_and(np.logical_and(data.values[:,2]<=2,data.values[:,1]==9),data.values[:,3]<=23))
     highlight = np.arange(Aug_highlight[0][0],Sep_highlight[0][-1])
 
     print ''
