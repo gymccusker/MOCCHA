@@ -1228,11 +1228,11 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
     plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-200')
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-100')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, label = 'CASIM-100')
+        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, label = 'IFS')
     else:
-        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, label = 'CASIM-100')
+        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, label = 'CASIM-200')
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1345,10 +1345,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-            if out_dir4 == '6_u-bm410_RA1M_CASIM':
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + 'oden_metum_casim-100_200_TSa.png'
+            if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
+                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
             elif out_dir4 == 'OUT2/':
-                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
+                fileout[:20] = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
     plt.savefig(fileout, dpi=400)
@@ -1755,7 +1755,7 @@ def main():
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
-    out_dir4 = 'OUT2/'
+    out_dir4 = '6_u-bm410_RA1M_CASIM/OUT/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
@@ -1825,9 +1825,9 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            '20180829_oden_']#,'20180830_oden_','20180831_oden_','20180901_oden_',
+            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
