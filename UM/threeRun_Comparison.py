@@ -1186,6 +1186,9 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     ### for reference in figures
     zeros = np.zeros(len(time_um2))
+    t1 = 13
+    t2 = 46
+    t3 = 61
 
     #################################################################
     ## create figure and axes instances
@@ -1234,6 +1237,10 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     else:
         plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data)
     plt.title('surface_net_SW_radiation [W/m2]')
+    lims = plt.ylim()
+    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
