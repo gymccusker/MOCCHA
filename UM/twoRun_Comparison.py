@@ -1613,13 +1613,13 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     #################################################################
 
     ax = plt.gca()
-    if out_dir1[:9] == 'u-bg610':
+    if out_dir1[:9] == '4_u-bg610':
         plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'UM')
-    elif out_dir1[:9] == 'u-bl661':
+    elif out_dir1[:9] == '5_u-bl661':
         plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'CASIM-100')
-    if out_dir2[:9] == 'u-bl661':
+    if out_dir2[:9] == '5_u-bl661':
         plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-100')
-    if out_dir2[:9] == 'u-bm410':
+    if out_dir2[:9] == '6_u-bm410':
         plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-200')
     plt.legend()
     plt.title('BL_depth [m]')
