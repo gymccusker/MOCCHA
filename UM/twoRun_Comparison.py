@@ -1101,8 +1101,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1336,8 +1335,7 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-            missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1416,7 +1414,7 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     plt.xlim([267,273])
     plt.xlabel('Temperature [K]')
     plt.ylabel('Z [m]')
-    plt.title('30-Aug-2019 1400 UTC')
+    plt.title('30-Aug-2018 1400 UTC')
     plt.legend()
 
     plt.subplot(122)
@@ -1438,7 +1436,7 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     plt.xlim([2.5,3.5])
     plt.xlabel('Specific humidity [g/kg]')
     # plt.ylabel('Z [m]')
-    plt.title('30-Aug-2019 1400 UTC')
+    plt.title('30-Aug-2018 1400 UTC')
     plt.legend()
 
     print '******'
@@ -1471,8 +1469,7 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     plt.savefig(fileout, dpi=600)
     plt.show()
 
-def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-            missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1533,25 +1530,48 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     height1 = cube_um1[22].dim_coords[1].points
     height2 = cube_um2[25].dim_coords[1].points
 
+    t = 11
+    # t = 12
+    # t = 13
+    # t = 14
+    # t = 28
+    # t = 45
+    # t = 61
+    # t = 66
+    # t = 72    ###good
+    # t = 84
+    # t = 86
+    # t = 84
+    # t = 59
+
     plt.subplot(131)
 
     dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['qnliq'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
-    plt.xlim([0,2e8])
+    plt.xlim([0,3.0e8])
     plt.xlabel('N_drop [/kg]')
     plt.ylabel('Z [m]')
-    plt.title('29-Aug-2019 2300 UTC')
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
     plt.legend()
 
     plt.subplot(132)
@@ -1559,32 +1579,50 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'UM')
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'CASIM-100')
 
     dat2 = np.transpose(np.squeeze(data_um2['qnice'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
 
     plt.ylim([0, 1000])
-    plt.xlim([0,7e3])
+    plt.xlim([0,2e4])
     plt.xlabel('N_ice [/kg]')
-    plt.title('29-Aug-2019 2300 UTC')
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
     # plt.legend()
 
     plt.subplot(133)
 
     data_um1 = calcThetaE(data_um1, time_um1, height1)
-    plt.plot(data_um1['theta_e'][46,:], height1, linewidth = 3)
+    plt.plot(data_um1['theta_e'][t,:], height1, linewidth = 3)
     data_um2 = calcThetaE(data_um2, time_um2, height2)
-    plt.plot(data_um2['theta_e'][46,:], height2, linewidth = 3)
+    plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
     # plt.legend()
     plt.ylim([0,1000])
-    plt.xlim([281.0,282.0])
-    plt.title('29-Aug-2019 2300 UTC')
+    plt.xlim([279,284])
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
     # plt.ylabel('Z [m]')
     plt.xlabel('$\Theta_{e}$ [K]')
 
@@ -1618,9 +1656,7 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     plt.savefig(fileout, dpi=600)
     plt.show()
 
-
-def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-            missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1727,8 +1763,7 @@ def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, m
     plt.savefig(fileout, dpi=600)
     plt.show()
 
-def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1763,7 +1798,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,5))
+    plt.figure(figsize=(10,5))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.15)
@@ -1782,6 +1817,16 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     ### for reference in figures
     zeros = np.zeros(len(time_um2))
 
+    t1 = 12
+    # t2 = 13
+    # t3 = 28
+    t3 = 46
+    t4 = 61
+    # t4 = 66
+    # t5 = 72
+    # t6 = 83
+    # t7 = 86
+
     #################################################################
     ## create figure and axes instances
     #################################################################
@@ -1792,10 +1837,18 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     elif out_dir1[:9] == '5_u-bl661':
         plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'CASIM-100')
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-100')
+        plt.plot(time_um2, data1d_um2['bl_depth'].data, label = 'CASIM-100')
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(time_um2, data1d_um1['bl_depth'].data, label = 'CASIM-200')
+        plt.plot(time_um2, data1d_um2['bl_depth'].data, label = 'CASIM-200')
     plt.legend()
+    lims = plt.ylim()
+    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
     plt.title('BL_depth [m]')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
@@ -1827,7 +1880,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLDepth.png'
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
             if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim_BLDepth.png'
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim_BLDepth.svg'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLDepth.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
@@ -1835,8 +1888,155 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-    month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined 1d timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 18
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,6))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
+
+    # UM -> um2 comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    ### for reference in figures
+    zeros = np.zeros(len(time_um2))
+
+    t1 = 11
+    # t2 = 13
+    # t3 = 28
+    t3 = 45
+    # t4 = 61
+    # t4 = 59
+    # t4 = 66
+    # t5 = 72
+    # t6 = 83
+    # t7 = 86
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+
+
+    plt.subplot(211)
+    ax = plt.gca()
+    plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'CASIM-100')
+    plt.plot(time_um2, data1d_um2['bl_depth'].data, label = 'CASIM-200')
+    plt.legend()
+    lims = plt.ylim()
+    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.title('BL_depth [m]')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        # plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        # plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        # plt.xlabel('Day of year')
+
+    plt.subplot(212)
+    ax = plt.gca()
+    plt.plot(time_um1, data1d_um1['bl_type'].data, label = 'CASIM-100')
+    plt.plot(time_um2, data1d_um2['bl_type'].data, label = 'CASIM-200')
+    # plt.legend()
+    lims = plt.ylim()
+    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
+    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
+    plt.title('BL_type')
+
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        plt.xlabel('Day of year')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == 8:
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_BLdiags.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_BLdiags.png'
+    if month_flag == 9:
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_BLdiags.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLdiags.png'
+    if month_flag == -1:
+        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLdiags.png'
+        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
+            if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
+                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim_BLdiags.svg'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim_BLdiags.png'
+        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_BLdiags.png'
+    plt.savefig(fileout, dpi=400)
+    plt.show()
+
+
+def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1985,7 +2185,6 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     print 'Saving as: ' + fileout
     plt.savefig(fileout, dpi=400)
     plt.show()
-
 
 def calcThetaE(data, time, height): #, lon, lat):
 
@@ -2296,6 +2495,9 @@ def main():
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
+        figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
@@ -2308,15 +2510,13 @@ def main():
         figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_ThetaE_profiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
-
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
         # -------------------------------------------------------------
         # figure = plot_multicontour_TS(cube, filename, out_dir)
 
 
+    np.save('working_data1d',data1d_um2)
     # -------------------------------------------------------------
     # FIN.
     # -------------------------------------------------------------
