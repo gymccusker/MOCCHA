@@ -2489,14 +2489,14 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
@@ -2507,8 +2507,8 @@ def main():
         # figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
@@ -2516,7 +2516,7 @@ def main():
         # figure = plot_multicontour_TS(cube, filename, out_dir)
 
 
-    np.save('working_data1d',data1d_um2)
+    # np.save('working_data1d',data1d_um2)
     # -------------------------------------------------------------
     # FIN.
     # -------------------------------------------------------------
