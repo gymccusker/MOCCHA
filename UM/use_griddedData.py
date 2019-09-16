@@ -610,7 +610,7 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
+def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -798,7 +798,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             ax.set_ylim([0, 5000])
             if month_flag == 8: ax.set_xlim([13.0, 32.0])
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([225.0, 258.0])
+            if month_flag == -1: ax.set_xlim([doy[0], doy[-1]])
 
             print ''
             print 'Zero out any data from missing files:'
@@ -847,7 +847,9 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum.png'
     if month_flag == -1:
-        if out_dir[:18] == '5_u-bl616_RA2M_CAS':
+        if out_dir[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
+        if out_dir[:18] == '5_u-bl661_RA1M_CAS':
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
@@ -1739,7 +1741,7 @@ def callback(cube, field, filename):
     if diags.findfieldName(iStash):
         if cube.name() != diags.findfieldName(iStash):
             cube.rename(diags.findfieldName(iStash))
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+
 def makeGlobalStashList():
     '''
     make a list of all the stash code we want to load
@@ -1783,12 +1785,13 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir = '6_u-bm410_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
-    ### 5_u-bl616_RA2M_CASIM/OUT_R0/
+    ### 5_u-bl661_RA1M_CASIM/OUT/
+    ### 6_u-bm410_RA1M_CASIM/OUT/
 
     print '******'
     print ''
@@ -1852,10 +1855,11 @@ def main():
             # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
             # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
             # '20180825_oden_metum.nc','20180826_oden_metum.nc',
-            '20180827_oden_metum.nc','20180828_oden_metum.nc',
+            # '20180827_oden_metum.nc',
+            '20180828_oden_metum.nc',
             '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc']#,'20180907_oden_metum.nc'',20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180902_oden_metum.nc']#,'20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+            # '20180906_oden_metum.nc','20180907_oden_metum.nc']#,'20180908_oden_metum.nc','20180909_oden_metum.nc',
             # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
             # '20180914_oden_metum.nc']
 
@@ -1965,7 +1969,7 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
@@ -1988,7 +1992,7 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 

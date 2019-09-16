@@ -1558,8 +1558,8 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(240,251)        ## 10-day subset
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    # doy = np.arange(240,251)        ## 10-day subset
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
