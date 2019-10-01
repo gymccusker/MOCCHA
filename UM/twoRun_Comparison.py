@@ -1530,12 +1530,12 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     height1 = cube_um1[22].dim_coords[1].points
     height2 = cube_um2[25].dim_coords[1].points
 
-    t = 11
+    # t = 11
     # t = 12
     # t = 13
     # t = 14
     # t = 28
-    # t = 45
+    t = 45
     # t = 61
     # t = 66
     # t = 72    ###good
@@ -1558,7 +1558,7 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     if out_dir2[:9] == '6_u-bm410':
         plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
 
-    plt.ylim([0, 1000])
+    plt.ylim([0, 2000])
     plt.xlim([0,3.0e8])
     plt.xlabel('N_drop [/kg]')
     plt.ylabel('Z [m]')
@@ -1589,7 +1589,7 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     if out_dir2[:9] == '6_u-bm410':
         plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
 
-    plt.ylim([0, 1000])
+    plt.ylim([0, 2000])
     plt.xlim([0,2e4])
     plt.xlabel('N_ice [/kg]')
     if t == 11: plt.title('28-Aug-2018 1100 UTC')
@@ -1611,8 +1611,8 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     data_um2 = calcThetaE(data_um2, time_um2, height2)
     plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
     # plt.legend()
-    plt.ylim([0,1000])
-    plt.xlim([279,284])
+    plt.ylim([0,2000])
+    plt.xlim([281,290])
     if t == 11: plt.title('28-Aug-2018 1100 UTC')
     if t == 12: plt.title('28-Aug-2018 1200 UTC')
     if t == 28: plt.title('29-Aug-2018 0400 UTC')
@@ -2489,14 +2489,14 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
         #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
@@ -2507,8 +2507,8 @@ def main():
         # figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
