@@ -6369,27 +6369,21 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             ###---------------------------------
             print 'Double-checking grid:'
             if len(cube[k].dim_coords[-1].points) == 25:
-            # if cube[0,0].shape >= 25-1:    # ll = 240, 471
                 xoffset = -239
                 yoffset = -470
             elif len(cube[k].dim_coords[-1].points) == 56:
-            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
                 xoffset = -210
                 yoffset = -385
             elif len(cube[k].dim_coords[-1].points) == 94:
-            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
                 xoffset = -211
                 yoffset = -385
             elif len(cube[k].dim_coords[-1].points) == 81:          ### 14th and 24th August
-            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
                 xoffset = -209
                 yoffset = -399
             elif len(cube[k].dim_coords[-1].points) == 380:         ### needs checked
-            # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
                 xoffset = -60
                 yoffset = -110
             else:
-            # elif cube[0,0].shape >= 500-1:
                 xoffset = 0
                 yoffset = 0
             print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
@@ -6401,11 +6395,6 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 print cube[k].standard_name
                 print 'Diagnostic is 3-hourly, break from loop'
                 break
-            # elif len(np.round(cube[k].coord('forecast_period').points)) > 10:
-            #     if xoffset == 0:
-            #         print cube[k].standard_name
-            #         print 'Diagnostic is 1-hourly, BUT this is a STASH typo since diagnostic covers whole nest.'
-            #         ok = False
             else:
                 print cube[k].standard_name
                 if int(xoffset) != 0:
@@ -7312,7 +7301,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '6_u-bm410_RA1M_CASIM/'
+    out_dir = '4_u-bg610_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
