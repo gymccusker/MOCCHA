@@ -6623,32 +6623,10 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         # print data
         # print 'data.shape = ', data.shape
 
-        #################################################################
-        ## FIGURES TO TEST OUTPUT
-        #################################################################
-        ### timeseries of lowest model level
-        # plt.figure(figsize=(7,5))
-        # plt.plot(cubetime[:-1],data[0:10,:])
-        # plt.show()
-
-        ### vertical profile of 1st timestep
-        # plt.figure(figsize=(7,5))
-        # plt.plot(data[:,0],cube.coord('model_level_number').points)
-        # plt.show()
-
-        ### pcolormesh of timeseries
-        # plt.figure(figsize=(7,5))
-        # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
-        # plt.colorbar()
-        # plt.show()
 
         #################################################################
         ## CREATE CUBE
         #################################################################
-        ### ECMWF FIELD NAMES
-        # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
-        #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
-        #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
         varname = varnames.findfieldName(stash)
         print 'standard_name = ', cube.standard_name
