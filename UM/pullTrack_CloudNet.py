@@ -6682,7 +6682,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         print ''
         if not os.path.exists(nc_outfile):
             if 'fcube' in locals():
-                out = writeNetCDF(date, fcube, nc_outfile)
+                # out = writeNetCDF(date, fcube, nc_outfile)
+                out = writePE_CASIM(fcube, nc_outfile)    ### use netCDF4 to make file rather than iris
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
