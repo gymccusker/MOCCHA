@@ -7353,7 +7353,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012']#,'_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
             expt = out_dir[10:-1]
             outfiles = [] ### define list to add processed filenames to
 
