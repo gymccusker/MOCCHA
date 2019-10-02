@@ -6493,8 +6493,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                     dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0:
                     dat = np.zeros([len(itime[0]), int(grid), int(grid)])       ### needs to hold subset of nest
-                    dat_std = np.zeros([len(itime[0]])                          ### only needs to be one number per timestep
-                    dat_med = np.zeros([len(itime[0]])                          ### only needs to be one number per timestep
+                    dat_std = np.zeros([len(itime[0])])                          ### only needs to be one number per timestep
+                    dat_med = np.zeros([len(itime[0])])                          ### only needs to be one number per timestep
 
                 #################################################################
                 ### loop over time gridded by ship track
@@ -6508,16 +6508,16 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
 
-                    print 'temp.shape = ' + str(temp.shape)
+                    print 'temp.shape = ' + str(temp.shape)     # 6x6 array
 
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
-                        if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                        if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                        if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                        if stash_flag == 1: dat[dat==0] = np.nan                # set zeros to nans
+                        if dim_flag == 1: data[:,j] = np.nanmean(dat,1)         # mean over time indices
+                        if dim_flag == 0: data[j] = np.nanmean(dat)             # mean over time indices
                     else:
-                        if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                        if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                        if dim_flag == 1: data[:,j] = np.squeeze(dat)           # if only one index per hour
+                        if dim_flag == 0: data[j] = np.squeeze(dat)             # if only one index per hour
                         print ''
 
 
