@@ -6296,6 +6296,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
     print '******'
     print ''
+    print 'Looking at region around ship track and storing variability as STDEV'
+    print ''
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
@@ -6438,7 +6440,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 print 'data.shape = ', str(data.shape)
                 print ''
             else:
-                print 'Variable is 3D:'
+                print 'Variable is 3D (single layer diagnostic):'
                 print ''
                 #### create empty arrays to be filled
                 if stream == '_pb009':
@@ -6466,19 +6468,22 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 print 'For ', str(j), 'h, itime = ', itime
                 if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
+
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                     if np.size(itime) > 1:
-                        # print 'Processing i = ', str(itime[0][i])
-                        # print '...'
+                        # store data as a temporary variable
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                     else:
-                        # print 'Processing i = ', str(itime[i])
-                        # print '...'
+                        # store data as a temporary variable
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+
+                    # decompose data on to dat variable depending on dimensions
                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if dim_flag == 0: dat[i] = np.squeeze(temp.data)
+
+                    # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
@@ -7386,40 +7391,66 @@ def main():
                     # -------------------------------------------------------------
                     # Pull gridded ship track from cube
                     # -------------------------------------------------------------
+
+                    # -------------------------------------------------------------
+                    ### use the following if only want the exact ship position and no variability
+                    # -------------------------------------------------------------
                     ### LOAD CUBE
                     nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
                     if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
                     aoutfile = nc_outfile[:-3] + '_a.nc'
                     boutfile = nc_outfile[:-3] + '_b.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
+
+                    # if stream == '_pa012':
+                    #     if not os.path.exists(aoutfile):
+                    #         print aoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pb009':
+                    #     if not os.path.exists(boutfile):
+                    #         print boutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pe011':
+                    #     if not os.path.exists(eoutfile):
+                    #         print eoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pc011':
+                    #     if not os.path.exists(nc_outfile):
+                    #         print nc_outfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    # else:
+                    #     print 'Valid stream not found.'
+
+                    # -------------------------------------------------------------
+                    ### use the following if only want the variability over a certain grid size
+                    # -------------------------------------------------------------
+                    ### LOAD CUBE
+                    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum_VAR.nc'
+                    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum_VAR.nc'
+                    aoutfile = nc_outfile[:-3] + '_a.nc'
+                    boutfile = nc_outfile[:-3] + '_b.nc'
+                    eoutfile = nc_outfile[:-3] + '_e.nc'
+
                     if stream == '_pa012':
                         if not os.path.exists(aoutfile):
                             print aoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                            outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pb009':
                         if not os.path.exists(boutfile):
                             print boutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                            outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pe011':
                         if not os.path.exists(eoutfile):
                             print eoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                            outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pc011':
                         if not os.path.exists(nc_outfile):
                             print nc_outfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                            outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
                     else:
                         print 'Valid stream not found.'
 
-                    ### if con_flag == 1: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
-                    ### if con_flag == 0: fcube, outfile = pullTrack_CloudNet(cube, grid_filename, var_con, stream, date)
 
-                    ##-------------------------------------------------------------
-                    ##Plot data (map)
-                    ##-------------------------------------------------------------
-                    ## select hour to plot
-                    # hour = 0
-                    # map = plot_cartmap(ship_data, cube, hour, grid_filename)#, lon, lat)
                 else:
                     print ''
                     print '****File does not exist****'
