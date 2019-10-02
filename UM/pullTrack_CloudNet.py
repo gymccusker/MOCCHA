@@ -6516,6 +6516,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                     if stash_flag == 1: dat[dat==0] = np.nan                # set zeros to nans
 
+                    print 'dat.shape = ' + str(dat.shape)     # 6x6 array
+
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
                         if dim_flag == 1:
@@ -6532,9 +6534,9 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                             data_std[:,j] = np.nanstd(dat,1)           # if only one index per hour
                             data_med[:,j] = np.nanmedian(dat,1)           # if only one index per hour
                         if dim_flag == 0:
-                            data[j] = np.nanmean(dat)             # if only one index per hour
-                            data_std[j] = np.nanstd(dat)             # if only one index per hour
-                            data_med[j] = np.nanmedian(dat)             # if only one index per hour
+                            data[j] = np.nanmean(np.nanmean(dat),1),1)             # if only one index per hour
+                            data_std[j] = np.nanstd(np.nanstd(dat,1),1)             # if only one index per hour
+                            data_med[j] = np.nanmedian(np.nanmedian(dat,1),1)             # if only one index per hour
                         print ''
 
                     # # if the ship covers more than one grid box over an hour...
@@ -6554,7 +6556,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             print 'standard_name = ', cube[k].standard_name
             print 'long name = ', cube[k].long_name
             print 'varname = ', varname
-            print 'data.shape = ' + str(data.shape)     # 6x6 array 
+            print 'data.shape = ' + str(data.shape)
             print ''
 
             if stream == '_pa012':
