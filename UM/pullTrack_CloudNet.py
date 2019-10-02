@@ -6510,20 +6510,33 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                     print 'temp.shape = ' + str(temp.shape)     # 6x6 array
 
+                    # decompose data on to dat variable depending on diagnostic dimensions
+                    if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
+                    if dim_flag == 0: dat[i] = np.squeeze(temp.data)
+
+                    if stash_flag == 1: dat[dat==0] = np.nan                # set zeros to nans
+
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
-                        if stash_flag == 1: dat[dat==0] = np.nan                # set zeros to nans
-                        if dim_flag == 1: data[:,j] = np.nanmean(dat,1)         # mean over time indices
-                        if dim_flag == 0: data[j] = np.nanmean(dat)             # mean over time indices
+
+                        if dim_flag == 1:
+                            data[:,j] = np.nanmean(dat,1)                       # mean over time indices
+                            data_std[:,j] = np.nanstd(dat,1)                    # stdev over time indices
+                            data_med[:,j] = np.nanmedian(dat,1)                 # median over time indices
+                        if dim_flag == 0:
+                            data[j] = np.nanmean(dat)                           # mean over time indices
+                            data_std[j] = np.nanstd(dat)                        # stdev over time indices
+                            data_med[j] = np.nanmedian(dat)                     # median over time indices
                     else:
-                        if dim_flag == 1: data[:,j] = np.squeeze(dat)           # if only one index per hour
-                        if dim_flag == 0: data[j] = np.squeeze(dat)             # if only one index per hour
+                        if dim_flag == 1:
+                            data[:,j] = np.nanmean(dat,1)           # if only one index per hour
+                            data_std[:,j] = np.nanstd(dat,1)           # if only one index per hour
+                            data_med[:,j] = np.nanmedian(dat,1)           # if only one index per hour
+                        if dim_flag == 0:
+                            data[j] = np.nanmean(dat)             # if only one index per hour
+                            data_std[j] = np.nanstd(dat)             # if only one index per hour
+                            data_med[j] = np.nanmedian(dat)             # if only one index per hour
                         print ''
-
-
-                    ## decompose data on to dat variable depending on diagnostic dimensions
-                    # if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
-                    # if dim_flag == 0: dat[i] = np.squeeze(temp.data)
 
                     # # if the ship covers more than one grid box over an hour...
                     # if np.size(itime) > 1:
