@@ -6388,7 +6388,18 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             else:
                 xoffset = 0
                 yoffset = 0
+
             print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
+            print ''
+
+            gridsize_required = 3.0       ### add which grid size we want to average over
+            print 'Averaging up to a grid size of ' + str(gridsize_required) + ' km.'
+
+            grid = gridsize_required / float(1.5)       ### HARD CODE: nest model resolution
+            x1 = xoffset - grid
+            x2 = xoffset + grid
+            y1 = yoffset - grid
+            y2 = yoffset + grid
 
             #################################################################
             ## if our diagnostics are 3-hourly, ignore
@@ -6464,18 +6475,19 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 else:
                     ### end point (23h)
                     itime = np.where(tim >= cubetime[-1])
-                # print ''
+
+                ### define data array depending on diagnostic shape
                 print 'For ', str(j), 'h, itime = ', itime
                 if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
 
+
                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
+                    # store data as a temporary variable
                     if np.size(itime) > 1:
-                        # store data as a temporary variable
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
                     else:
-                        # store data as a temporary variable
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
 
