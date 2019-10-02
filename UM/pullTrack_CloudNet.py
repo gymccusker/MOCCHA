@@ -6446,6 +6446,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 print ''
                 #### create empty arrays to be filled
                 data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
+                data_std = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
+                data_med = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                 ### make dimension flag
                 dim_flag = 1        ### for next loops
                 print 'data.shape = ', str(data.shape)
@@ -6456,12 +6458,21 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 #### create empty arrays to be filled
                 if stream == '_pb009':
                     if cube[k].long_name == 'large_scale_ice_water_path':
-                        data = np.zeros([len(cubetime)])
+                        data = np.zeros([len(cubetime), int(grid), int(grid)])  ### needs to hold subset of nest
+                        data_std = np.zeros([len(cubetime)])                    ### only needs to be one number per timestep
+                        data_med = np.zeros([len(cubetime)])                    ### only needs to be one number per timestep
                     elif cube[k].long_name == 'large_scale_liquid_water_path':
-                        data = np.zeros([len(cubetime)])
+                        data = np.zeros([len(cubetime), int(grid), int(grid)])  ### needs to hold subset of nest
+                        data_std = np.zeros([len(cubetime)])                    ### only needs to be one number per timestep
+                        data_med = np.zeros([len(cubetime)])                    ### only needs to be one number per timestep
                     else:
-                        data = np.zeros([len(cubetime)-1])
-                if stream == '_pa012': data = np.zeros([len(cubetime)])
+                        data = np.zeros([len(cubetime)-1, int(grid), int(grid)])### needs to hold subset of nest
+                        data_std = np.zeros([len(cubetime)-1])                  ### only needs to be one number per timestep
+                        data_med = np.zeros([len(cubetime)-1])                  ### only needs to be one number per timestep
+                if stream == '_pa012':
+                    data = np.zeros([len(cubetime), int(grid), int(grid)])      ### needs to hold subset of nest
+                    data_std = np.zeros([len(cubetime)])                        ### only needs to be one number per timestep
+                    data_med = np.zeros([len(cubetime)])                        ### only needs to be one number per timestep
                 dim_flag = 0       ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
@@ -6478,8 +6489,12 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                 ### define data array depending on diagnostic shape
                 print 'For ', str(j), 'h, itime = ', itime
-                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
-                if dim_flag == 0: dat = np.zeros([len(itime[0])])
+                if dim_flag == 1:
+                    dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                if dim_flag == 0:
+                    dat = np.zeros([len(itime[0]), int(grid), int(grid)])       ### needs to hold subset of nest
+                    dat_std = np.zeros([len(itime[0]])                          ### only needs to be one number per timestep
+                    dat_med = np.zeros([len(itime[0]])                          ### only needs to be one number per timestep
 
                 #################################################################
                 ### loop over time gridded by ship track
@@ -6495,22 +6510,30 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                     print 'temp.shape = ' + str(temp.shape)
 
-                    # decompose data on to dat variable depending on diagnostic dimensions
-                    if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
-                    if dim_flag == 0: dat[i] = np.squeeze(temp.data)
-
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
                         if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                        # print 'averaging over itime ...'
-                        # print ''
                     else:
                         if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                         if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                        # print 'no averaging, itime = 1 ...'
                         print ''
+
+
+                    ## decompose data on to dat variable depending on diagnostic dimensions
+                    # if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
+                    # if dim_flag == 0: dat[i] = np.squeeze(temp.data)
+
+                    # # if the ship covers more than one grid box over an hour...
+                    # if np.size(itime) > 1:
+                    #     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+                    #     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    #     if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                    # else:
+                    #     if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    #     if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                    #     print ''
 
         #################################################################
         ## CREATE CUBE
