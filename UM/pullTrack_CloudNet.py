@@ -6392,14 +6392,14 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
             print ''
 
-            gridsize_required = 3.0       ### add which grid size we want to average over
+            gridsize_required = 9.0       ### add which grid size we want to average over
             print 'Averaging up to a grid size of ' + str(gridsize_required) + ' km.'
 
             grid = gridsize_required / float(1.5)       ### HARD CODE: nest model resolution
-            x1 = xoffset - grid
-            x2 = xoffset + grid
-            y1 = yoffset - grid
-            y2 = yoffset + grid
+            x1 = xoffset - grid/float(2)
+            x2 = xoffset + grid/float(2)
+            y1 = yoffset - grid/float(2)
+            y2 = yoffset + grid/float(2)
 
             #################################################################
             ## if our diagnostics are 3-hourly, ignore
@@ -6492,8 +6492,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                     else:
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
-                    print temp.shape
-                    break
+
+                    print 'temp.shape = ' + str(temp.shape)
 
                     # decompose data on to dat variable depending on diagnostic dimensions
                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
