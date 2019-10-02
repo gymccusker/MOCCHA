@@ -6508,7 +6508,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
 
-                    print 'temp.shape = ' + str(temp.shape)     # 6x6 array
+                    # print 'temp.shape = ' + str(temp.shape)     # 6x6 array
 
                     # decompose data on to dat variable depending on diagnostic dimensions
                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
@@ -6518,7 +6518,6 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
-
                         if dim_flag == 1:
                             data[:,j] = np.nanmean(dat,1)                       # mean over time indices
                             data_std[:,j] = np.nanstd(dat,1)                    # stdev over time indices
@@ -6555,6 +6554,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             print 'standard_name = ', cube[k].standard_name
             print 'long name = ', cube[k].long_name
             print 'varname = ', varname
+            print 'data.shape = ' + str(data.shape)     # 6x6 array 
             print ''
 
             if stream == '_pa012':
