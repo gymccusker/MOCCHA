@@ -6481,17 +6481,21 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
 
-
-                for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
+                #################################################################
+                ### loop over time gridded by ship track
+                #################################################################
+                for i in range(0, len(itime[0])):
                     # store data as a temporary variable
                     if np.size(itime) > 1:
-                        if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-                        if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                        if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + y1):int(ilat[itime[0][i]] + y2),int(ilon[itime[0][i]] + x1):int(ilon[itime[0][i]] + x2)]
+                        if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + y1):int(ilat[itime[0][i]] + y2),int(ilon[itime[0][i]] + x1):int(ilon[itime[0][i]] + x2)]
                     else:
-                        if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                        if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                        if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
+                        if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + y1):int(ilat[itime[i]] + y2),int(ilon[itime[i]] + x1):int(ilon[itime[i]] + x2)]
+                    print temp.shape
+                    break
 
-                    # decompose data on to dat variable depending on dimensions
+                    # decompose data on to dat variable depending on diagnostic dimensions
                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
                     if dim_flag == 0: dat[i] = np.squeeze(temp.data)
 
