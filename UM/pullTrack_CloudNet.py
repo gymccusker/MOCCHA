@@ -6396,10 +6396,10 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             print 'Averaging up to a grid size of ' + str(gridsize_required) + ' km.'
 
             grid = gridsize_required / float(1.5)       ### HARD CODE: nest model resolution
-            x1 = xoffset - grid/float(2)
-            x2 = xoffset + grid/float(2)
-            y1 = yoffset - grid/float(2)
-            y2 = yoffset + grid/float(2)
+            x1 = xoffset - (grid / float(2))
+            x2 = xoffset + (grid / float(2))
+            y1 = yoffset - (grid / float(2))
+            y2 = yoffset + (grid / float(2))
 
             #################################################################
             ## if our diagnostics are 3-hourly, ignore
@@ -6535,7 +6535,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                             data_med[:,j] = np.nanmedian(dat,1)           # if only one index per hour
                         if dim_flag == 0:
                             data[j] = np.nanmean(np.nanmean(dat,1),1)           # if only one index per hour
-                            data_std[j] = np.nanstd(np.nanstd(dat,1),1)         
+                            data_std[j] = np.nanstd(np.nanstd(dat,1),1)
                             data_med[j] = np.nanmedian(np.nanmedian(dat,1),1)
                         print ''
 
