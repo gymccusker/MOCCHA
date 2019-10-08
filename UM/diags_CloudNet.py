@@ -905,7 +905,8 @@ def main():
                                 res = i*3
                             str_i = "%03d" % res # file number
                             # fileout = root_dir + out_dir + date + stream[:-3] + str_i
-                            fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
+                            if filename == filename1: fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
+                            if filename == filename2: fileout = root_dir + out_dir + date + '/' + date + '_glm' + stream[:-3] + str_i + '.pp'
                             # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
                             # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
                             # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
