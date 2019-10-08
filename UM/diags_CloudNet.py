@@ -895,12 +895,18 @@ def main():
                         print ''
 
                         ### define range to loop over
-                        if stream[-2:] == '12': looping = range(4,12)
+                        if stream[-2:] == '12':
+                            if filename[-12:-3] == 'glm_pa012':
+                                looping = range(2,6)
+                            else:
+                                looping = range(4,12)
                         if stream[-2:] == '11': looping = range(11,36)
                         if stream[-2:] == '09': looping = range(3,12)
                         for i in looping:
                             if np.size(looping) > 9:
                                 res = i #* 3     # how many hourly dumps in file
+                            elif filename == 'glm_pa012':
+                                res = i*6
                             else:
                                 res = i*3
                             str_i = "%03d" % res # file number
