@@ -877,76 +877,80 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-                print 'Checking: ' + filename
-                if os.path.exists(filename):
-                    # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
-                    # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
-                    # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
-                    # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
-                    pp_filename = filename[:-3] + '_r0.pp'
+                # 20180827T1200Z_glm_pc035.pp
+                filename1 = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
+                filename2 = root_dir + out_dir + date + '/' + date + '_glm_' + stream + '.pp'
+                filenames = [filename1, filename2]
+                for filename in filenames:
+                    print 'Checking: ' + filename
+                    if os.path.exists(filename):
+                        # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
+                        # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
+                        # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
+                        # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
+                        pp_filename = filename[:-3] + '_r0.pp'
 
-                    print '---'
-                    print 'Start files exist, continuing:'
-                    print ''
-
-                    ### define range to loop over
-                    if stream[-2:] == '12': looping = range(4,12)
-                    if stream[-2:] == '11': looping = range(11,36)
-                    if stream[-2:] == '09': looping = range(3,12)
-                    for i in looping:
-                        if np.size(looping) > 9:
-                            res = i #* 3     # how many hourly dumps in file
-                        else:
-                            res = i*3
-                        str_i = "%03d" % res # file number
-                        # fileout = root_dir + out_dir + date + stream[:-3] + str_i
-                        fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
-                        # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
-                        # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
-                        # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
-                        # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
-                        print fileout
-                        # # -------------------------------------------------------------
-                        # # Load cubes
-                        # # -------------------------------------------------------------
-                        print '******'
+                        print '---'
+                        print 'Start files exist, continuing:'
                         print ''
-                        print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
-                        print ' '
 
-                        #### LOAD CUBE
-                        if 'var_con' in locals():
-                            cube = iris.load(fileout, var_con)
-
-                            # -------------------------------------------------------------
-                            # Write out data
-                            # -------------------------------------------------------------
+                        ### define range to loop over
+                        if stream[-2:] == '12': looping = range(4,12)
+                        if stream[-2:] == '11': looping = range(11,36)
+                        if stream[-2:] == '09': looping = range(3,12)
+                        for i in looping:
+                            if np.size(looping) > 9:
+                                res = i #* 3     # how many hourly dumps in file
+                            else:
+                                res = i*3
+                            str_i = "%03d" % res # file number
+                            # fileout = root_dir + out_dir + date + stream[:-3] + str_i
+                            fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
+                            # fileout = root_dir + out_dir + date + '/umnsaa_pa' + str_i
+                            # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
+                            # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
+                            # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
+                            print fileout
+                            # # -------------------------------------------------------------
+                            # # Load cubes
+                            # # -------------------------------------------------------------
                             print '******'
                             print ''
-                            print 'Outputting fixed constraint ' + str_i + ' data:'
-                            print ''
-                            iris.save(cube, pp_filename, append=True)
+                            print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
+                            print ' '
 
-                        elif 'global_con' in locals():
-                            cube = iris.load(fileout, global_con, callback)
+                            #### LOAD CUBE
+                            if 'var_con' in locals():
+                                cube = iris.load(fileout, var_con)
 
-                            # -------------------------------------------------------------
-                            # Write out data
-                            # -------------------------------------------------------------
-                            print '******'
-                            print ''
-                            print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
-                            print cube
-                            print ''
-                            iris.save(cube, pp_filename, append=True)
-                            #### remove file to keep directory tidy
-                            print 'Directory clean up: removing ' + fileout
-                            print ''
-                            os.remove(fileout)
-                else:
-                    print 'Combined output files already exist, or the directory does not exist'
-                    print ''
+                                # -------------------------------------------------------------
+                                # Write out data
+                                # -------------------------------------------------------------
+                                print '******'
+                                print ''
+                                print 'Outputting fixed constraint ' + str_i + ' data:'
+                                print ''
+                                iris.save(cube, pp_filename, append=True)
+
+                            elif 'global_con' in locals():
+                                cube = iris.load(fileout, global_con, callback)
+
+                                # -------------------------------------------------------------
+                                # Write out data
+                                # -------------------------------------------------------------
+                                print '******'
+                                print ''
+                                print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
+                                print cube
+                                print ''
+                                iris.save(cube, pp_filename, append=True)
+                                #### remove file to keep directory tidy
+                                print 'Directory clean up: removing ' + fileout
+                                print ''
+                                os.remove(fileout)
+                    else:
+                        print 'Combined output files already exist, or the directory does not exist'
+                        print ''
 
             # for stream in names:
             #     # -------------------------------------------------------------
