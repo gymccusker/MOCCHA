@@ -958,7 +958,7 @@ def main():
                                 #### remove file to keep directory tidy
                                 print 'Directory clean up: removing ' + fileout
                                 print ''
-                                # os.remove(fileout)
+                                os.remove(fileout)
                     else:
                         print 'Combined output files already exist, or the directory does not exist'
                         print ''
