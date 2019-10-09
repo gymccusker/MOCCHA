@@ -902,6 +902,7 @@ def main():
                                 looping = range(4,12)
                         if stream[-2:] == '11': looping = range(11,36)
                         if stream[-2:] == '09': looping = range(3,12)
+                        if filename[-12:-3] == 'glm_pb012': looping = range(4,12)
                         for i in looping:
                             if np.size(looping) > 9:
                                 res = i #* 3     # how many hourly dumps in file
