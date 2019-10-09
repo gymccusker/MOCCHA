@@ -905,7 +905,7 @@ def main():
                         for i in looping:
                             if np.size(looping) > 9:
                                 res = i #* 3     # how many hourly dumps in file
-                            elif filename == 'glm_pa012':
+                            elif filename[-12:-3] == 'glm_pa012':
                                 res = i*6
                             else:
                                 res = i*3
