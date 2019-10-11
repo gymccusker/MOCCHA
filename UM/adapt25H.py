@@ -224,15 +224,16 @@ def combineNC(nc1, nc2, filename1, filename2):
     timem.long_name = 'forecast_time'
     timem[0:24] = nc1.variables['forecast_time'][0:]
     timem[24] = 24.0    ### hard code since nc2[0] = 0.0
+    print 'time shape = ' + str(timem.shape)
 
     #### height
-    # height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    # height.scale_factor = float(1)
-    # height.add_offset = float(0)
-    # height.comment = ''
-    # height.units = 'm'
-    # height.long_name = 'height'
-    # height[:] = nc1.variables['height']      ### forecast time (ignore first 12h)
+    height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = ''
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -240,22 +241,47 @@ def combineNC(nc1, nc2, filename1, filename2):
     ###################################
     ## Write pbXXX stream diagnostics
     ###################################
-    # for diag in nc1.variables:
-    diag = 'sfc_pressure'
-    if diag == 'sfc_pressure':
+    for diag in nc1.variables:
+    # diag = 'sfc_pressure'
+    # if diag == 'sfc_pressure':
         print 'Writing ' + diag
         print ''
         if np.size(np.shape(nc1.variables[diag])) == 1:
+            if diag == 'forecast_time':
+                print 'Diagnostic is forecast_time which is already defined... skipping.'
+                continue
+            if diag == 'height':
+                print 'Diagnostic is height which is already defined... skipping.'
+                continue
             dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
-            dat.units = nc1.variables[diag].units
-            dat.STASH = nc1.variables[diag].STASH
-            dat.standard_name = nc1.variables[diag].standard_name
-            # dat.long_name = str(cube[d].long_name)
+            if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+            if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+            if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+            if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+            if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
             dat[0:24] = nc1.variables[diag][0:]
             dat[24] = nc2.variables[diag][0]
-        # else:
+        elif np.size(np.shape(nc1.variables[diag])) == 2:
+            dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+            if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+            if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+            if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+            if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+            dat[0:24,:] = nc1.variables[diag][0:,:]
+            dat[24,:] = nc2.variables[diag][0,:]
+        else:
+            if diag == 'horizontal_resolution':
+                print 'Diagnostic is horizontal_resolution which needs to be defined separately...'
+                dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+                dat.comment = 'Horizontal grid size of nested region.'
+                dat.units = 'km'
+                dat[:] = 1.5
+                continue
 
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
