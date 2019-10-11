@@ -133,6 +133,7 @@ def combineCubes(cube1, cube2):
     ## COMBINE EACH DIAGNOSTIC
     #################################################################
     for k in range(0,np.size(cube1)):
+        print ''
         print 'Diag = ', str(cube1[k].var_name)
         print ''
 
