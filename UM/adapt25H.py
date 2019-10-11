@@ -283,40 +283,8 @@ def combineNC(nc1, nc2, filename1, filename2):
                 dat[:] = 1.5
                 continue
 
-    #################################################################
-    ## COMBINE EACH DIAGNOSTIC
-    #################################################################
-    # for diag in nc1.variables:
-    #     print ''
-    #     print 'Diag = ', diag
-    #     print ''
-    #
-    #     #################################################################
-    #     ## CREATE EMPTY DATA ARRAY
-    #     #################################################################
-    #     if np.size(nc1.variables[diag].shape) == 1:
-    #         print 'Diagnostic is 1D:'
-    #         print ''
-    #         data = np.zeros([25])
-    #         if nc1.variables[diag].dimensions[0] == 'forecast_time':
-    #             data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
-    #             data[24] = nc2.variables[diag][0]
-    #
-    #     elif np.size(nc1.variables[diag].shape) == 2:
-    #         print 'Diagnostic is 2D:'
-    #         print ''
-    #         data = np.zeros([25,71])
-    #         data[0:24,:] = nc1.variables[diag][0:,:]      ### 0:24 notation only does 0:23 really
-    #         data[24,:] = nc1.variables[diag][0,:]
-
-    #################################################################
-    ## REMEMBER TO ADD HEIGHT
-    #################################################################
-    # nc.variables['height'] = nc1.variables['height']
 
     nc.close()
-
-# def writeNetCDF(data)
 
 def callback(cube, field, filename):
     '''
