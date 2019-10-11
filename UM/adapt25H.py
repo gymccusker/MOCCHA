@@ -152,13 +152,15 @@ def combineCubes(cube1, cube2):
             print 'Diagnostic is 1D:'
             print ''
             data = np.zeros([25])
-            data[0:23] = cube1[k].data[0:23]
-            # data[25] = cube2[k].data[0]
-            print data
+            data[0:24] = cube1[k].data[0:]      ### 0:24 notation only does 0:23 really
+            data[24] = cube2[k].data[0]
+            # print data
         elif np.size(np.shape(cube1[k])) == 2:
             print 'Diagnostic is 2D:'
             print ''
             data = np.zeros([25,71])
+            data[0:24,:] = cube1[k].data[0:,:]      ### 0:24 notation only does 0:23 really
+            data[24,:] = cube2[k].data[0,:]
 
 
 
