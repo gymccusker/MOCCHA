@@ -1981,10 +1981,10 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
+        figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
