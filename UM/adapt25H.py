@@ -283,6 +283,19 @@ def combineNC(nc1, nc2, filename1, filename2):
                 dat[:] = 1.5
                 continue
 
+    ###################################
+    ## Add Global Attributes
+    ###################################
+    nc.conventions = 'CF-1.0'
+    nc.title = nc1.title
+    nc.description = nc1.description
+    nc.history = nc1.history
+    nc.source = nc1.source
+    nc.references = nc1.references
+    nc.project = nc1.project
+    nc.comment = nc1.comment
+    nc.institution = nc1.institution
+    nc.initialization_time = nc1.initialization_time
 
     nc.close()
 
