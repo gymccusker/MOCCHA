@@ -116,6 +116,9 @@ def trackShip(data, date):
 
 def combineCubes(cube1, cube2):
 
+    from iris.coords import DimCoord
+    from iris.cube import Cube
+
     '''
     Load in two cubes at a time, then join to make cube1 25h long
     for compatibility with Cloudnet
@@ -133,19 +136,32 @@ def combineCubes(cube1, cube2):
         print 'Diag = ', str(cube1[k].var_name)
         print ''
 
+        #################################################################
+        ## CREATE EMPTY DATA ARRAY
+        #################################################################
+        if np.size(np.shape(cube1[k])) == 1:
+            print 'Diagnostic is 1D:'
+            print ''
+            data = np.zeros(25)
+        elif np.size(np.shape(cube1[k])) == 2:
+            print 'Diagnostic is 2D:'
+            print ''
+            data = np.zeros(25,71)
+
+
     #################################################################
     ## READ OUT 25-H CUBE1 INTO NEW CUBE
     #################################################################
 
-    ncube = Cube(data,
-            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-            standard_name = cube[k].standard_name,
-            long_name = cube[k].long_name,
-            units = cube[k].units,
-            var_name = varname,
-            attributes = cube[k].attributes,
-            aux_coords_and_dims = None,
-            )
+    # ncube = Cube(data,
+    #         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+    #         standard_name = cube[k].standard_name,
+    #         long_name = cube[k].long_name,
+    #         units = cube[k].units,
+    #         var_name = varname,
+    #         attributes = cube[k].attributes,
+    #         aux_coords_and_dims = None,
+    #         )
 
 def callback(cube, field, filename):
     '''
