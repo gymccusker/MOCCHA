@@ -206,6 +206,52 @@ def combineNC(nc1, nc2, filename1, filename2):
     print nc.file_format
     print ''
 
+    ###################################
+    ## Data dimensions
+    ###################################
+    forecast_time = nc.createDimension('forecast_time', 25)
+    height = nc.createDimension('height', np.size(nc1.variables['height']))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
+    timem.long_name = 'forecast_time'
+    timem[0:24] = nc1.variables['forecast_time'][0:]
+    timem[24] = 24.0    ### hard code since nc2[0] = 0.0
+
+    #### height
+    height = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = ''
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = nc1.variables['height']      ### forecast time (ignore first 12h)
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    ###################################
+    ## Write pbXXX stream diagnostics
+    ###################################
+    for d in range(0,len(cube)):
+        print 'Writing ' + cube[d].var_name
+        print ''
+        dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+        dat.scale_factor = float(1)
+        dat.add_offset = float(0)
+        dat.units = str(cube[d].units)
+        dat.STASH = str(cube[d].attributes['STASH'])
+        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+        dat[:] = cube[d].data
+
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
     #################################################################
@@ -235,7 +281,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     #################################################################
     ## REMEMBER TO ADD HEIGHT
     #################################################################
-    nc.variables['height'] = nc1.variables['height']
+    # nc.variables['height'] = nc1.variables['height']
 
     nc.close()
 
