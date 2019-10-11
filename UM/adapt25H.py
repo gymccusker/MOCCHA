@@ -240,43 +240,45 @@ def combineNC(nc1, nc2, filename1, filename2):
     ###################################
     ## Write pbXXX stream diagnostics
     ###################################
-    for d in range(0,len(cube)):
-        print 'Writing ' + cube[d].var_name
+    # for diag in nc1.variables:
+    for diag == 'sfc_pressure':
+        print 'Writing ' + diag
         print ''
-        dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+        dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
-        dat.units = str(cube[d].units)
-        dat.STASH = str(cube[d].attributes['STASH'])
-        if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
-        if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-        dat[:] = cube[d].data
+        dat.units = nc1.variables[diag].units
+        dat.um_stash_source = nc1.variables[diag].um_stash_source
+        dat.standard_name = nc1.variables[diag].standard_name
+        # dat.long_name = str(cube[d].long_name)
+        dat[0:24] = nc1.variables[diag][0:]
+        dat[24] = nc2.variables[diag][0]
 
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
     #################################################################
-    for diag in nc1.variables:
-        print ''
-        print 'Diag = ', diag
-        print ''
-
-        #################################################################
-        ## CREATE EMPTY DATA ARRAY
-        #################################################################
-        if np.size(nc1.variables[diag].shape) == 1:
-            print 'Diagnostic is 1D:'
-            print ''
-            data = np.zeros([25])
-            if nc1.variables[diag].dimensions[0] == 'forecast_time':
-                data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
-                data[24] = nc2.variables[diag][0]
-
-        elif np.size(nc1.variables[diag].shape) == 2:
-            print 'Diagnostic is 2D:'
-            print ''
-            data = np.zeros([25,71])
-            data[0:24,:] = nc1.variables[diag][0:,:]      ### 0:24 notation only does 0:23 really
-            data[24,:] = nc1.variables[diag][0,:]
+    # for diag in nc1.variables:
+    #     print ''
+    #     print 'Diag = ', diag
+    #     print ''
+    #
+    #     #################################################################
+    #     ## CREATE EMPTY DATA ARRAY
+    #     #################################################################
+    #     if np.size(nc1.variables[diag].shape) == 1:
+    #         print 'Diagnostic is 1D:'
+    #         print ''
+    #         data = np.zeros([25])
+    #         if nc1.variables[diag].dimensions[0] == 'forecast_time':
+    #             data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
+    #             data[24] = nc2.variables[diag][0]
+    #
+    #     elif np.size(nc1.variables[diag].shape) == 2:
+    #         print 'Diagnostic is 2D:'
+    #         print ''
+    #         data = np.zeros([25,71])
+    #         data[0:24,:] = nc1.variables[diag][0:,:]      ### 0:24 notation only does 0:23 really
+    #         data[24,:] = nc1.variables[diag][0,:]
 
     #################################################################
     ## REMEMBER TO ADD HEIGHT
