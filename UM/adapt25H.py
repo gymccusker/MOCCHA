@@ -114,6 +114,36 @@ def trackShip(data, date):
 
     return trackShip_index
 
+def combineCubes(cube1, cube2):
+
+    '''
+    Load in two cubes at a time, then join to make cube1 25h long
+    for compatibility with Cloudnet
+    '''
+
+    #################################################################
+    ## CREATE EMPTY CUBE
+    #################################################################
+    ncube = Cube(np.zeros([np.size(cube1),70,25]))
+
+    ncube = Cube(data,
+            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+            standard_name = cube[k].standard_name,
+            long_name = cube[k].long_name,
+            units = cube[k].units,
+            var_name = varname,
+            attributes = cube[k].attributes,
+            aux_coords_and_dims = None,
+            )
+
+
+    #### -------------------------------------------------------------
+    #### COMBINE CUBES
+    #### -------------------------------------------------------------
+    for k in range(0,np.size(cube1)):
+        print 'Diag = ', str(cube1[k].var_name)
+        print ''
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -266,9 +296,9 @@ def main():
     print filename2
     print ''
 
-    # -------------------------------------------------------------
+    #### -------------------------------------------------------------
     #### LOAD CUBES
-    # -------------------------------------------------------------
+    #### -------------------------------------------------------------
     cube1 = iris.load(filename1)
     print cube1
     print ''
@@ -278,6 +308,7 @@ def main():
     print ''
 
 
+    out = combineCubes(cube1, cube2)
 
 
     # -------------------------------------------------------------
