@@ -169,6 +169,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     # if diag == 'sfc_pressure':
         print 'Writing ' + diag
         print ''
+        ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
             if diag == 'forecast_time':
                 print 'Diagnostic is forecast_time which is already defined... skipping.'
@@ -185,7 +186,7 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                dat[0:23] = nc1.variables[diag][0:]
+                dat[0:23] = nc1.variables[diag][0:-1]
                 dat[23:25] = nc2.variables[diag][0:2]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
@@ -198,6 +199,8 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:24] = nc1.variables[diag][0:]
                 dat[24] = nc2.variables[diag][0]
+
+        ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
             dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -209,6 +212,8 @@ def combineNC(nc1, nc2, filename1, filename2):
             if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
             dat[0:24,:] = nc1.variables[diag][0:,:]
             dat[24,:] = nc2.variables[diag][0,:]
+
+        ### 0Dimensions
         else:
             if diag == 'horizontal_resolution':
                 print 'Diagnostic is horizontal_resolution which needs to be defined separately...'
@@ -221,7 +226,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     ###################################
     ## Add Global Attributes
     ###################################
-    nc.conventions = 'CF-1.0'
+    nc.conventions = nc1.Conventions
     nc.title = nc1.title
     nc.description = nc1.description
     nc.history = nc1.history
