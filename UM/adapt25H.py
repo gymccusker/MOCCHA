@@ -239,7 +239,7 @@ def main():
             '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
             '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
             '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc']#,'20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
             '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
             '20180914_oden_metum.nc']
 
@@ -268,7 +268,7 @@ def main():
 
     # -------------------------------------------------------------
     #### LOAD CUBES
-    # -------------------------------------------------------------    
+    # -------------------------------------------------------------
     cube1 = iris.load(filename1)
     print cube1
     print ''
