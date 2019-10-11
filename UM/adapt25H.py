@@ -126,6 +126,17 @@ def combineCubes(cube1, cube2):
     #################################################################
     ncube = Cube(np.zeros([np.size(cube1),70,25]))
 
+    #################################################################
+    ## COMBINE EACH DIAGNOSTIC
+    #################################################################
+    for k in range(0,np.size(cube1)):
+        print 'Diag = ', str(cube1[k].var_name)
+        print ''
+
+    #################################################################
+    ## READ OUT 25-H CUBE1 INTO NEW CUBE
+    #################################################################
+
     ncube = Cube(data,
             dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
             standard_name = cube[k].standard_name,
@@ -135,14 +146,6 @@ def combineCubes(cube1, cube2):
             attributes = cube[k].attributes,
             aux_coords_and_dims = None,
             )
-
-
-    #### -------------------------------------------------------------
-    #### COMBINE CUBES
-    #### -------------------------------------------------------------
-    for k in range(0,np.size(cube1)):
-        print 'Diag = ', str(cube1[k].var_name)
-        print ''
 
 def callback(cube, field, filename):
     '''
