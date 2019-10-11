@@ -129,7 +129,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-    nc = Dataset(filename1[-22:-3] + '_25h.nc', 'w', format ='NETCDF4_CLASSIC')
+    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
     print ''
     print nc.file_format
     print ''
