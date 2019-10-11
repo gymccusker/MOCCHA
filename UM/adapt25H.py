@@ -122,6 +122,11 @@ def combineNC(nc1, nc2, filename1, filename2):
     '''
 
     #################################################################
+    ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
+    #################################################################
+    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+
+    #################################################################
     ## CREATE NEW NETCDF
     #################################################################
     nc = Dataset(filename1[-22:-3] + '_25h.nc', 'w', format ='NETCDF4_CLASSIC')
@@ -177,7 +182,7 @@ def combineNC(nc1, nc2, filename1, filename2):
             if diag == 'height':
                 print 'Diagnostic is height which is already defined... skipping.'
                 continue
-            if diag == 'surface_net_SW_radiation':
+            if diag in radlist:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
