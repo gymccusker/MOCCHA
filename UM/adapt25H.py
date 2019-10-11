@@ -114,6 +114,14 @@ def trackShip(data, date):
 
     return trackShip_index
 
+def radList(cube):
+
+    '''
+    Checks if diagnostic is in radiation list, meaning timesteps are at a
+    fraction past each hour. These diagnostics will need 2x timesteps copied
+    over from the subsequent output file.
+    '''
+
 def combineCubes(cube1, cube2):
 
     from iris.coords import DimCoord
@@ -144,10 +152,14 @@ def combineCubes(cube1, cube2):
             print 'Diagnostic is 1D:'
             print ''
             data = np.zeros([25])
+            data[0:23] = cube1[k].data[0:23]
+            # data[25] = cube2[k].data[0]
+            print data
         elif np.size(np.shape(cube1[k])) == 2:
             print 'Diagnostic is 2D:'
             print ''
             data = np.zeros([25,71])
+
 
 
     #################################################################
