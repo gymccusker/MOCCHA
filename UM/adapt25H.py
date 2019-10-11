@@ -167,7 +167,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -249,130 +249,34 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,258)        ## set DOY for full moccha figures
-    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(225,258)        ## set DOY for full moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
-    ## Flag for individual file or monthly:
-    combine = 1
     ## Choose month:
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
 
-    if combine == 0:
-        # name = '20180902_oden_metum.nc'
-        filename = root_dir + out_dir + names[0]
-        print filename
-        print ''
+    filename = root_dir + out_dir + names[0]
+    print filename
+    print ''
 
-        #### LOAD CUBE
-        if 'var_con' in locals():
-            print 'Loading single diagnostic:'
-            print var_con
-            cube1 = iris.load_cube(filename)#, var_con, callback)
-        elif 'global_con' in locals():
-            print 'Loading multiple diagnostics:'
-            # cube = iris.load_cubes(filename1, global_con)
-            cube = iris.load(filename)#, global_con, callback)
-
-            # -------------------------------------------------------------
-
-        print cube
-        print ''
+    #### LOAD CUBE
+    if 'var_con' in locals():
+        print 'Loading single diagnostic:'
+        print var_con
+        cube1 = iris.load_cube(filename)#, var_con, callback)
+    elif 'global_con' in locals():
+        print 'Loading multiple diagnostics:'
+        # cube = iris.load_cubes(filename1, global_con)
+        cube = iris.load(filename)#, global_con, callback)
 
         # -------------------------------------------------------------
-        # Plot data (5x2 timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename, out_dir)
 
-        # -------------------------------------------------------------
-        # Plot data (map)
-        # -------------------------------------------------------------
-        ### select hour to plot
-        # date = '20180814'
-        # hour = 0
-        # figure = plot_cartmap(ship_data, cube, hour, date)#, lon, lat)
+    print cube
+    print ''
 
-    else:
-        for i in range(0,len(names)):
-            filename = root_dir + out_dir + names[i]
-            print filename
-            print ''
-
-            print 'Loading multiple diagnostics:'
-            cube = iris.load(filename)#, global_con, callback)
-
-            # print 'i = ' + str(i)
-            print ''
-
-            if i == 0:
-                data = {}
-                data1d = {}
-                # data['time'] = []
-                # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                if month_flag == -1:
-                    timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
-                else:
-                    timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                for j in range(0,len(cube)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.sum(cube[j].data.shape) == 24:  # 1d timeseries only
-                        data1d[cube[j].var_name] = cube[j].data
-                    else:                                   # 2d column data
-                        data[cube[j].var_name] = cube[j].data
-                # print data[cube[0].var_name]
-            else:
-                # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
-                if month_flag == -1:
-                    timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
-                else:
-                    timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
-                # print data
-                for j in range(0,len(cube)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.sum(cube[j].data.shape) == 24:
-                        data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
-                    else:
-                        data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
-
-            # print 'Data dict = ' + str(data['radr_refl'].shape)
-
-        # -------------------------------------------------------------
-        # Plot combined column data (5x2 timeseries)
-        # -------------------------------------------------------------
-        # np.save('working_data', data)
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
-                    ### doesn't matter which cube, just needed for dim_coords
-
-        # -------------------------------------------------------------
-        # Plot combined CASIM column data (4x3 timeseries)
-        # -------------------------------------------------------------
-        # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords
-
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
-
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
-
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        # figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
