@@ -444,30 +444,31 @@ def main():
     missing_files = moccha_missing_files
     month_flag = -1
 
-    i = 0
+    # i = 0
+    for i in range(0,2):#len(moccha_names) - 1):
+        filename1 = root_dir + out_dir + names[i]
+        filename2 = root_dir + out_dir + names[i+1]
+        print filename1
+        print filename2
+        print ''
 
-    filename1 = root_dir + out_dir + names[i]
-    filename2 = root_dir + out_dir + names[i+1]
-    print filename1
-    print filename2
-    print ''
+        #### -------------------------------------------------------------
+        #### LOAD CUBES
+        #### -------------------------------------------------------------
+        # cube1 = iris.load(filename1)
+        nc1 = Dataset(filename1,'r')
+        print nc1
+        print ''
 
-    #### -------------------------------------------------------------
-    #### LOAD CUBES
-    #### -------------------------------------------------------------
-    # cube1 = iris.load(filename1)
-    nc1 = Dataset(filename1,'r')
-    print nc1
-    print ''
+        # cube2 = iris.load(filename1)
+        nc2 = Dataset(filename2,'r')
+        print nc2
+        print ''
 
-    # cube2 = iris.load(filename1)
-    nc2 = Dataset(filename2,'r')
-    print nc2
-    print ''
-
-
-    # out = combineCubes(cube1, cube2)
-    out = combineNC(nc1, nc2, filename1, filename2)
+        # out = combineCubes(cube1, cube2)
+        out = combineNC(nc1, nc2, filename1, filename2)
+        nc1.close()
+        nc2.close()
 
 
     # -------------------------------------------------------------
