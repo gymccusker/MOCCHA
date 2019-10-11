@@ -258,23 +258,23 @@ def main():
     missing_files = moccha_missing_files
     month_flag = -1
 
-    filename = root_dir + out_dir + names[0]
-    print filename
+    i = 0
+
+    filename1 = root_dir + out_dir + names[i]
+    filename2 = root_dir + out_dir + names[i+1]
+    print filename1
+    print filename2
     print ''
 
-    #### LOAD CUBE
-    if 'var_con' in locals():
-        print 'Loading single diagnostic:'
-        print var_con
-        cube1 = iris.load_cube(filename)#, var_con, callback)
-    elif 'global_con' in locals():
-        print 'Loading multiple diagnostics:'
-        # cube = iris.load_cubes(filename1, global_con)
-        cube = iris.load(filename)#, global_con, callback)
+    # -------------------------------------------------------------
+    #### LOAD CUBES
+    # -------------------------------------------------------------    
+    cube1 = iris.load(filename1)
+    print cube1
+    print ''
 
-        # -------------------------------------------------------------
-
-    print cube
+    cube2 = iris.load(filename1)
+    print cube2
     print ''
 
 
