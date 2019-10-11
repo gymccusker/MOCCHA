@@ -216,7 +216,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     ## Dimensions variables
     ###################################
     #### forecast_period
-    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem = nc.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
     timem.comment = 'Hours since 0000 UTC.'
@@ -226,13 +226,13 @@ def combineNC(nc1, nc2, filename1, filename2):
     timem[24] = 24.0    ### hard code since nc2[0] = 0.0
 
     #### height
-    height = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    height.scale_factor = float(1)
-    height.add_offset = float(0)
-    height.comment = ''
-    height.units = 'm'
-    height.long_name = 'height'
-    height[:] = nc1.variables['height']      ### forecast time (ignore first 12h)
+    # height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    # height.scale_factor = float(1)
+    # height.add_offset = float(0)
+    # height.comment = ''
+    # height.units = 'm'
+    # height.long_name = 'height'
+    # height[:] = nc1.variables['height']      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -241,14 +241,15 @@ def combineNC(nc1, nc2, filename1, filename2):
     ## Write pbXXX stream diagnostics
     ###################################
     # for diag in nc1.variables:
-    for diag == 'sfc_pressure':
+    diag = 'sfc_pressure'
+    if diag == 'sfc_pressure':
         print 'Writing ' + diag
         print ''
         dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = nc1.variables[diag].units
-        dat.um_stash_source = nc1.variables[diag].um_stash_source
+        dat.STASH = nc1.variables[diag].STASH
         dat.standard_name = nc1.variables[diag].standard_name
         # dat.long_name = str(cube[d].long_name)
         dat[0:24] = nc1.variables[diag][0:]
