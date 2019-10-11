@@ -245,15 +245,17 @@ def combineNC(nc1, nc2, filename1, filename2):
     if diag == 'sfc_pressure':
         print 'Writing ' + diag
         print ''
-        dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
-        dat.scale_factor = float(1)
-        dat.add_offset = float(0)
-        dat.units = nc1.variables[diag].units
-        dat.STASH = nc1.variables[diag].STASH
-        dat.standard_name = nc1.variables[diag].standard_name
-        # dat.long_name = str(cube[d].long_name)
-        dat[0:24] = nc1.variables[diag][0:]
-        dat[24] = nc2.variables[diag][0]
+        if np.size(np.shape(nc1.variables[diag])) == 1:
+            dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = nc1.variables[diag].units
+            dat.STASH = nc1.variables[diag].STASH
+            dat.standard_name = nc1.variables[diag].standard_name
+            # dat.long_name = str(cube[d].long_name)
+            dat[0:24] = nc1.variables[diag][0:]
+            dat[24] = nc2.variables[diag][0]
+        # else:
 
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
