@@ -382,8 +382,6 @@ def main():
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
 
-    # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-
     ## Choose month:
     names = moccha_names
     missing_files = moccha_missing_files
@@ -398,7 +396,7 @@ def main():
         print ''
 
         #### -------------------------------------------------------------
-        #### LOAD CUBES
+        #### LOAD NETCDF FILES
         #### -------------------------------------------------------------
         # cube1 = iris.load(filename1)
         nc1 = Dataset(filename1,'r')
@@ -410,8 +408,14 @@ def main():
         print nc2
         print ''
 
-        # out = combineCubes(cube1, cube2)
+        #### -------------------------------------------------------------
+        #### COMBINE NETCDF FILES
+        #### -------------------------------------------------------------
         out = combineNC(nc1, nc2, filename1, filename2)
+
+        #### -------------------------------------------------------------
+        #### CLOSE ORIGINAL NETCDF FILES
+        #### -------------------------------------------------------------
         nc1.close()
         nc2.close()
 
