@@ -296,6 +296,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     nc.comment = nc1.comment
     nc.institution = nc1.institution
     nc.initialization_time = nc1.initialization_time
+    nc.um_version = nc1.um_version
 
     nc.close()
 
