@@ -191,7 +191,7 @@ def combineCubes(cube1, cube2):
                     # aux_coords_and_dims = None,
                     )
 
-def combineNC(nc1, nc2):
+def combineNC(nc1, nc2, filename1, filename2):
 
     '''
     Load in two netCDF files at a time, then join to make nc1 25h long
@@ -201,12 +201,15 @@ def combineNC(nc1, nc2):
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-
+    nc = Dataset(filename1[-22:-3] + '_25h.nc', 'w', format ='NETCDF4_CLASSIC')
+    print ''
+    print nc.file_format
+    print ''
 
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
     #################################################################
-    for diag in nc.variables:
+    for diag in nc1.variables:
         print ''
         print 'Diag = ', diag
         print ''
@@ -218,15 +221,25 @@ def combineNC(nc1, nc2):
             print 'Diagnostic is 1D:'
             print ''
             data = np.zeros([25])
-            data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
-            data[24] = nc2.variables[diag][0]
+            if nc1.variables[diag].dimensions[0] == 'forecast_time':
+                data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
+                data[24] = nc2.variables[diag][0]
 
-        elif np.size(np.shape(cube1[k])) == 2:
+        elif np.size(nc1.variables[diag].shape) == 2:
             print 'Diagnostic is 2D:'
             print ''
             data = np.zeros([25,71])
-            data[0:24,:] = cube1[k].data[0:,:]      ### 0:24 notation only does 0:23 really
-            data[24,:] = cube2[k].data[0,:]
+            data[0:24,:] = nc1.variables[diag][0:,:]      ### 0:24 notation only does 0:23 really
+            data[24,:] = nc1.variables[diag][0,:]
+
+    #################################################################
+    ## REMEMBER TO ADD HEIGHT
+    #################################################################
+    nc.variables['height'] = nc1.variables['height']
+
+    nc.close()
+
+# def writeNetCDF(data)
 
 def callback(cube, field, filename):
     '''
@@ -395,7 +408,7 @@ def main():
 
 
     # out = combineCubes(cube1, cube2)
-    out = combineNC(nc1, nc2)
+    out = combineNC(nc1, nc2, filename1, filename2)
 
 
     # -------------------------------------------------------------
