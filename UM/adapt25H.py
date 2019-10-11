@@ -114,7 +114,6 @@ def trackShip(data, date):
 
     return trackShip_index
 
-
 def combineNC(nc1, nc2, filename1, filename2):
 
     '''
@@ -177,16 +176,28 @@ def combineNC(nc1, nc2, filename1, filename2):
             if diag == 'height':
                 print 'Diagnostic is height which is already defined... skipping.'
                 continue
-            dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
-            dat.scale_factor = float(1)
-            dat.add_offset = float(0)
-            if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
-            if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
-            if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
-            if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
-            if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-            dat[0:24] = nc1.variables[diag][0:]
-            dat[24] = nc2.variables[diag][0]
+            if diag == 'surface_net_SW_radiation':
+                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:23] = nc1.variables[diag][0:]
+                dat[23:25] = nc2.variables[diag][0:2]
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24] = nc1.variables[diag][0:]
+                dat[24] = nc2.variables[diag][0]
         elif np.size(np.shape(nc1.variables[diag])) == 2:
             dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -369,7 +380,7 @@ def main():
     month_flag = -1
 
     # i = 0
-    for i in range(0,2):#len(moccha_names) - 1):
+    for i in range(0,1):#len(moccha_names) - 1):
         filename1 = root_dir + out_dir + names[i]
         filename2 = root_dir + out_dir + names[i+1]
         print filename1
