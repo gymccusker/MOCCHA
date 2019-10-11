@@ -135,7 +135,10 @@ def combineCubes(cube1, cube2):
     #################################################################
     ## CREATE EMPTY CUBE
     #################################################################
-    ncube = Cube(np.zeros([np.size(cube1),70,25]))
+    ntime = 25  ## time array
+    model_height = 70 ## number of height levels
+
+    ncube = Cube(np.zeros([np.size(cube1),71,25]))
 
     #################################################################
     ## COMBINE EACH DIAGNOSTIC
@@ -154,7 +157,20 @@ def combineCubes(cube1, cube2):
             data = np.zeros([25])
             data[0:24] = cube1[k].data[0:]      ### 0:24 notation only does 0:23 really
             data[24] = cube2[k].data[0]
-            # print data
+
+            #################################################################
+            ## READ OUT 25-H CUBE1 INTO NEW CUBE
+            #################################################################
+            ncube = Cube(data,
+                    # dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                    # standard_name = cube1[k].standard_name,
+                    # long_name = cube1[k].long_name,
+                    # units = cube1[k].units,
+                    # var_name = cube1[k].var_name,
+                    # attributes = cube1[k].attributes,
+                    # aux_coords_and_dims = None,
+                    )
+
         elif np.size(np.shape(cube1[k])) == 2:
             print 'Diagnostic is 2D:'
             print ''
@@ -162,21 +178,55 @@ def combineCubes(cube1, cube2):
             data[0:24,:] = cube1[k].data[0:,:]      ### 0:24 notation only does 0:23 really
             data[24,:] = cube2[k].data[0,:]
 
+            #################################################################
+            ## READ OUT 25-H CUBE1 INTO NEW CUBE
+            #################################################################
+            ncube = Cube(data,
+                    # dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                    # standard_name = cube1[k].standard_name,
+                    # long_name = cube1[k].long_name,
+                    # units = cube1[k].units,
+                    # var_name = cube1[k].var_name,
+                    # attributes = cube1[k].attributes,
+                    # aux_coords_and_dims = None,
+                    )
+
+def combineNC(nc1, nc2):
+
+    '''
+    Load in two netCDF files at a time, then join to make nc1 25h long
+    for compatibility with Cloudnet
+    '''
+
+    #################################################################
+    ## CREATE NEW NETCDF
+    #################################################################
 
 
     #################################################################
-    ## READ OUT 25-H CUBE1 INTO NEW CUBE
+    ## COMBINE EACH DIAGNOSTIC
     #################################################################
+    for diag in nc.variables:
+        print ''
+        print 'Diag = ', diag
+        print ''
 
-    # ncube = Cube(data,
-    #         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-    #         standard_name = cube[k].standard_name,
-    #         long_name = cube[k].long_name,
-    #         units = cube[k].units,
-    #         var_name = varname,
-    #         attributes = cube[k].attributes,
-    #         aux_coords_and_dims = None,
-    #         )
+        #################################################################
+        ## CREATE EMPTY DATA ARRAY
+        #################################################################
+        if np.size(nc1.variables[diag].shape) == 1:
+            print 'Diagnostic is 1D:'
+            print ''
+            data = np.zeros([25])
+            data[0:24] = nc1.variables[diag][0:]      ### 0:24 notation only does 0:23 really
+            data[24] = nc2.variables[diag][0]
+
+        elif np.size(np.shape(cube1[k])) == 2:
+            print 'Diagnostic is 2D:'
+            print ''
+            data = np.zeros([25,71])
+            data[0:24,:] = cube1[k].data[0:,:]      ### 0:24 notation only does 0:23 really
+            data[24,:] = cube2[k].data[0,:]
 
 def callback(cube, field, filename):
     '''
@@ -333,16 +383,19 @@ def main():
     #### -------------------------------------------------------------
     #### LOAD CUBES
     #### -------------------------------------------------------------
-    cube1 = iris.load(filename1)
-    print cube1
+    # cube1 = iris.load(filename1)
+    nc1 = Dataset(filename1,'r')
+    print nc1
     print ''
 
-    cube2 = iris.load(filename1)
-    print cube2
+    # cube2 = iris.load(filename1)
+    nc2 = Dataset(filename2,'r')
+    print nc2
     print ''
 
 
-    out = combineCubes(cube1, cube2)
+    # out = combineCubes(cube1, cube2)
+    out = combineNC(nc1, nc2)
 
 
     # -------------------------------------------------------------
