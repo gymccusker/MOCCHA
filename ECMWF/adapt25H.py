@@ -343,22 +343,17 @@ def main():
 
     ### JASMIN
     ### LAPTOP
-    ### MONSOON
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-    if platform == 'MONSOON':
-        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+        root_dir = '/home/gillian/MOCCHA/ECMWF/DATA/'
+        ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
+        root_dir = '/nfs/a96/MOCCHA/working/data/ecmwf_ewan/moccha/ecmwf-all/2018/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
     out_dir = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
@@ -415,29 +410,29 @@ def main():
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
-    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
+    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_ecmwf.nc']
+    Aug_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
+            '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
+            '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
+            '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
+            '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc']
 
-    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
-            '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
-            '20180913_oden_metum.nc','20180914_oden_metum.nc']
+    Sep_names = ['20180901_oden_ecmwf.nc','20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc',
+            '20180905_oden_ecmwf.nc','20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc',
+            '20180909_oden_ecmwf.nc','20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc',
+            '20180913_oden_ecmwf.nc','20180914_oden_ecmwf.nc']
 
-    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+    moccha_names = ['20180813_oden_ecmwf.nc','20180814_oden_ecmwf.nc','20180815_oden_ecmwf.nc','20180816_oden_ecmwf.nc',
+            '20180817_oden_ecmwf.nc','20180818_oden_ecmwf.nc','20180819_oden_ecmwf.nc','20180820_oden_ecmwf.nc',
+            '20180821_oden_ecmwf.nc','20180822_oden_ecmwf.nc','20180823_oden_ecmwf.nc','20180824_oden_ecmwf.nc',
+            '20180825_oden_ecmwf.nc','20180826_oden_ecmwf.nc','20180827_oden_ecmwf.nc','20180828_oden_ecmwf.nc',
+            '20180829_oden_ecmwf.nc','20180830_oden_ecmwf.nc','20180831_oden_ecmwf.nc','20180901_oden_ecmwf.nc',
+            '20180902_oden_ecmwf.nc','20180903_oden_ecmwf.nc','20180904_oden_ecmwf.nc','20180905_oden_ecmwf.nc',
+            '20180906_oden_ecmwf.nc','20180907_oden_ecmwf.nc','20180908_oden_ecmwf.nc','20180909_oden_ecmwf.nc',
+            '20180910_oden_ecmwf.nc','20180911_oden_ecmwf.nc','20180912_oden_ecmwf.nc','20180913_oden_ecmwf.nc',
+            '20180914_oden_ecmwf.nc']
 
-    Aug_missing_files = ['20180812_oden_metum.nc']
+    Aug_missing_files = ['20180812_oden_ecmwf.nc']
 
     Sep_missing_files = []
 
