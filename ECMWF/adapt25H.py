@@ -236,8 +236,14 @@ def combineNC(nc1, nc2, filename1, filename2, date):
             if diag == 'forecast_time':
                 print 'Diagnostic is forecast_time which is already defined... skipping.'
                 continue
-            if diag == 'height':
-                print 'Diagnostic is height which is already defined... skipping.'
+            if diag == 'level':
+                print 'Diagnostic is level which is already defined... skipping.'
+                continue
+            if diag == 'flevel':
+                print 'Diagnostic is flevel which is already defined... skipping.'
+                continue
+            if diag == 'freq':
+                print 'Diagnostic is freq which is already defined... skipping.'
                 continue
             if diag in radlist:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
