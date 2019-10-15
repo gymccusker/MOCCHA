@@ -7141,6 +7141,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
     elif out_dir[2:9] == 'u-bm410':
         micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 2.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0. '
+    elif out_dir[2:9] == 'u-bn068':
+        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2), with l_ensure_min_in_cloud_qcf = 1 [Ensures that the model does not have very high ice cloud fractions with very little ice water content in them by reducing the ice cloud fraction to ensure a minimum in-cloud ice water content of 1.0e-6] and l_fixbug_pc2_mixph = 1 [Selecting this option removes a number of inconsistencies with the treatment of mixed phase cloud fraction that were present in the code pre vn8.2. Option 1) Advect the mixed phase cloud fraction instead of the bulk cloud fraction, which gives better behaved numerics of the advection scheme.]'
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
