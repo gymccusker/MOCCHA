@@ -114,7 +114,7 @@ def trackShip(data, date):
 
     return trackShip_index
 
-def combineNC(nc1, nc2, filename1, filename2):
+def combineNC(nc1, nc2, filename1, filename2, date):
 
     '''
     Load in two netCDF files at a time, then join to make nc1 25h long
@@ -135,33 +135,90 @@ def combineNC(nc1, nc2, filename1, filename2):
     print ''
 
     ###################################
+    #### load in a cube to define dimensions
+    ###################################
+    cube0 = iris.load('DATA/' + date + '_moccha_ecmwf_001.nc')
+
+    ###################################
     ## Data dimensions
     ###################################
-    forecast_time = nc.createDimension('forecast_time', 25)
-    height = nc.createDimension('height', np.size(nc1.variables['height']))
+    timem = dataset.createDimension('time', 25)
+    level = dataset.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
+    flevel = dataset.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
+    freq = dataset.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    timem = nc.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem = dataset.createVariable('time', np.float64, ('time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    timem.comment = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00.'
     timem.units = 'hours'
-    timem.long_name = 'forecast_time'
-    timem[0:24] = nc1.variables['forecast_time'][0:]
-    timem[24] = 24.0    ### hard code since nc2[0] = 0.0
-    print 'time shape = ' + str(timem.shape)
+    timem.long_name = 'hours_UTC'
+    timem.standard_name = 'time'
+    timem[:] = cube0[0].dim_coords[0].points[:-1]
 
-    #### height
-    height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    height.scale_factor = float(1)
-    height.add_offset = float(0)
-    height.comment = ''
-    height.units = 'm'
-    height.long_name = 'height'
-    height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
+    #### model level
+    level = dataset.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
+    level.scale_factor = float(1)
+    level.add_offset = float(0)
+    level.comment = ''
+    level.units = '1'
+    level.long_name = 'model_level'
+    level.standard_name = 'model_level_number'
+    level.positive = 'down'
+    level[:] = cube0[1].dim_coords[1].points
+
+    #### flux model level
+    flevel = dataset.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel.scale_factor = float(1)
+    flevel.add_offset = float(0)
+    flevel.comment = ''
+    flevel.units = '1'
+    flevel.long_name = 'model_flux_level'
+    flevel.positive = 'down'
+    flevel[:] = cube0[3].dim_coords[1].points
+
+    #### frequency
+    freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    freq.scale_factor = float(1)
+    freq.add_offset = float(0)
+    freq.comment = ''
+    freq.units = 'GHz'
+    freq.long_name = 'microwave_frequency'
+    freq.missing_value = -999.0
+    freq[:] = cube0[2].dim_coords[0].points
+
+    # ###################################
+    # ## Data dimensions
+    # ###################################
+    # forecast_time = nc.createDimension('forecast_time', 25)
+    # height = nc.createDimension('height', np.size(nc1.variables['height']))
+    #
+    # ###################################
+    # ## Dimensions variables
+    # ###################################
+    # #### forecast_period
+    # timem = nc.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    # timem.scale_factor = float(1)
+    # timem.add_offset = float(0)
+    # timem.comment = 'Hours since 0000 UTC.'
+    # timem.units = 'hours'
+    # timem.long_name = 'forecast_time'
+    # timem[0:24] = nc1.variables['forecast_time'][0:]
+    # timem[24] = 24.0    ### hard code since nc2[0] = 0.0
+    # print 'time shape = ' + str(timem.shape)
+    #
+    # #### height
+    # height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    # height.scale_factor = float(1)
+    # height.add_offset = float(0)
+    # height.comment = ''
+    # height.units = 'm'
+    # height.long_name = 'height'
+    # height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -382,18 +439,21 @@ def main():
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
 
+    date = '20180813'
+
     ## Choose month:
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
 
     # i = 0
-    for i in range(0,len(moccha_names) - 1):
+    for i in range(0,1):#len(moccha_names) - 1):
         filename1 = root_dir + out_dir + names[i]
         filename2 = root_dir + out_dir + names[i+1]
         print filename1
         print filename2
         print ''
+        date = names[i][0:8]
 
         #### -------------------------------------------------------------
         #### LOAD NETCDF FILES
