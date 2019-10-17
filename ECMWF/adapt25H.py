@@ -121,15 +121,18 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     for compatibility with Cloudnet
     '''
 
-    #################################################################
-    ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
-    #################################################################
-    # radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+    ###################################
+    ## Set fluxes to distinguish from model_level diags
+    ###################################
+    fluxes = ['flx_net_sw','flx_net_lw','flx_ls_snow','flx_ls_rain','flx_turb_mom_v',
+    'flx_turb_mom_u','flx_conv_snow','flx_conv_rain','flx_height','flx_turb_moist','flx_down_sens_heat']
+
+    qfields = ['qi','ql']
 
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-    nc1 = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
+    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
     print ''
     print nc.file_format
     print ''
@@ -142,16 +145,16 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ###################################
     ## Data dimensions
     ###################################
-    timem = nc1.createDimension('time', 25)
-    level = nc1.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
-    flevel = nc1.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
-    freq = nc1.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
+    timem = nc.createDimension('time', 25)
+    level = nc.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
+    flevel = nc.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
+    freq = nc.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    timem = nc1.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    timem = nc.createVariable('time', np.float64, ('time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
     timem.comment = 'Hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00.'
@@ -161,7 +164,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     timem[:] = cube0[0].dim_coords[0].points[:-1]
 
     #### model level
-    level = nc1.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
+    level = nc.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
     level.scale_factor = float(1)
     level.add_offset = float(0)
     level.comment = ''
@@ -172,7 +175,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     level[:] = cube0[1].dim_coords[1].points
 
     #### flux model level
-    flevel = nc1.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel = nc.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
     flevel.scale_factor = float(1)
     flevel.add_offset = float(0)
     flevel.comment = ''
@@ -182,7 +185,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     flevel[:] = cube0[3].dim_coords[1].points
 
     #### frequency
-    freq = nc1.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    freq = nc.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
     freq.scale_factor = float(1)
     freq.add_offset = float(0)
     freq.comment = ''
@@ -190,35 +193,6 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     freq.long_name = 'microwave_frequency'
     freq.missing_value = -999.0
     freq[:] = cube0[2].dim_coords[0].points
-
-    # ###################################
-    # ## Data dimensions
-    # ###################################
-    # forecast_time = nc.createDimension('forecast_time', 25)
-    # height = nc.createDimension('height', np.size(nc1.variables['height']))
-    #
-    # ###################################
-    # ## Dimensions variables
-    # ###################################
-    # #### forecast_period
-    # timem = nc.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
-    # timem.scale_factor = float(1)
-    # timem.add_offset = float(0)
-    # timem.comment = 'Hours since 0000 UTC.'
-    # timem.units = 'hours'
-    # timem.long_name = 'forecast_time'
-    # timem[0:24] = nc1.variables['forecast_time'][0:]
-    # timem[24] = 24.0    ### hard code since nc2[0] = 0.0
-    # print 'time shape = ' + str(timem.shape)
-    #
-    # #### height
-    # height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    # height.scale_factor = float(1)
-    # height.add_offset = float(0)
-    # height.comment = ''
-    # height.units = 'm'
-    # height.long_name = 'height'
-    # height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -268,9 +242,9 @@ def combineNC(nc1, nc2, filename1, filename2, date):
                 dat[0:24] = nc1.variables[diag][0:]
                 dat[24] = nc2.variables[diag][0]
 
-        ### 2Dimensions
+        ### 2Dimensions:         time: 24; model_level_number: 137
         elif np.size(np.shape(nc1.variables[diag])) == 2:
-            dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
+            dat = nc.createVariable(diag, np.float64, ('time','model_level_number',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
@@ -280,6 +254,19 @@ def combineNC(nc1, nc2, filename1, filename2, date):
             if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
             dat[0:24,:] = nc1.variables[diag][0:,:]
             dat[24,:] = nc2.variables[diag][0,:]
+
+        ### 3Dimensions:         microwave_frequency: 2; time: 24; model_level_number: 137
+        elif np.size(np.shape(nc1.variables[diag])) == 3:
+                dat = nc.createVariable(diag, np.float64, ('microwave_frequency','time','model_level_number',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                dat[24,:] = nc2.variables[diag][0,:]
 
         ### 0Dimensions
         else:
