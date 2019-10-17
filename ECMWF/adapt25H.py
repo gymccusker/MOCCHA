@@ -267,21 +267,31 @@ def combineNC(nc1, nc2, filename1, filename2, date):
                 dat.units = 'km'
                 dat[:] = 1.5
                 continue
+            elif diag == 'latitude':
+                print 'Diagnostic is latitude which needs to be defined separately...'
+                dat = nc.createVariable('latitude', np.float32, fill_value='-9999')
+                dat.standard_name = 'latitude'
+                dat.units = 'degrees_N'
+                dat[:] = nc1.variables['latitude'][:]
+                continue
+            elif diag == 'longitude':
+                print 'Diagnostic is longitude which needs to be defined separately...'
+                dat = nc.createVariable('longitude', np.float32, fill_value='-9999')
+                dat.standard_name = 'longitude'
+                dat.units = 'degrees_E'
+                dat[:] = nc1.variables['longitude'][:]
+                continue
 
     ###################################
     ## Add Global Attributes
     ###################################
-    nc.conventions = nc1.Conventions
     nc.title = nc1.title
     nc.description = nc1.description
     nc.history = nc1.history
     nc.source = nc1.source
-    nc.references = nc1.references
     nc.project = nc1.project
-    nc.comment = nc1.comment
     nc.institution = nc1.institution
     nc.initialization_time = nc1.initialization_time
-    nc.um_version = nc1.um_version
 
     nc.close()
 
