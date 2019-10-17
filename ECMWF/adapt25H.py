@@ -204,17 +204,17 @@ def combineNC(nc1, nc2, filename1, filename2, date):
         print ''
         ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
-            if diag == 'forecast_time':
+            if diag == 'time':
                 print 'Diagnostic is forecast_time which is already defined... skipping.'
                 continue
-            if diag == 'level':
-                print 'Diagnostic is level which is already defined... skipping.'
+            if diag == 'model_level_number':
+                print 'Diagnostic is model_level_number which is already defined... skipping.'
                 continue
-            if diag == 'flevel':
-                print 'Diagnostic is flevel which is already defined... skipping.'
+            if diag == 'model_flux_level':
+                print 'Diagnostic is model_flux_level which is already defined... skipping.'
                 continue
-            if diag == 'freq':
-                print 'Diagnostic is freq which is already defined... skipping.'
+            if diag == 'frequency':
+                print 'Diagnostic is frequency which is already defined... skipping.'
                 continue
             dat = nc.createVariable(diag, np.float64, ('time',), fill_value='-9999')
             dat.scale_factor = float(1)
