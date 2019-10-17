@@ -124,12 +124,12 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     #################################################################
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
-    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+    # radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
 
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
+    nc1 = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
     print ''
     print nc.file_format
     print ''
@@ -142,16 +142,16 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ###################################
     ## Data dimensions
     ###################################
-    timem = dataset.createDimension('time', 25)
-    level = dataset.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
-    flevel = dataset.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
-    freq = dataset.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
+    timem = nc1.createDimension('time', 25)
+    level = nc1.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
+    flevel = nc1.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
+    freq = nc1.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
     ###################################
     #### forecast_period
-    timem = dataset.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    timem = nc1.createVariable('time', np.float64, ('time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
     timem.comment = 'Hours since ' + date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' 00:00:00 +00:00.'
@@ -161,7 +161,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     timem[:] = cube0[0].dim_coords[0].points[:-1]
 
     #### model level
-    level = dataset.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
+    level = nc1.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
     level.scale_factor = float(1)
     level.add_offset = float(0)
     level.comment = ''
@@ -172,7 +172,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     level[:] = cube0[1].dim_coords[1].points
 
     #### flux model level
-    flevel = dataset.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
+    flevel = nc1.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
     flevel.scale_factor = float(1)
     flevel.add_offset = float(0)
     flevel.comment = ''
@@ -182,7 +182,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     flevel[:] = cube0[3].dim_coords[1].points
 
     #### frequency
-    freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
+    freq = nc1.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
     freq.scale_factor = float(1)
     freq.add_offset = float(0)
     freq.comment = ''
@@ -440,7 +440,7 @@ def main():
         #### -------------------------------------------------------------
         #### COMBINE NETCDF FILES
         #### -------------------------------------------------------------
-        out = combineNC(nc1, nc2, filename1, filename2)
+        out = combineNC(nc1, nc2, filename1, filename2, date)
 
         #### -------------------------------------------------------------
         #### CLOSE ORIGINAL NETCDF FILES
