@@ -255,8 +255,8 @@ def combineNC(nc1, nc2, filename1, filename2, date):
                 if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                dat[0:24,:] = nc1.variables[diag][0:,:]
-                dat[24,:] = nc2.variables[diag][0,:]
+                dat[0:24,:] = nc1.variables[diag][:,0:,:]
+                dat[24,:] = nc2.variables[diag][:,0,:]
 
         ### 0Dimensions
         else:
