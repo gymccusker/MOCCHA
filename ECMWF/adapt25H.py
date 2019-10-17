@@ -402,7 +402,7 @@ def main():
     month_flag = -1
 
     # i = 0
-    for i in range(0,1):#len(moccha_names) - 1):
+    for i in range(0,len(moccha_names) - 1):
         filename1 = root_dir + out_dir + names[i]
         filename2 = root_dir + out_dir + names[i+1]
         print filename1
