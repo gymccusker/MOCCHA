@@ -197,9 +197,6 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ###################################
     ## Create DIAGNOSTICS
     ###################################
-    ###################################
-    ## Write pbXXX stream diagnostics
-    ###################################
     for diag in nc1.variables:
     # diag = 'sfc_pressure'
     # if diag == 'sfc_pressure':
@@ -232,7 +229,12 @@ def combineNC(nc1, nc2, filename1, filename2, date):
 
         ### 2Dimensions:         time: 24; model_level_number: 137 / time: 24; model_flux_level: 138
         elif np.size(np.shape(nc1.variables[diag])) == 2:
-            dat = nc.createVariable(diag, np.float64, ('time','model_level_number',), fill_value='-9999')
+            if diag in fluxes:
+                print 'Diagnostic is on flux levels.'
+                dat = nc.createVariable(diag, np.float64, ('time','model_flux_level',), fill_value='-9999')
+            else:
+                print 'Diagnostic is on model levels.'
+                dat = nc.createVariable(diag, np.float64, ('time','model_level_number',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
