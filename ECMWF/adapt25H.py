@@ -247,7 +247,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
 
         ### 3Dimensions:         microwave_frequency: 2; time: 24; model_level_number: 137
         elif np.size(np.shape(nc1.variables[diag])) == 3:
-                dat = nc.createVariable(diag, np.float64, ('microwave_frequency','time','model_level_number',), fill_value='-9999')
+                dat = nc.createVariable(diag, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
