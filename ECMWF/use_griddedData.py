@@ -1614,9 +1614,9 @@ def main():
                     timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) <= 25:  # 1d timeseries only
+                    elif np.size(np.shape(cube[j])) == 1:  # 1d timeseries only
                         data1d[cube[j].var_name] = cube[j].data
                     else:                                   # 2d column data
                         data[cube[j].var_name] = cube[j].data
@@ -1634,9 +1634,9 @@ def main():
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) <= 25:
+                    elif np.size(np.shape(cube[j])) == 1:
                         data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
                     else:
                         data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
