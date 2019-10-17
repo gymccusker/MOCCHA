@@ -161,7 +161,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     timem.units = 'hours'
     timem.long_name = 'hours_UTC'
     timem.standard_name = 'time'
-    timem[:] = cube0[0].dim_coords[0].points[:-1]
+    timem[:] = cube0[0].dim_coords[0].points
 
     #### model level
     level = nc.createVariable('model_level_number', np.float64, ('model_level_number',), fill_value='-9999')
