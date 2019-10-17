@@ -1558,9 +1558,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = moccha_names
-    missing_files = moccha_missing_files
-    month_flag = -1         ### -1 to plot as DOY
+    names = Aug_names
+    missing_files = Aug_missing_files
+    month_flag = 8         ### -1 to plot as DOY
 
     if combine == 0:
         name = '20180813_oden_ecmwf.nc'
@@ -1616,11 +1616,11 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) >= 24:  # 1d timeseries only
+                    elif np.sum(cube[j].data.shape) <= 25:  # 1d timeseries only
                         data1d[cube[j].var_name] = cube[j].data
                     else:                                   # 2d column data
                         data[cube[j].var_name] = cube[j].data
-                # print data[cube[0].var_name]
+                # print data1d[cube[j].var_name]
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
@@ -1636,7 +1636,7 @@ def main():
                     # print 'j = ' + str(j)
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) >= 24:
+                    elif np.sum(cube[j].data.shape) <= 25:
                         data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
                     else:
                         data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
@@ -1646,7 +1646,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # np.save('working_data', data)
+        np.save('working_data', data)
         figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
