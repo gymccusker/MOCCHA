@@ -440,7 +440,7 @@ def main():
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
 
-    date = '20180813'
+    # date = '20180813'
 
     ## Choose month:
     names = moccha_names
@@ -455,6 +455,7 @@ def main():
         print filename2
         print ''
         date = names[i][0:8]
+        print 'Date = ' + date
 
         #### -------------------------------------------------------------
         #### LOAD NETCDF FILES
