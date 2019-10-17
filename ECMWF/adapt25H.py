@@ -350,6 +350,7 @@ def main():
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
         ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'DESKTOP':
         root_dir = '/nfs/a96/MOCCHA/working/data/ecmwf_ewan/moccha/ecmwf-all/2018/'
