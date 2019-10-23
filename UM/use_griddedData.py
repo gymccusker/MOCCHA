@@ -1284,7 +1284,7 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
     if month_flag == -1:
         if out_dir[:18] == '7_u-bn068_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'        
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
@@ -1874,8 +1874,8 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,258)        ## set DOY for full moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(240,244)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
