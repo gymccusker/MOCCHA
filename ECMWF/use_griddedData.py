@@ -1683,6 +1683,8 @@ def main():
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
+    #### test
+
     ### paXXX
     # 0: northward_wind_at_10m / (m s-1)     (time: 8; grid_latitude: 501; grid_longitude: 500)
     # 1: eastward_wind_at_10m / (m s-1)      (time: 8; grid_latitude: 501; grid_longitude: 500)
