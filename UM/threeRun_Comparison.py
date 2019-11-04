@@ -1411,7 +1411,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #             fileout[:20] = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
-    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.svg'
+    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_pc2_ifs_TSa.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
 
