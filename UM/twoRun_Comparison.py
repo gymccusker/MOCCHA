@@ -1101,7 +1101,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
             plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1185,14 +1185,8 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    if out_dir1[:9] == '4_u-bg610':
-        plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'UM')
-    elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    if out_dir2[:9] == '5_u-bl661':
-        plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    elif out_dir2[:9] == '6_u-bm410':
-        plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = label1)
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = label2)
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1970,8 +1964,8 @@ def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['bl_depth'].data, label = 'CASIM-100')
-    plt.plot(time_um2, data1d_um2['bl_depth'].data, label = 'CASIM-200')
+    plt.plot(time_um1, data1d_um1['bl_depth'].data, label = label1)
+    plt.plot(time_um2, data1d_um2['bl_depth'].data, label = label2)
     plt.legend()
     lims = plt.ylim()
     plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
@@ -1994,8 +1988,8 @@ def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
 
     plt.subplot(212)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['bl_type'].data, label = 'CASIM-100')
-    plt.plot(time_um2, data1d_um2['bl_type'].data, label = 'CASIM-200')
+    plt.plot(time_um1, data1d_um1['bl_type'].data, label = label1)
+    plt.plot(time_um2, data1d_um2['bl_type'].data, label = label2)
     # plt.legend()
     lims = plt.ylim()
     plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
@@ -2115,8 +2109,8 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r')
-    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b')
+    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
+    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -2136,8 +2130,8 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     ax = plt.gca()
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = label1)
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = label2)
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
@@ -2487,6 +2481,26 @@ def main():
                     else:
                         data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data,0)
 
+        #################################################################
+        ## create labels for figure legends - done here so only needs to be done once!
+        #################################################################
+        if out_dir1[:9] == '4_u-bg410':
+            label1 = 'UM_RA2M'
+        if out_dir1[:9] == '7_u-bn068':
+            label1 = 'UM_PC2'
+        if out_dir1[:9] == '6_u-bm410':
+            label2 = 'UM_CASIM-200'
+        if out_dir1[:9] == '5_u-bl661':
+            label1 = 'UM_CASIM-100'
+
+        if out_dir2[:9] == '7_u-bn068':
+            label2 = 'UM_PC2'
+        if out_dir2[:9] == '6_u-bm410':
+            label2 = 'UM_CASIM-200'
+        if out_dir2[:9] == '5_u-bl661':
+            label2 = 'UM_CASIM-100'
+
+
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
@@ -2505,22 +2519,22 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+                    missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+                    missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2)
 
         figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-            month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
+            month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2)
 
         # figure = plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-                    missing_files, out_dir1, out_dir2, cube_obs, doy)
+        # figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
