@@ -1326,6 +1326,8 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_TS.png'
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_TS.png'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
@@ -1458,6 +1460,8 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_BLprofiles.png'
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim-100_200_BLprofiles.svg'
         else:
@@ -1645,6 +1649,8 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_cloudProfiles.png'
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim-100_200_cloudProfiles.svg'
         else:
@@ -1751,6 +1757,8 @@ def plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, m
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_BLprofiles.png'
         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
             if 'out_dir4' in locals():
                 fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_BLprofiles.png'
@@ -1876,6 +1884,8 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLDepth.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_BLDepth.png'
         if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLDepth.png'
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
@@ -2023,6 +2033,8 @@ def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLdiags.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_BLdiags.png'
         if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
             fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLdiags.png'
         if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
@@ -2176,6 +2188,8 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
     #         fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
     if month_flag == -1:
+        if out_dir2[0:18] == '7_u-bn068_RA2M_PC2':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:18] + '_oden_metum_pc2_tempoC_SW.png'
         if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
         if out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
@@ -2422,7 +2436,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) == 24:  # 1d timeseries only
+                    elif np.sum(cube_um1[j].data.shape) >= 24:  # 1d timeseries only
                         data1d_um1[cube_um1[j].var_name] = cube_um1[j].data
                     else:                                   # 2d column data
                         data_um1[cube_um1[j].var_name] = cube_um1[j].data
@@ -2439,7 +2453,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) == 24:  # 1d timeseries only
+                    elif np.sum(cube_um2[j].data.shape) >= 24:  # 1d timeseries only
                         data1d_um2[cube_um2[j].var_name] = cube_um2[j].data
                     else:                                   # 2d column data
                         data_um2[cube_um2[j].var_name] = cube_um2[j].data
@@ -2457,7 +2471,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) == 24:
+                    elif np.sum(cube_um1[j].data.shape) >= 24:
                         data1d_um1[cube_um1[j].var_name] = np.append(data1d_um1[cube_um1[j].var_name].data,cube_um1[j].data)
                     else:
                         data_um1[cube_um1[j].var_name] = np.append(data_um1[cube_um1[j].var_name].data,cube_um1[j].data,0)
@@ -2468,7 +2482,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) == 24:
+                    elif np.sum(cube_um2[j].data.shape) >= 24:
                         data1d_um2[cube_um2[j].var_name] = np.append(data1d_um2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
                         data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data,0)
@@ -2490,8 +2504,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
+                    missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
