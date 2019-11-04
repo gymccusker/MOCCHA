@@ -1284,7 +1284,7 @@ def plot_line_TSa(timem, data, cube, month_flag, missing_files, out_dir): #, lon
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Da.png'
     if month_flag == -1:
         if out_dir[:18] == '7_u-bn068_RA2M_PC2':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Da.png'
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Da.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
@@ -1483,7 +1483,7 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum_1Db.png'
     if month_flag == -1:
         if out_dir[:18] == '7_u-bn068_RA2M_PC2':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Db.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_1Db.png'
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum_1Db.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
