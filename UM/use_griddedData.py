@@ -847,6 +847,8 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:19] + '201809_oden_metum.png'
     if month_flag == -1:
+        if out_dir[:18] == '7_u-bn068_RA2M_PC2':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
         if out_dir[:18] == '6_u-bm410_RA1M_CAS':
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
         if out_dir[:18] == '5_u-bl661_RA1M_CAS':
