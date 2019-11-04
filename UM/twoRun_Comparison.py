@@ -1892,7 +1892,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy):
+def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2042,7 +2042,7 @@ def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.show()
 
 
-def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2484,22 +2484,22 @@ def main():
         #################################################################
         ## create labels for figure legends - done here so only needs to be done once!
         #################################################################
-        if out_dir1[:9] == '4_u-bg410':
-            label1 = 'UM_RA2M'
-        if out_dir1[:9] == '7_u-bn068':
-            label1 = 'UM_PC2'
-        if out_dir1[:9] == '6_u-bm410':
-            label2 = 'UM_CASIM-200'
-        if out_dir1[:9] == '5_u-bl661':
-            label1 = 'UM_CASIM-100'
+        label1 = ''
+        label2 = ''
+        print out_dir1
+        print out_dir2
+        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
+        if out_dir1[:9] == '7_u-bn068': label1 = 'UM_PC2'
+        if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
+        if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
 
-        if out_dir2[:9] == '7_u-bn068':
-            label2 = 'UM_PC2'
-        if out_dir2[:9] == '6_u-bm410':
-            label2 = 'UM_CASIM-200'
-        if out_dir2[:9] == '5_u-bl661':
-            label2 = 'UM_CASIM-100'
+        if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
+        if out_dir2[:9] == '7_u-bn068': label2 = 'UM_PC2'
+        if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
+        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
 
+        print label1
+        print label2
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
