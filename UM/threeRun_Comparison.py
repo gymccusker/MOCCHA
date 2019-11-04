@@ -1992,7 +1992,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) == 24:  # 1d timeseries only
+                    elif np.sum(cube_um1[j].data.shape) >= 24:  # 1d timeseries only
                         data1d_um1[cube_um1[j].var_name] = cube_um1[j].data
                     else:                                   # 2d column data
                         data_um1[cube_um1[j].var_name] = cube_um1[j].data
@@ -2003,7 +2003,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) == 24:  # 1d timeseries only
+                    elif np.sum(cube_um2[j].data.shape) >= 24:  # 1d timeseries only
                         data1d_um2[cube_um2[j].var_name] = cube_um2[j].data
                     else:                                   # 2d column data
                         data_um2[cube_um2[j].var_name] = cube_um2[j].data
@@ -2014,7 +2014,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um3[j].data.shape) == 24:  # 1d timeseries only
+                    elif np.sum(cube_um3[j].data.shape) >= 24:  # 1d timeseries only
                         data1d_um3[cube_um3[j].var_name] = cube_um3[j].data
                     else:                                   # 2d column data
                         data_um3[cube_um3[j].var_name] = cube_um3[j].data
@@ -2035,7 +2035,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) == 24:
+                    elif np.sum(cube_um1[j].data.shape) >= 24:
                         data1d_um1[cube_um1[j].var_name] = np.append(data1d_um1[cube_um1[j].var_name].data,cube_um1[j].data)
                     else:
                         data_um1[cube_um1[j].var_name] = np.append(data_um1[cube_um1[j].var_name].data,cube_um1[j].data,0)
@@ -2046,7 +2046,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) == 24:
+                    elif np.sum(cube_um2[j].data.shape) >= 24:
                         data1d_um2[cube_um2[j].var_name] = np.append(data1d_um2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
                         data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data,0)
@@ -2057,7 +2057,7 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um3[j].data.shape) == 24:
+                    elif np.sum(cube_um3[j].data.shape) >= 24:
                         data1d_um3[cube_um3[j].var_name] = np.append(data1d_um3[cube_um3[j].var_name].data,cube_um3[j].data)
                     else:
                         data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data,0)
