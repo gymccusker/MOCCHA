@@ -1974,7 +1974,7 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
