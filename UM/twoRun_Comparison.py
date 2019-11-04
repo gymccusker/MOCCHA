@@ -1226,8 +1226,8 @@ def plot_line_TSa(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     ax = plt.gca()
     plt.plot(time_um2, zeros,'r--')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, label = 'UM')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, label = 'CASIM-200')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data)
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data)
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1402,15 +1402,15 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
 
     dat1 = np.transpose(np.squeeze(data_um1['temperature'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3)
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3)
 
     dat2 = np.transpose(np.squeeze(data_um2['temperature'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3)
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3)
 
     plt.ylim([0, 1000])
     plt.xlim([267,273])
@@ -1424,15 +1424,15 @@ def plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, 
     dat1 = np.transpose(np.squeeze(data_um1['q'].data)*float(1e3))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,46], height1, linewidth = 3)
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,46], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,46], height1, linewidth = 3)
 
     dat2 = np.transpose(np.squeeze(data_um2['q'].data)*float(1e3))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,46], height2, linewidth = 3)
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,46], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,46], height2, linewidth = 3)
 
     plt.ylim([0, 1000])
     plt.xlim([2.5,3.5])
@@ -1552,15 +1552,15 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
 
     dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
     if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,t], height1, linewidth = 3)
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,t], height1, linewidth = 3)
 
     dat2 = np.transpose(np.squeeze(data_um2['qnliq'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,t], height2, linewidth = 3)
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,t], height2, linewidth = 3)
 
     plt.ylim([0, 2000])
     plt.xlim([0,3.0e8])
@@ -1583,15 +1583,15 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
     if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'UM')
+        plt.plot(dat1[:,t], height1, linewidth = 3)
     elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,t], height1, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat1[:,t], height1, linewidth = 3)
 
     dat2 = np.transpose(np.squeeze(data_um2['qnice'].data))
     if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-100')
+        plt.plot(dat2[:,t], height2, linewidth = 3)
     if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,t], height2, linewidth = 3, label = 'CASIM-200')
+        plt.plot(dat2[:,t], height2, linewidth = 3)
 
     plt.ylim([0, 2000])
     plt.xlim([0,2e4])
@@ -2115,8 +2115,8 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = 'Oper')
-    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r')
+    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b')
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -2136,8 +2136,8 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     ax = plt.gca()
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = 'Oper')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r')
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
@@ -2284,7 +2284,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/'
+    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
     out_dir2 = '7_u-bn068_RA2M_PC2/OUT/'
     out_dir3 = 'MET_DATA/'
 
@@ -2513,17 +2513,17 @@ def main():
         figure = plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-        #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
+            month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # figure = plot_cloudfrac(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
-        # figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
-
-        figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        figure = plot_BLprofiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
                     missing_files, out_dir1, out_dir2, cube_obs, doy)
+
+        # figure = plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        #             missing_files, out_dir1, out_dir2, cube_obs, doy)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
