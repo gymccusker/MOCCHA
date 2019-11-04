@@ -298,14 +298,14 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA1M_CASIM/OUT/'
+    out_dir = '7_u-bn068_RA2M_PC2/OUT/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
     ### 5_u-bl661_RA1M_CASIM/OUT/
     ### 6_u-bm410_RA1M_CASIM/OUT/
-    ### 7_u-bn068_RA1M_CASIM/OUT/
+    ### 7_u-bn068_RA2M_PC2/OUT/
 
     print '******'
     print ''
