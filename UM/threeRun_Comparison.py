@@ -1102,7 +1102,7 @@ def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_
     plt.show()
 
 def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-            missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy): #, lon, lat):
+            missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1168,7 +1168,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
     ### set diagnostic naming flags for if IFS being used
-    if out_dir4 == 'OUT2/':
+    if out_dir4 == 'OUT_25H/':
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1209,12 +1209,12 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = 'CASIM-100')
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = 'CASIM-200')
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = label1)
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'grey', label = 'IFS')
+        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'grey', label = label3)
     else:
-        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = 'CASIM-200')
+        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = label3)
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1246,7 +1246,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    if out_dir4 != 'OUT2/': data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
+    if out_dir4 != 'OUT_25H/': data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -1395,19 +1395,19 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     # if month_flag == -1:
     #     if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
     #         if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-    #             if out_dir4 == 'OUT2/':
+    #             if out_dir4 == 'OUT_25H/':
     #                 fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.svg'
     #             else:
     #                 fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
     #         elif out_dir2[:9] == '4_u-bg410':
-    #             if out_dir4 == 'OUT2/':
+    #             if out_dir4 == 'OUT_25H/':
     #                 fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
     #         else:
     #             fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.svg'
     #     if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
     #         if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
     #             fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
-    #         elif out_dir4 == 'OUT2/':
+    #         elif out_dir4 == 'OUT_25H/':
     #             fileout[:20] = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
@@ -1810,15 +1810,16 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '5_u-bl661_RA1M_CASIM/OUT/'
-    out_dir2 = '6_u-bm410_RA1M_CASIM/OUT/'
+    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+    out_dir2 = '7_u-bn068_RA2M_PC2/OUT/'
     out_dir3 = 'MET_DATA/'
-    out_dir4 = 'OUT2/'
+    out_dir4 = 'OUT_25H/'
 
     ### TESTING/domain_tests/umnsaa_pa000
-    ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
+    ### 4_u-bg610_RA2M_CON/OUT_R1/
     ### 5_u-bl661_RA1M_CASIM/OUT/
     ### 6_u-bm410_RA1M_CASIM/OUT/
+    ### 7_u-bn068_RA2M_PC2/OUT/
 
     print '******'
     print ''
@@ -1911,7 +1912,7 @@ def main():
         name = '20180813_oden_'
         filename_um1 = um_root_dir + out_dir1 + name + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + name + 'metum.nc'
-        if out_dir4 == 'OUT2/':
+        if out_dir4 == 'OUT_25H/':
             print '***IFS being compared***'
             filename_um3 = misc_root_dir + out_dir4 + name + 'ecmwf.nc'
         else:
@@ -1945,7 +1946,7 @@ def main():
         for i in range(0,len(names)):
             filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
             filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-            if out_dir4 == 'OUT2/':
+            if out_dir4 == 'OUT_25H/':
                 print '***IFS being compared***'
                 filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
             else:
@@ -2062,6 +2063,24 @@ def main():
                         data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data,0)
 
 
+        #################################################################
+        ## create labels for figure legends - done here so only needs to be done once!
+        #################################################################
+        label1 = 'undefined_label'
+        if out_dir1[:9] == '7_u-bn068': label1 = 'UM_PC2'
+        if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
+        if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
+        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
+
+        label2 = 'undefined_label'
+        if out_dir2[:9] == '7_u-bn068': label2 = 'UM_PC2'
+        if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
+        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
+        if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
+
+        label3 = 'undefined_label'
+        if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
@@ -2080,7 +2099,7 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
+                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
