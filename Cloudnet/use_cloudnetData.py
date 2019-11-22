@@ -1705,6 +1705,44 @@ def main():
             # print 'i = ' + str(i)
             print ''
 
+            #### LOAD IN SPECIFIC DIAGNOSTICS
+            if out_dir[:-6] == 'cloud-fraction-metum-grid':
+                var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+
+            if i == 0:
+                data = {}
+                data1d = {}
+                # data['time'] = []
+                # data['time'] = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+                # timem = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+                if month_flag == -1:
+                    timem = doy[i] + ((nc.variables['time'][:])/24.0)
+                else:
+                    timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+                for j in range(0,len(var_list)):
+                    if np.sum(nc.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                        data1d[var_list[j]] = nc.variables[var_list[j]][:]
+                    else:                                   # 2d column data
+                        data[var_list[j]] = nc.variables[var_list[j]][:]
+                nc.close()
+                # np.save('working_data', data)
+                # np.save('working_data1d', data1d)
+            else:
+                if month_flag == -1:
+                    timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
+                else:
+                    timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
+                print data
+                for j in range(0,len(var_list)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    print 'j = ' + str(j)
+                    if np.sum(nc.variables[var_list[j]].shape) == 24:
+                        data1d[var_list[j]] = np.append(data1d[var_list[j]].data,nc.variables[var_list[j]][:])
+                    else:
+                        data[var_list[j]] = np.append(data[var_list[j]].data,nc.variables[var_list[j]][:])
+                nc.close()
+
+
             ######  LOAD ALL DIAGNOSTICS
             # if i == 0:
             #     data = {}
@@ -1752,55 +1790,6 @@ def main():
             #             data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
             #     nc.close()
 
-            #### LOAD IN SPECIFIC DIAGNOSTICS
-
-            #
-            #
-            # if i == 0:
-            #     data = {}
-            #     data1d = {}
-            #     # data['time'] = []
-            #     # data['time'] = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            #     # timem = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            #     if month_flag == -1:
-            #         timem = doy[i] + ((nc.variables['time'][:])/24.0)
-            #     else:
-            #         timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
-            #     for j in range(0,len(nc.variables.keys())):
-            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-            #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-            #             continue
-            #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-            #             continue
-            #         elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
-            #             continue
-            #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:  # 1d timeseries only
-            #             data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-            #         else:                                   # 2d column data
-            #             data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-            #     nc.close()
-            #     # np.save('working_data', data)
-            #     # np.save('working_data1d', data1d)
-            # else:
-            #     if month_flag == -1:
-            #         timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
-            #     else:
-            #         timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
-            #     print data
-            #     for j in range(0,len(nc.variables.keys())):
-            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-            #         print 'j = ' + str(j)
-            #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-            #             continue
-            #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-            #             continue
-            #         elif nc.variables.keys()[j] == 'time':     # ignore time, already defined
-            #             continue
-            #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
-            #             data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
-            #         else:
-            #             data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
-            #     nc.close()
 
 
         # -------------------------------------------------------------
