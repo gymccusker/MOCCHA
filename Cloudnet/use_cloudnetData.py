@@ -399,7 +399,7 @@ def plot_multicontour_TS(nc, filename, out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(timem, data, nc, month_flag, missing_files, out_dir, doy): #, lon, lat):
+def plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
