@@ -1277,7 +1277,7 @@ def main():
                     if np.sum(nc.variables[var_list[j]].shape) == 24:
                         data1d[var_list[j]] = np.append(data1d[var_list[j]].data,nc.variables[var_list[j]][:])
                     else:
-                        data[var_list[j]] = np.append(data[var_list[j]].data,nc.variables[var_list[j]][:])
+                        data[var_list[j]] = np.append(data[var_list[j]].data,nc.variables[var_list[j]][:],0)
 
             nc.close()
 
