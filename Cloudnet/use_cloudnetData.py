@@ -1707,7 +1707,8 @@ def main():
 
             #### LOAD IN SPECIFIC DIAGNOSTICS
             if out_dir[:-6] == 'cloud-fraction-metum-grid':
-                var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+                var_list = ['height','Cv','model_Cv']   ### time always read in separately
+                var_list_all = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
 
             if i == 0:
                 data = {}
