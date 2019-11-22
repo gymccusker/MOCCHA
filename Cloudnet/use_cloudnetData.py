@@ -1724,7 +1724,7 @@ def main():
                         data1d[var_list[j]] = nc.variables[var_list[j]][:]
                     else:                                   # 2d column data
                         data[var_list[j]] = nc.variables[var_list[j]][:]
-                nc.close()
+                # nc.close()
                 # np.save('working_data', data)
                 # np.save('working_data1d', data1d)
             else:
@@ -1740,7 +1740,8 @@ def main():
                         data1d[var_list[j]] = np.append(data1d[var_list[j]].data,nc.variables[var_list[j]][:])
                     else:
                         data[var_list[j]] = np.append(data[var_list[j]].data,nc.variables[var_list[j]][:])
-                nc.close()
+
+            nc.close()
 
 
             ######  LOAD ALL DIAGNOSTICS
