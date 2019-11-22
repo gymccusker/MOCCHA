@@ -1727,8 +1727,9 @@ def main():
                         data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
                         data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-                np.save('working_data', data)
-                np.save('working_data1d', data1d)
+                nc.close()
+                # np.save('working_data', data)
+                # np.save('working_data1d', data1d)
             else:
                 if month_flag == -1:
                     timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
@@ -1748,6 +1749,7 @@ def main():
                         data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
                     else:
                         data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
+                nc.close()
 
 
         # -------------------------------------------------------------
