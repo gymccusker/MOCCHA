@@ -1,10 +1,10 @@
 ###
 ###
-### SCRIPT TO READ IN UM MODEL DATA IN NETCDF FORMAT AS IRIS nc
+### SCRIPT TO READ IN UM MODEL DATA IN NETCDF FORMAT AS IRIS nc1
 ###
 ###
 
-# from __future__ import print_function
+# from __future__ import print_func1tion
 import time
 import datetime
 import numpy as np
@@ -115,7 +115,7 @@ def trackShip(um_data, date):
     return trackShip_index
 
 
-def plot_contour_TS(nc, filename_um): #, lon, lat):
+def plot_contour_TS(nc1, filename_um): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -130,7 +130,7 @@ def plot_contour_TS(nc, filename_um): #, lon, lat):
     diag = 2
     print ''
     print 'Diag is: '
-    print nc[diag]
+    print nc1[diag]
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -147,8 +147,8 @@ def plot_contour_TS(nc, filename_um): #, lon, lat):
     ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
     ###################################
 
-    time = nc[diag].dim_coords[0].points
-    height = nc[diag].dim_coords[1].points
+    time = nc1[diag].dim_coords[0].points
+    height = nc1[diag].dim_coords[1].points
 
     ###################################
     ## PLOT MAP
@@ -178,20 +178,20 @@ def plot_contour_TS(nc, filename_um): #, lon, lat):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     #################################################################
-    ## create figure and axes instances
+    ## create figure and axes instanc1es
     #################################################################
     plt.figure(figsize=(8,6))
     ax = plt.gca()
 
-    # plt.plot(nc[diag].dim_coords[0].points,nc[diag][:,0].um_data)        # line plot
-    # plt.contourf(nc[0].um_data)
-    # plt.plot(nc[2][0,:].um_data,height);plt.show()
+    # plt.plot(nc1[diag].dim_coords[0].points,nc1[diag][:,0].um_data)        # line plot
+    # plt.contourf(nc1[0].um_data)
+    # plt.plot(nc1[2][0,:].um_data,height);plt.show()
     #################################################################
     ## plot contour timeseries
     ################################################################
-    plt.contourf(time,height,np.transpose(nc[diag].um_data))
-    # plt.pcolormesh(time,height,np.transpose(nc[2].um_data))
-    plt.title(nc[diag].standard_name + ', ' + str(nc[diag].units))
+    plt.contourf(time,height,np.transpose(nc1[diag].um_data))
+    # plt.pcolormesh(time,height,np.transpose(nc1[2].um_data))
+    plt.title(nc1[diag].standard_name + ', ' + str(nc1[diag].units))
     plt.colorbar()
     ax.set_ylim([0, 3000])
 
@@ -205,7 +205,7 @@ def plot_contour_TS(nc, filename_um): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
-def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
+def plot_multicontour_TS(nc1, filename_um, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -246,9 +246,9 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
             hspace = 0.4, wspace = 0.1)
 
     l = -1
-    for i in range(0,len(nc)):
+    for i in range(0,len(nc1)):
         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-        if np.sum(nc[i].um_data.shape) > 24:
+        if np.sum(nc1[i].um_data.shape) > 24:
 
                 ###################################
                 ## CHOOSE DIAGNOSTIC
@@ -256,9 +256,9 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
                 diag = i
                 print ''
                 print 'Diag is: '
-                print nc[diag]
+                print nc1[diag]
 
-                ### define empty array for nc um_data
+                ### define empty array for nc1 um_data
                 um_data = []
 
                 ### pcXXX
@@ -277,16 +277,16 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
                 ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
                 ###################################
 
-                time = nc[diag].dim_coords[0].points
-                height = nc[diag].dim_coords[1].points
+                time = nc1[diag].dim_coords[0].points
+                height = nc1[diag].dim_coords[1].points
 
                 ### if mass mixing ratio, *1e3 to change to g/kg
-                # if nc[diag].var_name[0] == 'q':
-                #     um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]*1e3))
-                # elif nc[diag].var_name == 'pressure':
-                #     um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]/1e2))
+                # if nc1[diag].var_name[0] == 'q':
+                #     um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]*1e3))
+                # elif nc1[diag].var_name == 'pressure':
+                #     um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]/1e2))
                 # else:
-                #     um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
+                #     um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
 
                 #################################################################
                 ## um_data corrections
@@ -294,42 +294,42 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
                 ### set height limit to consider
                 ind = np.where(height<5000)
 
-                if nc[diag].var_name == 'temperature':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
-                elif nc[diag].var_name == 'qice':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]*1e3))
-                    title = nc[diag].var_name + ' [g/kg]'
-                elif nc[diag].var_name == 'qliq':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]*1e3))
-                    title = nc[diag].var_name + ' [g/kg]'
-                elif nc[diag].var_name == 'q':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]*1e3))
-                    title = nc[diag].var_name + ' [g/kg]'
-                elif nc[diag].var_name == 'pressure':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]/1e2))
-                    title = nc[diag].var_name + ' [hPa]'
-                elif nc[diag].var_name == 'uwind':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
-                elif nc[diag].var_name == 'wwind':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
-                elif nc[diag].var_name == 'radr_refl':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
-                elif nc[diag].var_name == 'cloud_fraction':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
-                elif nc[diag].var_name == 'vwind':
-                    um_data = np.transpose(np.squeeze(nc[diag].um_data[:,ind]))
-                    title = nc[diag].var_name + ' [' + str(nc[diag].units) + ']'
+                if nc1[diag].var_name == 'temperature':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
+                elif nc1[diag].var_name == 'qice':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]*1e3))
+                    title = nc1[diag].var_name + ' [g/kg]'
+                elif nc1[diag].var_name == 'qliq':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]*1e3))
+                    title = nc1[diag].var_name + ' [g/kg]'
+                elif nc1[diag].var_name == 'q':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]*1e3))
+                    title = nc1[diag].var_name + ' [g/kg]'
+                elif nc1[diag].var_name == 'pressure':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]/1e2))
+                    title = nc1[diag].var_name + ' [hPa]'
+                elif nc1[diag].var_name == 'uwind':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
+                elif nc1[diag].var_name == 'wwind':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
+                elif nc1[diag].var_name == 'radr_refl':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
+                elif nc1[diag].var_name == 'cloud_fraction':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
+                elif nc1[diag].var_name == 'vwind':
+                    um_data = np.transpose(np.squeeze(nc1[diag].um_data[:,ind]))
+                    title = nc1[diag].var_name + ' [' + str(nc1[diag].units) + ']'
 
                 #################################################################
-                ## create figure and axes instances
+                ## create figure and axes instanc1es
                 #################################################################
                 if len(um_data) > 0:
-                    l = l + 1 ## increment index for positive um_data association
+                    l = l + 1 ## inc1rement index for positive um_data association
 
                     print 'l = ' + str(l)
                     print title
@@ -340,14 +340,14 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
                     #################################################################
                     ## plot timeseries
                     #################################################################
-                    # plt.contourf(time,height,np.transpose(nc[diag].um_data))
-                    if nc[diag].var_name == 'temperature':
+                    # plt.contourf(time,height,np.transpose(nc1[diag].um_data))
+                    if nc1[diag].var_name == 'temperature':
                         plt.pcolormesh(time, height[ind], um_data, vmin = 250, vmax = np.nanmax(um_data))
-                    elif nc[diag].var_name == 'uwind':
+                    elif nc1[diag].var_name == 'uwind':
                         plt.pcolormesh(time, height[ind], um_data, vmin = -20, vmax = 20)
-                    elif nc[diag].var_name == 'vwind':
+                    elif nc1[diag].var_name == 'vwind':
                         plt.pcolormesh(time, height[ind], um_data, vmin = -20, vmax = 20)
-                    elif nc[diag].var_name == 'wwind':
+                    elif nc1[diag].var_name == 'wwind':
                         plt.pcolormesh(time, height[ind], um_data, vmin = -0.1, vmax = 0.1)
                     else:
                         plt.pcolormesh(time, height[ind], um_data, vmin = np.nanmin(um_data), vmax = np.nanmax(um_data))
@@ -356,13 +356,13 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
                     ## set plot properties
                     #################################################################
                     ### colormaps:
-                    if nc[diag].var_name == 'wwind':
+                    if nc1[diag].var_name == 'wwind':
                         plt.set_cmap(mpl_cm.RdBu_r)
-                    elif nc[diag].var_name == 'uwind':
+                    elif nc1[diag].var_name == 'uwind':
                         plt.set_cmap(mpl_cm.RdBu_r)
-                    elif nc[diag].var_name == 'vwind':
+                    elif nc1[diag].var_name == 'vwind':
                         plt.set_cmap(mpl_cm.RdBu_r)
-                    elif nc[diag].var_name[0] == 'q':
+                    elif nc1[diag].var_name[0] == 'q':
                         plt.set_cmap(mpl_cm.Blues)
                     else:
                         plt.set_cmap(mpl_cm.viridis)
@@ -462,7 +462,7 @@ def plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, 
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(time_um, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
+def plot_line_TSa(time_um, um_data, nc1, month_flag, missing_files, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -587,10 +587,10 @@ def plot_line_TSa(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
         # str(um_data.keys()[0][-4:])
 
         #################################################################
-        ## create figure and axes instances
+        ## create figure and axes instanc1es
         #################################################################
         if len(dat) > 0:
-            l = l + 1 ## increment index for positive um_data association
+            l = l + 1 ## inc1rement index for positive um_data association
             plt.subplot(4,2,l+1)
             print 'l = ' + str(l)
             print title
@@ -612,7 +612,7 @@ def plot_line_TSa(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
             print 'Zero out any um_data from missing files:'
             print ''
             for mfile in missing_files:
-                mtime = float(mfile[6:8]) + ((nc[0].dim_coords[0].points)/24.0)
+                mtime = float(mfile[6:8]) + ((nc1[0].dim_coords[0].points)/24.0)
                 nans = ax.get_ylim()
                 ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
@@ -651,7 +651,7 @@ def plot_line_TSa(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSb(time_um, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
+def plot_line_TSb(time_um, um_data, nc1, month_flag, missing_files, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -781,10 +781,10 @@ def plot_line_TSb(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
             title = str(um_data.keys()[diag]) + ' [m]'
 
         #################################################################
-        ## create figure and axes instances
+        ## create figure and axes instanc1es
         #################################################################
         if len(dat) > 0:
-            l = l + 1 ## increment index for positive um_data association
+            l = l + 1 ## inc1rement index for positive um_data association
             plt.subplot(5,3,l+1)
             # print 'l = ' + str(l)
             print title
@@ -807,7 +807,7 @@ def plot_line_TSb(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
             print 'Zero out any um_data from missing files:'
             print ''
             for mfile in missing_files:
-                mtime = float(mfile[6:8]) + ((nc[0].dim_coords[0].points)/24.0)
+                mtime = float(mfile[6:8]) + ((nc1[0].dim_coords[0].points)/24.0)
                 nans = ax.get_ylim()
                 ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
 
@@ -850,7 +850,7 @@ def plot_line_TSb(time_um, um_data, nc, month_flag, missing_files, um_out_dir): 
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TEMP(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_out_dir, nc_obs, doy): #, lon, lat):
+def plot_line_TEMP(time_um, um_data1d_um, nc1_um, month_flag, missing_files, um_out_dir, nc1_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -903,17 +903,17 @@ def plot_line_TEMP(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_o
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = nc_obs[0].dim_coords[0].points
+    datenums_temp = nc1_obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
     #################################################################
-    ## create figure and axes instances
+    ## create figure and axes instanc1es
     #################################################################
 
     ax = plt.gca()
     plt.plot(time_um, um_data1d_um['temp_1.5m'].um_data - 273.15, color = 'r', label = 'MetUM')
-    plt.plot(time_temp,nc_obs[0].um_data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,nc1_obs[0].um_data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature_at_1.5m [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -951,7 +951,7 @@ def plot_line_TEMP(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_o
     plt.savefig(fileout, dpi=600)
     plt.show()
 
-def plot_line_RAD(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_out_dir, nc_obs, doy): #, lon, lat):
+def plot_line_RAD(time_um, um_data1d_um, nc1_um, month_flag, missing_files, um_out_dir, nc1_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1004,22 +1004,22 @@ def plot_line_RAD(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_ou
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = nc_obs[0].dim_coords[0].points
+    datenums_temp = nc1_obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_radice = nc_obs[1].dim_coords[0].points
+    datenums_radice = nc1_obs[1].dim_coords[0].points
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
     #################################################################
-    ## create figure and axes instances
+    ## create figure and axes instanc1es
     #################################################################
 
     plt.subplot(211)
     ax = plt.gca()
     plt.plot(time_um, um_data1d_um['temp_1.5m'].um_data - 273.15, color = 'r', label = 'MetUM')
-    plt.plot(time_temp,nc_obs[0].um_data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,nc1_obs[0].um_data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -1038,7 +1038,7 @@ def plot_line_RAD(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_ou
     ax = plt.gca()
     um_data1d_um['surface_net_SW_radiation'].um_data[um_data1d_um['surface_net_SW_radiation'].um_data == 0] = np.nan
     plt.plot(time_um, um_data1d_um['surface_net_SW_radiation'].um_data, color = 'r', label = 'MetUM')
-    plt.plot(time_radice,(nc_obs[7].um_data - nc_obs[8].um_data), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(nc1_obs[7].um_data - nc1_obs[8].um_data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
     # plt.ylim([260,275])
@@ -1057,7 +1057,7 @@ def plot_line_RAD(time_um, um_data1d_um, nc_um, month_flag, missing_files, um_ou
     # ax = plt.gca()
     # um_data1d_um['surface_net_LW_radiation'].um_data[um_data1d_um['surface_net_LW_radiation'].um_data == 0] = np.nan
     # plt.plot(time_um, um_data1d_um['surface_net_LW_radiation'].um_data, color = 'r', label = 'MetUM')
-    # plt.plot(time_radice,(nc_obs[1].um_data - nc_obs[2].um_data), color = 'black', label = 'Observations')
+    # plt.plot(time_radice,(nc1_obs[1].um_data - nc1_obs[2].um_data), color = 'black', label = 'Observations')
     # # plt.legend()
     # plt.title('Net SW radiation [W/m2]')
     # # plt.ylim([260,275])
@@ -1112,7 +1112,7 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        um_dir = '/gws/nopw/j04/nc1as_weather/gyoung/MOCCHA/UM/'
         ship_filename_um = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
@@ -1131,14 +1131,14 @@ def main():
     ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     # out_dir3 = 'MET_DATA/'
 
-    ### lwc-adiabatic-metum-grid/2018/20180814_oden_lwc-adiabatic-metum-grid.nc
+    ### lwc-adiabatic-metum-grid/2018/20180814_oden_lwc-adiabatic-metum-grid.nc1
     ###             -> liquid water content derived using measurements averaged on to model grid
-    ### cloud-fraction-metum-grid/2018/20180814_oden_cloud-fraction-metum-grid.nc
+    ### cloud-fraction-metum-grid/2018/20180814_oden_cloud-fraction-metum-grid.nc1
     ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
 
     print '******'
     print ''
-    print 'Identifying .nc file: '
+    print 'Identifying .nc1 file: '
     print ''
 
     # -------------------------------------------------------------
@@ -1155,22 +1155,22 @@ def main():
     # Load observations
     # -------------------------------------------------------------
     # print 'Loading observations:'
-    # filename_um_obs = obs_um_dir + um_out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    # nc_obs = iris.load(filename_um_obs)#, global_con, callback)
+    # filename_um_obs = obs_um_dir + um_out_dir3 + 'MetData_Gillian_wTemp1p5m.nc1'
+    # nc1_obs = iris.load(filename_um_obs)#, global_con, callback)
     # print '...'
 
     # # -------------------------------------------------------------
-    # # Load nc
+    # # Load nc1
     # # -------------------------------------------------------------
     print '******'
     print ''
-    print 'Begin nc read in at ' + time.strftime("%c")
+    print 'Begin nc1 read in at ' + time.strftime("%c")
     print ' '
 
     ### -------------------------------------------------------------------------
     ### define input filename_um
     ### -------------------------------------------------------------------------
-    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
+    # tempnames = ['umnsaa_pa012_r0.nc1','umnsaa_pb012_r0.nc1','umnsaa_pc011_r0.nc1','umnsaa_pd011_r0.nc1','20180812_oden_metum.nc1']
     Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
@@ -1208,12 +1208,15 @@ def main():
     month_flag = -1
 
     for i in range(0,len(names)):
-        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
+        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc1'
+        filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc1'
         print filename_um
+        print filename_ifs
         print ''
 
         print 'Loading multiple diagnostics:'
-        nc = Dataset(filename_um,'r')#, global_con, callback)
+        nc1 = Dataset(filename_um,'r')
+        nc2 = Dataset(filename_ifs,'r')
 
         # print 'i = ' + str(i)
         print ''
@@ -1224,108 +1227,131 @@ def main():
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
             var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
 
+        ###     LOAD IN UM DATA FIRST
         if i == 0:
             um_data = {}
             um_data1d = {}
-            # um_data['time'] = []
-            # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            # time_um = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
             if month_flag == -1:
-                time_um = doy[i] + ((nc.variables['time'][:])/24.0)
+                time_um = doy[i] + ((nc1.variables['time'][:])/24.0)
             else:
-                time_um = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+                time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
-                if np.sum(nc.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    um_data1d[var_list[j]] = nc.variables[var_list[j]][:]
+                if np.sum(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    um_data1d[var_list[j]] = nc1.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
-                    um_data[var_list[j]] = nc.variables[var_list[j]][:]
-            # nc.close()
-            # np.save('working_um_data', um_data)
-            # np.save('working_um_data1d', um_data1d)
+                    um_data[var_list[j]] = nc1.variables[var_list[j]][:]
         else:
             if month_flag == -1:
-                time_um = np.append(time_um, doy[i] + ((nc.variables['time'][:])/24.0))
+                time_um = np.append(time_um, doy[i] + ((nc1.variables['time'][:])/24.0))
             else:
-                time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+                time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc1.variables['time'][:])/24.0))
             print um_data
             for j in range(0,len(var_list)):
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
-                if np.sum(nc.variables[var_list[j]].shape) == 24:
-                    um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].um_data,nc.variables[var_list[j]][:])
+                if np.sum(nc1.variables[var_list[j]].shape) == 24:
+                    um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].data,nc1.variables[var_list[j]][:])
                 else:
-                    um_data[var_list[j]] = np.append(um_data[var_list[j]].um_data,nc.variables[var_list[j]][:],0)
+                    um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
+        nc1.close()
 
-        nc.close()
+        ###     LOAD IN IFS DATA
+        if i == 0:
+            ifs_data = {}
+            ifs_data1d = {}
+            if month_flag == -1:
+                time_ifs = doy[i] + ((nc1.variables['time'][:])/24.0)
+            else:
+                time_ifs = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
+            for j in range(0,len(var_list)):
+                if np.sums(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    ifs_data1d[var_list[j]] = nc1.variables[var_list[j]][:]
+                else:                                   # 2d column um_data
+                    ifs_data[var_list[j]] = nc1.variables[var_list[j]][:]
+        else:
+            if month_flag == -1:
+                time_ifs = np.append(time_ifs, doy[i] + ((nc1.variables['time'][:])/24.0))
+            else:
+                time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc1.variables['time'][:])/24.0))
+            print ifs_data
+            for j in range(0,len(var_list)):
+                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                # print 'j = ' + str(j)
+                if np.sum(nc1.variables[var_list[j]].shape) == 24:
+                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc1.variables[var_list[j]][:])
+                else:
+                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
+        nc1.close()
+
 
         ######  LOAD ALL DIAGNOSTICS
         # if i == 0:
         #     um_data = {}
         #     um_data1d = {}
         #     # um_data['time'] = []
-        #     # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-        #     # time_um = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+        #     # um_data['time'] = float(filename_um[-16:-14]) + ((nc1[0].dim_coords[0].points)/24.0)
+        #     # time_um = float(filename_um[-16:-14]) + ((nc1[0].dim_coords[0].points)/24.0)
         #     if month_flag == -1:
-        #         time_um = doy[i] + ((nc.variables['time'][:])/24.0)
+        #         time_um = doy[i] + ((nc1.variables['time'][:])/24.0)
         #     else:
-        #         time_um = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
-        #     for j in range(0,len(nc.variables.keys())):
+        #         time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
+        #     for j in range(0,len(nc1.variables.keys())):
         #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-        #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
+        #         if np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
         #             continue
-        #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
+        #         elif nc1.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
         #             continue
-        #         elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
+        #         elif nc1.variables.keys()[j] == 'time':     # ignore forecast_time
         #             continue
-        #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:  # 1d timeseries only
-        #             um_data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
+        #         elif np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 24:  # 1d timeseries only
+        #             um_data1d[nc1.variables.keys()[j]] = nc1.variables[nc1.variables.keys()[j]][:]
         #         else:                                   # 2d column um_data
-        #             um_data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-        #     # nc.close()
+        #             um_data[nc1.variables.keys()[j]] = nc1.variables[nc1.variables.keys()[j]][:]
+        #     # nc1.close()
         #     # np.save('working_um_data', um_data)
         #     # np.save('working_um_data1d', um_data1d)
         # else:
         #     if month_flag == -1:
-        #         time_um = np.append(time_um, doy[i] + ((nc.variables['time'][:])/24.0))
+        #         time_um = np.append(time_um, doy[i] + ((nc1.variables['time'][:])/24.0))
         #     else:
-        #         time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+        #         time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc1.variables['time'][:])/24.0))
         #     print um_data
-        #     for j in range(0,len(nc.variables.keys())):
+        #     for j in range(0,len(nc1.variables.keys())):
         #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
         #         print 'j = ' + str(j)
-        #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
+        #         if np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
         #             continue
-        #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
+        #         elif nc1.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
         #             continue
-        #         elif nc.variables.keys()[j] == 'time':     # ignore time, already defined
+        #         elif nc1.variables.keys()[j] == 'time':     # ignore time, already defined
         #             continue
-        #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
-        #             um_data1d[nc.variables.keys()[j]] = np.append(um_data1d[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
+        #         elif np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 24:
+        #             um_data1d[nc1.variables.keys()[j]] = np.append(um_data1d[nc1.variables.keys()[j]].um_data,nc1.variables[nc1.variables.keys()[j]][:])
         #         else:
-        #             um_data[nc.variables.keys()[j]] = np.append(um_data[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
-        # nc.close()
+        #             um_data[nc1.variables.keys()[j]] = np.append(um_data[nc1.variables.keys()[j]].um_data,nc1.variables[nc1.variables.keys()[j]][:])
+        # nc1.close()
 
 
 
-        # -------------------------------------------------------------
-        # Plot combined column um_data (5x2 timeseries)
-        # -------------------------------------------------------------
-        np.save('working_um_data', um_data)
-        #### um_data = np.load('working_um_data.npy').item()
-        figure = plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy)
-                    ### doesn't matter which nc, just needed for dim_coords
+    # -------------------------------------------------------------
+    # Plot combined column um_data (5x2 timeseries)
+    # -------------------------------------------------------------
+    np.save('working_um_data', um_data)
+    #### um_data = np.load('working_um_data.npy').item()
+    figure = plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy)
+                ### doesn't matter which nc1, just needed for dim_coords
 
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TS(time_um, um_data1d, month_flag, missing_files, um_out_dir)
-                    ### doesn't matter which nc, just needed for dim_coords + nc structure
+    # -------------------------------------------------------------
+    # Plot combined timeseries as lineplot
+    # -------------------------------------------------------------
+    # figure = plot_line_TS(time_um, um_data1d, month_flag, missing_files, um_out_dir)
+                ### doesn't matter which nc1, just needed for dim_coords + nc1 structure
 
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TEMP(time_um, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
-        # figure = plot_line_RAD(time_um, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
+    # -------------------------------------------------------------
+    # Plot combined timeseries as lineplot
+    # -------------------------------------------------------------
+    # figure = plot_line_TEMP(time_um, um_data1d, nc1, month_flag, missing_files, um_out_dir, nc1_obs, doy)
+    # figure = plot_line_RAD(time_um, um_data1d, nc1, month_flag, missing_files, um_out_dir, nc1_obs, doy)
 
 
 
@@ -1356,17 +1382,17 @@ def main():
     # 12: air_pressure_at_sea_level / (Pa)    (time: 8; grid_latitude: 500; grid_longitude: 500)
     # 13: surface_air_pressure / (Pa)         (time: 8; grid_latitude: 500; grid_longitude: 500)
     # 14: surface_temperature / (K)           (time: 8; grid_latitude: 500; grid_longitude: 500)
-    # 15: toa_incoming_shortwave_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
+    # 15: toa_inc1oming_shortwave_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
     # 16: toa_outgoing_longwave_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
     # 17: toa_outgoing_shortwave_flux / (W m-2) (time: 24; grid_latitude: 94; grid_longitude: 95)
 
     #### 12 AUG ONLY - NO FULL NEST DIAGNOSTICS
-    # <iris 'nc' of surface_downwelling_longwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
-    # <iris 'nc' of surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
-    # <iris 'nc' of surface_net_downward_longwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
-    # <iris 'nc' of surface_net_downward_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
-    # <iris 'nc' of toa_incoming_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
-    # <iris 'nc' of toa_outgoing_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
+    # <iris 'nc1' of surface_downwelling_longwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'nc1' of surface_downwelling_shortwave_flux_in_air / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'nc1' of surface_net_downward_longwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'nc1' of surface_net_downward_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'nc1' of toa_inc1oming_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>,
+    # <iris 'nc1' of toa_outgoing_shortwave_flux / (W m-2) (time: 24; grid_latitude: 25; grid_longitude: 25)>]
 
     ### pbXXX
     # 0: specific_humidity_at_1.5m / (1)     (time: 24; grid_latitude: 94; grid_longitude: 95)
