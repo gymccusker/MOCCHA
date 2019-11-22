@@ -399,7 +399,7 @@ def plot_multicontour_TS(nc1, filename_um, um_out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1208,8 +1208,8 @@ def main():
     month_flag = -1
 
     for i in range(0,len(names)):
-        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc1'
-        filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc1'
+        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
+        filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
         print filename_um
         print filename_ifs
         print ''
@@ -1260,28 +1260,28 @@ def main():
             ifs_data = {}
             ifs_data1d = {}
             if month_flag == -1:
-                time_ifs = doy[i] + ((nc1.variables['time'][:])/24.0)
+                time_ifs = doy[i] + ((nc2.variables['time'][:])/24.0)
             else:
-                time_ifs = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
+                time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
-                if np.sums(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    ifs_data1d[var_list[j]] = nc1.variables[var_list[j]][:]
+                if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
-                    ifs_data[var_list[j]] = nc1.variables[var_list[j]][:]
+                    ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
         else:
             if month_flag == -1:
-                time_ifs = np.append(time_ifs, doy[i] + ((nc1.variables['time'][:])/24.0))
+                time_ifs = np.append(time_ifs, doy[i] + ((nc2.variables['time'][:])/24.0))
             else:
-                time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc1.variables['time'][:])/24.0))
+                time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc2.variables['time'][:])/24.0))
             print ifs_data
             for j in range(0,len(var_list)):
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
-                if np.sum(nc1.variables[var_list[j]].shape) == 24:
-                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc1.variables[var_list[j]][:])
+                if np.sum(nc2.variables[var_list[j]].shape) == 24:
+                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
                 else:
-                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
-        nc1.close()
+                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
+        nc2.close()
 
 
         ######  LOAD ALL DIAGNOSTICS
@@ -1337,8 +1337,9 @@ def main():
     # Plot combined column um_data (5x2 timeseries)
     # -------------------------------------------------------------
     np.save('working_um_data', um_data)
+    np.save('working_ifs_data', ifs_data)
     #### um_data = np.load('working_um_data.npy').item()
-    figure = plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
                 ### doesn't matter which nc1, just needed for dim_coords
 
     # -------------------------------------------------------------
