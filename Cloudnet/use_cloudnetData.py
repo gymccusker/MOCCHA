@@ -1581,7 +1581,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir = 'cloud-fraction-metum-grid/2018/'
-    out_dir3 = 'MET_DATA/'
+    # out_dir3 = 'MET_DATA/'
 
     ### lwc-adiabatic-metum-grid/2018/20180814_oden_lwc-adiabatic-metum-grid.nc
     ###             -> liquid water content derived using measurements averaged on to model grid
@@ -1606,10 +1606,10 @@ def main():
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
-    print 'Loading observations:'
-    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    cube_obs = iris.load(filename_obs)#, global_con, callback)
-    print '...'
+    # print 'Loading observations:'
+    # filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
+    # cube_obs = iris.load(filename_obs)#, global_con, callback)
+    # print '...'
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
