@@ -429,22 +429,28 @@ def plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_d
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(15,10))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(7,10))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
             hspace = 0.4, wspace = 0.1)
 
     print data.keys()
 
     #### set flagged data to nans
     data['Cv'][data['Cv']==-999] = np.nan
+    data['model_Cv'][data['model_Cv']==-999] = np.nan
 
-    plt.plot(data['Cv'][10,:],data['height'][10,:])
+    plt.plot(np.nanmean(data['Cv'],0),np.nanmean(data['height'],0), 'k--', label = 'Obs')
+    plt.plot(np.nanmean(data['model_Cv'],0),np.nanmean(data['height'],0), color = 'steelblue', label = 'UM')
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.legend()
 
     print '******'
     print ''
