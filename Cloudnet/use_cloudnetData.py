@@ -1734,12 +1734,12 @@ def main():
                 for j in range(0,len(nc.variables.keys())):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.sum(nc[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(nc[j].data.shape) >= 24:
-                        data1d[nc[j].var_name] = np.append(data1d[nc[j].var_name].data,nc[j].data)
+                    elif np.sum(nc.variables[nc.variables.keys()[j]].shape) >= 24:
+                        data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
                     else:
-                        data[nc[j].var_name] = np.append(data[nc[j].var_name].data,nc[j].data,0)
+                        data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:],0)
 
             # print 'Data dict = ' + str(data['radr_refl'].shape)
 
