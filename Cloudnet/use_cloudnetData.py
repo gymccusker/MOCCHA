@@ -1719,6 +1719,8 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
                         continue
+                    elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
+                        continue
                     elif np.sum(nc.variables[nc.variables.keys()[j]]) >= 24:  # 1d timeseries only
                         data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
@@ -1733,6 +1735,8 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     print 'j = ' + str(j)
                     if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
                         continue
                     elif np.sum(nc.variables[nc.variables.keys()[j]].shape) >= 24:
                         data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
