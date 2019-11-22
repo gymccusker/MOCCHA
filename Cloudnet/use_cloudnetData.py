@@ -431,10 +431,10 @@ def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missi
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=LARGE_SIZE)
     plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(7,10))
+    plt.figure(figsize=(6,8))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
             hspace = 0.4, wspace = 0.1)
 
@@ -445,9 +445,9 @@ def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missi
     um_data['model_Cv'][um_data['model_Cv'] < 0.0] = np.nan
     ifs_data['model_Cv'][ifs_data['model_Cv'] < 0.0] = np.nan
 
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', label = 'Obs')
-    plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', label = 'UM')
-    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', label = 'IFS')
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
@@ -460,7 +460,7 @@ def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missi
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/test.png'
+        fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
