@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 
-def readfile(filename):
+def readfile(filename_um):
 
     import pandas as pd
 
@@ -28,7 +28,7 @@ def readfile(filename):
     print 'Reading .txt file with pandas'
     print ''
 
-    um_data = pd.read_csv(filename, sep = " ")
+    um_data = pd.read_csv(filename_um, sep = " ")
     values = um_data.values
 
     return um_data
@@ -115,7 +115,7 @@ def trackShip(um_data, date):
     return trackShip_index
 
 
-def plot_contour_TS(nc, filename): #, lon, lat):
+def plot_contour_TS(nc, filename_um): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -205,7 +205,7 @@ def plot_contour_TS(nc, filename): #, lon, lat):
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
-def plot_multicontour_TS(nc, filename, um_out_dir): #, lon, lat):
+def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -393,9 +393,9 @@ def plot_multicontour_TS(nc, filename, um_out_dir): #, lon, lat):
     print ''
 
     if um_out_dir[:18] == '5_u-bl616_RA2M_CAS':
-        fileout = 'FIGS/' + um_out_dir[:21] + filename[-22:-3] + '.png'
+        fileout = 'FIGS/' + um_out_dir[:21] + filename_um[-22:-3] + '.png'
     elif um_out_dir[:18] == '4_u-bg610_RA2M_CON':
-        fileout = 'FIGS/' + um_out_dir[:19] + filename[-22:-3] + '.png'
+        fileout = 'FIGS/' + um_out_dir[:19] + filename_um[-22:-3] + '.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1113,18 +1113,18 @@ def main():
 
     if platform == 'JASMIN':
         um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        ship_filename_um = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         obs_um_dir = '/home/gillian/MOCCHA/ODEN/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         um_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
         um_dir = '/nfs/a96/MOCCHA/working/gillian/Cloudnet_data/UM/'
-        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-        # position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
+        ship_filename_um = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
+        # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
     um_out_dir = 'cloud-fraction-metum-grid/2018/'
@@ -1148,15 +1148,15 @@ def main():
     print ''
     print 'Load in ship track file:'
     print ''
-    ship_um_data = readfile(ship_filename)
-    columns = assignColumns(ship_um_data)
+    ship_data = readfile(ship_filename_um)
+    columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
     # print 'Loading observations:'
-    # filename_obs = obs_um_dir + um_out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    # nc_obs = iris.load(filename_obs)#, global_con, callback)
+    # filename_um_obs = obs_um_dir + um_out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
+    # nc_obs = iris.load(filename_um_obs)#, global_con, callback)
     # print '...'
 
     # # -------------------------------------------------------------
@@ -1168,7 +1168,7 @@ def main():
     print ' '
 
     ### -------------------------------------------------------------------------
-    ### define input filename
+    ### define input filename_um
     ### -------------------------------------------------------------------------
     # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
     Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
@@ -1207,137 +1207,102 @@ def main():
     missing_files = moccha_missing_files
     month_flag = -1
 
-    if combine == 0:
-        # name = '20180902_oden_metum.nc'
-        filename = um_dir + um_out_dir + names[0] + um_out_dir[:-6] + '.nc'
-        print filename
+    for i in range(0,len(names)):
+        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
+        print filename_um
         print ''
 
-        #### LOAD nc
-        if 'var_con' in locals():
-            print 'Loading single diagnostic:'
-            print var_con
-            nc1 = iris.load_nc(filename)#, var_con, callback)
-        elif 'global_con' in locals():
-            print 'Loading multiple diagnostics:'
-            # nc = iris.load_ncs(filename1, global_con)
-            nc = iris.load(filename)#, global_con, callback)
+        print 'Loading multiple diagnostics:'
+        nc = Dataset(filename_um,'r')#, global_con, callback)
 
-            # -------------------------------------------------------------
-
-        print nc
+        # print 'i = ' + str(i)
         print ''
 
-        # -------------------------------------------------------------
-        # Plot um_data (5x2 timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(nc, filename, um_out_dir)
+        #### LOAD IN SPECIFIC DIAGNOSTICS
+        if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
+            # var_list = ['height','Cv','model_Cv']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
 
-        # -------------------------------------------------------------
-        # Plot um_data (map)
-        # -------------------------------------------------------------
-        ### select hour to plot
-        # date = '20180814'
-        # hour = 0
-        # figure = plot_cartmap(ship_um_data, nc, hour, date)#, lon, lat)
-
-    else:
-        for i in range(0,len(names)):
-            filename = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
-            print filename
-            print ''
-
-            print 'Loading multiple diagnostics:'
-            nc = Dataset(filename,'r')#, global_con, callback)
-
-            # print 'i = ' + str(i)
-            print ''
-
-            #### LOAD IN SPECIFIC DIAGNOSTICS
-            if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
-                # var_list = ['height','Cv','model_Cv']   ### time always read in separately
-                var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
-
-            if i == 0:
-                um_data = {}
-                um_data1d = {}
-                # um_data['time'] = []
-                # um_data['time'] = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-                # timem = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-                if month_flag == -1:
-                    timem = doy[i] + ((nc.variables['time'][:])/24.0)
-                else:
-                    timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
-                for j in range(0,len(var_list)):
-                    if np.sum(nc.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                        um_data1d[var_list[j]] = nc.variables[var_list[j]][:]
-                    else:                                   # 2d column um_data
-                        um_data[var_list[j]] = nc.variables[var_list[j]][:]
-                # nc.close()
-                # np.save('working_um_data', um_data)
-                # np.save('working_um_data1d', um_data1d)
+        if i == 0:
+            um_data = {}
+            um_data1d = {}
+            # um_data['time'] = []
+            # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+            # timem = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+            if month_flag == -1:
+                timem = doy[i] + ((nc.variables['time'][:])/24.0)
             else:
-                if month_flag == -1:
-                    timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
-                else:
-                    timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
-                print um_data
-                for j in range(0,len(var_list)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
-                    if np.sum(nc.variables[var_list[j]].shape) == 24:
-                        um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].um_data,nc.variables[var_list[j]][:])
-                    else:
-                        um_data[var_list[j]] = np.append(um_data[var_list[j]].um_data,nc.variables[var_list[j]][:],0)
-
-            nc.close()
-
-            ######  LOAD ALL DIAGNOSTICS
-            # if i == 0:
-            #     um_data = {}
-            #     um_data1d = {}
-            #     # um_data['time'] = []
-            #     # um_data['time'] = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            #     # timem = float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            #     if month_flag == -1:
-            #         timem = doy[i] + ((nc.variables['time'][:])/24.0)
-            #     else:
-            #         timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
-            #     for j in range(0,len(nc.variables.keys())):
-            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-            #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-            #             continue
-            #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-            #             continue
-            #         elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
-            #             continue
-            #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:  # 1d timeseries only
-            #             um_data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-            #         else:                                   # 2d column um_data
-            #             um_data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-            #     # nc.close()
-            #     # np.save('working_um_data', um_data)
-            #     # np.save('working_um_data1d', um_data1d)
-            # else:
-            #     if month_flag == -1:
-            #         timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
-            #     else:
-            #         timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
-            #     print um_data
-            #     for j in range(0,len(nc.variables.keys())):
-            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-            #         print 'j = ' + str(j)
-            #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-            #             continue
-            #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-            #             continue
-            #         elif nc.variables.keys()[j] == 'time':     # ignore time, already defined
-            #             continue
-            #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
-            #             um_data1d[nc.variables.keys()[j]] = np.append(um_data1d[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
-            #         else:
-            #             um_data[nc.variables.keys()[j]] = np.append(um_data[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
+                timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+            for j in range(0,len(var_list)):
+                if np.sum(nc.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    um_data1d[var_list[j]] = nc.variables[var_list[j]][:]
+                else:                                   # 2d column um_data
+                    um_data[var_list[j]] = nc.variables[var_list[j]][:]
             # nc.close()
+            # np.save('working_um_data', um_data)
+            # np.save('working_um_data1d', um_data1d)
+        else:
+            if month_flag == -1:
+                timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
+            else:
+                timem = np.append(timem,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+            print um_data
+            for j in range(0,len(var_list)):
+                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                # print 'j = ' + str(j)
+                if np.sum(nc.variables[var_list[j]].shape) == 24:
+                    um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].um_data,nc.variables[var_list[j]][:])
+                else:
+                    um_data[var_list[j]] = np.append(um_data[var_list[j]].um_data,nc.variables[var_list[j]][:],0)
+
+        nc.close()
+
+        ######  LOAD ALL DIAGNOSTICS
+        # if i == 0:
+        #     um_data = {}
+        #     um_data1d = {}
+        #     # um_data['time'] = []
+        #     # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+        #     # timem = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+        #     if month_flag == -1:
+        #         timem = doy[i] + ((nc.variables['time'][:])/24.0)
+        #     else:
+        #         timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+        #     for j in range(0,len(nc.variables.keys())):
+        #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+        #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
+        #             continue
+        #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
+        #             continue
+        #         elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
+        #             continue
+        #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:  # 1d timeseries only
+        #             um_data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
+        #         else:                                   # 2d column um_data
+        #             um_data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
+        #     # nc.close()
+        #     # np.save('working_um_data', um_data)
+        #     # np.save('working_um_data1d', um_data1d)
+        # else:
+        #     if month_flag == -1:
+        #         timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
+        #     else:
+        #         timem = np.append(timem,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+        #     print um_data
+        #     for j in range(0,len(nc.variables.keys())):
+        #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+        #         print 'j = ' + str(j)
+        #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
+        #             continue
+        #         elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
+        #             continue
+        #         elif nc.variables.keys()[j] == 'time':     # ignore time, already defined
+        #             continue
+        #         elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
+        #             um_data1d[nc.variables.keys()[j]] = np.append(um_data1d[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
+        #         else:
+        #             um_data[nc.variables.keys()[j]] = np.append(um_data[nc.variables.keys()[j]].um_data,nc.variables[nc.variables.keys()[j]][:])
+        # nc.close()
 
 
 
