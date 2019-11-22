@@ -441,11 +441,13 @@ def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missi
     print um_data.keys()
 
     #### set flagged um_data to nans
-    um_data['Cv'][um_data['Cv']==-999] = np.nan
-    um_data['model_Cv'][um_data['model_Cv']==-999] = np.nan
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    um_data['model_Cv'][um_data['model_Cv'] < 0.0] = np.nan
+    ifs_data['model_Cv'][ifs_data['model_Cv'] < 0.0] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', label = 'Obs')
     plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', label = 'UM')
+    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', label = 'IFS')
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
