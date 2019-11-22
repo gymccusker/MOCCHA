@@ -1558,7 +1558,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'DESKTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -1575,20 +1575,18 @@ def main():
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
+        root_dir = '/nfs/a96/MOCCHA/working/gillian/Cloudnet_data/UM/'
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-        position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
+        # position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2M_PC2/OUT/'
+    out_dir = 'cloud-fraction-metum-grid/2018/'
     out_dir3 = 'MET_DATA/'
 
-    ### TESTING/domain_tests/umnsaa_pa000
-    ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
-    ### 4_u-bg610_RA2M_CON/OUT_R1_25H/
-    ### 5_u-bl661_RA1M_CASIM/OUT/
-    ### 6_u-bm410_RA1M_CASIM/OUT/
-    ### 7_u-bn068_RA2M_PC2/OUT/
+    ### lwc-adiabatic-metum-grid/2018/20180814_oden_lwc-adiabatic-metum-grid.nc
+    ###             -> liquid water content derived using measurements averaged on to model grid
+    ### cloud-fraction-metum-grid/2018/20180814_oden_cloud-fraction-metum-grid.nc
+    ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
 
     print '******'
     print ''
@@ -1637,28 +1635,27 @@ def main():
     ### define input filename
     ### -------------------------------------------------------------------------
     # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc']
+    Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_']
 
-    Sep_names = ['20180901_oden_metum.nc','20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc',
-            '20180905_oden_metum.nc','20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc',
-            '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
-            '20180913_oden_metum.nc','20180914_oden_metum.nc']
+    Sep_names = ['20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_',
+            '20180905_oden_','20180906_oden_','20180907_oden_','20180908_oden_',
+            '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
+            '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
-    Aug_missing_files = ['20180812_oden_metum.nc']
+    Aug_missing_files = []
 
     Sep_missing_files = []
 
@@ -1666,8 +1663,6 @@ def main():
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
-
-    # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -1678,7 +1673,7 @@ def main():
 
     if combine == 0:
         # name = '20180902_oden_metum.nc'
-        filename = root_dir + out_dir + names[0]
+        filename = root_dir + out_dir + names[0] + out_dir[:-6] + '.nc'
         print filename
         print ''
 
@@ -1712,7 +1707,7 @@ def main():
 
     else:
         for i in range(0,len(names)):
-            filename = root_dir + out_dir + names[i]
+            filename = root_dir + out_dir + names[i] + out_dir[:-6] + '.nc'
             print filename
             print ''
 
@@ -1777,7 +1772,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TS(timem, data1d, cube, month_flag, missing_files, out_dir)
+        # figure = plot_line_TS(timem, data1d, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords + cube structure
 
         # -------------------------------------------------------------
