@@ -441,6 +441,8 @@ def plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_d
 
     print data.keys()
 
+    plt.plot(data['Cv'][10,:],data['height'][10,:])
+
     print '******'
     print ''
     print 'Finished plotting! :)'
@@ -1331,7 +1333,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # np.save('working_data', data)
+        np.save('working_data', data)
         figure = plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which nc, just needed for dim_coords
 
