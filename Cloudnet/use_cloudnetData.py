@@ -441,6 +441,9 @@ def plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_d
 
     print data.keys()
 
+    #### set flagged data to nans
+    data['Cv'][data['Cv']==-999] = np.nan
+
     plt.plot(data['Cv'][10,:],data['height'][10,:])
 
     print '******'
