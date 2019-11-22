@@ -1723,7 +1723,7 @@ def main():
                         continue
                     elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
                         continue
-                    elif np.sum(nc.variables[nc.variables.keys()[j]]) == 24:  # 1d timeseries only
+                    elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:  # 1d timeseries only
                         data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
                         data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
@@ -1747,7 +1747,7 @@ def main():
                     elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
                         data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
                     else:
-                        data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:],0)
+                        data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
 
 
         # -------------------------------------------------------------
