@@ -1723,17 +1723,15 @@ def main():
                         data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
                         data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-                # print data[nc[0].var_name]
             else:
-                # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
                     timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
-                # print data
+                print data
                 for j in range(0,len(nc.variables.keys())):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
+                    print 'j = ' + str(j)
                     if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(nc.variables[nc.variables.keys()[j]].shape) >= 24:
@@ -1741,7 +1739,6 @@ def main():
                     else:
                         data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:],0)
 
-            # print 'Data dict = ' + str(data['radr_refl'].shape)
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
