@@ -1334,6 +1334,7 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         np.save('working_data', data)
+        #### data = np.load('working_data.npy').item()
         figure = plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which nc, just needed for dim_coords
 
