@@ -461,7 +461,7 @@ def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout)
     plt.show()
 
 def main():
