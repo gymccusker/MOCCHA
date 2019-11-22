@@ -1721,10 +1721,14 @@ def main():
                         continue
                     elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
                         continue
-                    elif np.sum(nc.variables[nc.variables.keys()[j]]) >= 24:  # 1d timeseries only
+                    elif nc.variables.keys()[j] == 'time':     # ignore forecast_time
+                        continue
+                    elif np.sum(nc.variables[nc.variables.keys()[j]]) == 24:  # 1d timeseries only
                         data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
                         data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
+                np.save('working_data', data)
+                np.save('working_data1d', data1d)
             else:
                 if month_flag == -1:
                     timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
@@ -1738,7 +1742,9 @@ def main():
                         continue
                     elif nc.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
                         continue
-                    elif np.sum(nc.variables[nc.variables.keys()[j]].shape) >= 24:
+                    elif nc.variables.keys()[j] == 'time':     # ignore time, already defined
+                        continue
+                    elif np.sum(nc.variables[nc.variables.keys()[j]].shape) == 24:
                         data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
                     else:
                         data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:],0)
