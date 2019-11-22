@@ -1707,8 +1707,8 @@ def main():
 
             #### LOAD IN SPECIFIC DIAGNOSTICS
             if out_dir[:-6] == 'cloud-fraction-metum-grid':
-                var_list = ['height','Cv','model_Cv']   ### time always read in separately
-                var_list_all = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+                # var_list = ['height','Cv','model_Cv']   ### time always read in separately
+                var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
 
             if i == 0:
                 data = {}
@@ -1744,7 +1744,6 @@ def main():
 
             nc.close()
 
-
             ######  LOAD ALL DIAGNOSTICS
             # if i == 0:
             #     data = {}
@@ -1768,7 +1767,7 @@ def main():
             #             data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
             #         else:                                   # 2d column data
             #             data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
-            #     nc.close()
+            #     # nc.close()
             #     # np.save('working_data', data)
             #     # np.save('working_data1d', data1d)
             # else:
@@ -1790,7 +1789,7 @@ def main():
             #             data1d[nc.variables.keys()[j]] = np.append(data1d[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
             #         else:
             #             data[nc.variables.keys()[j]] = np.append(data[nc.variables.keys()[j]].data,nc.variables[nc.variables.keys()[j]][:])
-            #     nc.close()
+            # nc.close()
 
 
 
@@ -1799,13 +1798,6 @@ def main():
         # -------------------------------------------------------------
         # np.save('working_data', data)
         # figure = plot_multicontour_multidate_TS(timem, data, nc, month_flag, missing_files, out_dir, doy)
-                    ### doesn't matter which nc, just needed for dim_coords
-
-        # -------------------------------------------------------------
-        # Plot combined CASIM column data (4x3 timeseries)
-        # -------------------------------------------------------------
-        # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_casim_TS(timem, data, nc, month_flag, missing_files, out_dir)
                     ### doesn't matter which nc, just needed for dim_coords
 
         # -------------------------------------------------------------
