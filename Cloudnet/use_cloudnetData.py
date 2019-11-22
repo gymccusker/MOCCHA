@@ -1527,27 +1527,6 @@ def plot_line_RAD(time_um, data1d_um, nc_um, month_flag, missing_files, out_dir,
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def callback(nc, field, filename):
-    '''
-    rename nc diagnostics per list of wanted stash diags
-    '''
-
-    iStash = nc.attributes['STASH'].__str__()
-    if diags.findfieldName(iStash):
-        if nc.name() != diags.findfieldName(iStash):
-            nc.rename(diags.findfieldName(iStash))
-
-def makeGlobalStashList():
-    '''
-    make a list of all the stash code we want to load
-    '''
-
-    GlobalStashList = diags.returnWantedStash()
-
-    # print GlobalStashList
-    # print GlobalStashList[0]
-
-    return GlobalStashList
 
 def main():
 
@@ -1797,13 +1776,13 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_TS(timem, data, nc, month_flag, missing_files, out_dir, doy)
+        figure = plot_multicontour_multidate_TS(timem, data, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which nc, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TS(timem, data1d, nc, month_flag, missing_files, out_dir)
+        # figure = plot_line_TS(timem, data1d, month_flag, missing_files, out_dir)
                     ### doesn't matter which nc, just needed for dim_coords + nc structure
 
         # -------------------------------------------------------------
