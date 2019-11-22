@@ -399,7 +399,7 @@ def plot_multicontour_TS(nc, filename_um, um_out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(timem, um_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -462,7 +462,7 @@ def plot_multicontour_multidate_TS(timem, um_data, month_flag, missing_files, um
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(timem, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
+def plot_line_TSa(time_um, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -600,7 +600,7 @@ def plot_line_TSa(timem, um_data, nc, month_flag, missing_files, um_out_dir): #,
             ## plot timeseries
             #################################################################
 
-            plt.plot(timem, dat)
+            plt.plot(time_um, dat)
             plt.ylim([np.nanmin(dat),np.nanmax(dat)])
             plt.title(title)
 
@@ -651,7 +651,7 @@ def plot_line_TSa(timem, um_data, nc, month_flag, missing_files, um_out_dir): #,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSb(timem, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
+def plot_line_TSb(time_um, um_data, nc, month_flag, missing_files, um_out_dir): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -794,7 +794,7 @@ def plot_line_TSb(timem, um_data, nc, month_flag, missing_files, um_out_dir): #,
             ## plot timeseries
             #################################################################
 
-            plt.plot(timem, dat)
+            plt.plot(time_um, dat)
             if np.logical_or(np.nanmin(dat) != np.nan, np.nanmax(dat) != np.nan):
                 plt.ylim([np.nanmin(dat),np.nanmax(dat)])
             plt.title(title)
@@ -1221,17 +1221,19 @@ def main():
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+        if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
 
         if i == 0:
             um_data = {}
             um_data1d = {}
             # um_data['time'] = []
             # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-            # timem = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+            # time_um = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
             if month_flag == -1:
-                timem = doy[i] + ((nc.variables['time'][:])/24.0)
+                time_um = doy[i] + ((nc.variables['time'][:])/24.0)
             else:
-                timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+                time_um = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
                 if np.sum(nc.variables[var_list[j]].shape) == 24:  # 1d timeseries only
                     um_data1d[var_list[j]] = nc.variables[var_list[j]][:]
@@ -1242,9 +1244,9 @@ def main():
             # np.save('working_um_data1d', um_data1d)
         else:
             if month_flag == -1:
-                timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
+                time_um = np.append(time_um, doy[i] + ((nc.variables['time'][:])/24.0))
             else:
-                timem = np.append(timem,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+                time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
             print um_data
             for j in range(0,len(var_list)):
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
@@ -1262,11 +1264,11 @@ def main():
         #     um_data1d = {}
         #     # um_data['time'] = []
         #     # um_data['time'] = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
-        #     # timem = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
+        #     # time_um = float(filename_um[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0)
         #     if month_flag == -1:
-        #         timem = doy[i] + ((nc.variables['time'][:])/24.0)
+        #         time_um = doy[i] + ((nc.variables['time'][:])/24.0)
         #     else:
-        #         timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
+        #         time_um = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
         #     for j in range(0,len(nc.variables.keys())):
         #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
         #         if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
@@ -1284,9 +1286,9 @@ def main():
         #     # np.save('working_um_data1d', um_data1d)
         # else:
         #     if month_flag == -1:
-        #         timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
+        #         time_um = np.append(time_um, doy[i] + ((nc.variables['time'][:])/24.0))
         #     else:
-        #         timem = np.append(timem,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
+        #         time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc.variables['time'][:])/24.0))
         #     print um_data
         #     for j in range(0,len(nc.variables.keys())):
         #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
@@ -1310,20 +1312,20 @@ def main():
         # -------------------------------------------------------------
         np.save('working_um_data', um_data)
         #### um_data = np.load('working_um_data.npy').item()
-        figure = plot_multicontour_multidate_TS(timem, um_data, month_flag, missing_files, um_out_dir, doy)
+        figure = plot_multicontour_multidate_TS(time_um, um_data, month_flag, missing_files, um_out_dir, doy)
                     ### doesn't matter which nc, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TS(timem, um_data1d, month_flag, missing_files, um_out_dir)
+        # figure = plot_line_TS(time_um, um_data1d, month_flag, missing_files, um_out_dir)
                     ### doesn't matter which nc, just needed for dim_coords + nc structure
 
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TEMP(timem, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
-        # figure = plot_line_RAD(timem, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
+        # figure = plot_line_TEMP(time_um, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
+        # figure = plot_line_RAD(time_um, um_data1d, nc, month_flag, missing_files, um_out_dir, nc_obs, doy)
 
 
 
