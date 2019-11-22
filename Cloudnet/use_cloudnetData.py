@@ -1715,14 +1715,14 @@ def main():
                     timem = doy[i] + ((nc.variables['time'][:])/24.0)
                 else:
                     timem = float(names[i][6:8]) + ((nc.variables['time'][:])/24.0)
-                for j in range(0,len(nc)):
+                for j in range(0,len(nc.variables.keys())):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    if np.sum(nc[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.sum(nc.variables[nc.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(nc[j].data.shape) >= 24:  # 1d timeseries only
-                        data1d[nc[j].var_name] = nc[j].data
+                    elif np.sum(nc.variables[nc.variables.keys()[j]]) >= 24:  # 1d timeseries only
+                        data1d[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                     else:                                   # 2d column data
-                        data[nc[j].var_name] = nc[j].data
+                        data[nc.variables.keys()[j]] = nc.variables[nc.variables.keys()[j]][:]
                 # print data[nc[0].var_name]
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0))
@@ -1731,7 +1731,7 @@ def main():
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0))
                 # print data
-                for j in range(0,len(nc)):
+                for j in range(0,len(nc.variables.keys())):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
                     if np.sum(nc[j].data.shape) == 0:     # ignore horizontal_resolution
