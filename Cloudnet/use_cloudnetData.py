@@ -1271,7 +1271,7 @@ def main():
                 print data
                 for j in range(0,len(var_list)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    print 'j = ' + str(j)
+                    # print 'j = ' + str(j)
                     if np.sum(nc.variables[var_list[j]].shape) == 24:
                         data1d[var_list[j]] = np.append(data1d[var_list[j]].data,nc.variables[var_list[j]][:])
                     else:
