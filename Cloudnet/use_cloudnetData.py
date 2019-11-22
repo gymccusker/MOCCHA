@@ -1727,9 +1727,9 @@ def main():
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
-                    timem = np.append(timem, doy[i] + ((nc[0].dim_coords[0].points)/24.0))
+                    timem = np.append(timem, doy[i] + ((nc.variables['time'][:])/24.0))
                 else:
-                    timem = np.append(timem,float(filename[-16:-14]) + ((nc[0].dim_coords[0].points)/24.0))
+                    timem = np.append(timem,float(filename[-16:-14]) + ((nc.variables['time'][:])/24.0))
                 # print data
                 for j in range(0,len(nc.variables.keys())):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
