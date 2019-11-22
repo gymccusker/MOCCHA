@@ -1558,7 +1558,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'DESKTOP'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -1569,7 +1569,7 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
+        root_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
