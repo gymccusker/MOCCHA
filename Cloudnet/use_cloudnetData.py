@@ -450,9 +450,9 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     freeze = np.where(um_data['time'] >= 240.0)
 
     plt.subplot(121)
-    plt.plot(np.nanmean(um_data['Cv'][melt,:],0),np.nanmean(um_data['height'][melt,:],0), 'k--', linewidth = 3, label = 'Obs')
-    plt.plot(np.nanmean(um_data['model_Cv'][melt,:],0),np.nanmean(um_data['height'][melt,:],0), color = 'steelblue', linewidth = 3, label = 'UM')
-    plt.plot(np.nanmean(ifs_data['model_Cv'][melt,:],0),np.nanmean(ifs_data['height'][melt,:],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][melt,:],0)),np.nanmean(np.squeeze(um_data['height'][melt,:],0)), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv'][melt,:],0)),np.nanmean(np.squeeze(um_data['height'][melt,:],0)), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_Cv'][melt,:],0)),np.nanmean(np.squeeze(ifs_data['height'][melt,:],0)), color = 'darkorange', linewidth = 3, label = 'IFS')
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
