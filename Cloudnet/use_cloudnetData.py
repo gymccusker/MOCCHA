@@ -435,9 +435,9 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,8))
+    plt.figure(figsize=(9,8))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
-            hspace = 0.4, wspace = 0.1)
+            hspace = 0.3, wspace = 0.1)
 
     # print um_data.keys()
 
@@ -446,6 +446,10 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     um_data['model_Cv'][um_data['model_Cv'] < 0.0] = np.nan
     ifs_data['model_Cv'][ifs_data['model_Cv'] < 0.0] = np.nan
 
+    melt = np.where(time_um < 240.0)
+    freeze = np.where(time_um >= 240.0)
+
+    plt.subplot(121)
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
@@ -454,6 +458,17 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.legend()
+
+    plt.subplot(122)
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+
+    plt.xlabel('Cloud Fraction')
+    # plt.ylabel('Height [m]')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    # plt.legend()
 
     print '******'
     print ''
