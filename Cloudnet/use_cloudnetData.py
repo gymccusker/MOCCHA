@@ -733,6 +733,10 @@ def main():
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
 
+        ### PUT TIME INTO DATA DICTIONARIES FOR EASE
+        ifs_data['time'] = time_ifs
+        um_data['time'] = time_um
+
 
         ######  LOAD ALL DIAGNOSTICS
         # if i == 0:
@@ -786,8 +790,8 @@ def main():
     # -------------------------------------------------------------
     # Save working data for debugging
     # -------------------------------------------------------------
-    # np.save('working_um_data', um_data)
-    # np.save('working_ifs_data', ifs_data)
+    np.save('working_um_data', um_data)
+    np.save('working_ifs_data', ifs_data)
     #### um_data = np.load('working_um_data.npy').item()
 
     # -------------------------------------------------------------
