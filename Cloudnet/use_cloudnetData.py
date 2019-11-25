@@ -456,16 +456,16 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
+    plt.title('Melt')
     plt.ylim([0,10000])
     plt.legend()
 
     plt.subplot(122)
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
-    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
-
+    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
     plt.xlabel('Cloud Fraction')
-    # plt.ylabel('Height [m]')
+    plt.title('Freeze up')
     plt.yticks([])
     plt.ylim([0,10000])
     # plt.legend()
