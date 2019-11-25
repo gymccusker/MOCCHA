@@ -416,7 +416,7 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
 
     print '******'
     print ''
-    print 'Plotting combined contour timeseries:'
+    print 'Plotting Cv statistics based on melt/freeze up periods:'
     print ''
 
     ##################################################
@@ -439,7 +439,7 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
             hspace = 0.4, wspace = 0.1)
 
-    print um_data.keys()
+    # print um_data.keys()
 
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
@@ -461,7 +461,7 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
+        fileout = 'FIGS/Obs_UM_IFS_Cv_splitSeason.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -481,7 +481,7 @@ def plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_ou
 
     print '******'
     print ''
-    print 'Plotting combined contour timeseries:'
+    print 'Plotting Cv statistics for whole drift period:'
     print ''
 
     ##################################################
