@@ -673,9 +673,9 @@ def main():
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
-            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature','model_Cv_filtered']   ### time always read in separately
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv','model_iwc','model_lwc','model_temperature','model_snow_Cv_filtered']   ### time always read in separately
 
         ###     LOAD IN UM DATA FIRST
         if i == 0:
@@ -797,7 +797,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
