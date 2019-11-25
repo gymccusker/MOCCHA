@@ -446,8 +446,8 @@ def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_
     um_data['model_Cv'][um_data['model_Cv'] < 0.0] = np.nan
     ifs_data['model_Cv'][ifs_data['model_Cv'] < 0.0] = np.nan
 
-    melt = np.where(time_um < 240.0)
-    freeze = np.where(time_um >= 240.0)
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
 
     plt.subplot(121)
     plt.plot(np.nanmean(um_data['Cv'][melt,:],0),np.nanmean(um_data['height'][melt,:],0), 'k--', linewidth = 3, label = 'Obs')
@@ -797,12 +797,12 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
