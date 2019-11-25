@@ -399,7 +399,73 @@ def plot_multicontour_TS(nc1, filename_um, um_out_dir): #, lon, lat):
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined contour timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    print um_data.keys()
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    um_data['model_Cv'][um_data['model_Cv'] < 0.0] = np.nan
+    ifs_data['model_Cv'][ifs_data['model_Cv'] < 0.0] = np.nan
+
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(um_data['model_Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(ifs_data['model_Cv'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -703,13 +769,21 @@ def main():
 
 
     # -------------------------------------------------------------
-    # Plot combined column um_data (5x2 timeseries)
+    # Save working data for debugging
     # -------------------------------------------------------------
-    np.save('working_um_data', um_data)
-    np.save('working_ifs_data', ifs_data)
+    # np.save('working_um_data', um_data)
+    # np.save('working_ifs_data', ifs_data)
     #### um_data = np.load('working_um_data.npy').item()
-    figure = plot_multicontour_multidate_TS(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
-                ### doesn't matter which nc1, just needed for dim_coords
+
+    # -------------------------------------------------------------
+    # Plot Cv statistics from drift period
+    # -------------------------------------------------------------
+    # figure = plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+
+    # -------------------------------------------------------------
+    # Plot Cv statistics based on melt/freeze up
+    # -------------------------------------------------------------
+    figure = plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
