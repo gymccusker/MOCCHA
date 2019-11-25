@@ -674,8 +674,6 @@ def main():
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_iwc','model_lwc','model_temperature','model_Cv_filtered']   ### time always read in separately
-        if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_iwc','model_lwc','model_temperature','model_snow_Cv_filtered']   ### time always read in separately
 
         ###     LOAD IN UM DATA FIRST
         if i == 0:
@@ -704,6 +702,9 @@ def main():
                 else:
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
         nc1.close()
+
+        if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+            var_list = ['height','Cv','model_iwc','model_lwc','model_temperature','model_snow_Cv_filtered']   ### time always read in separately
 
         ###     LOAD IN IFS DATA
         if i == 0:
