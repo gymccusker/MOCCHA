@@ -444,7 +444,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered_Cv'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
     melt = np.where(um_data['time'] < 240.0)
     freeze = np.where(um_data['time'] >= 240.0)
@@ -463,7 +463,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     plt.subplot(122)
     plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
     plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered_Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
     plt.xlabel('Cloud Fraction')
     plt.title('Freeze up')
     plt.yticks([])
@@ -480,7 +480,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     plt.savefig(fileout)
     plt.show()
 
-def plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -524,7 +524,7 @@ def plot_CvProfiles(time_um, um_data, ifs_data, month_flag, missing_files, um_ou
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered_Cv'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
