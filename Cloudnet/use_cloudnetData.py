@@ -400,7 +400,7 @@ def plot_multicontour_TS(nc1, filename_um, um_out_dir): #, lon, lat):
     plt.show()
 
 
-def plot_CvProfiles_SplitSeason(time_um, um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
