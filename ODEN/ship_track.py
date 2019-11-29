@@ -225,7 +225,7 @@ def plotmap(data):
 
     # plt.title('MOCCHA ship track')
 
-    plt.savefig('FIGS/HighArctic_vPOSTER_v2.svg',dpi=100)
+    # plt.savefig('FIGS/HighArctic_vPOSTER_v2.svg',dpi=100)
     plt.show()
 
 def main():
