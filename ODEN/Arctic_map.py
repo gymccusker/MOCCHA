@@ -58,5 +58,5 @@ csf = m.pcolor(x,y,data,cmap=mpl_cm.Blues_r)
 # cb.ax.xaxis.set_label_position('bottom')
 # cb.ax.axes.set_xlabel('MSLP [hPa]')
 
-plt.savefig('FIGS/EuropeanArctic_vPOSTER.svg',dpi=100)
+# plt.savefig('FIGS/EuropeanArctic_vPOSTER.svg',dpi=100)
 plt.show()
