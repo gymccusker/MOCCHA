@@ -151,7 +151,7 @@ def plotmap(data):
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=86,lat_0=86,lon_0=0)
+                lat_ts=86,lat_0=86,lon_0=-5)
     m.drawcoastlines()
     # m.bluemarble()
 
@@ -185,7 +185,7 @@ def plotmap(data):
     plt.plot(x, y, '--', color = 'pink', linewidth = 2, label = 'Whole')
     plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 3, label = 'In Ice')
     plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 3, label = 'Drift')
-    plt.plot(x_highlightPeriod, y_highlightPeriod, color = 'purple', linewidth = 4, label = 'Case examples')
+    # plt.plot(x_highlightPeriod, y_highlightPeriod, color = 'purple', linewidth = 4, label = 'Case examples')
 
     ###########################################
     ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
