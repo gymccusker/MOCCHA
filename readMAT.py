@@ -30,4 +30,4 @@ def readMatlabStruct(filename, struct_name):
             #### numpy structured arrays.
 
 
-    return data      #### returns dictionary containing matlab struct
+    return data      #### returns structured numpy array containing matlab struct
