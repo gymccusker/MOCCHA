@@ -20,7 +20,7 @@ def readMatlabStruct(filename, struct_name):
     #### --------------------------------------------------------------------
     #### USE STRUCT_NAME TO DEFINE INTERMEDIATE STRUCT ARRAY
     #### --------------------------------------------------------------------
-    print 'Dealing with intermediate data assignments...''
+    print 'Dealing with intermediate data assignments...'
     struct = dat[struct_name]
     print ''
 
@@ -39,8 +39,7 @@ def readMatlabStruct(filename, struct_name):
     # dict = {}
 
     print 'Finished! :)'
-    print 'Reading out ' + struct_name + ' struct within .mat file as defined output variable name'
-    print '[default = data]'
+    print 'Reading out ' + struct_name + ' struct within .mat file'
     print ''
 
     return data      #### returns structured numpy array containing matlab struct
