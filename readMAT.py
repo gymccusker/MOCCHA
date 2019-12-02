@@ -10,6 +10,9 @@ import numpy as np
 
 def readMatlabStruct(filename, struct_name):
 
+    #### EXAMPLE OF USE:
+    #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
+
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
     #### --------------------------------------------------------------------
