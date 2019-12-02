@@ -35,6 +35,7 @@ def readMatlabStruct(filename, struct_name):
 
     #### --------------------------------------------------------------------
     #### CHANGE NUMPY STRUCTURED ARRAY TO DICTIONARY FOR EASE OF USE
+    ####            --- come back to this later
     #### --------------------------------------------------------------------
     # dict = {}
 
