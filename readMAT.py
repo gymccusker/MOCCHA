@@ -8,7 +8,7 @@ from scipy.io import loadmat
 import numpy as np
 
 
-def readMAT(filename, struct_name):
+def readMatlabStruct(filename, struct_name):
 
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
@@ -26,7 +26,8 @@ def readMAT(filename, struct_name):
     data = struct[0,0]
         #### data.dtype:
             #### returns keys of dictionary (normal python dictionary access
-            #### commands don't quite work...)
+            #### commands don't quite work...). MATLAB structs come back as
+            #### numpy structured arrays.
 
 
     return data      #### returns dictionary containing matlab struct
