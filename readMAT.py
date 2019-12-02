@@ -24,5 +24,9 @@ def readMAT(filename, struct_name):
     #### IDENTIFY DATA AS FIRST ENTRY IN INTERMEDIATE STRUCT
     #### --------------------------------------------------------------------
     data = struct[0,0]
+        #### data.dtype:
+            #### returns keys of dictionary (normal python dictionary access
+            #### commands don't quite work...)
+
 
     return data      #### returns dictionary containing matlab struct
