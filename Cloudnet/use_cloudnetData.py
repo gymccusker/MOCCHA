@@ -547,6 +547,10 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
 
 def main():
 
+    import sys
+    sys.path.insert(1, '../py_functions/')
+        ### include py functions for dealing with .mat files
+
     START_TIME = time.time()
     print '******'
     print ''
