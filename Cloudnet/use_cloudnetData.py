@@ -244,13 +244,15 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    ax.fill_between(np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0), np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), np.nanmean(um_data['height'],0))
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.8)
     # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     # plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
+    plt.xlim([0,1])
     plt.legend()
 
     print '******'
