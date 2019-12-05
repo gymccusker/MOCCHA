@@ -525,20 +525,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
-
-    # -------------------------------------------------------------
-    # Plot combined timeseries as lineplot
-    # -------------------------------------------------------------
-    # figure = plot_line_TS(time_um, um_data1d, month_flag, missing_files, um_out_dir)
-                ### doesn't matter which nc1, just needed for dim_coords + nc1 structure
-
-    # -------------------------------------------------------------
-    # Plot combined timeseries as lineplot
-    # -------------------------------------------------------------
-    # figure = plot_line_TEMP(time_um, um_data1d, nc1, month_flag, missing_files, um_out_dir, nc1_obs, doy)
-    # figure = plot_line_RAD(time_um, um_data1d, nc1, month_flag, missing_files, um_out_dir, nc1_obs, doy)
-
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
 
     # -------------------------------------------------------------
