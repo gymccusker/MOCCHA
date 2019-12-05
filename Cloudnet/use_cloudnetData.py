@@ -166,14 +166,14 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     plt.subplot(121)
     ax1 = plt.gca()
     plt.plot(np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    # plt.plot(np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    # plt.plot(np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0),
         np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),
         np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0), color = 'lightblue', alpha = 0.4)
-    # plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),
+        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
