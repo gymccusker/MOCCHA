@@ -256,6 +256,7 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
 
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
@@ -542,12 +543,12 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
 
     # -------------------------------------------------------------
