@@ -143,15 +143,15 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     MED_SIZE = 14
     LARGE_SIZE = 16
 
-    plt.rc('font',size=MED_SIZE)
+    plt.rc('font',size=LARGE_SIZE)
     plt.rc('axes',titlesize=LARGE_SIZE)
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(9,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
-            hspace = 0.3, wspace = 0.1)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
+            hspace = 0.22, wspace = 0.1)
 
     # print um_data.keys()
 
@@ -183,13 +183,21 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     plt.legend()
 
     plt.subplot(122)
+    ax2 = plt.gca()
     plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),
+        np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),
+        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
     plt.xlabel('Cloud Fraction')
     plt.title('Freeze up')
     plt.yticks([])
     plt.ylim([0,10000])
+    plt.xlim([0,1])
     # plt.legend()
 
     print '******'
