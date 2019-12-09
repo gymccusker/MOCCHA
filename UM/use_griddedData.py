@@ -2111,15 +2111,16 @@ def main():
                     timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
                 else:
                     timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                # print timem
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) <= 25:  # 1d timeseries only
-                        data1d[cube[j].var_name] = cube[j].data
+                    # elif np.sum(cube[j].data.shape) <= 25:  # 1d timeseries only
+                    #     data1d[cube[j].var_name] = cube[j].data
                     else:                                   # 2d column data
                         data[cube[j].var_name] = cube[j].data
+                        ## set filled values to nans
+                        data[cube[j].var_name][data[cube[j].var_name] == -9999.0] = np.nan
                 # print data
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
@@ -2134,10 +2135,12 @@ def main():
                     # print 'j = ' + str(j)
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) <= 25:
-                        data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
+                    # elif np.sum(cube[j].data.shape) <= 25:
+                    #     data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
                     else:
                         data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
+                        ## set filled values to nans
+                        data[cube[j].var_name][data[cube[j].var_name] == -9999.0] = np.nan
 
             # print 'Data dict = ' + str(data['radr_refl'].shape)
 
