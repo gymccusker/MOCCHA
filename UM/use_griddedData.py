@@ -1798,9 +1798,12 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
 
     ### the following works for now, but could do with finding an easier
     ###         way to index cube by string
-    height = cube[j].dim_coords[1].points
+    for j in range(0,len(cube)):
+        if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
 
+    ###################################
     ### set diag-specific titles
+    ###################################
     temperature = np.transpose(np.squeeze(data[data.keys()["temperature"]].data))
     uwind = np.transpose(np.squeeze(data[data.keys()["uwind"]].data))
     wwind = np.transpose(np.squeeze(data[data.keys()["wwind"]].data))
