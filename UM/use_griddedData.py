@@ -855,7 +855,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir): #, lon, lat):
@@ -2145,7 +2145,7 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         np.save('working_data', data)
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
+        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which cube, just needed for dim_coords
 
         ### plot UM data in specific subplot order for paper:
