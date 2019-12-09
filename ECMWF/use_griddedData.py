@@ -703,30 +703,6 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         elif str(data.keys()[diag]) == "ql":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == "qnrain":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnsnow":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnice":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qprisice":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnliq":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qngraup":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qrain":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qgraup":
-            casim_flag = 1
-            dat = []
         elif str(data.keys()[diag]) == "q":
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
@@ -927,9 +903,9 @@ def main():
     ## Flag for individual file or monthly:
     combine = 1
     ## Choose month:
-    names = Aug_names
-    missing_files = Aug_missing_files
-    month_flag = 8         ### -1 to plot as DOY
+    names = moccha_names
+    missing_files = moccha_missing_files
+    month_flag = -1         ### -1 to plot as DOY
 
     if combine == 0:
         name = '20180813_oden_ecmwf.nc'
