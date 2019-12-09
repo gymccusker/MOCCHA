@@ -879,6 +879,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     ###################################
     ### set diag-specific titles
     ###################################
+    height =  np.transpose(np.squeeze(data['height'].data))
     temperature = np.transpose(np.squeeze(data['temperature'].data))
     uwind = np.transpose(np.squeeze(data['uwind'].data))
     wwind = np.transpose(np.squeeze(data['wwind'].data))
