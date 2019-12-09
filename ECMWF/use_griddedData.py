@@ -995,28 +995,6 @@ def main():
         figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
-        # -------------------------------------------------------------
-        # Plot combined CASIM column data (4x3 timeseries)
-        # -------------------------------------------------------------
-        # np.save('working_data', data)
-        # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords
-
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TSa(timem, data1d, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
-
-        # figure = plot_line_TSb(timem, data1d, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords + cube structure
-
-        # -------------------------------------------------------------
-        # Plot data (5x2 monthly timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename, out_dir)
-
-
     # -------------------------------------------------------------
     # FIN.
     # -------------------------------------------------------------
