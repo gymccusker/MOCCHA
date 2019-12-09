@@ -1412,7 +1412,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_pc2_ifs_TSa.png'
-    plt.savefig(fileout, dpi=400)
+    # plt.savefig(fileout, dpi=400)
     plt.show()
 
 def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
@@ -1500,8 +1500,6 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1
         #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
-
-
 
 
 def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
@@ -1811,7 +1809,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '7_u-bn068_RA2M_PC2/OUT/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
@@ -1884,9 +1882,9 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_']#,'20180901_oden_',
-            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
@@ -1896,8 +1894,8 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(240,244)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
