@@ -1186,35 +1186,20 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
 
     ### for reference in figures
     zeros = np.zeros(len(time_um2))
-    # t1 = 12
-    # # t2 = 46
-    # t2 = 66
-    # # t3 = 61
-    # # t1 = 28
-    # # t2 = 72
-    # # t3 = 84
-    # t3 = 86
-
     t1 = 11
-    # t2 = 13
     t3 = 45
-    # t4 = 61
-    # t5 = 72    ###good
-    # t6 = 83
-    # t7 = 86
-
 
     #################################################################
     ## create figure and axes instances
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, label = label1)
-    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, label = label2)
+    plt.plot(time_um1, data1d_um1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
+    plt.plot(time_um2, data1d_um2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'grey', label = label3)
+        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
     else:
-        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, label = label3)
+        plt.plot(time_um3, data1d_um3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1224,50 +1209,33 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,cube_obs[4].data + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, label = '1.5m')
-    ax1.plot(time_um2, data1d_um2['temp_1.5m'].data)#, label = '2m')
+    ax1.plot(time_um1, data1d_um1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    ax1.plot(time_um2, data1d_um2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
     if ifs_flag == True:
-        ax1.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'grey', label = '2m')
+        ax1.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
     else:
-        ax1.plot(time_um3, data1d_um3['temp_1.5m'].data)#, label = '2m')
+        ax1.plot(time_um3, data1d_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
     plt.title('near-sfc_temperature [K]')
-    lims = plt.ylim()
-    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
-    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
     plt.legend()
     if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
     if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
     if month_flag == -1: ax1.set_xlim([doy[0],doy[-1]])
 
-    data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
-    data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    if out_dir4 != 'OUT_25H/': data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
+    # data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
+    # data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir4 != 'OUT_25H/': data1d_um3['surface_net_SW_radiation'].data[data1d_um3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data)
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data)
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'steelblue')
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, color = 'grey')
+        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, color = 'darkorange')
     else:
-        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data)
+        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, color = 'darkorange')
     plt.title('surface_net_SW_radiation [W/m2]')
-    lims = plt.ylim()
-    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
-    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
@@ -1277,12 +1245,12 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'obs: ice')
-    plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data)
-    plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data)
+    plt.plot(time_um1, data1d_um1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(time_um2, data1d_um2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_lw'].data, color = 'grey')
+        plt.plot(time_um3, data1d_um3['sfc_net_lw'].data, color = 'darkorange')
     else:
-        plt.plot(time_um3, data1d_um3['surface_net_LW_radiation'].data)
+        plt.plot(time_um3, data1d_um3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1310,21 +1278,13 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
-    plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data)# * -1.0)
+    plt.plot(time_um1, data1d_um1['sensible_heat_flux'].data, color = 'steelblue')
+    plt.plot(time_um2, data1d_um2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_down_sens_heat_flx'].data * -1.0, color = 'grey')
+        plt.plot(time_um3, data1d_um3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
     else:
-        plt.plot(time_um3, data1d_um3['sensible_heat_flux'].data)# * -1.0)
+        plt.plot(time_um3, data1d_um3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
-    lims = plt.ylim()
-    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
-    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
@@ -1332,39 +1292,17 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(time_um2, zeros,'--', color='lightgrey')
-    plt.plot(time_um1, data1d_um1['latent_heat_flux'].data)
-    plt.plot(time_um2, data1d_um2['latent_heat_flux'].data)# * -1.0)
+    plt.plot(time_um1, data1d_um1['latent_heat_flux'].data, color = 'steelblue')
+    plt.plot(time_um2, data1d_um2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_down_lat_heat_flx'].data * -1.0, color = 'grey')
+        plt.plot(time_um3, data1d_um3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
     else:
-        plt.plot(time_um3, data1d_um3['latent_heat_flux'].data)# * -1.0)
+        plt.plot(time_um3, data1d_um3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
-    lims = plt.ylim()
-    plt.plot([time_um1[t1],time_um1[t1]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t2],time_um1[t2]],[lims[0],lims[-1]],'--',color = 'purple')
-    plt.plot([time_um1[t3],time_um1[t3]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t4],time_um1[t4]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t5],time_um1[t5]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t6],time_um1[t6]],[lims[0],lims[-1]],'--',color = 'purple')
-    # plt.plot([time_um1[t7],time_um1[t7]],[lims[0],lims[-1]],'--',color = 'purple')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
-    # print ''
-    # print 'Zero out any data from missing files:'
-    # print ''
-    # for mfile in missing_files:
-    #     mtime = float(mfile[6:8]) + ((cube_um[0].dim_coords[0].points)/24.0)
-    #     nans = ax.get_ylim()
-    #     ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
-
-
-    ### global plot properties
-    # plt.subplot(3,2,4)
-    # if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    # if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    # if month_flag == -1: plt.xlabel('Day of year')
     plt.subplot(3,2,5)
     if month_flag == 8: plt.xlabel('Day of month [Aug]')
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
@@ -1411,7 +1349,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #             fileout[:20] = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
-    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_pc2_ifs_TSa.png'
+    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_casim-100_ifs_TSa.png'
     # plt.savefig(fileout, dpi=400)
     plt.show()
 
@@ -1809,7 +1747,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
