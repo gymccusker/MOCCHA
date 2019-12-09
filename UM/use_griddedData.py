@@ -1802,7 +1802,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
 
     ### set diag-specific titles
     temperature = np.transpose(np.squeeze(data[data.keys()["temperature"]].data))
-    uwind = np.transpose(np.squeeze(data[data.keys()["uwind""]].data))
+    uwind = np.transpose(np.squeeze(data[data.keys()["uwind"]].data))
     wwind = np.transpose(np.squeeze(data[data.keys()["wwind"]].data))
     vwind = np.transpose(np.squeeze(data[data.keys()["vwind"]].data))
     qice = np.transpose(np.squeeze(data[data.keys()["qice"]].data*1e3))
