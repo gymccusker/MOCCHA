@@ -1780,29 +1780,17 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
 
     print data.keys()
 
-    l = -1
-
-    # for i in range(0,len(data.keys())):
-    for diag in range(0,len(data.keys())):
-        ###################################
-        ## CHOOSE DIAGNOSTIC
-        ###################################
-        # diag = i
-        print ''
-        print 'Diag is: '
-        print data.keys()[diag]
-
-        ### pcXXX - CUBE
-        # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-        # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    ### pcXXX - CUBE
+    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
 
         ###################################
         ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
@@ -1918,27 +1906,15 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
                 plt.set_cmap(mpl_cm.RdBu_r)
             elif str(data.keys()[diag][0]) == 'q':
                 plt.set_cmap(mpl_cm.Blues)
-            else:
-                plt.set_cmap(mpl_cm.viridis)
 
+            plt.set_cmap(mpl_cm.viridis)
             plt.title(title)
             plt.colorbar()
             ax.set_ylim([0, 5000])
-            if month_flag == 8: ax.set_xlim([13.0, 32.0])
-            if month_flag == 9: ax.set_xlim([1.0, 15.0])
-            if month_flag == -1: ax.set_xlim([doy[0], doy[-1]])
+            ax.set_xlim([doy[0], doy[-1]])
 
-            print ''
-            print 'Zero out any data from missing files:'
-            print ''
-            for mfile in missing_files:
-                # mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                # nans = np.zeros([len(height),len(mtime)])
-                # # nans[nans == 0] = np.nan
-                # plt.pcolormesh(mtime, height, nans)
-                mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
-                nans = ax.get_ylim()
-                ax.fill_between(mtime, nans[0], nans[-1], facecolor = 'lightgrey', zorder = 3)
+    plt.subplot(4,2,1)
+    plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
 
     ### global plot properties
     plt.subplot(5,2,9)
