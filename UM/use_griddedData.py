@@ -1940,9 +1940,9 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
+        root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        ship_filename = '/home/gillian/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -2090,6 +2090,7 @@ def main():
             print 'Loading multiple diagnostics:'
             cube = iris.load(filename)#, global_con, callback)
 
+            print cube
             # print 'i = ' + str(i)
             print ''
 
@@ -2103,28 +2104,30 @@ def main():
                     timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
                 else:
                     timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                # print timem
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) >= 24:  # 1d timeseries only
+                    elif np.sum(cube[j].data.shape) == 25:  # 1d timeseries only
                         data1d[cube[j].var_name] = cube[j].data
                     else:                                   # 2d column data
                         data[cube[j].var_name] = cube[j].data
-                # print data[cube[0].var_name]
+                print data
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
                     timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
-                # print data
+                # print timem
+                print data
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
                     if np.sum(cube[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube[j].data.shape) >= 24:
+                    elif np.sum(cube[j].data.shape) == 25:
                         data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
                     else:
                         data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
