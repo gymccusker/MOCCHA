@@ -1140,7 +1140,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-            hspace = 0.4, wspace = 0.15)
+            hspace = 0.4, wspace = 0.13)
 
     #################################################################
     ## sort out observations' timestamp
