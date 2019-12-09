@@ -813,6 +813,169 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
+def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting IFS contour timeseries for entire drift:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.figure(figsize=(15,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    print data.keys()
+
+    ### pcXXX - CUBE
+    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
+
+    ###################################
+    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+    ###################################
+
+    ### the following works for now, but could do with finding an easier
+    ###         way to index cube by string
+    # for j in range(0,len(cube)):
+    #     if cube[j].var_name == 'ql': height = cube[j].dim_coords[1].points
+
+    ###################################
+    ### set diag-specific titles
+    ###################################
+    temperature = np.transpose(np.squeeze(data['temperature'].data))
+    uwind = np.transpose(np.squeeze(data['uwind'].data))
+    wwind = np.transpose(np.squeeze(data['wwind'].data))
+    vwind = np.transpose(np.squeeze(data['vwind'].data))
+    qice = np.transpose(np.squeeze(data['qi'].data*1e3))
+    qliq = np.transpose(np.squeeze(data['ql'].data*1e3))
+    q = np.transpose(np.squeeze(data['q'].data*1e3))
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.subplot(4,2,1)
+    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = np.nanmax(temperature))
+    plt.set_cmap(mpl_cm.viridis)
+    plt.title('Temperature [K]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [m]')
+
+    plt.subplot(4,2,2)
+    plt.pcolormesh(timem, height, q, vmin = np.nanmin(q), vmax = np.nanmax(q))
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('q [g/kg]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+
+    plt.subplot(4,2,3)
+    plt.pcolormesh(timem, height, qliq, vmin = np.nanmin(qliq), vmax = np.nanmax(qliq))
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('qliq [g/kg]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [m]')
+
+    plt.subplot(4,2,4)
+    plt.pcolormesh(timem, height, qice, vmin = 0, vmax = 0.05)
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('qice [g/kg]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+
+    plt.subplot(4,2,5)
+    plt.pcolormesh(timem, height, uwind, vmin = -20, vmax = 20)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('uwind [m/s]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [m]')
+
+    plt.subplot(4,2,6)
+    plt.pcolormesh(timem, height, vwind, vmin = -20, vmax = 20)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('vwind [m/s]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.xlabel('Day of year')
+
+    plt.subplot(4,2,7)
+    plt.pcolormesh(timem, height, wwind, vmin = -0.1, vmax = 0.1)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('wwind [m/s]')
+    plt.colorbar()
+    ax = plt.gca()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        if out_dir[:18] == '7_u-bn068_RA2M_PC2':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf'
+        if out_dir[:18] == '6_u-bm410_RA1M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf'
+        if out_dir[:18] == '5_u-bl661_RA1M_CAS':
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf'
+        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf_vPaper'
+    plt.savefig(fileout + '.png', dpi=300)
+    plt.show()
+
 def main():
 
     START_TIME = time.time()
@@ -1025,8 +1188,9 @@ def main():
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
         np.save('working_data', ifs_data)
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        # figure = plot_multicontour_multidate_TS(time_ifs, ifs_data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
+        figure = plot_IFS_ContourTS(time_ifs, ifs_data, month_flag, missing_files, out_dir)
 
     # -------------------------------------------------------------
     # FIN.
