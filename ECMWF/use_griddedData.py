@@ -1124,7 +1124,7 @@ def main():
                 else:
                     time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
                 for j in range(0,len(var_list)):
-                    if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    if np.sum(nc2.variables[var_list[j]].shape) <= 25:  # 1d timeseries only
                         ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
                     else:                                   # 2d column um_data
                         ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
@@ -1137,7 +1137,7 @@ def main():
                 for j in range(0,len(var_list)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.sum(nc2.variables[var_list[j]].shape) == 24:
+                    if np.sum(nc2.variables[var_list[j]].shape) <= 25:
                         ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
                     else:
                         ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
