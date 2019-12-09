@@ -2090,7 +2090,7 @@ def main():
             print 'Loading multiple diagnostics:'
             cube = iris.load(filename)#, global_con, callback)
 
-            print cube
+            # print cube
             # print 'i = ' + str(i)
             print ''
 
@@ -2113,7 +2113,7 @@ def main():
                         data1d[cube[j].var_name] = cube[j].data
                     else:                                   # 2d column data
                         data[cube[j].var_name] = cube[j].data
-                print data
+                # print data
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
@@ -2121,7 +2121,7 @@ def main():
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 # print timem
-                print data
+                # print data
                 for j in range(0,len(cube)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
