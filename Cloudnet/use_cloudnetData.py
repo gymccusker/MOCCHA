@@ -331,6 +331,11 @@ def main():
     ###             -> liquid water content derived using measurements averaged on to model grid
     ### cloud-fraction-metum-grid/2018/20180814_oden_cloud-fraction-metum-grid.nc1
     ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
+    ### lwc-scaled-metum-grid
+    ###             -> dataset contains liquid water content derived using radar/lidar cloud boundaries and liquid water path from dual-wavelength
+    ###                 microwave radiometers, averaged on to the grid of a forecast model.
+    ###                 It also contains the liquid water content and liquid water path from that model, so may be used to calculate statistics
+    ###                 quantifying the model performance.
 
     print '******'
     print ''
