@@ -965,15 +965,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == -1:
-        if out_dir[:18] == '7_u-bn068_RA2M_PC2':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf'
-        if out_dir[:18] == '6_u-bm410_RA1M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf'
-        if out_dir[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf'
-        elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf_vPaper'
+    fileout = 'FIGS/AO2018_oden_ecmwf_vPaper'
     plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
