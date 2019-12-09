@@ -879,7 +879,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     ###################################
     ### set diag-specific titles
     ###################################
-    height =  np.transpose(np.squeeze(data['height'].data))
+    height =  np.transpose(np.squeeze(data['height'].data[0,:]))
     temperature = np.transpose(np.squeeze(data['temperature'].data))
     uwind = np.transpose(np.squeeze(data['uwind'].data))
     wwind = np.transpose(np.squeeze(data['wwind'].data))
@@ -1128,6 +1128,8 @@ def main():
                         ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
                     else:                                   # 2d column um_data
                         ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
+                        ## set filled values to nans
+                        ifs_data[var_list[j]][ifs_data[var_list[j]] == -9999.0] = np.nan
             else:
                 if month_flag == -1:
                     time_ifs = np.append(time_ifs, doy[i] + ((nc2.variables['time'][:])/24.0))
@@ -1141,6 +1143,8 @@ def main():
                         ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
                     else:
                         ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
+                        ## set filled values to nans
+                        ifs_data[var_list[j]][ifs_data[var_list[j]] == -9999.0] = np.nan
             nc2.close()
 
             # if i == 0:
