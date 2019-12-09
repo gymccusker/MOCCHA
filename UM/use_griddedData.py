@@ -1804,13 +1804,13 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     ###################################
     ### set diag-specific titles
     ###################################
-    temperature = np.transpose(np.squeeze(data[data.keys()['temperature']].data))
-    uwind = np.transpose(np.squeeze(data[data.keys()['uwind']].data))
-    wwind = np.transpose(np.squeeze(data[data.keys()['wwind']].data))
-    vwind = np.transpose(np.squeeze(data[data.keys()['vwind']].data))
-    qice = np.transpose(np.squeeze(data[data.keys()['qice']].data*1e3))
-    qliq = np.transpose(np.squeeze(data[data.keys()['qliq']].data*1e3))
-    q = np.transpose(np.squeeze(data[data.keys()['q']].data*1e3))
+    temperature = np.transpose(np.squeeze(data['temperature'].data))
+    uwind = np.transpose(np.squeeze(data['uwind'].data))
+    wwind = np.transpose(np.squeeze(data['wwind'].data))
+    vwind = np.transpose(np.squeeze(data['vwind'].data))
+    qice = np.transpose(np.squeeze(data['qice'].data*1e3))
+    qliq = np.transpose(np.squeeze(data['qliq'].data*1e3))
+    q = np.transpose(np.squeeze(data['q'].data*1e3))
 
     #################################################################
     ## create figure and axes instances
