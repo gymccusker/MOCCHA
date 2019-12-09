@@ -385,6 +385,103 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     plt.savefig(fileout, dpi=300)
     plt.show()
 
+def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting IWC cloudnet statistics based on melt/freeze up periods:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
+            hspace = 0.22, wspace = 0.14)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    um_data['iwc'][um_data['iwc'] == -999] = np.nan
+    um_data['iwc'][um_data['iwc'] == 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(um_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['iwc'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['iwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['iwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+
+    plt.xlabel('Ice water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    # plt.xlim([0,0.2])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(um_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['iwc'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.xlabel('Ice water content [g/m3]')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,0.2])
+    # plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_IWC_splitSeason.png'
+    plt.savefig(fileout, dpi=300)
+    plt.show()
+
 def main():
 
     import sys
@@ -421,8 +518,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = 'iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     # out_dir3 = 'MET_DATA/'
 
     ### lwc-adiabatic-metum-grid/2018/
@@ -434,6 +531,10 @@ def main():
     ###                 microwave radiometers, averaged on to the grid of a forecast model.
     ###                 It also contains the liquid water content and liquid water path from that model, so may be used to calculate statistics
     ###                 quantifying the model performance.
+    ### iwc-Z-T-metum-grid/2018/ + iwc-Z-T-ecmwf-grid/2018/
+    ###             -> dataset contains ice water content derived using radar reflectivity and temperature, averaged on to the grid of a forecast
+    ###                 model. It also contains the ice water content from that model, so may be used to calculate statistics quantifying the
+    ###                 model performance.
 
     print '******'
     print ''
@@ -525,6 +626,8 @@ def main():
             var_list = ['height','Cv','model_Cv_filtered']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
+        elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
+            var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
         ###     LOAD IN UM DATA FIRST
         if i == 0:
@@ -558,6 +661,8 @@ def main():
             var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
+        elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+            var_list = ['height','iwc','model_snow_iwc_filtered']   ### time always read in separately
 
         ###     LOAD IN IFS DATA
         if i == 0:
@@ -661,7 +766,12 @@ def main():
     # -------------------------------------------------------------
     # Plot LWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+
+    # -------------------------------------------------------------
+    # Plot IWC statistics based on melt/freeze up
+    # -------------------------------------------------------------
+    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.
