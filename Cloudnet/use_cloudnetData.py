@@ -428,8 +428,13 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
 
     #### set flagged um_data to nans
     um_data['iwc'][um_data['iwc'] == -999] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] == -999.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] == -999.0] = np.nan
+    ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] == -999.0] = np.nan
+
     um_data['iwc'][um_data['iwc'] == 0] = np.nan
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
 
     melt = np.where(um_data['time'] < 240.0)
@@ -450,8 +455,8 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.title('Melt')
-    plt.ylim([0,10000])
-    # plt.xlim([0,0.2])
+    plt.ylim([0,8000])
+    plt.xlim([0,0.05])
     plt.legend()
 
     plt.subplot(122)
@@ -462,14 +467,14 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmean(np.squeeze(ifs_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    # ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
+    #     np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     plt.xlabel('Ice water content [g/m3]')
     plt.title('Freeze up')
     plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,0.2])
+    plt.ylim([0,8000])
+    plt.xlim([0,0.05])
     # plt.legend()
 
     print '******'
@@ -662,7 +667,7 @@ def main():
         elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-            var_list = ['height','iwc','model_snow_iwc_filtered']   ### time always read in separately
+            var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
         ###     LOAD IN IFS DATA
         if i == 0:
