@@ -323,8 +323,8 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
     plt.figure(figsize=(10,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
-            hspace = 0.22, wspace = 0.1)
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
+            hspace = 0.22, wspace = 0.14)
 
     # print um_data.keys()
 
@@ -381,8 +381,8 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_LWC_splitSeason.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_LWC_splitSeason.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def main():
