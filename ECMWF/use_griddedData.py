@@ -1088,7 +1088,7 @@ def main():
         # -------------------------------------------------------------
         # Plot data (5x2 timeseries)
         # -------------------------------------------------------------
-        figure = plot_multicontour_TS(cube, filename, out_dir)
+        # figure = plot_multicontour_TS(cube, filename, out_dir)
 
         # -------------------------------------------------------------
         # Plot data (map)
@@ -1190,7 +1190,7 @@ def main():
         np.save('working_data', ifs_data)
         # figure = plot_multicontour_multidate_TS(time_ifs, ifs_data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
-        figure = plot_IFS_ContourTS(time_ifs, ifs_data, month_flag, missing_files, out_dir)
+        figure = plot_IFS_ContourTS(time_ifs, ifs_data, month_flag, missing_files, out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.
