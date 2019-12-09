@@ -879,7 +879,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     ###################################
     ### set diag-specific titles
     ###################################
-    height = np.transpose(np.nanmean(np.squeeze(data['height'].data),0))    ## use average height coordinate 
+    height = np.transpose(np.nanmean(np.squeeze(data['height'].data),0))    ## use average height coordinate
     temperature = np.transpose(np.squeeze(data['temperature'].data))
     uwind = np.transpose(np.squeeze(data['uwind'].data))
     wwind = np.transpose(np.squeeze(data['wwind'].data))
@@ -892,7 +892,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     ## create figure and axes instances
     #################################################################
     plt.subplot(4,2,1)
-    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = np.nanmax(temperature))
+    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = 275)
     plt.set_cmap(mpl_cm.viridis)
     plt.title('Temperature [K]')
     plt.colorbar()
@@ -902,7 +902,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     plt.ylabel('Z [m]')
 
     plt.subplot(4,2,2)
-    plt.pcolormesh(timem, height, q, vmin = np.nanmin(q), vmax = np.nanmax(q))
+    plt.pcolormesh(timem, height, q, vmin = 0.0, vmax = 4.0)
     plt.set_cmap(mpl_cm.Blues)
     plt.title('q [g/kg]')
     plt.colorbar()
@@ -911,7 +911,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
     ax.set_xlim([doy[0], doy[-1]])
 
     plt.subplot(4,2,3)
-    plt.pcolormesh(timem, height, qliq, vmin = np.nanmin(qliq), vmax = np.nanmax(qliq))
+    plt.pcolormesh(timem, height, qliq, vmin = 0.0, vmax = 0.35)
     plt.set_cmap(mpl_cm.Blues)
     plt.title('qliq [g/kg]')
     plt.colorbar()
@@ -974,7 +974,7 @@ def plot_IFS_ContourTS(timem, data, month_flag, missing_files, out_dir, doy): #,
             fileout = 'FIGS/' + out_dir[:20] + '_oden_ecmwf'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_ecmwf_vPaper'
-    # plt.savefig(fileout + '.png', dpi=300)
+    plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
 def main():

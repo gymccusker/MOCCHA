@@ -1816,7 +1816,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     ## create figure and axes instances
     #################################################################
     plt.subplot(4,2,1)
-    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = np.nanmax(temperature))
+    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = 275)
     plt.set_cmap(mpl_cm.viridis)
     plt.title('Temperature [K]')
     plt.colorbar()
@@ -1826,7 +1826,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     plt.ylabel('Z [m]')
 
     plt.subplot(4,2,2)
-    plt.pcolormesh(timem, height, q, vmin = np.nanmin(q), vmax = np.nanmax(q))
+    plt.pcolormesh(timem, height, q, vmin = 0.0, vmax = 4.0)
     plt.set_cmap(mpl_cm.Blues)
     plt.title('q [g/kg]')
     plt.colorbar()
@@ -1835,7 +1835,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     ax.set_xlim([doy[0], doy[-1]])
 
     plt.subplot(4,2,3)
-    plt.pcolormesh(timem, height, qliq, vmin = np.nanmin(qliq), vmax = np.nanmax(qliq))
+    plt.pcolormesh(timem, height, qliq, vmin = 0.0, vmax = 0.35)
     plt.set_cmap(mpl_cm.Blues)
     plt.title('qliq [g/kg]')
     plt.colorbar()
