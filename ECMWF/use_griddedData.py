@@ -942,57 +942,90 @@ def main():
             print ''
 
             print 'Loading multiple diagnostics:'
-            cube = iris.load(filename)
+            # cube = iris.load(filename)
+            nc2 = Dataset(filename,'r')
 
             # print 'i = ' + str(i)
             print ''
 
+            #### only load specific variables
+            var_list = ['temperature','q','ql','qi','uwind','vwind','wwind','height']   ### time always read in separately
+
+            ###     LOAD IN IFS DATA
             if i == 0:
-                data = {}
-                data1d = {}
-                # data['time'] = []
-                # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+                ifs_data = {}
+                ifs_data1d = {}
                 if month_flag == -1:
-                    timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
+                    time_ifs = doy[i] + ((nc2.variables['time'][:])/24.0)
                 else:
-                    timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
-                for j in range(0,len(cube)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.size(np.shape(cube[j])) == 1:  # 1d timeseries only
-                        data1d[cube[j].var_name] = cube[j].data
-                    else:                                   # 2d column data
-                        data[cube[j].var_name] = cube[j].data
-                # print data1d[cube[j].var_name]
+                    time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
+                for j in range(0,len(var_list)):
+                    if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                        ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
+                    else:                                   # 2d column um_data
+                        ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
             else:
-                # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
-                    if doy[i] == 247:       ### don't load data from 20180904
-                        continue
-                    else:
-                        timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
+                    time_ifs = np.append(time_ifs, doy[i] + ((nc2.variables['time'][:])/24.0))
                 else:
-                    timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
-                # print data
-                for j in range(0,len(cube)):
+                    time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc2.variables['time'][:])/24.0))
+                print ifs_data
+                for j in range(0,len(var_list)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.size(np.shape(cube[j])) == 1:
-                        data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
+                    if np.sum(nc2.variables[var_list[j]].shape) == 24:
+                        ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
                     else:
-                        data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
+                        ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
+            nc2.close()
+
+            # if i == 0:
+            #     data = {}
+            #     data1d = {}
+            #     # data['time'] = []
+            #     # data['time'] = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+            #     # timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+            #     if month_flag == -1:
+            #         timem = doy[i] + ((cube[0].dim_coords[0].points)/24.0)
+            #     else:
+            #         timem = float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0)
+            #     for j in range(0,len(cube)):
+            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+            #         if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
+            #             continue
+            #         elif np.size(np.shape(cube[j])) == 1:  # 1d timeseries only
+            #             data1d[cube[j].var_name] = cube[j].data
+            #         else:                                   # 2d column data
+            #             data[cube[j].var_name] = cube[j].data
+            #     # print data1d[cube[j].var_name]
+            # else:
+            #     # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+            #     if month_flag == -1:
+            #         if doy[i] == 247:       ### don't load data from 20180904
+            #             continue
+            #         else:
+            #             timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
+            #     else:
+            #         timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
+            #     # print data
+            #     for j in range(0,len(cube)):
+            #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+            #         # print 'j = ' + str(j)
+            #         if np.size(np.shape(cube[j])) == 0:     # ignore horizontal_resolution
+            #             continue
+            #         elif np.size(np.shape(cube[j])) == 1:
+            #             data1d[cube[j].var_name] = np.append(data1d[cube[j].var_name].data,cube[j].data)
+            #         else:
+            #             data[cube[j].var_name] = np.append(data[cube[j].var_name].data,cube[j].data,0)
+            #     # print data
 
             # print 'Data dict = ' + str(data['radr_refl'].shape)
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        np.save('working_data', data)
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+        np.save('working_data', ifs_data)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
     # -------------------------------------------------------------
