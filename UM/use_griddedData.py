@@ -1792,147 +1792,86 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
 
-        ###################################
-        ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
-        ###################################
+    ###################################
+    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
+    ###################################
 
-        ### the following works for now, but could do with finding an easier
-        ###         way to index cube by string
-        for j in range(0,len(cube)):
-            if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
+    ### the following works for now, but could do with finding an easier
+    ###         way to index cube by string
+    height = cube[j].dim_coords[1].points
 
-        dat = []
-        print 'dat = ' + str(len(dat))
+    ### set diag-specific titles
+    temperature = np.transpose(np.squeeze(data[data.keys()["temperature"]].data))
+    uwind = np.transpose(np.squeeze(data[data.keys()["uwind""]].data))
+    wwind = np.transpose(np.squeeze(data[data.keys()["wwind"]].data))
+    vwind = np.transpose(np.squeeze(data[data.keys()["vwind"]].data))
+    qice = np.transpose(np.squeeze(data[data.keys()["qice"]].data*1e3))
+    qliq = np.transpose(np.squeeze(data[data.keys()["qliq"]].data*1e3))
+    q = np.transpose(np.squeeze(data[data.keys()["q"]].data*1e3))
 
-        ### set diag-specific titles
-        if str(data.keys()[diag]) == "radr_refl":
-            title = str(data.keys()[diag]) + ' [dBz]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "pressure":
-            title = str(data.keys()[diag]) + ' [hPa]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data/1e2))
-        elif str(data.keys()[diag]) == "temperature":
-            title = str(data.keys()[diag]) + ' [K]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "uwind":
-            title = str(data.keys()[diag]) + ' [m/s]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "wwind":
-            title = str(data.keys()[diag]) + ' [m/s]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "vwind":
-            title = str(data.keys()[diag]) + ' [m/s]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "cloud_fraction":
-            title = str(data.keys()[diag]) + ' []'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data))
-        elif str(data.keys()[diag]) == "qice":
-            title = str(data.keys()[diag]) + ' [g/kg]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == "qliq":
-            title = str(data.keys()[diag]) + ' [g/kg]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-        elif str(data.keys()[diag]) == "qnrain":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnsnow":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnice":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qprisice":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qnliq":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qngraup":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qrain":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "qgraup":
-            casim_flag = 1
-            dat = []
-        elif str(data.keys()[diag]) == "q":
-            title = str(data.keys()[diag]) + ' [g/kg]'
-            dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
-
-        print 'dat = ' + str(len(dat))
-        print ''
-
-        if len(dat) > 0:
-            print 'Plotting since len(dat)>0'
-            print ''
-            print title
-
-            l = l + 1 ## increment index for positive data association
-            print 'l = ' +  str(l)
-            #################################################################
-            ## create figure and axes instances
-            #################################################################
-            plt.subplot(5,2,l+1)
-            ax = plt.gca()
-
-            #################################################################
-            ## plot timeseries
-            #################################################################
-            # plt.contourf(time,height,np.transpose(cube[diag].data))
-            if str(data.keys()[diag]) == 'temperature':
-                plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
-            elif str(data.keys()[diag]) == 'pressure':
-                plt.pcolormesh(timem, height, dat, vmin = 500, vmax = np.nanmax(dat))
-            elif str(data.keys()[diag]) == 'uwind':
-                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-            elif str(data.keys()[diag]) == 'vwind':
-                plt.pcolormesh(timem, height, dat, vmin = -20, vmax = 20)
-            elif str(data.keys()[diag]) == 'wwind':
-                plt.pcolormesh(timem, height, dat, vmin = -0.1, vmax = 0.1)
-            elif str(data.keys()[diag]) == 'qice':
-                plt.pcolormesh(timem, height, dat, vmin = 0, vmax = 0.05)
-            else:
-                plt.pcolormesh(timem, height, dat, vmin = np.nanmin(dat), vmax = np.nanmax(dat))
-            #################################################################
-            ## set plot properties
-            #################################################################
-            ### colormaps:
-            if str(data.keys()[diag]) == 'wwind':
-                plt.set_cmap(mpl_cm.RdBu_r)
-            elif str(data.keys()[diag]) == 'uwind':
-                plt.set_cmap(mpl_cm.RdBu_r)
-            elif str(data.keys()[diag]) == 'vwind':
-                plt.set_cmap(mpl_cm.RdBu_r)
-            elif str(data.keys()[diag][0]) == 'q':
-                plt.set_cmap(mpl_cm.Blues)
-
-            plt.set_cmap(mpl_cm.viridis)
-            plt.title(title)
-            plt.colorbar()
-            ax.set_ylim([0, 5000])
-            ax.set_xlim([doy[0], doy[-1]])
-
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
     plt.subplot(4,2,1)
-    plt.pcolormesh(timem, height, dat, vmin = 250, vmax = np.nanmax(dat))
+    plt.pcolormesh(timem, height, temperature, vmin = 250, vmax = np.nanmax(temperature))
+    plt.set_cmap(mpl_cm.viridis)
+    plt.title('Temperature [K]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [m]')
 
-    ### global plot properties
-    plt.subplot(5,2,9)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
+    plt.subplot(4,2,2)
+    plt.pcolormesh(timem, height, q, vmin = np.nanmin(q), vmax = np.nanmax(q))
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('q [g/kg]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+
+    plt.subplot(4,2,3)
+    plt.pcolormesh(timem, height, qliq, vmin = np.nanmin(qliq), vmax = np.nanmax(qliq))
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('qliq [g/kg]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
     plt.ylabel('Z [m]')
-    plt.subplot(5,2,10)
-    if month_flag == 8: plt.xlabel('Day of month [Aug]')
-    if month_flag == 9: plt.xlabel('Day of month [Sep]')
-    if month_flag == -1: plt.xlabel('Day of year')
-    plt.subplot(5,2,1)
+
+    plt.subplot(4,2,4)
+    plt.pcolormesh(timem, height, qice, vmin = 0, vmax = 0.05)
+    plt.set_cmap(mpl_cm.Blues)
+    plt.title('qice [g/kg]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+
+    plt.subplot(4,2,5)
+    plt.pcolormesh(timem, height, uwind, vmin = -20, vmax = 20)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('uwind [m/s]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
     plt.ylabel('Z [m]')
-    plt.subplot(5,2,3)
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,5)
-    plt.ylabel('Z [m]')
-    plt.subplot(5,2,7)
+
+    plt.subplot(4,2,6)
+    plt.pcolormesh(timem, height, vwind, vmin = -20, vmax = 20)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('vwind [m/s]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.xlabel('Day of year')
+
+    plt.subplot(4,2,7)
+    plt.pcolormesh(timem, height, wwind, vmin = -0.1, vmax = 0.1)
+    plt.set_cmap(mpl_cm.RdBu_r)
+    plt.title('wwind [m/s]')
+    plt.colorbar()
+    ax.set_ylim([0, 5000])
+    ax.set_xlim([doy[0], doy[-1]])
+    plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
     print '******'
