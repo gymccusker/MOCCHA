@@ -1891,14 +1891,14 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
 
     if month_flag == -1:
         if out_dir[:18] == '7_u-bn068_RA2M_PC2':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum'
         if out_dir[:18] == '6_u-bm410_RA1M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum'
         if out_dir[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum.png'
+            fileout = 'FIGS/' + out_dir[:20] + '_oden_metum'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum.png'
-    # plt.savefig(fileout, dpi=300)
+            fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_vPaper'
+    plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
 def callback(cube, field, filename):
@@ -2147,8 +2147,8 @@ def main():
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        np.save('working_data', data)
-        figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
+        # np.save('working_data', data)
+        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir, doy)
                     ### doesn't matter which cube, just needed for dim_coords
 
         ### plot UM data in specific subplot order for paper:
