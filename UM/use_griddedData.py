@@ -1915,6 +1915,10 @@ def makeGlobalStashList():
 
 def main():
 
+    import sys
+    sys.path.insert(1, '../py_functions/')
+        ### include py functions for dealing with .mat files
+
     START_TIME = time.time()
     print '******'
     print ''
