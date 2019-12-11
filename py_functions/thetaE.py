@@ -8,6 +8,9 @@ import numpy as np
 
 def calcThetaE(data, time, height):
 
+        #### EXAMPLE OF USE:
+        #### data = calcThetaE(data_um, time_um, height)
+
     L_vap = 2.5e6    # J/kg
     L_sub = 2.836e6  # J/kg
     cp = 1004.6      # J/kg.K
