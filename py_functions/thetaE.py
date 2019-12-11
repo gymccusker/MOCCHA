@@ -6,7 +6,7 @@ Function to calculate equivalent potential temperature
 
 import numpy as np
 
-def calcThetaE(data, time, height):
+def calcThetaE(temperature, pressure, q, time, height):
 
         #### EXAMPLE OF USE:
         #### data = calcThetaE(data_um, time_um, height)
@@ -16,15 +16,13 @@ def calcThetaE(data, time, height):
     cp = 1004.6      # J/kg.K
 
     print 'Calculating theta:'
-    data['theta'] = {}
-    data['theta'] = np.zeros([len(time),len(height)])
+    theta = np.zeros([len(time),len(height)])
     for k in range(0,len(height)):
-        data['theta'][:,k] = data['temperature'][:,k] * np.power(1e5 / data['pressure'][:,k], 0.2854)
+        theta[:,k] = temperature[:,k] * np.power(1e5 / pressure[:,k], 0.2854)
 
     print 'Calculating theta_e:'
-    data['theta_e'] = {}
-    data['theta_e'] = np.zeros([len(time),len(height)])
+    thetaE = np.zeros([len(time),len(height)])
     for k in range(0,len(height)):
-        data['theta_e'][:,k] = data['theta'][:,k] + ((data['theta'][:,k] * L_vap * data['q'][:,k]) / (cp * data['temperature'][:,k]))
+        thetaE[:,k] = theta[:,k] + ((theta * L_vap * q[:,k]) / (cp * temperature[:,k]))
 
-    return data
+    return theta, thetaE
