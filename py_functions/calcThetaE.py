@@ -1,49 +1,27 @@
 """
-Steps to read in Matlab struct files (saved as .mat)
+Function to calculate equivalent potential temperature
 ==============================
 
 """
 
-from scipy.io import loadmat
 import numpy as np
 
+def calcThetaE(data, time, height):
 
-def readMatlabStruct(filename, struct_name):
+    L_vap = 2.5e6    # J/kg
+    L_sub = 2.836e6  # J/kg
+    cp = 1004.6      # J/kg.K
 
-    #### EXAMPLE OF USE:
-    #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
+    print 'Calculating theta:'
+    data['theta'] = {}
+    data['theta'] = np.zeros([len(time),len(height)])
+    for k in range(0,len(height)):
+        data['theta'][:,k] = data['temperature'][:,k] * np.power(1e5 / data['pressure'][:,k], 0.2854)
 
-    #### --------------------------------------------------------------------
-    #### LOAD MATLAB FILE USING SCIPY
-    #### --------------------------------------------------------------------
-    print 'Reading in .mat file including struct...'
-    dat = loadmat(filename)
-    print ''
+    print 'Calculating theta_e:'
+    data['theta_e'] = {}
+    data['theta_e'] = np.zeros([len(time),len(height)])
+    for k in range(0,len(height)):
+        data['theta_e'][:,k] = data['theta'][:,k] + ((data['theta'][:,k] * L_vap * data['q'][:,k]) / (cp * data['temperature'][:,k]))
 
-    #### --------------------------------------------------------------------
-    #### USE STRUCT_NAME TO DEFINE INTERMEDIATE STRUCT ARRAY
-    #### --------------------------------------------------------------------
-    print 'Dealing with intermediate data assignments...'
-    struct = dat[struct_name]
-    print ''
-
-    #### --------------------------------------------------------------------
-    #### IDENTIFY DATA AS FIRST ENTRY IN INTERMEDIATE STRUCT
-    #### --------------------------------------------------------------------
-    data = struct[0,0]
-        #### data.dtype:
-            #### returns keys of dictionary (normal python dictionary access
-            #### commands don't quite work...). MATLAB structs come back as
-            #### numpy structured arrays.
-
-    #### --------------------------------------------------------------------
-    #### CHANGE NUMPY STRUCTURED ARRAY TO DICTIONARY FOR EASE OF USE
-    ####            --- come back to this later
-    #### --------------------------------------------------------------------
-    # dict = {}
-
-    print 'Finished! :)'
-    print 'Reading out ' + struct_name + ' struct within .mat file'
-    print ''
-
-    return data      #### returns structured numpy array containing matlab struct
+    return data
