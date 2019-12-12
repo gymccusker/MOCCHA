@@ -7143,8 +7143,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
         micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 2.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0. '
     elif out_dir[2:9] == 'u-bn068':
-        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2), with l_ensure_min_in_cloud_qcf = 1 [Ensures that the model does not have very high ice cloud fractions with very little ice water content in them by reducing the ice cloud fraction to ensure a minimum in-cloud ice water content of 1.0e-6] and l_fixbug_pc2_mixph = 1 [Selecting this option removes a number of inconsistencies with the treatment of mixed phase cloud fraction that were present in the code pre vn8.2. Option 1) Advect the mixed phase cloud fraction instead of the bulk cloud fraction, which gives better behaved numerics of the advection scheme.]'
-        revision = 'Revision no. 0. '
+        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud.'
+        revision = 'Revision no. 1. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
@@ -7343,7 +7343,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2M_CON/'
+    out_dir = '7_u-bn068_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -7353,6 +7353,7 @@ def main():
     ## 4_u-bg610_RA2M_CON/
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
+    ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
 
     #### run with nohup:
     #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
