@@ -7145,6 +7145,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
     elif out_dir[2:9] == 'u-bn068':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud.'
         revision = 'Revision no. 1. '
+    elif out_dir[2:9] == 'u-bp738':
+        micro = 'Global model initialised with ERA-Interim reanalyses. Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
@@ -7343,7 +7346,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/'
+    out_dir = '8_u-bp738_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -7354,6 +7357,7 @@ def main():
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
+    ## 8_u-bp738_RA2M_CON/              # ERAI
 
     #### run with nohup:
     #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
