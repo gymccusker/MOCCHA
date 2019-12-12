@@ -7149,7 +7149,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
     dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed.'
-    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris).'
+    dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (Iris/netCDF4).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'Rose suite ID: ' + out_dir[2:9]
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
