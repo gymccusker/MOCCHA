@@ -880,7 +880,7 @@ def main():
                 # 20180827T1200Z_glm_pc035.pp
                 filename1 = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
                 if stream == '_pb009':
-                    filename2 = root_dir + out_dir + date + '/' + date + '_glm_pb012.pp'
+                    filename2 = root_dir + out_dir + date + '/' + date + '_glm_pb012.pp'    ### FIX: no pb009 file for glm, starts at 012
                 else:
                     filename2 = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
                 filenames = [filename1, filename2]
