@@ -1101,7 +1101,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     #             fileout[:20] = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
-    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_pc2_ifs_TSa.png'
+    fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1759,13 +1759,13 @@ def main():
         ## create labels for figure legends - done here so only needs to be done once!
         #################################################################
         label1 = 'undefined_label'
-        if out_dir1[:9] == '7_u-bn068': label1 = 'UM_PC2'
+        if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
         if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
         if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
         if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
         label2 = 'undefined_label'
-        if out_dir2[:9] == '7_u-bn068': label2 = 'UM_PC2'
+        if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
         if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
         if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
         if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
