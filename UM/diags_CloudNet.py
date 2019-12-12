@@ -785,7 +785,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/'
+    out_dir = '8_u-bp738_ERAI_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
@@ -798,15 +798,16 @@ def main():
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
+    ## 8_u-bp738_ERAI_CON/              # ERAI
 
     # -------------------------------------------------------------
     # Extract from MASS with:
     # -------------------------------------------------------------
     #### moo select stash_extract_CloudNet.p2 moose:crum/u-bg610/apm.pp 4_u-bg610_RA2M_CON/20180811T1200Z/
-    #### moo select stash_extract_CASIM.p5 moose:crum/u-bl616/apm.pp 5_u-bl616_RA2M_CASIM/20180901T1200Z/
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bl661/apm.pp 5_u-bl661_RA1M_CASIM/20180831T1200Z/
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bm410/apm.pp 6_u-bm410_RA1M_CASIM/20180905T1200Z/
     #### moo select stash_extract_all.p4 moose:crum/u-bn068/apm.pp 7_u-bn068_RA2T_CON/20180827T1200Z/
+    #### moo select stash_extract_all.p4 moose:crum/u-bp738/apm.pp 8_u-bp738_ERAI_CON/20180827T1200Z/
 
     ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
     #### nohup python2.7 diags_CloudNet.py > nohup_u-bn068_diags_CloudNet.out &
