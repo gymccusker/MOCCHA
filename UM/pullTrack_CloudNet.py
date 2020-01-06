@@ -7158,7 +7158,6 @@ def appendMetaNetCDF(outfile, date, out_dir):
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = revision + micro + wind
     dataset.institution = 'University of Leeds.'
-    # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
 
     ###################################
