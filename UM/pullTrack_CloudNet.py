@@ -7137,16 +7137,16 @@ def appendMetaNetCDF(outfile, date, out_dir):
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
         revision = 'Revision no. 1. '
     elif out_dir[2:9] == 'u-bl661':
-        micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
+        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0. '
     elif out_dir[2:9] == 'u-bm410':
-        micro = 'CASIM microphysics + cloud scheme. Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 2.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
+        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 2.00e8 /m3, mass = 3.00e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0. '
     elif out_dir[2:9] == 'u-bn068':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud.'
         revision = 'Revision no. 1. '
     elif out_dir[2:9] == 'u-bp738':
-        micro = 'Global model initialised with ERA-Interim reanalyses. Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
+        micro = 'Global model initialised with ERA-Interim reanalyses, LAM run with RA2M_CON configuration (as u-bg610, default run). Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
         revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
@@ -7158,7 +7158,6 @@ def appendMetaNetCDF(outfile, date, out_dir):
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
     dataset.comment = revision + micro + wind
     dataset.institution = 'University of Leeds.'
-    # dataset.initialization_time = outfile[0:4] + '-' + outfile[4:6] + '-' + outfile[6:8]) + ' 00:00:00 UTC.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
 
     ###################################
@@ -7346,7 +7345,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '8_u-bp738_RA2M_CON/'
+    out_dir = '5_u-bl661_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 1_20160401_61DIAG_TEST/
