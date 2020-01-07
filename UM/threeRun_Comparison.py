@@ -1491,15 +1491,15 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '7_u-bn068_RA2T_CON/OUT/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
-    ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/
-    ### 5_u-bl661_RA1M_CASIM/OUT/
-    ### 6_u-bm410_RA1M_CASIM/OUT/
-    ### 7_u-bn068_RA2T_CON/OUT/
+    ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
+    ### 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
+    ### 7_u-bn068_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash
+    ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
 
     print '******'
     print ''
