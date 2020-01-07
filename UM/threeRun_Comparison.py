@@ -1332,7 +1332,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(9,8))
     plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+    plt.subplots_adjust(top = 0.9, bottom = 0.08, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.15)
 
     #################################################################
@@ -1399,10 +1399,8 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     else:
         plt.plot(time_um3, data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
-    # plt.legend()
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
-    # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1411,7 +1409,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.xlabel('Day of month [Sep]')
     if month_flag == -1:
         ax.set_xlim([doy[0],doy[-1]])
-        plt.xlabel('Day of year')
+        # plt.xlabel('Day of year')
 
     plt.subplot(3,1,3)
     ax = plt.gca()
@@ -1424,7 +1422,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(time_um3, data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
     # plt.legend()
-    plt.title('Net SW radiation [W/m2]')
+    plt.title('Net LW radiation [W/m2]')
     # plt.ylim([260,275])
     # plt.grid('on')
     if month_flag == 8:
