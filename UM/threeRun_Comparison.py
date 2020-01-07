@@ -1289,7 +1289,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
+def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3,
     month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
