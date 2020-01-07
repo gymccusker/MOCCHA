@@ -1416,8 +1416,8 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,1,3)
     ax = plt.gca()
     # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
-    plt.plot(time_um, data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(time_um, data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(time_um1, data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(time_um2, data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
         plt.plot(time_um3, data_um3['sfc_net_lw'].data, color = 'darkorange')
     else:
