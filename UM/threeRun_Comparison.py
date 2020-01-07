@@ -1290,7 +1290,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.show()
 
 def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
-    month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy):
+    month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1357,8 +1357,8 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = 'Oper')
-    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
+    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1378,8 +1378,8 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3
     ax = plt.gca()
     data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = 'Oper')
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = 'CASIM-100')
+    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = label1)
+    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = label2)
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
@@ -1785,7 +1785,7 @@ def main():
         #             missing_files, out_dir1, cube_obs, doy)
 
         figure = plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
-            month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy)
+            month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy, label1, label2, label3)
 
         # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
         #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
