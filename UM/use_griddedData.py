@@ -1952,9 +1952,10 @@ def main():
     ### TESTING/domain_tests/umnsaa_pa000
     ############ 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
-    ### 5_u-bl661_RA1M_CASIM/OUT/
-    ### 6_u-bm410_RA1M_CASIM/OUT/
-    ### 7_u-bn068_RA2M_PC2/OUT/
+    ### 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
+    ### 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
+    ### 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
+    ### 8_u-bp738_RA2M_CON/              # ERAI
 
     print '******'
     print ''
