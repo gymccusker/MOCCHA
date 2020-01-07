@@ -2034,7 +2034,7 @@ def main():
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
-    doy = np.arange(243,248)        ## set DOY for subset of moccha figures
+    doy = np.arange(243,249)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -2117,6 +2117,7 @@ def main():
             else:
                 # data['time'] = np.append(data['time'],float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
                 if month_flag == -1:
+                    print doy[i]
                     timem = np.append(timem, doy[i] + ((cube[0].dim_coords[0].points)/24.0))
                 else:
                     timem = np.append(timem,float(filename[-16:-14]) + ((cube[0].dim_coords[0].points)/24.0))
