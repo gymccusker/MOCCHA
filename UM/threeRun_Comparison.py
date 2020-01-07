@@ -1366,9 +1366,9 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
     plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
     if ifs_flag == True:
-        ax1.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'darkorange', label =  label3)
+        plt.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'darkorange', label =  label3)
     else:
-        ax1.plot(time_um3, data1d_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+        plt.plot(time_um3, data1d_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
     # plt.plot(time_um3, data1d_um3['temp_1.5m'].data - 273.15, color = 'g', label = label3)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
