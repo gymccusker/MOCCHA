@@ -1289,8 +1289,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3,
-    month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3):
+def plot_line_RAD(data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1356,6 +1355,10 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     datenums_radice = cube_obs[1].dim_coords[0].points
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+
+    time_um1 = data1d_um1['time'][:]
+    time_um2 = data1d_um2['time'][:]
+    time_um3 = data1d_um3['time'][:]
 
     #################################################################
     ## create figure and axes instances
@@ -1757,6 +1760,12 @@ def main():
                     else:
                         data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data,0)
 
+        #################################################################
+        ## save time to dictionary now we're not looping over all diags anymore
+        #################################################################
+        data_um1['time'] = time_um1
+        data_um2['time'] = time_um2
+        data_um3['time'] = time_um3
 
         #################################################################
         ## create labels for figure legends - done here so only needs to be done once!
@@ -1799,15 +1808,12 @@ def main():
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
 
-        figure = plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
+        figure = plot_line_RAD(data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
             month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3)
 
         # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
         #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
 
-        data_um1['time'] = time_um1
-        data_um2['time'] = time_um2
-        data_um3['time'] = time_um3
         np.save('working_data1', data_um1)
         np.save('working_data2', data_um2)
         np.save('working_data3', data_um3)
