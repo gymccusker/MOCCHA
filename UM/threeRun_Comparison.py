@@ -1105,8 +1105,7 @@ def plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_u
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-            missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy): #, lon, lat):
+def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1192,8 +1191,7 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1
     plt.show()
 
 
-def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
-        missing_files, out_dir1, cube_obs, doy): #, lon, lat):
+def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1291,8 +1289,8 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-    month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
+    month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1421,25 +1419,15 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     print 'Finished plotting! :)'
     print ''
 
-    # if month_flag == 8:
-    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #         fileout = '../FIGS/UM/' + out_dir[:21] + '201808_oden_metum_temp.png'
-    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #         fileout = '../FIGS/UM/' + out_dir[:19] + '201808_oden_metum_temp.png'
-    # if month_flag == 9:
-    #     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
-    #         fileout = '../FIGS/UM/' + out_dir[:21] + '201809_oden_metum_temp.png'
-    #     elif out_dir[:18] == '4_u-bg610_RA2M_CON':
-    #         fileout = '../FIGS/UM/' + out_dir[:19] + '201809_oden_metum_temp.png'
     if month_flag == -1:
         if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
         if out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
-        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
+        if out_dir2[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
     print 'Saving as: ' + fileout
-    plt.savefig(fileout, dpi=400)
+    # plt.savefig(fileout, dpi=400)
     plt.show()
 
 def callback(cube, field, filename):
@@ -1576,9 +1564,9 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_']#,
-            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            # '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
@@ -1588,8 +1576,8 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(240,245)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,245)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -1790,14 +1778,14 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3)
+        # figure = plot_line_TSa(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
+        #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, cube_obs, doy)
 
-        # figure = plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2,
-        #     month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy)
+        figure = plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3, cube_um1, cube_um2, cube_um3,
+            month_flag, missing_files, out_dir1, out_dir2, out_dir3, cube_obs, doy)
 
         # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag,
         #             missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy)
