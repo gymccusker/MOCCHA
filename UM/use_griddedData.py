@@ -1655,7 +1655,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'MetUM')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'CASIM-100')
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1674,7 +1674,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     plt.subplot(2,1,2)
     ax = plt.gca()
     data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'r', label = 'MetUM')
+    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'r', label = 'CASIM-100')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
@@ -1946,16 +1946,16 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/'
+    out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ############ 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
-    ### 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
+    ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
-    ### 8_u-bp738_RA2M_CON/              # ERAI
+    ### 7_u-bn068_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash
+    ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
 
     print '******'
     print ''
