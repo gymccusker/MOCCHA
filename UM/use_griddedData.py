@@ -2164,7 +2164,7 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
