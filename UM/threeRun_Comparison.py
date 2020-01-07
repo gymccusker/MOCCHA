@@ -1289,7 +1289,7 @@ def plot_line_BLDepth(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3):
+def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, cube_obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1356,9 +1356,9 @@ def plot_line_RAD(data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_u
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
-    time_um1 = data1d_um1['time'][:]
-    time_um2 = data1d_um2['time'][:]
-    time_um3 = data1d_um3['time'][:]
+    time_um1 = data_um1['time'][:]
+    time_um2 = data_um2['time'][:]
+    time_um3 = data_um3['time'][:]
 
     #################################################################
     ## create figure and axes instances
@@ -1366,12 +1366,12 @@ def plot_line_RAD(data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_u
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
-    plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
+    plt.plot(time_um1, data_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
+    plt.plot(time_um2, data_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_temp_2m'].data, color = 'darkorange', label =  label3)
+        plt.plot(time_um3, data_um3['sfc_temp_2m'].data, color = 'darkorange', label =  label3)
     else:
-        plt.plot(time_um3, data1d_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+        plt.plot(time_um3, data_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
     # plt.plot(time_um3, data1d_um3['temp_1.5m'].data - 273.15, color = 'g', label = label3)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
@@ -1392,12 +1392,12 @@ def plot_line_RAD(data1d_um1, data1d_um2, data1d_um3, cube_um1, cube_um2, cube_u
     ax = plt.gca()
     # data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
     # data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = label1)
-    plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = label2)
+    plt.plot(time_um1, data_um1['surface_net_SW_radiation'].data, color = 'r', label = label1)
+    plt.plot(time_um2, data_um2['surface_net_SW_radiation'].data, color = 'b', label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data1d_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+        plt.plot(time_um3, data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
-        plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+        plt.plot(time_um3, data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
