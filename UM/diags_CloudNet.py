@@ -807,12 +807,12 @@ def main():
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bl661/apm.pp 5_u-bl661_RA1M_CASIM/20180831T1200Z/
     #### moo select stash_extract_CASIM.p5 moose:crum/u-bm410/apm.pp 6_u-bm410_RA1M_CASIM/20180905T1200Z/
     #### moo select stash_extract_all.p4 moose:crum/u-bn068/apm.pp 7_u-bn068_RA2T_CON/20180827T1200Z/
-    #### moo select stash_extract_all.p4 moose:crum/u-bp738/apm.pp 8_u-bp738_ERAI_CON/20180827T1200Z/
+    #### moo select stash_extract_all.p4 moose:crum/u-bp738/apm.pp 8_u-bp738_RA2M_CON/20180904T1200Z/
 
     #### stash CASIM:
     ####    2, 3, 4, 10, 12, 24, 75, 78, 83, 86, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409, 1201,
     ####    2201, 2391, 2392, 3025, 3217, 3234, 3236, 3245, 3247, 3248, 3360, 3361, 3476, 4118, 4203, 4204,
-    ####    5216, 9203, 9204, 9205, 16004, 30461 
+    ####    5216, 9203, 9204, 9205, 16004, 30461
 
     ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
     #### nohup python2.7 diags_CloudNet.py > nohup_u-bn068_diags_CloudNet.out &
