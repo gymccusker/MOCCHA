@@ -1359,6 +1359,7 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3
     ax = plt.gca()
     plt.plot(time_um1, data1d_um1['temp_1.5m'].data - 273.15, color = 'r', label = label1)
     plt.plot(time_um2, data1d_um2['temp_1.5m'].data - 273.15, color = 'b', label = label2)
+    plt.plot(time_um3, data1d_um3['temp_1.5m'].data - 273.15, color = 'g', label = label3)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1376,10 +1377,11 @@ def plot_line_RAD(time_um1, time_um2, time_um3, data1d_um1, data1d_um2, data_um3
 
     plt.subplot(2,1,2)
     ax = plt.gca()
-    data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
-    data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
+    # data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
+    # data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um1, data1d_um1['surface_net_SW_radiation'].data, color = 'r', label = label1)
     plt.plot(time_um2, data1d_um2['surface_net_SW_radiation'].data, color = 'b', label = label2)
+    plt.plot(time_um3, data1d_um3['surface_net_SW_radiation'].data, color = 'g', label = label3)
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
