@@ -1582,9 +1582,9 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
         elif out_dir[:18] == '5_u-bl661_RA1M_CAS':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp_degC.png'
         elif out_dir[:18] == '7_u-bn068_RA2T_CON':
-            fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp_degC.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp_degC.png'
         elif out_dir[:18] == '8_u-bp738_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_temp_degC.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_temp_degC.png'
     plt.savefig(fileout, dpi=600)
     plt.show()
 
@@ -1720,9 +1720,9 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
         elif out_dir[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_tempdegC_SW.png'
         elif out_dir[:18] == '7_u-bn068_RA2T_CON':
-            fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_tempdegC_SW.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
         elif out_dir[:18] == '8_u-bp738_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_tempdegC_SW.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
     plt.savefig(fileout, dpi=400)
     plt.show()
 
