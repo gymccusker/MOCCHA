@@ -298,14 +298,14 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/OUT/'
+    out_dir = '7_u-bn068_RA2T_CON/OUT_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
     ### 5_u-bl661_RA1M_CASIM/OUT/       # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/OUT/       # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_24h/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/              # ERAI
 
     print '******'
@@ -372,8 +372,8 @@ def main():
             # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc',
             '20180828_oden_metum.nc',
             '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc']#,'20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc']#,'20180905_oden_metum.nc',
+            # '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
             # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
             # '20180914_oden_metum.nc']
 
