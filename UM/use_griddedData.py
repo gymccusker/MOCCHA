@@ -2015,16 +2015,16 @@ def main():
             '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
-    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc',
+    moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            # '20180829_oden_metum.nc','20180830_oden_metum.nc',
             '20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc']#,'20180905_oden_metum.nc',
+            # '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+            # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            # '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
@@ -2142,7 +2142,7 @@ def main():
                     ### doesn't matter which cube, just needed for dim_coords
 
         ### plot UM data in specific subplot order for paper:
-        figure = plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy)
+        # figure = plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy)
 
         # -------------------------------------------------------------
         # Plot combined CASIM column data (4x3 timeseries)
@@ -2164,7 +2164,7 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        # figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        figure = plot_line_RAD(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
