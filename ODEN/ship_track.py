@@ -140,20 +140,20 @@ def plotmap(data):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     ## create figure and axes instances
-    fig = plt.figure(figsize=(8.27, 11.69), dpi=300)
+    fig = plt.figure(figsize=(7, 10), dpi=300)
 
     #########################################################################################################
 
     ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
 
     ### MAP DIMENSIONS
-    dim = 2500000
+    dim = 1750000
 
-    m = Basemap(width=0.75*dim,height=dim,
+    m = Basemap(width=0.7*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=86,lat_0=86,lon_0=-10)
+                lat_ts=82,lat_0=83,lon_0=0)
     m.drawcoastlines()
-    # m.bluemarble()
+    m.bluemarble()
 
     # define parallels/meridians
     # m.drawparallels(np.arange(50.,91.,2.),color='k')
@@ -167,8 +167,7 @@ def plotmap(data):
 
     m.drawcoastlines(linewidth=1.)
 
-    # m.drawmapboundary(fill_color='lightgrey')
-    m.fillcontinents(color='lightgrey')
+    # m.fillcontinents(color='lightgrey')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
@@ -225,7 +224,7 @@ def plotmap(data):
 
     # plt.title('MOCCHA ship track')
 
-    # plt.savefig('FIGS/HighArctic_vPOSTER_v2.svg',dpi=100)
+    plt.savefig('FIGS/HighArctic_vPRES.svg')
     plt.show()
 
 def plotmap_poster(data):
