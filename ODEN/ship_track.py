@@ -182,8 +182,8 @@ def plotmap(data):
 
     # Plot tracks as line plot
     plt.plot(x, y, '--', color = 'pink', linewidth = 2, label = 'Whole')
-    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 3, label = 'In Ice')
-    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 3, label = 'Drift')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 4, label = 'In Ice')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 5, label = 'Drift')
     # plt.plot(x_highlightPeriod, y_highlightPeriod, color = 'purple', linewidth = 4, label = 'Case examples')
 
     ###########################################
