@@ -1774,12 +1774,12 @@ def main():
         if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
         if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
         if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
-        if out_dir1[:9] == '4_u-bg610': label1 = 'UM'
+        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
         label2 = 'undefined_label'
         if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
         if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
-        if out_dir2[:9] == '5_u-bl661': label2 = 'CASIM-100'
+        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
         if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
         label3 = 'undefined_label'
