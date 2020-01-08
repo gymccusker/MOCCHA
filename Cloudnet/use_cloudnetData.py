@@ -283,8 +283,8 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_Cv_240-250DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -523,8 +523,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+    um_out_dir = 'cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     # out_dir3 = 'MET_DATA/'
 
     ### lwc-adiabatic-metum-grid/2018/
@@ -587,14 +587,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            # '20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -602,8 +603,8 @@ def main():
 
     moccha_missing_files = ['20180910_oden_']   ### cloud radar not working
 
-    doy = np.arange(225,258)        ## set DOY for full moccha figures
-    # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
+    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -761,7 +762,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
@@ -776,7 +777,7 @@ def main():
     # -------------------------------------------------------------
     # Plot IWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.
