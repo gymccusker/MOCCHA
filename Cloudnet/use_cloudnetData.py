@@ -881,7 +881,7 @@ def main():
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv_filtered']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
-            var_list = ['height','lwc','model_lwc']   ### time always read in separately
+            var_list = ['height','lwc','model_lwc_filtered']   ### time always read in separately
         elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
             var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
@@ -916,7 +916,7 @@ def main():
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
             var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-            var_list = ['height','lwc','model_lwc']   ### time always read in separately
+            var_list = ['height','lwc','model_lwc_filtered']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
