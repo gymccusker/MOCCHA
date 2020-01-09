@@ -686,13 +686,13 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'cloud-fraction-metum-grid/2018/'
-    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    um_out_dir = 'lwc-scaled-metum-grid/2018/'
+    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
 
-    ### lwc-adiabatic-metum-grid/2018/
-    ###             -> liquid water content derived using measurements averaged on to model grid
+    ######## lwc-adiabatic-metum-grid/2018/
+    ########             -> liquid water content derived using measurements averaged on to model grid
     ### cloud-fraction-metum-grid/2018/ + cloud-fraction-ecmwf-grid/2018/
     ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
     ### lwc-scaled-metum-grid/2018/ + lwc-scaled-ecmwf-grid/2018/
@@ -833,7 +833,7 @@ def main():
 
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
             var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
-        elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
+        elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
@@ -873,7 +873,7 @@ def main():
         if misc_flag == 1:
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
                 var_list = ['height','cloud_fraction']   ### time always read in separately
-            elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
+            elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
                 var_list = ['height','qliq']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
                 var_list = ['height','qice']   ### time always read in separately
