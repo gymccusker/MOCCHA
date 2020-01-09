@@ -700,7 +700,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
-    misc_data['qice'][misc_data['qice'] == 0] = np.nan
+    misc_data['qice'][misc_data['qice'] <= 0] = np.nan
 
     plt.plot(np.nanmean(um_data['iwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['iwc'],0)*1e3 - np.nanstd(um_data['iwc'],0)*1e3,
@@ -711,9 +711,9 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 - np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3,
         np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 + np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
-    # ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qice'],0) - np.nanstd(misc_data['qice'],0))*1e3,
-    #     (np.nanmean(misc_data['qice'],0) + np.nanstd(misc_data['qice'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qice'],0) - np.nanstd(misc_data['qice'],0))*1e3,
+        (np.nanmean(misc_data['qice'],0) + np.nanstd(misc_data['qice'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
@@ -727,7 +727,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_IWC_240-250DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_240-250DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
