@@ -2194,34 +2194,6 @@ def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def calcThetaE(data, time, height): #, lon, lat):
-
-    '''
-    Function calculates equivalent potential temperature
-    '''
-
-    L_vap = 2.5e6    # J/kg
-    L_sub = 2.836e6  # J/kg
-    cp = 1004.6      # J/kg.K
-
-    print 'Calculating theta:'
-    data['theta'] = {}
-    data['theta'] = np.zeros([len(time),len(height)])
-    for k in range(0,len(height)):
-        data['theta'][:,k] = data['temperature'][:,k] * np.power(1e5 / data['pressure'][:,k], 0.2854)
-        # data_um2['theta'][:,k] = data_um2['temperature'][:,k] * np.power(1e5 / data_um2['pressure'][:,k], 0.2854)
-
-    print 'Calculating theta_e:'
-    data['theta_e'] = {}
-    # data_um2['theta_e'] = {}
-    data['theta_e'] = np.zeros([len(time),len(height)])
-    # data_um2['theta_e'] = np.zeros([len(time_um2),len(height)])
-    for k in range(0,len(height)):
-        data['theta_e'][:,k] = data['theta'][:,k] + ((data['theta'][:,k] * L_vap * data['q'][:,k]) / (cp * data['temperature'][:,k]))
-        # data_um2['theta_e'][:,k] = data_um2['theta'][:,k] + ((data_um2['theta'][:,k] * L_vap * data_um2['q'][:,k]) / (cp * data_um2['temperature'][:,k]))
-
-    return data
-
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
