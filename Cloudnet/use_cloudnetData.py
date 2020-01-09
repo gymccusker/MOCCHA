@@ -458,7 +458,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_splitSeason.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -560,7 +560,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_IWC_splitSeason.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def main():
