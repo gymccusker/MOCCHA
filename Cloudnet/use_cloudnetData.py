@@ -793,8 +793,8 @@ def main():
                 var_list = ['height','qice']   ### time always read in separately
 
             if i == 0:
-                ifs_data = {}
-                ifs_data1d = {}
+                misc_data = {}
+                misc_data1d = {}
                 if month_flag == -1:
                     time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
                 else:
