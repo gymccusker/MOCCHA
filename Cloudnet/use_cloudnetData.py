@@ -780,9 +780,11 @@ def main():
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
 
+        ### -------------------------------------------------------------------------
+        ###     LOAD IN MISC DATA IF COMPARING
+        ###             Only load in what variables are needed based on IFS file chosen
+        ### -------------------------------------------------------------------------
         if misc_flag == 1:
-            ###     LOAD IN MISC DATA IF COMPARING
-            ###             Only load in what variables are needed based on IFS file chosen
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
                 var_list = ['height','cloud_fraction']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
@@ -794,9 +796,9 @@ def main():
                 ifs_data = {}
                 ifs_data1d = {}
                 if month_flag == -1:
-                    time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
+                    time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
                 else:
-                    time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
+                    time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
                 for j in range(0,len(var_list)):
                     if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
                         misc_data1d[var_list[j]] = nc3.variables[var_list[j]][:]
@@ -804,9 +806,9 @@ def main():
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
             else:
                 if month_flag == -1:
-                    time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
+                    time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
                 else:
-                    time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
+                    time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
                 print misc_data
                 for j in range(0,len(var_list)):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
