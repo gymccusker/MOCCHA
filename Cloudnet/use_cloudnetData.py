@@ -513,9 +513,9 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     #### set flagged um_data to nans
     um_data['lwc'][um_data['lwc'] == -999] = np.nan
     um_data['lwc'][um_data['lwc'] == 0] = np.nan
-    um_data['model_lwc_filtered'][um_data['model_lwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_lwc_filtered'][ifs_data['model_lwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_lwc_filtered'][ifs_data['model_lwc_filtered'] >= 20.0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
     misc_data['qliq'][misc_data['qliq'] == 0] = np.nan
 
     plt.plot(np.nanmean(um_data['lwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
@@ -544,7 +544,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_qliq_240-250DOY.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -728,7 +728,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_240-250DOY.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def main():
@@ -768,8 +768,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+    um_out_dir = 'lwc-scaled-metum-grid/2018/'
+    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
 
@@ -881,7 +881,7 @@ def main():
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv_filtered']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
-            var_list = ['height','lwc','model_lwc_filtered']   ### time always read in separately
+            var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
             var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
@@ -916,7 +916,7 @@ def main():
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
             var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-            var_list = ['height','lwc','model_lwc_filtered']   ### time always read in separately
+            var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
@@ -1062,8 +1062,8 @@ def main():
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
