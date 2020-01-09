@@ -695,7 +695,7 @@ def main():
     for i in range(0,len(names)):
         filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
-        if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] 'metum.nc'
+        if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         print filename_um
         print filename_ifs
         if misc_flag == 1: print filename_misc
