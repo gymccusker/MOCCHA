@@ -516,7 +516,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
-    misc_data['qliq'][misc_data['qliq'] == 0] = np.nan
+    misc_data['qliq'][misc_data['qliq'] <= 0] = np.nan
 
     plt.plot(np.nanmean(um_data['lwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['lwc'],0)*1e3 - np.nanstd(um_data['lwc'],0)*1e3,
