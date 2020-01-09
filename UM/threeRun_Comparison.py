@@ -1377,7 +1377,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([263 - 273,275 - 273])
-    # plt.grid('on')
+    plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1401,6 +1401,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
+    plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1515,7 +1516,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '4_u-bg610_RA2M_CON/OUT_R1/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
@@ -1583,14 +1584,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1598,9 +1600,9 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
+    # doy = np.arange(225,259)        ## set DOY for full moccha figures
     # doy = np.arange(240,245)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
