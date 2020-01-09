@@ -695,13 +695,16 @@ def main():
     for i in range(0,len(names)):
         filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
+        if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] 'metum.nc'
         print filename_um
         print filename_ifs
+        if misc_flag == 1: print filename_misc
         print ''
 
         print 'Loading multiple diagnostics:'
         nc1 = Dataset(filename_um,'r')
         nc2 = Dataset(filename_ifs,'r')
+        if misc_flag == 1: nc3 = Dataset(filename_misc,'r')
 
         # print 'i = ' + str(i)
         print ''
@@ -777,50 +780,49 @@ def main():
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
 
-        ###     LOAD IN MISC DATA IF COMPARING
-        ###             Only load in what variables are needed based on IFS file chosen
-        if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','cloud_fraction']   ### time always read in separately
-        elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
-            var_list = ['height','qliq']   ### time always read in separately
-        elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-            var_list = ['height','qice']   ### time always read in separately
+        if misc_flag == 1:
+            ###     LOAD IN MISC DATA IF COMPARING
+            ###             Only load in what variables are needed based on IFS file chosen
+            if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+                var_list = ['height','cloud_fraction']   ### time always read in separately
+            elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
+                var_list = ['height','qliq']   ### time always read in separately
+            elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+                var_list = ['height','qice']   ### time always read in separately
 
-        if i == 0:
-            ifs_data = {}
-            ifs_data1d = {}
-            if month_flag == -1:
-                time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
-            else:
-                time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
-            for j in range(0,len(var_list)):
-                if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    misc_data1d[var_list[j]] = nc3.variables[var_list[j]][:]
-                else:                                   # 2d column um_data
-                    misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
-        else:
-            if month_flag == -1:
-                time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
-            else:
-                time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
-            print misc_data
-            for j in range(0,len(var_list)):
-                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                # print 'j = ' + str(j)
-                if np.sum(nc3.variables[var_list[j]].shape) == 24:
-                    misc_data1d[var_list[j]] = np.append(misc_data1d[var_list[j]].data,nc3.variables[var_list[j]][:])
+            if i == 0:
+                ifs_data = {}
+                ifs_data1d = {}
+                if month_flag == -1:
+                    time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
                 else:
-                    misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
-        nc3.close()
+                    time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
+                for j in range(0,len(var_list)):
+                    if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                        misc_data1d[var_list[j]] = nc3.variables[var_list[j]][:]
+                    else:                                   # 2d column um_data
+                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+            else:
+                if month_flag == -1:
+                    time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
+                else:
+                    time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
+                print misc_data
+                for j in range(0,len(var_list)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    # print 'j = ' + str(j)
+                    if np.sum(nc3.variables[var_list[j]].shape) == 24:
+                        misc_data1d[var_list[j]] = np.append(misc_data1d[var_list[j]].data,nc3.variables[var_list[j]][:])
+                    else:
+                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
+            nc3.close()
 
         ### -------------------------------------------------------------------------
         ### PUT TIME INTO DATA DICTIONARIES FOR EASE
         ### -------------------------------------------------------------------------
         ifs_data['time'] = time_ifs
         um_data['time'] = time_um
-
-
-
+        if misc_flag == 1: misc_data['time'] = time_misc
 
         ######  LOAD ALL DIAGNOSTICS
         # if i == 0:
@@ -876,6 +878,7 @@ def main():
     # -------------------------------------------------------------
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
+    if misc_flag == 1: np.save('working_misc_data', misc_data)
     #### um_data = np.load('working_um_data.npy').item()
 
     # -------------------------------------------------------------
