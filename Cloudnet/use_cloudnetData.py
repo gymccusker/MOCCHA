@@ -724,14 +724,14 @@ def main():
         ###     LOAD IN UM DATA FIRST
         if i == 0:
             um_data = {}
-            um_data1d = {}
+            # um_data1d = {}
             if month_flag == -1:
                 time_um = doy[i] + ((nc1.variables['time'][:])/24.0)
             else:
                 time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
                 if np.sum(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    um_data1d[var_list[j]] = nc1.variables[var_list[j]][:]
+                    um_data[var_list[j]] = nc1.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     um_data[var_list[j]] = nc1.variables[var_list[j]][:]
         else:
@@ -744,7 +744,7 @@ def main():
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
                 if np.sum(nc1.variables[var_list[j]].shape) == 24:
-                    um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].data,nc1.variables[var_list[j]][:])
+                    um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:])
                 else:
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
         nc1.close()
@@ -759,14 +759,14 @@ def main():
         ###     LOAD IN IFS DATA
         if i == 0:
             ifs_data = {}
-            ifs_data1d = {}
+            # ifs_data1d = {}
             if month_flag == -1:
                 time_ifs = doy[i] + ((nc2.variables['time'][:])/24.0)
             else:
                 time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
                 if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
+                    ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
         else:
@@ -779,7 +779,7 @@ def main():
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
                 if np.sum(nc2.variables[var_list[j]].shape) == 24:
-                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
+                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:])
                 else:
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
@@ -798,14 +798,14 @@ def main():
 
             if i == 0:
                 misc_data = {}
-                misc_data1d = {}
+                # misc_data1d = {}
                 if month_flag == -1:
                     time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
                 else:
                     time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
                 for j in range(0,len(var_list)):
                     if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                        misc_data1d[var_list[j]] = nc3.variables[var_list[j]][:]
+                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
                     else:                                   # 2d column um_data
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
             else:
@@ -818,7 +818,9 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
                     if np.sum(nc3.variables[var_list[j]].shape) == 24:
-                        misc_data1d[var_list[j]] = np.append(misc_data1d[var_list[j]].data,nc3.variables[var_list[j]][:])
+                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
+                    elif np.sum(nc3.variables[var_list[j]].shape) == 71:
+                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
                     else:
                         misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
             nc3.close()
