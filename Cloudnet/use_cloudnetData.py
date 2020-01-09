@@ -589,6 +589,7 @@ def main():
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+        misc_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_um_dir = '/home/gillian/MOCCHA/ODEN/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
@@ -601,6 +602,7 @@ def main():
     ### CHOSEN RUN
     um_out_dir = 'cloud-fraction-metum-grid/2018/'
     ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
 
     ### lwc-adiabatic-metum-grid/2018/
@@ -688,6 +690,7 @@ def main():
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
+    misc_flag = 1       ## flag to compare non-cloudnet model data
 
     for i in range(0,len(names)):
         filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
@@ -774,9 +777,41 @@ def main():
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
 
+        ###     LOAD IN MISC DATA IF COMPARING
+        if i == 0:
+            ifs_data = {}
+            ifs_data1d = {}
+            if month_flag == -1:
+                time_ifs = doy[i] + ((nc2.variables['time'][:])/24.0)
+            else:
+                time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
+            for j in range(0,len(var_list)):
+                if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
+                else:                                   # 2d column um_data
+                    ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
+        else:
+            if month_flag == -1:
+                time_ifs = np.append(time_ifs, doy[i] + ((nc2.variables['time'][:])/24.0))
+            else:
+                time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc2.variables['time'][:])/24.0))
+            print ifs_data
+            for j in range(0,len(var_list)):
+                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                # print 'j = ' + str(j)
+                if np.sum(nc2.variables[var_list[j]].shape) == 24:
+                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
+                else:
+                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
+        nc2.close()
+
+        ### -------------------------------------------------------------------------
         ### PUT TIME INTO DATA DICTIONARIES FOR EASE
+        ### -------------------------------------------------------------------------
         ifs_data['time'] = time_ifs
         um_data['time'] = time_um
+
+
 
 
         ######  LOAD ALL DIAGNOSTICS
@@ -838,7 +873,12 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+
+    # -------------------------------------------------------------
+    # Plot Cv statistics from drift period with a 3rd dataset (not run through cloudnet)
+    # -------------------------------------------------------------
+    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
