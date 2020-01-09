@@ -820,7 +820,7 @@ def main():
                     if np.sum(nc3.variables[var_list[j]].shape) == 24:
                         misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
                     elif np.sum(nc3.variables[var_list[j]].shape) == 71:
-                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
+                        continue
                     else:
                         misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
             nc3.close()
