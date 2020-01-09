@@ -1450,8 +1450,8 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
                 fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
         if out_dir2[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
-    print 'Saving as: ' + fileout
-    plt.savefig(fileout)#, dpi=400)
+    # print 'Saving as: ' + fileout
+    # plt.savefig(fileout)#, dpi=400)
     plt.show()
 
 def callback(cube, field, filename):
@@ -1515,7 +1515,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+    out_dir2 = '4_u-bg610_RA2M_CON/OUT_R1/'
     out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
@@ -1583,15 +1583,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_',
-            '20180828_oden_',
+    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1599,9 +1598,9 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
     # doy = np.arange(240,245)        ## set DOY for subset of moccha figures
-    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
