@@ -336,6 +336,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
@@ -346,6 +347,9 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
         np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['cloud_fraction'],0),np.nanmean(misc_data['height'],0), color = 'foresgreen', linewidth = 3, label = 'CASIM-100')
+    # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+    #     np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
