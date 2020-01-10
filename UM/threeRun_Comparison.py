@@ -1395,7 +1395,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     #     plt.plot(time_um3, data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     # else:
     #     plt.plot(time_um3, data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    # plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
     # plt.grid('on')
