@@ -1376,7 +1376,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([263 - 273,275 - 273])
-    plt.grid('on')
+    # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
@@ -1398,7 +1398,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
-    plt.grid('on')
+    # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
         plt.xlabel('Day of month [Aug]')
