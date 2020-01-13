@@ -298,7 +298,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
         # from matplotlib.patches import Polygon
 
     ###################################
-    ## PLOT MAP
+    ## PLOT PROFILE
     ###################################
 
     print '******'
@@ -741,6 +741,39 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mi
     import matplotlib.cm as mpl_cm
         # from matplotlib.patches import Polygon
 
+    ###################################
+    ## PLOT PROFILE
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting Cv statistics for whole drift period:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	SET FONT SIZE AND AXES INSTANCE
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print um_data.keys()
     #### set flagged um_data to nans
     um_data['model_temperature'][um_data['model_temperature'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
