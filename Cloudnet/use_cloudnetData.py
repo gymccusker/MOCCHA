@@ -731,6 +731,52 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     # plt.savefig(fileout)
     plt.show()
 
+def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
+
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
+        np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+        np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['cloud_fraction'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
+        np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_temp_240-250DOY.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
 def main():
 
     import sys
@@ -768,8 +814,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = 'cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
 
@@ -879,7 +925,7 @@ def main():
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
-            var_list = ['height','Cv','model_Cv_filtered']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv_filtered','temperature']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
@@ -914,7 +960,7 @@ def main():
         nc1.close()
 
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
+            var_list = ['height','Cv','model_snow_Cv_filtered','air_temperature']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
@@ -954,7 +1000,7 @@ def main():
         ### -------------------------------------------------------------------------
         if misc_flag == 1:
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-                var_list = ['height','cloud_fraction']   ### time always read in separately
+                var_list = ['height','cloud_fraction','air_temperature']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
                 var_list = ['height','qliq']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
