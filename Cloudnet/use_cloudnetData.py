@@ -742,11 +742,11 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mi
         # from matplotlib.patches import Polygon
 
     #### set flagged um_data to nans
-    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    um_data['model_temperature'][um_data['model_temperature'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
-    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-    # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
+    # um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_temperature'][ifs_data['model_temperature'] == -999] = np.nan
+    misc_data['air_temperature'][misc_data['air_temperature'] == -999] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
@@ -925,7 +925,7 @@ def main():
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
-            var_list = ['height','Cv','model_Cv_filtered','temperature']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
@@ -960,7 +960,7 @@ def main():
         nc1.close()
 
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_snow_Cv_filtered','air_temperature']   ### time always read in separately
+            var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
