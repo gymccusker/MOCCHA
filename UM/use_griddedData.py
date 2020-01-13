@@ -1889,7 +1889,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
-def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1967,82 +1967,34 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
     plt.subplot(131)
 
     dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
-    if out_dir1[:9] == '4_u-bg610':
-        plt.plot(dat1[:,t], height1, linewidth = 3)
-    elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,t], height1, linewidth = 3)
-
-    dat2 = np.transpose(np.squeeze(data_um2['qnliq'].data))
-    if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,t], height2, linewidth = 3)
-    if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,t], height2, linewidth = 3)
+    plt.plot(dat1[:,t], height1, linewidth = 3)
 
     plt.ylim([0, 2000])
-    plt.xlim([0,3.0e8])
+    # plt.xlim([0,3.0e8])
     plt.xlabel('N_drop [/kg]')
     plt.ylabel('Z [m]')
-    if t == 11: plt.title('28-Aug-2018 1100 UTC')
-    if t == 12: plt.title('28-Aug-2018 1200 UTC')
-    if t == 28: plt.title('29-Aug-2018 0400 UTC')
-    if t == 45: plt.title('29-Aug-2018 2100 UTC')
-    if t == 61: plt.title('30-Aug-2018 1300 UTC')
-    if t == 66: plt.title('30-Aug-2018 1800 UTC')
-    if t == 72: plt.title('31-Aug-2018 0000 UTC')
-    if t == 83: plt.title('31-Aug-2018 1100 UTC')
-    if t == 84: plt.title('31-Aug-2018 1200 UTC')
-    if t == 86: plt.title('31-Aug-2018 1400 UTC')
     plt.legend()
 
     plt.subplot(132)
 
     dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
     # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
-    if out_dir1[:9] == '4_u-bg410':
-        plt.plot(dat1[:,t], height1, linewidth = 3)
-    elif out_dir1[:9] == '5_u-bl661':
-        plt.plot(dat1[:,t], height1, linewidth = 3)
-
-    dat2 = np.transpose(np.squeeze(data_um2['qnice'].data))
-    if out_dir2[:9] == '5_u-bl661':
-        plt.plot(dat2[:,t], height2, linewidth = 3)
-    if out_dir2[:9] == '6_u-bm410':
-        plt.plot(dat2[:,t], height2, linewidth = 3)
-
+    plt.plot(dat1[:,t], height1, linewidth = 3)
     plt.ylim([0, 2000])
     plt.xlim([0,2e4])
     plt.xlabel('N_ice [/kg]')
-    if t == 11: plt.title('28-Aug-2018 1100 UTC')
-    if t == 12: plt.title('28-Aug-2018 1200 UTC')
-    if t == 28: plt.title('29-Aug-2018 0400 UTC')
-    if t == 45: plt.title('29-Aug-2018 2100 UTC')
-    if t == 61: plt.title('30-Aug-2018 1300 UTC')
-    if t == 66: plt.title('30-Aug-2018 1800 UTC')
-    if t == 72: plt.title('31-Aug-2018 0000 UTC')
-    if t == 83: plt.title('31-Aug-2018 1100 UTC')
-    if t == 84: plt.title('31-Aug-2018 1200 UTC')
-    if t == 86: plt.title('31-Aug-2018 1400 UTC')
     # plt.legend()
 
     plt.subplot(133)
 
-    data_um1 = calcThetaE(data_um1, time_um1, height1)
+    data_um1['theta_e'] = calcThetaE(data_um1, time_um1, height1)
+    # data_um1 = calcThetaE(data_um1, time_um1, height1)
     plt.plot(data_um1['theta_e'][t,:], height1, linewidth = 3)
-    data_um2 = calcThetaE(data_um2, time_um2, height2)
-    plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
+    # data_um2 = calcThetaE(data_um2, time_um2, height2)
+    # plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
     # plt.legend()
     plt.ylim([0,2000])
-    plt.xlim([281,290])
-    if t == 11: plt.title('28-Aug-2018 1100 UTC')
-    if t == 12: plt.title('28-Aug-2018 1200 UTC')
-    if t == 28: plt.title('29-Aug-2018 0400 UTC')
-    if t == 45: plt.title('29-Aug-2018 2100 UTC')
-    if t == 61: plt.title('30-Aug-2018 1300 UTC')
-    if t == 66: plt.title('30-Aug-2018 1800 UTC')
-    if t == 72: plt.title('31-Aug-2018 0000 UTC')
-    if t == 83: plt.title('31-Aug-2018 1100 UTC')
-    if t == 84: plt.title('31-Aug-2018 1200 UTC')
-    if t == 86: plt.title('31-Aug-2018 1400 UTC')
+    # plt.xlim([281,290])
     # plt.ylabel('Z [m]')
     plt.xlabel('$\Theta_{e}$ [K]')
 
@@ -2056,7 +2008,7 @@ def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_cloudProfiles.svg'
         if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_cloudProfiles.svg'
-    plt.savefig(fileout, dpi=600)
+    # plt.savefig(fileout, dpi=600)
     plt.show()
 
 
@@ -2338,7 +2290,12 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+
+        # -------------------------------------------------------------
+        # Plot CASIM profiles
+        # -------------------------------------------------------------
+        figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy)
 
 
 
