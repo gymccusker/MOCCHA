@@ -1441,13 +1441,15 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     if month_flag == -1:
         if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
-        if out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
+        elif out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
             if ifs_flag == True:
                 fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_IFS_tempoC_SW.svg'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
-        if out_dir2[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
+        else:
+            fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
     # print 'Saving as: ' + fileout
     plt.savefig(fileout)#, dpi=400)
     plt.show()
