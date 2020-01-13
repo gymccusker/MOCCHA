@@ -1889,6 +1889,177 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
+def plot_cloudProfiles(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting cloud fractions comparisons:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(12,7))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.95, left = 0.1,
+            hspace = 0.4, wspace = 0.25)
+
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    datenums_temp = cube_obs[0].dim_coords[0].points
+    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+
+    datenums_tice = cube_obs[4].dim_coords[0].points
+    timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
+    time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
+
+    datenums_radice = cube_obs[1].dim_coords[0].points
+    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
+    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    height1 = cube_um1[22].dim_coords[1].points
+    height2 = cube_um2[25].dim_coords[1].points
+
+    # t = 11
+    # t = 12
+    # t = 13
+    # t = 14
+    # t = 28
+    t = 45
+    # t = 61
+    # t = 66
+    # t = 72    ###good
+    # t = 84
+    # t = 86
+    # t = 84
+    # t = 59
+
+    plt.subplot(131)
+
+    dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
+    if out_dir1[:9] == '4_u-bg610':
+        plt.plot(dat1[:,t], height1, linewidth = 3)
+    elif out_dir1[:9] == '5_u-bl661':
+        plt.plot(dat1[:,t], height1, linewidth = 3)
+
+    dat2 = np.transpose(np.squeeze(data_um2['qnliq'].data))
+    if out_dir2[:9] == '5_u-bl661':
+        plt.plot(dat2[:,t], height2, linewidth = 3)
+    if out_dir2[:9] == '6_u-bm410':
+        plt.plot(dat2[:,t], height2, linewidth = 3)
+
+    plt.ylim([0, 2000])
+    plt.xlim([0,3.0e8])
+    plt.xlabel('N_drop [/kg]')
+    plt.ylabel('Z [m]')
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
+    plt.legend()
+
+    plt.subplot(132)
+
+    dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
+    # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
+    if out_dir1[:9] == '4_u-bg410':
+        plt.plot(dat1[:,t], height1, linewidth = 3)
+    elif out_dir1[:9] == '5_u-bl661':
+        plt.plot(dat1[:,t], height1, linewidth = 3)
+
+    dat2 = np.transpose(np.squeeze(data_um2['qnice'].data))
+    if out_dir2[:9] == '5_u-bl661':
+        plt.plot(dat2[:,t], height2, linewidth = 3)
+    if out_dir2[:9] == '6_u-bm410':
+        plt.plot(dat2[:,t], height2, linewidth = 3)
+
+    plt.ylim([0, 2000])
+    plt.xlim([0,2e4])
+    plt.xlabel('N_ice [/kg]')
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
+    # plt.legend()
+
+    plt.subplot(133)
+
+    data_um1 = calcThetaE(data_um1, time_um1, height1)
+    plt.plot(data_um1['theta_e'][t,:], height1, linewidth = 3)
+    data_um2 = calcThetaE(data_um2, time_um2, height2)
+    plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
+    # plt.legend()
+    plt.ylim([0,2000])
+    plt.xlim([281,290])
+    if t == 11: plt.title('28-Aug-2018 1100 UTC')
+    if t == 12: plt.title('28-Aug-2018 1200 UTC')
+    if t == 28: plt.title('29-Aug-2018 0400 UTC')
+    if t == 45: plt.title('29-Aug-2018 2100 UTC')
+    if t == 61: plt.title('30-Aug-2018 1300 UTC')
+    if t == 66: plt.title('30-Aug-2018 1800 UTC')
+    if t == 72: plt.title('31-Aug-2018 0000 UTC')
+    if t == 83: plt.title('31-Aug-2018 1100 UTC')
+    if t == 84: plt.title('31-Aug-2018 1200 UTC')
+    if t == 86: plt.title('31-Aug-2018 1400 UTC')
+    # plt.ylabel('Z [m]')
+    plt.xlabel('$\Theta_{e}$ [K]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_cloudProfiles.svg'
+        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_cloudProfiles.svg'
+    plt.savefig(fileout, dpi=600)
+    plt.show()
+
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
