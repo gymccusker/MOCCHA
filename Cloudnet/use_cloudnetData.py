@@ -727,8 +727,8 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_240-250DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_227-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -847,8 +847,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = 'iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
 
@@ -1143,8 +1143,8 @@ def main():
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
