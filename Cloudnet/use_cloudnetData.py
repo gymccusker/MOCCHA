@@ -781,20 +781,20 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mi
     ifs_data['model_temperature'][ifs_data['model_temperature'] == -999] = np.nan
     misc_data['temperature'][misc_data['temperature'] == -9999] = np.nan
 
-    plt.plot(np.nanmean(um_data['model_temperature'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    # plt.plot(np.nanmean(um_data['model_temperature'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_temperature'],0) - np.nanstd(um_data['Cv'],0),
     #     np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(um_data['model_temperature'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
-    # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_temperature'],0) - np.nanstd(um_data['model_temperature'],0),
-    #     np.nanmean(um_data['model_temperature'],0) + np.nanstd(um_data['model_temperature'],0), color = 'lightblue', alpha = 0.4)
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_temperature'],0) - np.nanstd(um_data['model_temperature'],0),
+        np.nanmean(um_data['model_temperature'],0) + np.nanstd(um_data['model_temperature'],0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(ifs_data['model_temperature'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
-    # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_temperature'],0) - np.nanstd(ifs_data['model_temperature'],0),
-    #     np.nanmean(ifs_data['model_temperature'],0) + np.nanstd(ifs_data['model_temperature'],0), color = 'navajowhite', alpha = 0.35)
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_temperature'],0) - np.nanstd(ifs_data['model_temperature'],0),
+        np.nanmean(ifs_data['model_temperature'],0) + np.nanstd(ifs_data['model_temperature'],0), color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(misc_data['temperature'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
-    # ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['temperature'],0) - np.nanstd(misc_data['temperature'],0),
-    #     np.nanmean(misc_data['temperature'],0) + np.nanstd(misc_data['temperature'],0), color = 'mediumaquamarine', alpha = 0.15)
+    ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['temperature'],0) - np.nanstd(misc_data['temperature'],0),
+        np.nanmean(misc_data['temperature'],0) + np.nanstd(misc_data['temperature'],0), color = 'mediumaquamarine', alpha = 0.15)
 
-    plt.xlabel('Cloud Fraction')
+    plt.xlabel('Temperature [K]')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     # plt.xlim([0,1])
