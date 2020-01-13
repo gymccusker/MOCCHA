@@ -837,7 +837,7 @@ def main():
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         misc_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        obs_um_dir = '/home/gillian/MOCCHA/ODEN/'
+        obs_out_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         um_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -847,10 +847,10 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-    # out_dir3 = 'MET_DATA/'
+    obs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
 
     ######## lwc-adiabatic-metum-grid/2018/
     ########             -> liquid water content derived using measurements averaged on to model grid
