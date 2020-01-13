@@ -363,8 +363,8 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_240-250DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_227-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
