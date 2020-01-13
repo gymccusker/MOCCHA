@@ -2295,7 +2295,7 @@ def main():
         # -------------------------------------------------------------
         # Plot CASIM profiles
         # -------------------------------------------------------------
-        figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy)
 
     # -------------------------------------------------------------
     # FIN.
