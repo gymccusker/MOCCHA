@@ -1297,6 +1297,8 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
         # from matplotlib.patches import Polygon
 
     ### set diagnostic naming flags for if IFS being used
@@ -1348,13 +1350,15 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = obs[0].dim_coords[0].points
-    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
-    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+    datenums_temp = nc.variables['time'][:]
+    time_temp = calcTime_Mat2DOY(datenums_temp)
+    # timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    # time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_radice = obs[1].dim_coords[0].points
-    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
-    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+    datenums_radice = nc.variables['time1'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
+    # timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
+    # time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
     time_um1 = data_um1['time'][:]
     time_um2 = data_um2['time'][:]
