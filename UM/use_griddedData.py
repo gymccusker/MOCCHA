@@ -1976,7 +1976,22 @@ def main():
     # Load observations
     # -------------------------------------------------------------
     print 'Loading observations:'
+
+        # -------------------------------------------------------------
+        # What file do I need to use?
+        # -------------------------------------------------------------
+        #### ice station: net LW / net SW
+                #### ice_station/mast_radiation_30min_v2.3.mat
+        #### foremast:
+                #### foremast/ACAS_AO2018_foremast_30min_v2_0.nc
+        #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
+                #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
+
     filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
+    if filename_obs[-3:] == '.mat':
+        matlab_flag = 1
+    else:
+        matlab_flag = 0
     cube_obs = iris.load(filename_obs)#, global_con, callback)
     print '...'
 
