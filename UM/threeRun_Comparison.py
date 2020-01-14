@@ -918,10 +918,6 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     datenums_tice = obs.variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
-    # datenums_tice = obs[4].dim_coords[0].points
-    # timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
-    # time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
-
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
         ifs_flag = True
@@ -963,7 +959,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(3,2,2)
     ax1 = plt.gca()
-    ax1.plot(time_tice,obs[4].data + 273.16, color = 'black', label = 'obs: ice')
+    ax1.plot(time_tice,obs.variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(data_um1['time'], data_um1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
     ax1.plot(data_um2['time'], data_um2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
     if ifs_flag == True:
@@ -983,7 +979,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,2,3)
     ax = plt.gca()
     plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs[7].data - obs[8].data), color = 'black', label = 'obs: ice')
+    plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data_um1['time'], data_um1['surface_net_SW_radiation'].data, color = 'steelblue')
     plt.plot(data_um2['time'], data_um2['surface_net_SW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
@@ -999,7 +995,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs[1].data - obs[2].data), color = 'black', label = 'obs: ice')
+    plt.plot(time_radice,(obs.variables['LWdice'][:] - obs.variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data_um1['time'], data_um1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data_um2['time'], data_um2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
