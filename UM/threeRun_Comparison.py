@@ -1176,104 +1176,6 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3,
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, obs_temp, doy): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-    import matplotlib.cm as mpl_cm
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 16
-    LARGE_SIZE = 18
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,5))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-    #         hspace = 0.4, wspace = 0.15)
-
-    # UM -> um2 comparisons:
-    # 1. snowfall_flux -> sfc_ls_snow
-    # 2. rainfall_flux -> sfc_ls_rain
-    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    # 4. latent_heat_flux -> flx_turb_moist
-    # 5. bl_depth -> sfc_bl_height
-    # 6. sfc_pressure -> sfc_pressure
-    # 7. temp_1.5m -> sfc_temp_2m
-    # 8. surface_net_LW_radiation -> sfc_net_lw
-    # 9. surface_net_SW_radiation -> sfc_net_sw
-
-    ### for reference in figures
-    zeros = np.zeros(len(time_um2))
-
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-
-    ax = plt.gca()
-    plt.plot(time_um1, data_um1['bl_depth'].data, label = 'UM')
-    plt.plot(time_um2, data_um1['bl_depth'].data, label = 'CASIM-100')
-    plt.legend()
-    plt.title('BL_depth [m]')
-    if month_flag == 8:
-        ax.set_xlim([13.0, 31.0])
-        plt.xlabel('Day of month [Aug]')
-    if month_flag == 9:
-        ax.set_xlim([1.0, 15.0])
-        plt.xlabel('Day of month [Sep]')
-    if month_flag == -1:
-        ax.set_xlim([doy[0],doy[-1]])
-        plt.xlabel('Day of year')
-
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
-
-    if month_flag == 8:
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_ecmwf_BLDepth.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_ecmwf_BLDepth.png'
-    if month_flag == 9:
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_ecmwf_BLDepth.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_ecmwf_BLDepth.png'
-    if month_flag == -1:
-        if out_dir1[:18] == '6_u-bm410_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-200_BLDepth.png'
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:20] + '_oden_metum_casim-100_BLDepth.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_BLDepth.png'
-    plt.savefig(fileout, dpi=400)
-    plt.show()
-
 def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -1539,6 +1441,7 @@ def main():
                     #### foremast/ACAS_AO2018_foremast_30min_v2_0.nc
             #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
                     #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
+
     print 'Load temporary ice station data from Jutta...'
     obs_temp = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
