@@ -9,15 +9,14 @@ import datetime
 import numpy as np
 import pandas as pd
 
-def calcTime_Mat2DOY(cube):
+def calcTime_Mat2DOY(matlab_time):
 
         #### EXAMPLE OF USE:
-        #### data = calcThetaE(data_um, time_um, height)
+        #### pytime = calcTime_Mat2DOY(matlab_time)
 
     print 'Converting MATLAB timesteps to DOY:'
 
-    datenums = cube[0].dim_coords[0].points
-    timestamps = pd.to_datetime(datenums-719529, unit='D')
-    times = timestamps.dayofyear + (timestamps.hour / 24.0) + (timestamps.minute / 1440.0) + (timestamps.second / 86400.0)
+    timestamps = pd.to_datetime(matlab_time-719529, unit='D')
+    python_time = timestamps.dayofyear + (timestamps.hour / 24.0) + (timestamps.minute / 1440.0) + (timestamps.second / 86400.0)
 
-    return times
+    return python_time
