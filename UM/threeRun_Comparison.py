@@ -1501,7 +1501,7 @@ def main():
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
     out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-    out_dir3 = 'MET_DATA/'
+    # out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
     ### 4_u-bg610_RA2M_CON/OUT_R1/
@@ -1529,12 +1529,8 @@ def main():
     # Load observations
     # -------------------------------------------------------------
     print 'Loading observations:'
-    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    if filename_obs[-3:] == 'mat':
-        matlab_flag = 1
-    else:
-        matlab_flag = 0
-    if matlab_flag == 0: obs = Dataset(filename_obs,'r')
+    filename_obs = obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc'
+    obs = Dataset(filename_obs,'r')
     print '...'
 
     # -------------------------------------------------------------------------
