@@ -47,16 +47,3 @@ def readMatlabStruct(filename, struct_name):
     print ''
 
     return data      #### returns structured numpy array containing matlab struct
-
-def matTime(mattime):
-
-    import pandis as pd
-
-    '''
-    Function reads in matlab time and outputs in DOY format
-    '''
-
-    timestamps = pd.to_datetime(mattime-719529, unit='D')
-    pytime = timestamps.dayofyear + (timestamps.hour / 24.0) + (timestamps.minute / 1440.0) + (timestamps.second / 86400.0)
-
-    return pytime
