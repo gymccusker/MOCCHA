@@ -957,6 +957,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
     else:
         plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
+    plt.plot(time_deck7th,deck7th.variables['p'][:], 'k')
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
