@@ -918,6 +918,12 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     datenums_tice = obs_temp.variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
+    datenums_foremast = foremast.variables['time'][:] ### foremast data on different timestep
+    time_foremast = calcTime_Mat2DOY(datenums_foremast)
+
+    datenums_deck7th = deck7th.variables['time'][:] ### 7th deck data on different timestep
+    time_deck7th = calcTime_Mat2DOY(datenums_deck7th)
+
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
         ifs_flag = True
