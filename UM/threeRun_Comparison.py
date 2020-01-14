@@ -1352,13 +1352,13 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     datenums_temp = obs.variables['time'][:]
     time_temp = calcTime_Mat2DOY(datenums_temp)
-    
+
     datenums_radice = obs.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
-    time_um1 = data_um1['time'][:]
-    time_um2 = data_um2['time'][:]
-    time_um3 = data_um3['time'][:]
+    # time_um1 = data_um1['time'][:]
+    # time_um2 = data_um2['time'][:]
+    # time_um3 = data_um3['time'][:]
 
     #################################################################
     ## create figure and axes instances
@@ -1366,12 +1366,12 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um1, data_um1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
-    plt.plot(time_um2, data_um2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
+    plt.plot(data_um1['time'][:], data_um1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
+    plt.plot(data_um2['time'][:], data_um2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
+        plt.plot(data_um3['time'][:], data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
-        plt.plot(time_um3, data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
+        plt.plot(data_um3['time'][:], data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
     plt.plot(time_temp,obs.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1389,12 +1389,12 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(2,1,2)
     ax = plt.gca()
-    plt.plot(time_um1, data_um1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(time_um2, data_um2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data_um1['time'][:], data_um1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data_um2['time'][:], data_um2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(time_um3, data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+        plt.plot(data_um3['time'][:], data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
-        plt.plot(time_um3, data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+        plt.plot(data_um3['time'][:], data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
@@ -1412,13 +1412,13 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # plt.subplot(3,1,3)
     # ax = plt.gca()
     # # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
-    # plt.plot(time_um1, data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(time_um2, data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    # plt.plot(data_um1['time'][:], data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(data_um2['time'][:], data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
     # if ifs_flag == True:
-    #     plt.plot(time_um3, data_um3['sfc_net_lw'].data, color = 'darkorange')
+    #     plt.plot(data_um3['time'][:], data_um3['sfc_net_lw'].data, color = 'darkorange')
     # else:
-    #     plt.plot(time_um3, data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
-    # plt.plot(time_radice,(obs[1].data - obs[2].data), color = 'black', label = 'Observations')
+    #     plt.plot(data_um3['time'][:], data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
+    # plt.plot(time_radice,(obs.variables['LWdice'][:] - obs.variables['LWuice'][:]), color = 'black', label = 'Observations')
     # # plt.legend()
     # plt.title('Net LW radiation [W/m2]')
     # # plt.ylim([260,275])
