@@ -2115,7 +2115,7 @@ def main():
         matlab_flag = 1
     else:
         matlab_flag = 0
-    if matlab_flag == 0: obs = nc.Dataset(filename_obs,'r')
+    if matlab_flag == 0: obs = Dataset(filename_obs,'r')
     print '...'
 
     # -------------------------------------------------------------------------
