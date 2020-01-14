@@ -854,7 +854,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3): #, lon, lat):
+def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -936,7 +936,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
     ### for reference in figures
-    zeros = np.zeros(len(data_um2['time']))
+    zeros = np.zeros(len(data2['time']))
     t1 = 11
     t3 = 45
 
@@ -945,12 +945,12 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(data_um1['time'], data_um1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
-    plt.plot(data_um2['time'], data_um2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data_um3['time'], data_um3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
+        plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
     else:
-        plt.plot(data_um3['time'], data_um3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
+        plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
     plt.title('sfc_pressure [hPa]')
     plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -960,48 +960,47 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
-    ax1.plot(data_um1['time'], data_um1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
-    ax1.plot(data_um2['time'], data_um2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
     if ifs_flag == True:
-        ax1.plot(data_um3['time'], data_um3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
+        ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
     else:
-        ax1.plot(data_um3['time'], data_um3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+        ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
     plt.title('near-sfc_temperature [K]')
     plt.legend()
     if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
     if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
     if month_flag == -1: ax1.set_xlim([doy[0],doy[-1]])
 
-    # data_um1['surface_net_SW_radiation'].data[data_um1['surface_net_SW_radiation'].data == 0] = np.nan
-    # data_um2['surface_net_SW_radiation'].data[data_um2['surface_net_SW_radiation'].data == 0] = np.nan
-    # if out_dir4 != 'OUT_25H/': data_um3['surface_net_SW_radiation'].data[data_um3['surface_net_SW_radiation'].data == 0] = np.nan
+    # data1['surface_net_SW_radiation'].data[data1['surface_net_SW_radiation'].data == 0] = np.nan
+    # data2['surface_net_SW_radiation'].data[data2['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir4 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
-    plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'obs_temp: ice')
-    plt.plot(data_um1['time'], data_um1['surface_net_SW_radiation'].data, color = 'steelblue')
-    plt.plot(data_um2['time'], data_um2['surface_net_SW_radiation'].data, color = 'forestgreen')
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
-        plt.plot(data_um3['time'], data_um3['sfc_net_sw'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange')
     else:
-        plt.plot(data_um3['time'], data_um3['surface_net_SW_radiation'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange')
     plt.title('surface_net_SW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
 
-
     plt.subplot(3,2,4)
     ax = plt.gca()
-    plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
-    plt.plot(data_um1['time'], data_um1['surface_net_LW_radiation'].data, color = 'steelblue')
-    plt.plot(data_um2['time'], data_um2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
-        plt.plot(data_um3['time'], data_um3['sfc_net_lw'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
     else:
-        plt.plot(data_um3['time'], data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.title('surface_net_LW_radiation [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1009,8 +1008,8 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     # plt.subplot(3,3,6)
     # ax = plt.gca()
-    # plt.plot(time_um, data_um['snowfall_flux'].data)
-    # plt.plot(time_um2, data_um2['sfc_ls_snow'].data)
+    # plt.plot(time_um, data['snowfall_flux'].data)
+    # plt.plot(time_um2, data2['sfc_ls_snow'].data)
     # plt.title('sfc_snow_amount [kg/m2]')
     # plt.legend()
     # if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1019,8 +1018,8 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     # plt.subplot(3,3,7)
     # ax = plt.gca()
-    # plt.plot(time_um, data_um['rainfall_flux'].data)
-    # plt.plot(time_um2, data_um2['sfc_ls_rain'].data)
+    # plt.plot(time_um, data['rainfall_flux'].data)
+    # plt.plot(time_um2, data2['sfc_ls_rain'].data)
     # plt.title('sfc_rain_amount [kg/m2]')
     # if month_flag == 8: ax.set_xlim([13.0, 31.0])
     # if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1028,13 +1027,13 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(3,2,5)
     ax = plt.gca()
-    plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data_um1['time'], data_um1['sensible_heat_flux'].data, color = 'steelblue')
-    plt.plot(data_um2['time'], data_um2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(data_um3['time'], data_um3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
     else:
-        plt.plot(data_um3['time'], data_um3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
+        plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1042,13 +1041,13 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(3,2,6)
     ax = plt.gca()
-    plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data_um1['time'], data_um1['latent_heat_flux'].data, color = 'steelblue')
-    plt.plot(data_um2['time'], data_um2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(data_um3['time'], data_um3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
     else:
-        plt.plot(data_um3['time'], data_um3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
+        plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
@@ -1091,7 +1090,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
+def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1176,7 +1175,7 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3,
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
+def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1243,9 +1242,9 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
-    # time_um1 = data_um1['time'][:]
-    # time_um2 = data_um2['time'][:]
-    # time_um3 = data_um3['time'][:]
+    # time_um1 = data1['time'][:]
+    # time_um2 = data2['time'][:]
+    # time_um3 = data3['time'][:]
 
     #################################################################
     ## create figure and axes instances
@@ -1253,12 +1252,12 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(data_um1['time'][:], data_um1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
-    plt.plot(data_um2['time'][:], data_um2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'][:], data1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
+    plt.plot(data2['time'][:], data2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data_um3['time'][:], data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
+        plt.plot(data3['time'][:], data3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
-        plt.plot(data_um3['time'][:], data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
+        plt.plot(data3['time'][:], data3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
     plt.plot(time_temp,obs_temp.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1276,12 +1275,12 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(2,1,2)
     ax = plt.gca()
-    plt.plot(data_um1['time'][:], data_um1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data_um2['time'][:], data_um2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'][:], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'][:], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data_um3['time'][:], data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+        plt.plot(data3['time'][:], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
-        plt.plot(data_um3['time'][:], data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+        plt.plot(data3['time'][:], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
@@ -1298,13 +1297,13 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     # plt.subplot(3,1,3)
     # ax = plt.gca()
-    # # data_um['surface_net_LW_radiation'].data[data_um['surface_net_LW_radiation'].data == 0] = np.nan
-    # plt.plot(data_um1['time'][:], data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data_um2['time'][:], data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    # # data['surface_net_LW_radiation'].data[data['surface_net_LW_radiation'].data == 0] = np.nan
+    # plt.plot(data1['time'][:], data1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'][:], data2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
     # if ifs_flag == True:
-    #     plt.plot(data_um3['time'][:], data_um3['sfc_net_lw'].data, color = 'darkorange')
+    #     plt.plot(data3['time'][:], data3['sfc_net_lw'].data, color = 'darkorange')
     # else:
-    #     plt.plot(data_um3['time'][:], data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
+    #     plt.plot(data3['time'][:], data3['surface_net_LW_radiation'].data, color = 'darkorange')
     # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'Observations')
     # # plt.legend()
     # plt.title('Net LW radiation [W/m2]')
@@ -1586,9 +1585,9 @@ def main():
                 ## ------------------
                 #### UM
                 ## ------------------
-                data_um1 = {}
-                data_um2 = {}
-                data_um3 = {}
+                data1 = {}
+                data2 = {}
+                data3 = {}
                 if month_flag == -1:
                     time_um1 = doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0)
                     time_um2 = doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0)
@@ -1602,9 +1601,9 @@ def main():
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     # elif np.sum(cube_um1[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data_um1[cube_um1[j].var_name] = cube_um1[j].data
+                    #     data1[cube_um1[j].var_name] = cube_um1[j].data
                     # else:                                   # 2d column data
-                    data_um1[cube_um1[j].var_name] = cube_um1[j].data
+                    data1[cube_um1[j].var_name] = cube_um1[j].data
                 ## ------------------
                 #### um2
                 ## ------------------
@@ -1613,9 +1612,9 @@ def main():
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     # elif np.sum(cube_um2[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data_um2[cube_um2[j].var_name] = cube_um2[j].data
+                    #     data2[cube_um2[j].var_name] = cube_um2[j].data
                     # else:                                   # 2d column data
-                    data_um2[cube_um2[j].var_name] = cube_um2[j].data
+                    data2[cube_um2[j].var_name] = cube_um2[j].data
                 ## ------------------
                 #### um3
                 ## ------------------
@@ -1624,9 +1623,9 @@ def main():
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     # elif np.sum(cube_um3[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data_um3[cube_um3[j].var_name] = cube_um3[j].data
+                    #     data3[cube_um3[j].var_name] = cube_um3[j].data
                     # else:                                   # 2d column data
-                    data_um3[cube_um3[j].var_name] = cube_um3[j].data
+                    data3[cube_um3[j].var_name] = cube_um3[j].data
 
             else:
                 if month_flag == -1:
@@ -1644,9 +1643,9 @@ def main():
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube_um1[j].data.shape) >= 24:
-                        data_um1[cube_um1[j].var_name] = np.append(data_um1[cube_um1[j].var_name].data,cube_um1[j].data)
+                        data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data)
                     else:
-                        data_um1[cube_um1[j].var_name] = np.append(data_um1[cube_um1[j].var_name].data,cube_um1[j].data,0)
+                        data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data,0)
                 ## ------------------
                 #### um2
                 ## ------------------
@@ -1654,9 +1653,9 @@ def main():
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube_um2[j].data.shape) >= 24:
-                        data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data)
+                        data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
-                        data_um2[cube_um2[j].var_name] = np.append(data_um2[cube_um2[j].var_name].data,cube_um2[j].data,0)
+                        data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data,0)
                 ## ------------------
                 #### um3
                 ## ------------------
@@ -1664,16 +1663,16 @@ def main():
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.sum(cube_um3[j].data.shape) >= 24:
-                        data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data)
+                        data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
                     else:
-                        data_um3[cube_um3[j].var_name] = np.append(data_um3[cube_um3[j].var_name].data,cube_um3[j].data,0)
+                        data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
 
         #################################################################
         ## save time to dictionary now we're not looping over all diags anymore
         #################################################################
-        data_um1['time'] = time_um1
-        data_um2['time'] = time_um2
-        data_um3['time'] = time_um3
+        data1['time'] = time_um1
+        data2['time'] = time_um2
+        data3['time'] = time_um3
 
         #################################################################
         ## create labels for figure legends - done here so only needs to be done once!
@@ -1710,21 +1709,20 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
+        figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, doy, label1, label2, label3)
 
-        # figure = plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
+        # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, obs_temp, doy)
 
-        # figure = plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3,
+        # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
         #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
 
-        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag,
+        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         #             missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy)
 
-        np.save('working_data1', data_um1)
-        np.save('working_data2', data_um2)
-        np.save('working_data3', data_um3)
+        np.save('working_data1', data1)
+        np.save('working_data2', data2)
+        np.save('working_data3', data3)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
