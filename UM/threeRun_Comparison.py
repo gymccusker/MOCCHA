@@ -1539,10 +1539,18 @@ def main():
                     #### foremast/ACAS_AO2018_foremast_30min_v2_0.nc
             #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
                     #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
+    print 'Load temporary ice station data from Jutta...'
     obs_temp = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+
+    # print 'Load ice station data from Jutta...'
     # ice_station = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+
+    print 'Load foremast data from John...'
     foremast = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
+
+    print 'Load 7th deck weather station data from John...'
     deck7th = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
+
     print '...'
 
     # -------------------------------------------------------------------------
