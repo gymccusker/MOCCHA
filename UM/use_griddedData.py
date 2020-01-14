@@ -1493,7 +1493,7 @@ def plot_line_TSb(timem, data, cube, month_flag, missing_files, out_dir): #, lon
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
+def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1546,7 +1546,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = cube_obs[0].dim_coords[0].points
+    datenums_temp = obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
@@ -1556,7 +1556,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
 
     ax = plt.gca()
     plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'MetUM')
-    plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature_at_1.5m [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -1588,7 +1588,7 @@ def plot_line_TEMP(time_um, data1d_um, cube_um, month_flag, missing_files, out_d
     plt.savefig(fileout, dpi=600)
     plt.show()
 
-def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
+def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_dir, obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1641,11 +1641,11 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = cube_obs[0].dim_coords[0].points
+    datenums_temp = obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_radice = cube_obs[1].dim_coords[0].points
+    datenums_radice = obs[1].dim_coords[0].points
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
@@ -1656,7 +1656,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     plt.subplot(211)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -1675,7 +1675,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     ax = plt.gca()
     # data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(obs[7].data - obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
     # plt.ylim([260,275])
@@ -1694,7 +1694,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     # ax = plt.gca()
     # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
     # plt.plot(time_um, data1d_um['surface_net_LW_radiation'].data, color = 'r', label = 'MetUM')
-    # plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
+    # plt.plot(time_radice,(obs[1].data - obs[2].data), color = 'black', label = 'Observations')
     # # plt.legend()
     # plt.title('Net SW radiation [W/m2]')
     # # plt.ylim([260,275])
@@ -1723,7 +1723,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
             fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
         elif out_dir[:18] == '8_u-bp738_RA2M_CON':
             fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
-    plt.savefig(fileout, dpi=400)
+    # plt.savefig(fileout, dpi=400)
     plt.show()
 
 def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy): #, lon, lat):
@@ -1886,10 +1886,10 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_vPaper'
-    plt.savefig(fileout + '.png', dpi=300)
+    # plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
-def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
+def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, obs, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1932,15 +1932,15 @@ def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out
     #################################################################
     ## sort out observations' timestamp
     #################################################################
-    datenums_temp = cube_obs[0].dim_coords[0].points
+    datenums_temp = obs[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_tice = cube_obs[4].dim_coords[0].points
+    datenums_tice = obs[4].dim_coords[0].points
     timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
     time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
 
-    datenums_radice = cube_obs[1].dim_coords[0].points
+    datenums_radice = obs[1].dim_coords[0].points
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
@@ -2111,11 +2111,11 @@ def main():
                 #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
 
     filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    if filename_obs[-3:] == '.mat':
+    if filename_obs[-3:] == 'mat':
         matlab_flag = 1
     else:
         matlab_flag = 0
-    cube_obs = iris.load(filename_obs)#, global_con, callback)
+    if matlab_flag == 0: obs = nc.Dataset(filename_obs,'r')
     print '...'
 
     # -------------------------------------------------------------------------
@@ -2304,13 +2304,13 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        # figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, obs, doy)
+        figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, obs, doy)
 
         # -------------------------------------------------------------
         # Plot CASIM profiles
         # -------------------------------------------------------------
-        # figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, obs, doy)
 
     # -------------------------------------------------------------
     # FIN.
