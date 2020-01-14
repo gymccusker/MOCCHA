@@ -1355,7 +1355,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     # time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_radice = obs.variables['time1'][:] ### radiation on different timestep
+    datenums_radice = obs.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
     # timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     # time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
