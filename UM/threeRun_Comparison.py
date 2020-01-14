@@ -940,7 +940,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
     ### for reference in figures
-    zeros = np.zeros(len(time_um2))
+    zeros = np.zeros(len(data_um2['time']))
     t1 = 11
     t3 = 45
 
