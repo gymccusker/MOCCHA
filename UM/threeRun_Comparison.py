@@ -1376,7 +1376,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(time_um3, data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
         plt.plot(time_um3, data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
-    plt.plot(time_temp,obs[0].data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([263 - 273,275 - 273])
@@ -1399,7 +1399,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(time_um3, data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
         plt.plot(time_um3, data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.plot(time_radice,(obs[7].data - obs[8].data), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
     # plt.grid('on')
