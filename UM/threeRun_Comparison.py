@@ -854,7 +854,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -897,7 +897,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
             hspace = 0.4, wspace = 0.13)
 
     #################################################################
-    ## sort out observations' timestamp
+    ## sort out obs_tempervations' timestamp
     #################################################################
     # 0: Tship / (1)                         (time: 2324)
     # 1: LWdice / (1)                        (time3: 1293)
@@ -909,13 +909,13 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = obs.variables['time'][:]
+    datenums_temp = obs_temp.variables['time'][:]
     time_temp = calcTime_Mat2DOY(datenums_temp)
 
-    datenums_radice = obs.variables['time3'][:] ### radiation on different timestep
+    datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
-    datenums_tice = obs.variables['time1'][:] ### ice camp data on different timestep
+    datenums_tice = obs_temp.variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
@@ -959,7 +959,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
 
     plt.subplot(3,2,2)
     ax1 = plt.gca()
-    ax1.plot(time_tice,obs.variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
+    ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
     ax1.plot(data_um1['time'], data_um1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
     ax1.plot(data_um2['time'], data_um2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
     if ifs_flag == True:
@@ -979,7 +979,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,2,3)
     ax = plt.gca()
     plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'obs: ice')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'obs_temp: ice')
     plt.plot(data_um1['time'], data_um1['surface_net_SW_radiation'].data, color = 'steelblue')
     plt.plot(data_um2['time'], data_um2['surface_net_SW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
@@ -995,7 +995,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(data_um2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs.variables['LWdice'][:] - obs.variables['LWuice'][:]), color = 'black', label = 'obs: ice')
+    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
     plt.plot(data_um1['time'], data_um1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data_um2['time'], data_um2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
@@ -1091,7 +1091,7 @@ def plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy): #, lon, lat):
+def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1132,17 +1132,17 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3,
             hspace = 0.4, wspace = 0.15)
 
     #################################################################
-    ## sort out observations' timestamp
+    ## sort out obs_tempervations' timestamp
     #################################################################
-    datenums_temp = obs[0].dim_coords[0].points
+    datenums_temp = obs_temp[0].dim_coords[0].points
     timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
     time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
 
-    datenums_tice = obs[4].dim_coords[0].points
+    datenums_tice = obs_temp[4].dim_coords[0].points
     timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
     time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
 
-    datenums_radice = obs[1].dim_coords[0].points
+    datenums_radice = obs_temp[1].dim_coords[0].points
     timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
     time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
 
@@ -1176,7 +1176,7 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3,
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, obs, doy): #, lon, lat):
+def plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, obs_temp, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1274,7 +1274,7 @@ def plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1323,7 +1323,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
             hspace = 0.4, wspace = 0.15)
 
     #################################################################
-    ## sort out observations' timestamp
+    ## sort out obs_tempervations' timestamp
     #################################################################
     # 0: Tship / (1)                         (time: 2324)
     # 1: LWdice / (1)                        (time3: 1293)
@@ -1335,10 +1335,10 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = obs.variables['time'][:]
+    datenums_temp = obs_temp.variables['time'][:]
     time_temp = calcTime_Mat2DOY(datenums_temp)
 
-    datenums_radice = obs.variables['time3'][:] ### radiation on different timestep
+    datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
     # time_um1 = data_um1['time'][:]
@@ -1357,7 +1357,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(data_um3['time'][:], data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
         plt.plot(data_um3['time'][:], data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
-    plt.plot(time_temp,obs.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs_temp.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([263 - 273,275 - 273])
@@ -1380,7 +1380,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(data_um3['time'][:], data_um3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
         plt.plot(data_um3['time'][:], data_um3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
     # plt.grid('on')
@@ -1403,7 +1403,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     #     plt.plot(data_um3['time'][:], data_um3['sfc_net_lw'].data, color = 'darkorange')
     # else:
     #     plt.plot(data_um3['time'][:], data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
-    # plt.plot(time_radice,(obs.variables['LWdice'][:] - obs.variables['LWuice'][:]), color = 'black', label = 'Observations')
+    # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'Observations')
     # # plt.legend()
     # plt.title('Net LW radiation [W/m2]')
     # # plt.ylim([260,275])
@@ -1526,11 +1526,11 @@ def main():
     columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
-    # Load observations
+    # Load obs_tempervations
     # -------------------------------------------------------------
     print 'Loading observations:'
-    filename_obs = obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc'
-    obs = Dataset(filename_obs,'r')
+    # filename_obs_temp = obs_temp_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc'
+    obs_temp = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
     print '...'
 
     # -------------------------------------------------------------------------
@@ -1788,16 +1788,16 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         figure = plot_line_TSa(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag,
-                    missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+                    missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data_um1, data_um2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, obs, doy)
+        #             missing_files, out_dir1, obs_temp, doy)
 
         # figure = plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3,
-        #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+        #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
 
         # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, month_flag,
-        #             missing_files, out_dir1, out_dir2, out_dir4, obs, doy)
+        #             missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy)
 
         np.save('working_data1', data_um1)
         np.save('working_data2', data_um2)
