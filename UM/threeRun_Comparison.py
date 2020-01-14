@@ -1466,6 +1466,7 @@ def main():
     import sys
     sys.path.insert(1, '../py_functions/')
         ### include py function in path
+    from readMAT import readMatlabStruct
 
     START_TIME = time.time()
     print '******'
@@ -1529,8 +1530,19 @@ def main():
     # Load obs_tempervations
     # -------------------------------------------------------------
     print 'Loading observations:'
-    # filename_obs_temp = obs_temp_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc'
+            # -------------------------------------------------------------
+            # Which file does what?
+            # -------------------------------------------------------------
+            #### ice station: net LW / net SW
+                    #### ice_station/mast_radiation_30min_v2.3.mat
+            #### foremast:
+                    #### foremast/ACAS_AO2018_foremast_30min_v2_0.nc
+            #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
+                    #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
     obs_temp = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+    # ice_station = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+    foremast = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
+    deck7th = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
     print '...'
 
     # -------------------------------------------------------------------------
