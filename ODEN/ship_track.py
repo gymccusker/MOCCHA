@@ -140,6 +140,124 @@ def plotmap(data):
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     ## create figure and axes instances
+    fig = plt.figure(figsize=(7, 10), dpi=300)
+
+    #########################################################################################################
+
+    ax  = fig.add_axes([0.1,0.1,0.8,0.8])	# left, bottom, width, height
+
+    ### MAP DIMENSIONS
+    dim = 1750000
+
+    m = Basemap(width=0.7*dim,height=dim,
+                resolution='l',projection='stere',\
+                lat_ts=82,lat_0=83,lon_0=0)
+    m.drawcoastlines()
+    m.bluemarble()
+
+    # define parallels/meridians
+    # m.drawparallels(np.arange(50.,91.,2.),color='k')
+    # m.drawmeridians(np.arange(-180.,181.,10.),color='k')
+
+    parallels = np.arange(0.,90,5.)
+    # # labels = [left,right,top,bottom]
+    m.drawparallels(parallels,labels=[False,False,False,False], color = 'grey')
+    meridians = np.arange(10.,351.,20.)
+    m.drawmeridians(meridians,labels=[False,False,False,False], color = 'grey')
+
+    m.drawcoastlines(linewidth=1.)
+
+    # m.fillcontinents(color='lightgrey')
+
+    ### DEFINE DRIFT + IN_ICE PERIODS
+    drift_index = iceDrift(data)
+    highlight_index = periodHighlight(data)
+    inIce_index = inIce(data)
+
+    ### MAP ONTO PROJECTION
+    x, y = m(data.values[:,6], data.values[:,7])
+    x_inIcePeriod, y_inIcePeriod = m(data.values[inIce_index,6],data.values[inIce_index,7])
+    x_driftPeriod, y_driftPeriod = m(data.values[drift_index,6],data.values[drift_index,7])
+    x_highlightPeriod, y_highlightPeriod = m(data.values[highlight_index,6],data.values[highlight_index,7])
+
+    # Plot tracks as line plot
+    plt.plot(x, y, '--', color = 'pink', linewidth = 2, label = 'Whole')
+    plt.plot(x_inIcePeriod, y_inIcePeriod, color = 'palevioletred', linewidth = 4, label = 'In Ice')
+    plt.plot(x_driftPeriod, y_driftPeriod, color = 'red', linewidth = 5, label = 'Drift')
+    # plt.plot(x_highlightPeriod, y_highlightPeriod, color = 'purple', linewidth = 4, label = 'Case examples')
+
+    ###########################################
+    ### PLOT NEST + SWATH FOR INCREASED FREQ DIAGS VIS
+    ###########################################
+        # I.B.:
+        # Drift limits are:
+        # latitude   88.4502 to 89.6388
+        # longitude  4.6830 to 73.7629
+        # R.P. original (0, 86.625) @ 500x500
+
+    ### SWATH
+    # lats = np.arange(80.9998,89.9998,0.09)
+    # lons = np.arange(3.0,76.0,0.73)
+    # x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
+    #
+    # ### NEST (input)
+    # grx = float(5600)
+    # gry = float(700)
+    # centlon = float(39.5)
+    # centlat = float(85.275)
+    # latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
+    # lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
+    # x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
+
+    # draw swath
+    # pols =  Polygon([(x1s,y1s),(x2s,y2s),(x3s,y3s),(x4s,y4s)],\
+    #               facecolor='none',linestyle='--',edgecolor='g',linewidth=2,label='Swath')
+    # plt.gca().add_patch(pols)
+
+    # draw nest
+    # poln =  Polygon([(x1n,y1n),(x2n,y2n),(x3n,y3n),(x4n,y4n)],\
+    #               facecolor='none',linestyle='-',edgecolor='w',linewidth=2,label='Nest')
+    # plt.gca().add_patch(poln)
+
+    ### ADD LEGEND
+    plt.legend()
+
+    # plt.title('MOCCHA ship track')
+
+    plt.savefig('FIGS/HighArctic_vPRES.svg')
+    plt.show()
+
+def plotmap_poster(data):
+
+    # import cartopy
+    # import cartopy.crs as crs
+    # import cartopy.feature as cfe
+    from mpl_toolkits.basemap import Basemap
+    from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    ##################################################
+    ##################################################
+    #### 	BASEMAP
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    ## create figure and axes instances
     fig = plt.figure(figsize=(8.27, 11.69), dpi=300)
 
     #########################################################################################################

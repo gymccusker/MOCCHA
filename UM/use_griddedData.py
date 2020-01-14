@@ -1655,7 +1655,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'r', label = 'MetUM')
+    plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'steelblue', label = 'MetUM')
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1673,8 +1673,8 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
 
     plt.subplot(2,1,2)
     ax = plt.gca()
-    data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
-    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'r', label = 'MetUM')
+    # data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
+    plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'steelblue', label = 'MetUM')
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
@@ -1716,7 +1716,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
 
     if month_flag == -1:
         if out_dir[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.png'
+            fileout = '../FIGS/UM/' + out_dir[:18] + '_oden_metum_tempdegC_SW.svg'
         elif out_dir[:20] == '5_u-bl661_RA1M_CASIM':
             fileout = '../FIGS/UM/' + out_dir[:20] + '_oden_metum_tempdegC_SW.png'
         elif out_dir[:18] == '7_u-bn068_RA2T_CON':
@@ -1889,6 +1889,129 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
     plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
+def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting cloud fractions comparisons:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(12,7))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.95, left = 0.1,
+            hspace = 0.4, wspace = 0.25)
+
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    datenums_temp = cube_obs[0].dim_coords[0].points
+    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
+    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+
+    datenums_tice = cube_obs[4].dim_coords[0].points
+    timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
+    time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
+
+    datenums_radice = cube_obs[1].dim_coords[0].points
+    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
+    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+
+    #################################################################
+    ## sort out observations' timestamp
+    #################################################################
+    height1 = cube_um1[22].dim_coords[1].points
+    height2 = cube_um2[25].dim_coords[1].points
+
+    # t = 11
+    # t = 12
+    # t = 13
+    # t = 14
+    # t = 28
+    t = 45
+    # t = 61
+    # t = 66
+    # t = 72    ###good
+    # t = 84
+    # t = 86
+    # t = 84
+    # t = 59
+
+    plt.subplot(131)
+
+    dat1 = np.transpose(np.squeeze(data_um1['qnliq'].data))
+    plt.plot(dat1[:,t], height1, linewidth = 3)
+
+    plt.ylim([0, 2000])
+    # plt.xlim([0,3.0e8])
+    plt.xlabel('N_drop [/kg]')
+    plt.ylabel('Z [m]')
+    plt.legend()
+
+    plt.subplot(132)
+
+    dat1 = np.transpose(np.squeeze(data_um1['qnice'].data))
+    # plt.fill_between(np.nanmin(dat1[:,11:15]), np.nanmax(dat1[:,11:15]), height1, alpha = 0.2)
+    plt.plot(dat1[:,t], height1, linewidth = 3)
+    plt.ylim([0, 2000])
+    plt.xlim([0,2e4])
+    plt.xlabel('N_ice [/kg]')
+    # plt.legend()
+
+    plt.subplot(133)
+
+    data_um1['theta_e'] = calcThetaE(data_um1, time_um1, height1)
+    # data_um1 = calcThetaE(data_um1, time_um1, height1)
+    plt.plot(data_um1['theta_e'][t,:], height1, linewidth = 3)
+    # data_um2 = calcThetaE(data_um2, time_um2, height2)
+    # plt.plot(data_um2['theta_e'][t,:], height2, linewidth = 3)
+    # plt.legend()
+    plt.ylim([0,2000])
+    # plt.xlim([281,290])
+    # plt.ylabel('Z [m]')
+    plt.xlabel('$\Theta_{e}$ [K]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_cloudProfiles.svg'
+        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
+            fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_cloudProfiles.svg'
+    # plt.savefig(fileout, dpi=600)
+    plt.show()
+
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -1946,7 +2069,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '8_u-bp738_RA2M_CON/OUT_R0/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -2033,11 +2156,11 @@ def main():
     moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
             # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
             # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            # '20180829_oden_metum.nc','20180830_oden_metum.nc',
-            '20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc']#,
-            # '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc',
+            '20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
+            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+            '20180906_oden_metum.nc','20180907_oden_metum.nc']#,'20180908_oden_metum.nc','20180909_oden_metum.nc',
             # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
             # '20180914_oden_metum.nc']
 
@@ -2049,8 +2172,8 @@ def main():
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
-    doy = np.arange(243,249)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(243,249)        ## set DOY for subset of moccha figures
+    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -2182,9 +2305,12 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, cube_obs, doy)
-        figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
+        # figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, cube_obs, doy)
 
-
+        # -------------------------------------------------------------
+        # Plot CASIM profiles
+        # -------------------------------------------------------------
+        # figure = plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, cube_obs, doy)
 
     # -------------------------------------------------------------
     # FIN.

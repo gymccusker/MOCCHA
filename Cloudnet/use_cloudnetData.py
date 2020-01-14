@@ -283,7 +283,87 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv.svg'
+        fileout = 'FIGS/Obs_UM_IFS_Cv_240-250DOY.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
+def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT PROFILE
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting Cv statistics for whole drift period:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print um_data.keys()
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
+
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
+        np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+        np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['cloud_fraction'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
+        np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_227-257DOY.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -382,7 +462,89 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_splitSeason.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
+    plt.show()
+
+def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting LWC statistics for whole drift period:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax1 = plt.gca()
+
+    print um_data.keys()
+
+    #### set flagged um_data to nans
+    #### set flagged um_data to nans
+    um_data['lwc'][um_data['lwc'] == -999] = np.nan
+    um_data['lwc'][um_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
+    misc_data['qliq'][misc_data['qliq'] <= 0] = np.nan
+
+    plt.plot(np.nanmean(um_data['lwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['lwc'],0)*1e3 - np.nanstd(um_data['lwc'],0)*1e3,
+        np.nanmean(um_data['lwc'],0)*1e3 + np.nanstd(um_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
+        np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
+        np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['qliq'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qliq'],0) - np.nanstd(misc_data['qliq'],0))*1e3,
+        (np.nanmean(misc_data['qliq'],0) + np.nanstd(misc_data['qliq'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Liquid water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,6000])
+    plt.xlim([0,0.2])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_qliq_227-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -484,7 +646,168 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_IWC_splitSeason.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
+    plt.show()
+
+def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting IWC statistics for whole drift period:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax1 = plt.gca()
+
+    print um_data.keys()
+
+    #### set flagged um_data to nans
+    #### set flagged um_data to nans
+    um_data['iwc'][um_data['iwc'] == -999] = np.nan
+    um_data['iwc'][um_data['iwc'] == 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+    misc_data['qice'][misc_data['qice'] <= 0] = np.nan
+
+    plt.plot(np.nanmean(um_data['iwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['iwc'],0)*1e3 - np.nanstd(um_data['iwc'],0)*1e3,
+        np.nanmean(um_data['iwc'],0)*1e3 + np.nanstd(um_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_iwc_filtered'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_iwc_filtered'],0)*1e3 - np.nanstd(um_data['model_iwc_filtered']*1e3,0),
+        np.nanmean(um_data['model_iwc_filtered'],0)*1e3 + np.nanstd(um_data['model_iwc_filtered'],0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 - np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3,
+        np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 + np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qice'],0) - np.nanstd(misc_data['qice'],0))*1e3,
+        (np.nanmean(misc_data['qice'],0) + np.nanstd(misc_data['qice'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Ice water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,6000])
+    plt.xlim([0,0.05])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_227-257DOY.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT PROFILE
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting Cv statistics for whole drift period:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	SET FONT SIZE AND AXES INSTANCE
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print um_data.keys()
+    #### set flagged um_data to nans
+    um_data['model_temperature'][um_data['model_temperature'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    # um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_temperature'][ifs_data['model_temperature'] == -999] = np.nan
+    misc_data['temperature'][misc_data['temperature'] == -9999] = np.nan
+
+    # plt.plot(np.nanmean(um_data['model_temperature'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_temperature'],0) - np.nanstd(um_data['Cv'],0),
+    #     np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_temperature'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_temperature'],0) - np.nanstd(um_data['model_temperature'],0),
+        np.nanmean(um_data['model_temperature'],0) + np.nanstd(um_data['model_temperature'],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_temperature'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_temperature'],0) - np.nanstd(ifs_data['model_temperature'],0),
+        np.nanmean(ifs_data['model_temperature'],0) + np.nanstd(ifs_data['model_temperature'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['temperature'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['temperature'],0) - np.nanstd(misc_data['temperature'],0),
+        np.nanmean(misc_data['temperature'],0) + np.nanstd(misc_data['temperature'],0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Temperature [K]')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    # plt.xlim([0,1])
+    plt.legend()
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_temp_240-250DOY.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def main():
@@ -513,7 +836,8 @@ def main():
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
-        obs_um_dir = '/home/gillian/MOCCHA/ODEN/'
+        misc_dir = '/home/gillian/MOCCHA/UM/DATA/'
+        obs_out_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         um_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -523,12 +847,13 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = 'iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
-    # out_dir3 = 'MET_DATA/'
+    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+    obs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
 
-    ### lwc-adiabatic-metum-grid/2018/
-    ###             -> liquid water content derived using measurements averaged on to model grid
+    ######## lwc-adiabatic-metum-grid/2018/
+    ########             -> liquid water content derived using measurements averaged on to model grid
     ### cloud-fraction-metum-grid/2018/ + cloud-fraction-ecmwf-grid/2018/
     ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
     ### lwc-scaled-metum-grid/2018/ + lwc-scaled-ecmwf-grid/2018/
@@ -587,10 +912,12 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+    moccha_names = [#'20180813_oden_','20180814_oden_',
+            '20180815_oden_','20180816_oden_',
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
@@ -602,8 +929,9 @@ def main():
 
     moccha_missing_files = ['20180910_oden_']   ### cloud radar not working
 
-    doy = np.arange(225,258)        ## set DOY for full moccha figures
-    # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
+    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(227,258)        ## set DOY for subset of moccha figures
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -611,24 +939,28 @@ def main():
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
+    misc_flag = 1       ## flag to compare non-cloudnet model data
 
     for i in range(0,len(names)):
         filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
+        if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         print filename_um
         print filename_ifs
+        if misc_flag == 1: print filename_misc
         print ''
 
         print 'Loading multiple diagnostics:'
         nc1 = Dataset(filename_um,'r')
         nc2 = Dataset(filename_ifs,'r')
+        if misc_flag == 1: nc3 = Dataset(filename_misc,'r')
 
         # print 'i = ' + str(i)
         print ''
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
-            var_list = ['height','Cv','model_Cv_filtered']   ### time always read in separately
+            var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
         elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
@@ -637,14 +969,14 @@ def main():
         ###     LOAD IN UM DATA FIRST
         if i == 0:
             um_data = {}
-            um_data1d = {}
+            # um_data1d = {}
             if month_flag == -1:
                 time_um = doy[i] + ((nc1.variables['time'][:])/24.0)
             else:
                 time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
                 if np.sum(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    um_data1d[var_list[j]] = nc1.variables[var_list[j]][:]
+                    um_data[var_list[j]] = nc1.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     um_data[var_list[j]] = nc1.variables[var_list[j]][:]
         else:
@@ -657,14 +989,14 @@ def main():
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
                 if np.sum(nc1.variables[var_list[j]].shape) == 24:
-                    um_data1d[var_list[j]] = np.append(um_data1d[var_list[j]].data,nc1.variables[var_list[j]][:])
+                    um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:])
                 else:
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
         nc1.close()
 
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_snow_Cv_filtered']   ### time always read in separately
-        elif ifs_out_dir[:-6] == 'lwc-scaled-metum-grid':
+            var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
+        elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
@@ -672,14 +1004,14 @@ def main():
         ###     LOAD IN IFS DATA
         if i == 0:
             ifs_data = {}
-            ifs_data1d = {}
+            # ifs_data1d = {}
             if month_flag == -1:
                 time_ifs = doy[i] + ((nc2.variables['time'][:])/24.0)
             else:
                 time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
                 if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                    ifs_data1d[var_list[j]] = nc2.variables[var_list[j]][:]
+                    ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
         else:
@@ -692,15 +1024,58 @@ def main():
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
                 if np.sum(nc2.variables[var_list[j]].shape) == 24:
-                    ifs_data1d[var_list[j]] = np.append(ifs_data1d[var_list[j]].data,nc2.variables[var_list[j]][:])
+                    ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:])
                 else:
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
         nc2.close()
 
+        ### -------------------------------------------------------------------------
+        ###     LOAD IN MISC DATA IF COMPARING
+        ###             Only load in what variables are needed based on IFS file chosen
+        ### -------------------------------------------------------------------------
+        if misc_flag == 1:
+            if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+                var_list = ['height','cloud_fraction','temperature']   ### time always read in separately
+            elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
+                var_list = ['height','qliq']   ### time always read in separately
+            elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+                var_list = ['height','qice']   ### time always read in separately
+
+            if i == 0:
+                misc_data = {}
+                # misc_data1d = {}
+                if month_flag == -1:
+                    time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                else:
+                    time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
+                for j in range(0,len(var_list)):
+                    if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+                    else:                                   # 2d column um_data
+                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+            else:
+                if month_flag == -1:
+                    time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
+                else:
+                    time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
+                print misc_data
+                for j in range(0,len(var_list)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    # print 'j = ' + str(j)
+                    if np.sum(nc3.variables[var_list[j]].shape) == 24:
+                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
+                    elif np.sum(nc3.variables[var_list[j]].shape) == 71:
+                        continue
+                    else:
+                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
+            nc3.close()
+
+        ### -------------------------------------------------------------------------
         ### PUT TIME INTO DATA DICTIONARIES FOR EASE
+        ### -------------------------------------------------------------------------
         ifs_data['time'] = time_ifs
         um_data['time'] = time_um
-
+        if misc_flag == 1: misc_data['time'] = time_misc
 
         ######  LOAD ALL DIAGNOSTICS
         # if i == 0:
@@ -756,12 +1131,21 @@ def main():
     # -------------------------------------------------------------
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
+    if misc_flag == 1: np.save('working_misc_data', misc_data)
     #### um_data = np.load('working_um_data.npy').item()
 
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+
+    # -------------------------------------------------------------
+    # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
+    # -------------------------------------------------------------
+    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
@@ -776,7 +1160,7 @@ def main():
     # -------------------------------------------------------------
     # Plot IWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.

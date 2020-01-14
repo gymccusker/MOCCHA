@@ -1330,9 +1330,9 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(9,8))
+    plt.figure(figsize=(8,9))
     plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.08, right = 0.9, left = 0.1,
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.15)
 
     #################################################################
@@ -1364,7 +1364,7 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     ## create figure and axes instances
     #################################################################
 
-    plt.subplot(311)
+    plt.subplot(211)
     ax = plt.gca()
     plt.plot(time_um1, data_um1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
     plt.plot(time_um2, data_um2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
@@ -1372,7 +1372,6 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         plt.plot(time_um3, data_um3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
         plt.plot(time_um3, data_um3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
-    # plt.plot(time_um3, data1d_um3['temp_1.5m'].data - 273.15, color = 'g', label = label3)
     plt.plot(time_temp,cube_obs[0].data - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
@@ -1388,10 +1387,8 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         ax.set_xlim([doy[0],doy[-1]])
         # plt.xlabel('Day of year')
 
-    plt.subplot(3,1,2)
+    plt.subplot(2,1,2)
     ax = plt.gca()
-    # data1d_um1['surface_net_SW_radiation'].data[data1d_um1['surface_net_SW_radiation'].data == 0] = np.nan
-    # data1d_um2['surface_net_SW_radiation'].data[data1d_um2['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um1, data_um1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
     plt.plot(time_um2, data_um2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1401,29 +1398,6 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     plt.plot(time_radice,(cube_obs[7].data - cube_obs[8].data), color = 'black', label = 'Observations')
     plt.title('Net SW radiation [W/m2]')
     plt.ylim([0,100])
-    if month_flag == 8:
-        ax.set_xlim([13.0, 31.0])
-        plt.xlabel('Day of month [Aug]')
-    if month_flag == 9:
-        ax.set_xlim([1.0, 15.0])
-        plt.xlabel('Day of month [Sep]')
-    if month_flag == -1:
-        ax.set_xlim([doy[0],doy[-1]])
-        # plt.xlabel('Day of year')
-
-    plt.subplot(3,1,3)
-    ax = plt.gca()
-    # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
-    plt.plot(time_um1, data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(time_um2, data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
-    if ifs_flag == True:
-        plt.plot(time_um3, data_um3['sfc_net_lw'].data, color = 'darkorange')
-    else:
-        plt.plot(time_um3, data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
-    plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
-    # plt.legend()
-    plt.title('Net LW radiation [W/m2]')
-    # plt.ylim([260,275])
     # plt.grid('on')
     if month_flag == 8:
         ax.set_xlim([13.0, 31.0])
@@ -1435,6 +1409,30 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
         ax.set_xlim([doy[0],doy[-1]])
         plt.xlabel('Day of year')
 
+    # plt.subplot(3,1,3)
+    # ax = plt.gca()
+    # # data1d_um['surface_net_LW_radiation'].data[data1d_um['surface_net_LW_radiation'].data == 0] = np.nan
+    # plt.plot(time_um1, data_um1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(time_um2, data_um2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    # if ifs_flag == True:
+    #     plt.plot(time_um3, data_um3['sfc_net_lw'].data, color = 'darkorange')
+    # else:
+    #     plt.plot(time_um3, data_um3['surface_net_LW_radiation'].data, color = 'darkorange')
+    # plt.plot(time_radice,(cube_obs[1].data - cube_obs[2].data), color = 'black', label = 'Observations')
+    # # plt.legend()
+    # plt.title('Net LW radiation [W/m2]')
+    # # plt.ylim([260,275])
+    # # plt.grid('on')
+    # if month_flag == 8:
+    #     ax.set_xlim([13.0, 31.0])
+    #     plt.xlabel('Day of month [Aug]')
+    # if month_flag == 9:
+    #     ax.set_xlim([1.0, 15.0])
+    #     plt.xlabel('Day of month [Sep]')
+    # if month_flag == -1:
+    #     ax.set_xlim([doy[0],doy[-1]])
+    #     plt.xlabel('Day of year')
+
     print '******'
     print ''
     print 'Finished plotting! :)'
@@ -1443,14 +1441,16 @@ def plot_line_RAD(data_um1, data_um2, data_um3, cube_um1, cube_um2, cube_um3, mo
     if month_flag == -1:
         if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
-        if out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
+        elif out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
             if ifs_flag == True:
-                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_IFS_tempoC_SW+LW.svg'
+                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_IFS_tempoC_SW.svg'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
-        if out_dir2[:18] == '4_u-bg610_RA2M_CON':
+        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
             fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
-    print 'Saving as: ' + fileout
+        else:
+            fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
+    # print 'Saving as: ' + fileout
     plt.savefig(fileout)#, dpi=400)
     plt.show()
 
@@ -1521,7 +1521,7 @@ def main():
 
     ### 4_u-bg610_RA2M_CON/OUT_R1/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
-    ### 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
+    ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
     ### 7_u-bn068_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
 
@@ -1774,16 +1774,16 @@ def main():
         if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
         if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
         if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
-        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
+        if out_dir1[:9] == '4_u-bg610': label1 = 'UM' #'UM_RA2M'
 
         label2 = 'undefined_label'
         if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
         if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
-        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
+        if out_dir2[:9] == '5_u-bl661': label2 = 'CASIM-100' #'UM_CASIM-100'
         if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
         label3 = 'undefined_label'
-        if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+        if out_dir4 == 'OUT_25H/': label3 = 'IFS' # 'ECMWF_IFS'
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
