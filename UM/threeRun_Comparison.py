@@ -1366,6 +1366,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         else:
             fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
     # print 'Saving as: ' + fileout
+    fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
     plt.savefig(fileout)#, dpi=400)
     plt.show()
 
