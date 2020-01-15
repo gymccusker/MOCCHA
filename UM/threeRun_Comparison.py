@@ -1358,7 +1358,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
             fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
         elif out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
             if ifs_flag == True:
-                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_IFS_tempoC_SW.svg'
+                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
             else:
                 fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
         elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
@@ -1366,7 +1366,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         else:
             fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
     # print 'Saving as: ' + fileout
-    # plt.savefig(fileout)#, dpi=400)
+    plt.savefig(fileout)#, dpi=400)
     plt.show()
 
 def callback(cube, field, filename):
@@ -1698,15 +1698,17 @@ def main():
         ## create labels for figure legends - done here so only needs to be done once!
         #################################################################
         label1 = 'undefined_label'
+        if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI'
         if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
         if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
         if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
-        if out_dir1[:9] == '4_u-bg610': label1 = 'UM' #'UM_RA2M'
+        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
         label2 = 'undefined_label'
+        if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI'
         if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
         if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
-        if out_dir2[:9] == '5_u-bl661': label2 = 'CASIM-100' #'UM_CASIM-100'
+        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
         if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
         label3 = 'undefined_label'
