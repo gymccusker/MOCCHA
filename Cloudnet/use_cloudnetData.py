@@ -291,7 +291,7 @@ def plot_CvProfiles(um_data, ifs_data, obs_data, month_flag, missing_files, um_o
     plt.savefig(fileout)
     plt.show()
 
-def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -711,16 +711,16 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     #### set flagged um_data to nans
     #### set flagged um_data to nans
-    um_data['iwc'][um_data['iwc'] == -999] = np.nan
-    um_data['iwc'][um_data['iwc'] == 0] = np.nan
+    obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
+    obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
     misc_data['qice'][misc_data['qice'] <= 0] = np.nan
 
-    plt.plot(np.nanmean(um_data['iwc'],0)*1e3,np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['iwc'],0)*1e3 - np.nanstd(um_data['iwc'],0)*1e3,
-        np.nanmean(um_data['iwc'],0)*1e3 + np.nanstd(um_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
+        np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(um_data['model_iwc_filtered'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_iwc_filtered'],0)*1e3 - np.nanstd(um_data['model_iwc_filtered']*1e3,0),
         np.nanmean(um_data['model_iwc_filtered'],0)*1e3 + np.nanstd(um_data['model_iwc_filtered'],0)*1e3, color = 'lightblue', alpha = 0.4)
@@ -743,8 +743,8 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_227-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -863,10 +863,10 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-    obs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    obs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
 
     ######## lwc-adiabatic-metum-grid/2018/
     ########             -> liquid water content derived using measurements averaged on to model grid
@@ -1205,9 +1205,9 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
