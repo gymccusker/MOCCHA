@@ -213,7 +213,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -265,7 +265,7 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
         np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
