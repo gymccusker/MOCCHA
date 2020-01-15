@@ -927,9 +927,9 @@ def main():
 
     moccha_missing_files = ['20180910_oden_']   ### cloud radar not working
 
-    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
-    doy = np.arange(227,258)        ## set DOY for subset of moccha figures
+    # doy = np.arange(227,258)        ## set DOY for subset of moccha figures
 
     ## Flag for individual file or monthly:
     combine = 1
