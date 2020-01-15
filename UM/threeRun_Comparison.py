@@ -950,7 +950,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ## create figure and axes instances
     #################################################################
     plt.subplot(3,2,1)
-    ax = plt.gca()
+    # ax = plt.gca()
     # plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
     # plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
     # if ifs_flag == True:
@@ -970,14 +970,15 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'CRF')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen')
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
-        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange')
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.title('CRF [W/m2]')
+    plt.legend()
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
@@ -1112,9 +1113,9 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
             elif out_dir4 == 'OUT_25H/':
                 fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.png'
         elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim_TSa.png'
+            fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim-100_TSa.png'
     # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
