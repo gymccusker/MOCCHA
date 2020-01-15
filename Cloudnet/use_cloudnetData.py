@@ -847,8 +847,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     obs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
 
@@ -957,11 +957,11 @@ def main():
         print ''
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
-        if um_out_dir[:-6] == 'cloud-fraction-metum-grid':
+        if um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
-        elif um_out_dir[:-6] == 'lwc-scaled-metum-grid':
+        elif um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
-        elif um_out_dir[:-6] == 'iwc-Z-T-metum-grid':
+        elif um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
             var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
         ###     LOAD IN UM DATA FIRST
