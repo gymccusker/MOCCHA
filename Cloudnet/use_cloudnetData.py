@@ -930,13 +930,13 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180911_oden_','20180912_oden_','20180913_oden_']
 
     Aug_missing_files = []
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_']   ### cloud radar not working
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
