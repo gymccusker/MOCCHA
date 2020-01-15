@@ -1063,6 +1063,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
     plt.plot(ice_station['mday'],ice_station['taflux'], 'r.')
+    plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
