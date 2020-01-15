@@ -14,6 +14,9 @@ def readMatlabStruct(filename, struct_name):
     #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
     #### find struct name with:
         #### sio.whosmat(filename)
+    #### access data with:
+        #### e.g. data['mday']
+        ####        data.dtype.names - lists var names in structured array
 
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
