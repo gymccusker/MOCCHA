@@ -6,12 +6,14 @@ Steps to read in Matlab struct files (saved as .mat) and associated functions to
 
 from scipy.io import loadmat
 import numpy as np
-
+import scipy.io as sio
 
 def readMatlabStruct(filename, struct_name):
 
     #### EXAMPLE OF USE:
     #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
+    #### find struct name with:
+        #### sio.whosmat(filename)
 
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
