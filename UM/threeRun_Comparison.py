@@ -1116,7 +1116,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
         #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim-100_TSa.svg'
     # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
@@ -1519,14 +1519,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_',
+            '20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_']#,'20180904_oden_']#,'20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1534,8 +1535,8 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(240,245)        ## set DOY for subset of moccha figures
+    # doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(243,247)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -1628,9 +1629,6 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    # elif np.sum(cube_um1[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data1[cube_um1[j].var_name] = cube_um1[j].data
-                    # else:                                   # 2d column data
                     data1[cube_um1[j].var_name] = cube_um1[j].data
                 ## ------------------
                 #### um2
@@ -1639,9 +1637,6 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    # elif np.sum(cube_um2[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data2[cube_um2[j].var_name] = cube_um2[j].data
-                    # else:                                   # 2d column data
                     data2[cube_um2[j].var_name] = cube_um2[j].data
                 ## ------------------
                 #### um3
@@ -1650,9 +1645,6 @@ def main():
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    # elif np.sum(cube_um3[j].data.shape) >= 24:  # 1d timeseries only
-                    #     data3[cube_um3[j].var_name] = cube_um3[j].data
-                    # else:                                   # 2d column data
                     data3[cube_um3[j].var_name] = cube_um3[j].data
 
             else:
