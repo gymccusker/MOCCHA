@@ -287,7 +287,7 @@ def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, do
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -339,12 +339,9 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
 
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
-    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
-        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color='purple', linewidth = 3, label = 'Obs_IFS')
-    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0),
-        np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), color = 'plum', alpha = 0.5)
+    # plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
+    # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+    #     np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
     #     np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
@@ -354,6 +351,16 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     # plt.plot(np.nanmean(misc_data['cloud_fraction'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
     # ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
     #     np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), '--', color = 'steelblue', linewidth = 3, label = 'Obs_UM')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightblue', alpha = 0.5)
+    plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color='darkorange', linewidth = 3, label = 'Obs_IFS')
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0),
+        np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), color = 'navajowhite', alpha = 0.5)
+    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+        np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
 
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
@@ -367,7 +374,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_Cv_modelProfiles_cloudfraction_225-257DOY.svg'
+        fileout = 'FIGS/Obs_Cv_Obs_modelProfiles_cloudfraction_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -841,7 +848,7 @@ def main():
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         misc_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        obs_out_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
+        obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         um_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -916,7 +923,7 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
@@ -929,11 +936,11 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180910_oden_']   ### cloud radar not working
+    moccha_missing_files = ['20180910_oden_', '20180813_oden_']   ### cloud radar not working
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
-    # doy = np.arange(227,258)        ## set DOY for subset of moccha figures
+    doy = np.arange(226,258)        ## set DOY for subset of moccha figures
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -952,6 +959,7 @@ def main():
             out_dir = 'iwc-Z-T-metum-grid'
         filename_um = um_dir + um_out_dir + names[i] + out_dir + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
+        filename_obs = obs_dir + obs_out_dir + names[i] + obs_out_dir[:-6] + '.nc'
         if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         print filename_um
         print filename_ifs
@@ -962,6 +970,7 @@ def main():
         nc1 = Dataset(filename_um,'r')
         nc2 = Dataset(filename_ifs,'r')
         if misc_flag == 1: nc3 = Dataset(filename_misc,'r')
+        nc4 = Dataset(filename_obs,'r')
 
         # print 'i = ' + str(i)
         print ''
@@ -1079,6 +1088,48 @@ def main():
             nc3.close()
 
         ### -------------------------------------------------------------------------
+        ###     LOAD IN OBS DATA
+        ###             Only load in what variables are needed based on IFS file chosen
+        ### -------------------------------------------------------------------------
+        if misc_flag == 1:
+            if obs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+                var_list = ['height','cloud_fraction','temperature']   ### time always read in separately
+            elif obs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
+                var_list = ['height','qliq']   ### time always read in separately
+            elif obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+                var_list = ['height','qice']   ### time always read in separately
+
+            if i == 0:
+                obs_data = {}
+                # misc_data1d = {}
+                if month_flag == -1:
+                    time_obs = doy[i] + ((nc4.variables['time'][:])/24.0)
+                else:
+                    time_obs = float(names[i][6:8]) + ((nc4.variables['time'][:])/24.0)
+                for j in range(0,len(var_list)):
+                    if np.sum(nc4.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                        obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
+                    else:                                   # 2d column um_data
+                        obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
+            else:
+                if month_flag == -1:
+                    time_obs = np.append(time_obs, doy[i] + ((nc4.variables['time'][:])/24.0))
+                else:
+                    time_obs = np.append(time_obs,float(filename_obs[-16:-14]) + ((nc4.variables['time'][:])/24.0))
+                print obs_data
+                for j in range(0,len(var_list)):
+                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                    # print 'j = ' + str(j)
+                    if np.sum(nc4.variables[var_list[j]].shape) == 24:
+                        obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:])
+                    elif np.sum(nc4.variables[var_list[j]].shape) == 71:
+                        continue
+                    else:
+                        obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:],0)
+            nc4.close()
+
+
+        ### -------------------------------------------------------------------------
         ### PUT TIME INTO DATA DICTIONARIES FOR EASE
         ### -------------------------------------------------------------------------
         ifs_data['time'] = time_ifs
@@ -1150,7 +1201,7 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
