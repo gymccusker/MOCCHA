@@ -1091,42 +1091,41 @@ def main():
         ###     LOAD IN OBS DATA
         ###             Only load in what variables are needed based on IFS file chosen
         ### -------------------------------------------------------------------------
-        if misc_flag == 1:
-            if obs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-                var_list = ['height','cloud_fraction','temperature']   ### time always read in separately
-            elif obs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-                var_list = ['height','qliq']   ### time always read in separately
-            elif obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-                var_list = ['height','qice']   ### time always read in separately
+        if obs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+            var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
+        elif obs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
+            var_list = ['height','lwc','model_lwc']   ### time always read in separately
+        elif obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+            var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
-            if i == 0:
-                obs_data = {}
-                # misc_data1d = {}
-                if month_flag == -1:
-                    time_obs = doy[i] + ((nc4.variables['time'][:])/24.0)
-                else:
-                    time_obs = float(names[i][6:8]) + ((nc4.variables['time'][:])/24.0)
-                for j in range(0,len(var_list)):
-                    if np.sum(nc4.variables[var_list[j]].shape) == 24:  # 1d timeseries only
-                        obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
-                    else:                                   # 2d column um_data
-                        obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
+        if i == 0:
+            obs_data = {}
+            # misc_data1d = {}
+            if month_flag == -1:
+                time_obs = doy[i] + ((nc4.variables['time'][:])/24.0)
             else:
-                if month_flag == -1:
-                    time_obs = np.append(time_obs, doy[i] + ((nc4.variables['time'][:])/24.0))
+                time_obs = float(names[i][6:8]) + ((nc4.variables['time'][:])/24.0)
+            for j in range(0,len(var_list)):
+                if np.sum(nc4.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
+                else:                                   # 2d column um_data
+                    obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
+        else:
+            if month_flag == -1:
+                time_obs = np.append(time_obs, doy[i] + ((nc4.variables['time'][:])/24.0))
+            else:
+                time_obs = np.append(time_obs,float(filename_obs[-16:-14]) + ((nc4.variables['time'][:])/24.0))
+            print obs_data
+            for j in range(0,len(var_list)):
+                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                # print 'j = ' + str(j)
+                if np.sum(nc4.variables[var_list[j]].shape) == 24:
+                    obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:])
+                elif np.sum(nc4.variables[var_list[j]].shape) == 71:
+                    continue
                 else:
-                    time_obs = np.append(time_obs,float(filename_obs[-16:-14]) + ((nc4.variables['time'][:])/24.0))
-                print obs_data
-                for j in range(0,len(var_list)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
-                    if np.sum(nc4.variables[var_list[j]].shape) == 24:
-                        obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:])
-                    elif np.sum(nc4.variables[var_list[j]].shape) == 71:
-                        continue
-                    else:
-                        obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:],0)
-            nc4.close()
+                    obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:],0)
+        nc4.close()
 
 
         ### -------------------------------------------------------------------------
