@@ -336,7 +336,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_
     print um_data.keys()
 
     #### set flagged um_data to nans
-    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
     ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
@@ -344,9 +344,9 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
 
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
-    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
-        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
+    ax.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+        np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
         np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
@@ -379,7 +379,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_Cv_Obs_modelProfiles_cloudfraction_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -481,7 +481,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missin
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -563,7 +563,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     plt.savefig(fileout)
     plt.show()
 
-def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_iwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -665,7 +665,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, u
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -747,7 +747,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, mis
     # plt.savefig(fileout)
     plt.show()
 
-def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1205,7 +1205,7 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
