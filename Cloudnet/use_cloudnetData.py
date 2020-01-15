@@ -1203,7 +1203,7 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, missing_files, um_out_dir, doy)
@@ -1211,7 +1211,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot LWC statistics based on melt/freeze up
