@@ -42,7 +42,9 @@ def readMatlabStruct(filename, struct_name):
     #### CHANGE NUMPY STRUCTURED ARRAY TO DICTIONARY FOR EASE OF USE
     ####            --- come back to this later
     #### --------------------------------------------------------------------
-    # dict = {}
+    # dicto = {}
+    # for name in dat[struct_name].dtype.names:#len(dat[struct_name].dtype.names)):
+    #     dicto[dat[struct_name].dtype.names]= dat[struct_name][]
 
     print 'Finished! :)'
     print 'Reading out ' + struct_name + ' struct within .mat file'
