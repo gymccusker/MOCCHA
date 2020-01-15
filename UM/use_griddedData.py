@@ -1655,7 +1655,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     plt.subplot(211)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_temp,obs_temp.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -1674,7 +1674,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     ax = plt.gca()
     # data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(obs.variables['SWdice'][:] - obs.variables['SWuice'][:]), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
     # plt.ylim([260,275])
