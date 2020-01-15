@@ -940,7 +940,13 @@ def main():
     misc_flag = 1       ## flag to compare non-cloudnet model data
 
     for i in range(0,len(names)):
-        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[-31:-6] + '.nc'
+        if um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
+            out_dir = 'cloud-fraction-metum-grid'
+        elif um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
+            out_dir = 'lwc-scaled-metum-grid'
+        elif um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
+            out_dir = 'iwc-Z-T-metum-grid'
+        filename_um = um_dir + um_out_dir + names[i] + out_dir + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
         if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         print filename_um
@@ -957,11 +963,11 @@ def main():
         print ''
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
-        if um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
+        if out_dir == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
-        elif um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
+        elif out_dir == 'lwc-scaled-metum-grid':
             var_list = ['height','lwc','model_lwc']   ### time always read in separately
-        elif um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
+        elif out_dir == 'iwc-Z-T-metum-grid':
             var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
         ###     LOAD IN UM DATA FIRST
