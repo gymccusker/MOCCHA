@@ -1039,7 +1039,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
@@ -1054,7 +1054,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'k.')
