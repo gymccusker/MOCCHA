@@ -114,7 +114,7 @@ def trackShip(um_data, date):
 
     return trackShip_index
 
-def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -157,6 +157,8 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
 
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -166,9 +168,9 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
 
     plt.subplot(121)
     ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(um_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),
         np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0), color = 'lightblue', alpha = 0.4)
@@ -185,9 +187,9 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
 
     plt.subplot(122)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),
         np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0), color = 'lightblue', alpha = 0.4)
@@ -207,8 +209,8 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv_splitSeason.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_Cv_splitSeason_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CvProfiles(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
