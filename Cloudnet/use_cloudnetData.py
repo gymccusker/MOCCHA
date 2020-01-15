@@ -333,6 +333,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
 
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -341,7 +342,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs_UM')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
         np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), '--', color='purple', linewidth = 3, label = 'Obs_IFS')
+    plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color='purple', linewidth = 3, label = 'Obs_IFS')
     ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0),
         np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), color = 'plum', alpha = 0.5)
     # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
@@ -366,8 +367,8 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_225-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_Cv_modelProfiles_cloudfraction_225-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_lwcProfiles_SplitSeason(um_data, ifs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
