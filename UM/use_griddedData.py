@@ -1596,6 +1596,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -1641,13 +1642,11 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_temp = obs[0].dim_coords[0].points
-    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
-    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+    datenums_temp = obs.variables['time'][:]
+    time_temp = calcTime_Mat2DOY(datenums_temp)
 
-    datenums_radice = obs[1].dim_coords[0].points
-    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
-    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
+    datenums_radice = obs.variables['time3'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
 
     #################################################################
     ## create figure and axes instances
@@ -1656,7 +1655,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     plt.subplot(211)
     ax = plt.gca()
     plt.plot(time_um, data1d_um['temp_1.5m'].data - 273.15, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_temp,obs[0].data - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs_temp.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([260 - 273,275 - 273])
@@ -1675,7 +1674,7 @@ def plot_line_RAD(time_um, data1d_um, cube_um, month_flag, missing_files, out_di
     ax = plt.gca()
     # data1d_um['surface_net_SW_radiation'].data[data1d_um['surface_net_SW_radiation'].data == 0] = np.nan
     plt.plot(time_um, data1d_um['surface_net_SW_radiation'].data, color = 'steelblue', label = 'MetUM')
-    plt.plot(time_radice,(obs[7].data - obs[8].data), color = 'black', label = 'Observations')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
     # plt.legend()
     plt.title('Net SW radiation [W/m2]')
     # plt.ylim([260,275])
@@ -2010,7 +2009,6 @@ def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out
             fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-100_cloudProfiles.svg'
     # plt.savefig(fileout, dpi=600)
     plt.show()
-
 
 def callback(cube, field, filename):
     '''
