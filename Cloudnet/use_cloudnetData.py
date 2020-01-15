@@ -363,7 +363,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, month_flag, miss
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_227-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_cloudfraction_225-257DOY.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -940,7 +940,7 @@ def main():
     misc_flag = 1       ## flag to compare non-cloudnet model data
 
     for i in range(0,len(names)):
-        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[:-6] + '.nc'
+        filename_um = um_dir + um_out_dir + names[i] + um_out_dir[-31:-6] + '.nc'
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
         if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         print filename_um
