@@ -951,16 +951,33 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     #################################################################
     plt.subplot(3,2,1)
     ax = plt.gca()
-    plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
+    # plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
+    # if ifs_flag == True:
+    #     plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
+    # else:
+    #     plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
+    # plt.plot(foremast.variables['doy'][:],foremast.variables['Psurf'][:], 'k')
+    # plt.title('sfc_pressure [hPa]')
+    # plt.ylim([980, 1010])
+    # plt.legend()
+    # if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    # if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    # if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
+    netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
+
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'CRF')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange', label = label3)
+        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange')
     else:
-        plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'darkorange',label = label3)
-    plt.plot(foremast.variables['doy'][:],foremast.variables['Psurf'][:], 'k')
-    plt.title('sfc_pressure [hPa]')
-    plt.ylim([980, 1010])
-    plt.legend()
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange')
+    plt.title('CRF [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
     if month_flag == 9: ax.set_xlim([1.0, 15.0])
     if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
