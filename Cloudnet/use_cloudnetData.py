@@ -353,7 +353,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, obs_data, misc_data, month_
     # ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
     #     np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
 
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), '--', color = 'steelblue', linewidth = 3, label = 'Obs_UM')
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'Obs_UM')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
         np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightblue', alpha = 0.5)
     plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color='darkorange', linewidth = 3, label = 'Obs_IFS')
