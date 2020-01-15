@@ -1287,7 +1287,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         plt.plot(data3['time'][:], data3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
     else:
         plt.plot(data3['time'][:], data3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
-    plt.plot(time_temp,obs_temp.variables['Tship'][:] - 273.15, color = 'black', label = 'Observations')
+    plt.plot(time_temp,obs_temp.variables['Tice'][:] - 273.15, color = 'black', label = 'Observations')
     plt.legend()
     plt.title('Temperature [$^{o}C$]')
     plt.ylim([263 - 273,275 - 273])
