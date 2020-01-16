@@ -1242,7 +1242,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
-    plt.ylim([0,0.yCmax])
+    plt.ylim([0,yCmax])
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.27,0.35])   # left, bottom, width, height
