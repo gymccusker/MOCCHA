@@ -1150,7 +1150,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 16
+    MED_SIZE = 18
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1159,7 +1159,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(15,10))
+    plt.figure(figsize=(18,12))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
             hspace = 0.3, wspace = 0.1)
