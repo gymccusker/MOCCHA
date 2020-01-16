@@ -1223,6 +1223,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### Build figure (PDFs)
     ### -------------------------------
     # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
+    plt.figure(figsize=(7,9))
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
+            hspace = 0.3, wspace = 0.1)
     plt.subplot(211)
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
