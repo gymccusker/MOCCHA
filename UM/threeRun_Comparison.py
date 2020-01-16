@@ -1792,12 +1792,11 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
     yDmax = 0.05
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
-    sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
-    sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
-    sns.distplot(netLW + netSW, hist=False, color="black", label = 'Ice_station')
+    sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW + netSW, hist=False, color="black")
     plt.title('CRF [W/m2]')
-    # plt.legend()
     plt.xlim([-50,80])
     plt.ylim([0,yDmax])
 
