@@ -1313,7 +1313,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    plt.subplot(4,2,2)
+    plt.subplot(4,1,2)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
@@ -1327,7 +1327,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
 
-    plt.subplot(4,2,3)
+    plt.subplot(4,1,3)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
