@@ -1227,7 +1227,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
-    ax  = fig.add_axes([0.1,0.55,0.7,0.4])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.55,0.8,0.35])   # left, bottom, width, height
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True})
@@ -1236,7 +1236,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([-20,60])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.1,0.1,0.7,0.4])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.1,0.7,0.35])   # left, bottom, width, height
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True})
