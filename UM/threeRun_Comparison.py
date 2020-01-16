@@ -1236,7 +1236,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([-20,60])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.15,0.1,0.7,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.1,0.8,0.35])   # left, bottom, width, height
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True})
@@ -1244,8 +1244,8 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
 
-    # fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/SHF_LHF_PDFS_oden_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
@@ -1717,15 +1717,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_',
-            '20180828_oden_',
+    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -1733,9 +1732,9 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,259)        ## set DOY for full moccha figures
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
     # doy = np.arange(244,250)        ## set DOY for subset of moccha figures
-    doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
