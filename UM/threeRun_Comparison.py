@@ -1224,21 +1224,25 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
     plt.figure(figsize=(7,9))
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
-            hspace = 0.3, wspace = 0.1)
-    plt.subplot(211)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
+    #         hspace = 0.3, wspace = 0.15)
+    # plt.subplot(211)
+    ax  = fig.add_axes([0.1,0.55,0.7,0.4])   # left, bottom, width, height
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True})
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True})
     plt.title('sensible_heat_flux [W/m2]')
+    plt.xlim([-20,60])
 
-    plt.subplot(212)
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.1,0.1,0.7,0.4])   # left, bottom, width, height
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True})
     sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True})
     plt.title('latent_heat_flux [W/m2]')
+    plt.xlim([-20,60])
 
     # fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
     # plt.savefig(fileout)
