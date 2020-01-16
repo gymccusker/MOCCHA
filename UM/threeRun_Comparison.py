@@ -1179,14 +1179,14 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.subplot(2,1,1)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
+    plt.plot(time_iceStation,ice_station['taflux'], 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
-    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    plt.plot(time_iceStation,ice_station['taflux'], 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.legend()
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
@@ -1195,16 +1195,17 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.subplot(2,1,2)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
+    index = np.logical_and(ice_station['lrflux']>=-50, ice_station['lrflux']<=100)
+    plt.plot(np.squeeze(time_iceStation[np.squeeze(index)]),np.squeeze(ice_station['lrflux'][index]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
-    plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    index = np.logical_and(ice_station['lrflux']>=-50, ice_station['lrflux']<=100)
-    plt.plot(np.squeeze(time_iceStation[np.squeeze(index)]),np.squeeze(ice_station['lrflux'][index]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.title('latent_heat_flux [W/m2]')
+    plt.ylim([-30, 60])
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
 
