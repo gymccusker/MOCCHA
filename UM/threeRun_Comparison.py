@@ -1831,8 +1831,8 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_nrsfTemp_oden_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
