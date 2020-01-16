@@ -1145,7 +1145,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     ##################################################
     ##################################################
-    #### 	BUILD AXES
+    #### 	SET AXES PROPERTIES
     ##################################################
     ##################################################
 
@@ -1159,25 +1159,33 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(18,12))
 
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
-            hspace = 0.3, wspace = 0.1)
-
+    ### -------------------------------
     ### set diagnostic naming flags for if IFS being used
+    ### -------------------------------
     if out_dir4 == 'OUT_25H/':
         ifs_flag = True
     else:
         ifs_flag = False
 
+    ### -------------------------------
     ### for reference in figures
+    ### -------------------------------
     zeros = np.zeros(len(data2['time']))
 
+    ### -------------------------------
     ### change matlab time for obs
+    ### -------------------------------
     time_iceStation = calcTime_Mat2DOY(np.squeeze(ice_station['mday'][:]))
 
 
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    # plt.figure(figsize=(18,12))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
+    #         hspace = 0.3, wspace = 0.1)
     # plt.subplot(2,1,1)
     # ax = plt.gca()
     # plt.plot(data2['time'], zeros,'--', color='lightgrey')
@@ -1211,14 +1219,19 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # ax.set_xlim([doy[0],doy[-1]])
     # plt.xlabel('Day of year')
 
-    ### build axes and subfigures
-    f, axes = plt.subplots(2, 1, figsize=(7, 7), sharex=True)
+    ### -------------------------------
+    ### Build figure (PDFs)
+    ### -------------------------------
+    f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True}, ax=axes[0])
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True}, ax=axes[0])
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True}, ax=axes[0])
+    sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, ax=axes[0])
 
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True}, ax=axes[1])
-
+    sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True}, ax=axes[0])
+    sns.distplot(data2['sensible_lat_flux'].data, hist=False, color="green", kde_kws={"shade": True}, ax=axes[0])
+    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, ax=axes[0])
 
     # fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
     # plt.savefig(fileout)
