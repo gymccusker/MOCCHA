@@ -1270,6 +1270,9 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
+    datenums_tice = obs_temp.variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
         ifs_flag = True
