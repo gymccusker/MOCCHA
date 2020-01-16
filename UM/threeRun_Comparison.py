@@ -1820,7 +1820,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW, hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}
+    sns.distplot(netLW, hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('surface_net_LW_radiation [W/m2]')
     # plt.xlim([-20,60])
     # plt.ylim([0,yDmax])
