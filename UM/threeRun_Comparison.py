@@ -1229,25 +1229,25 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
-    ax  = fig.add_axes([0.65,0.55,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.55,0.27,0.35])   # left, bottom, width, height
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, label = 'Foremast')
     indexta = np.logical_and(ice_station['taflux']>=-50, ice_station['taflux']<=100)
-    sns.distplot(np.squeeze(ice_station['taflux'][indexta]),'--', hist=False, color="grey", kde_kws={"shade": False}, label = 'Ice_station')
+    sns.distplot(np.squeeze(ice_station['taflux'][indexta]), hist=False, color="grey", kde_kws={"shade": False}, kde_kws={'linestyle':'--'}, label = 'Ice_station')
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.65,0.1,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.1,0.27,0.35])   # left, bottom, width, height
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
     sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True})
     indexlr = np.logical_and(ice_station['lrflux']>=-50, ice_station['lrflux']<=100)
-    sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), '--', hist=False, color="grey", kde_kws={"shade": False})
+    sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), hist=False, color="grey", kde_kws={"shade": False}, kde_kws={'linestyle':'--'})
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
 
