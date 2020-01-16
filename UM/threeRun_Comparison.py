@@ -1765,7 +1765,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.title('surface_net_SW_radiation [W/m2]')
-    plt.legend()
+    # plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
@@ -1790,40 +1790,41 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    yCmax = 0.16
-    plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
+    yDmax = 0.05
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(netLW + netSW, hist=False, color="black", label = 'Ice_station')
     plt.title('CRF [W/m2]')
-    plt.legend()
-    # plt.xlim([-20,60])
-    # plt.ylim([0,yCmax])
+    # plt.legend()
+    plt.xlim([-50,80])
+    plt.ylim([0,yDmax])
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    yDmax = 0.12
-    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netSW, hist=False, color="black")
+    yEmax = 0.06
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
+    sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
     plt.title('surface_net_SW_radiation [W/m2]')
-    # plt.xlim([-20,60])
-    # plt.ylim([0,yDmax])
+    plt.legend()
+    plt.xlim([-10,110])
+    plt.ylim([0,yEmax])
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    yDmax = 0.12
-    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    yFmax = 0.12
+    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
     sns.distplot(netLW, hist=False, color="black")
     plt.title('surface_net_LW_radiation [W/m2]')
-    # plt.xlim([-20,60])
-    # plt.ylim([0,yDmax])
+    plt.xlim([-80,20])
+    plt.ylim([0,yFmax])
 
     print '******'
     print ''
