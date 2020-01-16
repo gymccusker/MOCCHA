@@ -1232,7 +1232,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, label = 'Foremast')
-    sns.distplot(ice_station['taflux'], hist=False, color="grey", kde_kws={"shade": True}, label = 'Ice_station'))
+    sns.distplot(ice_station['taflux'], hist=False, color="grey", kde_kws={"shade": True}, label = 'Ice_station')
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
@@ -1248,7 +1248,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
 
-    fileout = '../FIGS/comparisons/SHF_LHF_PDFS_oden_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/SHF_LHF_PDFS_oden_foremast+iceStation_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
