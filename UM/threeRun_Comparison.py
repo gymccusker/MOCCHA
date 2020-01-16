@@ -1186,7 +1186,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.', label = 'Foremast')
-    plt.plot(time_iceStation,ice_station['taflux'], '.', color = 'grey', label = 'Ice_station')
+    plt.plot(time_iceStation,ice_station['taflux'], 's', color = 'grey', label = 'Ice_station')
     plt.legend()
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
@@ -1202,7 +1202,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     else:
         plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'k.', label = 'Foremast')
-    plt.plot(time_iceStation,ice_station['rflux'], '.', color = 'grey', label = 'Ice_station')
+    plt.plot(time_iceStation,ice_station['rflux'], 's', color = 'grey', label = 'Ice_station')
     plt.title('latent_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
