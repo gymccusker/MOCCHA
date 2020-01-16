@@ -854,7 +854,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3): #, lon, lat):
+def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1121,8 +1121,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-
-def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
+def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1211,6 +1210,173 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
+    plt.show()
+
+def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined timeseries and PDFs of radiation terms:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(8,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+            hspace = 0.4, wspace = 0.13)
+
+    #################################################################
+    ## sort out obs_tempervations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    # UM -> um2 comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+    t1 = 11
+    t3 = 45
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.subplot(4,1,1)
+    netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
+    netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('CRF [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(4,2,2)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('surface_net_SW_radiation [W/m2]')
+    plt.legend()
+    ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(4,2,3)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
+    plt.title('surface_net_LW_radiation [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(4,1,4)
+    ax1 = plt.gca()
+    ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
+    if ifs_flag == True:
+        ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
+    else:
+        ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    ax1.set_xlim([doy[0],doy[-1]])
+    plt.xlabel('Day of year')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        # if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
+            # if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
+            #     if out_dir4 == 'OUT_25H/':
+            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.svg'
+            #     else:
+            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
+            # elif out_dir2[:9] == '4_u-bg410':
+            #     if out_dir4 == 'OUT_25H/':
+            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
+            # else:
+            #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.svg'
+        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
+            if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
+                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
+            elif out_dir4 == 'OUT_25H/':
+                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.svg'
+        # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
+        #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim-100_TSa.svg'
+    # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
@@ -1750,7 +1916,11 @@ def main():
         # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
         #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
 
-        figure = plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # -------------------------------------------------------------
+        # Plot paper figures
+        # -------------------------------------------------------------
+        # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
         np.save('working_data1', data1)
         np.save('working_data2', data2)
