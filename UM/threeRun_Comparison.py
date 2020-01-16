@@ -1229,9 +1229,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, ax=axes[0])
 
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="blue", kde_kws={"shade": True}, ax=axes[1])
-    sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True}, ax=axes[0])
-    sns.distplot(data2['latent_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True}, ax=axes[0])
-    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, ax=axes[0])
+    sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="orange", kde_kws={"shade": True}, ax=axes[1])
+    sns.distplot(data2['latent_heat_flux'].data, hist=False, color="green", kde_kws={"shade": True}, ax=axes[1])
+    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black", kde_kws={"shade": True}, ax=axes[1])
 
     # fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
     # plt.savefig(fileout)
