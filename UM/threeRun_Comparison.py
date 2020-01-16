@@ -1121,7 +1121,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy): #, lon, lat):
+
+def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1129,6 +1130,8 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -1137,12 +1140,12 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1
 
     print '******'
     print ''
-    print 'Plotting BL profile comparisons:'
+    print 'Plotting timeseries of turbulent fluxes:'
     print ''
 
     ##################################################
     ##################################################
-    #### 	CARTOPY
+    #### 	BUILD AXES
     ##################################################
     ##################################################
 
@@ -1159,51 +1162,38 @@ def plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1
     plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
-            hspace = 0.4, wspace = 0.15)
+            hspace = 0.4, wspace = 0.13)
 
-    #################################################################
-    ## sort out obs_tempervations' timestamp
-    #################################################################
-    datenums_temp = obs_temp[0].dim_coords[0].points
-    timestamps_temp = pd.to_datetime(datenums_temp-719529, unit='D')
-    time_temp = timestamps_temp.dayofyear + (timestamps_temp.hour / 24.0) + (timestamps_temp.minute / 1440.0) + (timestamps_temp.second / 86400.0)
+    plt.subplot(2,1,1)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
+    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
+    plt.plot(ice_station['time'],ice_station['tafluxB'], 'r.')
+    plt.ylim([-30, 30])
+    plt.title('sensible_heat_flux [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
 
-    datenums_tice = obs_temp[4].dim_coords[0].points
-    timestamps_tice = pd.to_datetime(datenums_tice-719529, unit='D')
-    time_tice = timestamps_tice.dayofyear + (timestamps_tice.hour / 24.0) + (timestamps_tice.minute / 1440.0) + (timestamps_tice.second / 86400.0)
+    plt.subplot(2,1,2)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
+    plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'k.')
+    plt.title('latent_heat_flux [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
 
-    datenums_radice = obs_temp[1].dim_coords[0].points
-    timestamps_radice = pd.to_datetime(datenums_radice-719529, unit='D')
-    time_radice = timestamps_radice.dayofyear + (timestamps_radice.hour / 24.0) + (timestamps_radice.minute / 1440.0) + (timestamps_radice.second / 86400.0)
-
-
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
-
-    if month_flag == 8:
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            if out_dir4 in locals():
-                fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir4[:9] + '201808_oden_metum_TS.png'
-            else:
-                fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201808_oden_metum_TS.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201808_oden_metum_TS.png'
-    if month_flag == 9:
-        if out_dir1[:18] == '5_u-bl661_RA1M_CAS':
-            fileout = '../FIGS/comparisons/' + out_dir1[:21] + '201809_oden_metum_TS.png'
-        elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:19] + '201809_oden_metum_TS.png'
-    if month_flag == -1:
-        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-            if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_BLprofiles.png'
-            else:
-                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_casim-200_BLprofiles.png'
-        # elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
-        #     fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_casim_TS.png'
-    plt.savefig(fileout, dpi=400)
+    # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
@@ -1735,7 +1725,7 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
         #             missing_files, out_dir1, obs_temp, doy)
@@ -1743,8 +1733,7 @@ def main():
         # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
         #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3)
 
-        # figure = plot_BL_profiles(time_um1, time_um2, time_um3, data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
-        #             missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy)
+        figure = plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
         np.save('working_data1', data1)
         np.save('working_data2', data2)
