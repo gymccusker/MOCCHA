@@ -1249,9 +1249,9 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,10))
+    plt.figure(figsize=(9,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
             hspace = 0.4, wspace = 0.13)
 
     #################################################################
