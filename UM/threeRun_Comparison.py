@@ -1359,27 +1359,8 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == -1:
-        # if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
-            # if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-            #     if out_dir4 == 'OUT_25H/':
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.svg'
-            #     else:
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
-            # elif out_dir2[:9] == '4_u-bg410':
-            #     if out_dir4 == 'OUT_25H/':
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
-            # else:
-            #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.svg'
-        if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-            if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
-                fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
-            elif out_dir4 == 'OUT_25H/':
-                fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.svg'
-        # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-        #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim-100_TSa.svg'
-    # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_nrsfTemp_oden_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
