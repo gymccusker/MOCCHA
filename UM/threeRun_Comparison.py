@@ -1795,9 +1795,9 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(18,12))
+    fig = plt.figure(figsize=(16,12))
 
-    ax  = fig.add_axes([0.07,0.7,0.56,0.2])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
     netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
     netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
     ax = plt.gca()
@@ -1812,7 +1812,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    ax  = fig.add_axes([0.07,0.4,0.56,0.2])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
@@ -1826,7 +1826,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
 
-    ax  = fig.add_axes([0.07,0.1,0.56,0.2])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
@@ -1847,7 +1847,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
-    ax  = fig.add_axes([0.7,0.7,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
     # zerosC = np.zeros(len(data2['time']))
     yCmax = 0.16
     plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
@@ -1863,7 +1863,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.ylim([0,yCmax])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.4,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
     yDmax = 0.12
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
@@ -1877,7 +1877,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.ylim([0,yDmax])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.4,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
     yDmax = 0.12
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
@@ -1888,7 +1888,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
-    plt.ylim([0,yDmax])    
+    plt.ylim([0,yDmax])
 
     print '******'
     print ''
@@ -2127,7 +2127,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
