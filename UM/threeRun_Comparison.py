@@ -1174,7 +1174,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     zeros = np.zeros(len(data2['time']))
 
     ### change matlab time for obs
-    time_iceStation = calcTime_Mat2DOY(ice_station['mday'])
+    time_iceStation = calcTime_Mat2DOY(np.squeeze(ice_station['mday'][:]))
 
     plt.subplot(2,1,1)
     ax = plt.gca()
