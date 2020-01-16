@@ -1316,6 +1316,199 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
+def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined 1d timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(15,10))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+            hspace = 0.4, wspace = 0.13)
+
+    #################################################################
+    ## sort out obs_tempervations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    datenums_temp = obs_temp.variables['time'][:]
+    time_temp = calcTime_Mat2DOY(datenums_temp)
+
+    datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
+
+    datenums_tice = obs_temp.variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+    t1 = 11
+    t3 = 45
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.subplot(3,2,1)
+
+    netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
+    netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
+
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'firebrick', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('CRF [W/m2]')
+    # plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,2)
+    ax1 = plt.gca()
+    ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'firebrick')#, label = '2m')
+    if ifs_flag == True:
+        ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
+    else:
+        ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    if month_flag == 8:  ax1.set_xlim([13.0, 31.0])
+    if month_flag == 9:  ax1.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax1.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,3)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'firebrick', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('surface_net_SW_radiation [W/m2]')
+    plt.legend()
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,4)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'firebrick')
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
+    plt.title('surface_net_LW_radiation [W/m2]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,5)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'firebrick')# * -1.0)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
+    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
+    plt.plot(ice_station['mday'],ice_station['tafluxB'], 'r.')
+    plt.ylim([-30, 30])
+    plt.title('sensible_heat_flux [W/m2]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,6)
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'firebrick')# * -1.0)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
+    plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'k.')
+    plt.title('latent_heat_flux [W/m2]')
+    if month_flag == 8: ax.set_xlim([13.0, 31.0])
+    if month_flag == 9: ax.set_xlim([1.0, 15.0])
+    if month_flag == -1: ax.set_xlim([doy[0],doy[-1]])
+
+    plt.subplot(3,2,5)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
+    plt.subplot(3,2,6)
+    if month_flag == 8: plt.xlabel('Day of month [Aug]')
+    if month_flag == 9: plt.xlabel('Day of month [Sep]')
+    if month_flag == -1: plt.xlabel('Day of year')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_erai-glm_ifs_TSa.svg'
+    plt.savefig(fileout, dpi=300)
+    plt.show()
 
 def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
@@ -1836,7 +2029,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '7_u-bn068_RA2T_CON/OUT_R0/'
+    out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
@@ -1929,10 +2122,10 @@ def main():
     moccha_names = [#'20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
             # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_',
-            '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_',
+            '20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
             # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
@@ -1942,10 +2135,10 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(244,250)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
-    doy = np.arange(240,248)          ## set DOY for RA2T  (28th Aug to 4th Sep)
+    # doy = np.arange(225,259)        ## set DOY for full drift figures
+    # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
+    # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    doy = np.arange(243,249)          ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -2106,14 +2299,14 @@ def main():
         ## create labels for figure legends - done here so only needs to be done once!
         #################################################################
         label1 = 'undefined_label'
-        if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI'
+        if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
         if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
         if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
         if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
         if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
         label2 = 'undefined_label'
-        if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI'
+        if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
         if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
         if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
         if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
@@ -2152,7 +2345,8 @@ def main():
         # -------------------------------------------------------------
         # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
-        figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
         np.save('working_data1', data1)
         np.save('working_data2', data2)
