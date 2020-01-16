@@ -1507,7 +1507,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ''
 
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_erai-glm_ifs_TSa.svg'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
@@ -1736,7 +1736,68 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.subplot(4,1,1)
+    # plt.subplot(4,1,1)
+    # netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
+    # netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
+    # ax = plt.gca()
+    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
+    # plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    # if ifs_flag == True:
+    #     plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    # else:
+    #     plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    # plt.title('CRF [W/m2]')
+    # ax.set_xlim([doy[0],doy[-1]])
+
+    # plt.subplot(4,1,2)
+    # ax = plt.gca()
+    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    # plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    # if ifs_flag == True:
+    #     plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    # else:
+    #     plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    # plt.title('surface_net_SW_radiation [W/m2]')
+    # plt.legend()
+    # ax.set_xlim([doy[0],doy[-1]])
+
+    # plt.subplot(4,1,3)
+    # ax = plt.gca()
+    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
+    # plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    # plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    # if ifs_flag == True:
+    #     plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
+    # else:
+    #     plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
+    # plt.title('surface_net_LW_radiation [W/m2]')
+    # ax.set_xlim([doy[0],doy[-1]])
+
+    # plt.subplot(4,1,4)
+    # ax1 = plt.gca()
+    # ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
+    # ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    # ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
+    # if ifs_flag == True:
+    #     ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
+    # else:
+    #     ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
+    # plt.title('near-sfc_temperature [K]')
+    # plt.legend()
+    # ax1.set_xlim([doy[0],doy[-1]])
+    # plt.xlabel('Day of year')
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(18,12))
+
+    ax  = fig.add_axes([0.07,0.7,0.56,0.2])   # left, bottom, width, height
     netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
     netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
     ax = plt.gca()
@@ -1751,7 +1812,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    plt.subplot(4,1,2)
+    ax  = fig.add_axes([0.07,0.4,0.56,0.2])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
@@ -1765,7 +1826,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
 
-    plt.subplot(4,1,3)
+    ax  = fig.add_axes([0.07,0.1,0.56,0.2])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
@@ -1778,19 +1839,56 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('surface_net_LW_radiation [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    plt.subplot(4,1,4)
-    ax1 = plt.gca()
-    ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
-    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
-    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
-    if ifs_flag == True:
-        ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
-    else:
-        ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
-    plt.title('near-sfc_temperature [K]')
+    ### -------------------------------
+    ### Build figure (PDFs)
+    ### -------------------------------
+    # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
+    # fig = plt.figure(figsize=(7,9))
+    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
+    #         hspace = 0.3, wspace = 0.15)
+    # plt.subplot(211)
+    ax  = fig.add_axes([0.7,0.7,0.27,0.35])   # left, bottom, width, height
+    # zerosC = np.zeros(len(data2['time']))
+    yCmax = 0.16
+    plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
+    sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
+    sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
+    indexta = np.logical_and(ice_station['taflux']>=-30, ice_station['taflux']<=70)
+    sns.distplot(np.squeeze(ice_station['taflux'][indexta]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
+    plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
-    ax1.set_xlim([doy[0],doy[-1]])
-    plt.xlabel('Day of year')
+    plt.xlim([-20,60])
+    plt.ylim([0,yCmax])
+
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.7,0.4,0.27,0.35])   # left, bottom, width, height
+    yDmax = 0.12
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black")#, kde_kws={"shade": True})
+    indexlr = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
+    sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.title('latent_heat_flux [W/m2]')
+    plt.xlim([-20,60])
+    plt.ylim([0,yDmax])
+
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.7,0.4,0.27,0.35])   # left, bottom, width, height
+    yDmax = 0.12
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black")#, kde_kws={"shade": True})
+    indexlr = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
+    sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.title('latent_heat_flux [W/m2]')
+    plt.xlim([-20,60])
+    plt.ylim([0,yDmax])    
 
     print '******'
     print ''
@@ -1798,7 +1896,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print ''
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_nrsfTemp_oden_metum_ifs_casim-100.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
@@ -2344,9 +2442,9 @@ def main():
         # Plot paper figures
         # -------------------------------------------------------------
         # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
-        # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
-        figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
         np.save('working_data1', data1)
         np.save('working_data2', data2)
