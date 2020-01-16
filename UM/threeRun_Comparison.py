@@ -1182,7 +1182,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    plt.figure(figsize=(18,12))
+    fig = plt.figure(figsize=(18,12))
     # plt.rc('figure',titlesize=LARGE_SIZE)
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
     #         hspace = 0.3, wspace = 0.1)
