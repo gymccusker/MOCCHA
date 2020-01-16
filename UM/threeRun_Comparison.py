@@ -1744,7 +1744,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'grey', label = 'Observations')
+    plt.plot(time_radice, netLW + netSW, color = 'grey', linewidth = 3, linestyle = '--', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1757,7 +1757,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'grey', label = 'Ice_station')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'grey', linewidth = 3, linestyle = '--', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1771,7 +1771,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'grey', label = 'obs: ice')
+    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'grey',  linewidth = 3, linestyle = '--', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
