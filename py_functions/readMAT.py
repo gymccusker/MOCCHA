@@ -35,7 +35,7 @@ def readMatlabStruct(filename, struct_name):
     #### --------------------------------------------------------------------
     #### IDENTIFY DATA AS FIRST ENTRY IN INTERMEDIATE STRUCT
     #### --------------------------------------------------------------------
-    data = struct[0,0]
+    a = struct[0,0]
         #### data.dtype:
             #### returns keys of dictionary (normal python dictionary access
             #### commands don't quite work...). MATLAB structs come back as
@@ -43,14 +43,12 @@ def readMatlabStruct(filename, struct_name):
 
     #### --------------------------------------------------------------------
     #### CHANGE NUMPY STRUCTURED ARRAY TO DICTIONARY FOR EASE OF USE
-    ####            --- come back to this later
+    ####           
     #### --------------------------------------------------------------------
-    # dicto = {}
-    # for name in dat[struct_name].dtype.names:#len(dat[struct_name].dtype.names)):
-    #     dicto[dat[struct_name].dtype.names]= dat[struct_name][]
+    b = {name:a[name] for name in a.dtype.names}
 
     print 'Finished! :)'
     print 'Reading out ' + struct_name + ' struct within .mat file'
     print ''
 
-    return data      #### returns structured numpy array containing matlab struct
+    return b     #### returns structured numpy array containing matlab struct
