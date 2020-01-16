@@ -1173,6 +1173,9 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
+    ### change matlab time for obs
+    time_iceStation = calcTime_Mat2DOY(ice_station['mday'])
+
     plt.subplot(2,1,1)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
@@ -1183,7 +1186,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
-    plt.plot(ice_station['time'],ice_station['tafluxB'], 'r.')
+    plt.plot(time_iceStation,ice_station['tafluxB'], 'r.')
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
