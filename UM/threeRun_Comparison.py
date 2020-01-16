@@ -1730,68 +1730,10 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
-    t1 = 11
-    t3 = 45
 
     #################################################################
     ## create figure and axes instances
     #################################################################
-    # plt.subplot(4,1,1)
-    # netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
-    # netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
-    # ax = plt.gca()
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
-    # plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    # else:
-    #     plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    # plt.title('CRF [W/m2]')
-    # ax.set_xlim([doy[0],doy[-1]])
-
-    # plt.subplot(4,1,2)
-    # ax = plt.gca()
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
-    # plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    # else:
-    #     plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    # plt.title('surface_net_SW_radiation [W/m2]')
-    # plt.legend()
-    # ax.set_xlim([doy[0],doy[-1]])
-
-    # plt.subplot(4,1,3)
-    # ax = plt.gca()
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs_temp: ice')
-    # plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    # plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
-    # else:
-    #     plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
-    # plt.title('surface_net_LW_radiation [W/m2]')
-    # ax.set_xlim([doy[0],doy[-1]])
-
-    # plt.subplot(4,1,4)
-    # ax1 = plt.gca()
-    # ax1.plot(time_tice,obs_temp.variables['Tice'][:] + 273.16, color = 'black', label = 'obs_temp: ice')
-    # ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
-    # ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
-    # if ifs_flag == True:
-    #     ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'darkorange', label = '2m')
-    # else:
-    #     ax1.plot(data3['time'], data3['temp_1.5m'].data, color = 'darkorange')#, label = '2m')
-    # plt.title('near-sfc_temperature [K]')
-    # plt.legend()
-    # ax1.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
@@ -1866,7 +1808,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netSW, hist=False, color="black")#, kde_kws={"shade": True})
+    sns.distplot(netSW, hist=False, color="grey")#, kde_kws={"shade": True})
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.xlim([-20,60])
     # plt.ylim([0,yDmax])
@@ -1878,7 +1820,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW, hist=False, color="black")#, kde_kws={"shade": True})
+    sns.distplot(netLW, hist=False, color="grey")#, kde_kws={"shade": True})
     plt.title('surface_net_LW_radiation [W/m2]')
     # plt.xlim([-20,60])
     # plt.ylim([0,yDmax])
