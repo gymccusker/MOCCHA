@@ -1181,12 +1181,12 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
     plt.plot(time_iceStation,ice_station['taflux'], 's', color = 'grey', markersize = 3, label = 'Ice_station')
-    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
+        plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange', label = label3)
     else:
-        plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
+        plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')
     plt.legend()
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
@@ -1205,12 +1205,12 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     else:
         plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.title('latent_heat_flux [W/m2]')
-    plt.ylim([-30, 60])
+    plt.ylim([-20, 60])
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
 
-    # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/SHF_LHF_oden_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
