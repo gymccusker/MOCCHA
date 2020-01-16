@@ -1164,6 +1164,12 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.13)
 
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
