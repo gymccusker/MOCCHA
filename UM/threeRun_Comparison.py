@@ -1161,7 +1161,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(15,10))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05,
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
             hspace = 0.4, wspace = 0.13)
 
     ### set diagnostic naming flags for if IFS being used
@@ -1185,8 +1185,9 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
-    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.')
-    plt.plot(time_iceStation,ice_station['tafluxB'], 'r.')
+    plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'k.', label = 'Foremast')
+    plt.plot(time_iceStation,ice_station['taflux'], '.', color = 'grey', label = 'Ice_station')
+    plt.legend()
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -1203,6 +1204,7 @@ def plot_line_Fluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'k.')
     plt.title('latent_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xlabel('Day of year')
 
     # fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.png'
     # plt.savefig(fileout, dpi=300)
