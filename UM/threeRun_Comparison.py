@@ -1230,6 +1230,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
     ax  = fig.add_axes([0.7,0.55,0.27,0.35])   # left, bottom, width, height
+    # zerosC = np.zeros(len(data2['time']))
+    yCmax = 0.16
+    plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
@@ -1239,9 +1242,12 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
+    plt.ylim([0,0.yCmax])
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.27,0.35])   # left, bottom, width, height
+    yDmax = 0.12
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
@@ -1250,6 +1256,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(np.squeeze(ice_station['lrflux'][indexlr]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
+    plt.ylim([0,yDmax])
 
     fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStation_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
