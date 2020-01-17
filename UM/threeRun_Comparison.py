@@ -1580,7 +1580,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ax  = fig.add_axes([0.07,0.55,0.56,0.35])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    plt.plot(np.squeeze(time_iceStation[ice_station['taflag'][:] == 1]),np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
+    plt.plot(time_iceStation[np.squeeze(ice_station['taflag'][:]==1)],np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1597,7 +1597,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
     # index = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
-    plt.plot(np.squeeze(time_iceStation[ice_station['lrflag'][:] == 1]),np.squeeze(ice_station['lrflux'][ice_station['lrflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
+    plt.plot(time_iceStation[np.squeeze(ice_station['lrflag'][:]==1)],np.squeeze(ice_station['lrflux'][ice_station['lrflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
