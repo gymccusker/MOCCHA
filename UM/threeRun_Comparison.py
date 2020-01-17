@@ -1580,7 +1580,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ax  = fig.add_axes([0.07,0.55,0.56,0.35])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(foremast.variables['doy'][foremast.variables['taflag'][:] == 1], foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    plt.plot(time_iceStation,ice_station['taflux'], 's', color = 'grey', markersize = 3, label = 'Ice_station')
+    plt.plot(np.squeeze(time_iceStation[ice_station['taflag'][:] == 1]),np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1596,8 +1596,8 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(foremast.variables['doy'][foremast.variables['rflag'][:] == 1], foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    index = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
-    plt.plot(np.squeeze(time_iceStation[np.squeeze(index)]),np.squeeze(ice_station['lrflux'][index]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
+    # index = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
+    plt.plot(np.squeeze(time_iceStation[ice_station['lrflag'][:] == 1]),np.squeeze(ice_station['lrflux'][ice_station['lrflag'][:] == 1]), 's', color = 'grey', markersize = 3, label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
@@ -1626,7 +1626,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
     # indexta = np.logical_and(ice_station['taflux']>=-30, ice_station['taflux']<=70)
-    sns.distplot(np.squeeze(ice_station['taflux'][ice_station.variables['taflag'][:] == 1]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
+    sns.distplot(np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
@@ -1641,7 +1641,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
     sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black")#, kde_kws={"shade": True})
     # indexlr = np.logical_and(ice_station['lrflux']>=-30, ice_station['lrflux']<=70)
-    sns.distplot(np.squeeze(ice_station['lrflux'][ice_station.variables['lrflag'][:] == 1]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    sns.distplot(np.squeeze(ice_station['lrflux'][ice_station['lrflag'][:] == 1]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,60])
     plt.ylim([0,yDmax])
