@@ -1624,7 +1624,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
-    sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
+    fmst_taflux = foremast.variables['taflux'][foremast.variables['taflag'][:] == 1]
+    indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
+    sns.distplot(fmst_taflux[indextafmst], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
     taflux = np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1])
     indexta = np.logical_and(taflux>=-50, taflux<=50)
     sns.distplot(taflux[indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
@@ -1640,7 +1642,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data1['latent_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(data3['sfc_down_lat_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
     sns.distplot(data2['latent_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(foremast.variables['rflux'][foremast.variables['rflag'][:] == 1], hist=False, color="black")#, kde_kws={"shade": True})
+    fmst_lrflux = foremast.variables['rflux'][foremast.variables['rflag'][:] == 1]
+    indexlrfmst = np.logical_and(fmst_lrflux>=-50, fmst_lrflux<=50)
+    sns.distplot(fmst_lrflux[indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
     lrflux = np.squeeze(ice_station['lrflux'][ice_station['lrflag'][:] == 1])
     indexlr = np.logical_and(lrflux>=-50, lrflux<=50)
     sns.distplot(lrflux[indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
