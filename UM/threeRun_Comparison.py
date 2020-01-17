@@ -1625,8 +1625,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(foremast.variables['taflux'][foremast.variables['taflag'][:] == 1], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
-    # indexta = np.logical_and(ice_station['taflux']>=-30, ice_station['taflux']<=70)
-    sns.distplot(np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1]), hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
+    taflux = np.squeeze(ice_station['taflux'][ice_station['taflag'][:] == 1])
+    indexta = np.logical_and(taflux>=-30, taflux<=70)
+    sns.distplot(taflux[indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
     plt.title('sensible_heat_flux [W/m2]')
     plt.legend()
     plt.xlim([-20,60])
@@ -1647,7 +1648,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.ylim([0,yDmax])
 
     fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStationQC_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
