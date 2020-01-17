@@ -1788,6 +1788,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.title('surface_net_LW_radiation [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xlabel('Day of year')
 
     ### -------------------------------
     ### Build figure (PDFs)
@@ -1832,7 +1833,6 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('surface_net_LW_radiation [W/m2]')
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel(['Day of year'])
 
     print '******'
     print ''
