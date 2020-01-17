@@ -19,6 +19,8 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 import seaborn as sns
+from time_functions import calcTime_Mat2DOY
+from readMAT import readMatlabStruct
 
 def readfile(filename):
 
