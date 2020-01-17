@@ -2105,7 +2105,7 @@ def main():
     obs_temp = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
     print 'Load ice station data from Jutta...'
-    ice_station = readMatlabStruct(obs_root_dir + 'ice_station/flux30_trhwxrel.mat','flux')
+    ice_station = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat','flux')
             #### mast_radiation_30min_v2.3.mat
             #### flux30_trhwxrel.mat
 
@@ -2375,8 +2375,8 @@ def main():
         # -------------------------------------------------------------
         # Plot paper figures
         # -------------------------------------------------------------
-        # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
-        figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
