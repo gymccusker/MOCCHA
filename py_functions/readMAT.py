@@ -63,22 +63,3 @@ def readMatlabStruct(filename):
     print ''
 
     return b     #### returns structured numpy array containing matlab struct
-
-# def findMatlabStruct(filename):
-#
-#     '''
-#     Use to find Matlab struct name in .mat file (can never remember the command!)
-#     '''
-#
-#     ### ----------------------------------
-#     ### Find struct name from .mat file using sio
-#     ### ----------------------------------
-#     dat = sio.whosmat(filename)
-#
-#     ### ----------------------------------
-#     ### Extract out struct name
-#     ### ----------------------------------
-#
-#     structname = dat[0][0]
-#
-#     return structname
