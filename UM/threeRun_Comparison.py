@@ -2021,7 +2021,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
-    from time_functions import calcTime_Mat2DOY
+    from scipy.interpolate import interp1d
 
         # from matplotlib.patches import Polygon
 
@@ -2082,6 +2082,10 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### 6-hourly time binning for model
     # dat = np.zeros(len(data1['time'])/4)
     # for i in range(0,len(dat)): dat[i] = data1['time'][0]+i*l
+
+    ### figuring out how to interpolate sonde data correctly on to model grid...
+    ## for the sondes, higher altitudes are listed as NaNs
+    ## t=0 on 20180814 has numerical values between [1600:1729]
 
     meltObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>=226,np.squeeze(obs['sondes']['doy'][:]<=240)))
     freezeObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>240,np.squeeze(obs['sondes']['doy'][:]<=259)))
@@ -2227,7 +2231,7 @@ def main():
     columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
-    # Load obs['obs_temp']ervations
+    # Load observations
     # -------------------------------------------------------------
     print 'Loading observations:'
             # -------------------------------------------------------------
