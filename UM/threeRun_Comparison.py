@@ -861,7 +861,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1128,7 +1128,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], doy, label1, label2, label3):
+def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1294,7 +1294,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     plt.savefig(fileout)#, dpi=400)
     plt.show()
 
-def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1488,7 +1488,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1682,7 +1682,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1828,7 +1828,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.savefig(fileout)
     plt.show()
 
-def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2013,7 +2013,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.savefig(fileout)
     plt.show()
 
-def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3):
+def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2545,13 +2545,13 @@ def main():
         # -------------------------------------------------------------
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
-        # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], obs['foremast'], obs['deck7th'], obs['ice_station'], doy, label1, label2, label3)
+        # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
         # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, obs['obs_temp'], doy)
+        #             missing_files, out_dir1, obs, doy)
 
         # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
-        #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs['obs_temp'], doy, label1, label2, label3)
+        #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
         # -------------------------------------------------------------
         # Plot paper figures
