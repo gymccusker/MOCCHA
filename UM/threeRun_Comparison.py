@@ -2079,6 +2079,10 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
 
+    ### 6-hourly time binning for model
+    # dat = np.zeros(len(data1['time'])/4)
+    # for i in range(0,len(dat)): dat[i] = data1['time'][0]+i*l
+
     meltObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>=226,np.squeeze(obs['sondes']['doy'][:]<=240)))
     freezeObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>240,np.squeeze(obs['sondes']['doy'][:]<=259)))
 
