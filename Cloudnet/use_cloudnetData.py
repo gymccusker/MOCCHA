@@ -999,7 +999,7 @@ def main():
             else:
                 time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
-                if np.sum(nc1.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                if np.ndim(nc1.variables[var_list[j]]) == 1:  # 1d timeseries only
                     um_data[var_list[j]] = nc1.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     um_data[var_list[j]] = nc1.variables[var_list[j]][:]
@@ -1010,9 +1010,8 @@ def main():
                 time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc1.variables['time'][:])/24.0))
             print um_data
             for j in range(0,len(var_list)):
-                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
-                if np.sum(nc1.variables[var_list[j]].shape) == 24:
+                if np.ndim(nc1.variables[var_list[j]]) == 1:
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:])
                 else:
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
@@ -1034,7 +1033,7 @@ def main():
             else:
                 time_ifs = float(names[i][6:8]) + ((nc2.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
-                if np.sum(nc2.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                if np.ndim(nc2.variables[var_list[j]]) == 1:  # 1d timeseries only
                     ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     ifs_data[var_list[j]] = nc2.variables[var_list[j]][:]
@@ -1047,7 +1046,7 @@ def main():
             for j in range(0,len(var_list)):
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
-                if np.sum(nc2.variables[var_list[j]].shape) == 24:
+                if np.ndim(nc2.variables[var_list[j]]) == 1:
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:])
                 else:
                     ifs_data[var_list[j]] = np.append(ifs_data[var_list[j]].data,nc2.variables[var_list[j]][:],0)
@@ -1073,7 +1072,7 @@ def main():
                 else:
                     time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
                 for j in range(0,len(var_list)):
-                    if np.sum(nc3.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                    if np.ndim(nc3.variables[var_list[j]]) == 1:  # 1d timeseries only
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
                     else:                                   # 2d column um_data
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
@@ -1084,9 +1083,8 @@ def main():
                     time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
                 print misc_data
                 for j in range(0,len(var_list)):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.sum(nc3.variables[var_list[j]].shape) == 24:
+                    if np.ndim(nc3.variables[var_list[j]]) == 1:
                         misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
                     elif np.sum(nc3.variables[var_list[j]].shape) == 71:
                         continue
@@ -1113,7 +1111,7 @@ def main():
             else:
                 time_obs = float(names[i][6:8]) + ((nc4.variables['time'][:])/24.0)
             for j in range(0,len(var_list)):
-                if np.sum(nc4.variables[var_list[j]].shape) == 24:  # 1d timeseries only
+                if np.ndim(nc4.variables[var_list[j]]) == 1:  # 1d timeseries only
                     obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
                 else:                                   # 2d column um_data
                     obs_data[var_list[j]] = nc4.variables[var_list[j]][:]
@@ -1124,9 +1122,8 @@ def main():
                 time_obs = np.append(time_obs,float(filename_obs[-16:-14]) + ((nc4.variables['time'][:])/24.0))
             print obs_data
             for j in range(0,len(var_list)):
-                ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
-                if np.sum(nc4.variables[var_list[j]].shape) == 24:
+                if np.ndim(nc4.variables[var_list[j]]) == 1:
                     obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:])
                 elif np.sum(nc4.variables[var_list[j]].shape) == 71:
                     continue
