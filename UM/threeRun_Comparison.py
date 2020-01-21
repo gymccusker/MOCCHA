@@ -2377,11 +2377,18 @@ def main():
                     time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
                     time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
                     if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
+
+                ### define height arrays explicitly
+                data1['height'] = nc1.variables['height'][:]
+                data2['height'] = nc2.variables['height'][:]
+                if not ifs_flag: data3['height'] = nc3.variables['height'][:]
+
                 for j in range(0,len(var_list1)):
                     if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                         continue
                     elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
                         data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
+                nc1.close()
                 ## ------------------
                 #### um2
                 ## ------------------
@@ -2390,6 +2397,7 @@ def main():
                         continue
                     elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
                         data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
+                nc2.close()
                 ## ------------------
                 #### um3
                 ## ------------------
@@ -2399,6 +2407,7 @@ def main():
                     elif np.ndim(nc3.variables[var_list3[j]]) >= 1:
                         # data1[cube_um1[j].var_name] = cube_um1[j].data
                         data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
+                nc3.close()
             else:
                 if month_flag == -1:
                     time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
@@ -2419,6 +2428,7 @@ def main():
                         data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:])
                     elif np.ndim(nc1.variables[var_list1[j]]) == 2:
                         data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
+                nc1.close()
                 ## ------------------
                 #### um2
                 ## ------------------
@@ -2429,6 +2439,7 @@ def main():
                         data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:])
                     elif np.ndim(nc2.variables[var_list2[j]]) == 2:
                         data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:],0)
+                nc2.close()
                 ## ------------------
                 #### um3 / ifs
                 ## ------------------
@@ -2439,16 +2450,13 @@ def main():
                         data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
                     elif np.ndim(nc3.variables[var_list3[j]]) == 2:
                         data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
-
+                nc3.close()
         #################################################################
         ## save time to dictionary now we're not looping over all diags anymore
         #################################################################
         data1['time'] = time_um1
         data2['time'] = time_um2
         data3['time'] = time_um3
-        data1['height'] = nc1.variables['height'][:]
-        data2['height'] = nc2.variables['height'][:]
-        if not ifs_flag: data3['height'] = nc3.variables['height'][:]
 
         #################################################################
         ## create labels for figure legends - done here so only needs to be done once!
