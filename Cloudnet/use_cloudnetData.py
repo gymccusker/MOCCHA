@@ -1,6 +1,6 @@
 ###
 ###
-### SCRIPT TO READ IN UM MODEL DATA IN NETCDF FORMAT AS IRIS nc1
+### SCRIPT TO READ IN CLOUDNET DATA
 ###
 ###
 
@@ -18,6 +18,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
+
+#### import python functions
+import sys
+sys.path.insert(1, '../py_functions/')
+from time_functions import calcTime_Mat2DOY
+from readMAT import readMatlabStruct
 
 def readfile(filename_um):
 
@@ -827,10 +833,6 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     plt.show()
 
 def main():
-
-    import sys
-    sys.path.insert(1, '../py_functions/')
-        ### include py function in path
 
     START_TIME = time.time()
     print '******'
