@@ -19,6 +19,10 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 import seaborn as sns
+
+#### import python functions
+import sys
+sys.path.insert(1, '../py_functions/')
 from time_functions import calcTime_Mat2DOY
 from readMAT import readMatlabStruct
 
@@ -2201,10 +2205,10 @@ def makeGlobalStashList():
 
 def main():
 
-    import sys
-    sys.path.insert(1, '../py_functions/')
-        ### include py function in path
-    from readMAT import readMatlabStruct
+    # import sys
+    # sys.path.insert(1, '../py_functions/')
+    #     ### include py function in path
+    # from readMAT import readMatlabStruct
 
     START_TIME = time.time()
     print '******'
