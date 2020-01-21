@@ -2051,11 +2051,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
 
-    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
-    time_radice = calcTime_Mat2DOY(datenums_radice)
-
-    datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
-    time_tice = calcTime_Mat2DOY(datenums_tice)
+    obs['sondes']['doy'] = calcTime_Mat2DOY(obs['sondes']['mday'])
 
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
@@ -2086,91 +2082,25 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     fig = plt.figure(figsize=(16,12))
 
     ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
-    netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
-    netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
-    ax = plt.gca()
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    else:
-        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.title('CRF [W/m2]')
-    ax.set_xlim([doy[0],doy[-1]])
+    plt.pcolor(np.squeeze(sondes['doy']),sondes['gpsaltitude'][:,0],sondes['temperature'])
+    plt.ylim([0,1e5])
+    plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    else:
-        plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.title('surface_net_SW_radiation [W/m2]')
-    # plt.legend()
-    ax.set_xlim([doy[0],doy[-1]])
+
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
-    if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
-    else:
-        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
-    plt.title('surface_net_LW_radiation [W/m2]')
-    ax.set_xlim([doy[0],doy[-1]])
-    plt.xlabel('Day of year')
 
-    ### -------------------------------
-    ### Build figure (PDFs)
-    ### -------------------------------
-    # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
-    # fig = plt.figure(figsize=(7,9))
-    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
-    #         hspace = 0.3, wspace = 0.15)
-    # plt.subplot(211)
+
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    yDmax = 0.05
-    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW + netSW, hist=False, color="black")
-    plt.title('CRF [W/m2]')
-    plt.xlim([-50,80])
-    plt.ylim([0,yDmax])
+
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    yEmax = 0.06
-    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
-    sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
-    sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
-    sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
-    plt.title('surface_net_SW_radiation [W/m2]')
-    plt.legend()
-    plt.xlim([-10,110])
-    plt.ylim([0,yEmax])
+
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    yFmax = 0.12
-    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW, hist=False, color="black")
-    plt.title('surface_net_LW_radiation [W/m2]')
-    plt.xlim([-80,20])
-    plt.ylim([0,yFmax])
 
     print '******'
     print ''
