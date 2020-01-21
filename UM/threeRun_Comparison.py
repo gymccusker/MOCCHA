@@ -2108,8 +2108,8 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(np.squeeze(sondes['temperature'][:,meltObs]),1),np.nanmean(np.squeeze(sondes['gpsaltitude'][:,meltObs]),1))
-    plt.plot(np.nanmean(np.squeeze(sondes['temperature'][:,freezeObs]),1),np.nanmean(np.squeeze(sondes['gpsaltitude'][:,freezeObs]),1))
+    plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,meltObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,meltObs]),1))
+    plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,freezeObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,freezeObs]),1))
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
