@@ -2082,7 +2082,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     fig = plt.figure(figsize=(16,12))
 
     ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(np.squeeze(sondes['doy']),sondes['gpsaltitude'][:,0],sondes['temperature'])
+    plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'])
     plt.ylim([0,1e5])
     plt.xlim([doy[0],doy[-1]])
 
