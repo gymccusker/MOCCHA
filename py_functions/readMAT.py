@@ -59,7 +59,7 @@ def readMatlabStruct(filename):
     b = {name:a[name].astype(float) for name in a.dtype.names}
 
     print 'Finished! :)'
-    print 'Reading out ' + struct_name + ' struct within .mat file'
+    print 'Reading out ' + structname + ' struct within .mat file'
     print ''
 
     return b     #### returns structured numpy array containing matlab struct
