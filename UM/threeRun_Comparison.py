@@ -2051,7 +2051,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
 
-    obs['sondes']['doy'] = calcTime_Mat2DOY(obs['sondes']['mday'])
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday'])
 
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
