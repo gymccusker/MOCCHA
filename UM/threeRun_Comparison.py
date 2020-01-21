@@ -2095,12 +2095,12 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature']));plt.show()
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature']))
     plt.ylim([0,1e4])
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature']));plt.show()
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature']))
     plt.ylim([0,1e4])
     plt.xlim([doy[0],doy[-1]])
 
@@ -2487,7 +2487,7 @@ def main():
         if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
         label3 = 'undefined_label'
-        if out_dir4 == 'OUT_25H/': label3 = 'IFS' # 'ECMWF_IFS'
+        if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
