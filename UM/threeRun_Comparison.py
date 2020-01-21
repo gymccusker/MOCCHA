@@ -2051,6 +2051,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
 
+    #### change matlab time to doy
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
@@ -2073,6 +2074,13 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
+    #### set flagged values to nans
+    data1['temperature'][data1['temperature'] == -9999] = np.nan
+    data2['temperature'][data2['temperature'] == -9999] = np.nan
+    data3['temperature'][data3['temperature'] <= 0] = np.nan
+
+    print 'Starting radiosonde figure (quite slow!)...:'
+
     #################################################################
     ## create figure and axes instances
     #################################################################
@@ -2087,11 +2095,14 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
-    # plt.pcolor(data1['time'],data1[''])
-
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature']));plt.show()
+    plt.ylim([0,1e4])
+    plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
-
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature']));plt.show()
+    plt.ylim([0,1e4])
+    plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
 
