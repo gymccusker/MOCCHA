@@ -2083,7 +2083,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'])
-    plt.ylim([0,1e5])
+    plt.ylim([0,1e4])
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
@@ -2416,7 +2416,7 @@ def main():
                 for j in range(0,len(cube_um2)):
                     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) >= 24:
+                    elif np.sum(cube_um2[j].data.shape) <= 25:
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data,0)
@@ -2426,7 +2426,7 @@ def main():
                 for j in range(0,len(cube_um3)):
                     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um3[j].data.shape) >= 24:
+                    elif np.sum(cube_um3[j].data.shape) <= 25:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
                     else:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
