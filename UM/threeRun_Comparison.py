@@ -1124,6 +1124,172 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.savefig(fileout, dpi=300)
     plt.show()
 
+def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
+        # from matplotlib.patches import Polygon
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting combined 1d timeseries:'
+    print ''
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 18
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(8,9))
+    plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
+
+    #################################################################
+    ## sort out obs_tempervations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    datenums_temp = obs_temp.variables['time'][:]
+    time_temp = calcTime_Mat2DOY(datenums_temp)
+
+    datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
+
+    # time_um1 = data1['time'][:]
+    # time_um2 = data2['time'][:]
+    # time_um3 = data3['time'][:]
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+
+    plt.subplot(211)
+    ax = plt.gca()
+    plt.plot(data1['time'][:], data1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
+    plt.plot(data2['time'][:], data2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'][:], data3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
+    else:
+        plt.plot(data3['time'][:], data3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
+    plt.plot(time_temp,obs_temp.variables['Tice'][:] - 273.15, color = 'black', label = 'Observations')
+    plt.legend()
+    plt.title('Temperature [$^{o}C$]')
+    plt.ylim([263 - 273,275 - 273])
+    # plt.grid('on')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        # plt.xlabel('Day of year')
+
+    plt.subplot(2,1,2)
+    ax = plt.gca()
+    plt.plot(data1['time'][:], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'][:], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'][:], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'][:], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
+    plt.title('Net SW radiation [W/m2]')
+    plt.ylim([0,100])
+    # plt.grid('on')
+    if month_flag == 8:
+        ax.set_xlim([13.0, 31.0])
+        plt.xlabel('Day of month [Aug]')
+    if month_flag == 9:
+        ax.set_xlim([1.0, 15.0])
+        plt.xlabel('Day of month [Sep]')
+    if month_flag == -1:
+        ax.set_xlim([doy[0],doy[-1]])
+        plt.xlabel('Day of year')
+
+    # plt.subplot(3,1,3)
+    # ax = plt.gca()
+    # # data['surface_net_LW_radiation'].data[data['surface_net_LW_radiation'].data == 0] = np.nan
+    # plt.plot(data1['time'][:], data1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'][:], data2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    # if ifs_flag == True:
+    #     plt.plot(data3['time'][:], data3['sfc_net_lw'].data, color = 'darkorange')
+    # else:
+    #     plt.plot(data3['time'][:], data3['surface_net_LW_radiation'].data, color = 'darkorange')
+    # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'Observations')
+    # # plt.legend()
+    # plt.title('Net LW radiation [W/m2]')
+    # # plt.ylim([260,275])
+    # # plt.grid('on')
+    # if month_flag == 8:
+    #     ax.set_xlim([13.0, 31.0])
+    #     plt.xlabel('Day of month [Aug]')
+    # if month_flag == 9:
+    #     ax.set_xlim([1.0, 15.0])
+    #     plt.xlabel('Day of month [Sep]')
+    # if month_flag == -1:
+    #     ax.set_xlim([doy[0],doy[-1]])
+    #     plt.xlabel('Day of year')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    if month_flag == -1:
+        if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
+            fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
+        elif out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
+            if ifs_flag == True:
+                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
+            else:
+                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
+        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
+            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
+        else:
+            fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
+    # print 'Saving as: ' + fileout
+    fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
+    plt.savefig(fileout)#, dpi=400)
+    plt.show()
+
 def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -1843,7 +2009,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.savefig(fileout)
     plt.show()
 
-def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, doy, label1, label2, label3):
+def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1855,19 +2021,13 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
 
         # from matplotlib.patches import Polygon
 
-    ### set diagnostic naming flags for if IFS being used
-    if out_dir4 == 'OUT_25H/':
-        ifs_flag = True
-    else:
-        ifs_flag = False
-
     ###################################
     ## PLOT MAP
     ###################################
 
     print '******'
     print ''
-    print 'Plotting combined 1d timeseries:'
+    print 'Plotting radiosonde and model temperature profiles:'
     print ''
 
     ##################################################
@@ -1877,8 +2037,8 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 16
-    LARGE_SIZE = 18
+    MED_SIZE = 14
+    LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
@@ -1886,127 +2046,135 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,9))
-    plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.1,
-            hspace = 0.4, wspace = 0.15)
-
-    #################################################################
-    ## sort out obs_tempervations' timestamp
-    #################################################################
-    # 0: Tship / (1)                         (time: 2324)
-    # 1: LWdice / (1)                        (time3: 1293)
-    # 2: LWuice / (1)                        (time3: 1293)
-    # 3: precip / (1)                        (time4: 2352)
-    # 4: Tice / (1)                          (time1: 1296)
-    # 5: SWdship / (1)                       (time2: 2348)
-    # 6: LWdship / (1)                       (time2: 2348)
-    # 7: SWdice / (1)                        (time3: 1293)
-    # 8: SWuice / (1)                        (time3: 1293)
-
-    datenums_temp = obs_temp.variables['time'][:]
-    time_temp = calcTime_Mat2DOY(datenums_temp)
 
     datenums_radice = obs_temp.variables['time3'][:] ### radiation on different timestep
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
-    # time_um1 = data1['time'][:]
-    # time_um2 = data2['time'][:]
-    # time_um3 = data3['time'][:]
+    datenums_tice = obs_temp.variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    # UM -> um2 comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
 
     #################################################################
     ## create figure and axes instances
     #################################################################
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(16,12))
 
-    plt.subplot(211)
+    ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
+    netLW = obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]
+    netSW = obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]
     ax = plt.gca()
-    plt.plot(data1['time'][:], data1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
-    plt.plot(data2['time'][:], data2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'][:], data3['sfc_temp_2m'].data - 273.15, color = 'darkorange', label =  label3)
+        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
-        plt.plot(data3['time'][:], data3['temp_1.5m'].data - 273.15, color = 'darkorange')#, label = '2m')
-    plt.plot(time_temp,obs_temp.variables['Tice'][:] - 273.15, color = 'black', label = 'Observations')
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('CRF [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
+
+    ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Ice_station')
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
+    plt.title('surface_net_SW_radiation [W/m2]')
+    # plt.legend()
+    ax.set_xlim([doy[0],doy[-1]])
+
+    ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
+    ax = plt.gca()
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'obs: ice')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
+    else:
+        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
+    plt.title('surface_net_LW_radiation [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.xlabel('Day of year')
+
+    ### -------------------------------
+    ### Build figure (PDFs)
+    ### -------------------------------
+    # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
+    # fig = plt.figure(figsize=(7,9))
+    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
+    #         hspace = 0.3, wspace = 0.15)
+    # plt.subplot(211)
+    ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
+    yDmax = 0.05
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW + netSW, hist=False, color="black")
+    plt.title('CRF [W/m2]')
+    plt.xlim([-50,80])
+    plt.ylim([0,yDmax])
+
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
+    yEmax = 0.06
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
+    sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
+    plt.title('surface_net_SW_radiation [W/m2]')
     plt.legend()
-    plt.title('Temperature [$^{o}C$]')
-    plt.ylim([263 - 273,275 - 273])
-    # plt.grid('on')
-    if month_flag == 8:
-        ax.set_xlim([13.0, 31.0])
-        plt.xlabel('Day of month [Aug]')
-    if month_flag == 9:
-        ax.set_xlim([1.0, 15.0])
-        plt.xlabel('Day of month [Sep]')
-    if month_flag == -1:
-        ax.set_xlim([doy[0],doy[-1]])
-        # plt.xlabel('Day of year')
+    plt.xlim([-10,110])
+    plt.ylim([0,yEmax])
 
-    plt.subplot(2,1,2)
-    ax = plt.gca()
-    plt.plot(data1['time'][:], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'][:], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    if ifs_flag == True:
-        plt.plot(data3['time'][:], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    else:
-        plt.plot(data3['time'][:], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.plot(time_radice,(obs_temp.variables['SWdice'][:] - obs_temp.variables['SWuice'][:]), color = 'black', label = 'Observations')
-    plt.title('Net SW radiation [W/m2]')
-    plt.ylim([0,100])
-    # plt.grid('on')
-    if month_flag == 8:
-        ax.set_xlim([13.0, 31.0])
-        plt.xlabel('Day of month [Aug]')
-    if month_flag == 9:
-        ax.set_xlim([1.0, 15.0])
-        plt.xlabel('Day of month [Sep]')
-    if month_flag == -1:
-        ax.set_xlim([doy[0],doy[-1]])
-        plt.xlabel('Day of year')
-
-    # plt.subplot(3,1,3)
-    # ax = plt.gca()
-    # # data['surface_net_LW_radiation'].data[data['surface_net_LW_radiation'].data == 0] = np.nan
-    # plt.plot(data1['time'][:], data1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'][:], data2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'][:], data3['sfc_net_lw'].data, color = 'darkorange')
-    # else:
-    #     plt.plot(data3['time'][:], data3['surface_net_LW_radiation'].data, color = 'darkorange')
-    # plt.plot(time_radice,(obs_temp.variables['LWdice'][:] - obs_temp.variables['LWuice'][:]), color = 'black', label = 'Observations')
-    # # plt.legend()
-    # plt.title('Net LW radiation [W/m2]')
-    # # plt.ylim([260,275])
-    # # plt.grid('on')
-    # if month_flag == 8:
-    #     ax.set_xlim([13.0, 31.0])
-    #     plt.xlabel('Day of month [Aug]')
-    # if month_flag == 9:
-    #     ax.set_xlim([1.0, 15.0])
-    #     plt.xlabel('Day of month [Sep]')
-    # if month_flag == -1:
-    #     ax.set_xlim([doy[0],doy[-1]])
-    #     plt.xlabel('Day of year')
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
+    yFmax = 0.12
+    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
+    sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW, hist=False, color="black")
+    plt.title('surface_net_LW_radiation [W/m2]')
+    plt.xlim([-80,20])
+    plt.ylim([0,yFmax])
 
     print '******'
     print ''
     print 'Finished plotting! :)'
     print ''
 
-    if month_flag == -1:
-        if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
-            fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-200_tempoC_SW.png'
-        elif out_dir2[0:20] == '5_u-bl661_RA1M_CASIM':
-            if ifs_flag == True:
-                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
-            else:
-                fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_casim-100_tempoC_SW.png'
-        elif out_dir2[:18] == '4_u-bg610_RA2M_CON':
-            fileout = '../FIGS/comparisons/' + out_dir1[:18] + '_oden_metum_tempoC_SW.png'
-        else:
-            fileout = '../FIGS/comparisons/' + out_dir2[:18] + '_oden_metum_tempoC_SW.png'
-    # print 'Saving as: ' + fileout
-    fileout = '../FIGS/comparisons/' + out_dir2[0:20] + '_oden_metum_metum-erai_IFS_tempoC_SW.svg'
-    plt.savefig(fileout)#, dpi=400)
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def callback(cube, field, filename):
@@ -2385,7 +2553,8 @@ def main():
         # Plot paper figures
         # -------------------------------------------------------------
         # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
-        figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
+        figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
         # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs_temp, foremast, deck7th, ice_station, doy, label1, label2, label3)
 
