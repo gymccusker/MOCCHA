@@ -2432,7 +2432,7 @@ def main():
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
                     elif np.ndim(cube_um3[j]) == 2:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
-                    np.save('working_data3', data3)
+                    # np.save('working_data3', data3)
 
         #################################################################
         ## save time to dictionary now we're not looping over all diags anymore
