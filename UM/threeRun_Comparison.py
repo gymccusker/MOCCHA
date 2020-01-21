@@ -2079,6 +2079,9 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
 
+    meltObs = np.where(np.logical_and(np.squeeze(sondes['doy'][:])>=226,np.squeeze(sondes['doy'][:]<=240)))
+    freezeObs = np.where(np.logical_and(np.squeeze(sondes['doy'][:])>240,np.squeeze(sondes['doy'][:]<=259)))
+
     print 'Starting radiosonde figure (quite slow!)...:'
 
     #################################################################
@@ -2105,7 +2108,8 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-
+    plt.plot(np.nanmean(np.squeeze(sondes['temperature'][:,meltObs]),1),np.nanmean(np.squeeze(sondes['gpsaltitude'][:,meltObs]),1))
+    plt.plot(np.nanmean(np.squeeze(sondes['temperature'][:,freezeObs]),1),np.nanmean(np.squeeze(sondes['gpsaltitude'][:,freezeObs]),1))
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
