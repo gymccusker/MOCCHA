@@ -2404,33 +2404,33 @@ def main():
                 #### UM
                 ## ------------------
                 for j in range(0,len(cube_um1)):
-                    if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.ndim(cube_um1[j]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) <= 25:
+                    elif np.ndim(cube_um1[j]) == 1:
                         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data)
-                    else:
+                    elif np.ndim(cube_um1[j]) == 2:
                         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data,0)
                     # np.save('working_data1', data1)
                 ## ------------------
                 #### um2
                 ## ------------------
                 for j in range(0,len(cube_um2)):
-                    if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.ndim(cube_um2[j]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um2[j].data.shape) <= 25:
+                    elif np.ndim(cube_um2[j]) == 1:
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data)
-                    else:
+                    elif np.ndim(cube_um2[j]) == 2:
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data,0)
                     # np.save('working_data2', data2)
                 ## ------------------
                 #### um3 / ifs
                 ## ------------------
                 for j in range(0,len(cube_um3)):
-                    if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
+                    if np.ndim(cube_um3[j]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um3[j].data.shape) <= 25:
+                    elif np.ndim(cube_um3[j]) == 1:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
-                    else:
+                    elif np.ndim(cube_um3[j]) == 2:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
                     np.save('working_data3', data3)
 
