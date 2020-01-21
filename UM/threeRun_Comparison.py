@@ -2406,10 +2406,11 @@ def main():
                 for j in range(0,len(cube_um1)):
                     if np.sum(cube_um1[j].data.shape) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.sum(cube_um1[j].data.shape) >= 24:
+                    elif np.sum(cube_um1[j].data.shape) <= 25:
                         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data)
                     else:
                         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data,0)
+                    np.save('working_data1', data1)
                 ## ------------------
                 #### um2
                 ## ------------------
@@ -2420,6 +2421,7 @@ def main():
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data)
                     else:
                         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data,0)
+                    np.save('working_data2', data2)
                 ## ------------------
                 #### um3
                 ## ------------------
@@ -2430,7 +2432,8 @@ def main():
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
                     else:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
-
+                    np.save('working_data3', data3)
+                    
         #################################################################
         ## save time to dictionary now we're not looping over all diags anymore
         #################################################################
