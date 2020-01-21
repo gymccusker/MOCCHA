@@ -1,6 +1,6 @@
 ###
 ###
-### SCRIPT TO READ IN UM MODEL DATA IN NETCDF FORMAT AS IRIS CUBE
+### SCRIPT TO READ IN UM, IFS, and UM-CASIM model data
 ###
 ###
 
