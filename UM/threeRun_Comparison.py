@@ -2431,7 +2431,6 @@ def main():
                     elif np.sum(cube_um3[j].data.shape) <= 25:
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
                     else:
-                        if i == len(names): cube_um3[j].data[25,:] = 0.0
                         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
                     np.save('working_data3', data3)
 
