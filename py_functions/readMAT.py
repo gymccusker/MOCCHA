@@ -8,7 +8,7 @@ from scipy.io import loadmat
 import numpy as np
 import scipy.io as sio
 
-def readMatlabStruct(filename, struct_name):
+def readMatlabStruct(filename):
 
     #### EXAMPLE OF USE:
     #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
@@ -17,6 +17,16 @@ def readMatlabStruct(filename, struct_name):
     #### access data with:
         #### e.g. data['mday']
         ####        data.dtype.names - lists var names in structured array
+
+    ### ----------------------------------
+    ### Find struct name from .mat file using sio
+    ### ----------------------------------
+    dat = sio.whosmat(filename)
+
+    ### ----------------------------------
+    ### Extract out struct name
+    ### ----------------------------------
+    structname = dat[0][0]
 
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
@@ -29,7 +39,7 @@ def readMatlabStruct(filename, struct_name):
     #### USE STRUCT_NAME TO DEFINE INTERMEDIATE STRUCT ARRAY
     #### --------------------------------------------------------------------
     print 'Dealing with intermediate data assignments...'
-    struct = dat[struct_name]
+    struct = dat[structname]
     print ''
 
     #### --------------------------------------------------------------------
@@ -53,3 +63,22 @@ def readMatlabStruct(filename, struct_name):
     print ''
 
     return b     #### returns structured numpy array containing matlab struct
+
+# def findMatlabStruct(filename):
+#
+#     '''
+#     Use to find Matlab struct name in .mat file (can never remember the command!)
+#     '''
+#
+#     ### ----------------------------------
+#     ### Find struct name from .mat file using sio
+#     ### ----------------------------------
+#     dat = sio.whosmat(filename)
+#
+#     ### ----------------------------------
+#     ### Extract out struct name
+#     ### ----------------------------------
+#
+#     structname = dat[0][0]
+#
+#     return structname
