@@ -2114,17 +2114,22 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,meltObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,meltObs]),1), label = 'Melt')
     plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,freezeObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,freezeObs]),1), label = 'Freeze')
     plt.ylim([0,4000])
+    plt.xlim([-20,5])
     plt.legend()
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(data1['temperature'][melt],0),data1['height'][:])
-    plt.plot(np.nanmean(data1['temperature'][freeze],0),data1['height'][:])
+    plt.plot(np.nanmean(data1['temperature'][melt],0)-273.15,data1['height'][:])
+    plt.plot(np.nanmean(data1['temperature'][freeze],0)-273.15,data1['height'][:])
+    plt.ylim([0,4000])
+    plt.xlim([-20,5])
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(data3['temperature'][melt],0),np.nanmean(data3['height'][melt],0))
-    plt.plot(np.nanmean(data3['temperature'][freeze],0),np.nanmean(data3['height'][freeze],0))
+    plt.plot(np.nanmean(data3['temperature'][melt],0)-273.15,np.nanmean(data3['height'][melt],0))
+    plt.plot(np.nanmean(data3['temperature'][freeze],0)-273.15,np.nanmean(data3['height'][freeze],0))
+    plt.ylim([0,4000])
+    plt.xlim([-20,5])
 
     print '******'
     print ''
