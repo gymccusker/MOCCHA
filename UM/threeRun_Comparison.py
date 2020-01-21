@@ -2344,15 +2344,12 @@ def main():
 
             #### LOAD CUBE
             print 'Loading first run diagnostics:'
-            # cube_um1 = iris.load(filename_um1)#, global_con, callback)
             nc1 = Dataset(filename_um1,'r')
             print '...'
             print 'Loading second run diagnostics:'
-            # cube_um2 = iris.load(filename_um2)#, global_con, callback)
             nc2 = Dataset(filename_um2,'r')
             print '...'
             print 'Loading third run diagnostics:'
-            # cube_um3 = iris.load(filename_um3)#, global_con, callback)
             nc3 = Dataset(filename_um3,'r')
             print '...'
             # -------------------------------------------------------------
@@ -2361,9 +2358,9 @@ def main():
 
             #### LOAD IN SPECIFIC DIAGNOSTICS
             # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-            var_list1 = ['height','temperature']
-            var_list2 = ['height','temperature']
-            var_list3 = ['height','temperature']
+            var_list1 = ['temperature']
+            var_list2 = ['temperature']
+            if ifs_flag: var_list3 = ['height','temperature']
 
             if i == 0:
                 ## ------------------
@@ -2373,61 +2370,40 @@ def main():
                 data2 = {}
                 data3 = {}
                 if month_flag == -1:
-                    # time_um1 = doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0)
                     time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
-                    # time_um2 = doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0)
                     time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
-                    # time_um3 = doy[i] + ((cube_um3[0].dim_coords[0].points)/24.0)
                     time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
                 else:
-                    # time_um1 = float(filename_um1[-16:-14]) + ((cube_um1[0].dim_coords[0].points)/24.0)
                     time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
-                    # time_um2 = float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0)
                     time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
-                    # time_um3 = float(filename_um3[-16:-14]) + ((cube_um3[0].dim_coords[0].points)/24.0)
                     if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
-                # for j in range(0,len(cube_um1)):
                 for j in range(0,len(var_list1)):
                     if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                        # data1[cube_um1[j].var_name] = cube_um1[j].data
+                    elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
                         data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
                 ## ------------------
                 #### um2
                 ## ------------------
-                # for j in range(0,len(cube_um2)):
-                #     if np.sum(cube_um2[j].data.shape) == 0:     # ignore horizontal_resolution
-                #         continue
-                #     data2[cube_um2[j].var_name] = cube_um2[j].data
                 for j in range(0,len(var_list2)):
                     if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                        # data1[cube_um1[j].var_name] = cube_um1[j].data
-                        data2[var_list[j]] = nc2.variables[var_list2[j]][:]
+                    elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
+                        data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
                 ## ------------------
                 #### um3
                 ## ------------------
-                # for j in range(0,len(cube_um3)):
-                #     if np.sum(cube_um3[j].data.shape) == 0:     # ignore horizontal_resolution
-                #         continue
-                #     data3[cube_um3[j].var_name] = cube_um3[j].data
                 for j in range(0,len(var_list3)):
                     if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                         continue
-                    elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                    elif np.ndim(nc3.variables[var_list3[j]]) >= 1:
                         # data1[cube_um1[j].var_name] = cube_um1[j].data
-                        data3[var_list[j]] = nc3.variables[var_list3[j]][:]
-
+                        data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
             else:
                 if month_flag == -1:
-                    # time_um1 = np.append(time_um1, doy[i] + ((cube_um1[0].dim_coords[0].points)/24.0))
-                    time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time']/24.0))
-                    # time_um2 = np.append(time_um2, doy[i] + ((cube_um2[0].dim_coords[0].points)/24.0))
-                    time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time']/24.0))
-                    # time_um3 = np.append(time_um3, doy[i] + ((cube_um3[0].dim_coords[0].points)/24.0))
-                    if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time']/24.0))
+                    time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
+                    time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+                    if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
                 # else:
                 #     time_um1 = np.append(time_um1,float(filename_um1[-16:-14]) + ((cube_um1[0].dim_coords[0].points)/24.0))
                 #     time_um2 = np.append(time_um2,float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0))
@@ -2435,14 +2411,6 @@ def main():
                 ## ------------------
                 #### UM
                 ## ------------------
-                # for j in range(0,len(cube_um1)):
-                #     if np.ndim(cube_um1[j]) == 0:     # ignore horizontal_resolution
-                #         continue
-                #     elif np.ndim(cube_um1[j]) == 1:
-                #         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data)
-                #     elif np.ndim(cube_um1[j]) == 2:
-                #         data1[cube_um1[j].var_name] = np.append(data1[cube_um1[j].var_name].data,cube_um1[j].data,0)
-                    # np.save('working_data1', data1)
                 for j in range(0,len(var_list1)):
                     if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                         continue
@@ -2454,14 +2422,6 @@ def main():
                 ## ------------------
                 #### um2
                 ## ------------------
-                # for j in range(0,len(cube_um2)):
-                #     if np.ndim(cube_um2[j]) == 0:     # ignore horizontal_resolution
-                #         continue
-                #     elif np.ndim(cube_um2[j]) == 1:
-                #         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data)
-                #     elif np.ndim(cube_um2[j]) == 2:
-                #         data2[cube_um2[j].var_name] = np.append(data2[cube_um2[j].var_name].data,cube_um2[j].data,0)
-                #     # np.save('working_data2', data2)
                 for j in range(0,len(var_list2)):
                     if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                         continue
@@ -2472,14 +2432,6 @@ def main():
                 ## ------------------
                 #### um3 / ifs
                 ## ------------------
-                # for j in range(0,len(cube_um3)):
-                #     if np.ndim(cube_um3[j]) == 0:     # ignore horizontal_resolution
-                #         continue
-                #     elif np.ndim(cube_um3[j]) == 1:
-                #         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data)
-                #     elif np.ndim(cube_um3[j]) == 2:
-                #         data3[cube_um3[j].var_name] = np.append(data3[cube_um3[j].var_name].data,cube_um3[j].data,0)
-                    # np.save('working_data3', data3)
                 for j in range(0,len(var_list3)):
                     if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                         continue
@@ -2494,7 +2446,9 @@ def main():
         data1['time'] = time_um1
         data2['time'] = time_um2
         data3['time'] = time_um3
-        # data1['height'] = cube_um1
+        data1['height'] = nc1.variables['height'][:]
+        data2['height'] = nc2.variables['height'][:]
+        if not ifs_flag: data3['height'] = nc3.variables['height'][:]
 
         #################################################################
         ## create labels for figure legends - done here so only needs to be done once!
