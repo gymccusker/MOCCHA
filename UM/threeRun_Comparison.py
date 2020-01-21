@@ -2087,6 +2087,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
+    # plt.pcolor(data1['time'],data1[''])
 
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
