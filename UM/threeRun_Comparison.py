@@ -992,7 +992,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     plt.subplot(3,2,2)
     ax1 = plt.gca()
-    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs['obs_temp']: ice')
+    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
     ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
     if ifs_flag == True:
@@ -1028,7 +1028,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs['obs_temp']: ice')
+    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
     if ifs_flag == True:
@@ -1394,7 +1394,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
     plt.subplot(3,2,2)
     ax1 = plt.gca()
-    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs['obs_temp']: ice')
+    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
     ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'purple')#, label = '2m')
     if ifs_flag == True:
@@ -1426,7 +1426,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs['obs_temp']: ice')
+    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'purple')
     if ifs_flag == True:
@@ -1588,7 +1588,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
 
     plt.subplot(3,2,2)
     ax1 = plt.gca()
-    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs['obs_temp']: ice')
+    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
     ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
     ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'firebrick')#, label = '2m')
     if ifs_flag == True:
@@ -1620,7 +1620,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     plt.subplot(3,2,4)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs['obs_temp']: ice')
+    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'firebrick')
     if ifs_flag == True:
@@ -1824,7 +1824,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([-20,60])
     plt.ylim([0,yDmax])
 
-    fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_obs['foremast']+iceStationQC_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStationQC_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -2290,7 +2290,7 @@ def main():
     print 'Load radiosonde data from Jutta...'
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
 
-    print 'Load obs['foremast'] data from John...'
+    print 'Load foremast data from John...'
     obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
 
     print 'Load 7th deck weather station data from John...'
