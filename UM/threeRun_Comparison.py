@@ -2437,7 +2437,7 @@ def main():
                         continue
                     elif np.ndim(nc3.variables[var_list3[j]]) == 1:
                         data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
-                    elif np.ndim(nc2.variables[var_list2[j]]) == 2:
+                    elif np.ndim(nc3.variables[var_list3[j]]) == 2:
                         data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
 
         #################################################################
