@@ -2101,43 +2101,41 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(16,12))
+    fig = plt.figure(figsize=(12,10))
 
-    ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'])
-    plt.ylim([0,1e4])
+    ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'], vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title('Radiosondes')
 
-    ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature']))
-    plt.ylim([0,1e4])
+    ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label3)
 
-    ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
-    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature']))
-    plt.ylim([0,1e4])
+    ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label1)
 
-    ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,meltObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,meltObs]),1), label = 'Melt')
-    plt.plot(np.nanmean(np.squeeze(obs['sondes']['temperature'][:,freezeObs]),1),np.nanmean(np.squeeze(obs['sondes']['gpsaltitude'][:,freezeObs]),1), label = 'Freeze')
-    plt.ylim([0,2000])
-    plt.xlim([-15,5])
-    plt.legend()
+    ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time'],data2['height'],np.transpose(data2['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+    plt.title(label2)
 
-    # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(data1['temperature'][melt],0)-273.15,data1['height'][:])
-    plt.plot(np.nanmean(data1['temperature'][freeze],0)-273.15,data1['height'][:])
-    plt.ylim([0,2000])
-    plt.xlim([-15,5])
-
-    # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    plt.plot(np.nanmean(data3['temperature'][melt],0)-273.15,np.nanmean(data3['height'][melt],0))
-    plt.plot(np.nanmean(data3['temperature'][freeze],0)-273.15,np.nanmean(data3['height'][freeze],0))
-    plt.ylim([0,2000])
-    plt.xlim([-15,5])
 
     print '******'
     print ''
