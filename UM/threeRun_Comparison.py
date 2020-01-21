@@ -2565,7 +2565,7 @@ def main():
         np.save('working_data1', data1)
         np.save('working_data2', data2)
         np.save('working_data3', data3)
-        np.save('working_dataObs', obs)
+        # np.save('working_dataObs', obs)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
