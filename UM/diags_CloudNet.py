@@ -774,7 +774,7 @@ def main():
 
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        ship_filename = '~/GWS_NCAS_WEATHER/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/UM/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -792,7 +792,7 @@ def main():
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
-    ## 8_u-bp738_RA2M_CON/              # ERAI – need to extract files, combine, and pull track
+    ## 8_u-bp738_RA2M_CON/              # ERAI
     ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
 
     # -------------------------------------------------------------
