@@ -7150,7 +7150,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
         revision = 'Revision no. 0. '
     elif out_dir[2:9] == 'u-bq791':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Fletcher (1962) for consistency with Wilson and Ballard (1999) microphysics]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
-        revision = 'Revision no. 0.
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
