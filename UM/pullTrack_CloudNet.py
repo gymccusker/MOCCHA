@@ -7151,6 +7151,9 @@ def appendMetaNetCDF(outfile, date, out_dir):
     elif out_dir[2:9] == 'u-bq791':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Fletcher (1962) for consistency with Wilson and Ballard (1999) microphysics]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0. '
+    elif out_dir[2:9] == 'u-bq798':
+        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Meyers et al., (1992)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
@@ -7348,14 +7351,14 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '10_u-bq791_RA1M_CASIM/'
+    out_dir = '11_u-bq798_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
-    ## 8_u-bp738_RA2M_CON/              # ERAI 
+    ## 8_u-bp738_RA2M_CON/              # ERAI
     ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
     ## 11_u-bq798_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Meyers
 
