@@ -794,6 +794,7 @@ def main():
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
     ## 8_u-bp738_RA2M_CON/              # ERAI
     ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
+    ## 11_u-bq798_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Meyers
 
     # -------------------------------------------------------------
     # Extract from MASS with:
@@ -832,7 +833,7 @@ def main():
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
         expt = out_dir[-9:-1]
-        
+
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Define time and Stash constraints:
