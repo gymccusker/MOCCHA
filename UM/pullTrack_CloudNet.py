@@ -7148,7 +7148,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     elif out_dir[2:9] == 'u-bp738':
         micro = 'Global model initialised with ERA-Interim reanalyses, LAM run with RA2M_CON configuration (as u-bg610, default run). Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
         revision = 'Revision no. 0. '
-    elif out_dir[2:9] = 'u-bq791':
+    elif out_dir[2:9] == 'u-bq791':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Fletcher (1962) for consistency with Wilson and Ballard (1999) microphysics]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
         revision = 'Revision no. 0.
     else:
