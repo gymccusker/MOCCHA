@@ -785,20 +785,15 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '5_u-bl661_RA1M_CASIM/'
+    out_dir = '10_u-bq791_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
-    ## 1_20160401_61DIAG_TEST/
-    ## 2_20180801_61DIAGS_TEST/2_30_86.625/
-    ## 3_12AUG_SWATH_2FCSTS/
-    ## 3_1AUG_SWATH_2FCSTS/
-    ## 4_OPER/20180830T0000Z_TRIAL/
-    ## 4_u-bg610_RA2M_CON/
-    ## 5_u-bl616_RA2M_CASIM/
-    ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol
+    ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
+    ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
     ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
     ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
-    ## 8_u-bp738_RA2M_CON/              # ERAI
+    ## 8_u-bp738_RA2M_CON/              # ERAI – need to extract files, combine, and pull track
+    ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
 
     # -------------------------------------------------------------
     # Extract from MASS with:
