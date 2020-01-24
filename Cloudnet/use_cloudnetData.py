@@ -270,6 +270,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
     plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
