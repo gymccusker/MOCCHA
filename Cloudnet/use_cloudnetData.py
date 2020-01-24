@@ -456,9 +456,9 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
         np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc_filtered'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc_filtered'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
@@ -478,9 +478,9 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc_filtered'][freeze,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc_filtered'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.title('Freeze up')
