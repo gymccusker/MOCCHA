@@ -868,13 +868,14 @@ def main():
     ### CHOSEN RUN
     um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
     ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
-    obs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+
 
     ######## lwc-adiabatic-metum-grid/2018/
     ########             -> liquid water content derived using measurements averaged on to model grid
