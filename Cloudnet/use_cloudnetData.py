@@ -870,8 +870,10 @@ def main():
     ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     if misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        misc_flag = 1       ## flag to compare non-cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+        misc_flag = 0       ## flag to compare cloudnet model data
     obs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
 
     ######## lwc-adiabatic-metum-grid/2018/
@@ -959,9 +961,9 @@ def main():
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
-    misc_flag = 1       ## flag to compare non-cloudnet model data
 
     for i in range(0,len(names)):
+
         if um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
             out_dir = 'cloud-fraction-metum-grid'
         elif um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
@@ -972,20 +974,28 @@ def main():
         filename_ifs = ifs_dir + ifs_out_dir + names[i] + ifs_out_dir[:-6] + '.nc'
         filename_obs = obs_dir + obs_out_dir + names[i] + obs_out_dir[:-6] + '.nc'
         if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
+        if misc_flag == 0: filename_misc = misc_dir + misc_out_dir + names[i] + out_dir + '.nc'
         print filename_um
         print filename_ifs
         if misc_flag == 1: print filename_misc
         print ''
 
+        ### --------------------------------------------------------------------
+        ###     READ IN ALL FILES
+        ### --------------------------------------------------------------------
+
         print 'Loading multiple diagnostics:'
         nc1 = Dataset(filename_um,'r')
         nc2 = Dataset(filename_ifs,'r')
-        if misc_flag == 1: nc3 = Dataset(filename_misc,'r')
+        if misc_flag != -1: nc3 = Dataset(filename_misc,'r')
         nc4 = Dataset(filename_obs,'r')
 
         # print 'i = ' + str(i)
         print ''
 
+        ### --------------------------------------------------------------------
+        ###     LOAD UM DATA INTO DICTIONARY
+        ### --------------------------------------------------------------------
         #### LOAD IN SPECIFIC DIAGNOSTICS
         if out_dir == 'cloud-fraction-metum-grid':
             var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
@@ -994,7 +1004,7 @@ def main():
         elif out_dir == 'iwc-Z-T-metum-grid':
             var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
-        ###     LOAD IN UM DATA FIRST
+        ###     LOOP OVER TIME DUMP
         if i == 0:
             um_data = {}
             # um_data1d = {}
@@ -1021,6 +1031,9 @@ def main():
                     um_data[var_list[j]] = np.append(um_data[var_list[j]].data,nc1.variables[var_list[j]][:],0)
         nc1.close()
 
+        ### --------------------------------------------------------------------
+        ### LOAD IN IFS DATA INTO DICTIONARY
+        ### --------------------------------------------------------------------
         if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
             var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
@@ -1028,7 +1041,7 @@ def main():
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
-        ###     LOAD IN IFS DATA
+        ###     LOOP OVER TIME DUMP
         if i == 0:
             ifs_data = {}
             # ifs_data1d = {}
@@ -1057,24 +1070,35 @@ def main():
         nc2.close()
 
         ### -------------------------------------------------------------------------
-        ###     LOAD IN MISC DATA IF COMPARING
+        ###     LOAD IN MISC DATA INTO DICTIONARY IF COMPARING
         ###             Only load in what variables are needed based on IFS file chosen
         ### -------------------------------------------------------------------------
-        if misc_flag == 1:
+        if misc_flag != -1:
+            continue
+        elif misc_flag == 1:
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
                 var_list = ['height','cloud_fraction','temperature']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
                 var_list = ['height','qliq']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
                 var_list = ['height','qice']   ### time always read in separately
+        elif misc_flag == 0:
+            if out_dir == 'cloud-fraction-metum-grid':
+                var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
+            elif out_dir == 'lwc-scaled-metum-grid':
+                var_list = ['height','lwc','model_lwc']   ### time always read in separately
+            elif out_dir == 'iwc-Z-T-metum-grid':
+                var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
             if i == 0:
                 misc_data = {}
                 # misc_data1d = {}
                 if month_flag == -1:
-                    time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                    if misc_flag == 1: time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                    if misc_flag == 0: time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
                 else:
-                    time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
+                    if misc_flag == 1: time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
+                    if misc_flag == 0: time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
                 for j in range(0,len(var_list)):
                     if np.ndim(nc3.variables[var_list[j]]) == 1:  # 1d timeseries only
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
@@ -1082,9 +1106,11 @@ def main():
                         misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
             else:
                 if month_flag == -1:
-                    time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
+                    if misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
+                    if misc_flag == 0: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
                 else:
-                    time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
+                    if misc_flag == 1: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
+                    if misc_flag == 0: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
                 print misc_data
                 for j in range(0,len(var_list)):
                     # print 'j = ' + str(j)
@@ -1135,75 +1161,25 @@ def main():
                     obs_data[var_list[j]] = np.append(obs_data[var_list[j]].data,nc4.variables[var_list[j]][:],0)
         nc4.close()
 
-
         ### -------------------------------------------------------------------------
         ### PUT TIME INTO DATA DICTIONARIES FOR EASE
         ### -------------------------------------------------------------------------
         ifs_data['time'] = time_ifs
         um_data['time'] = time_um
-        if misc_flag == 1: misc_data['time'] = time_misc
-
-        ######  LOAD ALL DIAGNOSTICS
-        # if i == 0:
-        #     um_data = {}
-        #     um_data1d = {}
-        #     # um_data['time'] = []
-        #     # um_data['time'] = float(filename_um[-16:-14]) + ((nc1[0].dim_coords[0].points)/24.0)
-        #     # time_um = float(filename_um[-16:-14]) + ((nc1[0].dim_coords[0].points)/24.0)
-        #     if month_flag == -1:
-        #         time_um = doy[i] + ((nc1.variables['time'][:])/24.0)
-        #     else:
-        #         time_um = float(names[i][6:8]) + ((nc1.variables['time'][:])/24.0)
-        #     for j in range(0,len(nc1.variables.keys())):
-        #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-        #         if np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-        #             continue
-        #         elif nc1.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-        #             continue
-        #         elif nc1.variables.keys()[j] == 'time':     # ignore forecast_time
-        #             continue
-        #         elif np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 24:  # 1d timeseries only
-        #             um_data1d[nc1.variables.keys()[j]] = nc1.variables[nc1.variables.keys()[j]][:]
-        #         else:                                   # 2d column um_data
-        #             um_data[nc1.variables.keys()[j]] = nc1.variables[nc1.variables.keys()[j]][:]
-        #     # nc1.close()
-        #     # np.save('working_um_data', um_data)
-        #     # np.save('working_um_data1d', um_data1d)
-        # else:
-        #     if month_flag == -1:
-        #         time_um = np.append(time_um, doy[i] + ((nc1.variables['time'][:])/24.0))
-        #     else:
-        #         time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc1.variables['time'][:])/24.0))
-        #     print um_data
-        #     for j in range(0,len(nc1.variables.keys())):
-        #         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-        #         print 'j = ' + str(j)
-        #         if np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 0:     # ignore horizontal_resolution
-        #             continue
-        #         elif nc1.variables.keys()[j] == 'forecast_time':     # ignore forecast_time
-        #             continue
-        #         elif nc1.variables.keys()[j] == 'time':     # ignore time, already defined
-        #             continue
-        #         elif np.sum(nc1.variables[nc1.variables.keys()[j]].shape) == 24:
-        #             um_data1d[nc1.variables.keys()[j]] = np.append(um_data1d[nc1.variables.keys()[j]].um_data,nc1.variables[nc1.variables.keys()[j]][:])
-        #         else:
-        #             um_data[nc1.variables.keys()[j]] = np.append(um_data[nc1.variables.keys()[j]].um_data,nc1.variables[nc1.variables.keys()[j]][:])
-        # nc1.close()
-
-
+        if misc_flag != -1: misc_data['time'] = time_misc
 
     # -------------------------------------------------------------
     # Save working data for debugging
     # -------------------------------------------------------------
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
-    if misc_flag == 1: np.save('working_misc_data', misc_data)
+    if misc_flag != -1: np.save('working_misc_data', misc_data)
     #### um_data = np.load('working_um_data.npy').item()
 
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
