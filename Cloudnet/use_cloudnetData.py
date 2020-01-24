@@ -964,6 +964,9 @@ def main():
 
     for i in range(0,len(names)):
 
+        ### --------------------------------------------------------------------
+        ###     DEFINE FILENAMES
+        ### --------------------------------------------------------------------
         if um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
             out_dir = 'cloud-fraction-metum-grid'
         elif um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
@@ -1073,7 +1076,7 @@ def main():
         ###     LOAD IN MISC DATA INTO DICTIONARY IF COMPARING
         ###             Only load in what variables are needed based on IFS file chosen
         ### -------------------------------------------------------------------------
-        if misc_flag != -1:
+        if misc_flag == -1:
             continue
         elif misc_flag == 1:
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
