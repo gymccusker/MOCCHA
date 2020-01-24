@@ -855,7 +855,7 @@ def main():
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         # misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
-        misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
+        misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
         obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
