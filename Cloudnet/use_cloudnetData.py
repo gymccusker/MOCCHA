@@ -120,7 +120,7 @@ def trackShip(um_data, date):
 
     return trackShip_index
 
-def plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -219,7 +219,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvProfiles(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -389,7 +389,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     plt.savefig(fileout)
     plt.show()
 
-def plot_lwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -569,7 +569,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.savefig(fileout)
     plt.show()
 
-def plot_iwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1199,7 +1199,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
@@ -1212,17 +1212,17 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot LWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot IWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.
