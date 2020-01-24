@@ -1182,7 +1182,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
