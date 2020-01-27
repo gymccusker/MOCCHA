@@ -2590,9 +2590,11 @@ def main():
 
             #### LOAD IN SPECIFIC DIAGNOSTICS
             # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-            var_list1 = ['temperature']
-            var_list2 = ['temperature']
-            if ifs_flag: var_list3 = ['height','temperature']
+            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+                'temp_1.5m']
+            var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+                'temp_1.5m']
+            if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx']
 
             if i == 0:
                 ## ------------------
