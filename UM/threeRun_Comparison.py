@@ -2212,6 +2212,8 @@ def main():
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
     ### 7_u-bn068_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
+    ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
+    ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param    
 
     print '******'
     print ''
