@@ -2722,6 +2722,13 @@ def main():
 
         label3 = 'undefined_label'
         if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+        if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
+        if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
+        if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
+        if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
+        if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
+        if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
+        if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
 
         # -------------------------------------------------------------
         # save out working data for debugging purposes
