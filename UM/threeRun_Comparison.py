@@ -2569,7 +2569,9 @@ def main():
                 ifs_flag = True
                 filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
             else:
+                print '***IFS NOT being compared***'
                 filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+                ifs_flag = False
             print filename_um1
             print filename_um2
             print filename_um3
