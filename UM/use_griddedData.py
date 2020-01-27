@@ -1885,7 +1885,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_vPaper'
-    plt.savefig(fileout + '.svg', dpi=300)
+    plt.savefig(fileout + '.png', dpi=300)
     plt.show()
 
 def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, obs, doy): #, lon, lat):
