@@ -2715,16 +2715,22 @@ def main():
         if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
 
         # -------------------------------------------------------------
+        # save out working data for debugging purposes
+        # -------------------------------------------------------------
+        np.save('working_data1', data1)
+        np.save('working_data2', data2)
+        np.save('working_data3', data3)
+        # np.save('working_dataObs', obs)
+
+        # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
         # -------------------------------------------------------------
-        # np.save('working_data', data)
         # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
         # -------------------------------------------------------------
         # Plot combined CASIM column data (4x3 timeseries)
         # -------------------------------------------------------------
-        # np.save('working_data', data)
         # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
                     ### doesn't matter which cube, just needed for dim_coords
 
@@ -2749,12 +2755,6 @@ def main():
         # figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-
-
-        np.save('working_data1', data1)
-        np.save('working_data2', data2)
-        np.save('working_data3', data3)
-        # np.save('working_dataObs', obs)
 
         # -------------------------------------------------------------
         # Plot data (5x2 monthly timeseries)
