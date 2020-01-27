@@ -2595,10 +2595,10 @@ def main():
             # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
                 'temp_1.5m']
-            var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-                'temp_1.5m']
+            var_list2 = var_list1
             if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m']
+            if not ifs_flag: var_list3 = var_list1
 
             if i == 0:
                 ## ------------------
