@@ -2385,7 +2385,8 @@ def main():
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        # misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
@@ -2396,10 +2397,10 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+    out_dir1 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir2 = '10_u-bq791_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
-    out_dir4 = 'OUT_25H/'
+    out_dir4 = '11_u-bq798_RA1M_CASIM/OUT_R0/'
 
     ### IFS: OUT_25H
     ### 4_u-bg610_RA2M_CON/OUT_R1/
