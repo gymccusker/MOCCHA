@@ -1484,8 +1484,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_ifs_CASIM-NiceTestFletcher.svg'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/CASIM-NiceTest_C86-F62-M92_DOY243-248.svg'
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
