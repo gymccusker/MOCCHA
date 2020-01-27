@@ -1885,7 +1885,7 @@ def plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy
             fileout = 'FIGS/' + out_dir[:20] + '_oden_metum'
         elif out_dir[:18] == '4_u-bg610_RA2M_CON':
             fileout = 'FIGS/' + out_dir[:18] + '_oden_metum_vPaper'
-    # plt.savefig(fileout + '.png', dpi=300)
+    plt.savefig(fileout + '.svg', dpi=300)
     plt.show()
 
 def plot_cloudProfiles(time_um, data_um, cube_um, month_flag, missing_files, out_dir, obs, doy): #, lon, lat):
@@ -2067,7 +2067,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1/'
+    out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -2151,16 +2151,15 @@ def main():
             '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
-    moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            # '20180829_oden_metum.nc',
-            '20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc']#,'20180905_oden_metum.nc',
-            # '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            # '20180914_oden_metum.nc']
+    moccha_names = ['20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
+            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
@@ -2168,9 +2167,9 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(240,244)        ## set DOY for subset of moccha figures
-    doy = np.arange(243,249)        ## set DOY for subset of moccha figures
+    # doy = np.arange(243,249)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -2281,7 +2280,7 @@ def main():
                     ### doesn't matter which cube, just needed for dim_coords
 
         ### plot UM data in specific subplot order for paper:
-        # figure = plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy)
+        figure = plot_UM_ContourTS(timem, data, cube, month_flag, missing_files, out_dir, doy)
 
         # -------------------------------------------------------------
         # Plot combined CASIM column data (4x3 timeseries)
@@ -2303,7 +2302,7 @@ def main():
         # Plot combined timeseries as lineplot
         # -------------------------------------------------------------
         # figure = plot_line_TEMP(timem, data1d, cube, month_flag, missing_files, out_dir, obs, doy)
-        figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, obs, doy)
+        # figure = plot_line_RAD(timem, data, cube, month_flag, missing_files, out_dir, obs, doy)
 
         # -------------------------------------------------------------
         # Plot CASIM profiles
