@@ -383,7 +383,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
-    doy = np.arange(227,258)        ## set DOY for subset of moccha figures
+    doy = np.arange(243,249)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     ## Choose month:
