@@ -2397,7 +2397,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '10_u-bq791_RA1M_CASIM/OUT_R0/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
