@@ -147,7 +147,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,8))
+    plt.figure(figsize=(10,8))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -167,14 +167,14 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
     # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
-    plt.plot(obs_data['time'][:],obs_data['deck7th']['lwp'][:]*1e3, 'k', label = 'Obs_HATPRO')
-    plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, 'o', color = 'steelblue', label = 'UM_RA2M')
-    plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, '^', color = 'darkorange', label = 'ECMWF_IFS')
-    plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, 's', color = 'forestgreen', label = 'UM_CASIM-100')
+    plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(um_data['time'][::2],um_data['model_lwp'][::2]*1e3, 'o', color = 'steelblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][::2],ifs_data['model_lwp'][::2]*1e3, '^', color = 'darkorange', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][::2],misc_data['model_lwp'][::2]*1e3, 's', color = 'forestgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
     # plt.ylim([0,10000])
-    # plt.xlim([0,1])
+    plt.xlim([doy[0],doy[-1]])
     plt.legend()
 
     print '******'
@@ -183,8 +183,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     print ''
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWP_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
