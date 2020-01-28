@@ -166,7 +166,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
     obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
-    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+    # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+    plt.plot(obs_data['time'][:],obs_data['deck7th']['lwp']*1e3, 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, 'o', color = 'steelblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, '^', color = 'darkorange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, 's', color = 'forestgreen', label = 'UM_CASIM-100')
@@ -1115,6 +1116,7 @@ def main():
         # misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
         misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
         obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
+        obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         um_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -1429,6 +1431,27 @@ def main():
         um_data['time'] = time_um
         if misc_flag != -1: misc_data['time'] = time_misc
         obs_data['time'] = time_obs
+
+    ### -------------------------------------------------------------------------
+    ### Load in other measurement data
+    ### -------------------------------------------------------------------------
+
+    print 'Load temporary ice station data from Jutta...'
+    obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+
+    print 'Load ice station data from Jutta...'
+    obs['ice_station'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
+            #### mast_radiation_30min_v2.3.mat
+            #### flux30_trhwxrel.mat
+
+    print 'Load radiosonde data from Jutta...'
+    obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
+
+    print 'Load foremast data from John...'
+    obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
+
+    print 'Load 7th deck weather station data from John...'
+    obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
 
     # -------------------------------------------------------------
