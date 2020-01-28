@@ -163,8 +163,9 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1000] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
-    # obs_data['Cv'][obs_data['Cv'] <= 0] = np.nan
+    obs_data['lwp'][obs_data['lwp'] < 0] = np.nan
 
+    plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, 'k', label = 'Obs')
     plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, color = 'steelblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, color = 'darkorange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, color = 'forestgreen', label = 'UM_CASIM-100')
@@ -1386,11 +1387,11 @@ def main():
         ###             Only load in what variables are needed based on IFS file chosen
         ### -------------------------------------------------------------------------
         if obs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-            var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
+            var_list = ['height','Cv']   ### time always read in separately
         elif obs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-            var_list = ['height','lwc','model_lwc','model_lwp']   ### time always read in separately
+            var_list = ['height','lwc','lwp']   ### time always read in separately
         elif obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-            var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
+            var_list = ['height','iwc']   ### time always read in separately
 
         if i == 0:
             obs_data = {}
@@ -1426,6 +1427,8 @@ def main():
         ifs_data['time'] = time_ifs
         um_data['time'] = time_um
         if misc_flag != -1: misc_data['time'] = time_misc
+        obs_data['time'] = time_obs
+
 
     # -------------------------------------------------------------
     # Save working data for debugging
