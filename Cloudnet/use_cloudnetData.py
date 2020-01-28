@@ -148,7 +148,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
     plt.figure(figsize=(6,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
