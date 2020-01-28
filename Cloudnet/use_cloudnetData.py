@@ -157,9 +157,12 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     print um_data.keys()
 
     #### set flagged and bad data to nans
-    um_data['model_lwp'][um_data['model_lwp'] <= 0] = np.nan
-    ifs_data['model_lwp'][ifs_data['model_lwp'] <= 0] = np.nan
-    misc_data['model_lwp'][misc_data['model_lwp'] <= 0] = np.nan
+    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
+    # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1000] = np.nan
+    # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
     # obs_data['Cv'][obs_data['Cv'] <= 0] = np.nan
 
     plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, color = 'steelblue', label = 'UM_RA2M')
