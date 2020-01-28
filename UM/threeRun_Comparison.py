@@ -2287,10 +2287,18 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
 
     data1['rainfall_flux'][data1['rainfall_flux'] < 0] = np.nan
     data2['rainfall_flux'][data2['rainfall_flux'] < 0] = np.nan
-    flx_ls_rain = np.nansum(data3['flx_ls_rain'],1)
+    # flx_ls_rain = np.nansum(data3['flx_ls_rain'],1)
+    # flx_conv_rain = np.nansum(data3['flx_conv_rain'],1)
+    # flx_conv_rain[flx_conv_rain < 0] = np.nan
+    # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
+
+    flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
+    flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
+                                                        #### above evaporates/sublimes before it reaches
+                                                        #### the surface
+    #### remove flagged values
     flx_ls_rain[flx_ls_rain < 0] = np.nan
-    flx_conv_rain = np.nansum(data3['flx_conv_rain'],1)
-    flx_conv_rain[flx_conv_rain < 0] = np.nan
+    flx_ls_snow[flx_ls_snow < 0] = np.nan
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
@@ -2307,8 +2315,8 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['rainfall_flux'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['rainfall_flux'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['rainfall_flux'].data*3600, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['rainfall_flux'].data*3600, color = 'forestgreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], (flx_ls_rain)*3600, color = 'darkorange', label = label3)
         # plt.plot(data3['time'], (flx_conv_rain)*3600, color = 'k', label = label3)
@@ -2319,17 +2327,16 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
 
     ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
-    # plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
-    # else:
-    #     plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    # plt.title('surface_net_SW_radiation [W/m2]')
-    # # plt.legend()
-    # ax.set_xlim([doy[0],doy[-1]])
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
+    plt.plot(data1['time'], data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], (flx_ls_snow)*3600, color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['snowfall_flux'].data, color = 'darkorange', label = label3)
+    plt.title('Snowfall flux [mm/hr]')
+    ax.set_xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
     ax = plt.gca()
@@ -2779,10 +2786,10 @@ def main():
             #### LOAD IN SPECIFIC DIAGNOSTICS
             # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-                'temp_1.5m', 'rainfall_flux']
+                'temp_1.5m', 'rainfall_flux','snowfall_flux']
             var_list2 = var_list1
             if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-                'sfc_temp_2m','flx_ls_rain','flx_conv_rain']
+                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow']
             if not ifs_flag: var_list3 = var_list1
 
             if i == 0:
