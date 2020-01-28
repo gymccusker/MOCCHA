@@ -167,7 +167,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
     # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
-    plt.plot(obs_data['time'][:],obs_data['deck7th']['lwp']*1e3, 'k', label = 'Obs_HATPRO')
+    plt.plot(obs_data['time'][:],obs_data['deck7th']['lwp'][:]*1e3, 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, 'o', color = 'steelblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, '^', color = 'darkorange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, 's', color = 'forestgreen', label = 'UM_CASIM-100')
