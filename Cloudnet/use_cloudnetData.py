@@ -162,9 +162,9 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     misc_data['model_lwp'][misc_data['model_lwp'] <= 0] = np.nan
     # obs_data['Cv'][obs_data['Cv'] <= 0] = np.nan
 
-    plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, color = 'steelblue', label = label1)
-    plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, color = 'darkorange', label = label2)
-    plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, color = 'forestgreen', label = label3)
+    plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, color = 'steelblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, color = 'darkorange', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, color = 'forestgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
     # plt.ylim([0,10000])
