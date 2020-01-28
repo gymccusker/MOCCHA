@@ -161,11 +161,12 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
     misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
     # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
-    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1000] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 10] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
-    obs_data['lwp'][obs_data['lwp'] < 0] = np.nan
+    obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
+    obs_data['lwp'][obs_data['lwp'][:,0] > 10, 0] = np.nan    ### >10 == >1000g/m2
 
-    plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, 'k', label = 'Obs')
+    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
     plt.plot(um_data['time'][:],um_data['model_lwp'][:]*1e3, color = 'steelblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][:],ifs_data['model_lwp'][:]*1e3, color = 'darkorange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][:],misc_data['model_lwp'][:]*1e3, color = 'forestgreen', label = 'UM_CASIM-100')
