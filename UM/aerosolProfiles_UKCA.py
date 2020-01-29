@@ -606,7 +606,7 @@ def main():
     #### -------------------------------------------------------------
     #### CHOOSE DATE
     #### -------------------------------------------------------------
-    date = '20180910'
+    date = '20180901'
     doyIndex = calcTime_Date2DOY(date)
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
 
