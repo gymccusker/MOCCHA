@@ -99,14 +99,12 @@ def inIce(data):
 
     return inIce_index
 
-def trackShip(data, date):
+def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==14,data.values[:,1]==8),data.values[:,3]>=0))
     trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]==1))
-    # trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==int(date[-2:]),data.values[:,1]==int(date[-4:-2])),data.values[:,3]>=0))
-    # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -167,7 +165,7 @@ def plot_cartmap(ship_data, nc, doy):
     ### set size
     # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
     # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
+    # ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
     # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
     # ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())    ### V LARGE
     # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
@@ -181,32 +179,26 @@ def plot_cartmap(ship_data, nc, doy):
     ax.add_feature(cartopy.feature.OCEAN, color='white', zorder=0)
     ax.add_feature(cartopy.feature.LAND, color='lightgrey', zorder=0, edgecolor='black')
     ax.add_feature(cartopy.feature.COASTLINE)
-    # ax.set_global()
+    ax.set_global()
     ax.gridlines()
+
+    #################################################################
+    ## choose date + time to plot
+    ################################################################
+    plt.pcolormesh(nc.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][0,0,:,:],
+             transform = ccrs.PlateCarree())
 
     #################################################################
     ## plot UM data
     ################################################################
-    # if np.size(cube[diag].data.shape) == 4:
-    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
-    # elif np.size(cube[diag].data.shape) == 3:
-    #     iplt.pcolormesh(cube[diag][hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube[diag].data.shape) == 2:
-    iplt.pcolormesh(cube[diag][290:370,150:230])
-    # # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
+    # iplt.pcolormesh(cube[diag][290:370,150:230])
+
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
     # qplt.outline(cube[hour,380:500,230:285])          ### original swath
-    # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
-    # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
-    # qplt.outline(cube[diag][hour,386:495,211:305])          ### ukca
-    # qplt.outline(cube[diag][290:370,150:230])
-
 
     #################################################################
     ## plot ship track
@@ -214,7 +206,7 @@ def plot_cartmap(ship_data, nc, doy):
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(ship_data)
     inIce_index = inIce(ship_data)
-    trackShip_index = trackShip(ship_data, date)
+    trackShip_index = trackShip(ship_data)
 
     ### Plot full track as line plot
     plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
@@ -249,53 +241,20 @@ def plot_cartmap(ship_data, nc, doy):
     # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
 
-def plot_contour_TS(cube, filename): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-        # from matplotlib.patches import Polygon
+def plot_aeroProfiles(nc2, nc3, doy):
 
     ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    diag = 2
-    print ''
-    print 'Diag is: '
-    print cube[diag]
-    ### pcXXX
-    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-
-    ###################################
-    ## DEFINE DIMENSIONS COORDS DEPENDING ON DIAG
-    ###################################
-
-    time = cube[diag].dim_coords[0].points
-    height = cube[diag].dim_coords[1].points
-
-    ###################################
-    ## PLOT MAP
+    ## PLOT AEROSOL PROFILES
     ###################################
 
     print '******'
     print ''
-    print 'Plotting contour timeseries:'
+    print 'Plotting aerosol profiles for whole drift period:'
     print ''
 
     ##################################################
     ##################################################
-    #### 	CARTOPY
+    #### 	SET UP FIGURE PROPERTIES
     ##################################################
     ##################################################
 
@@ -304,40 +263,52 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
+            hspace = 0.4, wspace = 0.1)
 
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(8,6))
-    ax = plt.gca()
-
-    # plt.plot(cube[diag].dim_coords[0].points,cube[diag][:,0].data)        # line plot
-    # plt.contourf(cube[0].data)
-    # plt.plot(cube[2][0,:].data,height);plt.show()
-    #################################################################
-    ## plot contour timeseries
-    ################################################################
-    plt.contourf(time,height,np.transpose(cube[diag].data))
-    # plt.pcolormesh(time,height,np.transpose(cube[2].data))
-    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    plt.subplot(211)
+    plt.pcolormesh(nc3.variables['day_of_year'][:],nc3.variables['level_height'][:],
+        np.transpose(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,179],2)),
+        vmin = 0, vmax = 0.3)
+    plt.ylim([0, 1e4])
+    plt.xlim([doy[0], doy[-1]])
     plt.colorbar()
-    ax.set_ylim([0, 3000])
+    # plt.xlabel('Day of year')
+    plt.ylabel('Height [m]')
+    plt.title('N$_{aer, sol, coarse}$ [cm$^{-3}$]')
 
-    plt.legend()
+    plt.subplot(212)
+    plt.pcolormesh(nc2.variables['day_of_year'][:],nc2.variables['level_height'][:],
+        np.transpose(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,179],2)),
+        vmin = 0, vmax = 200)
+    plt.ylim([0, 1e4])
+    plt.xlim([doy[0], doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    plt.ylabel('Height [m]')
+    plt.title('N$_{aer, sol, accum}$ [cm$^{-3}$]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
-
-    # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
+    fileout = 'FIGS/UKCA_aeroProfiles_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
+
+def interpolate_aeroProfiles(nc1, nc2, nc3, doy):
+
+        ###################################
+        ## PLOT TIMESERIES
+        ###################################
+
+        print '******'
+        print ''
+        print 'Calculating aerosol profiles on UM nZ70 grid:'
+        print ''
+
 
 def main():
 
@@ -548,15 +519,25 @@ def main():
     filename_um3 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_coarse_mode_aerosol.nc'
     #### LOAD DATASET
     print 'Loading UKCA aerosol data (accumulation and coarse mode):'
-    nc2 = Dataset(filename_um1,'r')
+    nc2 = Dataset(filename_um2,'r')
     print '...'
-    nc3 = Dataset(filename_um1,'r')
+    nc3 = Dataset(filename_um3,'r')
     print '...'
 
     #### -------------------------------------------------------------
-    #### LOAD MAP
+    #### PLOT MAP
     #### -------------------------------------------------------------
-    figure = plot_cartmap(ship_data, nc1, doy)
+    # figure = plot_cartmap(ship_data, nc2, doy)
+
+    #### -------------------------------------------------------------
+    #### PLOT AEROSOL PROFILES
+    #### -------------------------------------------------------------
+    figure = plot_aeroProfiles(nc2, nc3, doy)
+
+    #### -------------------------------------------------------------
+    #### CREATE Naer PROFILES
+    #### -------------------------------------------------------------
+    # out = interpolate_aeroProfiles(nc1, nc2, nc3, doy)
 
     # -------------------------------------------------------------
     # FIN.
