@@ -518,18 +518,6 @@ def main():
 
     print '...'
 
-    # -------------------------------------------------------------------------
-    # make global stash list and constraint
-    # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
-    GlobalStashList = makeGlobalStashList()
-    global_con = iris.AttributeConstraint(
-        STASH=lambda stash: str(stash) in GlobalStashList)
-            ### defines which stash variables to load - should be within a loop
-
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
@@ -646,19 +634,6 @@ def main():
     print ''
     print 'End: ' + time.strftime("%c")
     print ''
-
-    #### DIAGNOSTICS TO CHOOSE FROM:
-
-    # UM -> um2 comparisons:
-    # 1. snowfall_flux -> sfc_ls_snow
-    # 2. rainfall_flux -> sfc_ls_rain
-    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    # 4. latent_heat_flux -> flx_turb_moist
-    # 5. bl_depth -> sfc_bl_height
-    # 6. sfc_pressure -> sfc_pressure
-    # 7. sfc_temperature -> sfc_temperature
-    # 8. surface_net_LW_radiation -> sfc_net_lw
-    # 9. surface_net_SW_radiation -> sfc_net_sw
 
 if __name__ == '__main__':
 
