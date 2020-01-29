@@ -274,7 +274,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
 
     plt.subplot(211)
     plt.pcolormesh(nc3.variables['day_of_year'][:],nc3.variables['level_height'][:],
-        np.transpose(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,179],2)),
+        np.transpose(np.nanmean(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 0.3)
     plt.ylim([0, 1e4])
     plt.xlim([doy[0], doy[-1]])
@@ -285,7 +285,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
 
     plt.subplot(212)
     plt.pcolormesh(nc2.variables['day_of_year'][:],nc2.variables['level_height'][:],
-        np.transpose(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,179],2)),
+        np.transpose(np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 200)
     plt.ylim([0, 1e4])
     plt.xlim([doy[0], doy[-1]])
@@ -294,7 +294,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.ylabel('Height [m]')
     plt.title('N$_{aer, sol, accum}$ [cm$^{-3}$]')
 
-    fileout = 'FIGS/UKCA_aeroProfiles_226-257DOY.svg'
+    fileout = 'FIGS/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
