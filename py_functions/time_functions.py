@@ -39,7 +39,7 @@ def calcTime_Date2DOY(date):
     else:
         print '****Date not valid with this function****'
 
-    print '****'
+    print '----'
     print 'Date = ', date
     print 'DOY = ', doy
     print ''
