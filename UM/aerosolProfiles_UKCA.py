@@ -23,7 +23,7 @@ import seaborn as sns
 #### import python functions
 import sys
 sys.path.insert(1, '../py_functions/')
-from time_functions import calcTime_Mat2DOY
+from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY
 from readMAT import readMatlabStruct
 
 def readfile(filename):
@@ -606,8 +606,15 @@ def main():
     #### -------------------------------------------------------------
     #### CHOOSE DATE
     #### -------------------------------------------------------------
-    date = '20180901'
-    ukca_index = 0
+    date = '20180910'
+    doyIndex = calcTime_Date2DOY(date)
+    ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
+
+    print '****'
+    print 'UKCA time = ', doyIndex, ' at index = ', np.squeeze(ukca_index)
+    print 'Proof: nc2.variables[''day_of_year''][ukca_index] = ', nc2.variables['day_of_year'][ukca_index]
+    print '****'
+    print ''
 
     #### -------------------------------------------------------------
     #### PLOT MAP
@@ -617,12 +624,12 @@ def main():
     #### -------------------------------------------------------------
     #### PLOT AEROSOL PROFILES
     #### -------------------------------------------------------------
-    figure = plot_aeroProfiles(nc2, nc3, doy)
+    # figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
     #### CREATE Naer PROFILES
     #### -------------------------------------------------------------
-    out = interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index)
+    out = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     # -------------------------------------------------------------
     # FIN.
