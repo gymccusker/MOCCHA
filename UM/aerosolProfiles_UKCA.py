@@ -570,12 +570,15 @@ def main():
     missing_files = moccha_missing_files
     month_flag = -1
 
+    #### -------------------------------------------------------------
+    #### LOAD UM DATA
+    #### -------------------------------------------------------------
     for i in range(0,len(names)):
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         print filename_um1
         print ''
 
-        #### LOAD CUBE
+        #### LOAD DATASET
         print 'Loading UM diagnostics for reference:'
         nc1 = Dataset(filename_um1,'r')
         print '...'
@@ -622,9 +625,17 @@ def main():
                     data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
             nc1.close()
 
-
-
-
+    #### -------------------------------------------------------------
+    #### LOAD UKCA DATA
+    #### -------------------------------------------------------------
+    filename_um2 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_accumulation_mode_aerosol.nc'
+    filename_um3 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_coarse_mode_aerosol.nc'
+    #### LOAD DATASET
+    print 'Loading UKCA aerosol data (accumulation and coarse mode):'
+    nc2 = Dataset(filename_um1,'r')
+    print '...'
+    nc3 = Dataset(filename_um1,'r')
+    print '...'
 
     # -------------------------------------------------------------
     # FIN.
