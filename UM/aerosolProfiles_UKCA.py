@@ -294,21 +294,42 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.ylabel('Height [m]')
     plt.title('N$_{aer, sol, accum}$ [cm$^{-3}$]')
 
-    fileout = 'FIGS/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY.svg'
+    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
-def interpolate_aeroProfiles(nc1, nc2, nc3, doy):
+def interpolate_aeroProfiles(data1, nc2, nc3, doy):
 
-        ###################################
-        ## PLOT TIMESERIES
-        ###################################
+    from scipy.interpolate import interp1d
 
-        print '******'
-        print ''
-        print 'Calculating aerosol profiles on UM nZ70 grid:'
-        print ''
+    ###################################
+    ## PLOT TIMESERIES
+    ###################################
 
+    print '******'
+    print ''
+    print 'Calculating aerosol profiles on UM nZ=70 grid:'
+    print ''
+
+    naer_accum = np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)
+    naer_coarse = np.nanmean(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,:],3),2)
+
+    print 'naer_accum shape = ', naer_accum.shape
+    print 'naer_coarse shape = ', naer_coarse.shape
+    print ''
+
+    um_height = data1['height'][:]
+    ukca_height = nc2.variables['level_height'][:]
+
+    print 'um_height shape = ', um_height.shape
+    print 'ukca_height shape = ', ukca_height.shape
+    print ''
+
+
+
+    plt.plot(naer_accum[0,:],ukca_height)
+
+    plt.show()
 
 def main():
 
@@ -532,12 +553,12 @@ def main():
     #### -------------------------------------------------------------
     #### PLOT AEROSOL PROFILES
     #### -------------------------------------------------------------
-    figure = plot_aeroProfiles(nc2, nc3, doy)
+    # figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
     #### CREATE Naer PROFILES
     #### -------------------------------------------------------------
-    # out = interpolate_aeroProfiles(nc1, nc2, nc3, doy)
+    out = interpolate_aeroProfiles(data1, nc2, nc3, doy)
 
     # -------------------------------------------------------------
     # FIN.
