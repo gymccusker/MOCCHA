@@ -303,7 +303,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     from scipy.interpolate import interp1d
 
     ###################################
-    ## PLOT TIMESERIES
+    ## interpolate UKCA aerosol profiles from Ruth on to my UM height grid
     ###################################
 
     print '******'
@@ -399,20 +399,20 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     print 'newCoarse.shape = ', newCoarse.shape
 
     #### build new arrays with extra 2 bins at the surface
-    outAccum = np.zeros(len(um_height)-1)   ### 70 height bins
-    outCoarse = np.zeros(len(um_height)-1)   ### 70 height bins
+    numAccum = np.zeros(len(um_height)-1)   ### 70 height bins
+    numCoarse = np.zeros(len(um_height)-1)   ### 70 height bins
 
-    outAccum[0:2] = newAccum[0]
-    outAccum[2:] = newAccum[:]
-    print 'outAccum = ', outAccum
+    numAccum[0:2] = newAccum[0]*1e6
+    numAccum[2:] = newAccum[:]*1e6
+    print 'numAccum = ', numAccum
 
-    outCoarse[0:2] = newCoarse[0]
-    outCoarse[2:] = newCoarse[:]
-    print 'outCoarse = ', outCoarse
+    numCoarse[0:2] = newCoarse[0]*1e6
+    numCoarse[2:] = newCoarse[:]*1e6
+    print 'numCoarse = ', numCoarse
 
     print ''
-    print 'outAccum.shape = ', outAccum.shape
-    print 'outCoarse.shape = ', outCoarse.shape
+    print 'numAccum.shape = ', numAccum.shape
+    print 'numCoarse.shape = ', numCoarse.shape
 
     ##################################################
     ##################################################
@@ -435,26 +435,49 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
             hspace = 0.4, wspace = 0.2)
 
     plt.subplot(121)
-    plt.plot(naer_accum[ukca_index,:], ukca_height, label = 'UKCA')
-    plt.plot(outAccum, um_height[1:], '--', label = 'UM Interpolated')
+    plt.plot(naer_accum[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
+    plt.plot(numAccum, um_height[1:], '--', label = 'UM Interpolated')
     plt.ylabel('Z [m]')
-    plt.xlabel('N$_{aer, accum}$ [cm$^{-3}$]')
+    plt.xlabel('N$_{aer, accum}$ [m$^{-1}$]')
     plt.ylim([0, 40000])
     plt.legend()
 
     plt.subplot(122)
-    plt.plot(naer_coarse[ukca_index,:], ukca_height, label = 'UKCA')
-    plt.plot(outCoarse, um_height[1:], '--', label = 'UM Interpolated')
+    plt.plot(naer_coarse[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
+    plt.plot(numCoarse, um_height[1:], '--', label = 'UM Interpolated')
     # plt.ylabel('Z [m]')
-    plt.xlabel('N$_{aer, coarse}$ [cm$^{-3}$]')
+    plt.xlabel('N$_{aer, coarse}$ [m$^{-1}$]')
     plt.ylim([0, 40000])
     # plt.legend()
 
-    fileout = '../FIGS/UKCA/UKCA_UM_outAccum_outCoarse_example.svg'
+    fileout = '../FIGS/UKCA/UKCA_UM_numAccum_numCoarse_example.svg'
     # plt.savefig(fileout)
     plt.show()
 
-    return outAccum, outCoarse
+    return numAccum, numCoarse
+
+def scaleMass(numAccum, numCoarse):
+
+    #### -------------------------------------------------------------
+    #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
+    #### -------------------------------------------------------------
+
+    print ''
+    print '****'
+    print 'Scaling mass by default values used in CASIM suite'
+    print ''
+
+    ### calculate scaling factor
+    factor = 1.5e-9 / 1e8
+
+    massAccum = factor * numAccum
+    print 'massAccum = ', massAccum
+    print ''
+
+    ### add filler for now
+    massCoarse = 0
+
+    return massAccum, massCoarse
 
 def main():
 
@@ -694,14 +717,15 @@ def main():
     # figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
-    #### CREATE N_AER PROFILES (IN /CC)
+    #### CREATE N_AER PROFILES (IN /M)
     #### -------------------------------------------------------------
-    outAccum, outCoarse = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
+    numAccum, numCoarse = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     #### -------------------------------------------------------------
-    #### SCALE AEROSOL MASS (1.5*1e-9 for every 1.00*1e8 aerosol particles)
+    #### SCALE AEROSOL MASS
+    ####        Accum: 1.5*1e-9 for every 1.00*1e8 aerosol particles
     #### -------------------------------------------------------------
-
+    massAccum, massCoarse = scaleMass(numAccum, numCoarse)
 
     # -------------------------------------------------------------
     # FIN.
