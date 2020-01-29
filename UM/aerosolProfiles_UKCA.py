@@ -318,16 +318,48 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     print 'naer_coarse shape = ', naer_coarse.shape
     print ''
 
-    um_height = data1['height'][:]
+    um_height = data1['height'].data
     ukca_height = nc2.variables['level_height'][:]
 
     print 'um_height shape = ', um_height.shape
     print 'ukca_height shape = ', ukca_height.shape
     print ''
 
+    fnct_accum = interp1d(ukca_height, naer_accum[0,:])
+    print 'Interpolation function succeeded!'
+    print ''
+    print 'Next: test function on um_height'
+    newAccum = fnct_accum(um_height[3:])        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    print ''
+    print 'Function worked! :)'
+    print ''
 
+    ##################################################
+    ##################################################
+    #### 	SET UP FIGURE PROPERTIES
+    ##################################################
+    ##################################################
 
-    plt.plot(naer_accum[0,:],ukca_height)
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
+            hspace = 0.4, wspace = 0.1)
+
+    plt.plot(naer_accum[0,:], ukca_height, label = 'UKCA')
+    plt.plot(newAccum, um_height[3:], '--', label = 'UM Interpolated')
+    plt.ylabel('Z [m]')
+    plt.xlabel('N$_{aer, accum}$ [cm$^{-3}$]')
+    plt.ylim([0, 40000])
+    plt.legend()
 
     plt.show()
 
