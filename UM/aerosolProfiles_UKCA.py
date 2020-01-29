@@ -121,7 +121,7 @@ def trackShip(data, date):
 
     return trackShip_index
 
-def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
+def plot_cartmap(ship_data, nc, doy):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -129,50 +129,6 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.path as mpath
-        # from matplotlib.patches import Polygon
-
-    ###---------------------------------
-    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
-    ###---------------------------------
-    print 'What grid are we looking at?'
-    if len(cube[0].dim_coords[-1].points) == 25:
-    # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-        xoffset = -239
-        yoffset = -470
-    elif len(cube[0].dim_coords[-1].points) == 56:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    elif len(cube[0].dim_coords[-1].points) == 95:
-    # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-        xoffset = -210
-        yoffset = -385
-    else:
-    # elif cube[0,0].shape >= 500-1:
-        xoffset = 0
-        yoffset = 0
-
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
-
-    ###################################
-    ## CHOOSE DIAGNOSTIC
-    ###################################
-    diag = 2
-    print ''
-    print 'Diag is: ', cube[diag].long_name
-    ### pcXXX
-    # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 2: air_temperature / (K)               (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 3: eastward_wind / (m s-1)             (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 4: large_scale_cloud_area_fraction / (1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 5: mass_fraction_of_cloud_ice_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 6: mass_fraction_of_cloud_liquid_water_in_air / (kg kg-1) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 7: northward_wind / (m s-1)            (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 8: specific_humidity / (kg kg-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
-    # 9: upward_air_velocity / (m s-1)       (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
 
     ###################################
     ## PLOT MAP
@@ -228,16 +184,6 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     # ax.set_global()
     ax.gridlines()
 
-    # # Compute a circle in axes coordinates, which we can use as a boundary
-    # # for the map. We can pan/zoom as much as we like - the boundary will be
-    # # permanently circular.
-    # theta = np.linspace(0, 2*np.pi, 100)
-    # center, radius = [0.5, 0.5], 0.5
-    # verts = np.vstack([np.sin(theta), np.cos(theta)]).T
-    # circle = mpath.Path(verts * radius + center)
-    #
-    # ax.set_boundary(circle, transform=ax.transAxes)
-
     #################################################################
     ## plot UM data
     ################################################################
@@ -262,11 +208,6 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     # qplt.outline(cube[diag][290:370,150:230])
 
 
-
-    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
-
-            #### MID POINT: (433, 258)
-
     #################################################################
     ## plot ship track
     #################################################################
@@ -275,53 +216,28 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     inIce_index = inIce(ship_data)
     trackShip_index = trackShip(ship_data, date)
 
-    ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-
     ### Plot full track as line plot
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
-    #          color = 'pink', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-    #          color = 'palevioletred', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'In Ice',
-    #          )
-    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-    #          'k^', markerfacecolor = 'palevioletred', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-    #          'kv', markerfacecolor = 'palevioletred', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-    #          color = 'red', linewidth = 4,
-    #          transform = ccrs.PlateCarree(), label = 'Drift',
-    #          )
+    plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
+             color = 'pink', linewidth = 2,
+             transform = ccrs.PlateCarree(), label = 'Whole',
+             )
+    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+             color = 'palevioletred', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'In Ice',
+             )
+    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+             'k^', markerfacecolor = 'palevioletred', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+             'kv', markerfacecolor = 'palevioletred', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+             color = 'red', linewidth = 4,
+             transform = ccrs.PlateCarree(), label = 'Drift',
+             )
 
-    #### test plotting of unrotated grid
-    # lon, lat = unrotateGrid(cube)
-
-    # plt.plot(np.nanmin(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmin(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmin(lat),
-    #         color='black',transform = ccrs.PlateCarree())
-    # plt.plot(np.nanmax(lon),np.nanmax(lat),
-    #         color='black',transform = ccrs.PlateCarree())
 
     plt.legend()
 
@@ -636,6 +552,11 @@ def main():
     print '...'
     nc3 = Dataset(filename_um1,'r')
     print '...'
+
+    #### -------------------------------------------------------------
+    #### LOAD MAP
+    #### -------------------------------------------------------------
+    figure = plot_cartmap(ship_data, nc, doy)
 
     # -------------------------------------------------------------
     # FIN.
