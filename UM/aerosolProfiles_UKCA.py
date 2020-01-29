@@ -348,6 +348,71 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     ####        seem to be at midnight when looking at DOY, but forecast_period
     ####        and forecast_period_bnds suggest it's a daily average and the time
     ####        step should be at midday
+    #### ----------------------------------------------------------
+
+    # ##################################################
+    # ##################################################
+    # #### 	SET UP FIGURE PROPERTIES
+    # ##################################################
+    # ##################################################
+    #
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=LARGE_SIZE)
+    # plt.rc('axes',labelsize=LARGE_SIZE)
+    # plt.rc('xtick',labelsize=LARGE_SIZE)
+    # plt.rc('ytick',labelsize=LARGE_SIZE)
+    # plt.rc('legend',fontsize=LARGE_SIZE)
+    # plt.figure(figsize=(12,7))
+    # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
+    #         hspace = 0.4, wspace = 0.2)
+    #
+    # plt.subplot(121)
+    # plt.plot(naer_accum[ukca_index,:], ukca_height, label = 'UKCA')
+    # plt.plot(newAccum, um_height[3:], '--', label = 'UM Interpolated')
+    # plt.ylabel('Z [m]')
+    # plt.xlabel('N$_{aer, accum}$ [cm$^{-3}$]')
+    # plt.ylim([0, 40000])
+    # plt.legend()
+    #
+    # plt.subplot(122)
+    # plt.plot(naer_coarse[ukca_index,:], ukca_height, label = 'UKCA')
+    # plt.plot(newCoarse, um_height[3:], '--', label = 'UM Interpolated')
+    # # plt.ylabel('Z [m]')
+    # plt.xlabel('N$_{aer, coarse}$ [cm$^{-3}$]')
+    # plt.ylim([0, 40000])
+    # # plt.legend()
+    #
+    # fileout = '../FIGS/UKCA/UKCA_aeroProfiles_UM-interp1d_example.svg'
+    # # plt.savefig(fileout)
+    # plt.show()
+
+    #### ----------------------------------------------------------
+    #### next, print out newAccum and newCoarse on UM binning for
+    ####    use in um/rose-app.conf namelist
+    #### ----------------------------------------------------------
+
+    print 'newAccum.shape = ', newAccum.shape
+    print 'newCoarse.shape = ', newCoarse.shape
+
+    #### build new arrays with extra 2 bins at the surface
+    outAccum = np.zeros(len(um_height)-1)   ### 70 height bins
+    outCoarse = np.zeros(len(um_height)-1)   ### 70 height bins
+
+    outAccum[0:2] = newAccum[0]
+    outAccum[2:] = newAccum[:]
+    print 'outAccum = ', outAccum
+
+    outCoarse[0:2] = newCoarse[0]
+    outCoarse[2:] = newCoarse[:]
+    print 'outCoarse = ', outCoarse
+
+    print ''
+    print 'outAccum.shape = ', outAccum.shape
+    print 'outCoarse.shape = ', outCoarse.shape
 
     ##################################################
     ##################################################
@@ -371,7 +436,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
 
     plt.subplot(121)
     plt.plot(naer_accum[ukca_index,:], ukca_height, label = 'UKCA')
-    plt.plot(newAccum, um_height[3:], '--', label = 'UM Interpolated')
+    plt.plot(outAccum, um_height[1:], '--', label = 'UM Interpolated')
     plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, accum}$ [cm$^{-3}$]')
     plt.ylim([0, 40000])
@@ -379,15 +444,17 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
 
     plt.subplot(122)
     plt.plot(naer_coarse[ukca_index,:], ukca_height, label = 'UKCA')
-    plt.plot(newCoarse, um_height[3:], '--', label = 'UM Interpolated')
+    plt.plot(outCoarse, um_height[1:], '--', label = 'UM Interpolated')
     # plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, coarse}$ [cm$^{-3}$]')
     plt.ylim([0, 40000])
     # plt.legend()
 
-    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_UM-interp1d_example.svg'
+    fileout = '../FIGS/UKCA/UKCA_UM_outAccum_outCoarse_example.svg'
     # plt.savefig(fileout)
     plt.show()
+
+    return outAccum, outCoarse
 
 def main():
 
@@ -629,7 +696,7 @@ def main():
     #### -------------------------------------------------------------
     #### CREATE Naer PROFILES
     #### -------------------------------------------------------------
-    out = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
+    outAccum, outCoarse = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     # -------------------------------------------------------------
     # FIN.
