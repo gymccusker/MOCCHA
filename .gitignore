@@ -44,6 +44,7 @@ UM/DATA/*
 *.nc
 *.pp
 *.npy
+*.mat
 
 # Compiled files
 *.pyc
