@@ -470,7 +470,7 @@ def scaleMass(numAccum, numCoarse):
     ### calculate scaling factor
     factor = 1.5e-9 / 1e8
 
-    massAccum = factor * numAccum
+    massAccum = factor * (numAccum*1e2)
     print 'massAccum = ', massAccum
     print ''
 
