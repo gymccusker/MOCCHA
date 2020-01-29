@@ -326,10 +326,19 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     print ''
 
     fnct_accum = interp1d(ukca_height, naer_accum[0,:])
-    print 'Interpolation function succeeded!'
+    print 'Accumulation mode interpolation function succeeded!'
     print ''
     print 'Next: test function on um_height'
     newAccum = fnct_accum(um_height[3:])        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    print ''
+    print 'Function worked! :)'
+    print ''
+
+    fnct_coarse = interp1d(ukca_height, naer_coarse[0,:])
+    print 'Coarse mode interpolation function succeeded!'
+    print ''
+    print 'Next: test function on um_height'
+    newCoarse = fnct_coarse(um_height[3:])        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
     print ''
     print 'Function worked! :)'
     print ''
@@ -350,10 +359,11 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,8))
+    plt.figure(figsize=(12,7))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
-            hspace = 0.4, wspace = 0.1)
+            hspace = 0.4, wspace = 0.2)
 
+    plt.subplot(121)
     plt.plot(naer_accum[0,:], ukca_height, label = 'UKCA')
     plt.plot(newAccum, um_height[3:], '--', label = 'UM Interpolated')
     plt.ylabel('Z [m]')
@@ -361,6 +371,13 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     plt.ylim([0, 40000])
     plt.legend()
 
+    plt.subplot(122)
+    plt.plot(naer_coarse[0,:], ukca_height, label = 'UKCA')
+    plt.plot(newCoarse, um_height[3:], '--', label = 'UM Interpolated')
+    # plt.ylabel('Z [m]')
+    plt.xlabel('N$_{aer, coarse}$ [cm$^{-3}$]')
+    plt.ylim([0, 40000])
+    # plt.legend()
 
     fileout = '../FIGS/UKCA/UKCA_aeroProfiles_UM-interp1d_example.svg'
     plt.savefig(fileout)
