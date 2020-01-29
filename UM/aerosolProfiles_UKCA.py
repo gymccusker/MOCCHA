@@ -699,7 +699,7 @@ def main():
     outAccum, outCoarse = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     #### -------------------------------------------------------------
-    #### CREATE N_AER PROFILES (IN /M3)
+    #### SCALE AEROSOL MASS (1.5*1e-9 for every 1.00*1e8 aerosol particles)
     #### -------------------------------------------------------------
 
 
