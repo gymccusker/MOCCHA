@@ -273,7 +273,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
             hspace = 0.4, wspace = 0.1)
 
     plt.subplot(211)
-    plt.pcolormesh(nc3.variables['day_of_year'][:]+0.5,nc3.variables['level_height'][:],
+    plt.pcolormesh(nc3.variables['day_of_year'][:],nc3.variables['level_height'][:],
         np.transpose(np.nanmean(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 0.3)
     plt.ylim([0, 1e4])
@@ -284,7 +284,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.title('N$_{aer, sol, coarse}$ [cm$^{-3}$]')
 
     plt.subplot(212)
-    plt.pcolormesh(nc2.variables['day_of_year'][:]+0.5,nc2.variables['level_height'][:],
+    plt.pcolormesh(nc2.variables['day_of_year'][:],nc2.variables['level_height'][:],
         np.transpose(np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 200)
     plt.ylim([0, 1e4])
