@@ -298,7 +298,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.savefig(fileout)
     plt.show()
 
-def interpolate_aeroProfiles(data1, nc2, nc3, doy):
+def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
 
     from scipy.interpolate import interp1d
 
@@ -325,7 +325,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     print 'ukca_height shape = ', ukca_height.shape
     print ''
 
-    fnct_accum = interp1d(ukca_height, naer_accum[0,:])
+    fnct_accum = interp1d(ukca_height, naer_accum[ukca_index,:])
     print 'Accumulation mode interpolation function succeeded!'
     print ''
     print 'Next: test function on um_height'
@@ -334,7 +334,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     print 'Function worked! :)'
     print ''
 
-    fnct_coarse = interp1d(ukca_height, naer_coarse[0,:])
+    fnct_coarse = interp1d(ukca_height, naer_coarse[ukca_index,:])
     print 'Coarse mode interpolation function succeeded!'
     print ''
     print 'Next: test function on um_height'
@@ -364,7 +364,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
             hspace = 0.4, wspace = 0.2)
 
     plt.subplot(121)
-    plt.plot(naer_accum[0,:], ukca_height, label = 'UKCA')
+    plt.plot(naer_accum[ukca_index,:], ukca_height, label = 'UKCA')
     plt.plot(newAccum, um_height[3:], '--', label = 'UM Interpolated')
     plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, accum}$ [cm$^{-3}$]')
@@ -372,7 +372,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     plt.legend()
 
     plt.subplot(122)
-    plt.plot(naer_coarse[0,:], ukca_height, label = 'UKCA')
+    plt.plot(naer_coarse[ukca_index,:], ukca_height, label = 'UKCA')
     plt.plot(newCoarse, um_height[3:], '--', label = 'UM Interpolated')
     # plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, coarse}$ [cm$^{-3}$]')
@@ -380,7 +380,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     # plt.legend()
 
     fileout = '../FIGS/UKCA/UKCA_aeroProfiles_UM-interp1d_example.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def main():
@@ -598,6 +598,11 @@ def main():
     print '...'
 
     #### -------------------------------------------------------------
+    #### CHOOSE DATE
+    #### -------------------------------------------------------------
+    date = '20180901'
+
+    #### -------------------------------------------------------------
     #### PLOT MAP
     #### -------------------------------------------------------------
     # figure = plot_cartmap(ship_data, nc2, doy)
@@ -610,7 +615,7 @@ def main():
     #### -------------------------------------------------------------
     #### CREATE Naer PROFILES
     #### -------------------------------------------------------------
-    out = interpolate_aeroProfiles(data1, nc2, nc3, doy)
+    out = interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index)
 
     # -------------------------------------------------------------
     # FIN.
