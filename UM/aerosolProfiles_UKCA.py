@@ -343,6 +343,12 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     print 'Function worked! :)'
     print ''
 
+    #### ----------------------------------------------------------
+    #### ukca timestamps are midpoints of bin (+/- 12h)
+    ####        seem to be at midnight when looking at DOY, but forecast_period
+    ####        and forecast_period_bnds suggest it's a daily average and the time
+    ####        step should be at midday
+
     ##################################################
     ##################################################
     #### 	SET UP FIGURE PROPERTIES
