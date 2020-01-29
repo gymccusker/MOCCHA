@@ -361,6 +361,9 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy):
     plt.ylim([0, 40000])
     plt.legend()
 
+
+    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_UM-interp1d_example.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def main():
