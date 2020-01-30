@@ -2724,22 +2724,22 @@ def main():
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
-    ## Flag for individual file or monthly:
-    combine = 1
     ## Choose month:
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
 
-    if combine == 0:
-        name = '20180813_oden_'
-        filename_um1 = um_root_dir + out_dir1 + name + 'metum.nc'
-        filename_um2 = um_root_dir + out_dir2 + name + 'metum.nc'
+    for i in range(0,len(names)):
+        filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
+        filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
         if out_dir4 == 'OUT_25H/':
             print '***IFS being compared***'
-            filename_um3 = misc_root_dir + out_dir4 + name + 'ecmwf.nc'
+            ifs_flag = True
+            filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
         else:
-            filename_um3 = misc_root_dir + out_dir4 + name + 'metum.nc'
+            print '***IFS NOT being compared***'
+            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            ifs_flag = False
         print filename_um1
         print filename_um2
         print filename_um3
@@ -2747,152 +2747,116 @@ def main():
 
         #### LOAD CUBE
         print 'Loading first run diagnostics:'
-        cube_um1 = iris.load(filename_um1)#, global_con, callback)
+        nc1 = Dataset(filename_um1,'r')
         print '...'
         print 'Loading second run diagnostics:'
-        cube_um2 = iris.load(filename_um2)#, global_con, callback)
+        nc2 = Dataset(filename_um2,'r')
         print '...'
         print 'Loading third run diagnostics:'
-        cube_um3 = iris.load(filename_um3)#, global_con, callback)
-        # -------------------------------------------------------------
+        nc3 = Dataset(filename_um3,'r')
         print '...'
-
-        print cube_um1
-        print ''
-        print cube_um2
-        print ''
-        print cube_um3
+        # -------------------------------------------------------------
+        # print 'i = ' + str(i)
         print ''
 
+        #### LOAD IN SPECIFIC DIAGNOSTICS
+        # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
+        var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+            'temp_1.5m', 'rainfall_flux','snowfall_flux']
+        var_list2 = var_list1
+        if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
+            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow']
+        if not ifs_flag: var_list3 = var_list1
 
-    else:
-        for i in range(0,len(names)):
-            filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
-            filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-            if out_dir4 == 'OUT_25H/':
-                print '***IFS being compared***'
-                ifs_flag = True
-                filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
+        if i == 0:
+            ## ------------------
+            #### UM
+            ## ------------------
+            data1 = {}
+            data2 = {}
+            data3 = {}
+            if month_flag == -1:
+                time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
+                time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
+                if ifs_flag: time_um3 = doy[i] + (nc3.variables['time'][:]/24.0)
+                if not ifs_flag: time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
             else:
-                print '***IFS NOT being compared***'
-                filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
-                ifs_flag = False
-            print filename_um1
-            print filename_um2
-            print filename_um3
-            print ''
+                time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
+                time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
+                if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
+                if not ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['forecast_time'][:]/24.0)
 
-            #### LOAD CUBE
-            print 'Loading first run diagnostics:'
-            nc1 = Dataset(filename_um1,'r')
-            print '...'
-            print 'Loading second run diagnostics:'
-            nc2 = Dataset(filename_um2,'r')
-            print '...'
-            print 'Loading third run diagnostics:'
-            nc3 = Dataset(filename_um3,'r')
-            print '...'
-            # -------------------------------------------------------------
-            # print 'i = ' + str(i)
-            print ''
+            ### define height arrays explicitly
+            data1['height'] = nc1.variables['height'][:]
+            data2['height'] = nc2.variables['height'][:]
+            if not ifs_flag: data3['height'] = nc3.variables['height'][:]
 
-            #### LOAD IN SPECIFIC DIAGNOSTICS
-            # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-                'temp_1.5m', 'rainfall_flux','snowfall_flux']
-            var_list2 = var_list1
-            if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow']
-            if not ifs_flag: var_list3 = var_list1
-
-            if i == 0:
-                ## ------------------
-                #### UM
-                ## ------------------
-                data1 = {}
-                data2 = {}
-                data3 = {}
-                if month_flag == -1:
-                    time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
-                    time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
-                    if ifs_flag: time_um3 = doy[i] + (nc3.variables['time'][:]/24.0)
-                    if not ifs_flag: time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
-                else:
-                    time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
-                    time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
-                    if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
-                    if not ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['forecast_time'][:]/24.0)
-
-                ### define height arrays explicitly
-                data1['height'] = nc1.variables['height'][:]
-                data2['height'] = nc2.variables['height'][:]
-                if not ifs_flag: data3['height'] = nc3.variables['height'][:]
-
-                for j in range(0,len(var_list1)):
-                    if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
-                        data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
-                nc1.close()
-                ## ------------------
-                #### um2
-                ## ------------------
-                for j in range(0,len(var_list2)):
-                    if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
-                        data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
-                nc2.close()
-                ## ------------------
-                #### um3
-                ## ------------------
-                for j in range(0,len(var_list3)):
-                    if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc3.variables[var_list3[j]]) >= 1:
-                        # data1[cube_um1[j].var_name] = cube_um1[j].data
-                        data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
-                nc3.close()
-            else:
-                if month_flag == -1:
-                    time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-                    time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-                    if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
-                    if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
-                ## ------------------
-                #### UM
-                ## ------------------
-                for j in range(0,len(var_list1)):
-                    if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                        # data1[cube_um1[j].var_name] = cube_um1[j].data
-                        data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:])
-                    elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                        data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
-                nc1.close()
-                ## ------------------
-                #### um2
-                ## ------------------
-                for j in range(0,len(var_list2)):
-                    if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                        data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:])
-                    elif np.ndim(nc2.variables[var_list2[j]]) == 2:
-                        data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:],0)
-                nc2.close()
-                ## ------------------
-                #### um3 / ifs
-                ## ------------------
-                for j in range(0,len(var_list3)):
-                    if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                        data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
-                    elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                        data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
-                nc3.close()
+            for j in range(0,len(var_list1)):
+                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
+                    data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
+            nc1.close()
+            ## ------------------
+            #### um2
+            ## ------------------
+            for j in range(0,len(var_list2)):
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
+                    data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
+            nc2.close()
+            ## ------------------
+            #### um3
+            ## ------------------
+            for j in range(0,len(var_list3)):
+                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc3.variables[var_list3[j]]) >= 1:
+                    # data1[cube_um1[j].var_name] = cube_um1[j].data
+                    data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
+            nc3.close()
+        else:
+            if month_flag == -1:
+                time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
+                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+                if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
+                if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
+            ## ------------------
+            #### UM
+            ## ------------------
+            for j in range(0,len(var_list1)):
+                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc1.variables[var_list1[j]]) == 1:
+                    # data1[cube_um1[j].var_name] = cube_um1[j].data
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:])
+                elif np.ndim(nc1.variables[var_list1[j]]) == 2:
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
+            nc1.close()
+            ## ------------------
+            #### um2
+            ## ------------------
+            for j in range(0,len(var_list2)):
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) == 1:
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:])
+                elif np.ndim(nc2.variables[var_list2[j]]) == 2:
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:],0)
+            nc2.close()
+            ## ------------------
+            #### um3 / ifs
+            ## ------------------
+            for j in range(0,len(var_list3)):
+                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
+                elif np.ndim(nc3.variables[var_list3[j]]) == 2:
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
+            nc3.close()
+            
         #################################################################
         ## save time to dictionary now we're not looping over all diags anymore
         #################################################################
@@ -2937,7 +2901,7 @@ def main():
         np.save('working_data1', data1)
         np.save('working_data2', data2)
         np.save('working_data3', data3)
-        # np.save('working_dataObs', obs)
+        np.save('working_dataObs', obs['sondes'])
 
         # -------------------------------------------------------------
         # Plot combined column data (5x2 timeseries)
@@ -2967,10 +2931,10 @@ def main():
         # -------------------------------------------------------------
         # Plot paper figures
         # -------------------------------------------------------------
-        figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+        # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        # figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+        figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
