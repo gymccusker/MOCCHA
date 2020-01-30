@@ -41,7 +41,7 @@ ECMWF/OD/*
 # Data files
 ODEN/DATA/*
 UM/DATA/*
-*.txt
+*.csv
 *.nc
 *.pp
 *.npy
