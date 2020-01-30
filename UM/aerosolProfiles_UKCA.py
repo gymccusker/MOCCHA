@@ -781,7 +781,29 @@ def main():
 
     print('Formatting output for use in run_casim_tracers UM namelist...')
     print('')
-    for i in range(0,len(numAccum)): print("%f, " % (numAccum[i]), end=" ")
+
+    ### open text file
+    file = open(outfile,'w+')
+
+    file.write("accum_sol_num_var=%f, " % (numAccum[0]))#, end=" ")
+    for i in range(1,len(numAccum)-1): file.write("%f, " % (numAccum[i]))#, end=" ")
+    file.write("%f \n" % (numAccum[-1]))
+    file.write('\n')
+    file.write("accum_sol_mass_var=%e, " % (massAccum[0]))#, end=" ")
+    for i in range(1,len(massAccum)-1): file.write("%e, " % (massAccum[i]))#, end=" ")
+    file.write("%e \n" % (massAccum[-1]))
+    file.write('\n')
+    file.write("coarse_sol_num_var=%f, " % (numCoarse[0]))#, end=" ")
+    for i in range(1,len(numCoarse)-1): file.write("%f, " % (numCoarse[i]))#, end=" ")
+    file.write("%f \n" % (numCoarse[-1]))
+    file.write('\n')
+    file.write("coarse_sol_mass_var=%e, " % (massCoarse[0]))#, end=" ")
+    for i in range(1,len(massCoarse)-1): file.write("%e, " % (massCoarse[i]))#, end=" ")
+    file.write("%e " % (massCoarse[-1]))
+    file.write('')
+
+    ### close text file
+    file.close()
 
     # -------------------------------------------------------------
     # FIN.
