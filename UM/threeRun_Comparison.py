@@ -2520,7 +2520,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.title('Radiosondes')
+    plt.title('Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
