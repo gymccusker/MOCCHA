@@ -438,7 +438,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     plt.plot(naer_accum[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
     plt.plot(numAccum, um_height[1:], '--', label = 'UM Interpolated')
     plt.ylabel('Z [m]')
-    plt.xlabel('N$_{aer, accum}$ [m$^{-1}$]')
+    plt.xlabel('N$_{aer, accum}$ [m$^{-3}$]')
     plt.ylim([0, 40000])
     plt.legend()
 
@@ -446,7 +446,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     plt.plot(naer_coarse[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
     plt.plot(numCoarse, um_height[1:], '--', label = 'UM Interpolated')
     # plt.ylabel('Z [m]')
-    plt.xlabel('N$_{aer, coarse}$ [m$^{-1}$]')
+    plt.xlabel('N$_{aer, coarse}$ [m$^{-3}$]')
     plt.ylim([0, 40000])
     # plt.legend()
 
@@ -465,6 +465,8 @@ def scaleMass(numAccum, numCoarse):
     print ''
     print '****'
     print 'Scaling mass by default values used in CASIM suite'
+    print ''
+    print 'accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles'
     print ''
 
     ### calculate scaling factor
