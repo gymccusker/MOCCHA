@@ -48,7 +48,7 @@ numCoarse =  [7.31374575e+04 7.31374575e+04 7.31374575e+04 7.53865306e+04
 ### ----------------------------------------
 Estimate mass by mean modal radius and assuming spherical particles:
 
-Calculating aerosol mass mixing ratio assuming: 
+Calculating aerosol mass mixing ratio assuming:
 rho_aer =  1777.0  kg/m3
 Rm =  0.5  nm
 ...
@@ -71,8 +71,11 @@ mass =  [8.70310435e-11 8.71701442e-11 8.73605226e-11 8.92237550e-11
  4.90927620e-10 4.20511761e-10 1.07072449e-11 1.89959608e-11
  1.01257304e-11 6.40757304e-12]
 
- 
 
+#### --------------------------------------------------------------
+#### FOR COARSE MODE: look at particle density estimates from ESEM work
+#### --------------------------------------------------------------
 
-
-
+## alpha=[mindustindex' mixindex' carichindex' freshssindex' agedssindex' sulphateindex' gypsumindex' ...
+##     carbonindex' bioindex' phosindex' oxindex' biomassindex' otherindex'];
+## rho=[2.7,2.7,2.7,2,2,1.5,2.3,1,1,1.4,5,1,1];    % cgs (g/cm3)
