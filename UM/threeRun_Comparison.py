@@ -2434,23 +2434,6 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     print 'Plotting radiosonde and model temperature profiles:'
     print ''
 
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-
     #### change matlab time to doy
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
@@ -2459,17 +2442,6 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         ifs_flag = True
     else:
         ifs_flag = False
-
-    # UM -> um2 comparisons:
-    # 1. snowfall_flux -> sfc_ls_snow
-    # 2. rainfall_flux -> sfc_ls_rain
-    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    # 4. latent_heat_flux -> flx_turb_moist
-    # 5. bl_depth -> sfc_bl_height
-    # 6. sfc_pressure -> sfc_pressure
-    # 7. temp_1.5m -> sfc_temp_2m
-    # 8. surface_net_LW_radiation -> sfc_net_lw
-    # 9. surface_net_SW_radiation -> sfc_net_sw
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
@@ -2495,9 +2467,23 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     print 'Starting radiosonde figure (quite slow!)...:'
 
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
