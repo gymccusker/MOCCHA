@@ -2859,10 +2859,6 @@ def main():
                     time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
                     if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
                     if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
-                # else:
-                #     time_um1 = np.append(time_um1,float(filename_um1[-16:-14]) + ((cube_um1[0].dim_coords[0].points)/24.0))
-                #     time_um2 = np.append(time_um2,float(filename_um2[-16:-14]) + ((cube_um2[0].dim_coords[0].points)/24.0))
-                #     time_um3 = np.append(time_um3,float(filename_um3[-16:-14]) + ((cube_um3[0].dim_coords[0].points)/24.0))
                 ## ------------------
                 #### UM
                 ## ------------------
