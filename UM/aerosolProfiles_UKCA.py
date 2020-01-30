@@ -482,7 +482,7 @@ def scaleMass(numAccum, numCoarse):
 
     return massAccum, massCoarse
 
-def estimateMass(N, rho_air):
+def estimateMass(N, rho_air, flag):
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
@@ -497,9 +497,16 @@ def estimateMass(N, rho_air):
 
     ### make dummy variables
     # M = 1.0
-    sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
-    rho = 1777.0    #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
-    Rm = 0.5*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
+    if flag == 1:
+        sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
+        rho = 1777.0        #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
+        Rm = 0.5*1.0e-6     #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
+    elif flag == 2:
+        sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
+        rho = 1777.0        #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
+        Rm = 5*1.0e-6       #### == fixed_aerosol_rm (mphys_constants.F90); 5 um
+    else:
+        print '****Mode option not valid!****'
 
     print 'Calculating aerosol mass mixing ratio assuming: '
     print 'rho_aer = ', rho, ' kg/m3'
@@ -744,13 +751,25 @@ def main():
     ####        assume spherical particles
     #### -------------------------------------------------------------
 
-    #### TESTING
-    num = np.zeros([70])
-    num[:] = 1.0e8
-    massAccum = estimateMass(num, rho_air)
+    # #### TESTING
+    # num = np.zeros([70])
+    # num[:] = 1.0e8
+    # massAccum = estimateMass(num, rho_air)
 
-    # massAccum = estimateMass(numAccum, rho_air)
-    plt.plot(massAccum,nc1.variables['height'][1:]);plt.show()
+    print '****'
+    print 'Estimate accumulation mode mass:'
+    print ''
+    modeFlag = 1
+    massAccum = estimateMass(numAccum, rho_air, modeFlag = 1)
+    plt.plot(massAccum,nc1.variables['height'][1:]); plt.show()
+
+    print '****'
+    print 'Estimate coarse mode mass:'
+    print ''
+    modeFlag = 2
+    massCoarse = estimateMass(numCoarse, rho_air, modeFlag = 2)
+    plt.plot(massCoarse,nc1.variables['height'][1:]); plt.show()
+
 
     # -------------------------------------------------------------
     # FIN.
