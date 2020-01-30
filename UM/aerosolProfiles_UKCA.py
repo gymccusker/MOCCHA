@@ -481,7 +481,7 @@ def scaleMass(numAccum, numCoarse):
 
     return massAccum, massCoarse
 
-def estimateMass(num):
+def estimateMass(N):
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
@@ -492,15 +492,23 @@ def estimateMass(num):
     print 'Estimate mass by mean modal radius and assuming spherical particles:'
     print ''
 
-    ### calculate scaling factor
-    factor = 1.5e-9 / 1e8
+    #### Accumulation mode: 0.1um < d_p < 1um
 
-    mass = factor * (num*1e2)
-    print 'mass = ', mass
+    ### make dummy variables
+    M = 1.0
+    sigma = 1.0
+    density = 1.0
+
+
+    ### calculation for mean radius given mass and number:
+    MntoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
+        (4.0*N*np.pi*density) )**(1.0/3.0)
+                ### just copied from casim/lognormal_funcs.F90
+
+    print 'mass = ', M
     print ''
 
-
-    return massAccum
+    return M
 
 def main():
 
