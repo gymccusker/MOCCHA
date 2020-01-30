@@ -760,14 +760,14 @@ def main():
     print 'Estimate accumulation mode mass:'
     print ''
     modeFlag = 1
-    massAccum = estimateMass(numAccum, rho_air, modeFlag = 1)
+    massAccum = estimateMass(numAccum, rho_air, modeFlag)
     plt.plot(massAccum,nc1.variables['height'][1:]); plt.show()
 
     print '****'
     print 'Estimate coarse mode mass:'
     print ''
     modeFlag = 2
-    massCoarse = estimateMass(numCoarse, rho_air, modeFlag = 2)
+    massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
     plt.plot(massCoarse,nc1.variables['height'][1:]); plt.show()
 
 
