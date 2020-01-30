@@ -25,7 +25,7 @@ def calcAirDensity(temperature, pressure):
     for k in range(0,np.size(temperature)):
         rho[k] = pressure[k] / (R * temperature[k])
 
-    print rho
+    # print rho
 
     return rho
 
