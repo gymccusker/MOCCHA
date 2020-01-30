@@ -2594,15 +2594,16 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### original data
     ### ------------------------------
-    ax  = fig.add_axes([0.08,0.78,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy'][drift[0]],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['temperature'][:,drift[0]], vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
+    plt.set_cmap('viridis')
     plt.ylabel('Z [m]')
     plt.title('Sondes, T[degC]')
 
-    ax  = fig.add_axes([0.08,0.54,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2610,7 +2611,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.ylabel('Z [m]')
     plt.title(label3 + ', T[degC]')
 
-    ax  = fig.add_axes([0.08,0.3,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_hrly'][::6],data1['height'],np.transpose(data1['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2618,7 +2619,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.ylabel('Z [m]')
     plt.title(label1 + ', T[degC]')
 
-    ax  = fig.add_axes([0.08,0.06,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_hrly'][::6],data2['height'],np.transpose(data2['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2629,7 +2630,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### sonde and ifs data interpolated to um grid (Z<10km)
     ### ------------------------------
-    ax  = fig.add_axes([0.39,0.78,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy'][drift[0]],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_hrly_UM'][drift[0],:]), vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2637,7 +2638,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.ylabel('Z [m]')
     plt.title('Sondes(INTP), T[degC]')
 
-    ax  = fig.add_axes([0.39,0.54,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'][::6])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2645,7 +2646,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.ylabel('Z [m]')
     plt.title(label3 + '(INTP), T[degC]')
 
-    ax  = fig.add_axes([0.39,0.3,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data1['temp_hrly'][::6,iUM[0][3:]])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2653,7 +2654,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.ylabel('Z [m]')
     plt.title(label1 + ', T[degC]')
 
-    ax  = fig.add_axes([0.39,0.06,0.3,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_hrly'][::6],data2['height'][iUM[0][3:]],np.transpose(data2['temp_hrly'][::6,iUM[0][3:]])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
