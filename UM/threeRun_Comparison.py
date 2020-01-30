@@ -2452,8 +2452,27 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data3['temperature'][data3['temperature'] <= 0] = np.nan
 
     ### 6-hourly time binning for model
-    # dat = np.zeros(len(data1['time'])/4)
-    # for i in range(0,len(dat)): dat[i] = data1['time'][0]+i*l
+    ### um['time'][:24:6].data
+    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
+    ###     need to pick out where we have a repeated time value, then remove it so
+    ###     that the time array can be indexed easily 
+
+    ###
+    temp = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp[i] = data1['time'][i]
+    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_6hrly'] = temp[ii]
+    data2['time_6hrly'] = temp[ii]
+    data3['time_6hrly'] = temp[ii]
+
+    print data1['time_6hrly'][::6]
+
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
     ## for the sondes, higher altitudes are listed as NaNs
