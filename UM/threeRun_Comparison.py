@@ -2500,13 +2500,14 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #### ---------------------------------------------------------------
     print ''
     print 'Defining IFS temperature profile as a function:'
+    print 'using ifs.height[0,:] to define temperature profiles...'
     data3['temp_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
-        if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
-            continue
-        else:
-            print 'iTim = ', str(iTim)
-            fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
+        # if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
+        #     continue
+        # else:
+        print 'iTim = ', str(iTim)
+        fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
         data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
     print '...'
     print 'IFS(UM Grid) function worked!'
@@ -2525,9 +2526,9 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     #### INTERPOLATION TESTING:
     print data3['temp_hrly_UM'].shape
-    print data3['time_hrly'][::6].shape
-    print data1['temp_hrly'].shape
-    print data1['time_hrly'][::6].shape
+    # print data3['time_hrly'][::6].shape
+    print data1['temp_hrly'][:,iUM[0][3:]].shape
+    # print data1['time_hrly'][::6].shape
     # plt.plot(data3['temp_hrly_UM'][10,:],data1['height'][iUM[0][2:]])
     # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
     # plt.show()
@@ -2625,7 +2626,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('Radiosondes(INTP), T[degC]')
 
     ax  = fig.add_axes([0.55,0.54,0.4,0.17])   # left, bottom, width, height
-    plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'][::6])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
