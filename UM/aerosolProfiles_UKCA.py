@@ -499,7 +499,7 @@ def estimateMass(N, rho_air):
     # M = 1.0
     sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
     rho = 1777.0    #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
-    Rm = 0.1*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 100nm
+    Rm = 0.5*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
 
     print 'Calculating aerosol mass mixing ratio assuming: '
     print 'rho_aer = ', rho, ' kg/m3'
@@ -511,7 +511,7 @@ def estimateMass(N, rho_air):
     #     (4.0*N*np.pi*rho) )**(1.0/3.0)
                 ### just copied from casim/lognormal_funcs.F90
 
-    mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho)/(np.exp(-4.5*np.log(sigma)**2))
+    mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho) / (np.exp(-4.5*np.log(sigma)**2))
             ### gives mass concentration in kg/m3
 
     #### need mass concentration in kg/kg for casim input
@@ -743,7 +743,13 @@ def main():
     #### ESTIMATE AEROSOL MASS
     ####        assume spherical particles
     #### -------------------------------------------------------------
-    massAccum = estimateMass(numAccum, rho_air)
+
+    #### TESTING
+    num = np.zeros([70])
+    num[:] = 1.0e8
+    massAccum = estimateMass(num, rho_air)
+
+    # massAccum = estimateMass(numAccum, rho_air)
     plt.plot(massAccum,nc1.variables['height'][1:]);plt.show()
 
     # -------------------------------------------------------------
