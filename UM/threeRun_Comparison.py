@@ -2554,64 +2554,96 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##################################################
     ##################################################
 
-    # SMALL_SIZE = 12
-    # MED_SIZE = 14
-    # LARGE_SIZE = 16
-    #
-    # plt.rc('font',size=MED_SIZE)
-    # plt.rc('axes',titlesize=MED_SIZE)
-    # plt.rc('axes',labelsize=MED_SIZE)
-    # plt.rc('xtick',labelsize=MED_SIZE)
-    # plt.rc('ytick',labelsize=MED_SIZE)
-    # plt.rc('legend',fontsize=MED_SIZE)
-    #
-    # ### -------------------------------
-    # ### Build figure (timeseries)
-    # ### -------------------------------
-    # fig = plt.figure(figsize=(12,10))
-    #
-    # ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(obs['sondes']['doy'],data1['height'][iUM[0][2:]],obs['sondes']['temp_hrly_UM'], vmin = -25, vmax = 5)
-    # plt.ylim([0,4000])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # plt.ylabel('Z [m]')
-    # plt.title('Radiosondes, T[degC]')
-    #
-    # ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][2:]],np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
-    # plt.ylim([0,4000])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # plt.ylabel('Z [m]')
-    # plt.title(label3 + ', T[degC]')
-    #
-    # ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data1['time_hrly'][::6],data1['height'][2:],np.transpose(data1['temp_hrly'][::6,2:])-273.15, vmin = -25, vmax = 5)
-    # plt.ylim([0,4000])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # plt.ylabel('Z [m]')
-    # plt.title(label1 + ', T[degC]')
-    #
-    # ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data2['time_hrly'][::6],data2['height'][2:],np.transpose(data2['temp_hrly'][::6,2:])-273.15, vmin = -25, vmax = 5)
-    # plt.ylim([0,4000])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
-    # plt.title(label2 + ', T[degC]')
-    #
-    #
-    # print '******'
-    # print ''
-    # print 'Finished plotting! :)'
-    # print ''
-    #
-    # fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
-    # # plt.savefig(fileout)
-    # plt.show()
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(12,10))
+
+    ax  = fig.add_axes([0.1,0.78,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy'],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_hrly_UM']), vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title('Radiosondes, T[degC]')
+
+    ax  = fig.add_axes([0.1,0.54,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label3 + ', T[degC]')
+
+    ax  = fig.add_axes([0.1,0.3,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_hrly'][::6],data1['height'][3:],np.transpose(data1['temp_hrly'][::6,3:])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label1 + ', T[degC]')
+
+    ax  = fig.add_axes([0.1,0.06,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_hrly'][::6],data2['height'][3:],np.transpose(data2['temp_hrly'][::6,3:])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+
+
+    ax  = fig.add_axes([0.55,0.78,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy'],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_hrly_UM']), vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title('Radiosondes(INTP), T[degC]')
+
+    ax  = fig.add_axes([0.55,0.54,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label3 + '(INTP), T[degC]')
+
+    ax  = fig.add_axes([0.55,0.3,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_hrly'][::6],data1['height'][3:],np.transpose(data1['temp_hrly'][::6,3:])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label1 + ', T[degC]')
+
+    ax  = fig.add_axes([0.55,0.06,0.4,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_hrly'][::6],data2['height'][3:],np.transpose(data2['temp_hrly'][::6,3:])-273.15, vmin = -25, vmax = 5)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+    plt.title(label2 + ', T[degC]')
+
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
+    # plt.savefig(fileout)
+    plt.show()
 
 def callback(cube, field, filename):
     '''
