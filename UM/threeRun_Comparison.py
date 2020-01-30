@@ -2856,92 +2856,92 @@ def main():
                 elif np.ndim(nc3.variables[var_list3[j]]) == 2:
                     data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
             nc3.close()
-            
-        #################################################################
-        ## save time to dictionary now we're not looping over all diags anymore
-        #################################################################
-        data1['time'] = time_um1
-        data2['time'] = time_um2
-        data3['time'] = time_um3
 
-        #################################################################
-        ## create labels for figure legends - done here so only needs to be done once!
-        #################################################################
-        label1 = 'undefined_label'
-        if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
-        if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
-        if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
-        if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
-        if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
-        if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
-        if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
+    #################################################################
+    ## save time to dictionary now we're not looping over all diags anymore
+    #################################################################
+    data1['time'] = time_um1
+    data2['time'] = time_um2
+    data3['time'] = time_um3
 
-        label2 = 'undefined_label'
-        if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
-        if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
-        if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
-        if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
-        if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
-        if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
-        if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
+    #################################################################
+    ## create labels for figure legends - done here so only needs to be done once!
+    #################################################################
+    label1 = 'undefined_label'
+    if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
+    if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
+    if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
+    if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
+    if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
+    if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
+    if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
-        label3 = 'undefined_label'
-        if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
-        if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
-        if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
-        if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
-        if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
-        if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
-        if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
-        if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
+    label2 = 'undefined_label'
+    if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
+    if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
+    if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
+    if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
+    if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
+    if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
+    if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
-        # -------------------------------------------------------------
-        # save out working data for debugging purposes
-        # -------------------------------------------------------------
-        np.save('working_data1', data1)
-        np.save('working_data2', data2)
-        np.save('working_data3', data3)
-        np.save('working_dataObs', obs['sondes'])
+    label3 = 'undefined_label'
+    if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
+    if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
+    if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
+    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
+    if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
+    if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
+    if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
 
-        # -------------------------------------------------------------
-        # Plot combined column data (5x2 timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords
+    # -------------------------------------------------------------
+    # save out working data for debugging purposes
+    # -------------------------------------------------------------
+    np.save('working_data1', data1)
+    np.save('working_data2', data2)
+    np.save('working_data3', data3)
+    np.save('working_dataObs', obs['sondes'])
 
-        # -------------------------------------------------------------
-        # Plot combined CASIM column data (4x3 timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                    ### doesn't matter which cube, just needed for dim_coords
+    # -------------------------------------------------------------
+    # Plot combined column data (5x2 timeseries)
+    # -------------------------------------------------------------
+    # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
+                ### doesn't matter which cube, just needed for dim_coords
 
-        # -------------------------------------------------------------
-        # Plot combined timeseries as lineplot
-        # -------------------------------------------------------------
-        # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # -------------------------------------------------------------
+    # Plot combined CASIM column data (4x3 timeseries)
+    # -------------------------------------------------------------
+    # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
+                ### doesn't matter which cube, just needed for dim_coords
 
-        # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
-        #             missing_files, out_dir1, obs, doy)
+    # -------------------------------------------------------------
+    # Plot combined timeseries as lineplot
+    # -------------------------------------------------------------
+    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
-        # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
-        #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
+    #             missing_files, out_dir1, obs, doy)
 
-        # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
+    #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
-        # -------------------------------------------------------------
-        # Plot paper figures
-        # -------------------------------------------------------------
-        # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
-        # -------------------------------------------------------------
-        # Plot data (5x2 monthly timeseries)
-        # -------------------------------------------------------------
-        # figure = plot_multicontour_TS(cube, filename, out_dir)
+    # -------------------------------------------------------------
+    # Plot paper figures
+    # -------------------------------------------------------------
+    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
+    # -------------------------------------------------------------
+    # Plot data (5x2 monthly timeseries)
+    # -------------------------------------------------------------
+    # figure = plot_multicontour_TS(cube, filename, out_dir)
 
 
     # -------------------------------------------------------------
