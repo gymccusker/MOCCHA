@@ -2472,7 +2472,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data3['time_hrly'] = temp[ii]
 
     #### ---------------------------------------------------------------
-    #### save hourly temperature profiles (using the ii index defined by the time indices)
+    #### save hourly temperature model profiles (using the ii index defined by the time indices)
     #### ---------------------------------------------------------------
     data1['temp_hrly'] = np.squeeze(data1['temperature'][ii,:])
     data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
@@ -2494,21 +2494,29 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # (1, 58)
         #### so, will interpolate on to um grid (lowest resolution)
 
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION
+    #### ---------------------------------------------------------------
     print ''
     print 'Defining IFS temperature profile as a function:'
-    fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
-    print '...'
-    print 'Applying to UM vertical grid:'
-    data3['temp_hrly_UM'] = fnct_IFS(data1['height'][iUM[0][2:]].data)
+    data3['temp_hrly_UM'] = np.zeros([np.size(data3['time_hrly'][::6],0),len(data1['height'][iUM[0][2:]])])
+    for iTim in range(0,np.size(data3['time_hrly'][::6],0)):
+        if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
+            continue
+        else:
+            fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
+        data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][2:]].data)
     print '...'
     print 'IFS(UM Grid) function worked!'
     print '*****'
 
     #### INTERPOLATION TESTING:
-    # print data3['temp_hrly_UM']
-    # plt.plot(data3['temp_hrly_UM'][:],data1['height'][iUM[0][2:]])
-    # plt.plot(np.squeeze(data3['temp_hrly'][iTim,iIFS]),np.squeeze(data3['height'][iTim,iIFS]))
-    # plt.show()
+    print data3['temp_hrly_UM'].shape
+    print data3['time_hrly'][::6].shape
+    plt.plot(data3['temp_hrly_UM'][10,:],data1['height'][iUM[0][2:]])
+    plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
+    plt.show()
 
     print ''
     print 'Defining Radiosonde temperature profile as a function:'
@@ -2526,24 +2534,13 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
     # plt.show()
 
+    print 'Starting radiosonde figure (quite slow!)...:'
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
 
-    ### figuring out how to interpolate sonde data correctly on to model grid...
-    ## for the sondes, higher altitudes are listed as NaNs
-    ## t=0 on 20180814 has numerical values between [1600:1729]
-
-    meltObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>=226,np.squeeze(obs['sondes']['doy'][:]<=240)))
-    freezeObs = np.where(np.logical_and(np.squeeze(obs['sondes']['doy'][:])>240,np.squeeze(obs['sondes']['doy'][:]<=259)))
-
-    melt = np.where(np.logical_and(np.squeeze(data1['time'][:])>=226,np.squeeze(data1['time'][:]<=240)))
-    freeze = np.where(np.logical_and(np.squeeze(data1['time'][:])>240,np.squeeze(data1['time'][:]<=259)))
-
-    # print 'Starting radiosonde figure (quite slow!)...:'
-    # ##################################################
-    # ##################################################
-    # #### create figure and axes instances
-    # ##################################################
-    # ##################################################
-    #
     # SMALL_SIZE = 12
     # MED_SIZE = 14
     # LARGE_SIZE = 16
@@ -2561,7 +2558,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # fig = plt.figure(figsize=(12,10))
     #
     # ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'], vmin = -25, vmax = 5)
+    # plt.pcolor(obs['sondes']['doy'],data1['height'][iUM[0][2:]],obs['sondes']['temp_hrly_UM'], vmin = -25, vmax = 5)
     # plt.ylim([0,4000])
     # plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
@@ -2569,7 +2566,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.title('Radiosondes, T[degC]')
     #
     # ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.pcolor(data3['time_hrly'][::6],data1['height'][iUM[0][2:]],np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     # plt.ylim([0,4000])
     # plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
@@ -2577,7 +2574,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.title(label3 + ', T[degC]')
     #
     # ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data1['time_hrly'][::6],data1['height'],np.transpose(data1['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.pcolor(data1['time_hrly'][::6],data1['height'][2:],np.transpose(data1['temp_hrly'][::6,2:])-273.15, vmin = -25, vmax = 5)
     # plt.ylim([0,4000])
     # plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
@@ -2585,7 +2582,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.title(label1 + ', T[degC]')
     #
     # ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
-    # plt.pcolor(data2['time_hrly'][::6],data2['height'],np.transpose(data2['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.pcolor(data2['time_hrly'][::6],data2['height'][2:],np.transpose(data2['temp_hrly'][::6,2:])-273.15, vmin = -25, vmax = 5)
     # plt.ylim([0,4000])
     # plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
