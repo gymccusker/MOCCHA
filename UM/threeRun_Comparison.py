@@ -2474,10 +2474,11 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #### ---------------------------------------------------------------
     #### save 6hourly temperature profiles (using the ii index defined by the time indices)
     #### ---------------------------------------------------------------
-    data1['temp_6hrly'] = data1['temperature'][ii,:]
-    data2['temp_6hrly'] = data2['temperature'][ii,:]
-    data3['temp_6hrly'] = data3['temperature'][ii,:]
+    data1['temp_6hrly'] = np.squeeze(data1['temperature'][ii,:])
+    data2['temp_6hrly'] = np.squeeze(data2['temperature'][ii,:])
+    data3['temp_6hrly'] = np.squeeze(data3['temperature'][ii,:])
 
+    print data3['temp_6hrly'].shape
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
     ## for the sondes, higher altitudes are listed as NaNs
