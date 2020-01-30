@@ -298,7 +298,7 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.savefig(fileout)
     plt.show()
 
-def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
+def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
 
     from scipy.interpolate import interp1d
 
@@ -318,7 +318,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     print 'naer_coarse shape = ', naer_coarse.shape
     print ''
 
-    um_height = data1['height'].data
+    um_height = nc1.variables['height'][:]
     ukca_height = nc2.variables['level_height'][:]
 
     print 'um_height shape = ', um_height.shape
@@ -329,7 +329,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     print 'Accumulation mode interpolation function succeeded!'
     print ''
     print 'Next: test function on um_height'
-    newAccum = fnct_accum(um_height[3:])        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    newAccum = fnct_accum(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
     print ''
     print 'Function worked! :)'
     print ''
@@ -338,7 +338,7 @@ def interpolate_aeroProfiles(data1, nc2, nc3, doy, ukca_index):
     print 'Coarse mode interpolation function succeeded!'
     print ''
     print 'Next: test function on um_height'
-    newCoarse = fnct_coarse(um_height[3:])        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    newCoarse = fnct_coarse(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
     print ''
     print 'Function worked! :)'
     print ''
@@ -481,7 +481,7 @@ def scaleMass(numAccum, numCoarse):
 
     return massAccum, massCoarse
 
-def estimateMass(N):
+def estimateMass(N, rho_air):
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
@@ -495,15 +495,21 @@ def estimateMass(N):
     #### Accumulation mode: 0.1um < d_p < 1um
 
     ### make dummy variables
-    M = 1.0
-    sigma = 1.0
-    density = 1.0
-
+    # M = 1.0
+    sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
+    rho = 1777.0    #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
+    Rm = 0.5*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
 
     ### calculation for mean radius given mass and number:
-    MntoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
-        (4.0*N*np.pi*density) )**(1.0/3.0)
+    MNtoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
+        (4.0*N*np.pi*rho) )**(1.0/3.0)
                 ### just copied from casim/lognormal_funcs.F90
+
+    mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho)/(np.exp(-4.5*np.log(sigma)**2))
+            ### gives mass concentration in kg/m3
+
+    #### need mass concentration in kg/kg for casim input
+
 
     print 'mass = ', M
     print ''
@@ -658,61 +664,6 @@ def main():
     month_flag = -1
 
     #### -------------------------------------------------------------
-    #### LOAD UM DATA
-    #### -------------------------------------------------------------
-    for i in range(0,len(names)):
-        filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
-        print filename_um1
-        print ''
-
-        #### LOAD DATASET
-        print 'Loading UM diagnostics for reference:'
-        nc1 = Dataset(filename_um1,'r')
-        print '...'
-        # -------------------------------------------------------------
-        # print 'i = ' + str(i)
-        print ''
-
-        #### LOAD IN SPECIFIC DIAGNOSTICS
-        # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-        var_list1 = ['pressure','temperature','q']
-
-        if i == 0:
-            ## ------------------
-            #### UM
-            ## ------------------
-            data1 = {}
-            if month_flag == -1:
-                time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
-            else:
-                time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
-
-            ### define height arrays explicitly
-            data1['height'] = nc1.variables['height'][:]
-
-            for j in range(0,len(var_list1)):
-                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
-                    data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
-            nc1.close()
-        else:
-            if month_flag == -1:
-                time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-            ## ------------------
-            #### UM
-            ## ------------------
-            for j in range(0,len(var_list1)):
-                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                    # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:])
-                elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
-            nc1.close()
-
-    #### -------------------------------------------------------------
     #### LOAD UKCA DATA
     #### -------------------------------------------------------------
     filename_um2 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_accumulation_mode_aerosol.nc'
@@ -725,17 +676,34 @@ def main():
     print '...'
 
     #### -------------------------------------------------------------
+    #### -------------------------------------------------------------
     #### CHOOSE DATE
     #### -------------------------------------------------------------
+    #### -------------------------------------------------------------
+    
     date = '20180901'
     doyIndex = calcTime_Date2DOY(date)
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
+    # um_index = np.where(data1['time'][:] == doyIndex)
 
     print '****'
     print 'UKCA time = ', doyIndex, ' at index = ', np.squeeze(ukca_index)
     print 'Proof: nc2.variables[''day_of_year''][ukca_index] = ', nc2.variables['day_of_year'][ukca_index]
     print '****'
     print ''
+
+    #### -------------------------------------------------------------
+    #### LOAD UM DATA
+    #### -------------------------------------------------------------
+    filename_um1 = um_root_dir + out_dir1 + date + '_oden_metum.nc'
+    print filename_um1
+    print ''
+
+    #### LOAD DATASET
+    print 'Loading UM diagnostics for reference:'
+    nc1 = Dataset(filename_um1,'r')
+    print '...'
+    # ---------------------
 
     #### -------------------------------------------------------------
     #### PLOT MAP
@@ -750,7 +718,7 @@ def main():
     #### -------------------------------------------------------------
     #### CREATE N_AER PROFILES (IN /M)
     #### -------------------------------------------------------------
-    numAccum, numCoarse = interpolate_aeroProfiles(data1, nc2, nc3, doy, np.squeeze(ukca_index))
+    numAccum, numCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS
@@ -759,10 +727,16 @@ def main():
     # massAccum, massCoarse = scaleMass(numAccum, numCoarse)
 
     #### -------------------------------------------------------------
-    #### ESTIMATE AEROSOL MASS
-    ####        assume spherical particles, R = , rho =
+    #### CALCULATE AIR DENSITY
+    ####        for use in mass conversion calculation
     #### -------------------------------------------------------------
-    massAccum = estimateMass(numAccum)
+    # rho_air = calcAirDensity(data1['temperature'][:],data1['pressure'])
+
+    #### -------------------------------------------------------------
+    #### ESTIMATE AEROSOL MASS
+    ####        assume spherical particles
+    #### -------------------------------------------------------------
+    massAccum = estimateMass(numAccum, rho_air)
 
     # -------------------------------------------------------------
     # FIN.
