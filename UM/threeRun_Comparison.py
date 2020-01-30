@@ -2455,7 +2455,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### um['time'][:24:6].data
     ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
     ###     need to pick out where we have a repeated time value, then remove it so
-    ###     that the time array can be indexed easily 
+    ###     that the time array can be indexed easily
 
     ###
     temp = np.zeros([len(data1['time'])])
@@ -2471,7 +2471,12 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['time_6hrly'] = temp[ii]
     data3['time_6hrly'] = temp[ii]
 
-    print data1['time_6hrly'][::6]
+    #### ---------------------------------------------------------------
+    #### save 6hourly temperature profiles (using the ii index defined by the time indices)
+    #### ---------------------------------------------------------------
+    data1['temp_6hrly'] = data1['temperature'][ii,:]
+    data2['temp_6hrly'] = data2['temperature'][ii,:]
+    data3['temp_6hrly'] = data3['temperature'][ii,:]
 
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
@@ -2517,7 +2522,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('Radiosondes')
 
     ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2525,7 +2530,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label3)
 
     ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2533,7 +2538,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label1)
 
     ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data2['time'],data2['height'],np.transpose(data2['temperature'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
