@@ -481,6 +481,27 @@ def scaleMass(numAccum, numCoarse):
 
     return massAccum, massCoarse
 
+def estimateMass(num):
+
+    #### -------------------------------------------------------------
+    #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
+    #### -------------------------------------------------------------
+
+    print ''
+    print '****'
+    print 'Estimate mass by mean modal radius and assuming spherical particles:'
+    print ''
+
+    ### calculate scaling factor
+    factor = 1.5e-9 / 1e8
+
+    mass = factor * (num*1e2)
+    print 'mass = ', mass
+    print ''
+
+
+    return massAccum
+
 def main():
 
     START_TIME = time.time()
@@ -727,7 +748,13 @@ def main():
     #### SCALE AEROSOL MASS
     ####        Accum: 1.5*1e-9 for every 1.00*1e8 aerosol particles
     #### -------------------------------------------------------------
-    massAccum, massCoarse = scaleMass(numAccum, numCoarse)
+    # massAccum, massCoarse = scaleMass(numAccum, numCoarse)
+
+    #### -------------------------------------------------------------
+    #### ESTIMATE AEROSOL MASS
+    ####        assume spherical particles, R = , rho =
+    #### -------------------------------------------------------------
+    massAccum = estimateMass(numAccum)
 
     # -------------------------------------------------------------
     # FIN.
