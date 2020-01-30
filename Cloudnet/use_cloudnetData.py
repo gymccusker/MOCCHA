@@ -168,9 +168,9 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
 
     # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
     plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
-    plt.plot(um_data['time'][::2],um_data['model_lwp'][::2]*1e3, 'o', color = 'steelblue', label = 'UM_RA2M')
-    plt.plot(ifs_data['time'][::2],ifs_data['model_lwp'][::2]*1e3, '^', color = 'darkorange', label = 'ECMWF_IFS')
-    plt.plot(misc_data['time'][::2],misc_data['model_lwp'][::2]*1e3, 's', color = 'forestgreen', label = 'UM_CASIM-100')
+    plt.plot(um_data['time'][::2],um_data['model_lwp'][::2]*1e3, 'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][::2],ifs_data['model_lwp'][::2]*1e3, '^', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][::2],misc_data['model_lwp'][::2]*1e3, 's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
     # plt.ylim([0,10000])
