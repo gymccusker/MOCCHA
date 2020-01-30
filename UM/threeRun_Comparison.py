@@ -2486,11 +2486,46 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     iUM = np.where(data1['height'] <= 10000)
     iIFS = np.where(data3['height'][iTim,:] <= 10000)
 
-    print obs['sondes']['gpsaltitude'][iObs].shape
-    print data1['height'][iUM].shape
-    print data3['height'][iIFS].shape
+    # print obs['sondes']['gpsaltitude'][iObs,iTim].shape
+    # print data1['height'][iUM].shape
+    # print data3['height'][iTim,iIFS].shape
+    # (1, 1001)
+    # (53,)
+    # (1, 58)
+        #### so, will interpolate on to um grid (lowest resolution)
 
-    # print data3['temp_hrly'].shape
+    print ''
+    print 'Defining IFS temperature profile as a function:'
+    fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
+    print '...'
+    print 'Applying to UM vertical grid:'
+    data3['temp_hrly_UM'] = fnct_IFS(data1['height'][iUM[0][2:]].data)
+    print '...'
+    print 'IFS(UM Grid) function worked!'
+    print '*****'
+
+    #### INTERPOLATION TESTING:
+    # print data3['temp_hrly_UM']
+    # plt.plot(data3['temp_hrly_UM'][:],data1['height'][iUM[0][2:]])
+    # plt.plot(np.squeeze(data3['temp_hrly'][iTim,iIFS]),np.squeeze(data3['height'][iTim,iIFS]))
+    # plt.show()
+
+    print ''
+    print 'Defining Radiosonde temperature profile as a function:'
+    fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes']['temperature'][iObs,iTim]))
+    print '...'
+    print 'Applying to UM vertical grid:'
+    obs['sondes']['temp_hrly_UM'] = fnct_Obs(data1['height'][iUM[0][2:]].data)
+    print '...'
+    print 'Sonde(UM Grid) function worked!'
+    print '*****'
+
+    #### INTERPOLATION TESTING:
+    # print obs['sondes']['temp_hrly_UM']
+    # plt.plot(obs['sondes']['temp_hrly_UM'],data1['height'][iUM[0][2:]])
+    # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
+    # plt.show()
+
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
     ## for the sondes, higher altitudes are listed as NaNs
@@ -2502,72 +2537,71 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     melt = np.where(np.logical_and(np.squeeze(data1['time'][:])>=226,np.squeeze(data1['time'][:]<=240)))
     freeze = np.where(np.logical_and(np.squeeze(data1['time'][:])>240,np.squeeze(data1['time'][:]<=259)))
 
-    print 'Starting radiosonde figure (quite slow!)...:'
-
-    ##################################################
-    ##################################################
-    #### create figure and axes instances
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-
-    ### -------------------------------
-    ### Build figure (timeseries)
-    ### -------------------------------
-    fig = plt.figure(figsize=(12,10))
-
-    ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'], vmin = -25, vmax = 5)
-    plt.ylim([0,4000])
-    plt.xlim([doy[0],doy[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.title('Radiosondes, T[degC]')
-
-    ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
-    plt.ylim([0,4000])
-    plt.xlim([doy[0],doy[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.title(label3 + ', T[degC]')
-
-    ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time_hrly'][::6],data1['height'],np.transpose(data1['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
-    plt.ylim([0,4000])
-    plt.xlim([doy[0],doy[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.title(label1 + ', T[degC]')
-
-    ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data2['time_hrly'][::6],data2['height'],np.transpose(data2['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
-    plt.ylim([0,4000])
-    plt.xlim([doy[0],doy[-1]])
-    plt.colorbar()
-    plt.xlabel('Day of year')
-    plt.ylabel('Z [m]')
-    plt.title(label2 + ', T[degC]')
-
-
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
-
-    fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
-    plt.show()
+    # print 'Starting radiosonde figure (quite slow!)...:'
+    # ##################################################
+    # ##################################################
+    # #### create figure and axes instances
+    # ##################################################
+    # ##################################################
+    #
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    #
+    # ### -------------------------------
+    # ### Build figure (timeseries)
+    # ### -------------------------------
+    # fig = plt.figure(figsize=(12,10))
+    #
+    # ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
+    # plt.pcolor(obs['sondes']['doy'],obs['sondes']['gpsaltitude'][:,0],obs['sondes']['temperature'], vmin = -25, vmax = 5)
+    # plt.ylim([0,4000])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.colorbar()
+    # plt.ylabel('Z [m]')
+    # plt.title('Radiosondes, T[degC]')
+    #
+    # ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
+    # plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.ylim([0,4000])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.colorbar()
+    # plt.ylabel('Z [m]')
+    # plt.title(label3 + ', T[degC]')
+    #
+    # ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
+    # plt.pcolor(data1['time_hrly'][::6],data1['height'],np.transpose(data1['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.ylim([0,4000])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.colorbar()
+    # plt.ylabel('Z [m]')
+    # plt.title(label1 + ', T[degC]')
+    #
+    # ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
+    # plt.pcolor(data2['time_hrly'][::6],data2['height'],np.transpose(data2['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
+    # plt.ylim([0,4000])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.colorbar()
+    # plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    # plt.title(label2 + ', T[degC]')
+    #
+    #
+    # print '******'
+    # print ''
+    # print 'Finished plotting! :)'
+    # print ''
+    #
+    # fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
+    # # plt.savefig(fileout)
+    # plt.show()
 
 def callback(cube, field, filename):
     '''
