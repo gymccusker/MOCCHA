@@ -2478,7 +2478,19 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
     data3['temp_hrly'] = np.squeeze(data3['temperature'][ii,:])
 
-    print data3['temp_hrly'].shape
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    iTim = 0
+    iObs = np.where(obs['gpsaltitude'][:,iTim] <= 10000)
+    iUM = np.where(data1['height'] <= 10000)
+    iIFS = np.where(data3['height'][iTim,:] <= 10000)
+
+    print obs['gpsaltitude'][iObs].shape
+    print data1['height'][iUM].shape
+    print data3['height'][iIFS].shape
+
+    # print data3['temp_hrly'].shape
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
     ## for the sondes, higher altitudes are listed as NaNs
