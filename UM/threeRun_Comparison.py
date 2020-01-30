@@ -2482,11 +2482,11 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
     iTim = 0
-    iObs = np.where(obs['gpsaltitude'][:,iTim] <= 10000)
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 10000)
     iUM = np.where(data1['height'] <= 10000)
     iIFS = np.where(data3['height'][iTim,:] <= 10000)
 
-    print obs['gpsaltitude'][iObs].shape
+    print obs['sondes']['gpsaltitude'][iObs].shape
     print data1['height'][iUM].shape
     print data3['height'][iIFS].shape
 
