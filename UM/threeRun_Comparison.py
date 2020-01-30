@@ -1886,8 +1886,6 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     import matplotlib.cm as mpl_cm
     from time_functions import calcTime_Mat2DOY
 
-        # from matplotlib.patches import Polygon
-
     ###################################
     ## PLOT MAP
     ###################################
@@ -1932,38 +1930,38 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     time_iceStation = calcTime_Mat2DOY(np.squeeze(obs['ice_station']['mday'][:]))
 
-
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
     fig = plt.figure(figsize=(18,12))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.05,
-    #         hspace = 0.3, wspace = 0.1)
-    # plt.subplot(2,1,1)
-    # ax = plt.gca()
 
     ax  = fig.add_axes([0.07,0.55,0.56,0.35])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1], obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['taflag'][:]==1)],np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1]), 's', color = 'grey', markersize = 4, label = 'Ice_station')
+    plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1],
+        obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1],
+        'kv', markersize = 5, label = 'Foremast')
+    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['taflag'][:]==1)],
+        np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1]),
+        '^', color = 'darkgrey', markersize = 6, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'darkorange', label = label3)
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')
-    # plt.legend()
     plt.ylim([-20, 40])
     plt.title('sensible_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.56,0.35])   # left, bottom, width, height
-    # ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1], obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1], 'kd', markersize = 3, label = 'Foremast')
+    plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1],
+        obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1],
+        'kv', markersize = 5, label = 'Foremast')
     # index = np.logical_and(obs['ice_station']['lrflux']>=-30, obs['ice_station']['lrflux']<=70)
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['lrflag'][:]==1)],np.squeeze(obs['ice_station']['lrflux'][obs['ice_station']['lrflag'][:] == 1]), 's', color = 'grey', markersize = 4, label = 'Ice_station')
+    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['lrflag'][:]==1)],
+        np.squeeze(obs['ice_station']['lrflux'][obs['ice_station']['lrflag'][:] == 1]),
+        '^', color = 'darkgrey', markersize = 6, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
@@ -1990,9 +1988,11 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     sns.distplot(data1['sensible_heat_flux'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     sns.distplot(data2['sensible_heat_flux'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+
     fmst_taflux = obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1]
     indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
     sns.distplot(fmst_taflux[indextafmst], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
+
     taflux = np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1])
     indexta = np.logical_and(taflux>=-50, taflux<=50)
     sns.distplot(taflux[indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
@@ -2958,9 +2958,9 @@ def main():
         # -------------------------------------------------------------
         # Plot paper figures
         # -------------------------------------------------------------
-        # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+        figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-        figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+        # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
         # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
