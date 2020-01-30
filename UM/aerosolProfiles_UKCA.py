@@ -25,6 +25,7 @@ import sys
 sys.path.insert(1, '../py_functions/')
 from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY
 from readMAT import readMatlabStruct
+from physFuncts import calcAirDensity
 
 def readfile(filename):
 
@@ -498,18 +499,23 @@ def estimateMass(N, rho_air):
     # M = 1.0
     sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
     rho = 1777.0    #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
-    Rm = 0.5*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
+    Rm = 0.1*1.0e-6    #### == fixed_aerosol_rm (mphys_constants.F90); 100nm
+
+    print 'Calculating aerosol mass mixing ratio assuming: '
+    print 'rho_aer = ', rho, ' kg/m3'
+    print 'Rm = ', Rm*1e6, ' nm'
+    print '...'
 
     ### calculation for mean radius given mass and number:
-    MNtoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
-        (4.0*N*np.pi*rho) )**(1.0/3.0)
+    # MNtoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
+    #     (4.0*N*np.pi*rho) )**(1.0/3.0)
                 ### just copied from casim/lognormal_funcs.F90
 
     mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho)/(np.exp(-4.5*np.log(sigma)**2))
             ### gives mass concentration in kg/m3
 
     #### need mass concentration in kg/kg for casim input
-
+    M = mass / rho_air
 
     print 'mass = ', M
     print ''
@@ -680,7 +686,7 @@ def main():
     #### CHOOSE DATE
     #### -------------------------------------------------------------
     #### -------------------------------------------------------------
-    
+
     date = '20180901'
     doyIndex = calcTime_Date2DOY(date)
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
@@ -727,16 +733,18 @@ def main():
     # massAccum, massCoarse = scaleMass(numAccum, numCoarse)
 
     #### -------------------------------------------------------------
-    #### CALCULATE AIR DENSITY
+    #### CALCULATE DAY MEAN AIR DENSITY
     ####        for use in mass conversion calculation
     #### -------------------------------------------------------------
-    # rho_air = calcAirDensity(data1['temperature'][:],data1['pressure'])
+    rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:],0))
+    # plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
 
     #### -------------------------------------------------------------
     #### ESTIMATE AEROSOL MASS
     ####        assume spherical particles
     #### -------------------------------------------------------------
     massAccum = estimateMass(numAccum, rho_air)
+    plt.plot(massAccum,nc1.variables['height'][1:]);plt.show()
 
     # -------------------------------------------------------------
     # FIN.
