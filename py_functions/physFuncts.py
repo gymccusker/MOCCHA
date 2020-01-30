@@ -20,9 +20,10 @@ def calcAirDensity(temperature, pressure):
     R = 2.8704  #### hPa kg-1 K-1
 
     print 'Calculating air density profile:'
-    rho = np.zeros([np.size(temperature,0),np.size(temperature,1)])
-    for k in range(0,np.size(temperature,1)):
-        rho[:,k] = pressure[:,k] / (R * temperature[:,k])
+    print ''
+    rho = np.zeros([np.size(temperature)])
+    for k in range(0,np.size(temperature)):
+        rho[k] = pressure[k] / (R * temperature[k])
 
     return rho
 
