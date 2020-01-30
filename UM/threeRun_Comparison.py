@@ -2467,18 +2467,18 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ii = np.where(temp != 0.0)      ### picks out where data are non-zero
 
     ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_6hrly'] = temp[ii]
-    data2['time_6hrly'] = temp[ii]
-    data3['time_6hrly'] = temp[ii]
+    data1['time_hrly'] = temp[ii]
+    data2['time_hrly'] = temp[ii]
+    data3['time_hrly'] = temp[ii]
 
     #### ---------------------------------------------------------------
-    #### save 6hourly temperature profiles (using the ii index defined by the time indices)
+    #### save hourly temperature profiles (using the ii index defined by the time indices)
     #### ---------------------------------------------------------------
-    data1['temp_6hrly'] = np.squeeze(data1['temperature'][ii,:])
-    data2['temp_6hrly'] = np.squeeze(data2['temperature'][ii,:])
-    data3['temp_6hrly'] = np.squeeze(data3['temperature'][ii,:])
+    data1['temp_hrly'] = np.squeeze(data1['temperature'][ii,:])
+    data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
+    data3['temp_hrly'] = np.squeeze(data3['temperature'][ii,:])
 
-    print data3['temp_6hrly'].shape
+    print data3['temp_hrly'].shape
 
     ### figuring out how to interpolate sonde data correctly on to model grid...
     ## for the sondes, higher altitudes are listed as NaNs
@@ -2523,29 +2523,29 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('Radiosondes')
 
     ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data3['time_hrly'][::6],np.nanmean(data3['height'],0),np.transpose(data3['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.title(label3)
+    plt.title(label3 + ', T[degC]')
 
     ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data1['time_hrly'][::6],data1['height'],np.transpose(data1['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.title(label1)
+    plt.title(label1 + ', T[degC]')
 
     ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
-    plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['temp_6hrly'])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data2['time_hrly'][::6],data2['height'],np.transpose(data2['temp_hrly'][::6,:])-273.15, vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
-    plt.title(label2)
+    plt.title(label2 + ', T[degC]')
 
 
     print '******'
@@ -2553,7 +2553,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
     # plt.savefig(fileout)
     plt.show()
 
