@@ -4,7 +4,7 @@
 ###
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -31,10 +31,10 @@ def readfile(filename):
 
     import pandas as pd
 
-    # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    # print('******'
+    print('')
+    print('Reading .txt file with pandas')
+    print('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -57,12 +57,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print('******')
+    print('')
+    # print('Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
+    # print('Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
+    print('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print('')
 
     return drift_index
 
@@ -84,19 +84,19 @@ def inIce(data):
     # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
-    # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print('******')
+    print('')
+    # print('Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # print('Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    # print('In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    print('CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print('')
+    print('Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')')
+    print('Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print('Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
+    print('Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6])))
+    print('')
+    print('Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7])))
 
     return inIce_index
 
@@ -108,15 +108,15 @@ def trackShip(data):
     trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
-    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
-    # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
-    # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    print('******')
+    print('')
+    # print('Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    print('Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print('Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
+    # print('Start: ' + str(data.values[trackShip_start[0][0],0:4])
+    # print('End: ' + str(data.values[trackShip_end[0][-1],0:4])
+    print('trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print('')
 
     return trackShip_index
 
@@ -133,10 +133,10 @@ def plot_cartmap(ship_data, nc, doy):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
+    print('******')
+    print('')
+    print('Plotting cartopy map:')
+    print('')
 
     ##################################################
     ##################################################
@@ -234,10 +234,10 @@ def plot_cartmap(ship_data, nc, doy):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
+    print('******')
+    print('')
+    print('Finished plotting cartopy map! :)')
+    print('')
 
     # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
@@ -248,10 +248,10 @@ def plot_aeroProfiles(nc2, nc3, doy):
     ## PLOT AEROSOL PROFILES
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting aerosol profiles for whole drift period:'
-    print ''
+    print('******')
+    print('')
+    print('Plotting aerosol profiles for whole drift period:')
+    print('')
 
     ##################################################
     ##################################################
@@ -307,42 +307,42 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     ## interpolate UKCA aerosol profiles from Ruth on to my UM height grid
     ###################################
 
-    print '******'
-    print ''
-    print 'Calculating aerosol profiles on UM nZ=70 grid:'
-    print ''
+    print('******')
+    print('')
+    print('Calculating aerosol profiles on UM nZ=70 grid:')
+    print('')
 
     naer_accum = np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)
     naer_coarse = np.nanmean(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,:],3),2)
 
-    print 'naer_accum shape = ', naer_accum.shape
-    print 'naer_coarse shape = ', naer_coarse.shape
-    print ''
+    print('naer_accum shape = ', naer_accum.shape)
+    print('naer_coarse shape = ', naer_coarse.shape)
+    print('')
 
     um_height = nc1.variables['height'][:]
     ukca_height = nc2.variables['level_height'][:]
 
-    print 'um_height shape = ', um_height.shape
-    print 'ukca_height shape = ', ukca_height.shape
-    print ''
+    print('um_height shape = ', um_height.shape)
+    print('ukca_height shape = ', ukca_height.shape)
+    print('')
 
     fnct_accum = interp1d(ukca_height, naer_accum[ukca_index,:])
-    print 'Accumulation mode interpolation function succeeded!'
-    print ''
-    print 'Next: test function on um_height'
+    print('Accumulation mode interpolation function succeeded!')
+    print('')
+    print('Next: test function on um_height')
     newAccum = fnct_accum(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
-    print ''
-    print 'Function worked! :)'
-    print ''
+    print('')
+    print('Function worked! :)')
+    print('')
 
     fnct_coarse = interp1d(ukca_height, naer_coarse[ukca_index,:])
-    print 'Coarse mode interpolation function succeeded!'
-    print ''
-    print 'Next: test function on um_height'
+    print('Coarse mode interpolation function succeeded!')
+    print('')
+    print('Next: test function on um_height')
     newCoarse = fnct_coarse(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
-    print ''
-    print 'Function worked! :)'
-    print ''
+    print('')
+    print('Function worked! :)')
+    print('')
 
     #### ----------------------------------------------------------
     #### ukca timestamps are midpoints of bin (+/- 12h)
@@ -396,8 +396,8 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     ####    use in um/rose-app.conf namelist
     #### ----------------------------------------------------------
 
-    print 'newAccum.shape = ', newAccum.shape
-    print 'newCoarse.shape = ', newCoarse.shape
+    print('newAccum.shape = ', newAccum.shape)
+    print('newCoarse.shape = ', newCoarse.shape)
 
     #### build new arrays with extra 2 bins at the surface
     numAccum = np.zeros(len(um_height)-1)   ### 70 height bins
@@ -405,15 +405,15 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
 
     numAccum[0:2] = newAccum[0]*1e6
     numAccum[2:] = newAccum[:]*1e6
-    print 'numAccum = ', numAccum
+    print('numAccum = ', numAccum)
 
     numCoarse[0:2] = newCoarse[0]*1e6
     numCoarse[2:] = newCoarse[:]*1e6
-    print 'numCoarse = ', numCoarse
+    print('numCoarse = ', numCoarse)
 
-    print ''
-    print 'numAccum.shape = ', numAccum.shape
-    print 'numCoarse.shape = ', numCoarse.shape
+    print('')
+    print('numAccum.shape = ', numAccum.shape)
+    print('numCoarse.shape = ', numCoarse.shape)
 
     ##################################################
     ##################################################
@@ -463,19 +463,19 @@ def scaleMass(numAccum, numCoarse):
     #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
     #### -------------------------------------------------------------
 
-    print ''
-    print '****'
-    print 'Scaling mass by default values used in CASIM suite'
-    print ''
-    print 'accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles'
-    print ''
+    print('')
+    print('****')
+    print('Scaling mass by default values used in CASIM suite')
+    print('')
+    print('accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles')
+    print('')
 
     ### calculate scaling factor
     factor = 1.5e-9 / 1e8
 
     massAccum = factor * (numAccum*1e2)
-    print 'massAccum = ', massAccum
-    print ''
+    print('massAccum = ', massAccum)
+    print('')
 
     ### add filler for now
     massCoarse = 0
@@ -488,10 +488,10 @@ def estimateMass(N, rho_air, flag):
     #### SCALE AEROSOL MASS (accumulation mode: 1.5*1e-9 for every 1.00*1e8 aerosol particles)
     #### -------------------------------------------------------------
 
-    print ''
-    print '****'
-    print 'Estimate mass by mean modal radius and assuming spherical particles:'
-    print ''
+    print('')
+    print('****')
+    print('Estimate mass by mean modal radius and assuming spherical particles:')
+    print('')
 
     #### Accumulation mode: 0.1um < d_p < 1um
 
@@ -506,12 +506,12 @@ def estimateMass(N, rho_air, flag):
         rho = 2000.0        #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
         Rm = 5*1.0e-6       #### == fixed_aerosol_rm (mphys_constants.F90); 5 um
     else:
-        print '****Mode option not valid!****'
+        print('****Mode option not valid!****')
 
-    print 'Calculating aerosol mass mixing ratio assuming: '
-    print 'rho_aer = ', rho, ' kg/m3'
-    print 'Rm = ', Rm*1e6, ' nm'
-    print '...'
+    print('Calculating aerosol mass mixing ratio assuming: ')
+    print('rho_aer = ', rho, ' kg/m3')
+    print('Rm = ', Rm*1e6, ' um')
+    print('...')
 
     ### calculation for mean radius given mass and number:
     # MNtoRm = ( 3.0*M*np.exp(-4.5*np.log(sigma)**2) /
@@ -524,18 +524,18 @@ def estimateMass(N, rho_air, flag):
     #### need mass concentration in kg/kg for casim input
     M = mass / rho_air
 
-    print 'mass = ', M
-    print ''
+    print('mass = ', M)
+    print('')
 
     return M
 
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print('******')
+    print('')
+    print('Start: ' + time.strftime("%c"))
+    print('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -574,25 +574,25 @@ def main():
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print('******')
+    print('')
+    print('Identifying .nc file: ')
+    print('')
 
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print('******')
+    print('')
+    print('Load in ship track file:')
+    print('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
-    print 'Loading observations:'
+    print('Loading observations:')
             # -------------------------------------------------------------
             # Which file does what?
             # -------------------------------------------------------------
@@ -605,32 +605,32 @@ def main():
 
     obs = {}
 
-    print 'Load temporary ice station data from Jutta...'
+    print('Load temporary ice station data from Jutta...')
     obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
-    print 'Load ice station data from Jutta...'
+    print('Load ice station data from Jutta...')
     obs['ice_station'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
             #### mast_radiation_30min_v2.3.mat
             #### flux30_trhwxrel.mat
 
-    print 'Load radiosonde data from Jutta...'
+    print('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
 
-    print 'Load foremast data from John...'
+    print('Load foremast data from John...')
     obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
 
-    print 'Load 7th deck weather station data from John...'
+    print('Load 7th deck weather station data from John...')
     obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
-    print '...'
+    print('...')
 
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
+    print('******')
+    print('')
+    print('Begin cube read in at ' + time.strftime("%c"))
+    print(' ')
 
     ### -------------------------------------------------------------------------
     ### define input filename
@@ -682,11 +682,11 @@ def main():
     filename_um2 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_accumulation_mode_aerosol.nc'
     filename_um3 = um_root_dir + out_dir2 + 'number_concentration_of_soluble_coarse_mode_aerosol.nc'
     #### LOAD DATASET
-    print 'Loading UKCA aerosol data (accumulation and coarse mode):'
+    print('Loading UKCA aerosol data (accumulation and coarse mode):')
     nc2 = Dataset(filename_um2,'r')
-    print '...'
+    print('...')
     nc3 = Dataset(filename_um3,'r')
-    print '...'
+    print('...')
 
     #### -------------------------------------------------------------
     #### -------------------------------------------------------------
@@ -699,23 +699,23 @@ def main():
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
     # um_index = np.where(data1['time'][:] == doyIndex)
 
-    print '****'
-    print 'UKCA time = ', doyIndex, ' at index = ', np.squeeze(ukca_index)
-    print 'Proof: nc2.variables[''day_of_year''][ukca_index] = ', nc2.variables['day_of_year'][ukca_index]
-    print '****'
-    print ''
+    print('****')
+    print('UKCA time = ', doyIndex, ' at index = ', np.squeeze(ukca_index))
+    print('Proof: nc2.variables[''day_of_year''][ukca_index] = ', nc2.variables['day_of_year'][ukca_index])
+    print('****')
+    print('')
 
     #### -------------------------------------------------------------
     #### LOAD UM DATA
     #### -------------------------------------------------------------
     filename_um1 = um_root_dir + out_dir1 + date + '_oden_metum.nc'
-    print filename_um1
-    print ''
+    print(filename_um1)
+    print('')
 
     #### LOAD DATASET
-    print 'Loading UM diagnostics for reference:'
+    print('Loading UM diagnostics for reference:')
     nc1 = Dataset(filename_um1,'r')
-    print '...'
+    print('...')
     # ---------------------
 
     #### -------------------------------------------------------------
@@ -756,29 +756,41 @@ def main():
     # num[:] = 1.0e8
     # massAccum = estimateMass(num, rho_air)
 
-    print '****'
-    print 'Estimate accumulation mode mass:'
-    print ''
+    print('****')
+    print('Estimate accumulation mode mass:')
+    print('')
     modeFlag = 1
     massAccum = estimateMass(numAccum, rho_air, modeFlag)
     plt.plot(massAccum,nc1.variables['height'][1:]); plt.show()
 
-    print '****'
-    print 'Estimate coarse mode mass:'
-    print ''
+    print('****')
+    print('Estimate coarse mode mass:')
+    print('')
     modeFlag = 2
     massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
     plt.plot(massCoarse,nc1.variables['height'][1:]); plt.show()
 
+    #### -------------------------------------------------------------
+    #### FORMAT OUTPUT FOR UM/ROSE-APP.CONF
+    #### -------------------------------------------------------------
+    outfile = 'AUX_DATA/CASIM-AeroProf_input_' + date + '.txt'
+
+    ### 1) print("testing with i = %i, num is %f" % (i, num[i]))
+    ### 2) for i in range(0,4): print("testing with i = %i, num is %f" % (i, num[i]))
+    ### 3) for i in range(0,len(num)): print("%f, " % (num[i]), end=" ") ### prints dynamically to the same line
+
+    print('Formatting output for use in run_casim_tracers UM namelist...')
+    print('')
+    for i in range(0,len(numAccum)): print("%f, " % (numAccum[i]), end=" ")
 
     # -------------------------------------------------------------
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print('******')
+    print('')
+    print('End: ' + time.strftime("%c"))
+    print('')
 
 if __name__ == '__main__':
 
