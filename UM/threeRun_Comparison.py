@@ -2552,6 +2552,22 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
     # plt.show()
 
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT SONDES FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 226, obs['sondes']['doy'] <= 258))
+
+    ### save in dict for ease
+    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+
+    # print drift
+    # print drift[0][0]
+    # print obs['sondes']['doy'][drift[0]].shape
+    # print obs['sondes']['gpsaltitude'][:,drift[0][0]].shape
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
     np.save('working_data1',data1)
     np.save('working_data3',data3)
     np.save('working_dataObs',obs['sondes'])
@@ -2579,15 +2595,6 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     fig = plt.figure(figsize=(18,10))
 
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 226, obs['sondes']['doy'] <= 258))
-
-    ### save in dict for ease
-    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
-
-    # print drift
-    # print drift[0][0]
-    # print obs['sondes']['doy'][drift[0]].shape
-    # print obs['sondes']['gpsaltitude'][:,drift[0][0]].shape
 
     ### -------------------------------
     ### original data
