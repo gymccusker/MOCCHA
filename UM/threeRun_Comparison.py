@@ -2811,7 +2811,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
         obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
     print '...'
     print 'Sonde(UM Grid) function worked!'
-    print 'All ' var + ' sonde data now on UM vertical grid.'
+    print 'All ' + var + ' sonde data now on UM vertical grid.'
     print '*****'
 
     #### INTERPOLATION TESTING:
