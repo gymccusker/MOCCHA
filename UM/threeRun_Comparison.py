@@ -2665,7 +2665,8 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     data2['q'][data2['q'] == -9999] = np.nan
     data3['q'][data3['q'] <= 0] = np.nan
 
-
+    data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'], data1['time'], data1['height'])
+    # data2['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'], data1['time'], data1['height'])
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -3178,10 +3179,10 @@ def main():
         #### LOAD IN SPECIFIC DIAGNOSTICS
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q']
+            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure']
         var_list2 = var_list1
         if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q']
+            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure']
         if not ifs_flag: var_list3 = var_list1
 
         if i == 0:
