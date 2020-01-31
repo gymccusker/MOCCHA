@@ -2535,13 +2535,13 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
 
     print ''
     print 'Defining Sonde temperature profile as a function:'
-    obs['sondes']['temp_hrly_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
+    obs['sondes']['temp_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(obs['sondes']['doy'],0)):
         # print 'iTim = ', str(iTim)
         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes']['temperature'][iObs,iTim]))
-        obs['sondes']['temp_hrly_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+        obs['sondes']['temp_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
     print '...'
-    print 'Sonde(UM Grid) function worked!'
+    print 'Sonde(UM Grid) function worked! All sonde data interpolated onto UM grid.'
     print '*****'
 
     #### INTERPOLATION TESTING:
@@ -2555,15 +2555,10 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.1))
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
 
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
-
-    # print drift
-    # print drift[0][0]
-    # print obs['sondes']['doy'][drift[0]].shape
-    # print obs['sondes']['gpsaltitude'][:,drift[0][0]].shape
 
     #### ---------------------------------------------------------------
     #### save out working data for debugging
@@ -2593,14 +2588,14 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(18,10))
+    fig = plt.figure(figsize=(19,10))
 
 
     ### -------------------------------
     ### original data
     ### ------------------------------
     ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy'][drift[0]],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['temperature'][:,drift[0]],
+    plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['temperature'][:,drift[0]],
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2640,13 +2635,13 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### sonde and ifs data interpolated to um grid (Z<10km)
     ### ------------------------------
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy'][drift[0]],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_hrly_UM'][drift[0],:]),
+    plt.pcolor(obs['sondes']['doy_drift'],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(INTP), T[degC]')
+    plt.title('Sondes(REGRID), T[degC]')
 
     ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'][::6])-273.15, vmin = -25, vmax = 5)
@@ -2654,7 +2649,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title(label3 + '(INTP), T[degC]')
+    plt.title(label3 + '(REGRID), T[degC]')
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])-273.15,
@@ -2676,54 +2671,56 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label2 + ', T[degC]')
 
     ### -------------------------------
-    ### sonde and ifs data interpolated to um grid (Z<10km)
+    ### model anomalies wrt radiosondes
     ### ------------------------------
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy'][drift[0]],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_hrly_UM'][drift[0],:]),
+    plt.pcolor(obs['sondes']['doy_drift'],data1['height'][iUM[0][3:]],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(INTP), T[degC]')
+    plt.title('Sondes(REGRID), T[degC]')
 
     ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
-    # dat3 = np.transpose(obs['sondes']['temp_hrly_UM'][drift[0],:]) - np.transpose(data3['temp_hrly_UM'][::6])-273.15
-    plt.pcolor(data3['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data3['temp_hrly_UM'][::6])-273.15,
-        vmin = -25, vmax = 5, cmap=mpl_cm.RdBu_r)
+    dat3 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data3['temp_hrly_UM'][::6])
+    plt.pcolor(data3['time_6hrly'],data1['height'][iUM[0][3:]], dat3,
+        vmin = -4.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.set_cmap('seismic')
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(INTP) - ' + label3 + '(INTP), T[degC]')
+    plt.title('Sondes(REGRID) - ' + label3 + '(INTP), T[K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])-273.15,
-        vmin = -25, vmax = 5, cmap=mpl_cm.RdBu_r)
+    dat1 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])
+    plt.pcolor(data1['time_6hrly'],data1['height'][iUM[0][3:]], dat1,
+        vmin = -4.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(INTP) - ' + label1 + ', T[degC]')
+    plt.title('Sondes(REGRID) - ' + label1 + ', T[K]')
 
     ax  = fig.add_axes([0.7,0.06,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data2['time_6hrly'],data2['height'][iUM[0][3:]],np.transpose(data2['temp_6hrly'][:,iUM[0][3:]])-273.15,
-        vmin = -25, vmax = 5, cmap=mpl_cm.RdBu_r)
+    dat2 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data2['temp_6hrly'][:,iUM[0][3:]])
+    plt.pcolor(data2['time_6hrly'],data2['height'][iUM[0][3:]], dat2,
+        vmin = -4.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(INTP) - ' + label2 + ', T[degC]')
+    plt.title('Sondes(REGRID) - ' + label2 + ', T[K]')
 
     print '******'
     print ''
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/TemperatureProfiles_sondes_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_sondes_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def callback(cube, field, filename):
