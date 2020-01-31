@@ -2555,7 +2555,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 226, obs['sondes']['doy'] <= 258))
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.1))
 
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
@@ -2882,7 +2882,7 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
@@ -2895,9 +2895,9 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = []
+    moccha_missing_files = ['20180813_oden_']
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)          ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
