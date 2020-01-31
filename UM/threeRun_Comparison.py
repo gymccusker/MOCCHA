@@ -2485,9 +2485,9 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data1['time_6hrly'] = data1['time_hrly'][::6]
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data3['time_6hrly'] = data3['time_hrly'][::6]
-    data1['temp_hrly'] = data1['time_6hrly'][::6]
-    data2['temp_hrly'] = data2['temp_6hrly'][::6]
-    data3['temp_hrly'] = data3['temp_6hrly'][::6]
+    data1['temp_6hrly'] = data1['temp_hrly'][::6]
+    data2['temp_6hrly'] = data2['temp_hrly'][::6]
+    data3['temp_6hrly'] = data3['temp_hrly'][::6]
 
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
