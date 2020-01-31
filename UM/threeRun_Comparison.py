@@ -2571,7 +2571,9 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'temp')
 
 
+    print ''
     print 'Starting radiosonde figure (quite slow!)...:'
+    print '...'
     ##################################################
     ##################################################
     #### create figure and axes instances
