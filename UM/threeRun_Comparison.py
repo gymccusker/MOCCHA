@@ -2650,7 +2650,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label3 + '(INTP), T[degC]')
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data1['temp_6hrly'][,iUM[0][3:]])-273.15,
+    plt.pcolor(data1['time_6hrly'],data1['height'][iUM[0][3:]],np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])-273.15,
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
