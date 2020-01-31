@@ -2451,121 +2451,124 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
 
-    ### 6-hourly time binning for model
-    ### um['time'][:24:6].data
-    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
-    ###     need to pick out where we have a repeated time value, then remove it so
-    ###     that the time array can be indexed easily
+    # ### 6-hourly time binning for model
+    # ### um['time'][:24:6].data
+    # ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
+    # ###     need to pick out where we have a repeated time value, then remove it so
+    # ###     that the time array can be indexed easily
+    #
+    # ###
+    # temp = np.zeros([len(data1['time'])])
+    # for i in range(0, len(temp)-1):
+    #     if data1['time'][i] == data1['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp[i] = data1['time'][i]
+    # ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+    #
+    # ### can use temp for all model data since they are on the same (hourly) time binning
+    # data1['time_hrly'] = temp[ii]
+    # data2['time_hrly'] = temp[ii]
+    # data3['time_hrly'] = temp[ii]
+    #
+    # #### ---------------------------------------------------------------
+    # #### save hourly temperature model profiles (using the ii index defined by the time indices)
+    # #### ---------------------------------------------------------------
+    # data1['temp_hrly'] = np.squeeze(data1['temperature'][ii,:])
+    # data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
+    # data3['temp_hrly'] = np.squeeze(data3['temperature'][ii,:])
+    #
+    # #### ---------------------------------------------------------------
+    # #### explicitly save 6-hourly temperature model profiles and time binning for ease
+    # #### ---------------------------------------------------------------
+    # ### can use temp for all model data since they are on the same (hourly) time binning
+    # data1['time_6hrly'] = data1['time_hrly'][::6]
+    # data2['time_6hrly'] = data2['time_hrly'][::6]
+    # data3['time_6hrly'] = data3['time_hrly'][::6]
+    # data1['temp_6hrly'] = data1['temp_hrly'][::6]
+    # data2['temp_6hrly'] = data2['temp_hrly'][::6]
+    # data3['temp_6hrly'] = data3['temp_hrly'][::6]
+    #
+    # #### ---------------------------------------------------------------
+    # #### index to only look at altitudes <10km
+    # #### ---------------------------------------------------------------
+    # iTim = 0
+    # iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 10000)
+    # iUM = np.where(data1['height'] <= 10000)
+    # iIFS = np.where(data3['height'][iTim,:] <= 10000)
+    #
+    # # print obs['sondes']['gpsaltitude'][iObs,iTim].shape
+    # # print data1['height'][iUM].shape
+    # # print data3['height'][iTim,iIFS].shape
+    # # (1, 1001)
+    # # (53,)
+    # # (1, 58)
+    #     #### so, will interpolate on to um grid (lowest resolution)
+    #
+    #
+    # #### ---------------------------------------------------------------
+    # #### START INTERPOLATION
+    # #### ---------------------------------------------------------------
+    # print ''
+    # print 'Defining IFS temperature profile as a function:'
+    # print 'using ifs.height[0,:] to define temperature profiles...'
+    # data3['temp_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+    # for iTim in range(0,np.size(data3['time_hrly'],0)):
+    #     # if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
+    #     #     continue
+    #     # else:
+    #     # print 'iTim = ', str(iTim)
+    #     fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
+    #     data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+    # print '...'
+    # print 'IFS(UM Grid) function worked!'
+    # print '*****'
+    #
+    # #### INTERPOLATION TESTING:
+    # print data3['temp_hrly_UM'].shape
+    # # print data3['time_hrly'][::6].shape
+    # print data1['temp_hrly'][:,iUM[0][3:]].shape
+    # # print data1['time_hrly'][::6].shape
+    # # plt.plot(data3['temp_hrly_UM'][10,:],data1['height'][iUM[0][2:]])
+    # # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
+    # # plt.show()
+    #
+    # print ''
+    # print 'Defining Sonde temperature profile as a function:'
+    # obs['sondes']['temp_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
+    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+    #     # print 'iTim = ', str(iTim)
+    #     fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes']['temperature'][iObs,iTim]))
+    #     obs['sondes']['temp_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+    # print '...'
+    # print 'Sonde(UM Grid) function worked! All sonde data interpolated onto UM grid.'
+    # print '*****'
+    #
+    # #### INTERPOLATION TESTING:
+    # # print obs['sondes']['temp_hrly_UM'].shape
+    # # print obs['sondes']['doy'].shape
+    # # print obs['sondes']['temp_hrly_UM']
+    # # plt.plot(obs['sondes']['temp_hrly_UM'],data1['height'][iUM[0][2:]])
+    # # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
+    # # plt.show()
+    #
+    # #### ---------------------------------------------------------------
+    # #### ONLY LOOK AT SONDES FROM THE DRIFT
+    # #### ---------------------------------------------------------------
+    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+    #
+    # ### save in dict for ease
+    # obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+    #
+    # #### ---------------------------------------------------------------
+    # #### save out working data for debugging
+    # #### ---------------------------------------------------------------
+    # np.save('working_data1',data1)
+    # np.save('working_data3',data3)
+    # np.save('working_dataObs',obs['sondes'])
 
-    ###
-    temp = np.zeros([len(data1['time'])])
-    for i in range(0, len(temp)-1):
-        if data1['time'][i] == data1['time'][i+1]:
-            continue
-        else:
-            temp[i] = data1['time'][i]
-    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
-
-    ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_hrly'] = temp[ii]
-    data2['time_hrly'] = temp[ii]
-    data3['time_hrly'] = temp[ii]
-
-    #### ---------------------------------------------------------------
-    #### save hourly temperature model profiles (using the ii index defined by the time indices)
-    #### ---------------------------------------------------------------
-    data1['temp_hrly'] = np.squeeze(data1['temperature'][ii,:])
-    data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
-    data3['temp_hrly'] = np.squeeze(data3['temperature'][ii,:])
-
-    #### ---------------------------------------------------------------
-    #### explicitly save 6-hourly temperature model profiles and time binning for ease
-    #### ---------------------------------------------------------------
-    ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_6hrly'] = data1['time_hrly'][::6]
-    data2['time_6hrly'] = data2['time_hrly'][::6]
-    data3['time_6hrly'] = data3['time_hrly'][::6]
-    data1['temp_6hrly'] = data1['temp_hrly'][::6]
-    data2['temp_6hrly'] = data2['temp_hrly'][::6]
-    data3['temp_6hrly'] = data3['temp_hrly'][::6]
-
-    #### ---------------------------------------------------------------
-    #### index to only look at altitudes <10km
-    #### ---------------------------------------------------------------
-    iTim = 0
-    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 10000)
-    iUM = np.where(data1['height'] <= 10000)
-    iIFS = np.where(data3['height'][iTim,:] <= 10000)
-
-    # print obs['sondes']['gpsaltitude'][iObs,iTim].shape
-    # print data1['height'][iUM].shape
-    # print data3['height'][iTim,iIFS].shape
-    # (1, 1001)
-    # (53,)
-    # (1, 58)
-        #### so, will interpolate on to um grid (lowest resolution)
-
-
-    #### ---------------------------------------------------------------
-    #### START INTERPOLATION
-    #### ---------------------------------------------------------------
-    print ''
-    print 'Defining IFS temperature profile as a function:'
-    print 'using ifs.height[0,:] to define temperature profiles...'
-    data3['temp_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
-    for iTim in range(0,np.size(data3['time_hrly'],0)):
-        # if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
-        #     continue
-        # else:
-        # print 'iTim = ', str(iTim)
-        fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
-        data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
-    print '...'
-    print 'IFS(UM Grid) function worked!'
-    print '*****'
-
-    #### INTERPOLATION TESTING:
-    print data3['temp_hrly_UM'].shape
-    # print data3['time_hrly'][::6].shape
-    print data1['temp_hrly'][:,iUM[0][3:]].shape
-    # print data1['time_hrly'][::6].shape
-    # plt.plot(data3['temp_hrly_UM'][10,:],data1['height'][iUM[0][2:]])
-    # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
-    # plt.show()
-
-    print ''
-    print 'Defining Sonde temperature profile as a function:'
-    obs['sondes']['temp_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
-    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
-        # print 'iTim = ', str(iTim)
-        fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes']['temperature'][iObs,iTim]))
-        obs['sondes']['temp_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
-    print '...'
-    print 'Sonde(UM Grid) function worked! All sonde data interpolated onto UM grid.'
-    print '*****'
-
-    #### INTERPOLATION TESTING:
-    # print obs['sondes']['temp_hrly_UM'].shape
-    # print obs['sondes']['doy'].shape
-    # print obs['sondes']['temp_hrly_UM']
-    # plt.plot(obs['sondes']['temp_hrly_UM'],data1['height'][iUM[0][2:]])
-    # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
-    # plt.show()
-
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT SONDES FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
-
-    ### save in dict for ease
-    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
-
-    #### ---------------------------------------------------------------
-    #### save out working data for debugging
-    #### ---------------------------------------------------------------
-    np.save('working_data1',data1)
-    np.save('working_data3',data3)
-    np.save('working_dataObs',obs['sondes'])
+    ### test use of new reGrid_Sondes function:
+    data1, data2, data3, obs = reGrid_Sondes(data1, data2, data3, obs, doy, 'temp')
 
     print 'Starting radiosonde figure (quite slow!)...:'
     ##################################################
@@ -2722,6 +2725,119 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_sondes_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
+
+def reGrid_Sondes(data1, data2, data3, obs, doy, var):
+
+    ### 6-hourly time binning for model
+    ### um['time'][:24:6].data
+    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
+    ###     need to pick out where we have a repeated time value, then remove it so
+    ###     that the time array can be indexed easily
+
+    ###
+    temp = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp[i] = data1['time'][i]
+    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_hrly'] = temp[ii]
+    data2['time_hrly'] = temp[ii]
+    data3['time_hrly'] = temp[ii]
+
+    if var == 'temp':
+            ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
+        varlist = ['temperature','temperature','temperature','temperature']
+
+    #### ---------------------------------------------------------------
+    #### save hourly temperature model profiles (using the ii index defined by the time indices)
+    #### ---------------------------------------------------------------
+    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][ii,:])
+    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][ii,:])
+    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][ii,:])
+
+    #### ---------------------------------------------------------------
+    #### explicitly save 6-hourly temperature model profiles and time binning for ease
+    #### ---------------------------------------------------------------
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
+    data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
+    data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
+
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    iTim = 0
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 10000)
+    iUM = np.where(data1['height'] <= 10000)
+    iIFS = np.where(data3['height'][iTim,:] <= 10000)
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION
+    #### ---------------------------------------------------------------
+    print ''
+    print 'Defining IFS temperature profile as a function:'
+    print 'using ifs.height[0,:] to define temperature profiles...'
+    data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(data3['time_hrly'],0)):
+        fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
+        data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+    print '...'
+    print 'IFS(UM Grid) function worked!'
+    print var + ' IFS data now on UM vertical grid'
+    print '*****'
+
+    #### INTERPOLATION TESTING:
+    # print data3['temp_hrly_UM'].shape
+    # print data3['time_hrly'][::6].shape
+    # print data1['temp_hrly'][:,iUM[0][3:]].shape
+    # print data1['time_hrly'][::6].shape
+    # plt.plot(data3['temp_hrly_UM'][10,:],data1['height'][iUM[0][2:]])
+    # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
+    # plt.show()
+
+    print ''
+    print 'Defining Sonde temperature profile as a function:'
+    obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+        # print 'iTim = ', str(iTim)
+        fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][var_list[0]][iObs,iTim]))
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+    print '...'
+    print 'Sonde(UM Grid) function worked!'
+    print 'All ' var + ' sonde data now on UM vertical grid.'
+    print '*****'
+
+    #### INTERPOLATION TESTING:
+    # print obs['sondes']['temp_hrly_UM'].shape
+    # print obs['sondes']['doy'].shape
+    # print obs['sondes']['temp_hrly_UM']
+    # plt.plot(obs['sondes']['temp_hrly_UM'],data1['height'][iUM[0][2:]])
+    # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
+    # plt.show()
+
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT SONDES FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+
+    ### save in dict for ease
+    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
+
+    return data1, data2, data3, obs
 
 def callback(cube, field, filename):
     '''
