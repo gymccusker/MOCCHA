@@ -2691,7 +2691,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.colorbar()
     # plt.set_cmap('seismic')
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(REGRID) - ' + label3 + '(INTP), T[K]')
+    plt.title('Sondes(REGRID) - ' + label3 + '(REGRID), T[K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
     dat1 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])
@@ -2719,8 +2719,8 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_sondes_metum_ifs_casim-100.svg'
-    plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_sondes_metum_ifs_casim-100.png'
+    plt.savefig(fileout, dpi = 300)
     plt.show()
 
 def callback(cube, field, filename):
