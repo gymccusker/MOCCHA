@@ -2708,7 +2708,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.colorbar()
     plt.set_cmap('viridis')
     plt.ylabel('Z [m]')
-    plt.title('Sondes, $\Theta_{E}$ [degC]')
+    plt.title('Sondes, q [g/kg]')
 
     ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['q_6hrly'])*1e3,
