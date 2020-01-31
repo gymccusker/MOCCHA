@@ -1873,7 +1873,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ''
 
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_erai-glm_ifs_TSa.svg'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -3111,12 +3111,12 @@ def main():
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     figure = plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Plot data (5x2 monthly timeseries)
