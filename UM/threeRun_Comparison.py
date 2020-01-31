@@ -2621,6 +2621,217 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
+def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    # from scipy.interpolate import interp1d
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print '******'
+    print ''
+    print 'Plotting radiosonde and model thetaE profiles:'
+    print ''
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    #### set flagged values to nans
+    data1['q'][data1['q'] == -9999] = np.nan
+    data2['q'][data2['q'] == -9999] = np.nan
+    data3['q'][data3['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print '...'
+    print 'Re-gridding sonde and ifs data...'
+    print ''
+    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'q')
+    print ''
+    print 'Done!'
+
+    print ''
+    print 'Starting radiosonde figure (quite slow!)...:'
+    print '...'
+
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(19,10))
+
+
+    ### -------------------------------
+    ### original data
+    ### ------------------------------
+    ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['mr'][:,drift[0]],
+        vmin = 0.0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.set_cmap('viridis')
+    plt.ylabel('Z [m]')
+    plt.title('Sondes, $\Theta_{E}$ [degC]')
+
+    ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['q_6hrly'])*1e3,
+        vmin = 0.0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label3 + ', q [g/kg]')
+
+    ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['q_6hrly'])*1e3,
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label1 + ', q [g/kg]')
+
+    ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['q_6hrly'])*1e3,
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label2 + ', q [g/kg]')
+    plt.xlabel('Day of year')
+
+    ### -------------------------------
+    ### sonde and ifs data interpolated to um grid (Z<10km)
+    ### ------------------------------
+    ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:]),
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title('Sondes(REGRID), q [g/kg]')
+
+    ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['q_hrly_UM'][::6])*1e3,
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID), q [g/kg]')
+
+    ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3,
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label1 + ', q [g/kg]')
+
+    ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3,
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    plt.title(label2 + ', q [g/kg]')
+
+    ### -------------------------------
+    ### model anomalies wrt radiosondes
+    ### ------------------------------
+    ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:]),
+        vmin = 0, vmax = 4.0)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title('Sondes(REGRID),  q [g/kg]')
+
+    ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
+    dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
+    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+        vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.set_cmap('seismic')
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID) - Sondes(REGRID),  q [g/kg]')
+
+    ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
+    dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
+        vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label1 + ' - Sondes(REGRID), q [g/kg]')
+
+    ax  = fig.add_axes([0.7,0.06,0.3,0.17])   # left, bottom, width, height
+    dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
+        vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,4000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    plt.title(label2 + ' - Sondes(REGRID), q [g/kg]')
+
+    print '******'
+    print ''
+    print 'Finished plotting! :)'
+    print ''
+
+    fileout = '../FIGS/comparisons/QProfiles_REGRID_sondes_metum_ifs_casim-100.png'
+    plt.savefig(fileout, dpi = 300)
+    plt.show()
+
+
 def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -2872,6 +3083,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
         varlist = ['temperature','temperature','temperature','temperature']
     elif var == 'thetaE':
         varlist = ['epottemp','thetaE','thetaE','thetaE']
+    elif var == 'q':
+        varlist = ['mr','q','q','q']
 
     #### ---------------------------------------------------------------
     #### save hourly temperature model profiles (using the ii index defined by the time indices)
@@ -3354,7 +3567,8 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
