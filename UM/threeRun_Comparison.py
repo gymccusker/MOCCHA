@@ -2478,6 +2478,18 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     data2['temp_hrly'] = np.squeeze(data2['temperature'][ii,:])
     data3['temp_hrly'] = np.squeeze(data3['temperature'][ii,:])
 
+
+    #### ---------------------------------------------------------------
+    #### explicitly save 6-hourly temperature model profiles and time binning for ease
+    #### ---------------------------------------------------------------
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data1['temp_hrly'] = data1['time_6hrly'][::6]
+    data2['temp_hrly'] = data2['temp_6hrly'][::6]
+    data3['temp_hrly'] = data3['temp_6hrly'][::6]
+
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
@@ -2540,6 +2552,10 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.plot(obs['sondes']['temp_hrly_UM'],data1['height'][iUM[0][2:]])
     # plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,iTim]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]))
     # plt.show()
+
+    np.save('working_data1',data1)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
 
     print 'Starting radiosonde figure (quite slow!)...:'
     ##################################################
