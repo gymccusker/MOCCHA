@@ -2421,7 +2421,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
-    from scipy.interpolate import interp1d
+    # from scipy.interpolate import interp1d
 
         # from matplotlib.patches import Polygon
 
@@ -2727,6 +2727,8 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.show()
 
 def reGrid_Sondes(data1, data2, data3, obs, doy, var):
+
+    from scipy.interpolate import interp1d
 
     ### 6-hourly time binning for model
     ### um['time'][:24:6].data
