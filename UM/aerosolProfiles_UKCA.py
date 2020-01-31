@@ -694,7 +694,7 @@ def main():
     #### -------------------------------------------------------------
     #### -------------------------------------------------------------
 
-    date = '20180914'
+    date = '20180831'
     doyIndex = calcTime_Date2DOY(date)
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
     # um_index = np.where(data1['time'][:] == doyIndex)
@@ -761,14 +761,14 @@ def main():
     print('')
     modeFlag = 1
     massAccum = estimateMass(numAccum, rho_air, modeFlag)
-    plt.plot(massAccum,nc1.variables['height'][1:]); plt.show()
+    plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
 
     print('****')
     print('Estimate coarse mode mass:')
     print('')
     modeFlag = 2
     massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
-    plt.plot(massCoarse,nc1.variables['height'][1:]); plt.show()
+    plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
 
     #### -------------------------------------------------------------
     #### FORMAT OUTPUT FOR UM/ROSE-APP.CONF
