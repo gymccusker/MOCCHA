@@ -2506,23 +2506,12 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         # if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
         #     continue
         # else:
-        print 'iTim = ', str(iTim)
+        # print 'iTim = ', str(iTim)
         fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
         data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
     print '...'
     print 'IFS(UM Grid) function worked!'
     print '*****'
-    # data3['temp_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
-    # for iTim in range(0,np.size(data3['time_hrly'],0)):
-    #     if np.squeeze(data3['height'][iTim,iIFS[0][0]]) <= 0.0:     ### if height data flagged or not present, skip
-    #         continue
-    #     else:
-    #         print 'iTim = ', str(iTim)
-    #         fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3['temp_hrly'][iTim,iIFS]))
-    #     data3['temp_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
-    # print '...'
-    # print 'IFS(UM Grid) function worked!'
-    # print '*****'
 
     #### INTERPOLATION TESTING:
     print data3['temp_hrly_UM'].shape
@@ -2533,18 +2522,8 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
     # plt.show()
 
-    # print ''
-    # print 'Defining Radiosonde temperature profile as a function:'
-    # fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes']['temperature'][iObs,iTim]))
-    # print '...'
-    # print 'Applying to UM vertical grid:'
-    # obs['sondes']['temp_hrly_UM'] = fnct_Obs(data1['height'][iUM[0][2:]].data)
-    # print '...'
-    # print 'Sonde(UM Grid) function worked!'
-    # print '*****'
-
     print ''
-    print 'Defining IFS temperature profile as a function:'
+    print 'Defining Sonde temperature profile as a function:'
     obs['sondes']['temp_hrly_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(obs['sondes']['doy'],0)):
         # print 'iTim = ', str(iTim)
