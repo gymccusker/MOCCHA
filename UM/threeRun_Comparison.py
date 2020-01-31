@@ -2656,7 +2656,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label3 + '(REGRID), T[degC]')
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])-273.15,
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2665,7 +2665,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title(label1 + ', T[degC]')
 
     ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['temp_6hrly'][:,iUM[0][3:]])-273.15,
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
         vmin = -25, vmax = 5)
     plt.ylim([0,4000])
     plt.xlim([doy[0],doy[-1]])
@@ -2698,7 +2698,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('Sondes(REGRID) - ' + label3 + '(REGRID), T[K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
-    dat1 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data1['temp_6hrly'][:,iUM[0][3:]])
+    dat1 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']])
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -4.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,4000])
@@ -2708,7 +2708,7 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.title('Sondes(REGRID) - ' + label1 + ', T[K]')
 
     ax  = fig.add_axes([0.7,0.06,0.3,0.17])   # left, bottom, width, height
-    dat2 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data2['temp_6hrly'][:,iUM[0][3:]])
+    dat2 = np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15) - np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']])
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -4.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,4000])
@@ -2837,6 +2837,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### make some dictionary assignments for use later
     #### ---------------------------------------------------------------
     data1['universal_height'] = data1['height'][iUM[0][3:]].data
+    data1['universal_height_UMindex'] = iUM[0][3:]
 
     #### ---------------------------------------------------------------
     #### save out working data for debugging
