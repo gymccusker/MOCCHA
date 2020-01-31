@@ -2580,6 +2580,10 @@ def plot_Radiosondes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     fig = plt.figure(figsize=(18,10))
 
     drift = np.where(np.logical_and(obs['sondes']['doy'] >= 226, obs['sondes']['doy'] <= 258))
+
+    ### save in dict for ease
+    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+
     # print drift
     # print drift[0][0]
     # print obs['sondes']['doy'][drift[0]].shape
