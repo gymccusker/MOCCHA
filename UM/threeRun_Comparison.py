@@ -2488,13 +2488,15 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ### -------------------------------
     fig = plt.figure(figsize=(19,10))
 
+    Tmin = -45
+    Tmax = 5
 
     ### -------------------------------
     ### original data
     ### ------------------------------
     ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['temperature'][:,drift[0]],
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2504,7 +2506,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['temp_6hrly'])-273.15,
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2513,7 +2515,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['temp_6hrly'])-273.15,
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2522,19 +2524,20 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['temp_6hrly'])-273.15,
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
     plt.xlabel('Day of year')
+    plt.title(label2 + ', T[degC]')
 
     ### -------------------------------
     ### sonde and ifs data interpolated to um grid (Z<10km)
     ### ------------------------------
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2542,7 +2545,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.title('Sondes(REGRID), T[degC]')
 
     ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['temp_hrly_UM'][::6])-273.15, vmin = -25, vmax = 5)
+    plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['temp_hrly_UM'][::6])-273.15,
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2551,7 +2555,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2560,7 +2564,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2573,7 +2577,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ### ------------------------------
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
-        vmin = -25, vmax = 5)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2916,13 +2920,15 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ### -------------------------------
     fig = plt.figure(figsize=(19,10))
 
+    Tmin = -5
+    Tmax = 65
 
     ### -------------------------------
     ### original data
     ### ------------------------------
     ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['epottemp'][:,drift[0]],
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2932,8 +2938,8 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['thetaE_6hrly'])-273.15,
-        vmin = -5, vmax = 30)
-    plt.ylim([0,4000])
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2941,7 +2947,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['thetaE_6hrly'])-273.15,
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2950,7 +2956,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['thetaE_6hrly'])-273.15,
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2963,7 +2969,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ### ------------------------------
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:]),
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2972,7 +2978,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['thetaE_hrly_UM'][::6])-273.15,
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2981,7 +2987,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['thetaE_6hrly'][:,data1['universal_height_UMindex']])-273.15,
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2990,7 +2996,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
 
     ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['thetaE_6hrly'][:,data1['universal_height_UMindex']])-273.15,
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -3003,7 +3009,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ### ------------------------------
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:]),
-        vmin = -5, vmax = 30)
+        vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -3107,9 +3113,9 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
     iTim = 0
-    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 10000)
-    iUM = np.where(data1['height'] <= 10000)
-    iIFS = np.where(data3['height'][iTim,:] <= 10000)
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
+    iUM = np.where(data1['height'] <= 11000)
+    iIFS = np.where(data3['height'][iTim,:] <= 11000)
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
@@ -3566,9 +3572,9 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
