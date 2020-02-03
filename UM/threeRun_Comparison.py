@@ -2879,9 +2879,15 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     data2['q'][data2['q'] == -9999] = np.nan
     data3['q'][data3['q'] <= 0] = np.nan
 
+    #### ---------------------------------------------------------------
+    #### calculate equivalent potential temperature
+    #### ---------------------------------------------------------------
     data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'], data1['time'], data1['height'])
     data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'], data2['time'], data2['height'])
     data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'], data3['time'], np.squeeze(data3['height'][0,:]))
+
+    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(data2['temperature']+273.15, data2['pressure'], data2['q'], data2['time'], data2['height'])
+
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -3573,8 +3579,8 @@ def main():
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
