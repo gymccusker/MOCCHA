@@ -4,7 +4,7 @@
 ###
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -32,9 +32,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print( '')
+    print( 'Reading .txt file with pandas')
+    print( '')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -57,12 +57,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -84,19 +84,19 @@ def inIce(data):
     # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
+    print( '******')
+    print( '')
     # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print( 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print( '')
+    print( 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')')
+    print( 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print( 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
+    print( 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6])))
+    print( 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7])))
+    print( '')
 
     return inIce_index
 
@@ -110,15 +110,15 @@ def trackShip(data, date):
     # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
+    print( '******')
+    print( '')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print( 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print( 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
     # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
     # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    print( 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print( '')
 
     return trackShip_index
 
@@ -135,7 +135,7 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    print 'What grid are we looking at?'
+    print( 'What grid are we looking at?')
     if len(cube[0].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
@@ -153,16 +153,16 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    print( 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points)))
+    print( 'xoffset = ', xoffset)
+    print( 'yoffset = ', yoffset)
 
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
     diag = 2
-    print ''
-    print 'Diag is: ', cube[diag].long_name
+    print( '')
+    print( 'Diag is: ', cube[diag].long_name)
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -179,10 +179,10 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Plotting cartopy map:')
+    print( '')
 
     ##################################################
     ##################################################
@@ -326,10 +326,10 @@ def plot_cartmap(ship_data, cube, hour, date): #, lon, lat):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Finished plotting cartopy map! :)')
+    print( '')
 
     # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
@@ -347,9 +347,9 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     ## CHOOSE DIAGNOSTIC
     ###################################
     diag = 2
-    print ''
-    print 'Diag is: '
-    print cube[diag]
+    print( '')
+    print( 'Diag is: ')
+    print( cube[diag])
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
     # 1: air_pressure / (Pa)                 (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -373,10 +373,10 @@ def plot_contour_TS(cube, filename): #, lon, lat):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting contour timeseries:'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Plotting contour timeseries:')
+    print( '')
 
     ##################################################
     ##################################################
@@ -416,10 +416,10 @@ def plot_contour_TS(cube, filename): #, lon, lat):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Finished plotting! :)')
+    print( '')
 
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
@@ -438,10 +438,10 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting contour timeseries:'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Plotting contour timeseries:')
+    print( '')
 
     ##################################################
     ##################################################
@@ -473,9 +473,9 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 ## CHOOSE DIAGNOSTIC
                 ###################################
                 diag = i
-                print ''
-                print 'Diag is: '
-                print cube[diag]
+                print( '')
+                print( 'Diag is: ')
+                print( cube[diag])
 
                 ### define empty array for cube data
                 data = []
@@ -550,8 +550,8 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                 if len(data) > 0:
                     l = l + 1 ## increment index for positive data association
 
-                    print 'l = ' + str(l)
-                    print title
+                    print( 'l = ' + str(l))
+                    print( title)
 
                     plt.subplot(5,2,l+1)
                     ax = plt.gca()
@@ -606,10 +606,10 @@ def plot_multicontour_TS(cube, filename, out_dir): #, lon, lat):
                     plt.subplot(5,2,7)
                     plt.ylabel('Z [m]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Finished plotting! :)')
+    print( '')
 
     if out_dir[:18] == '5_u-bl616_RA2M_CAS':
         fileout = 'FIGS/' + out_dir[:21] + filename[-22:-3] + '.png'
@@ -632,10 +632,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined contour timeseries:'
-    print ''
+    print( '******')
+    print( '')
+    print( 'Plotting combined contour timeseries:')
+    print( '')
 
     ##################################################
     ##################################################
@@ -658,7 +658,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
-    print data.keys()
+    print (data.keys())
 
     l = -1
 
@@ -668,9 +668,9 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
         ## CHOOSE DIAGNOSTIC
         ###################################
         # diag = i
-        print ''
-        print 'Diag is: '
-        print data.keys()[diag]
+        print ('')
+        print ('Diag is: ')
+        print (data.keys()[diag])
 
         ### pcXXX - CUBE
         # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -694,7 +694,7 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             if cube[j].var_name == 'qliq': height = cube[j].dim_coords[1].points
 
         dat = []
-        print 'dat = ' + str(len(dat))
+        print ('dat = ' + str(len(dat)))
 
         ### set diag-specific titles
         if str(data.keys()[diag]) == "radr_refl":
@@ -752,16 +752,16 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             title = str(data.keys()[diag]) + ' [g/kg]'
             dat = np.transpose(np.squeeze(data[data.keys()[diag]].data*1e3))
 
-        print 'dat = ' + str(len(dat))
-        print ''
+        print ('dat = ' + str(len(dat)))
+        print ('')
 
         if len(dat) > 0:
-            print 'Plotting since len(dat)>0'
-            print ''
-            print title
+            print ('Plotting since len(dat)>0')
+            print ('')
+            print (title)
 
             l = l + 1 ## increment index for positive data association
-            print 'l = ' +  str(l)
+            print ('l = ' +  str(l))
             #################################################################
             ## create figure and axes instances
             #################################################################
@@ -808,9 +808,9 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
             if month_flag == 9: ax.set_xlim([1.0, 15.0])
             if month_flag == -1: ax.set_xlim([225.0, 258.0])
 
-            print ''
-            print 'Zero out any data from missing files:'
-            print ''
+            print ('')
+            print ('Zero out any data from missing files:')
+            print ('')
             for mfile in missing_files:
                 # mtime = float(mfile[6:8]) + ((cube[0].dim_coords[0].points)/24.0)
                 # nans = np.zeros([len(height),len(mtime)])
@@ -839,10 +839,10 @@ def plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files,
     plt.subplot(5,2,7)
     plt.ylabel('Z [m]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == 8:
         if out_dir[:18] == '5_u-bl616_RA2M_CAS':
@@ -878,10 +878,10 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined 1d timeseries:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1101,10 +1101,10 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     # if month_flag == -1:
         # if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
@@ -1151,10 +1151,10 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined 1d timeseries:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1273,10 +1273,10 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     #     ax.set_xlim([doy[0],doy[-1]])
     #     plt.xlabel('Day of year')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         if out_dir2[0:20] == '6_u-bm410_RA1M_CASIM':
@@ -1311,10 +1311,10 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined 1d timeseries:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1480,10 +1480,10 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/CASIM-NiceTest_C86-F62-M92_DOY243-249.svg'
     plt.savefig(fileout, dpi=300)
@@ -1505,10 +1505,10 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined 1d timeseries:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1674,10 +1674,10 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.svg'
     plt.savefig(fileout, dpi=300)
@@ -1699,10 +1699,10 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined 1d timeseries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined 1d timeseries:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1868,10 +1868,10 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     if month_flag == 9: plt.xlabel('Day of month [Sep]')
     if month_flag == -1: plt.xlabel('Day of year')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_erai-glm_ifs_TSa.svg'
     plt.savefig(fileout, dpi=300)
@@ -1891,10 +1891,10 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting timeseries of turbulent fluxes:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting timeseries of turbulent fluxes:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -2052,10 +2052,10 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined timeseries and PDFs of radiation terms:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined timeseries and PDFs of radiation terms:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -2212,10 +2212,10 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
@@ -2237,10 +2237,10 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting combined timeseries and PDFs of precipitation terms:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting combined timeseries and PDFs of precipitation terms:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -2405,10 +2405,10 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     # plt.xlim([-80,20])
     # plt.ylim([0,yFmax])
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
     # plt.savefig(fileout)
@@ -2430,10 +2430,10 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting radiosonde and model temperature profiles:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model temperature profiles:')
+    print ('')
 
     #### change matlab time to doy
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
@@ -2456,16 +2456,16 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
 
-    print '...'
-    print 'Re-gridding sonde and ifs data...'
-    print ''
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
     data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'temp')
-    print ''
-    print 'Done!'
+    print ('')
+    print ('Done!')
 
-    print ''
-    print 'Starting radiosonde figure (quite slow!)...:'
-    print '...'
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
     ##################################################
     ##################################################
     #### create figure and axes instances
@@ -2616,10 +2616,10 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     # plt.ylabel('Z [m]')
     plt.title(label2 + ' - Sondes(REGRID), T[K]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
@@ -2641,10 +2641,10 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting radiosonde and model thetaE profiles:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model thetaE profiles:')
+    print ('')
 
     #### change matlab time to doy
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
@@ -2667,16 +2667,16 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
 
-    print '...'
-    print 'Re-gridding sonde and ifs data...'
-    print ''
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
     data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'q')
-    print ''
-    print 'Done!'
+    print ('')
+    print ('Done!')
 
-    print ''
-    print 'Starting radiosonde figure (quite slow!)...:'
-    print '...'
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
 
     ##################################################
     ##################################################
@@ -2826,10 +2826,10 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.ylabel('Z [m]')
     plt.title(label2 + ' - Sondes(REGRID), q [g/kg]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/QProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
@@ -2851,10 +2851,10 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting radiosonde and model thetaE profiles:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model thetaE profiles:')
+    print ('')
 
     #### change matlab time to doy
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
@@ -2903,16 +2903,16 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
 
-    print '...'
-    print 'Re-gridding sonde and ifs data...'
-    print ''
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
     data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'thetaE')
-    print ''
-    print 'Done!'
+    print ('')
+    print ('Done!')
 
-    print ''
-    print 'Starting radiosonde figure (quite slow!)...:'
-    print '...'
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
 
     ##################################################
     ##################################################
@@ -3064,10 +3064,10 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     # plt.ylabel('Z [m]')
     plt.title(label2 + ' - Sondes(REGRID), $\Theta_{E}$ [K]')
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     fileout = '../FIGS/comparisons/ThetaEProfiles_REGRID_10km_sondes-calculated_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
@@ -3137,17 +3137,17 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
     #### ---------------------------------------------------------------
-    print ''
-    print 'Defining IFS temperature profile as a function:'
-    print 'using ifs.height[0,:] to define temperature profiles...'
+    print ('')
+    print ('Defining IFS temperature profile as a function:')
+    print ('using ifs.height[0,:] to define temperature profiles...')
     data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
         fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
         data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
-    print '...'
-    print 'IFS(UM Grid) function worked!'
-    print var + ' IFS data now on UM vertical grid'
-    print '*****'
+    print ('...')
+    print ('IFS(UM Grid) function worked!')
+    print (var + ' IFS data now on UM vertical grid')
+    print ('*****')
 
     #### INTERPOLATION TESTING:
     # print data3['temp_hrly_UM'].shape
@@ -3158,17 +3158,17 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     # plt.plot(np.squeeze(data3['temp_hrly'][10,iIFS]),np.squeeze(data3['height'][10,iIFS]))
     # plt.show()
 
-    print ''
-    print 'Defining Sonde temperature profile as a function:'
+    print ('')
+    print ('Defining Sonde temperature profile as a function:')
     obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(obs['sondes']['doy'],0)):
         # print 'iTim = ', str(iTim)
         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
         obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
-    print '...'
-    print 'Sonde(UM Grid) function worked!'
-    print 'All ' + var + ' sonde data now on UM vertical grid.'
-    print '*****'
+    print ('...')
+    print ('Sonde(UM Grid) function worked!')
+    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('*****')
 
     #### INTERPOLATION TESTING:
     # print obs['sondes']['temp_hrly_UM'].shape
@@ -3226,10 +3226,10 @@ def makeGlobalStashList():
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -3272,25 +3272,25 @@ def main():
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc file: ')
+    print ('')
 
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
-    print 'Loading observations:'
+    print ('Loading observations:')
             # -------------------------------------------------------------
             # Which file does what?
             # -------------------------------------------------------------
@@ -3303,32 +3303,32 @@ def main():
 
     obs = {}
 
-    print 'Load temporary ice station data from Jutta...'
+    print ('Load temporary ice station data from Jutta...')
     obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
-    print 'Load ice station data from Jutta...'
+    print ('Load ice station data from Jutta...')
     obs['ice_station'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
             #### mast_radiation_30min_v2.3.mat
             #### flux30_trhwxrel.mat
 
-    print 'Load radiosonde data from Jutta...'
+    print ('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
 
-    print 'Load foremast data from John...'
+    print ('Load foremast data from John...')
     obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
 
-    print 'Load 7th deck weather station data from John...'
+    print ('Load 7th deck weather station data from John...')
     obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
-    print '...'
+    print ('...')
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
@@ -3337,10 +3337,10 @@ def main():
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Begin cube read in at ' + time.strftime("%c"))
+    print (' ')
 
     ### -------------------------------------------------------------------------
     ### define input filename
@@ -3388,31 +3388,31 @@ def main():
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
         if out_dir4 == 'OUT_25H/':
-            print '***IFS being compared***'
+            print( '***IFS being compared***')
             ifs_flag = True
             filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
         else:
-            print '***IFS NOT being compared***'
+            print ('***IFS NOT being compared***')
             filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
             ifs_flag = False
-        print filename_um1
-        print filename_um2
-        print filename_um3
-        print ''
+        print (filename_um1)
+        print (filename_um2)
+        print (filename_um3)
+        print ('')
 
         #### LOAD CUBE
-        print 'Loading first run diagnostics:'
+        print( 'Loading first run diagnostics:')
         nc1 = Dataset(filename_um1,'r')
-        print '...'
-        print 'Loading second run diagnostics:'
+        print ('...')
+        print( 'Loading second run diagnostics:')
         nc2 = Dataset(filename_um2,'r')
-        print '...'
-        print 'Loading third run diagnostics:'
+        print ('...')
+        print ('Loading third run diagnostics:')
         nc3 = Dataset(filename_um3,'r')
-        print '...'
+        print ('...')
         # -------------------------------------------------------------
         # print 'i = ' + str(i)
-        print ''
+        print ('')
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
@@ -3605,10 +3605,10 @@ def main():
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
