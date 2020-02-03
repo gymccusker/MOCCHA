@@ -3059,7 +3059,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     print 'Finished plotting! :)'
     print ''
 
-    fileout = '../FIGS/comparisons/ThetaEProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
+    fileout = '../FIGS/comparisons/ThetaEProfiles_REGRID_10km_sondes-calculated_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
@@ -3093,7 +3093,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     if var == 'temp':
         varlist = ['temperature','temperature','temperature','temperature']
     elif var == 'thetaE':
-        varlist = ['epottemp','thetaE','thetaE','thetaE']
+        # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
+        varlist = ['thetaE','thetaE','thetaE','thetaE']         # use sonde calculated thetaE
     elif var == 'q':
         varlist = ['mr','q','q','q']
 
