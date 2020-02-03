@@ -3033,7 +3033,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     plt.title('Sondes(REGRID), $\Theta_{E}$ [degC]')
 
     ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
-    dat3 = np.transpose(data3['thetaE_hrly_UM'][::6]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:] + 273.15)
+    dat3 = np.transpose(data3['thetaE_hrly_UM'][::6]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:])
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,10000])
@@ -3044,7 +3044,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     plt.title(label3 + '(REGRID) - Sondes(REGRID), $\Theta_{E}$ [K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
-    dat1 = np.transpose(data1['thetaE_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:] + 273.15)
+    dat1 = np.transpose(data1['thetaE_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:])
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,10000])
@@ -3054,7 +3054,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     plt.title(label1 + ' - Sondes(REGRID), $\Theta_{E}$ [K]')
 
     ax  = fig.add_axes([0.7,0.06,0.3,0.17])   # left, bottom, width, height
-    dat2 = np.transpose(data2['thetaE_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:] + 273.15)
+    dat2 = np.transpose(data2['thetaE_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:])
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
     plt.ylim([0,10000])
