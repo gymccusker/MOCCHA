@@ -31,7 +31,7 @@ def calcAirDensity(temperature, pressure):
     return rho
 
 
-def calcThetaE(temperature, pressure, q, time, height):
+def calcThetaE(temperature, pressure, q, tim, height):
 
     """
     Function to calculate equivalent potential temperature
@@ -51,48 +51,54 @@ def calcThetaE(temperature, pressure, q, time, height):
     Rd = 287.04   # dry air J kg^-1 K^-1
     Rv = 461.50
 
-    kd = Rd/cpd
+    kd = Rd/cpd     # k dry air
 
     eps = Rd/Rv
 
-    # e = rh .* svp(T)  # in hPa
-    # m =0.622.*e ./ (p-e); %mixing ratio [g /g]
+    ### saturation vapour pressue
+    evs = polysvp(temperature, 0)
 
+    print(evs.shape)
 
+    ### saturation mixing ratio and relative humidity
+    qvs = np.zeros([len(np.squeeze(tim)),len(height)])
+    rh = np.zeros([len(np.squeeze(tim)),len(height)])
+    for k in range(0,len(height)):
+        qvs[:,k] = (eps * evs[:,k]) / (pressure[:,k] - evs[:,k])
+        rh[:,k] = q[:,k] / qvs[:,k]
+                #### gives RH as a fraction
+
+    print(qvs.shape)
+    print(rh.shape)
 
     print('Calculating theta:')
-    theta = np.zeros([len(time),len(height)])
+    theta = np.zeros([len(tim),len(height)])
     for k in range(0,len(height)):
         theta[:,k] = temperature[:,k] * np.power(1e5 / pressure[:,k], (Rd/cp))
     print('...')
 
-    print('Calculating theta_e:')
-    thetaE = np.zeros([len(time),len(height)])
+    print('Calculating theta of dry air:')
+    thetad = np.zeros([len(tim),len(height)])
     for k in range(0,len(height)):
-        thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
+        thetad[:,k] = temperature[:,k] * np.power(1e5 / (pressure[:,k] - evs[:,k]), kd)
+    print('...')
+    print(thetad.shape)
 
-    # %% Equation after Bryan 2008
-    # % Konstants after Davies-Jones 2009: "On Formulas for equivalent pot. temperature"
-    # % Accuracy 0.4 K
-    # % T in degC
-    # % p in hPa
-    # % rh in %
-    #
-    # p0=1000;
-    # Rd=287.04; % dry air J kg^-1 K^-1
-    # Rv=461.50;
-    #
-    # Lvap = 2.555*10^6; %J kg^-1
-    # cpd=1005.7; % J kg^1 K^-1
-    # kd = Rd/cpd;
-    # eps=Rd/Rv;
-    #
-    # e=rh .* svp(T)/100;  % in hPa
-    # m =0.622.*e ./ (p-e); %mixing ratio [g /g]
-    #
-    # thetad=T.* ((p0./(p-e)).^kd); % in K
-    # thetae = thetad .* (rh/100).^(-kd*m/eps) .* exp(L_vap*m./(T.*cpd));
+    # dat = {}
+    # dat['thetad'] = thetad
+    # dat['temperature'] = temperature
+    # dat['pressure'] = pressure
+    # dat['evs'] = evs
+    # dat['qvs'] = qvs
+    # dat['rh'] = rh
+    # np.save('~/MOCCHA/UM/thetaE_debug',dat)
 
+    print('Calculating theta_e:')
+    thetaE = np.zeros([len(tim),len(height)])
+    print(thetaE.shape)
+    for k in range(0,1):#len(height)):
+        # thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
+        thetaE[:,k] = thetad[:,k] * np.power( rh[:,k], (-1.0*kd*q[:,k]) / eps[:,k] )# * np.exp(L_vap * q[:,k] / (T[:,k] * cpd) )         ###Bryan 2008
 
     print('...')
     print('Done!')
