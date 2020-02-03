@@ -2530,7 +2530,14 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     data1['histogram_n'], data1['histogram_bins'] = np.histogram(data1['bl_type'], bins = np.arange(1,9))
     data2['histogram_n'], data2['histogram_bins'] = np.histogram(data2['bl_type'], bins = np.arange(1,9))
 
+    ### calculate total number of occurrences for normalised charts
+    total1 = float(np.sum(data1['histogram_n']))
+    total2 = float(np.sum(data2['histogram_n']))
+
+    ### create arranys of instances for e.g. type I, type II etc. between each simulation
     types = {}
+    for i in range(0,7): types[i+1] = [data1['histogram_n'][i]/total1, data2['histogram_n'][i]/total2]
+
     doc = ['1: Stable BL', '2: Sc over stable NSL', '3: Well-mixed BL', '4: Unstable BL with dSc o/Cu',
         '5: dSc o/Cu', '6: Cu-capped BL', '7: Shear-dominated unstable BL']
 
@@ -2541,12 +2548,6 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     # Type V: Boundary layer with a DSC layer over cumulus — the cumulus (treated by the model’s mass-flux convection scheme) provides coupling with the SML​
     # Type VI: Cumulus-capped boundary layer — no turbulent diffusivities are allowed at or above the LCL as the mass-flux convection scheme operates here ​
     # Type VII: Shear-dominated unstable layer — potentially wind-shear might allow deeper turbulent mixing in unstable boundary layers than is apparent purely from the thermodynamic profiles (sufficient even to inhibit the formation of cumulus)
-
-    # for t in range(0,7):
-    #     str_t = str(t)
-    #     types[str_t] = data1['histogram_n'][t]
-
-    for i in range(0,7): types[i+1] = [data1['histogram_n'][i],data2['histogram_n'][i]]
 
     #################################################################
     ## create figure and axes instances
