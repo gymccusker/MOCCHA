@@ -2886,8 +2886,11 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'], data2['time'], data2['height'])
     data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'], data3['time'], np.squeeze(data3['height'][0,:]))
 
-    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(obs['sondes']['temperature']+273.15,
-        obs['sondes']['pressure'], obs['sondes']['mr'], obs['sondes']['doy'], obs['sondes']['gpsaltitude'])
+    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(np.transpose(obs['sondes']['temperature'])+273.15,
+        np.transpose(obs['sondes']['pressure']), np.transpose(obs['sondes']['mr']),
+        obs['sondes']['doy'], obs['sondes']['gpsaltitude'])
+
+    obs['sondes']['thetaE'] = np.transpose(obs['sondes']['thetaE'])         ### for consistency with original sonde dimensions
 
     #### ---------------------------------------------------------------
     #### save out working data for debugging
