@@ -99,7 +99,7 @@ def calcThetaE(temperature, pressure, q, tim, height):
     print(thetaE.shape)
     for k in range(0,1):#len(height)):
         # thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
-        tempvar[:,k] = (-1.0*kd*q[:,k]) / eps[:,k]
+        tempvar[:,k] = (-1.0 * kd * q[:,k]) / eps[:,k]
         thetaE[:,k] = thetad[:,k] * np.power( rh[:,k], tempvar[:,k] )# * np.exp(L_vap * q[:,k] / (T[:,k] * cpd) )         ###Bryan 2008
 
     print('...')
@@ -138,19 +138,19 @@ def polysvp(t,type):
 
     ### ! ICE
     if type == 1:
-        dt = np.maximum(-80.,t-273.16)
+        dt = np.maximum(-80,t-273.16)
         polysvp = 6.11147274 + dt * (0.503160820 + dt * (0.188439774e-1 + dt * (0.420895665e-3 + dt *
             (0.615021634e-5 + dt * (0.602588177e-7 + dt * (0.385852041e-9 + dt * (0.146898966e-11 +
             0.252751365e-14 * dt)))))))
-        polysvp = polysvp*100.
+        polysvp = polysvp*100
 
     ### ! LIQUID
     elif type == 0:
-        dt = np.maximum(-80.,t-273.16)
+        dt = np.maximum(-80,t-273.16)
         polysvp = 6.11239921 + dt * (0.443987641 + dt * (0.142986287e-1 + dt * (0.264847430e-3 + dt *
             (0.302950461e-5 + dt * (0.206739458e-7 + dt * (0.640689451e-10 + dt * (-0.952447341e-13 +
             -0.976195544e-15 * dt)))))))
-        polysvp = polysvp*100.
+        polysvp = polysvp*100
 
 
     return polysvp
