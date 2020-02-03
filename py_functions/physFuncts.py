@@ -111,7 +111,7 @@ def svp(T):
 
     tempC = T - 273.15
 
-    satvappres = 6.112 * np.exp( 17.67*temp / (temp + 243.5) ) * 100
+    satvappres = 6.112 * np.exp( 17.67*tempC / (tempC + 243.5) ) * 100
 
     return satvappres
 
