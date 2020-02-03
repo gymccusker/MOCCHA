@@ -58,60 +58,22 @@ def calcThetaE(temperature, pressure, q, tim, height):
     ### saturation vapour pressue
     evs = polysvp(temperature, 0)
 
-    # print('evs = ')
-    # print(evs)
-
     ### saturation mixing ratio and relative humidity
     qvs = (eps * evs) / (pressure - evs)
     rh = q / qvs
                 #### gives RH as a fraction
 
-    # qvs = np.zeros([len(np.squeeze(tim)),len(height)])
-    # rh = np.zeros([len(np.squeeze(tim)),len(height)])
-    # for k in range(0,len(height)):
-    #     qvs[:,k] = (eps * evs[:,k]) / (pressure[:,k] - evs[:,k])
-    #     rh[:,k] = q[:,k] / qvs[:,k]
-                #### gives RH as a fraction
-    # print(qvs.shape)
-    # print(rh.shape)
-
     print('Calculating theta:')
     theta = temperature * np.power(1e5 / pressure, (Rd/cp))
-    # theta = np.zeros([len(tim),len(height)])
-    # for k in range(0,len(height)):
-    #     theta[:,k] = temperature[:,k] * np.power(1e5 / pressure[:,k], (Rd/cp))
     print('...')
 
     print('Calculating theta of dry air:')
-    # thetad = np.zeros([len(tim),len(height)])
     thetad = temperature * np.power(1e5 / (pressure - evs), kd)
-    # print(thetad)
-    # for k in range(0,len(height)):
-        # thetad[:,k] = temperature[:,k] * np.power(1e5 / (pressure[:,k] - evs[:,k]), kd)
     print('...')
-    # print(thetad.shape)
-
-    # dat = {}
-    # dat['thetad'] = thetad
-    # dat['temperature'] = temperature
-    # dat['pressure'] = pressure
-    # dat['evs'] = evs
-    # dat['qvs'] = qvs
-    # dat['rh'] = rh
-    # np.save('~/MOCCHA/UM/thetaE_debug',dat)
 
     print('Calculating theta_e:')
-    # thetaE = np.zeros([len(tim),len(height)])
-    # tempvar = np.zeros([len(tim),len(height)])
     tempvar = (-1.0 * kd * q) / eps
     thetaE = thetad * np.power( rh, tempvar ) * np.exp(L_vap * q / (temperature * cpd) )         ###Bryan 2008
-
-    # print(tempvar.shape)
-    # print(thetaE.shape)
-    # for k in range(0,1):#len(height)):
-    #     # thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
-    #     # tempvar[:,k] = (-1.0 * kd * q[:,k]) / eps[:,k]
-    #     thetaE[:,k] = thetad[:,k] * np.power( rh[:,k], tempvar[:,k] ) #* np.exp(L_vap * q[:,k] / (T[:,k] * cpd) )         ###Bryan 2008
 
     print('...')
     print('Done!')
