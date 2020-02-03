@@ -113,6 +113,8 @@ def svp(T):
 
     satvappres = 6.112 * exp( 17.67*temp / (temp + 243.5) ) * 100
 
+    return satvappres
+
 def polysvp(T,type):
 
 
@@ -156,4 +158,4 @@ def polysvp(T,type):
         polysvp = polysvp*100.
 
 
-    return satvappres
+    return polysvp
