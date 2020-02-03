@@ -2414,6 +2414,75 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     # plt.savefig(fileout)
     plt.show()
 
+def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting BL depth timeseries:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	set up figure properties
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 18
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,5))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.94, left = 0.12,
+            hspace = 0.4, wspace = 0.15)
+
+    # UM -> IFS comparisons:
+    # 5. bl_depth -> sfc_bl_height
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+
+    ax = plt.gca()
+    plt.plot(data1['time'], data1['bl_depth'], color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['bl_depth'], color = 'forestgreen', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_bl_height'], color = 'darkorange', label = label3)
+    else:
+        plt.plot(data3['time'], data3['bl_depth'], color = 'darkorange', label = label3)
+    plt.legend()
+    plt.title('BL_depth [m]')
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    fileout = '../FIGS/comparisons/BLDepth_timeseries_oden_metum_ifs_casim-100.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+
 def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -3418,10 +3487,10 @@ def main():
         #### LOAD IN SPECIFIC DIAGNOSTICS
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure']
+            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth']
         var_list2 = var_list1
         if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure']
+            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
         if not ifs_flag: var_list3 = var_list1
 
         if i == 0:
@@ -3590,11 +3659,13 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
 
     # -------------------------------------------------------------
     # Plot data (5x2 monthly timeseries)
