@@ -55,6 +55,6 @@ def calcThetaE(temperature, pressure, q, time, height):
     print 'Calculating theta_e:'
     thetaE = np.zeros([len(time),len(height)])
     for k in range(0,len(height)):
-        thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] §13.1 p. 546
+        thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
 
     return theta, thetaE
