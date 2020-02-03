@@ -2527,8 +2527,8 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     ## split data into relative contributions from each BL type
     #################################################################
 
-    data1['histogram_n'], data1['histogram_bins'] = np.histogram(data1['bl_type'], bins = np.arange(1,8))
-    data2['histogram_n'], data2['histogram_bins'] = np.histogram(data2['bl_type'], bins = np.arange(1,8))
+    data1['histogram_n'], data1['histogram_bins'] = np.histogram(data1['bl_type'], bins = np.arange(1,9))
+    data2['histogram_n'], data2['histogram_bins'] = np.histogram(data2['bl_type'], bins = np.arange(1,9))
 
     types = {}
     doc = ['1: Stable BL', '2: Sc over stable NSL', '3: Well-mixed BL', '4: Unstable BL with dSc o/Cu',
@@ -2542,19 +2542,22 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     # Type VI: Cumulus-capped boundary layer — no turbulent diffusivities are allowed at or above the LCL as the mass-flux convection scheme operates here ​
     # Type VII: Shear-dominated unstable layer — potentially wind-shear might allow deeper turbulent mixing in unstable boundary layers than is apparent purely from the thermodynamic profiles (sufficient even to inhibit the formation of cumulus)
 
+    # for t in range(0,7):
+    #     str_t = str(t)
+    #     types[str_t] = data1['histogram_n'][t]
+
+    for i in range(0,7): types[i+1] = [data1['histogram_n'][i],data2['histogram_n'][i]]
 
     #################################################################
     ## create figure and axes instances
     #################################################################
     ax = plt.gca()
 
-    # plt.bar(normN)
-    # plt.plot(data2['time'], data2['bl_depth'], color = 'forestgreen', label = label2)
-    # plt.legend()
-    # plt.title('BL_depth [m]')
-    # ax.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
+    plt.bar([0,1], types[1])
+    plt.bar([0,1], types[2], bottom = types[1]); bars = np.add(types[1], types[2]).tolist()
+    for i in range(3,8):
+        plt.bar([0,1], types[i], bottom = bars); bars = np.add(bars, types[i]).tolist()
+    plt.xticks([0,1], [label1, label2])
 
     print ('******')
     print ('')
