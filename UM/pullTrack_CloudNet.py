@@ -7355,7 +7355,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '11_u-bq798_RA1M_CASIM/'
+    out_dir = '12_u-br210_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -7365,6 +7365,7 @@ def main():
     ## 8_u-bp738_RA2M_CON/              # ERAI
     ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
     ## 11_u-bq798_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Meyers
+    ## 12_u-br210_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
 
     #### run with nohup:
     #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
