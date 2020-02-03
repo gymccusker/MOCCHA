@@ -2530,8 +2530,17 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     data1['histogram_n'], data1['histogram_bins'] = np.histogram(data1['bl_type'], bins = np.arange(1,8))
     data2['histogram_n'], data2['histogram_bins'] = np.histogram(data2['bl_type'], bins = np.arange(1,8))
 
-    normN = np.zeros(len(n))
-    for i in range(0,len(n)): normN[i] = float(n[i]) / np.nansum(n)
+    types = {}
+    doc = ['1: Stable BL', '2: Sc over stable NSL', '3: Well-mixed BL', '4: Unstable BL with dSc o/Cu',
+        '5: dSc o/Cu', '6: Cu-capped BL', '7: Shear-dominated unstable BL']
+
+    # Type I: Stable boundary layer (with or without cloud) — turbulent diffusivities are calculated by the ‘local’ scheme ​
+    # Type II: Boundary layer with stratocumulus over a stable near-surface layer — as Type I but with a turbulently mixed cloud layer driven from its top ​
+    # Type III: Well mixed boundary layer — the classic single mixed layer which may be cloud-topped or clear but is predominantly buoyancy-driven (c.f. a possible type VII below)​
+    # Type IV: Unstable boundary layer with a DSC layer not over cumulus — the surface-based and cloud-top-driven non-local K profiles may or may not overlap and cloud-top entrainment can still include the surface forcing​
+    # Type V: Boundary layer with a DSC layer over cumulus — the cumulus (treated by the model’s mass-flux convection scheme) provides coupling with the SML​
+    # Type VI: Cumulus-capped boundary layer — no turbulent diffusivities are allowed at or above the LCL as the mass-flux convection scheme operates here ​
+    # Type VII: Shear-dominated unstable layer — potentially wind-shear might allow deeper turbulent mixing in unstable boundary layers than is apparent purely from the thermodynamic profiles (sufficient even to inhibit the formation of cumulus)
 
 
     #################################################################
