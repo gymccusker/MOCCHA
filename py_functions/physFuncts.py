@@ -48,9 +48,8 @@ def calcThetaE(temperature, pressure, q, time, height):
     cp = 1004.6      # J/kg.K
     cpd = 1005.7     # J/kg.K
 
-    p0=1000
-    Rd=287.04   # dry air J kg^-1 K^-1
-    Rv=461.50
+    Rd = 287.04   # dry air J kg^-1 K^-1
+    Rv = 461.50
 
     kd = Rd/cpd
 
@@ -58,6 +57,8 @@ def calcThetaE(temperature, pressure, q, time, height):
 
     e = rh .* svp(T)  # in hPa
     m =0.622.*e ./ (p-e); %mixing ratio [g /g]
+
+
 
     print('Calculating theta:')
     theta = np.zeros([len(time),len(height)])
@@ -111,5 +112,48 @@ def svp(T):
     tempC = T - 273.15
 
     satvappres = 6.112 * exp( 17.67*temp / (temp + 243.5) ) * 100
+
+def polysvp(T,type):
+
+
+    """
+    Function to calculate saturation vapour pressure
+    ==============================
+    inputs:
+    temperature = K
+
+    POLYSVP RETURNED IN UNITS OF PA.
+    TYPE REFERS TO SATURATION WITH RESPECT TO LIQUID (0) OR ICE (1)
+    COPIED FROM PARCEL MODEL
+    """
+
+		# 	E_VS(N) = POLYSVP(TEMP(N),0)   ! SATURATION VAPOUR PRESSURE
+	 	# 	E_IS(N) = POLYSVP(TEMP(N),1)   ! SATURATION VAPOUR PRESSURE O/ICE
+        #
+		# 	IF (E_IS(N).GT.E_VS(N)) E_IS(N) = E_VS(N)
+		# !	 MAKE SURE ICE SATURATION DOESN'T EXCEED WATER SAT. NEAR FREEZING
+        #
+        # 		Q_VS(N) = EPS*E_VS(N)/(P1D(N)-E_VS(N))		! SATURATION MIXING RATIO (KG/KG)
+      	# 		Q_VI(N) = EPS*E_IS(N)/(P1D(N)-E_IS(N))		! SATURATION MIXING RATIO O/ICE (KG/KG)
+        #
+		# 	Q3D_FIELDS(N,1)=RH(N)*Q_VS(N)			! VAPOUR MIXING RATIO (KG/KG)
+	    #    		RH_ICE(N) = Q3D_FIELDS(N,1)/Q_VI(N)		! RH WRT ICE (FRAC)
+
+    ### ! ICE
+    if type == 1:
+        dt = max(-80.,t-273.16)
+        polysvp = 6.11147274 + dt * (0.503160820 + dt * (0.188439774e-1 + dt * (0.420895665e-3 + dt *
+            (0.615021634e-5 + dt * (0.602588177e-7 + dt * (0.385852041e-9 + dt * (0.146898966e-11 +
+            0.252751365e-14 * dt)))))))
+        polysvp = polysvp*100.
+
+    ### ! LIQUID
+    elif type == 0:
+        dt = max(-80.,t-273.16)
+        polysvp = 6.11239921 + dt * (0.443987641 + dt * (0.142986287e-1 + dt * (0.264847430e-3 + dt *
+            (0.302950461e-5 + dt * (0.206739458e-7 + dt * (0.640689451e-10 + dt * (-0.952447341e-13 +
+            -0.976195544e-15 * dt)))))))
+        polysvp = polysvp*100.
+
 
     return satvappres
