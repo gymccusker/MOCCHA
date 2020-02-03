@@ -2508,10 +2508,10 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,5))
+    plt.figure(figsize=(9,8))
     # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.94, left = 0.12,
-            hspace = 0.4, wspace = 0.15)
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.5, left = 0.08,
+            hspace = 0.4, wspace = 0.10)
 
     # UM -> IFS comparisons:
     # 5. bl_depth -> sfc_bl_height
@@ -2555,11 +2555,14 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     #################################################################
     ax = plt.gca()
 
-    plt.bar([0,1], types[1])
-    plt.bar([0,1], types[2], bottom = types[1]); bars = np.add(types[1], types[2]).tolist()
+    plt.bar([0,1], types[1], label = doc[0])
+    plt.bar([0,1], types[2], bottom = types[1], label = doc[1]); bars = np.add(types[1], types[2]).tolist()
     for i in range(3,8):
-        plt.bar([0,1], types[i], bottom = bars); bars = np.add(bars, types[i]).tolist()
+        print(i)
+        plt.bar([0,1], types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
     plt.xticks([0,1], [label1, label2])
+    plt.legend(bbox_to_anchor=(1.2, 0.3, 1., .102), loc=4, ncol=1)
+    plt.title('BL type occurrences (normalised)')
 
     print ('******')
     print ('')
@@ -2567,7 +2570,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     print ('')
 
     fileout = '../FIGS/comparisons/BLType_oden_metum_casim-100.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
