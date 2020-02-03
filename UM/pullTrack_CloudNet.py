@@ -18,6 +18,10 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 
+#### import python functions
+import sys
+sys.path.insert(1, '../py_functions/')
+
 def readfile(filename):
 
     import pandas as pd
