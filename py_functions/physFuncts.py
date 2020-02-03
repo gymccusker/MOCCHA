@@ -30,7 +30,6 @@ def calcAirDensity(temperature, pressure):
 
     return rho
 
-
 def calcThetaE(temperature, pressure, q, tim, height):
 
     """
@@ -127,3 +126,37 @@ def polysvp(t,type):
 
 
     return svp
+
+def calcRH(temperature, pressure, q):
+
+    """
+    Function to calculate RH from given water vapour mixing ratio
+    ==============================
+    inputs:
+    pressure = Pa
+    temperature = K
+    water vapour mixing ratio = kg/kg
+
+    """
+
+    L_vap = 2.555e6    # J/kg
+    L_sub = 2.836e6  # J/kg
+    cp = 1004.6      # J/kg.K
+    cpd = 1005.7     # J/kg.K
+
+    Rd = 287.04   # dry air J kg^-1 K^-1
+    Rv = 461.50
+
+    kd = Rd/cpd     # k dry air
+
+    eps = Rd/Rv
+
+    ### saturation vapour pressue
+    evs = polysvp(temperature, 0)
+
+    ### saturation mixing ratio and relative humidity
+    qvs = (eps * evs) / (pressure - evs)
+    rh = (q / qvs) * 100
+                #### gives RH as a percentage
+
+    return rh
