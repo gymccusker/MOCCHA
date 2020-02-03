@@ -117,7 +117,6 @@ def svp(T):
 
 def polysvp(t,type):
 
-
     """
     Function to calculate saturation vapour pressure
     ==============================
@@ -128,18 +127,6 @@ def polysvp(t,type):
     TYPE REFERS TO SATURATION WITH RESPECT TO LIQUID (0) OR ICE (1)
     COPIED FROM PARCEL MODEL
     """
-
-		# 	E_VS(N) = POLYSVP(TEMP(N),0)   ! SATURATION VAPOUR PRESSURE
-	 	# 	E_IS(N) = POLYSVP(TEMP(N),1)   ! SATURATION VAPOUR PRESSURE O/ICE
-        #
-		# 	IF (E_IS(N).GT.E_VS(N)) E_IS(N) = E_VS(N)
-		# !	 MAKE SURE ICE SATURATION DOESN'T EXCEED WATER SAT. NEAR FREEZING
-        #
-        # 		Q_VS(N) = EPS*E_VS(N)/(P1D(N)-E_VS(N))		! SATURATION MIXING RATIO (KG/KG)
-      	# 		Q_VI(N) = EPS*E_IS(N)/(P1D(N)-E_IS(N))		! SATURATION MIXING RATIO O/ICE (KG/KG)
-        #
-		# 	Q3D_FIELDS(N,1)=RH(N)*Q_VS(N)			! VAPOUR MIXING RATIO (KG/KG)
-	    #    		RH_ICE(N) = Q3D_FIELDS(N,1)/Q_VI(N)		! RH WRT ICE (FRAC)
 
     ### ! ICE
     if type == 1:
