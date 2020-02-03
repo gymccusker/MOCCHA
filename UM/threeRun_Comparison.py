@@ -2886,8 +2886,15 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'], data2['time'], data2['height'])
     data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'], data3['time'], np.squeeze(data3['height'][0,:]))
 
-    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(data2['temperature']+273.15, data2['pressure'], data2['q'], data2['time'], data2['height'])
+    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(obs['sondes']['temperature']+273.15,
+        obs['sondes']['pressure'], obs['sondes']['mr'], obs['sondes']['doy'], obs['sondes']['gpsaltitude'])
 
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -3119,7 +3126,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
-    iTim = 0
+    iTim = 0        ### initialised
     iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
     iUM = np.where(data1['height'] <= 11000)
     iIFS = np.where(data3['height'][iTim,:] <= 11000)
