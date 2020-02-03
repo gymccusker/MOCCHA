@@ -2984,7 +2984,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ### sonde and ifs data interpolated to um grid (Z<10km)
     ### ------------------------------
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:]),
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:])-273.15,
         vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
@@ -3024,7 +3024,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     ### model anomalies wrt radiosondes
     ### ------------------------------
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
-    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:]),
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['thetaE_allSondes_UM'][drift[0],:])-273.15,
         vmin = Tmin, vmax = Tmax)
     plt.ylim([0,10000])
     plt.xlim([doy[0],doy[-1]])
