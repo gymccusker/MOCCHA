@@ -35,11 +35,13 @@ def calcThetaE(temperature, pressure, q, time, height):
     """
     Function to calculate equivalent potential temperature
     ==============================
+    pressure = Pa
+    temperature = K
+    water vapour mixing ratio = kg/kg
 
     """
 
-        #### EXAMPLE OF USE:
-        #### data = calcThetaE(data_um, time_um, height)
+
 
     L_vap = 2.5e6    # J/kg
     L_sub = 2.836e6  # J/kg
