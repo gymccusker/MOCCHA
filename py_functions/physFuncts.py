@@ -58,6 +58,30 @@ def calcThetaE(temperature, pressure, q, time, height):
     thetaE = np.zeros([len(time),len(height)])
     for k in range(0,len(height)):
         thetaE[:,k] = theta[:,k] + ((theta[:,k] * L_vap * q[:,k]) / (cp * temperature[:,k]))    ### Stull 1988[4] sect. 13.1 p. 546
+
+    # %% Equation after Bryan 2008 
+    # % Konstants after Davies-Jones 2009: "On Formulas for equivalent pot. temperature"
+    # % Accuracy 0.4 K
+    # % T in °C
+    # % p in hPa
+    # % rh in %
+    #
+    # p0=1000;
+    # Rd=287.04; % dry air J kg^-1 K^-1
+    # Rv=461.50;
+    #
+    # Lvstar = 2.555*10^6; %J kg^-1
+    # cpd=1005.7; % J kg^1 K^-1
+    # kd = Rd/cpd;
+    # eps=Rd/Rv;
+    #
+    # e=rh .* svp(T)/100;  % in hPa
+    # m =0.622.*e ./ (p-e); %mixing ratio [g /g]
+    #
+    # thetad=T.* ((p0./(p-e)).^kd); % in K
+    # thetae = thetad .* (rh/100).^(-kd*m/eps) .* exp(Lvstar*m./(T.*cpd));
+
+
     print('...')
     print('Done!')
 
