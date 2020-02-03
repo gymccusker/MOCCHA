@@ -55,8 +55,8 @@ def calcThetaE(temperature, pressure, q, time, height):
 
     eps = Rd/Rv
 
-    e = rh .* svp(T)  # in hPa
-    m =0.622.*e ./ (p-e); %mixing ratio [g /g]
+    # e = rh .* svp(T)  # in hPa
+    # m =0.622.*e ./ (p-e); %mixing ratio [g /g]
 
 
 
@@ -74,7 +74,7 @@ def calcThetaE(temperature, pressure, q, time, height):
     # %% Equation after Bryan 2008
     # % Konstants after Davies-Jones 2009: "On Formulas for equivalent pot. temperature"
     # % Accuracy 0.4 K
-    # % T in °C
+    # % T in degC
     # % p in hPa
     # % rh in %
     #
@@ -111,7 +111,7 @@ def svp(T):
 
     tempC = T - 273.15
 
-    satvappres = 6.112 * exp( 17.67*temp / (temp + 243.5) ) * 100
+    satvappres = 6.112 * np.exp( 17.67*temp / (temp + 243.5) ) * 100
 
     return satvappres
 
@@ -143,7 +143,7 @@ def polysvp(T,type):
 
     ### ! ICE
     if type == 1:
-        dt = max(-80.,t-273.16)
+        dt = np.max(-80.,t-273.16)
         polysvp = 6.11147274 + dt * (0.503160820 + dt * (0.188439774e-1 + dt * (0.420895665e-3 + dt *
             (0.615021634e-5 + dt * (0.602588177e-7 + dt * (0.385852041e-9 + dt * (0.146898966e-11 +
             0.252751365e-14 * dt)))))))
@@ -151,7 +151,7 @@ def polysvp(T,type):
 
     ### ! LIQUID
     elif type == 0:
-        dt = max(-80.,t-273.16)
+        dt = np.max(-80.,t-273.16)
         polysvp = 6.11239921 + dt * (0.443987641 + dt * (0.142986287e-1 + dt * (0.264847430e-3 + dt *
             (0.302950461e-5 + dt * (0.206739458e-7 + dt * (0.640689451e-10 + dt * (-0.952447341e-13 +
             -0.976195544e-15 * dt)))))))
