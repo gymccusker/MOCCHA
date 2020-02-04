@@ -2564,7 +2564,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
         else:
             plt.bar([0,1], types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
     plt.xticks([0,1], [label1, label2])
-    plt.legend(bbox_to_anchor=(1.2, 0.3, 1., .102), loc=4, ncol=1)
+    plt.legend(bbox_to_anchor=(1.1, 0.3, 1., .102), loc=4, ncol=1)
     plt.title('BL type occurrences (normalised)')
 
     print ('******')
