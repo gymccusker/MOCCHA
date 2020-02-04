@@ -2539,8 +2539,8 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     for i in range(0,7): types[i+1] = [data1['histogram_n'][i]/total1, data2['histogram_n'][i]/total2]
 
     #### list of BL types from UM documentation
-    doc = ['1: Stable BL', '2: Sc over stable NSL', '3: Well-mixed BL', '4: Unstable BL with dSc not o/Cu',
-        '5: dSc o/Cu', '6: Cu-capped BL', '7: Shear-dominated unstable BL']
+    doc = ['1: Stable BL', '2: Sc over stable SL', '3: Well-mixed BL', '4: Unstable BL, dSc not o/Cu',
+        '5: dSc o/Cu', '6: Cu-capped BL', '7: Shear-dom unstable BL']
 
     # Type I: Stable boundary layer (with or without cloud)
     # Type II: Boundary layer with stratocumulus over a stable near-surface layer
