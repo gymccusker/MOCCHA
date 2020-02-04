@@ -7044,7 +7044,7 @@ def writePD_BL(cube, doutfile):
     # ###################################
     #### find first occurrence of 2D variable, then break
     for l in range(0,len(cube)):
-        if np.ndim(cube[l]) == 4:
+        if np.ndim(cube[l]) == 2:
             lind = l
             break
 
