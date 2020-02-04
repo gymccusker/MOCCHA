@@ -5959,7 +5959,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                         data = np.zeros([len(cubetime)])
                     else:
                         data = np.zeros([len(cubetime)-1])
-                if stream == '_pa012': data = np.zeros([len(cubetime)])
+                elif stream == '_pa012': data = np.zeros([len(cubetime)])
+                elif stream == '_pd011': data = np.zeros([len(cubetime)-1])
                 dim_flag = 0       ### for next loops
                 print 'data.shape = ', str(data.shape)
                 print ''
@@ -6047,7 +6048,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                     ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
             if dim_flag == 1:         ### 4D VARIABLE
                 model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                comdata = fixHeight(data, cube[k])
+                if stream == '_pd011':
+                    continue                    #### leave BL diagnostics on RHO levels
+                else:
+                    comdata = fixHeight(data, cube[k])
                 ncube = Cube(np.transpose(comdata),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
                         standard_name = cube[k].standard_name,
