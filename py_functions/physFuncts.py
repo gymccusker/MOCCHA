@@ -106,6 +106,8 @@ def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
     Rd = 287.04   # dry air J kg^-1 K^-1
     Rv = 461.50
 
+    g = 9.806       # m/s2
+
     kd = Rd/cpd     # k dry air
 
     eps = Rd/Rv
@@ -125,13 +127,9 @@ def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
     theta = temperature * np.power(1e5 / pressure, (Rd/cp))
     print('...')
 
-    print('Calculating theta of dry air:')
-    thetad = temperature * np.power(1e5 / (pressure - evs), kd)
+    print('Calculating theta_l:')
+    thetad = temperature - ((L_vap * ql)/cp) - ((L_sub * qi)/cp) + ((g * height)/cp)
     print('...')
-
-    print('Calculating theta_e:')
-    tempvar = (-1.0 * kd * q) / eps
-    thetaE = thetad * np.power( rh, tempvar ) * np.exp(L_vap * q / (temperature * cpd) )         ###Bryan 2008
 
     print('...')
     print('Done!')
