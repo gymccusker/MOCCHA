@@ -7386,7 +7386,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
     if os.path.exists(doutfile):
         ncD = Dataset(doutfile, 'r')
 
-        #### height
+        #### height on rho levels
+        height2 = dataset.createDimension('height2', np.size(ncD.variables['height'][:]))
         height2 = dataset.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
         height2.scale_factor = float(1)
         height2.add_offset = float(0)
