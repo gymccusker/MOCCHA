@@ -2726,6 +2726,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     Tmin = -45
     Tmax = 5
+    ymax = 8000
 
     ### -------------------------------
     ### original data
@@ -2733,7 +2734,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['temperature'][:,drift[0]],
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.set_cmap('viridis')
@@ -2743,7 +2744,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['temp_6hrly'])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2752,7 +2753,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['temp_6hrly'])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2761,7 +2762,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['temp_6hrly'])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2774,7 +2775,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2783,7 +2784,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['temp_hrly_UM'][::6])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2792,7 +2793,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2801,7 +2802,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']])-273.15,
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
@@ -2814,7 +2815,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
         vmin = Tmin, vmax = Tmax)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2824,7 +2825,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.set_cmap('seismic')
@@ -2835,7 +2836,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2845,7 +2846,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
@@ -2936,14 +2937,16 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### -------------------------------
     fig = plt.figure(figsize=(19,10))
 
+    qmax = 4.0
+    ymax = 8000
 
     ### -------------------------------
     ### original data
     ### ------------------------------
     ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['mr'][:,drift[0]],
-        vmin = 0.0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0.0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.set_cmap('viridis')
@@ -2952,8 +2955,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['q_6hrly'])*1e3,
-        vmin = 0.0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0.0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2961,8 +2964,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['q_6hrly'])*1e3,
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2970,8 +2973,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['q_6hrly'])*1e3,
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
@@ -2983,8 +2986,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### ------------------------------
     ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:]),
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2992,8 +2995,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['q_hrly_UM'][::6])*1e3,
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -3001,8 +3004,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3,
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -3010,8 +3013,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3,
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
@@ -3023,8 +3026,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### ------------------------------
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:]),
-        vmin = 0, vmax = 4.0)
-    plt.ylim([0,10000])
+        vmin = 0, vmax = qmax)
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -3034,7 +3037,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.set_cmap('seismic')
@@ -3045,7 +3048,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -3055,7 +3058,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -2.0, vmax = 2.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,10000])
+    plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
