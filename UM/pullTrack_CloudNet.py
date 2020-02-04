@@ -7407,8 +7407,8 @@ def appendMetaNetCDF(outfile, date, out_dir):
                 print 'Writing ' + ncD.variables.keys()[d]
                 print ''
                 if np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 2:
-                    print 'Writing 2D variable ' + ncD.variables.keys()[d]
-                    daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                    print 'Variable is 2D:'
+                    daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height2',), fill_value='-9999')
                     daat.scale_factor = float(1)
                     daat.add_offset = float(0)
                     if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
@@ -7423,7 +7423,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
                         daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
                     daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
                 elif np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 1:
-                    print 'Writing 1D variable ' + ncD.variables.keys()[d]
+                    print 'Variable is 1D:'
                     dat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', ), fill_value='-9999')
                     dat.scale_factor = float(1)
                     dat.add_offset = float(0)
