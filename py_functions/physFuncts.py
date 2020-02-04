@@ -79,6 +79,65 @@ def calcThetaE(temperature, pressure, q, tim, height):
 
     return theta, thetaE
 
+def calcThetaVL(temperature, pressure, q, tim, height):
+
+    """
+    Function to calculate virtual liquid potential temperature
+    ==============================
+    inputs:
+    pressure = Pa
+    temperature = K
+    water vapour mixing ratio = kg/kg
+
+    Note that theta_l is based on ‘liquid/frozen water static energy’ (= cpT + gz − L.ql − Ls.qi )
+        rather than potential temperature.
+    Theta_vl is a conserved variable that is equal to virtual potential temperature (theta_v) in
+        cloud-free air and so is used as a simplified measure of buoyancy
+
+    """
+
+    L_vap = 2.555e6    # J/kg
+    L_sub = 2.836e6  # J/kg
+    cp = 1004.6      # J/kg.K
+    cpd = 1005.7     # J/kg.K
+
+    Rd = 287.04   # dry air J kg^-1 K^-1
+    Rv = 461.50
+
+    kd = Rd/cpd     # k dry air
+
+    eps = Rd/Rv
+
+    ### total water mixing ratio
+    qt = q + ql + qi
+
+    ### saturation vapour pressue
+    evs = polysvp(temperature, 0)
+
+    ### saturation mixing ratio and relative humidity
+    qvs = (eps * evs) / (pressure - evs)
+    rh = q / qvs
+                #### gives RH as a fraction
+
+    print('Calculating theta:')
+    theta = temperature * np.power(1e5 / pressure, (Rd/cp))
+    print('...')
+
+    print('Calculating theta of dry air:')
+    thetad = temperature * np.power(1e5 / (pressure - evs), kd)
+    print('...')
+
+    print('Calculating theta_e:')
+    tempvar = (-1.0 * kd * q) / eps
+    thetaE = thetad * np.power( rh, tempvar ) * np.exp(L_vap * q / (temperature * cpd) )         ###Bryan 2008
+
+    print('...')
+    print('Done!')
+
+    return theta, thetaE
+
+
+
 def svp(T):
 
     """
