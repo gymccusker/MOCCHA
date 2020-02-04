@@ -139,7 +139,7 @@ def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
     print('...')
     print('Done!')
 
-    return theta_l, theta_vl
+    return theta, theta_l, theta_vl
 
 
 
