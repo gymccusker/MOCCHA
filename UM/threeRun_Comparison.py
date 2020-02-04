@@ -2558,8 +2558,11 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.bar([0,1], types[1], label = doc[0])
     plt.bar([0,1], types[2], bottom = types[1], label = doc[1]); bars = np.add(types[1], types[2]).tolist()
     for i in range(3,8):
-        print(i)
-        plt.bar([0,1], types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+        # print(i)
+        if i == 4:
+            plt.bar([0,1], types[i], bottom = bars, hatch = '/', label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+        else:
+            plt.bar([0,1], types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
     plt.xticks([0,1], [label1, label2])
     plt.legend(bbox_to_anchor=(1.2, 0.3, 1., .102), loc=4, ncol=1)
     plt.title('BL type occurrences (normalised)')
