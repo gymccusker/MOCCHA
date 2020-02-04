@@ -79,7 +79,7 @@ def calcThetaE(temperature, pressure, q, tim, height):
 
     return theta, thetaE
 
-def calcThetaVL(temperature, pressure, q, tim, height):
+def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
 
     """
     Function to calculate virtual liquid potential temperature
@@ -88,6 +88,8 @@ def calcThetaVL(temperature, pressure, q, tim, height):
     pressure = Pa
     temperature = K
     water vapour mixing ratio = kg/kg
+    liquid mass mixing ratio = kg/kg
+    ice mass mixing ratio = kg/kg
 
     Note that theta_l is based on 'liquid/frozen water static energy' (= cp.T + g.z - L.ql - Ls.qi)
         rather than potential temperature.
