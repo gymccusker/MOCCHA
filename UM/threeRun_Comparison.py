@@ -3310,6 +3310,245 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
+def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    # from scipy.interpolate import interp1d
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model theta profiles:')
+    print ('')
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### set diagnostic naming flags for if IFS being used
+    if out_dir4 == 'OUT_25H/':
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    #### set flagged values to nans
+    data1['temperature'][data1['temperature'] == -9999] = np.nan
+    data2['temperature'][data2['temperature'] == -9999] = np.nan
+    data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data1['pressure'][data1['pressure'] == -9999] = np.nan
+    data2['pressure'][data2['pressure'] == -9999] = np.nan
+    data3['pressure'][data3['pressure'] <= 0] = np.nan
+    data1['q'][data1['q'] == -9999] = np.nan
+    data2['q'][data2['q'] == -9999] = np.nan
+    data3['q'][data3['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### calculate equivalent potential temperature
+    #### ---------------------------------------------------------------
+    data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'], data1['time'], data1['height'])
+    data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'], data2['time'], data2['height'])
+    data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'], data3['time'], np.squeeze(data3['height'][0,:]))
+
+    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(np.transpose(obs['sondes']['temperature'])+273.15,
+        np.transpose(obs['sondes']['pressure'])*1e2, np.transpose(obs['sondes']['mr'])/1e3,
+        obs['sondes']['doy'], obs['sondes']['gpsaltitude'])
+
+    obs['sondes']['theta'] = np.transpose(obs['sondes']['theta'])         ### for consistency with original sonde dimensions
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
+    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'theta')
+    print ('')
+    print ('Done!')
+
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
+
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(19,10))
+
+    Tmin = -5
+    Tmax = 45
+    ymax = 8000
+
+    ### -------------------------------
+    ### original data
+    ### ------------------------------
+    ax  = fig.add_axes([0.06,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],obs['sondes']['gpsaltitude'][:,drift[0][0]],obs['sondes']['pottemp'][:,drift[0]],
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.set_cmap('viridis')
+    plt.ylabel('Z [m]')
+    plt.title('Sondes, $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.06,0.54,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_6hrly'],np.nanmean(data3['height'],0),np.transpose(data3['theta_6hrly'])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label3 + ', $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.06,0.3,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'],data1['height'],np.transpose(data1['theta_6hrly'])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label1 + ', $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.06,0.06,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_6hrly'],data2['height'],np.transpose(data2['theta_6hrly'])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.title(label2 + ', $\Theta$ [degC]')
+    plt.xlabel('Day of year')
+
+    ### -------------------------------
+    ### sonde and ifs data interpolated to um grid (Z<10km)
+    ### ------------------------------
+    ax  = fig.add_axes([0.38,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title('Sondes(REGRID), $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.38,0.54,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data3['time_6hrly'],data1['universal_height'],np.transpose(data3['theta_hrly_UM'][::6])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID), $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.38,0.3,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'],np.transpose(data1['theta_6hrly'][:,data1['universal_height_UMindex']])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label1 + ', $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.38,0.06,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'],np.transpose(data2['theta_6hrly'][:,data1['universal_height_UMindex']])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    plt.title(label2 + ', $\Theta$ [degC]')
+
+    ### -------------------------------
+    ### model anomalies wrt radiosondes
+    ### ------------------------------
+    ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])-273.15,
+        vmin = Tmin, vmax = Tmax)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title('Sondes(REGRID), $\Theta$ [degC]')
+
+    ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
+    dat3 = np.transpose(data3['theta_hrly_UM'][::6]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
+    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+        vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.set_cmap('seismic')
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID) - Sondes(REGRID), $\Theta$ [K]')
+
+    ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
+    dat1 = np.transpose(data1['theta_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
+        vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label1 + ' - Sondes(REGRID), $\Theta$ [K]')
+
+    ax  = fig.add_axes([0.7,0.06,0.3,0.17])   # left, bottom, width, height
+    dat2 = np.transpose(data2['theta_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
+        vmin = -8.0, vmax = 8.0, cmap=mpl_cm.RdBu_r)
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    plt.title(label2 + ' - Sondes(REGRID), $\Theta$ [K]')
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    fileout = '../FIGS/comparisons/ThetaProfiles_REGRID_10km_sondes-calculated_metum_ifs_casim-100.png'
+    plt.savefig(fileout, dpi = 300)
+    plt.show()
+
 def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     from scipy.interpolate import interp1d
@@ -3342,6 +3581,9 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     elif var == 'thetaE':
         # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
         varlist = ['thetaE','thetaE','thetaE','thetaE']         # use sonde calculated thetaE
+    elif var == 'theta':
+        # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
+        varlist = ['theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
         varlist = ['mr','q','q','q']
 
