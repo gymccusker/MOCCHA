@@ -2606,7 +2606,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     ### create arranys of instances for e.g. type I, type II etc. between each simulation
     types = {}
     for i in range(0,7): types[i+1] = [data1['histogram_nMelt'][i]/total1melt, data1['histogram_nFreeze'][i]/total1freeze,
-                                        0, data2['histogram_nMelt'][i]/total2melt, data2['histogram_nFreeze'][i]/total2freeze]
+                                        data2['histogram_nMelt'][i]/total2melt, data2['histogram_nFreeze'][i]/total2freeze]
 
     #### list of BL types from UM documentation
     doc = ['1: Stable BL', '2: Sc over stable SL', '3: Well-mixed BL', '4: Unstable BL, dSc not o/Cu',
@@ -2623,18 +2623,22 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     #################################################################
     ## create figure and axes instances
     #################################################################
+    plt.figure(figsize=(12,7))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.68, left = 0.05,
+            hspace = 0.4, wspace = 0.10)
     ax = plt.gca()
 
-    plt.bar(np.arange(0,5), types[1], label = doc[0])
-    plt.bar(np.arange(0,5), types[2], bottom = types[1], label = doc[1]); bars = np.add(types[1], types[2]).tolist()
+    plt.bar(np.arange(0,4), types[1], label = doc[0])
+    plt.bar(np.arange(0,4), types[2], bottom = types[1], label = doc[1]); bars = np.add(types[1], types[2]).tolist()
     for i in range(3,8):
         # print(i)
         if i == 4:
-            plt.bar(np.arange(0,5), types[i], bottom = bars, hatch = '/', label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+            plt.bar(np.arange(0,4), types[i], bottom = bars, hatch = '/', label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
         else:
-            plt.bar(np.arange(0,5), types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
-    plt.xticks(np.arange(0,5), [label1 + '-Melt', label1 + '-Freeze', ' ', label2 + '-Melt', label2 + '-Freeze'])
-    plt.legend(bbox_to_anchor=(1.1, 0.3, 1., .102), loc=4, ncol=1)
+            plt.bar(np.arange(0,4), types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+    plt.xticks(np.arange(0,4), [label1 + '\nMelt', label1 + '\nFreeze', label2 + '\nMelt', label2 + '\nFreeze'])
+    plt.legend(bbox_to_anchor=(0.5, 0.3, 1., .102), loc=4, ncol=1)
     plt.title('BL type occurrences (normalised)')
 
     print ('******')
