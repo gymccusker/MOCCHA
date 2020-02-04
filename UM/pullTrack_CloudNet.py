@@ -6248,9 +6248,26 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
+    if stream == '_pd011':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pd stream (using Iris cubes)
+        print 'fcube = '
+        print fcube
+        print ''
+        print '******'
+        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
+        print '***file is merged to outfile later***'
+        print ''
+        doutfile = nc_outfile[:-3] + '_e.nc'
+        if not os.path.exists(doutfile):
+            if 'fcube' in locals():
+                out = writeFile_netCDF4(fcube, doutfile)
+            # if PD outfile already exists, combine other stream data
+            # if PD outfile doesn't exist, write new
+
     if stream == '_pe011':
         ## Combine track-pulled pp output files to one netCDF
-        ## First, make netCDF with pc stream (using Iris cubes)
+        ## First, make netCDF with pd stream (using Iris cubes)
         print 'fcube = '
         print fcube
         print ''
