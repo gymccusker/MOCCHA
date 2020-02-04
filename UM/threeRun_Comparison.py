@@ -3321,13 +3321,7 @@ def plot_RadiosondesThetaVL(data1, data2, data3, month_flag, missing_files, out_
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
-    # from scipy.interpolate import interp1d
 
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
 
     print ('******')
     print ('')
