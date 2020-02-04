@@ -7386,6 +7386,15 @@ def appendMetaNetCDF(outfile, date, out_dir):
     if os.path.exists(doutfile):
         ncD = Dataset(doutfile, 'r')
 
+        #### height
+        height2 = dataset.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+        height2.scale_factor = float(1)
+        height2.add_offset = float(0)
+        height2.comment = 'height coordinate on rho levels'
+        height2.units = 'm'
+        height2.long_name = 'height'
+        height2[:] = ncD.variables['height'][:]      ### forecast time (ignore first 12h)
+
         ###################################
         ## Append pdXXX stream diagnostics
         ###################################
@@ -7396,20 +7405,38 @@ def appendMetaNetCDF(outfile, date, out_dir):
             if not ncD.variables.keys()[d] in dataset.variables.keys():
                 print 'Writing ' + ncD.variables.keys()[d]
                 print ''
-                daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
-                daat.scale_factor = float(1)
-                daat.add_offset = float(0)
-                if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
-                    daat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
-                else:
-                    daat.units = 'unknown'
-                if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
-                    daat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
-                if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
-                    daat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
-                if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
-                    daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
-                daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
+                if np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 2:
+                    print 'Writing 2D variable ' + ncD.variables.keys()[d]
+                    daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                    daat.scale_factor = float(1)
+                    daat.add_offset = float(0)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
+                        daat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
+                    else:
+                        daat.units = 'unknown'
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
+                        daat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
+                        daat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
+                        daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
+                    daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
+                elif np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 1:
+                    print 'Writing 1D variable ' + ncD.variables.keys()[d]
+                    dat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', ), fill_value='-9999')
+                    dat.scale_factor = float(1)
+                    dat.add_offset = float(0)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
+                        dat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
+                    else:
+                        dat.units = 'unknown'
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
+                        dat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
+                        dat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
+                    if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
+                        dat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
+                    dat[:] = ncD.variables[ncD.variables.keys()[d]][:]
 
         ###################################
         ## Close read-only pdXXX file
