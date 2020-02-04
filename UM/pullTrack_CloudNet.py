@@ -6257,7 +6257,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
-                out = writePE_CASIM(fcube, eoutfile)
+                out = writeFile_netCDF4(fcube, eoutfile)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6746,7 +6746,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         if not os.path.exists(nc_outfile):
             if 'fcube' in locals():
                 # out = writeNetCDF(date, fcube, nc_outfile)
-                out = writePE_CASIM(fcube, nc_outfile)    ### use netCDF4 to make file rather than iris
+                out = writeFile_netCDF4(fcube, nc_outfile)    ### use netCDF4 to make file rather than iris
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6763,9 +6763,26 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
-                out = writePE_CASIM(fcube, eoutfile)
-            # if PC outfile already exists, combine other stream data
-            # if PC outfile doesn't exist, write new
+                out = writeFile_netCDF4(fcube, eoutfile)
+            # if PE outfile already exists, combine other stream data
+            # if PE outfile doesn't exist, write new
+
+    if stream == '_pd011':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pc stream (using Iris cubes)
+        print 'fcube = '
+        print fcube
+        print ''
+        print '******'
+        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
+        print '***file is merged to outfile later***'
+        print ''
+        doutfile = nc_outfile[:-3] + '_d.nc'
+        if not os.path.exists(doutfile):
+            if 'fcube' in locals():
+                out = writeFile_netCDF4(fcube, doutfile)
+            # if PD outfile already exists, combine other stream data
+            # if PD outfile doesn't exist, write new
 
     elif stream == '_pb009':
         print 'fcube = '
@@ -7028,7 +7045,7 @@ def writePA_Analysis(cube, aoutfile):
 
     return dataset
 
-def writePE_CASIM(cube, eoutfile):
+def writeFile_netCDF4(cube, eoutfile):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
@@ -7294,10 +7311,47 @@ def appendMetaNetCDF(outfile, date, out_dir):
                 daat[:,:] = ncE.variables[ncE.variables.keys()[d]][:,:]
 
         ###################################
-        ## Close read-only paXXX file
+        ## Close read-only peXXX file
         ###################################
         ncE.close()
 
+    ###################################
+    ## Open pdXXX netCDF file
+    ###################################
+    doutfile = outfile[:-3] + '_e.nc'
+
+    if os.path.exists(doutfile):
+        ncD = Dataset(doutfile, 'r')
+
+        ###################################
+        ## Append pdXXX stream diagnostics
+        ###################################
+        print 'Appending pdXXX diagnostics:'
+        print '---'
+        for d in range(0,len(ncD.variables)):
+            if ncD.variables.keys()[d] == 'forecast_time': continue
+            if not ncD.variables.keys()[d] in dataset.variables.keys():
+                print 'Writing ' + ncD.variables.keys()[d]
+                print ''
+                daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                daat.scale_factor = float(1)
+                daat.add_offset = float(0)
+                if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
+                    daat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
+                else:
+                    daat.units = 'unknown'
+                if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
+                    daat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
+                if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
+                    daat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
+                if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
+                    daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
+                daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
+
+        ###################################
+        ## Close read-only pdXXX file
+        ###################################
+        ncD.close()
 
     ###################################
     ## Write out file
@@ -7432,7 +7486,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pa012','_pb009','_pd011','_pe011','_pc011']         ### make pa + pb files first, then append to pc
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
@@ -7477,6 +7531,7 @@ def main():
                     if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
                     aoutfile = nc_outfile[:-3] + '_a.nc'
                     boutfile = nc_outfile[:-3] + '_b.nc'
+                    doutfile = nc_outfile[:-3] + '_d.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
 
                     if stream == '_pa012':
@@ -7486,6 +7541,10 @@ def main():
                     elif stream == '_pb009':
                         if not os.path.exists(boutfile):
                             print boutfile + ' does not exist, so pulling ship track...'
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
+                    elif stream == '_pd011':
+                        if not os.path.exists(doutfile):
+                            print doutfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date)
                     elif stream == '_pe011':
                         if not os.path.exists(eoutfile):
@@ -7540,7 +7599,7 @@ def main():
                         ## -------------------------------------------------------------
                         print '******'
                         print ''
-                        print 'stream = ' + stream + ', so appending pa, pb, pe (if present), and metadata'
+                        print 'stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata'
                         print ''
                         # outfile = '20180902_oden_metum.nc'
                         out = appendMetaNetCDF(nc_outfile, date, out_dir)
