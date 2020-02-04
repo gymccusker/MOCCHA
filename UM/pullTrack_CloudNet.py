@@ -6261,7 +6261,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
         doutfile = nc_outfile[:-3] + '_d.nc'
         if not os.path.exists(doutfile):
             if 'fcube' in locals():
-                out = writeFile_netCDF4(fcube, doutfile)
+                out = writePD_BL(fcube, doutfile)
             # if PD outfile already exists, combine other stream data
             # if PD outfile doesn't exist, write new
 
@@ -6996,6 +6996,102 @@ def writePA_Analysis(cube, aoutfile):
         print 'Writing ' + cube[d].var_name
         print ''
         if not cube[d].var_name in dataset.variables.keys():
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = str(cube[d].units)
+            dat.STASH = str(cube[d].attributes['STASH'])
+            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+            dat[:] = cube[d].data
+
+    ###################################
+    ## Write out file
+    ###################################
+    dataset.close()
+
+    return dataset
+
+def writePD_BL(cube, doutfile):
+    #################################################################
+    ## Write boundary layer diagnosticsa (PD) to newly created netCDF
+    #################################################################
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print '******'
+    print ''
+    print 'Writing 3D data to ' + doutfile
+    print ''
+
+    ###################################
+    ## Open File
+    ###################################
+    dataset = Dataset(doutfile, 'w', format ='NETCDF4_CLASSIC')
+    print ''
+    print dataset.file_format
+    print ''
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    dataset.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    # ###################################
+    #### find first occurrence of 2D variable, then break
+    for l in range(0,len(cube)):
+        if np.ndim(cube[l]) == 4:
+            lind = l
+            break
+
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[lind].dim_coords[0].points))
+    height = dataset.createDimension('height', np.size(cube[lind].dim_coords[1].points))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
+    timem.long_name = 'forecast_time'
+    timem[:] = cube[lind].dim_coords[0].points      ### forecast time (ignore first 12h)
+
+    #### height
+    height = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = ''
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = cube[lind].dim_coords[1].points      ### forecast time (ignore first 12h)
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    ###################################
+    ## Write paXXX stream diagnostics
+    ###################################
+    for d in range(0,len(cube)):
+        print 'Writing ' + cube[d].var_name
+        print ''
+        if np.ndim(cube[d]) == 2:
+            if cube[d].var_name == 'air_pressure': continue
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
+            dat.scale_factor = float(1)
+            dat.add_offset = float(0)
+            dat.units = str(cube[d].units)
+            dat.STASH = str(cube[d].attributes['STASH'])
+            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+            dat[:,:] = cube[d].data
+        elif np.ndim(cube[d]) == 1:
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
