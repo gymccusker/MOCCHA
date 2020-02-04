@@ -2522,7 +2522,6 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     else:
         ifs_flag = False
 
-
     #################################################################
     ## split data into relative contributions from each BL type
     #################################################################
@@ -2573,6 +2572,77 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     print ('')
 
     fileout = '../FIGS/comparisons/BLType_oden_metum_casim-100.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+
+    #### ------------------------------------------------------------------
+    #### ------------------------------------------------------------------
+    ####        SEASONAL SPLIT
+    #### ------------------------------------------------------------------
+    #### ------------------------------------------------------------------
+
+
+    melt = np.where(data1['time'] < 240.0)
+    freeze = np.where(data1['time'] >= 240.0)
+
+    #################################################################
+    ## split data into relative contributions from each BL type
+    #################################################################
+
+    data1['histogram_nMelt'], data1['histogram_bins'] = np.histogram(data1['bl_type'][melt], bins = np.arange(1,9))
+    data2['histogram_nMelt'], data2['histogram_bins'] = np.histogram(data2['bl_type'][melt], bins = np.arange(1,9))
+
+    data1['histogram_nFreeze'], data1['histogram_bins'] = np.histogram(data1['bl_type'][freeze], bins = np.arange(1,9))
+    data2['histogram_nFreeze'], data2['histogram_bins'] = np.histogram(data2['bl_type'][freeze], bins = np.arange(1,9))
+
+    ### calculate total number of occurrences for normalised charts
+    total1melt = float(np.sum(data1['histogram_nMelt']))
+    total2melt = float(np.sum(data2['histogram_nMelt']))
+    total1freeze = float(np.sum(data1['histogram_nFreeze']))
+    total2freeze = float(np.sum(data2['histogram_nFreeze']))
+
+
+    ### create arranys of instances for e.g. type I, type II etc. between each simulation
+    types = {}
+    for i in range(0,7): types[i+1] = [data1['histogram_nMelt'][i]/total1melt, data1['histogram_nFreeze'][i]/total1freeze,
+                                        0, data2['histogram_nMelt'][i]/total2melt, data2['histogram_nFreeze'][i]/total2freeze]
+
+    #### list of BL types from UM documentation
+    doc = ['1: Stable BL', '2: Sc over stable SL', '3: Well-mixed BL', '4: Unstable BL, dSc not o/Cu',
+        '5: dSc o/Cu', '6: Cu-capped BL', '7: Shear-dom unstable BL']
+
+    # Type I: Stable boundary layer (with or without cloud)
+    # Type II: Boundary layer with stratocumulus over a stable near-surface layer
+    # Type III: Well mixed boundary layer
+    # Type IV: Unstable boundary layer with a DSC layer not over cumulus
+    # Type V: Boundary layer with a DSC layer over cumulus
+    # Type VI: Cumulus-capped boundary layer
+    # Type VII: Shear-dominated unstable layer
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    ax = plt.gca()
+
+    plt.bar(np.arange(0,5), types[1], label = doc[0])
+    plt.bar(np.arange(0,5), types[2], bottom = types[1], label = doc[1]); bars = np.add(types[1], types[2]).tolist()
+    for i in range(3,8):
+        # print(i)
+        if i == 4:
+            plt.bar(np.arange(0,5), types[i], bottom = bars, hatch = '/', label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+        else:
+            plt.bar(np.arange(0,5), types[i], bottom = bars, label = doc[i-1]); bars = np.add(bars, types[i]).tolist()
+    plt.xticks(np.arange(0,5), [label1 + '-Melt', label1 + '-Freeze', ' ', label2 + '-Melt', label2 + '-Freeze'])
+    plt.legend(bbox_to_anchor=(1.1, 0.3, 1., .102), loc=4, ncol=1)
+    plt.title('BL type occurrences (normalised)')
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    fileout = '../FIGS/comparisons/BLType_oden_metum_casim-100_splitSeason.svg'
     plt.savefig(fileout)
     plt.show()
 
