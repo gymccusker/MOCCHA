@@ -7381,7 +7381,7 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     ## Open pdXXX netCDF file
     ###################################
-    doutfile = outfile[:-3] + '_e.nc'
+    doutfile = outfile[:-3] + '_d.nc'
 
     if os.path.exists(doutfile):
         ncD = Dataset(doutfile, 'r')
