@@ -89,7 +89,7 @@ def calcThetaVL(temperature, pressure, q, tim, height):
     temperature = K
     water vapour mixing ratio = kg/kg
 
-    Note that theta_l is based on ‘liquid/frozen water static energy’ (= cpT + gz − L.ql − Ls.qi )
+    Note that theta_l is based on 'liquid/frozen water static energy' (= cp.T + g.z - L.ql - Ls.qi)
         rather than potential temperature.
     Theta_vl is a conserved variable that is equal to virtual potential temperature (theta_v) in
         cloud-free air and so is used as a simplified measure of buoyancy
