@@ -128,7 +128,7 @@ def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
     print('...')
 
     print('Calculating theta_l:')
-    thetad = temperature - ((L_vap * ql)/cp) - ((L_sub * qi)/cp) + ((g * height)/cp)
+    thet_l = temperature - ((L_vap * ql)/cp) - ((L_sub * qi)/cp) + ((g * height)/cp)
     print('...')
 
     print('...')
