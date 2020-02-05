@@ -425,8 +425,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     #### set flagged um_data to nans
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
     ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
-    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
-    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     # misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
@@ -441,8 +440,8 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
         np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(misc_data['cloud_fraction'],0),misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
-    ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
-        np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    # ax.fill_betweenx(misc_data['height'],np.nanmean(misc_data['cloud_fraction'],0) - np.nanstd(misc_data['cloud_fraction'],0),
+    #     np.nanmean(misc_data['cloud_fraction'],0) + np.nanstd(misc_data['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
 
     # plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'Obs_UM')
     # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
@@ -737,7 +736,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_qliq_226-257DOY.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -1013,7 +1012,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_226-257DOY.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -1350,11 +1349,11 @@ def main():
             continue
         elif misc_flag == 1:
             if ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-                var_list = ['height','cloud_fraction','temperature']   ### time always read in separately
+                var_list = ['cloud_fraction','temperature']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-                var_list = ['height','qliq']   ### time always read in separately
+                var_list = ['qliq']   ### time always read in separately
             elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-                var_list = ['height','qice']   ### time always read in separately
+                var_list = ['qice']   ### time always read in separately
         elif misc_flag == 0:
             if out_dir == 'cloud-fraction-metum-grid':
                 var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
@@ -1372,7 +1371,9 @@ def main():
             misc_data = {}
             # misc_data1d = {}
             if month_flag == -1:
-                if misc_flag == 1: time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                if misc_flag == 1:
+                    time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                    misc_data['height'] = nc3.variables['height'][:]
                 if misc_flag == 0: time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
             else:
                 if misc_flag == 1: time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
@@ -1394,8 +1395,8 @@ def main():
                 # print 'j = ' + str(j)
                 if np.ndim(nc3.variables[var_list[j]]) == 1:
                     misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
-                elif np.sum(nc3.variables[var_list[j]].shape) == 71:
-                    continue
+                # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
+                #     continue
                 else:
                     misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
         nc3.close()
@@ -1492,9 +1493,9 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
