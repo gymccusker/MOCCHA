@@ -1368,37 +1368,37 @@ def main():
         print var_list
         print ''
 
-            if i == 0:
-                misc_data = {}
-                # misc_data1d = {}
-                if month_flag == -1:
-                    if misc_flag == 1: time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
-                    if misc_flag == 0: time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
-                else:
-                    if misc_flag == 1: time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
-                    if misc_flag == 0: time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
-                for j in range(0,len(var_list)):
-                    if np.ndim(nc3.variables[var_list[j]]) == 1:  # 1d timeseries only
-                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
-                    else:                                   # 2d column um_data
-                        misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+        if i == 0:
+            misc_data = {}
+            # misc_data1d = {}
+            if month_flag == -1:
+                if misc_flag == 1: time_misc = doy[i] + ((nc3.variables['forecast_time'][:])/24.0)
+                if misc_flag == 0: time_misc = doy[i] + ((nc3.variables['time'][:])/24.0)
             else:
-                if month_flag == -1:
-                    if misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
-                    if misc_flag == 0: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
+                if misc_flag == 1: time_misc = float(names[i][6:8]) + ((nc3.variables['forecast_time'][:])/24.0)
+                if misc_flag == 0: time_misc = float(names[i][6:8]) + ((nc3.variables['time'][:])/24.0)
+            for j in range(0,len(var_list)):
+                if np.ndim(nc3.variables[var_list[j]]) == 1:  # 1d timeseries only
+                    misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+                else:                                   # 2d column um_data
+                    misc_data[var_list[j]] = nc3.variables[var_list[j]][:]
+        else:
+            if month_flag == -1:
+                if misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['forecast_time'][:])/24.0))
+                if misc_flag == 0: time_misc = np.append(time_misc, doy[i] + ((nc3.variables['time'][:])/24.0))
+            else:
+                if misc_flag == 1: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
+                if misc_flag == 0: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
+            print misc_data
+            for j in range(0,len(var_list)):
+                # print 'j = ' + str(j)
+                if np.ndim(nc3.variables[var_list[j]]) == 1:
+                    misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
+                elif np.sum(nc3.variables[var_list[j]].shape) == 71:
+                    continue
                 else:
-                    if misc_flag == 1: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
-                    if misc_flag == 0: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
-                print misc_data
-                for j in range(0,len(var_list)):
-                    # print 'j = ' + str(j)
-                    if np.ndim(nc3.variables[var_list[j]]) == 1:
-                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:])
-                    elif np.sum(nc3.variables[var_list[j]].shape) == 71:
-                        continue
-                    else:
-                        misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
-            nc3.close()
+                    misc_data[var_list[j]] = np.append(misc_data[var_list[j]].data,nc3.variables[var_list[j]][:],0)
+        nc3.close()
 
         ### -------------------------------------------------------------------------
         ###     LOAD IN OBS DATA
