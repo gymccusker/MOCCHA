@@ -1140,7 +1140,7 @@ def main():
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
-    print 'Misc_flag = ' + misc_flag + '... so third simulation for comparison is:'
+    print 'Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:'
     if misc_flag == 0: print 'Cloudnet-ed data!'
     if misc_flag == 1: print 'standard model output!'
 
