@@ -2974,8 +2974,8 @@ def main():
     print ('Load ice station flux data from Jutta...')
     obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
-    print ('Load ice station radiation data from Jutta...')
-    obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+    # print ('Load ice station radiation data from Jutta...')
+    # obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
     print ('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
