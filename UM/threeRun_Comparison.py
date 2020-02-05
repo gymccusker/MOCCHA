@@ -1577,16 +1577,16 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     # flx_conv_rain[flx_conv_rain < 0] = np.nan
     # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
 
-    # flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
-    # flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
-    #                                                     #### above evaporates/sublimes before it reaches
-    #                                                     #### the surface
+    flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
+    flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
+                                                        #### above evaporates/sublimes before it reaches
+                                                        #### the surface
 
     # flx_ls_rain = np.nanmean(data3['flx_ls_rain'],1)         #### take average rate
     # flx_ls_snow = np.nanmean(data3['flx_ls_snow'],1)
 
-    flx_ls_rain = np.nansum(data3['flx_ls_rain'],1)         #### take total
-    flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
+    # flx_ls_rain = np.nansum(data3['flx_ls_rain'],1)         #### take total
+    # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
 
     #### remove flagged values
     flx_ls_rain[flx_ls_rain < 0] = np.nan
@@ -1635,7 +1635,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-nansum_casim-100.svg'
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
