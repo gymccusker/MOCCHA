@@ -125,6 +125,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
     radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+    flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress']
 
     #################################################################
     ## CREATE NEW NETCDF
@@ -139,6 +140,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     ###################################
     forecast_time = nc.createDimension('forecast_time', 25)
     height = nc.createDimension('height', np.size(nc1.variables['height']))
+    height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
 
     ###################################
     ## Dimensions variables
@@ -163,6 +165,15 @@ def combineNC(nc1, nc2, filename1, filename2):
     height.long_name = 'height'
     height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
+    #### height2
+    height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+    height2.scale_factor = float(1)
+    height2.add_offset = float(0)
+    height2.comment = ''
+    height2.units = 'm'
+    height2.long_name = 'height2'
+    height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -181,6 +192,9 @@ def combineNC(nc1, nc2, filename1, filename2):
                 continue
             if diag == 'height':
                 print 'Diagnostic is height which is already defined... skipping.'
+                continue
+            if diag == 'height2':
+                print 'Diagnostic is height2 which is already defined... skipping.'
                 continue
             if diag in radlist:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
@@ -207,16 +221,28 @@ def combineNC(nc1, nc2, filename1, filename2):
 
         ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
-            dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
-            dat.scale_factor = float(1)
-            dat.add_offset = float(0)
-            if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
-            if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
-            if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
-            if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
-            if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-            dat[0:24,:] = nc1.variables[diag][0:,:]
-            dat[24,:] = nc2.variables[diag][0,:]
+            if diag in flxlist:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                dat[24,:] = nc2.variables[diag][0,:]
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                dat[24,:] = nc2.variables[diag][0,:]
 
         ### 0Dimensions
         else:
