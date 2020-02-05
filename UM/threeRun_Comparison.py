@@ -1247,14 +1247,17 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     yCmax = 0.16
     plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
     ##---
-    indextaum = np.logical_and(data1['sensible_heat_flux'].data>=-50, data1['sensible_heat_flux'].data<=50)
-    sns.distplot(data1['sensible_heat_flux'][indextaum].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    shf1 = data1['sensible_heat_flux'][data1['hrly_flag']].data
+    indextaum = np.logical_and(shf1 >= -50, shf1 <= 50)
+    sns.distplot(shf1[indextaum], hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
     ##---
-    indextaifs = np.logical_and(data3['sfc_down_sens_heat_flx'].data * -1.0 >=-50, data3['sfc_down_sens_heat_flx'].data * -1.0 <=50)
-    sns.distplot(data3['sfc_down_sens_heat_flx'].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
+    shf3 = data3['sfc_down_sens_heat_flx'][data3['hrly_flag']].data * -1.0
+    indextaifs = np.logical_and(shf3 >= -50, shf3 <= 50)
+    sns.distplot(shf3[indextaifs], hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
     ##---
-    indextacasim = np.logical_and(data2['sensible_heat_flux'].data>=-50, data2['sensible_heat_flux'].data<=50)
-    sns.distplot(data2['sensible_heat_flux'][indextacasim].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    shf2 = data2['sensible_heat_flux'][data2['hrly_flag']].data
+    indextacasim = np.logical_and(shf2 >= -50, shf2 <= 50)
+    sns.distplot(shf2[indextacasim], hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     ##---
     fmst_taflux = obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1]
     indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
@@ -1272,14 +1275,17 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     yDmax = 0.12
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     ##---
-    indexlrum = np.logical_and(data1['latent_heat_flux'].data>=-50, data1['latent_heat_flux'].data<=50)
-    sns.distplot(data1['latent_heat_flux'][indexlrum].data, hist=False, color="steelblue", kde_kws={"shade": True})
+    lhf1 = data1['latent_heat_flux'][data1['hrly_flag']].data
+    indexlrum = np.logical_and(lhf1 >= -50, lhf1 <= 50)
+    sns.distplot(lhf1[indexlrum], hist=False, color="steelblue", kde_kws={"shade": True})
     ##---
-    indexlrifs = np.logical_and(data3['sfc_down_lat_heat_flx'].data * -1.0>=-50, data3['sfc_down_lat_heat_flx'].data * -1.0<=50)
-    sns.distplot(data3['sfc_down_lat_heat_flx'][indexlrifs].data * -1.0, hist=False, color="darkorange", kde_kws={"shade": True})
+    lhf3 = data1['sfc_down_lat_heat_flx'][data3['hrly_flag']].data * -1.0
+    indexlrifs = np.logical_and(lhf3 >= -50, lhf3 <= 50)
+    sns.distplot(lhf3[indexlrifs], hist=False, color="darkorange", kde_kws={"shade": True})
     ##---
-    indexlrcasim = np.logical_and(data2['latent_heat_flux'].data>=-50, data2['latent_heat_flux'].data<=50)
-    sns.distplot(data2['latent_heat_flux'][indexlrcasim].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    lhf2 = data2['latent_heat_flux'][data2['hrly_flag']].data
+    indexlrcasim = np.logical_and(lhf2 >= -50, lhf2 <= 50)
+    sns.distplot(lhf2[indexlrcasim], hist=False, color="forestgreen", kde_kws={"shade": True})
     ##---
     fmst_lrflux = obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1]
     indexlrfmst = np.logical_and(fmst_lrflux>=-50, fmst_lrflux<=50)
