@@ -1363,6 +1363,11 @@ def main():
             elif out_dir == 'iwc-Z-T-metum-grid':
                 var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
+        print ''
+        print 'misc file variable list is:'
+        print var_list
+        print ''
+
             if i == 0:
                 misc_data = {}
                 # misc_data1d = {}
