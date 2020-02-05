@@ -1203,7 +1203,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         'kv', markersize = 5, label = 'Foremast')
     plt.plot(time_iceStation[np.squeeze(obs['ice_station']['taflag'][:]==1)],
         np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1]),
-        '^', color = 'darkgrey', markersize = 6, markeredgecolor = 'grey', label = 'Ice_station')
+        '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1222,7 +1222,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     # index = np.logical_and(obs['ice_station']['lrflux']>=-30, obs['ice_station']['lrflux']<=70)
     plt.plot(time_iceStation[np.squeeze(obs['ice_station']['lrflag'][:]==1)],
         np.squeeze(obs['ice_station']['lrflux'][obs['ice_station']['lrflag'][:] == 1]),
-        '^', color = 'darkgrey', markersize = 6, markeredgecolor = 'grey', label = 'Ice_station')
+        '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
     if ifs_flag == True:
@@ -1299,7 +1299,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.ylim([0,yDmax])
 
     fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStationQC_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -3306,8 +3306,8 @@ def main():
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
