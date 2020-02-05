@@ -1129,11 +1129,11 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
