@@ -3021,7 +3021,7 @@ def main():
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
-    doy = np.arange(244,256)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
+    doy = np.arange(244,255)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
