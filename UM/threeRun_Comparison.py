@@ -1279,7 +1279,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     indexlrum = np.logical_and(lhf1 >= -50, lhf1 <= 50)
     sns.distplot(lhf1[indexlrum], hist=False, color="steelblue", kde_kws={"shade": True})
     ##---
-    lhf3 = data1['sfc_down_lat_heat_flx'][data3['hrly_flag']].data * -1.0
+    lhf3 = data3['sfc_down_lat_heat_flx'][data3['hrly_flag']].data * -1.0
     indexlrifs = np.logical_and(lhf3 >= -50, lhf3 <= 50)
     sns.distplot(lhf3[indexlrifs], hist=False, color="darkorange", kde_kws={"shade": True})
     ##---
