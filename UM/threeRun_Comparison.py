@@ -2822,7 +2822,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     ###     need to pick out where we have a repeated time value, then remove it so
     ###     that the time array can be indexed easily
 
-    ###
+    ### stop double counting of 0000 and 2400 from model data
     temp = np.zeros([len(data1['time'])])
     for i in range(0, len(temp)-1):
         if data1['time'][i] == data1['time'][i+1]:
