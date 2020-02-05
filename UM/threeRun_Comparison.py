@@ -2822,20 +2822,6 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     ###     need to pick out where we have a repeated time value, then remove it so
     ###     that the time array can be indexed easily
 
-    ### stop double counting of 0000 and 2400 from model data
-    temp = np.zeros([len(data1['time'])])
-    for i in range(0, len(temp)-1):
-        if data1['time'][i] == data1['time'][i+1]:
-            continue
-        else:
-            temp[i] = data1['time'][i]
-    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
-
-    ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_hrly'] = temp[ii]
-    data2['time_hrly'] = temp[ii]
-    data3['time_hrly'] = temp[ii]
-
     #### ---------------------------------------------------------------
     ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
     #### ---------------------------------------------------------------
@@ -3226,6 +3212,20 @@ def main():
     data1['time'] = time_um1
     data2['time'] = time_um2
     data3['time'] = time_um3
+
+    ### stop double counting of 0000 and 2400 from model data
+    temp = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp[i] = data1['time'][i]
+    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_hrly'] = temp[ii]
+    data2['time_hrly'] = temp[ii]
+    data3['time_hrly'] = temp[ii]
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
