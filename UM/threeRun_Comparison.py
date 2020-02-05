@@ -2782,6 +2782,15 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     elif var == 'q':
         varlist = ['mr','q','q','q']
 
+    ### stop double counting of 0000 and 2400 from model data
+    temp = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp[i] = data1['time'][i]
+    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
     #### ---------------------------------------------------------------
     #### save hourly temperature model profiles (using the ii index defined by the time indices)
     #### ---------------------------------------------------------------
