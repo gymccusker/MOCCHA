@@ -1423,14 +1423,26 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
     #         hspace = 0.3, wspace = 0.15)
     # plt.subplot(211)
+
+    #### only compare with observations where we have data:
+    ####        all model data share a timestamp
+    tindex = np.where(data1['time_hrly'] >= time_radice[0])
+
+    sw1 = data1['surface_net_SW_radiation'][data1['hrly_flag']]
+    lw1 = data1['surface_net_LW_radiation'][data1['hrly_flag']]
+    sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
+    lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
+    sw3 = data3['sfc_net_sw'][data3['hrly_flag']]
+    lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
+
     ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
     yDmax = 0.05
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    crf1 = data1['surface_net_SW_radiation'][data1['hrly_flag']].data + data1['surface_net_LW_radiation'][data1['hrly_flag']].data
+    crf1 = sw1[tindex] + lw1[tindex]
     sns.distplot(crf1, hist=False, color="steelblue", kde_kws={"shade": True})
-    crf3 = data3['sfc_net_sw'][data3['hrly_flag']].data + data3['sfc_net_lw'][data3['hrly_flag']].data
+    crf3 = sw3[tindex] + lw3[tindex]
     sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
-    crf2 = data2['surface_net_SW_radiation'][data2['hrly_flag']].data + data2['surface_net_LW_radiation'][data2['hrly_flag']].data
+    crf2 = sw2[tindex] + lw2[tindex]
     sns.distplot(crf2, hist=False, color="forestgreen", kde_kws={"shade": True})
     sns.distplot(netLW + netSW, hist=False, color="black")
     plt.title('CRF [W/m2]')
@@ -1441,9 +1453,9 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
     yEmax = 0.06
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_SW_radiation'][data1['hrly_flag']].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
-    sns.distplot(data3['sfc_net_sw'][data3['hrly_flag']].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
-    sns.distplot(data2['surface_net_SW_radiation'][data2['hrly_flag']].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    sns.distplot(sw1[tindex], hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    sns.distplot(sw3[tindex], hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
+    sns.distplot(sw2[tindex], hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
     sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
     plt.title('surface_net_SW_radiation [W/m2]')
     plt.legend()
@@ -1454,9 +1466,9 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
     yFmax = 0.12
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(data1['surface_net_LW_radiation'][data1['hrly_flag']].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(data3['sfc_net_lw'][data3['hrly_flag']].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(data2['surface_net_LW_radiation'][data2['hrly_flag']].data, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(lw1[tindex], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw3[tindex], hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(lw2[tindex], hist=False, color="forestgreen", kde_kws={"shade": True})
     sns.distplot(netLW, hist=False, color="black")
     plt.title('surface_net_LW_radiation [W/m2]')
     plt.xlim([-80,20])
@@ -1467,7 +1479,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
