@@ -539,7 +539,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.title('Melt')
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.2])
     plt.legend()
 
@@ -561,7 +561,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.xlabel('Liquid water content [g/m3]')
     plt.title('Freeze up')
     plt.yticks([])
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.2])
     # plt.legend()
 
@@ -643,7 +643,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.2])
     plt.legend()
 
@@ -725,7 +725,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.2])
     plt.legend()
 
@@ -736,7 +736,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_qliq_226-257DOY.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -919,7 +919,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
 
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.05])
     plt.legend()
 
@@ -1001,7 +1001,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,6000])
+    plt.ylim([0,8000])
     plt.xlim([0,0.05])
     plt.legend()
 
@@ -1129,11 +1129,11 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
@@ -1485,8 +1485,8 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
@@ -1500,12 +1500,12 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot LWC statistics based on melt/freeze up
     # -------------------------------------------------------------
-    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot IWC statistics based on melt/freeze up
