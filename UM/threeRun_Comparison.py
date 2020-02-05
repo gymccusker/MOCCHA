@@ -1503,15 +1503,14 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    # plt.figure(figsize=(9,10))
-    # # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
-    #         hspace = 0.4, wspace = 0.13)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
 
     #################################################################
     ## sort out obs['obs_temp']ervations' timestamp
@@ -1587,9 +1586,9 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(10,5))
+    # fig = plt.figure(figsize=(10,5))
 
-    ax  = fig.add_axes([0.1,0.12,0.8,0.75])   # left, bottom, width, height
+    # ax  = fig.add_axes([0.1,0.12,0.8,0.75])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], 'k', label = 'Obs_PWS')
@@ -1607,6 +1606,8 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([0,2])
     plt.xlabel('Day of year')
+    plt.legend()
+
 
     # ax  = fig.add_axes([0.75,0.15,0.2,0.7])   # left, bottom, width, height
 
@@ -3262,7 +3263,7 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
