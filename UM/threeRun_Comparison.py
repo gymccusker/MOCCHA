@@ -330,7 +330,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1], obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1], 'k.')
-    plt.plot(obs['ice_station']['mday'],obs['ice_station']['tafluxB'], 'r.')
+    plt.plot(obs['ice_station_fluxes']['mday'],obs['ice_station_fluxes']['tafluxB'], 'r.')
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -690,7 +690,7 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1], obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1], 'k.')
-    plt.plot(obs['ice_station']['mday'],obs['ice_station']['tafluxB'], 'r.')
+    plt.plot(obs['ice_station_fluxes']['mday'],obs['ice_station_fluxes']['tafluxB'], 'r.')
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -884,7 +884,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1], obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1], 'k.')
-    plt.plot(obs['ice_station']['mday'],obs['ice_station']['tafluxB'], 'r.')
+    plt.plot(obs['ice_station_fluxes']['mday'],obs['ice_station_fluxes']['tafluxB'], 'r.')
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1078,7 +1078,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'darkorange')# * -1.0)
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1], obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1], 'k.')
-    plt.plot(obs['ice_station']['mday'],obs['ice_station']['tafluxB'], 'r.')
+    plt.plot(obs['ice_station_fluxes']['mday'],obs['ice_station_fluxes']['tafluxB'], 'r.')
     plt.ylim([-30, 30])
     plt.title('sensible_heat_flux [W/m2]')
     if month_flag == 8: ax.set_xlim([13.0, 31.0])
@@ -1170,7 +1170,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### change matlab time for obs
     ### -------------------------------
-    time_iceStation = calcTime_Mat2DOY(np.squeeze(obs['ice_station']['mday'][:]))
+    time_iceStation = calcTime_Mat2DOY(np.squeeze(obs['ice_station_fluxes']['mday'][:]))
 
     ### -------------------------------
     ### Build figure (timeseries)
@@ -1182,8 +1182,8 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1],
         obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1],
         'kv', markersize = 5, label = 'Foremast')
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['taflag'][:]==1)],
-        np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1]),
+    plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['taflag'][:]==1)],
+        np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
@@ -1200,9 +1200,9 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1],
         obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1],
         'kv', markersize = 5, label = 'Foremast')
-    # index = np.logical_and(obs['ice_station']['lrflux']>=-30, obs['ice_station']['lrflux']<=70)
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station']['lrflag'][:]==1)],
-        np.squeeze(obs['ice_station']['lrflux'][obs['ice_station']['lrflag'][:] == 1]),
+    # index = np.logical_and(obs['ice_station_fluxes']['lrflux']>=-30, obs['ice_station_fluxes']['lrflux']<=70)
+    plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['lrflag'][:]==1)],
+        np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
@@ -1244,7 +1244,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
     sns.distplot(fmst_taflux[indextafmst], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
     ##---
-    taflux = np.squeeze(obs['ice_station']['taflux'][obs['ice_station']['taflag'][:] == 1])
+    taflux = np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1])
     indexta = np.logical_and(taflux>=-50, taflux<=50)
     sns.distplot(taflux[indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
     plt.title('sensible_heat_flux [W/m2]')
@@ -1272,7 +1272,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     indexlrfmst = np.logical_and(fmst_lrflux>=-50, fmst_lrflux<=50)
     sns.distplot(fmst_lrflux[indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
     ##---
-    lrflux = np.squeeze(obs['ice_station']['lrflux'][obs['ice_station']['lrflag'][:] == 1])
+    lrflux = np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1])
     indexlr = np.logical_and(lrflux>=-50, lrflux<=50)
     sns.distplot(lrflux[indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('latent_heat_flux [W/m2]')
@@ -2958,7 +2958,7 @@ def main():
             # Which file does what?
             # -------------------------------------------------------------
             #### ice station: net LW / net SW
-                    #### obs['ice_station']/mast_radiation_30min_v2.3.mat
+                    #### obs['ice_station_fluxes']/mast_radiation_30min_v2.3.mat
             #### obs['foremast']:
                     #### obs['foremast']/ACAS_AO2018_obs['foremast']_30min_v2_0.nc
             #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
@@ -2969,10 +2969,13 @@ def main():
     print ('Load temporary ice station data from Jutta...')
     obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
-    print ('Load ice station data from Jutta...')
-    obs['ice_station'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
-            #### mast_radiation_30min_v2.3.mat
-            #### flux30_trhwxrel.mat
+
+
+    print ('Load ice station flux data from Jutta...')
+    obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
+
+    print ('Load ice station radiation data from Jutta...')
+    obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
     print ('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
@@ -3262,8 +3265,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
