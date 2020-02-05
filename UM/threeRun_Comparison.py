@@ -1551,6 +1551,8 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
+
+
     ### set diagnostic naming flags for if IFS being used
     if out_dir4 == 'OUT_25H/':
         ifs_flag = True
@@ -1575,13 +1577,25 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     # flx_conv_rain[flx_conv_rain < 0] = np.nan
     # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
 
-    flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
-    flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
-                                                        #### above evaporates/sublimes before it reaches
-                                                        #### the surface
+    # flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
+    # flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
+    #                                                     #### above evaporates/sublimes before it reaches
+    #                                                     #### the surface
+
+    # flx_ls_rain = np.nanmean(data3['flx_ls_rain'],1)         #### take average rate
+    # flx_ls_snow = np.nanmean(data3['flx_ls_snow'],1)
+
+    flx_ls_rain = np.nansum(data3['flx_ls_rain'],1)         #### take total
+    flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
+
     #### remove flagged values
     flx_ls_rain[flx_ls_rain < 0] = np.nan
     flx_ls_snow[flx_ls_snow < 0] = np.nan
+
+    ### doy drift flag
+    drift = np.squeeze(np.where(np.logical_and(obs['pws']['doy'] >= 226.0, obs['pws']['doy'] <= 258.0)))
+
+    # print (drift.shape)
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
@@ -1592,42 +1606,37 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(16,12))
+    fig = plt.figure(figsize=(10,5))
 
-    # ax  = fig.add_axes([0.1,0.56,0.8,0.4])   # left, bottom, width, height
+    ax  = fig.add_axes([0.1,0.12,0.8,0.75])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['rainfall_flux'].data*3600 + data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['rainfall_flux'].data*3600 + data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
+    plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], 'k', label = 'Obs_PWS')
+    plt.plot(data1['time'][::2], data1['rainfall_flux'][::2].data*3600 + data1['snowfall_flux'][::2].data*3600,
+        'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+    plt.plot(data2['time'][::2], data2['rainfall_flux'][::2].data*3600 + data2['snowfall_flux'][::2].data*3600,
+        's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'], (flx_ls_rain)*3600 + (flx_ls_snow)*3600, color = 'darkorange', label = label3)
+        plt.plot(data3['time'][::2], (flx_ls_rain[::2])*3600 + (flx_ls_snow[::2])*3600,
+            '^', color = 'darkorange', markeredgecolor = 'saddlebrown', label = label3)
         # plt.plot(data3['time'], (flx_conv_rain)*3600, color = 'k', label = label3)
     else:
-        plt.plot(data3['time'], data3['rainfall_flux'].data, color = 'darkorange', label = label3)
+        plt.plot(data3['time'], data3['rainfall_flux'].data + data3['snowfall_flux'].data*3600, color = 'darkorange', label = label3)
     plt.title('Precipitation flux [mm/hr]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.ylim([0,2])
+    plt.xlabel('Day of year')
 
-    # ax  = fig.add_axes([0.1,0.1,0.8,0.4])   # left, bottom, width, height
-    # ax = plt.gca()
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    # plt.plot(data1['time'], data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'], data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time'], (flx_ls_snow)*3600, color = 'darkorange', label = label3)
-    # else:
-    #     plt.plot(data3['time'], data3['snowfall_flux'].data, color = 'darkorange', label = label3)
-    # plt.title('Snowfall flux [mm/hr]')
-    # ax.set_xlim([doy[0],doy[-1]])
+    # ax  = fig.add_axes([0.75,0.15,0.2,0.7])   # left, bottom, width, height
+
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-nansum_casim-100.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -3072,7 +3081,7 @@ def main():
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
         var_list2 = var_list1
-        if ifs_flag: var_list3 = ['height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
+        if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
         if not ifs_flag: var_list3 = var_list1
 
