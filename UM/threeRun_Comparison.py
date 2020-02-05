@@ -1468,7 +1468,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print ('')
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -1617,7 +1617,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('')
 
     fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -2911,7 +2911,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '12_u-br210_RA1M_CASIM/OUT_R0/'
+    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
     out_dir4 = 'OUT_25H/'
 
@@ -3001,15 +3001,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_','20180831_oden_',
-            '20180901_oden_',
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_']#,'20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -3017,11 +3016,11 @@ def main():
 
     moccha_missing_files = ['20180813_oden_']
 
-    # doy = np.arange(226,258)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
-    doy = np.arange(244,255)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
+    # doy = np.arange(244,256)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -3239,7 +3238,7 @@ def main():
     # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
     # -------------------------------------------------------------
-    figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
     #             missing_files, out_dir1, obs, doy)
@@ -3252,15 +3251,15 @@ def main():
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
