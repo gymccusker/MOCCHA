@@ -1594,85 +1594,32 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ### -------------------------------
     fig = plt.figure(figsize=(16,12))
 
-    ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
+    # ax  = fig.add_axes([0.1,0.56,0.8,0.4])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['rainfall_flux'].data*3600, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['rainfall_flux'].data*3600, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['rainfall_flux'].data*3600 + data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
+    plt.plot(data2['time'], data2['rainfall_flux'].data*3600 + data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'], (flx_ls_rain)*3600, color = 'darkorange', label = label3)
+        plt.plot(data3['time'], (flx_ls_rain)*3600 + (flx_ls_snow)*3600, color = 'darkorange', label = label3)
         # plt.plot(data3['time'], (flx_conv_rain)*3600, color = 'k', label = label3)
     else:
         plt.plot(data3['time'], data3['rainfall_flux'].data, color = 'darkorange', label = label3)
-    plt.title('Rainfall flux [mm/hr]')
+    plt.title('Precipitation flux [mm/hr]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
-    if ifs_flag == True:
-        plt.plot(data3['time'], (flx_ls_snow)*3600, color = 'darkorange', label = label3)
-    else:
-        plt.plot(data3['time'], data3['snowfall_flux'].data, color = 'darkorange', label = label3)
-    plt.title('Snowfall flux [mm/hr]')
-    ax.set_xlim([doy[0],doy[-1]])
-
-    ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
-    ax = plt.gca()
+    # ax  = fig.add_axes([0.1,0.1,0.8,0.4])   # left, bottom, width, height
+    # ax = plt.gca()
     # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    # plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    # plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    # # # plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
+    # plt.plot(data1['time'], data1['snowfall_flux'].data*3600, color = 'steelblue', label = label1)
+    # plt.plot(data2['time'], data2['snowfall_flux'].data*3600, color = 'forestgreen', label = label2)
     # if ifs_flag == True:
-    #     plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
+    #     plt.plot(data3['time'], (flx_ls_snow)*3600, color = 'darkorange', label = label3)
     # else:
-    #     plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
-    # plt.title('surface_net_LW_radiation [W/m2]')
+    #     plt.plot(data3['time'], data3['snowfall_flux'].data, color = 'darkorange', label = label3)
+    # plt.title('Snowfall flux [mm/hr]')
     # ax.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-
-    ### -------------------------------
-    ### Build figure (PDFs)
-    ### -------------------------------
-    ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    # yDmax = 0.05
-    # plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    # sns.distplot(data1['surface_net_SW_radiation'].data + data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    # sns.distplot(data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    # sns.distplot(data2['surface_net_SW_radiation'].data + data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    # sns.distplot(netLW + netSW, hist=False, color="black")
-    # plt.title('CRF [W/m2]')
-    # plt.xlim([-50,80])
-    # plt.ylim([0,yDmax])
-
-
-    ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    # yEmax = 0.06
-    # plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    # sns.distplot(data1['surface_net_SW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
-    # sns.distplot(data3['sfc_net_sw'].data, hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
-    # sns.distplot(data2['surface_net_SW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
-    # sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
-    # plt.title('surface_net_SW_radiation [W/m2]')
-    # plt.legend()
-    # plt.xlim([-10,110])
-    # plt.ylim([0,yEmax])
-
-
-    ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    # yFmax = 0.12
-    # plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    # sns.distplot(data1['surface_net_LW_radiation'].data, hist=False, color="steelblue", kde_kws={"shade": True})
-    # sns.distplot(data3['sfc_net_lw'].data, hist=False, color="darkorange", kde_kws={"shade": True})
-    # sns.distplot(data2['surface_net_LW_radiation'].data, hist=False, color="forestgreen", kde_kws={"shade": True})
-    # sns.distplot(netLW, hist=False, color="black")
-    # plt.title('surface_net_LW_radiation [W/m2]')
-    # plt.xlim([-80,20])
-    # plt.ylim([0,yFmax])
 
     print ('******')
     print ('')
@@ -3034,6 +2981,9 @@ def main():
 
     print ('Load 7th deck weather station data from John...')
     obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
+
+    print ('Load weather sensor data from John...')
+    obs['pws'] = readMatlabStruct(obs_root_dir + '7thDeck/ACAS_AO2018_PWD_30min_v1_0.mat')
 
     print ('...')
 
