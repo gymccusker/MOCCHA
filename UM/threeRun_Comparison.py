@@ -366,8 +366,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.svg'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/244-256_oden_metum_ifs_casim-aeroprof_TSa.svg'
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -2911,9 +2911,9 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+    out_dir2 = '12_u-br210_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
-    out_dir4 = '12_u-br210_RA1M_CASIM/OUT_R0/'
+    out_dir4 = 'OUT_25H/'
 
     ### IFS: OUT_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
