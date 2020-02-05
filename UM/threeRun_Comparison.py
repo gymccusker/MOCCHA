@@ -2943,28 +2943,6 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     return data1, data2, data3, obs, drift
 
-def callback(cube, field, filename):
-    '''
-    rename cube diagnostics per list of wanted stash diags
-    '''
-
-    iStash = cube.attributes['STASH'].__str__()
-    if diags.findfieldName(iStash):
-        if cube.name() != diags.findfieldName(iStash):
-            cube.rename(diags.findfieldName(iStash))
-
-def makeGlobalStashList():
-    '''
-    make a list of all the stash code we want to load
-    '''
-
-    GlobalStashList = diags.returnWantedStash()
-
-    # print GlobalStashList
-    # print GlobalStashList[0]
-
-    return GlobalStashList
-
 def main():
 
     START_TIME = time.time()
@@ -3063,18 +3041,6 @@ def main():
     obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
     print ('...')
-
-    # -------------------------------------------------------------------------
-    # make global stash list and constraint
-    # -------------------------------------------------------------------------
-    print ('******')
-    print ('')
-    print ('Make stash list for cube read in at ' + time.strftime("%c"))
-    print (' ')
-    GlobalStashList = makeGlobalStashList()
-    global_con = iris.AttributeConstraint(
-        STASH=lambda stash: str(stash) in GlobalStashList)
-            ### defines which stash variables to load - should be within a loop
 
     # # -------------------------------------------------------------
     # # Load cube
