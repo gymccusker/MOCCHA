@@ -366,27 +366,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('Finished plotting! :)')
     print ('')
 
-    # if month_flag == -1:
-        # if out_dir1[:20] == '5_u-bl661_RA1M_CASIM':
-            # if out_dir2[:20] == '6_u-bm410_RA1M_CASIM':
-            #     if out_dir4 == 'OUT_25H/':
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] + '_oden_metum_ifs_casim_TSa.svg'
-            #     else:
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_casim_TSa.png'
-            # elif out_dir2[:9] == '4_u-bg410':
-            #     if out_dir4 == 'OUT_25H/':
-            #         fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:20] + '_oden_metum_ifs_casim_TSa.svg'
-            # else:
-            #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_oden_metum_casim_TSa.svg'
-        # if out_dir2[:20] == '5_u-bl661_RA1M_CASIM':
-        #     if out_dir4[:20] == '6_u-bm410_RA1M_CASIM':
-        #         fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_' + out_dir4[:9] + '_oden_metum_casim-100_200_TSa.png'
-        #     elif out_dir4 == 'OUT_25H/':
-        #         fileout = '../FIGS/comparisons/' + out_dir2[:20] + '_oden_metum_ifs_casim-100_TSa.svg'
-        # elif out_dir1[:18] == '4_u-bg610_RA2M_CON':
-        #     fileout = '../FIGS/comparisons/' + out_dir1[:9] + '_' + out_dir2[:9] +'_oden_metum_casim-100_TSa.svg'
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_ra2t_ifs_TSa.svg'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -1134,7 +1115,7 @@ def plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('')
 
     fileout = '../FIGS/comparisons/' + out_dir2[:9] + '_oden_metum_erai-glm_ifs_TSa.svg'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -1487,7 +1468,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     print ('')
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_metum_ifs_casim-100.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -1636,7 +1617,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('')
 
     fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -2942,6 +2923,7 @@ def main():
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
+    ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
 
     print ('******')
     print ('')
@@ -3019,14 +3001,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_',
+            '20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_']#,'20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -3034,10 +3017,11 @@ def main():
 
     moccha_missing_files = ['20180813_oden_']
 
-    doy = np.arange(226,258)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,258)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
-    # doy = np.arange(243,250)          ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    doy = np.arange(244,256)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -3202,6 +3186,7 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '12_u-br210': label1 = 'UM_CASIM-AeroProf'
     if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
     if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
     if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
@@ -3211,6 +3196,7 @@ def main():
     if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '12_u-br210': label2 = 'UM_CASIM-AeroProf'
     if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
     if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
     if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
@@ -3221,6 +3207,7 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
     if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
     if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
     if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
@@ -3252,7 +3239,7 @@ def main():
     # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
     # -------------------------------------------------------------
-    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
     #             missing_files, out_dir1, obs, doy)
@@ -3267,7 +3254,7 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
