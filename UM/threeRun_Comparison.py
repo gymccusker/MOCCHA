@@ -2097,6 +2097,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ax  = fig.add_axes([0.7,0.78,0.3,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:]),
         vmin = Tmin, vmax = Tmax)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2107,6 +2108,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2118,6 +2120,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2128,6 +2131,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')        
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
