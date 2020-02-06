@@ -2131,7 +2131,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_allSondes_UM'][drift[0],:] + 273.15)
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')        
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2314,6 +2314,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:]),
         vmin = 0, vmax = qmax)
     plt.ylim([0,ymax])
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')        
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
@@ -2323,6 +2324,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2334,6 +2336,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
@@ -2344,6 +2347,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_allSondes_UM'][drift[0],:])
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
