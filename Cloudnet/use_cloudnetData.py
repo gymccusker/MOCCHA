@@ -4,7 +4,7 @@
 ###
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -29,10 +29,9 @@ def readfile(filename_um):
 
     import pandas as pd
 
-    # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     um_data = pd.read_csv(filename_um, sep = " ")
     values = um_data.values
@@ -55,12 +54,12 @@ def iceDrift(um_data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(um_data.values[:,2]<=14,um_data.values[:,1]==9),um_data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(um_data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(um_data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(um_data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(um_data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(um_data.values[drift_index[0],0:4]) + ' - ' + str(um_data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(um_data.values[drift_index[0],0:4]) + ' - ' + str(um_data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -82,19 +81,19 @@ def inIce(um_data):
     # # Sep_inIce = np.where(np.logical_and(np.logical_and(um_data.values[:,2]<=20,um_data.values[:,1]==9),um_data.values[:,3]<=1))
     # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(um_data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(um_data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(um_data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(um_data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(um_data.values[inIce_index[0],0:4]) + ' - ' + str(um_data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(um_data.values[inIce_index[0],0:4]) + ' - ' + str(um_data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(um_data.values[inIce_index,6])) + ', ' + str(np.nanmedian(um_data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(um_data.values[inIce_index[0],6]) + ', ' + str(um_data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(um_data.values[inIce_index[-1],6]) + ', ' + str(um_data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(um_data.values[inIce_index,6])) + ', ' + str(np.nanmax(um_data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(um_data.values[inIce_index,7])) + ', ' + str(np.nanmax(um_data.values[inIce_index,7]))
-    print ''
+    print ('CloudNET: ' + str(um_data.values[inIce_index[0],0:4]) + ' - ' + str(um_data.values[inIce_index[-1],0:4]))
+    print ('')
+    print ('Mean lon/lat of ship track: (' + str(np.nanmedian(um_data.values[inIce_index,6])) + ', ' + str(np.nanmedian(um_data.values[inIce_index,7])) + ')')
+    print ('Lon/lat of start point: (' + str(um_data.values[inIce_index[0],6]) + ', ' + str(um_data.values[inIce_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(um_data.values[inIce_index[-1],6]) + ', ' + str(um_data.values[inIce_index[-1],7]) + ')')
+    print ('Min/max longitude: ' + str(np.nanmin(um_data.values[inIce_index,6])) + ', ' + str(np.nanmax(um_data.values[inIce_index,6])))
+    print ('Min/max latitude: ' + str(np.nanmin(um_data.values[inIce_index,7])) + ', ' + str(np.nanmax(um_data.values[inIce_index,7])))
+    print ('')
 
     return inIce_index
 
@@ -108,15 +107,15 @@ def trackShip(um_data, date):
     # trackShip_end = np.where(np.logical_and(np.logical_and(um_data.values[:,2]==(int(date[-2:]) + 1),um_data.values[:,1]==int(date[-4:-2])),um_data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(um_data.values[inIce_index,6])) + ', ' + str(np.nanmedian(um_data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(um_data.values[trackShip_index[0],6]) + ', ' + str(um_data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(um_data.values[trackShip_index[-1],6]) + ', ' + str(um_data.values[trackShip_index[-1],7]) + ')'
+    print ('Lon/lat of start point: (' + str(um_data.values[trackShip_index[0],6]) + ', ' + str(um_data.values[trackShip_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(um_data.values[trackShip_index[-1],6]) + ', ' + str(um_data.values[trackShip_index[-1],7]) + ')')
     # print 'Start: ' + str(um_data.values[trackShip_start[0][0],0:4])
     # print 'End: ' + str(um_data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(um_data.values[trackShip_index[0],0:4]) + ' - ' + str(um_data.values[trackShip_index[-1],0:4])
-    print ''
+    print ('trackShip: ' + str(um_data.values[trackShip_index[0],0:4]) + ' - ' + str(um_data.values[trackShip_index[-1],0:4]))
+    print ('')
 
     return trackShip_index
 
@@ -126,10 +125,10 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     ## PLOT TIMESERIES
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting LWP timeseries for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting LWP timeseries for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -154,7 +153,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     ### define axis instance
     ax = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged and bad data to nans
     um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
@@ -180,10 +179,10 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     plt.xlim([doy[0],doy[-1]])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY.svg'
@@ -204,10 +203,10 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_fl
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting Cv statistics based on melt/freeze up periods:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics based on melt/freeze up periods:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -286,10 +285,10 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_fl
     plt.xlim([0,1])
     # plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_splitSeason_226-257DOY.svg'
@@ -310,10 +309,10 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting Cv statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -338,7 +337,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     ### define axis instance
     ax = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
@@ -368,10 +367,10 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     plt.xlim([0,1])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
@@ -392,10 +391,10 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     ## PLOT PROFILE
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting Cv statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -420,7 +419,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     ### define axis instance
     ax = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
@@ -459,10 +458,10 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     plt.xlim([0,1])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
@@ -483,10 +482,10 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting LWC cloudnet statistics based on melt/freeze up periods:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting LWC cloudnet statistics based on melt/freeze up periods:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -565,10 +564,10 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.xlim([0,0.2])
     # plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC_splitSeason.svg'
@@ -589,10 +588,10 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting LWC statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting LWC statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -617,7 +616,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ### define axis instance
     ax1 = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     #### set flagged um_data to nans
@@ -647,10 +646,10 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlim([0,0.2])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC_226-257DOY.svg'
@@ -671,10 +670,10 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting LWC statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting LWC statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -699,7 +698,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     ### define axis instance
     ax1 = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     #### set flagged um_data to nans
@@ -729,10 +728,10 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.xlim([0,0.2])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_qliq_226-257DOY.svg'
@@ -753,10 +752,10 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting IWC cloudnet statistics based on melt/freeze up periods:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting IWC cloudnet statistics based on melt/freeze up periods:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -841,10 +840,10 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.xlim([0,0.05])
     # plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWC_splitSeason.svg'
@@ -865,10 +864,10 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting IWC statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting IWC statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -893,7 +892,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ### define axis instance
     ax1 = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     #### set flagged um_data to nans
@@ -923,10 +922,10 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlim([0,0.05])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWC_226-257DOY.svg'
@@ -947,10 +946,10 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting IWC statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting IWC statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -975,7 +974,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     ### define axis instance
     ax1 = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
 
     #### set flagged um_data to nans
     #### set flagged um_data to nans
@@ -1005,10 +1004,10 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.xlim([0,0.05])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_226-257DOY.svg'
@@ -1029,10 +1028,10 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     ## PLOT PROFILE
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting Cv statistics for whole drift period:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics for whole drift period:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -1057,7 +1056,7 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     ### define axis instance
     ax = plt.gca()
 
-    print um_data.keys()
+    print (um_data.keys())
     #### set flagged um_data to nans
     um_data['model_temperature'][um_data['model_temperature'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
@@ -1084,10 +1083,10 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     # plt.xlim([0,1])
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_Cv_CASIM-100_temp_240-250DOY.svg'
@@ -1097,10 +1096,10 @@ def plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -1139,9 +1138,9 @@ def main():
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
-    print 'Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:'
-    if misc_flag == 0: print 'Cloudnet-ed data!'
-    if misc_flag == 1: print 'standard model output!'
+    print ('Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:')
+    if misc_flag == 0: print ('Cloudnet-ed data!')
+    if misc_flag == 1: print ('standard model output!')
 
     ######## lwc-adiabatic-metum-grid/2018/
     ########             -> liquid water content derived using measurements averaged on to model grid
@@ -1157,18 +1156,18 @@ def main():
     ###                 model. It also contains the ice water content from that model, so may be used to calculate statistics quantifying the
     ###                 model performance.
 
-    print '******'
-    print ''
-    print 'Identifying .nc1 file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc1 file: ')
+    print ('')
 
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename_um)
     columns = assignColumns(ship_data)
 
@@ -1183,10 +1182,10 @@ def main():
     # # -------------------------------------------------------------
     # # Load nc1
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin nc1 read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Begin nc1 read in at ' + time.strftime("%c"))
+    print (' ')
 
     ### -------------------------------------------------------------------------
     ### define input filename_um
@@ -1246,23 +1245,23 @@ def main():
         filename_obs = obs_dir + obs_out_dir + names[i] + obs_out_dir[:-6] + '.nc'
         if misc_flag == 1: filename_misc = misc_dir + misc_out_dir + names[i] + 'metum.nc'
         if misc_flag == 0: filename_misc = misc_dir + misc_out_dir + names[i] + out_dir + '.nc'
-        print filename_um
-        print filename_ifs
-        if misc_flag == 1: print filename_misc
-        print ''
+        print (filename_um)
+        print (filename_ifs)
+        if misc_flag == 1: print (filename_misc)
+        print ('')
 
         ### --------------------------------------------------------------------
         ###     READ IN ALL FILES
         ### --------------------------------------------------------------------
 
-        print 'Loading multiple diagnostics:'
+        print ('Loading multiple diagnostics:')
         nc1 = Dataset(filename_um,'r')
         nc2 = Dataset(filename_ifs,'r')
         if misc_flag != -1: nc3 = Dataset(filename_misc,'r')
         nc4 = Dataset(filename_obs,'r')
 
         # print 'i = ' + str(i)
-        print ''
+        print ('')
 
         ### --------------------------------------------------------------------
         ###     LOAD UM DATA INTO DICTIONARY
@@ -1293,7 +1292,7 @@ def main():
                 time_um = np.append(time_um, doy[i] + ((nc1.variables['time'][:])/24.0))
             else:
                 time_um = np.append(time_um,float(filename_um[-16:-14]) + ((nc1.variables['time'][:])/24.0))
-            print um_data
+            print (um_data)
             for j in range(0,len(var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(nc1.variables[var_list[j]]) == 1:
@@ -1330,7 +1329,7 @@ def main():
                 time_ifs = np.append(time_ifs, doy[i] + ((nc2.variables['time'][:])/24.0))
             else:
                 time_ifs = np.append(time_ifs,float(filename_ifs[-16:-14]) + ((nc2.variables['time'][:])/24.0))
-            print ifs_data
+            print (ifs_data)
             for j in range(0,len(var_list)):
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
@@ -1361,10 +1360,10 @@ def main():
             elif out_dir == 'iwc-Z-T-metum-grid':
                 var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
-        print ''
-        print 'misc file variable list is:'
-        print var_list
-        print ''
+        print ('')
+        print ('misc file variable list is:')
+        print (var_list)
+        print ('')
 
         if i == 0:
             misc_data = {}
@@ -1389,7 +1388,7 @@ def main():
             else:
                 if misc_flag == 1: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['forecast_time'][:])/24.0))
                 if misc_flag == 0: time_misc = np.append(time_misc,float(filename_misc[-16:-14]) + ((nc3.variables['time'][:])/24.0))
-            print misc_data
+            print (misc_data)
             for j in range(0,len(var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(nc3.variables[var_list[j]]) == 1:
@@ -1428,7 +1427,7 @@ def main():
                 time_obs = np.append(time_obs, doy[i] + ((nc4.variables['time'][:])/24.0))
             else:
                 time_obs = np.append(time_obs,float(filename_obs[-16:-14]) + ((nc4.variables['time'][:])/24.0))
-            print obs_data
+            print (obs_data)
             for j in range(0,len(var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(nc4.variables[var_list[j]]) == 1:
@@ -1451,21 +1450,24 @@ def main():
     ### Load in other measurement data
     ### -------------------------------------------------------------------------
 
-    print 'Load temporary ice station data from Jutta...'
+    print ('Load temporary ice station data from Jutta...')
     obs_data['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
-    print 'Load ice station data from Jutta...'
+    print ('Load ice station data from Jutta...')
     obs_data['ice_station'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
             #### mast_radiation_30min_v2.3.mat
             #### flux30_trhwxrel.mat
 
-    print 'Load radiosonde data from Jutta...'
+    print ('Load radiosonde data from Jutta...')
     obs_data['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
 
-    print 'Load foremast data from John...'
+    print ('Load observations inversion height data from Jutta...')
+    obs['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/InversionHeights_RSh05int_final_V03.mat')
+
+    print ('Load foremast data from John...')
     obs_data['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
 
-    print 'Load 7th deck weather station data from John...'
+    print ('Load 7th deck weather station data from John...')
     obs_data['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
 
@@ -1516,10 +1518,10 @@ def main():
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
