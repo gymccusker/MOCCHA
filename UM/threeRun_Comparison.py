@@ -1370,12 +1370,14 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(16,12))
+    fig = plt.figure(figsize=(18,12))
 
-    ax  = fig.add_axes([0.07,0.7,0.56,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
     netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
     netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
     ax = plt.gca()
+    yA = [-65, 85]
+    plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
@@ -1386,9 +1388,13 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.legend(bbox_to_anchor=(-0.11, 0.67, 1., .102), loc=4, ncol=2)
+    plt.ylim([-60,80])
 
-    ax  = fig.add_axes([0.07,0.4,0.56,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
     ax = plt.gca()
+    yB = [-10, 120]
+    plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
@@ -1400,9 +1406,12 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('surface_net_SW_radiation [W/m2]')
     # plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
+    plt.ylim([-3,120])
 
-    ax  = fig.add_axes([0.07,0.1,0.56,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
     ax = plt.gca()
+    yC = [-90, 10]
+    plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
@@ -1414,6 +1423,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.title('surface_net_LW_radiation [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
+    plt.ylim([-90,5])
 
     ### -------------------------------
     ### Build figure (PDFs)
@@ -1426,7 +1436,11 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
 
     #### only compare with observations where we have data:
     ####        all model data share a timestamp
-    tindex = np.where(data1['time_hrly'] >= time_radice[0])
+    melt = np.where(np.logical_and(data1['time_hrly'] >= time_radice[0], data1['time_hrly'] < 240.0))
+    freeze = np.where(data1['time_hrly'] >= 240.0)
+
+    obsmelt = np.where(time_radice < 240.0)
+    obsfreeze = np.where(time_radice >= 240.0)
 
     sw1 = data1['surface_net_SW_radiation'][data1['hrly_flag']]
     lw1 = data1['surface_net_LW_radiation'][data1['hrly_flag']]
@@ -1435,51 +1449,96 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sw3 = data3['sfc_net_sw'][data3['hrly_flag']]
     lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
 
-    ax  = fig.add_axes([0.7,0.7,0.27,0.22])   # left, bottom, width, height
-    yDmax = 0.05
+    ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
+    yDmax = 0.08
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    crf1 = sw1[tindex] + lw1[tindex]
+    crf1 = sw1[melt] + lw1[melt]
     sns.distplot(crf1, hist=False, color="steelblue", kde_kws={"shade": True})
-    crf3 = sw3[tindex] + lw3[tindex]
+    crf3 = sw3[melt] + lw3[melt]
     sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
-    crf2 = sw2[tindex] + lw2[tindex]
+    crf2 = sw2[melt] + lw2[melt]
     sns.distplot(crf2, hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW + netSW, hist=False, color="black")
-    plt.title('CRF [W/m2]')
+    sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
+    plt.title('Melt')
+    plt.xlabel('CRF [W/m2]')
     plt.xlim([-50,80])
     plt.ylim([0,yDmax])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.4,0.27,0.22])   # left, bottom, width, height
-    yEmax = 0.06
+    ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
+    yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(sw1[tindex], hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
-    sns.distplot(sw3[tindex], hist=False, color="darkorange", kde_kws={"shade": True}, label = label3)
-    sns.distplot(sw2[tindex], hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
-    sns.distplot(netSW, hist=False, color="black", label = 'Ice_station')
-    plt.title('surface_net_SW_radiation [W/m2]')
-    plt.legend()
+    sns.distplot(sw1[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw3[melt], hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(sw2[melt], hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netSW[obsmelt], hist=False, color="black")
+    plt.title('Melt')
+    # plt.legend()
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
+    plt.xlabel('$SW_{net,surf}$ [W/m2]')
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.7,0.1,0.27,0.22])   # left, bottom, width, height
-    yFmax = 0.12
+    ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
+    yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(lw1[tindex], hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(lw3[tindex], hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(lw2[tindex], hist=False, color="forestgreen", kde_kws={"shade": True})
-    sns.distplot(netLW, hist=False, color="black")
-    plt.title('surface_net_LW_radiation [W/m2]')
+    sns.distplot(lw1[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw3[melt], hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(lw2[melt], hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW[obsmelt], hist=False, color="black")
+    plt.title('Melt')
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
+    plt.xlabel('$LW_{net,surf}$ [W/m2]')
+
+    ax  = fig.add_axes([0.83,0.7,0.15,0.22])   # left, bottom, width, height
+    yDmax = 0.08
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    crf1 = sw1[freeze] + lw1[freeze]
+    sns.distplot(crf1, hist=False, color="steelblue", kde_kws={"shade": True})
+    crf3 = sw3[freeze] + lw3[freeze]
+    sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
+    crf2 = sw2[freeze] + lw2[freeze]
+    sns.distplot(crf2, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW[obsfreeze] + netSW[obsfreeze], hist=False, color="black")
+    plt.title('Freeze')
+    plt.xlim([-50,80])
+    plt.ylim([0,yDmax])
+    plt.xlabel('CRF [W/m2]')
+
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
+    yEmax = 0.08
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    sns.distplot(sw1[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw3[freeze], hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(sw2[freeze], hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netSW[obsfreeze], hist=False, color="black")
+    plt.title('Freeze')
+    plt.xlim([-10,110])
+    plt.ylim([0,yEmax])
+    plt.xlabel('$SW_{net,surf}$ [W/m2]')
+
+    # plt.subplot(212)
+    ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
+    yFmax = 0.16
+    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
+    sns.distplot(lw1[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw3[freeze], hist=False, color="darkorange", kde_kws={"shade": True})
+    sns.distplot(lw2[freeze], hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(netLW[obsfreeze], hist=False, color="black")
+    plt.title('Freeze')
+    plt.xlim([-80,20])
+    plt.ylim([0,yFmax])
+    plt.xlabel('$LW_{net,surf}$ [W/m2]')
+
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_splitSeason.svg'
     plt.savefig(fileout)
     plt.show()
 
