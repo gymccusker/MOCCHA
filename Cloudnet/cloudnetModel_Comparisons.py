@@ -189,6 +189,10 @@ def main():
         cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
         cn_misc_flag = 1       ## flag to compare non-cloudnet model data
 
+    print ('Misc_flag = ' + str(cn_misc_flag) + '... so third simulation for Cloudnet comparison is:')
+    if cn_misc_flag == 0: print ('Cloudnet-ed data!')
+    if cn_misc_flag == 1: print ('standard model output!')
+
     print ('******')
     print ('')
     print ('Identifying .nc file: ')
