@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 from netCDF4 import Dataset
 import numpy as np
-import diags_MOCCHA as diags
-import diags_varnames as varnames
+# import diags_MOCCHA as diags
+# import diags_varnames as varnames
 import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
@@ -344,11 +344,11 @@ def main():
         cn_filename_um = cn_um_dir + cn_um_out_dir + names[i] + cn_out_dir + '.nc'
         cn_filename_ifs = cn_ifs_dir + cn_ifs_out_dir + names[i] + cn_ifs_out_dir[:-6] + '.nc'
         cn_filename_obs = cn_obs_dir + cn_obs_out_dir + names[i] + cn_obs_out_dir[:-6] + '.nc'
-        if misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + 'metum.nc'
-        if misc_flag == 0: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + cn_out_dir + '.nc'
+        if cn_misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + 'metum.nc'
+        if cn_misc_flag == 0: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + cn_out_dir + '.nc'
         print (cn_filename_um)
         print (cn_filename_ifs)
-        if misc_flag != 1: print (cn_filename_misc)
+        if cn_misc_flag != 1: print (cn_filename_misc)
         print ('')
 
         #### LOAD CUBE
