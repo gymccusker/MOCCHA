@@ -160,7 +160,8 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
-    ### CHOSEN RUN
+    ### -----------------------------------------------------------------
+    ### CHOSEN RUN - MODEL DATA
     out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
     out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     # out_dir3 = 'MET_DATA/'
@@ -175,6 +176,18 @@ def main():
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+
+    ### -----------------------------------------------------------------
+    ### CHOSEN RUN - CLOUDNET DATA
+    cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+    cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    cn_obs_out_dir = cn_ifs_out_dir
+    if cn_misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
+        cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+        cn_misc_flag = 0       ## flag to compare cloudnet model data
+    elif cn_misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
+        cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
+        cn_misc_flag = 1       ## flag to compare non-cloudnet model data
 
     print ('******')
     print ('')
