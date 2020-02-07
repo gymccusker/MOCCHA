@@ -368,10 +368,10 @@ def main():
         ###     READ IN ALL CLOUDNET FILES
         ### --------------------------------------------------------------------
         print ('Loading multiple diagnostics:')
-        nc1 = Dataset(filename_um,'r')
-        nc2 = Dataset(filename_ifs,'r')
-        if misc_flag != -1: nc3 = Dataset(filename_misc,'r')
-        nc4 = Dataset(filename_obs,'r')
+        cn_nc1 = Dataset(cn_filename_um,'r')
+        cn_nc2 = Dataset(cn_filename_ifs,'r')
+        if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc,'r')
+        cn_nc4 = Dataset(cn_filename_obs,'r')
 
         # -------------------------------------------------------------
         print ('')
