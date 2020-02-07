@@ -122,6 +122,88 @@ def trackShip(data, date):
 
     return trackShip_index
 
+def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
+        np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+        np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
+        np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
 def main():
 
     START_TIME = time.time()
@@ -498,9 +580,9 @@ def main():
                 time_um = float(names[i][6:8]) + ((cn_nc1.variables['time'][:])/24.0)
             for j in range(0,len(cn_var_list)):
                 if np.ndim(cn_nc1.variables[cn_var_list[j]]) == 1:  # 1d timeseries only
-                    cn_um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
+                    um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
                 else:                                   # 2d column um_data
-                    cn_um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
+                    um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
         else:
             if month_flag == -1:
                 time_um = np.append(time_um, doy[i] + ((cn_nc1.variables['time'][:])/24.0))
@@ -591,7 +673,7 @@ def main():
                 if cn_misc_flag == 1: time_misc = float(names[i][6:8]) + ((cn_nc3.variables['forecast_time'][:])/24.0)
                 if cn_misc_flag == 0: time_misc = float(names[i][6:8]) + ((cn_nc3.variables['time'][:])/24.0)
             for j in range(0,len(cn_var_list)):
-                if np.ndim(cn_nc3.variables[var_list[j]]) == 1:  # 1d timeseries only
+                if np.ndim(cn_nc3.variables[cn_var_list[j]]) == 1:  # 1d timeseries only
                     misc_data[cn_var_list[j]] = cn_nc3.variables[cn_var_list[j]][:]
                 else:                                   # 2d column um_data
                     misc_data[cn_var_list[j]] = cn_nc3.variables[cn_var_list[j]][:]
@@ -602,7 +684,7 @@ def main():
             else:
                 if cn_misc_flag == 1: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['forecast_time'][:])/24.0))
                 if cn_misc_flag == 0: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['time'][:])/24.0))
-            print (cn_misc_data)
+            print (misc_data)
             for j in range(0,len(cn_var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(cn_nc3.variables[cn_var_list[j]]) == 1:
@@ -663,7 +745,7 @@ def main():
     ### cloudnet
     ifs_data['time'] = time_ifs
     um_data['time'] = time_um
-    if misc_flag != -1: misc_data['time'] = time_misc
+    if cn_misc_flag != -1: misc_data['time'] = time_misc
     obs_data['time'] = time_obs
 
     #################################################################
@@ -731,7 +813,19 @@ def main():
     ### cloudnet
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
-    if misc_flag != -1: np.save('working_misc_data', misc_data)
+    if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
+
+
+###################################################################################################################
+###################################################################################################################
+################################################ FIGURES ##########################################################
+###################################################################################################################
+###################################################################################################################
+
+    # -------------------------------------------------------------
+    # Test cloudnet plot: Plot Cv statistics from drift period
+    # -------------------------------------------------------------
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # FIN.
