@@ -189,6 +189,20 @@ def main():
         cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
         cn_misc_flag = 1       ## flag to compare non-cloudnet model data
 
+    ######## lwc-adiabatic-metum-grid/2018/
+    ########             -> liquid water content derived using measurements averaged on to model grid
+    ### cloud-fraction-metum-grid/2018/ + cloud-fraction-ecmwf-grid/2018/
+    ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
+    ### lwc-scaled-metum-grid/2018/ + lwc-scaled-ecmwf-grid/2018/
+    ###             -> dataset contains liquid water content derived using radar/lidar cloud boundaries and liquid water path from dual-wavelength
+    ###                 microwave radiometers, averaged on to the grid of a forecast model.
+    ###                 It also contains the liquid water content and liquid water path from that model, so may be used to calculate statistics
+    ###                 quantifying the model performance.
+    ### iwc-Z-T-metum-grid/2018/ + iwc-Z-T-ecmwf-grid/2018/
+    ###             -> dataset contains ice water content derived using radar reflectivity and temperature, averaged on to the grid of a forecast
+    ###                 model. It also contains the ice water content from that model, so may be used to calculate statistics quantifying the
+    ###                 model performance.
+
     print ('Misc_flag = ' + str(cn_misc_flag) + '... so third simulation for Cloudnet comparison is:')
     if cn_misc_flag == 0: print ('Cloudnet-ed data!')
     if cn_misc_flag == 1: print ('standard model output!')
