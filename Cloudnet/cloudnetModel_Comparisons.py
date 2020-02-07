@@ -302,7 +302,7 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_']
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -318,6 +318,7 @@ def main():
     month_flag = -1
 
     for i in range(0,len(names)):
+        print ('Load raw model data first: ')
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
         if out_dir4 == 'OUT_25H/':
@@ -331,6 +332,23 @@ def main():
         print (filename_um1)
         print (filename_um2)
         print (filename_um3)
+        print ('')
+
+        print ('Now load cloudnet data:')
+        if cn_um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
+            cn_out_dir = 'cloud-fraction-metum-grid'
+        elif cn_um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
+            cn_out_dir = 'lwc-scaled-metum-grid'
+        elif cn_um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
+            out_dir = 'iwc-Z-T-metum-grid'
+        cn_filename_um = cn_um_dir + cn_um_out_dir + names[i] + cn_out_dir + '.nc'
+        cn_filename_ifs = cn_ifs_dir + cn_ifs_out_dir + names[i] + cn_ifs_out_dir[:-6] + '.nc'
+        cn_filename_obs = cn_obs_dir + cn_obs_out_dir + names[i] + cn_obs_out_dir[:-6] + '.nc'
+        if misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + 'metum.nc'
+        if misc_flag == 0: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + cn_out_dir + '.nc'
+        print (cn_filename_um)
+        print (cn_filename_ifs)
+        if misc_flag != 1: print (cn_filename_misc)
         print ('')
 
         #### LOAD CUBE
