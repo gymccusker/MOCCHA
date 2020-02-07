@@ -351,7 +351,9 @@ def main():
         if cn_misc_flag != 1: print (cn_filename_misc)
         print ('')
 
-        #### LOAD CUBE
+        ### --------------------------------------------------------------------
+        ###     READ IN ALL MODEL FILES
+        ### --------------------------------------------------------------------
         print( 'Loading first run diagnostics:')
         nc1 = Dataset(filename_um1,'r')
         print ('...')
@@ -361,8 +363,17 @@ def main():
         print ('Loading third run diagnostics:')
         nc3 = Dataset(filename_um3,'r')
         print ('...')
+
+        ### --------------------------------------------------------------------
+        ###     READ IN ALL CLOUDNET FILES
+        ### --------------------------------------------------------------------
+        print ('Loading multiple diagnostics:')
+        nc1 = Dataset(filename_um,'r')
+        nc2 = Dataset(filename_ifs,'r')
+        if misc_flag != -1: nc3 = Dataset(filename_misc,'r')
+        nc4 = Dataset(filename_obs,'r')
+
         # -------------------------------------------------------------
-        # print 'i = ' + str(i)
         print ('')
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
