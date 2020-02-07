@@ -271,7 +271,7 @@ def main():
     # # -------------------------------------------------------------
     print ('******')
     print ('')
-    print ('Begin cube read in at ' + time.strftime("%c"))
+    print ('Begin nc read in at ' + time.strftime("%c"))
     print (' ')
 
     ### -------------------------------------------------------------------------
