@@ -474,7 +474,7 @@ def main():
     if platform == 'JASMIN':
         um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-        misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
+        ifs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
         cn_um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_RA2M/'
         cn_ifs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/ECMWF_IFS/'
@@ -483,7 +483,7 @@ def main():
         cn_obs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/Observations/'
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         cn_um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
@@ -670,7 +670,7 @@ def main():
         if out_dir4 == 'OUT_25H/':
             print( '***IFS being compared***')
             ifs_flag = True
-            filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
+            filename_um3 = ifs_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
         else:
             print ('***IFS NOT being compared***')
             filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
