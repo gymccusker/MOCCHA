@@ -1737,7 +1737,8 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     #################################################################
 
     ax = plt.gca()
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', label = 'Observations')
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', label = 'Obs: main inversion')
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), '--', color = 'grey', label = 'Obs: surface ML height')
     plt.plot(data1['time'], data1['bl_depth'], color = 'steelblue', label = label1)
     plt.plot(data2['time'], data2['bl_depth'], color = 'forestgreen', label = label2)
     if ifs_flag == True:
@@ -1745,7 +1746,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     else:
         plt.plot(data3['time'], data3['bl_depth'], color = 'darkorange', label = label3)
     plt.legend()
-    plt.title('BL_depth / Main inversion base [m]')
+    plt.title('BL_depth / Inversion heights [m]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
