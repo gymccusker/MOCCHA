@@ -3247,7 +3247,7 @@ def main():
                     # data1[cube_um1[j].var_name] = cube_um1[j].data
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
             nc1.close()
             ## ------------------
             #### um2
