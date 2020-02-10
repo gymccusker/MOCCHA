@@ -1727,7 +1727,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if out_dir4 == 'OUT_25H/':
+    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
