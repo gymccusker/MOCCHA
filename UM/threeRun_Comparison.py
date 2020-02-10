@@ -3240,6 +3240,7 @@ def main():
             ## ------------------
             print ('Appending UM data:')
             for j in range(0,len(var_list1)):
+                print (var_list1[j])
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc1.variables[var_list1[j]]) == 1:
