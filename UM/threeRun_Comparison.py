@@ -1739,12 +1739,12 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ax = plt.gca()
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), '--', color = 'grey', label = 'Obs: main inversion')
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'k', label = 'Obs: SML height')
-    plt.plot(data1['time'][::2], data1['bl_depth'][::2],
+    plt.plot(data1['time_hrly'][::6], data1['bl_depth'][data1['hrly_flag'][::6]],
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(data2['time'][::2], data2['bl_depth'][::2],
+    plt.plot(data2['time_hrly'][::6], data2['bl_depth'][data1['hrly_flag'][::6]],
         's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time'][::2], data3['sfc_bl_height'][::2],
+        plt.plot(data3['time_hrly'][::6], data3['sfc_bl_height'][data1['hrly_flag'][::6]],
             '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     else:
         plt.plot(data3['time'], data3['bl_depth'], color = 'darkorange', label = label3)
