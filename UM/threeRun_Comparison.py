@@ -2977,7 +2977,7 @@ def main():
     print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### only works on laptop for now
 
@@ -2987,9 +2987,14 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        platformflag = 'jasmin'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
+        misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
+        # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
+        obs_root_dir = '//gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
     if platform == 'LAPTOP':
+        platformflag = 'laptop'
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
         # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
@@ -3003,10 +3008,16 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-    # out_dir3 = 'MET_DATA/'
-    out_dir4 = 'OUT_25H/'
+    if platformflag == 'laptop':
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        # out_dir3 = 'MET_DATA/'
+        out_dir4 = 'OUT_25H/'
+    elif platformflag == 'jasmin':
+        out_dir1 = 'UM_RA2M/'
+        out_dir2 = 'UM_CASIM-100'
+        # out_dir3 = 'MET_DATA/'
+        out_dir4 = 'ECMWF_IFS/'
 
     ### IFS: OUT_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
@@ -3049,16 +3060,14 @@ def main():
 
     obs = {}
 
-    print ('Load temporary ice station data from Jutta...')
-    obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+    # print ('Load temporary ice station data from Jutta...')
+    # obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
+    # print ('Load ice station flux data from Jutta...')
+    # obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
-
-    print ('Load ice station flux data from Jutta...')
-    obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
-
-    # print ('Load ice station radiation data from Jutta...')
-    # obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+    ### print ('Load ice station radiation data from Jutta...')
+    ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
     print ('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
