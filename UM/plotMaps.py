@@ -304,11 +304,6 @@ def main():
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
 
-    print ('******')
-    print ('')
-    print ('Identifying .nc file: ')
-    print ('')
-
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
@@ -318,46 +313,6 @@ def main():
     print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
-
-    # -------------------------------------------------------------
-    # Load observations
-    # -------------------------------------------------------------
-    print ('Loading observations:')
-            # -------------------------------------------------------------
-            # Which file does what?
-            # -------------------------------------------------------------
-            #### ice station: net LW / net SW
-                    #### obs['ice_station_fluxes']/mast_radiation_30min_v2.3.mat
-            #### obs['foremast']:
-                    #### obs['foremast']/ACAS_AO2018_obs['foremast']_30min_v2_0.nc
-            #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
-                    #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
-
-    obs = {}
-
-    if platform == 'LAPTOP':
-        print ('Load temporary ice station data from Jutta...')
-        obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
-        print ('Load ice station flux data from Jutta...')
-        obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
-
-    ### print ('Load ice station radiation data from Jutta...')
-    ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
-
-    print ('Load radiosonde data from Jutta...')
-    obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
-
-    print ('Load observations inversion height data from Jutta...')
-    obs['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/InversionHeights_RSh05int_final_V03.mat')
-
-    print ('Load foremast data from John...')
-    obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
-
-    print ('Load 7th deck weather station data from John...')
-    obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
-
-    print ('Load weather sensor data from John...')
-    obs['pws'] = readMatlabStruct(obs_root_dir + '7thDeck/ACAS_AO2018_PWD_30min_v1_0.mat')
 
     print ('...')
 
@@ -371,257 +326,38 @@ def main():
 
     ### -------------------------------------------------------------------------
     ### define input filename
+    ###             just need one date - it's the grid that matters!
     ### -------------------------------------------------------------------------
-    # tempnames = ['umnsaa_pa012_r0.nc','umnsaa_pb012_r0.nc','umnsaa_pc011_r0.nc','umnsaa_pd011_r0.nc','20180812_oden_metum.nc']
-    Aug_names = ['20180813_oden_','20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_']
+    print ('******')
+    print ('')
+    print ('Identifying iris cubes: ')
+    print ('')
 
-    Sep_names = ['20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_',
-            '20180905_oden_','20180906_oden_','20180907_oden_','20180908_oden_',
-            '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
-            '20180913_oden_','20180914_oden_']
+    name = '20180901_oden_'
+    filename_um = um_root_dir + out_dir1 + name + 'metum.nc'
+    filename_ifs = ifs_root_dir + out_dir2 + name + 'ecmwf.nc'
+    print filename_um
+    print filename_ifs
+    print ''
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
-
-    Aug_missing_files = []
-
-    Sep_missing_files = []
-
-    moccha_missing_files = ['20180813_oden_']
-
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
-    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
-    # doy = np.arange(244,256)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
-
-    # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
-
-    ## Choose month:
-    names = moccha_names
-    missing_files = moccha_missing_files
-    month_flag = -1
-
-    for i in range(0,len(names)):
-        filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
-        filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
-            print( '***IFS being compared***')
-            ifs_flag = True
-            filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
-        else:
-            print ('***IFS NOT being compared***')
-            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
-            ifs_flag = False
-        print (filename_um1)
-        print (filename_um2)
-        print (filename_um3)
-        print ('')
-
-        #### LOAD CUBE
-        print( 'Loading first run diagnostics:')
-        nc1 = Dataset(filename_um1,'r')
-        print ('...')
-        print( 'Loading second run diagnostics:')
-        nc2 = Dataset(filename_um2,'r')
-        print ('...')
-        print ('Loading third run diagnostics:')
-        nc3 = Dataset(filename_um3,'r')
-        print ('...')
-        # -------------------------------------------------------------
-        # print 'i = ' + str(i)
-        print ('')
-
-        #### LOAD IN SPECIFIC DIAGNOSTICS
-        # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-        var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
-        var_list2 = var_list1
-        if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
-        if not ifs_flag: var_list3 = var_list1
-
-        if i == 0:
-            ## ------------------
-            #### UM
-            ## ------------------
-            data1 = {}
-            data2 = {}
-            data3 = {}
-            if month_flag == -1:
-                time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
-                time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
-                if ifs_flag: time_um3 = doy[i] + (nc3.variables['time'][:]/24.0)
-                if not ifs_flag: time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
-            else:
-                time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
-                time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
-                if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
-                if not ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['forecast_time'][:]/24.0)
-
-            ### define height arrays explicitly
-            data1['height'] = nc1.variables['height'][:]
-            data2['height'] = nc2.variables['height'][:]
-            if not ifs_flag: data3['height'] = nc3.variables['height'][:]
-
-            print ('Starting on t=0 UM data:')
-            for j in range(0,len(var_list1)):
-                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list1[j]]) >= 1:
-                    data1[var_list1[j]] = nc1.variables[var_list1[j]][:]
-            nc1.close()
-            ## ------------------
-            #### um2
-            ## ------------------
-            print ('Starting on t=0 CASIM data:')
-            for j in range(0,len(var_list2)):
-                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
-                    data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
-            nc2.close()
-            ## ------------------
-            #### um3
-            ## ------------------
-            print ('Starting on t=0 IFS data:')
-            for j in range(0,len(var_list3)):
-                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc3.variables[var_list3[j]]) >= 1:
-                    # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
-            nc3.close()
-            print ('')
-        else:
-            if month_flag == -1:
-                time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-                if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
-                if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
-            ## ------------------
-            #### UM
-            ## ------------------
-            print ('Appending UM data:')
-            for j in range(0,len(var_list1)):
-                print (var_list1[j])
-                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                    # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
-                elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
-            np.save('working_data1',data1)
-            nc1.close()
-            ## ------------------
-            #### um2
-            ## ------------------
-            print ('Appending CASIM data:')
-            for j in range(0,len(var_list2)):
-                print (var_list2[j])
-                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:])
-                elif np.ndim(nc2.variables[var_list2[j]]) == 2:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:],0)
-            nc2.close()
-            ## ------------------
-            #### um3 / ifs
-            ## ------------------
-            print ('Appending IFS data:')
-            for j in range(0,len(var_list3)):
-                print (var_list3[j])
-                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:])
-                elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
-            nc3.close()
-            print ('')
-
-    #################################################################
-    ## save time to dictionary now we're not looping over all diags anymore
-    #################################################################
-    data1['time'] = time_um1
-    data2['time'] = time_um2
-    data3['time'] = time_um3
-
-    ### stop double counting of 0000 and 2400 from model data
-    temp = np.zeros([len(data1['time'])])
-    for i in range(0, len(temp)-1):
-        if data1['time'][i] == data1['time'][i+1]:
-            continue
-        else:
-            temp[i] = data1['time'][i]
-    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
-
-    ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_hrly'] = temp[ii]
-    data2['time_hrly'] = temp[ii]
-    data3['time_hrly'] = temp[ii]
-    data1['hrly_flag'] = ii
-    data2['hrly_flag'] = ii
-    data3['hrly_flag'] = ii
-
-    #################################################################
-    ## create labels for figure legends - done here so only needs to be done once!
-    #################################################################
-    label1 = 'undefined_label'
-    if out_dir1[:10] == '12_u-br210': label1 = 'UM_CASIM-AeroProf'
-    if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
-    if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
-    if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
-    if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
-    if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
-    if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
-    if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
-
-    label2 = 'undefined_label'
-    if out_dir2[:10] == '12_u-br210': label2 = 'UM_CASIM-AeroProf'
-    if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
-    if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
-    if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
-    if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
-    if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
-    if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
-    if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
-
-    label3 = 'undefined_label'
-    if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
-    if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
-    if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
-    if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
-    if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
-    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
-    if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
-    if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
-    if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
-
+    #### LOAD CUBE
+    print ('Loading first run diagnostics:')
+    cube_um = iris.load(filename_um)
+    print ('...')
+    print ('Loading second run diagnostics:')
+    cube_ifs = iris.load(filename_ifs)
     # -------------------------------------------------------------
-    # save out working data for debugging purposes
-    # -------------------------------------------------------------
-    np.save('working_data1', data1)
-    np.save('working_data2', data2)
-    np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    print ('...')
+
+    print (cube_um)
+    print ('')
+    print (cube_ifs)
+    print ('')
 
     # -------------------------------------------------------------
     # Plot map
     # -------------------------------------------------------------
-    figure = plot_driftMap(data1, data3, obs, doy)
+    # figure = plot_driftMap(data1, data3, obs, doy)
 
 
     # -------------------------------------------------------------
