@@ -3199,6 +3199,7 @@ def main():
             data2['height'] = nc2.variables['height'][:]
             if not ifs_flag: data3['height'] = nc3.variables['height'][:]
 
+            print ('Starting on UM data:')
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3208,6 +3209,7 @@ def main():
             ## ------------------
             #### um2
             ## ------------------
+            print ('Starting on CASIM data:')
             for j in range(0,len(var_list2)):
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3217,6 +3219,7 @@ def main():
             ## ------------------
             #### um3
             ## ------------------
+            print ('Starting on IFS data:')
             for j in range(0,len(var_list3)):
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3233,6 +3236,7 @@ def main():
             ## ------------------
             #### UM
             ## ------------------
+            print ('Appending UM data:')
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3245,6 +3249,7 @@ def main():
             ## ------------------
             #### um2
             ## ------------------
+            print ('Appending CASIM data:')
             for j in range(0,len(var_list2)):
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3256,6 +3261,7 @@ def main():
             ## ------------------
             #### um3 / ifs
             ## ------------------
+            print ('Appending IFS data:')
             for j in range(0,len(var_list3)):
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3264,6 +3270,7 @@ def main():
                 elif np.ndim(nc3.variables[var_list3[j]]) == 2:
                     data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
             nc3.close()
+            print ('')
 
     #################################################################
     ## save time to dictionary now we're not looping over all diags anymore
