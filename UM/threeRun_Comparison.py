@@ -3199,7 +3199,7 @@ def main():
             data2['height'] = nc2.variables['height'][:]
             if not ifs_flag: data3['height'] = nc3.variables['height'][:]
 
-            print ('Starting on UM data:')
+            print ('Starting on t=0 UM data:')
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3209,7 +3209,7 @@ def main():
             ## ------------------
             #### um2
             ## ------------------
-            print ('Starting on CASIM data:')
+            print ('Starting on t=0 CASIM data:')
             for j in range(0,len(var_list2)):
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3219,7 +3219,7 @@ def main():
             ## ------------------
             #### um3
             ## ------------------
-            print ('Starting on IFS data:')
+            print ('Starting on t=0 IFS data:')
             for j in range(0,len(var_list3)):
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -3227,6 +3227,8 @@ def main():
                     # data1[cube_um1[j].var_name] = cube_um1[j].data
                     data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
             nc3.close()
+            print ('')
+            np.save('working_data1',data1)
         else:
             if month_flag == -1:
                 time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
