@@ -3140,7 +3140,7 @@ def main():
     for i in range(0,len(names)):
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if out_dir4 == 'OUT_25H/':
+        if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
             print( '***IFS being compared***')
             ifs_flag = True
             filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
