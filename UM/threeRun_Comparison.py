@@ -2988,11 +2988,11 @@ def main():
 
     if platform == 'JASMIN':
         platformflag = 'jasmin'
-        ship_filename = '~/GWS/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
         misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
         # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        obs_root_dir = '//gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
+        obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
     if platform == 'LAPTOP':
         platformflag = 'laptop'
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
