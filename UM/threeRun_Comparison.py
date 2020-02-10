@@ -3340,7 +3340,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    np.save('working_dataObs', obs['inversions'])
 
     # -------------------------------------------------------------
     # Plot combined column data (5x2 timeseries)
