@@ -452,7 +452,6 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-
 def main():
 
     START_TIME = time.time()
@@ -534,7 +533,7 @@ def main():
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
         cn_obs_out_dir = cn_ifs_out_dir
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/' + cn_um_out_dir
+            cn_misc_out_dir = cn_um_out_dir
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
 
