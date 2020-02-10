@@ -3015,7 +3015,7 @@ def main():
         out_dir4 = 'OUT_25H/'
     elif platformflag == 'jasmin':
         out_dir1 = 'UM_RA2M/'
-        out_dir2 = 'UM_CASIM-100'
+        out_dir2 = 'UM_CASIM-100/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'ECMWF_IFS/'
 
