@@ -590,8 +590,8 @@ def main():
 
     obs = {}
 
-    print ('Load temporary ice station data from Jutta...')
-    obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+    # print ('Load temporary ice station data from Jutta...')
+    # obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
 
     print ('Load ice station flux data from Jutta...')
     obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
