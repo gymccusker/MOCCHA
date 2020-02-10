@@ -462,7 +462,7 @@ def main():
     print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### only works on laptop for now
 
@@ -472,8 +472,15 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
-        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        ship_filename = '~/GWS/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
+        obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
+        cn_um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_RA2M/'
+        cn_ifs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/ECMWF_IFS/'
+        # cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
+        cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_CASIM-100/'        ### FOR CLOUDNET UM DATA
+        cn_obs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/Observations/'
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
