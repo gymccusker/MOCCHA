@@ -3008,12 +3008,12 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    if platformflag == 'laptop':
+    if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
-    elif platformflag == 'jasmin':
+    elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
         # out_dir3 = 'MET_DATA/'
@@ -3060,7 +3060,7 @@ def main():
 
     obs = {}
 
-    if platformflag == 'laptop':
+    if platform == 'LAPTOP':
         print ('Load temporary ice station data from Jutta...')
         obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
         print ('Load ice station flux data from Jutta...')
@@ -3247,7 +3247,7 @@ def main():
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
-            np.save('working_data1',data1)                    
+            np.save('working_data1',data1)
             nc1.close()
             ## ------------------
             #### um2
