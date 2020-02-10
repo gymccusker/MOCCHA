@@ -3235,7 +3235,7 @@ def main():
             ## ------------------
             print ('Appending UM data:')
             for j in range(0,len(var_list1)):
-                print (var_list1[j])
+                # print (var_list1[j])
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc1.variables[var_list1[j]]) == 1:
@@ -3250,7 +3250,7 @@ def main():
             ## ------------------
             print ('Appending CASIM data:')
             for j in range(0,len(var_list2)):
-                print (var_list2[j])
+                # print (var_list2[j])
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc2.variables[var_list2[j]]) == 1:
@@ -3263,7 +3263,7 @@ def main():
             ## ------------------
             print ('Appending IFS data:')
             for j in range(0,len(var_list3)):
-                print (var_list3[j])
+                # print (var_list3[j])
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc3.variables[var_list3[j]]) == 1:
