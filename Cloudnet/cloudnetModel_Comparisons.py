@@ -478,8 +478,8 @@ def main():
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
         cn_um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_RA2M/'
         cn_ifs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/ECMWF_IFS/'
-        # cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
-        cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_CASIM-100/'        ### FOR CLOUDNET UM DATA
+        # cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
+        cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_CASIM-100/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         cn_obs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/Observations/'
     if platform == 'LAPTOP':
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
@@ -488,8 +488,8 @@ def main():
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         cn_um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
-        # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
-        cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
+        # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
+        cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -521,15 +521,22 @@ def main():
 
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
-    cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-    cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
-    cn_obs_out_dir = cn_ifs_out_dir
-    if cn_misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
-        cn_misc_flag = 0       ## flag to compare cloudnet model data
-    elif cn_misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
-        cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
-        cn_misc_flag = 1       ## flag to compare non-cloudnet model data
+    if platform == 'LAPTOP':
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_obs_out_dir = cn_ifs_out_dir
+        if cn_misc_flag == 0:       ## flag to compare cloudnet model data
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+        elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
+            cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
+    elif platform == 'JASMIN':
+        cn_um_out_dir = 'cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_obs_out_dir = cn_ifs_out_dir
+        if cn_misc_flag == 0:       ## flag to compare cloudnet model data
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/' + cn_um_out_dir
+        elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
+            cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
 
     ######## lwc-adiabatic-metum-grid/2018/
     ########             -> liquid water content derived using measurements averaged on to model grid
