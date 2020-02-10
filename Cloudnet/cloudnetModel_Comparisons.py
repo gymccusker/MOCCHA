@@ -275,7 +275,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # time_obs['deck7th'] = calcTime_Mat2DOY(datenums_obs['deck7th'])
 
     ### set diagnostic naming flags for if IFS being used
-    if out_dir4 == 'OUT_25H/':
+    if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -677,7 +677,7 @@ def main():
         print ('Load raw model data first: ')
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if out_dir4 == 'OUT_25H/':
+        if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'):
             print( '***IFS being compared***')
             ifs_flag = True
             filename_um3 = ifs_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
@@ -1067,7 +1067,7 @@ def main():
     if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
     label3 = 'undefined_label'
-    if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'): label3 = 'ECMWF_IFS'
     if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
     if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
     if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
