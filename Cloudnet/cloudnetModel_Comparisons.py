@@ -472,9 +472,9 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
         ship_filename = '~/GWS/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-        ifs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ECMWF/'
+        ifs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
         cn_um_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_RA2M/'
         cn_ifs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/ECMWF_IFS/'
@@ -500,10 +500,14 @@ def main():
 
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - MODEL DATA
-    out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-    out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-    # out_dir3 = 'MET_DATA/'
-    out_dir4 = 'OUT_25H/'
+    if platform == 'LAPTOP':
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir4 = 'OUT_25H/'
+    elif platform == 'JASMIN':
+        out_dir1 = 'UM_RA2M/'
+        out_dir2 = 'UM_CASIM-100/'
+        out_dir4 = 'ECMWF_IFS/'
 
     ### IFS: OUT_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
