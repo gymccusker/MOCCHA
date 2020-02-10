@@ -589,11 +589,11 @@ def main():
 
     obs = {}
 
-    # print ('Load temporary ice station data from Jutta...')
-    # obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
-
-    # print ('Load ice station flux data from Jutta...')
-    # obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
+    if platformflag == 'laptop':
+        print ('Load temporary ice station data from Jutta...')
+        obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
+        print ('Load ice station flux data from Jutta...')
+        obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
     # print ('Load ice station radiation data from Jutta...')
     # obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
@@ -806,9 +806,9 @@ def main():
                     continue
                 elif np.ndim(nc1.variables[var_list1[j]]) == 1:
                     # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:])
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]].data,nc1.variables[var_list1[j]][:],0)
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
             nc1.close()
             ## ------------------
             #### um2
@@ -817,9 +817,9 @@ def main():
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:])
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:])
                 elif np.ndim(nc2.variables[var_list2[j]]) == 2:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:],0)
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:],0)
             nc2.close()
             ## ------------------
             #### um3 / ifs
@@ -828,9 +828,9 @@ def main():
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:])
                 elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
             nc3.close()
 
 ###################################################################################################################
@@ -868,9 +868,9 @@ def main():
             for j in range(0,len(cn_var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(cn_nc1.variables[cn_var_list[j]]) == 1:
-                    um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]].data,cn_nc1.variables[cn_var_list[j]][:])
+                    um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]],cn_nc1.variables[cn_var_list[j]][:])
                 else:
-                    um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]].data,cn_nc1.variables[cn_var_list[j]][:],0)
+                    um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]],cn_nc1.variables[cn_var_list[j]][:],0)
         cn_nc1.close()
 
         ### --------------------------------------------------------------------
@@ -906,9 +906,9 @@ def main():
                 ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                 # print 'j = ' + str(j)
                 if np.ndim(cn_nc2.variables[cn_var_list[j]]) == 1:
-                    ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]].data,cn_nc2.variables[cn_var_list[j]][:])
+                    ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]],cn_nc2.variables[cn_var_list[j]][:])
                 else:
-                    ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]].data,cn_nc2.variables[cn_var_list[j]][:],0)
+                    ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]],cn_nc2.variables[cn_var_list[j]][:],0)
         cn_nc2.close()
 
         ### -------------------------------------------------------------------------
@@ -964,11 +964,11 @@ def main():
             for j in range(0,len(cn_var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(cn_nc3.variables[cn_var_list[j]]) == 1:
-                    misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]].data,cn_nc3.variables[cn_var_list[j]][:])
+                    misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]],cn_nc3.variables[cn_var_list[j]][:])
                 # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
                 #     continue
                 else:
-                    misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]].data,cn_nc3.variables[cn_var_list[j]][:],0)
+                    misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]],cn_nc3.variables[cn_var_list[j]][:],0)
         cn_nc3.close()
 
         ### -------------------------------------------------------------------------
@@ -1003,11 +1003,11 @@ def main():
             for j in range(0,len(cn_var_list)):
                 # print 'j = ' + str(j)
                 if np.ndim(cn_nc4.variables[cn_var_list[j]]) == 1:
-                    obs_data[cn_var_list[j]] = np.append(obs_data[cn_var_list[j]].data,cn_nc4.variables[cn_var_list[j]][:])
+                    obs_data[cn_var_list[j]] = np.append(obs_data[cn_var_list[j]],cn_nc4.variables[cn_var_list[j]][:])
                 elif np.sum(cn_nc4.variables[cn_var_list[j]].shape) == 71:
                     continue
                 else:
-                    obs_data[cn_var_list[j]] = np.append(obs_data[cn_var_list[j]].data,cn_nc4.variables[cn_var_list[j]][:],0)
+                    obs_data[cn_var_list[j]] = np.append(obs_data[cn_var_list[j]],cn_nc4.variables[cn_var_list[j]][:],0)
         cn_nc4.close()
 
     #################################################################
