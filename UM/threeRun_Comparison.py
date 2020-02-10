@@ -3228,7 +3228,6 @@ def main():
                     data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
             nc3.close()
             print ('')
-            np.save('working_data1',data1)
         else:
             if month_flag == -1:
                 time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
@@ -3248,30 +3247,33 @@ def main():
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
+            np.save('working_data1',data1)                    
             nc1.close()
             ## ------------------
             #### um2
             ## ------------------
             print ('Appending CASIM data:')
             for j in range(0,len(var_list2)):
+                print (var_list2[j])
                 if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:])
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:])
                 elif np.ndim(nc2.variables[var_list2[j]]) == 2:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]].data,nc2.variables[var_list2[j]][:],0)
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:],0)
             nc2.close()
             ## ------------------
             #### um3 / ifs
             ## ------------------
             print ('Appending IFS data:')
             for j in range(0,len(var_list3)):
+                print (var_list3[j])
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:])
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:])
                 elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]].data,nc3.variables[var_list3[j]][:],0)
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
             nc3.close()
             print ('')
 
