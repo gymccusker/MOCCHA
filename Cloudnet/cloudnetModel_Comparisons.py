@@ -589,7 +589,7 @@ def main():
 
     obs = {}
 
-    if platformflag == 'laptop':
+    if platform == 'LAPTOP':
         print ('Load temporary ice station data from Jutta...')
         obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
         print ('Load ice station flux data from Jutta...')
