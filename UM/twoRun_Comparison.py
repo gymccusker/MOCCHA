@@ -2041,7 +2041,6 @@ def plot_line_BLdiags(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube
     plt.savefig(fileout, dpi=400)
     plt.show()
 
-
 def plot_line_RAD(time_um1, time_um2, data1d_um1, data1d_um2, cube_um1, cube_um2, month_flag, missing_files, out_dir1, out_dir2, cube_obs, doy, label1, label2): #, lon, lat):
 
     import iris.plot as iplt
@@ -2229,7 +2228,7 @@ def main():
     print ''
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### only works on laptop for now
 
