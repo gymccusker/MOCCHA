@@ -1754,7 +1754,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/BLDepth_timeseries_oden_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/BLDepth_timeseries_oden_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -2963,7 +2963,6 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     return data1, data2, data3, obs, drift
 
-
 def main():
 
     START_TIME = time.time()
@@ -3370,7 +3369,7 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
@@ -3378,13 +3377,6 @@ def main():
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-
-
-    # -------------------------------------------------------------
-    # Plot map
-    # -------------------------------------------------------------
-    figure = plot_driftMap(data1, data3, obs, doy)
-
 
     # -------------------------------------------------------------
     # FIN.
