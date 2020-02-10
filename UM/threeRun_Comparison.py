@@ -3016,7 +3016,7 @@ def plot_driftMap(data1, data3, obs, doy):
     # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
     # ax.set_global()
 
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+    ### DON'T USE: PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
     #################################################################
     ## add geographic features/guides for reference
@@ -3027,28 +3027,10 @@ def plot_driftMap(data1, data3, obs, doy):
     # ax.set_global()
     ax.gridlines()
 
-    # # Compute a circle in axes coordinates, which we can use as a boundary
-    # # for the map. We can pan/zoom as much as we like - the boundary will be
-    # # permanently circular.
-    # theta = np.linspace(0, 2*np.pi, 100)
-    # center, radius = [0.5, 0.5], 0.5
-    # verts = np.vstack([np.sin(theta), np.cos(theta)]).T
-    # circle = mpath.Path(verts * radius + center)
-    #
-    # ax.set_boundary(circle, transform=ax.transAxes)
-
     #################################################################
     ## plot UM data
     ################################################################
-    # if np.size(cube[diag].data.shape) == 4:
-    #     iplt.pcolormesh(cube[diag][hour,0,:,:])
-    # elif np.size(cube[diag].data.shape) == 3:
-    #     iplt.pcolormesh(cube[diag][hour,:,:])
-    #     # iplt.pcolormesh(cube[hour,471:495,240:264])
-    # elif np.size(cube[diag].data.shape) == 2:
     iplt.pcolormesh(cube[diag][290:370,150:230])
-    # # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
