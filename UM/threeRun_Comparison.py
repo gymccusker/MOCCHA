@@ -2915,6 +2915,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('using ifs.height[0,:] to define temperature profiles...')
     data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
+        print (iTim)
         fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
         data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]])
     print ('...')
