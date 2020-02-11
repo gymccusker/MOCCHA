@@ -2989,7 +2989,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
     obs['sondes']['drift'] = drift
-    obs['sondes']['temp_driftSondes_UM'] = obs['sondes']['temp_allSondes_UM'][drift[0],:]
+    obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
 
     #### INTERPOLATION TESTING - IFS + SONDE + UM_RA2M:
     # print (obs['sondes']['doy_drift'].shape)
