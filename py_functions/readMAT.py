@@ -11,12 +11,11 @@ import scipy.io as sio
 def readMatlabStruct(filename):
 
     #### EXAMPLE OF USE:
-    #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat','RS10intall')
-    #### find struct name with:
-        #### sio.whosmat(filename)
-    #### access data with:
-        #### e.g. data['mday']
-        ####        data.dtype.names - lists var names in structured array
+    #### data = readMatlabStruct('../../jutta/UserReadyData/radiosondes/SondeData_h10int_V02.mat')
+
+    #### for reference:
+        #### find struct name with:
+            #### sio.whosmat(filename)
 
     ### ----------------------------------
     ### Find struct name from .mat file using sio
