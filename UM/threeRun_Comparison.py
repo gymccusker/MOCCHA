@@ -2966,17 +2966,17 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     #### INTERPOLATION TESTING:
     print (obs['sondes']['doy_drift'].shape)
-    # print (obs['sondes']['temp_allSondes_UM'][:,drift].shape)
-    # for i in range(0, np.size(obs['sondes']['doy_drift'])):
-    #     plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), label = 'original')
-    #     plt.plot(obs['sondes']['temp_allSondes_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
-    #     plt.title('Sonde test ' + str(np.round(obs['sondes']['doy_drift'][i])))
-    #     plt.legend()
-    #     plt.savefig('../FIGS/regrid/Sonde_test_doy' + str(np.round(obs['sondes']['doy_drift'][i])) + '.png')
-    #     if i == 0:
-    #         plt.show()
-    #     else:
-    #         plt.close()
+    print (obs['sondes']['temp_allSondes_UM'][drift,:].shape)
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), label = 'original')
+        plt.plot(obs['sondes']['temp_allSondes_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+        plt.title('Sonde test ' + str(np.round(obs['sondes']['doy_drift'][i])))
+        plt.legend()
+        plt.savefig('../FIGS/regrid/Sonde_test_doy' + str(np.round(obs['sondes']['doy_drift'][i])) + '.png')
+        if i == 0:
+            plt.show()
+        else:
+            plt.close()
 
     #### ---------------------------------------------------------------
     #### make some dictionary assignments for use later
