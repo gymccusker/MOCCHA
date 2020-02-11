@@ -2999,7 +2999,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
         plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]] + 273.15, color = 'k', label = 'sonde-interpd')
         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
-        plt.plot(data1['temp_6hrly'][:,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+        plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.legend()
         plt.savefig('../FIGS/regrid/REGRID_test_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
