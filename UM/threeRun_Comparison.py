@@ -2465,9 +2465,8 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### -------------------------------
     fig = plt.figure(figsize=(5,9))
 
-    Tmin = -45
-    Tmax = 5
     ymax = 8000
+    qmax = 4.0
 
     ### -------------------------------
     ### model anomalies wrt radiosondes
