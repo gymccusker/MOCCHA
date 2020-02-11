@@ -2169,7 +2169,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(5,7))
+    fig = plt.figure(figsize=(5,9))
 
     Tmin = -45
     Tmax = 5
