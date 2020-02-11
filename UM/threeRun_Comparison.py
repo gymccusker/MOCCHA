@@ -2946,10 +2946,9 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('*****')
 
     #### INTERPOLATION TESTING:
-    print (obs['sondes']['temp_hrly_UM'].shape)
     print (obs['sondes']['doy'].shape)
-    print (obs['sondes']['temp_hrly_UM'])
-    plt.plot(obs['sondes']['temp_hrly_UM'][50,:],data1['height'][iUM[0][3:]])
+    print (obs['sondes']['temp_allSondes_UM'].shape)
+    plt.plot(obs['sondes']['temp_allSondes_UM'][50,:],data1['height'][iUM[0][3:]])
     plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,50]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,50]))
     plt.title('sonde test')
     plt.show()
