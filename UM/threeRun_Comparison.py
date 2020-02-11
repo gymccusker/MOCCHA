@@ -2923,12 +2923,12 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('*****')
 
     #### INTERPOLATION TESTING:
-    print data3['temp_hrly_UM'].shape
-    print data3['time_hrly'][::6].shape
-    print data1['temp_hrly'][:,iUM[0][3:]].shape
-    print data1['time_hrly'][::6].shape
+    print (data3['temp_hrly_UM'].shape)
+    print (data3['time_hrly'][::6].shape)
+    print (data1['temp_hrly'][:,iUM[0][3:]].shape)
+    print (data1['time_hrly'][::6].shape)
     fig = plt.figure()
-    plt.plot(data3['temp_hrly_UM'][50,:],data1['height'][iUM[0][2:]])
+    plt.plot(data3['temp_hrly_UM'][50,:],data1['height'][iUM[0][3:]])
     plt.plot(np.squeeze(data3['temp_hrly'][50,iIFS]),np.squeeze(data3['height'][0,iIFS]))
     plt.title('IFS test')
     plt.show()
@@ -2946,10 +2946,10 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('*****')
 
     #### INTERPOLATION TESTING:
-    # print obs['sondes']['temp_hrly_UM'].shape
-    # print obs['sondes']['doy'].shape
-    # print obs['sondes']['temp_hrly_UM']
-    plt.plot(obs['sondes']['temp_hrly_UM'][50,:],data1['height'][iUM[0][2:]])
+    print (obs['sondes']['temp_hrly_UM'].shape)
+    print (obs['sondes']['doy'].shape)
+    print (obs['sondes']['temp_hrly_UM'])
+    plt.plot(obs['sondes']['temp_hrly_UM'][50,:],data1['height'][iUM[0][3:]])
     plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,50]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,50]))
     plt.title('sonde test')
     plt.show()
