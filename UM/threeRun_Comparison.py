@@ -3076,7 +3076,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     print ('')
     print ('Defining IFS temperature profile as a function:')
-    print ('using ifs.height[0,:] to define temperature profiles...')
+    print ('using ifs.height[i,:] to define temperature profiles...')
     data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
         # print (iTim)
