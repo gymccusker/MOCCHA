@@ -3012,7 +3012,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### make some dictionary assignments for use later
     #### ---------------------------------------------------------------
-    data1['universal_height'] = data1['height'][iUM[0][3:]].data
+    data1['universal_height'] = data1['height'][iUM[0][3:]]
     data1['universal_height_UMindex'] = iUM[0][3:]
 
     #### ---------------------------------------------------------------
