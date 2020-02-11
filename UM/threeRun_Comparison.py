@@ -2236,6 +2236,16 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     # plt.show()
     plt.close()
 
+    # height = np.zeros([np.size(um['temp_anomalies'],0), np.size(um['temp_anomalies'],1)])
+    # for i in range(0,np.size(height,1)): height[:,i] = um['universal_height']
+    # plt.figure()
+    # sns.jointplot(um['temp_anomalies'], height, kind = 'hex', color = 'steelblue')
+    # plt.figure()
+    # sns.jointplot(ifs['temp_anomalies'], height, kind = 'hex', color = 'darkorange')
+    # plt.figure()
+    # sns.jointplot(casim['temp_anomalies'], height, kind = 'hex', color = 'forestgreen')
+    # plt.show()
+
 def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
