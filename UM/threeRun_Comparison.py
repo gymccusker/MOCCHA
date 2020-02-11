@@ -2155,83 +2155,83 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     # # plt.show()
     # plt.close()
 
-        SMALL_SIZE = 12
-        MED_SIZE = 14
-        LARGE_SIZE = 16
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
 
-        plt.rc('font',size=MED_SIZE)
-        plt.rc('axes',titlesize=MED_SIZE)
-        plt.rc('axes',labelsize=MED_SIZE)
-        plt.rc('xtick',labelsize=MED_SIZE)
-        plt.rc('ytick',labelsize=MED_SIZE)
-        plt.rc('legend',fontsize=MED_SIZE)
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
 
-        ### -------------------------------
-        ### Build figure (timeseries)
-        ### -------------------------------
-        fig = plt.figure(figsize=(7,8))
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(7,8))
 
-        Tmin = -45
-        Tmax = 5
-        ymax = 8000
+    Tmin = -45
+    Tmax = 5
+    ymax = 8000
 
-        ### -------------------------------
-        ### model anomalies wrt radiosondes
-        ### ------------------------------
-        ax  = fig.add_axes([0.1,0.78,0.8,0.17])   # left, bottom, width, height
-        plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
-            vmin = Tmin, vmax = Tmax)
-        plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-        plt.ylim([0,ymax])
-        plt.xlim([doy[0],doy[-1]])
-        plt.colorbar()
-        # plt.ylabel('Z [m]')
-        plt.title('Sondes(REGRID), T[degC]')
+    ### -------------------------------
+    ### model anomalies wrt radiosondes
+    ### ------------------------------
+    ax  = fig.add_axes([0.1,0.78,0.8,0.17])   # left, bottom, width, height
+    plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
+        vmin = Tmin, vmax = Tmax)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title('Sondes(REGRID), T[degC]')
 
-        ax  = fig.add_axes([0.1,0.54,0.8,0.17])   # left, bottom, width, height
-        dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-        plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
-            vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-        plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-        plt.ylim([0,ymax])
-        plt.xlim([doy[0],doy[-1]])
-        plt.colorbar()
-        # plt.set_cmap('seismic')
-        # plt.ylabel('Z [m]')
-        plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
+    ax  = fig.add_axes([0.1,0.54,0.8,0.17])   # left, bottom, width, height
+    dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.set_cmap('seismic')
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
 
-        ax  = fig.add_axes([0.1,0.3,0.8,0.17])   # left, bottom, width, height
-        dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-        plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
-            vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-        plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-        plt.ylim([0,ymax])
-        plt.xlim([doy[0],doy[-1]])
-        plt.colorbar()
-        # plt.ylabel('Z [m]')
-        plt.title(label1 + ' - Sondes(REGRID), T[K]')
+    ax  = fig.add_axes([0.1,0.3,0.8,0.17])   # left, bottom, width, height
+    dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.title(label1 + ' - Sondes(REGRID), T[K]')
 
-        ax  = fig.add_axes([0.1,0.06,0.8,0.17])   # left, bottom, width, height
-        dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-        plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
-            vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-        plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-        plt.ylim([0,ymax])
-        plt.xlim([doy[0],doy[-1]])
-        plt.colorbar()
-        plt.xlabel('Day of year')
-        # plt.ylabel('Z [m]')
-        plt.title(label2 + ' - Sondes(REGRID), T[K]')
+    ax  = fig.add_axes([0.1,0.06,0.8,0.17])   # left, bottom, width, height
+    dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
+    plt.title(label2 + ' - Sondes(REGRID), T[K]')
 
-        print ('******')
-        print ('')
-        print ('Finished plotting! :)')
-        print ('')
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
 
-        fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100.png'
-        plt.savefig(fileout, dpi = 300)
-        # plt.show()
-        plt.close()
+    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100.png'
+    plt.savefig(fileout, dpi = 300)
+    # plt.show()
+    plt.close()
 
 def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
