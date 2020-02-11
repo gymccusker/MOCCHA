@@ -2966,17 +2966,17 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     #### INTERPOLATION TESTING:
     print (obs['sondes']['doy_drift'].shape)
-    print (obs['sondes']['temp_allSondes_UM'][:,drift].shape)
-    for i in range(0, np.size(obs['sondes']['doy_drift'])):
-        plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), label = 'original')
-        plt.plot(obs['sondes']['temp_allSondes_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
-        plt.title('Sonde test ' + str(np.round(obs['sondes']['doy_drift'][i])))
-        plt.legend()
-        plt.savefig('../FIGS/regrid/Sonde_test_doy' + str(np.round(obs['sondes']['doy_drift'][i])) + '.png')
-        if i == 0:
-            plt.show()
-        else:
-            plt.close()
+    # print (obs['sondes']['temp_allSondes_UM'][:,drift].shape)
+    # for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #     plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), label = 'original')
+    #     plt.plot(obs['sondes']['temp_allSondes_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.title('Sonde test ' + str(np.round(obs['sondes']['doy_drift'][i])))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/Sonde_test_doy' + str(np.round(obs['sondes']['doy_drift'][i])) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
 
     #### ---------------------------------------------------------------
     #### make some dictionary assignments for use later
@@ -3270,7 +3270,7 @@ def main():
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
-            np.save('working_data1',data1)
+            # np.save('working_data1',data1)
             nc1.close()
             ## ------------------
             #### um2
@@ -3365,10 +3365,10 @@ def main():
     # -------------------------------------------------------------
     # save out working data for debugging purposes
     # -------------------------------------------------------------
-    np.save('working_data1', data1)
-    np.save('working_data2', data2)
-    np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    # np.save('working_data1', data1)
+    # np.save('working_data2', data2)
+    # np.save('working_data3', data3)
+    # np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
     # Plot combined column data (5x2 timeseries)
