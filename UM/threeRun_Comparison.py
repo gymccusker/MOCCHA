@@ -2010,7 +2010,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(19,10))
+    fig = plt.figure(figsize=(10,8))
 
     Tmin = -45
     Tmax = 5
@@ -2151,7 +2151,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     print ('')
 
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
-    plt.savefig(fileout, dpi = 300)
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
