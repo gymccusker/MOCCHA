@@ -2921,27 +2921,27 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('IFS(UM Grid) function worked!')
     print (var + ' IFS data now on UM vertical grid')
     print ('*****')
-
-    #### INTERPOLATION TESTING:
-    print (data3['temp_hrly_UM'].shape)
-    print (data3['time_hrly'][::6].shape)
-    print (data1['temp_hrly'][:,iUM[0][3:]].shape)
-    print (data1['time_hrly'][::6].shape)
-
+    ### assign for easier indexing later
     data3['temp_6hrly_UM'] = data3['temp_hrly_UM'][::6,:]
     data3['temp_6hrly'] = data3['temp_hrly'][::6,:]
-    for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
-        fig = plt.figure()
-        plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
-        plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][i,iIFS]), label = 'height indexed')
-        plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
-        plt.title('IFS test ' + str(data3['time_6hrly'][i]))
-        plt.legend()
-        plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
-        if i == 0:
-            plt.show()
-        else:
-            plt.close()
+
+    #### INTERPOLATION TESTING:
+    # print (data3['temp_hrly_UM'].shape)
+    # print (data3['time_hrly'][::6].shape)
+    # print (data1['temp_hrly'][:,iUM[0][3:]].shape)
+    # print (data1['time_hrly'][::6].shape)
+    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
+    #     fig = plt.figure()
+    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][i,iIFS]), label = 'height indexed')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
+    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
 
     print ('')
     print ('Defining Sonde temperature profile as a function:')
