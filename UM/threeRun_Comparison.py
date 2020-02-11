@@ -2190,6 +2190,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data3['temp_anomalies'] = dat3
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2202,6 +2203,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data1['temp_anomalies'] = dat1
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2213,6 +2215,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = dat2
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2483,6 +2486,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data3['q_anomalies'] = dat3
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2495,6 +2499,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data1['q_anomalies'] = dat1
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2506,6 +2511,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data2['q_anomalies'] = dat2
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -2762,7 +2768,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     print ('')
 
     fileout = '../FIGS/comparisons/ThetaEProfiles_REGRID_10km_sondes-calculated_metum_ifs_casim-100.png'
-    plt.savefig(fileout, dpi = 300)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -3001,7 +3007,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     print ('')
 
     fileout = '../FIGS/comparisons/ThetaProfiles_REGRID_10km_sondes-calculated_metum_ifs_casim-100.png'
-    plt.savefig(fileout, dpi = 300)
+    plt.savefig(fileout)
     plt.show()
 
 def reGrid_Sondes(data1, data2, data3, obs, doy, var):
@@ -3589,12 +3595,20 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_ERAI_GLM(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
+    # -------------------------------------------------------------
+    # save out working data for debugging purposes
+    # -------------------------------------------------------------
+    np.save('working_data1', data1)
+    np.save('working_data2', data2)
+    np.save('working_data3', data3)
+    np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
     # FIN.
