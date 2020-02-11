@@ -2922,7 +2922,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('using ifs.height[0,:] to define temperature profiles...')
     data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
-        print (iTim)
+        # print (iTim)
         iIFS = np.where(data3['height'][iTim,:] <= 11000)
         if np.all(data3['height'][iTim,:] == 0.0):
             data3[var + '_hrly_UM'][iTim,:] = np.nan
@@ -2968,17 +2968,18 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('All ' + var + ' sonde data now on UM vertical grid.')
     print ('*****')
 
-    # print ('')
-    # print ('Defining Sonde temperature profile as a function for the IFS:')
-    # obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
-    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
-    #     # print 'iTim = ', str(iTim)
-    #     fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-    #     obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]])
-    # print ('...')
-    # print ('Sonde(UM Grid) function worked!')
-    # print ('All ' + var + ' sonde data now on UM vertical grid.')
-    # print ('*****')
+    print ('')
+    print ('Defining Sonde temperature profile as a function for the IFS:')
+    obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
+    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+        # print 'iTim = ', str(iTim)
+        iIFS = np.where(data3['height'][iTim,:] <= 11000)
+        fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
+    print ('...')
+    print ('Sonde(IFS Grid) function worked!')
+    print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
+    print ('*****')
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
