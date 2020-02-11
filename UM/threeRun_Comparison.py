@@ -2922,8 +2922,11 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     for iTim in range(0,np.size(data3['time_hrly'],0)):
         print (iTim)
         iIFS = np.where(data3['height'][iTim,:] <= 11000)
-        fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
-        data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]])
+        if data3['height'][iTim,:] = np.nan:
+            data3[var + '_hrly_UM'][iTim,:] = np.nan
+        else:
+            fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
+            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]])
     print ('...')
     print ('IFS(UM Grid) function worked!')
     print (var + ' IFS data now on UM vertical grid')
