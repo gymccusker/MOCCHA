@@ -2967,19 +2967,19 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
     print ('*****')
-
-    print ('')
-    print ('Defining Sonde temperature profile as a function for the IFS:')
-    obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
-    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
-        # print 'iTim = ', str(iTim)
-        iIFS = np.where(data3['height'][iTim,:] <= 11000)
-        fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
-    print ('...')
-    print ('Sonde(IFS Grid) function worked!')
-    print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
-    print ('*****')
+    # 
+    # print ('')
+    # print ('Defining Sonde temperature profile as a function for the IFS:')
+    # obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
+    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+    #     # print 'iTim = ', str(iTim)
+    #     iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    #     fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+    #     obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
+    # print ('...')
+    # print ('Sonde(IFS Grid) function worked!')
+    # print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
+    # print ('*****')
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
