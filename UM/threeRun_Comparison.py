@@ -2916,7 +2916,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(data3['time_hrly'],0)):
         fnct_IFS = interp1d(np.squeeze(data3['height'][0,iIFS]), np.squeeze(data3[var + '_hrly'][iTim,iIFS]))
-        data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+        data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]])
     print ('...')
     print ('IFS(UM Grid) function worked!')
     print (var + ' IFS data now on UM vertical grid')
@@ -2939,7 +2939,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     for iTim in range(0,np.size(obs['sondes']['doy'],0)):
         # print 'iTim = ', str(iTim)
         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]])
     print ('...')
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
