@@ -2923,10 +2923,10 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print ('*****')
 
     #### INTERPOLATION TESTING:
-    # print data3['temp_hrly_UM'].shape
-    # print data3['time_hrly'][::6].shape
-    # print data1['temp_hrly'][:,iUM[0][3:]].shape
-    # print data1['time_hrly'][::6].shape
+    print data3['temp_hrly_UM'].shape
+    print data3['time_hrly'][::6].shape
+    print data1['temp_hrly'][:,iUM[0][3:]].shape
+    print data1['time_hrly'][::6].shape
     fig = plt.figure()
     plt.plot(data3['temp_hrly_UM'][50,:],data1['height'][iUM[0][2:]])
     plt.plot(np.squeeze(data3['temp_hrly'][50,iIFS]),np.squeeze(data3['height'][0,iIFS]))
@@ -3000,13 +3000,11 @@ def main():
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
         misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
-        # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
     if platform == 'LAPTOP':
         platformflag = 'laptop'
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
-        # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
@@ -3137,7 +3135,7 @@ def main():
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
-    # doy = np.arange(244,256)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
+    # doy = np.arange(244,256)        ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -3354,7 +3352,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['inversions'])
+    np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
     # Plot combined column data (5x2 timeseries)
