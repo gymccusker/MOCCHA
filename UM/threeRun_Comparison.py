@@ -2922,8 +2922,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print (var + ' IFS data now on UM vertical grid')
     print ('*****')
     ### assign for easier indexing later
-    data3['temp_6hrly_UM'] = data3['temp_hrly_UM'][::6,:]
-    data3['temp_6hrly'] = data3['temp_hrly'][::6,:]
+    data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
+    data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
 
     #### INTERPOLATION TESTING:
     # print (data3['temp_hrly_UM'].shape)
