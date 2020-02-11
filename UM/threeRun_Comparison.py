@@ -2936,6 +2936,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     ### assign for easier indexing later
     data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
     data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
+    data3['height_6hrly'] = data3['height'][::6,:]  ### need to explicitly save since height coord changes at each timedump
 
     #### INTERPOLATION TESTING:
     # print (data3['temp_hrly_UM'].shape)
@@ -2945,7 +2946,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
         fig = plt.figure()
         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
-        plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][i,iIFS]), label = 'height indexed')
+        plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
         plt.title('IFS test ' + str(data3['time_6hrly'][i]))
         plt.legend()
