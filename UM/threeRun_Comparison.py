@@ -2929,11 +2929,11 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     print (data1['time_hrly'][::6].shape)
     for i in range(0, np.size(data3['temp_hrly_UM'],0)):
         fig = plt.figure()
-        plt.plot(data3['temp_hrly_UM'][i],:],data1['height'][iUM[0][3:]], label = 'interpd')
+        plt.plot(data3['temp_hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
         plt.plot(np.squeeze(data3['temp_hrly'][i,iIFS]),np.squeeze(data3['height'][i,iIFS]), label = 'height indexed')
         plt.plot(np.squeeze(data3['temp_hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
-        plt.title('IFS test ' + str(i))
-        plt.savefig('../FIGS/regrid/IFS_test_' + str(i) + '.png')
+        plt.title('IFS test ' + str(data3['time_hrly'][i]))
+        plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_hrly'][i]) + '.png')
         if i == 0:
             plt.show()
         else:
