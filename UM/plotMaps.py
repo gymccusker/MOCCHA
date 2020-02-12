@@ -335,7 +335,7 @@ def main():
 
     name = '20180901_oden_'
     filename_um = um_root_dir + out_dir1 + name + 'metum.nc'
-    filename_ifs = ifs_root_dir + out_dir2 + name + 'ecmwf.nc'
+    filename_ifs = ifs_root_dir + out_dir4 + name + 'ecmwf.nc'
     print (filename_um)
     print (filename_ifs)
     print ('')
