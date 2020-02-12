@@ -1372,7 +1372,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
     ax = plt.gca()
     yA = [-65, 85]
-    plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='red')
+    # plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
@@ -1389,7 +1389,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
     ax = plt.gca()
     yB = [-10, 120]
-    plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
+    # plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
@@ -1406,7 +1406,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
     ax = plt.gca()
     yC = [-90, 10]
-    plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='red')
+    # plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
@@ -3615,9 +3615,9 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
