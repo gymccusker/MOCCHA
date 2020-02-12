@@ -1702,27 +1702,6 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('Plotting BL depth timeseries:')
     print ('')
 
-    ##################################################
-    ##################################################
-    #### 	set up figure properties
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 16
-    LARGE_SIZE = 18
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,4.5))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.94, left = 0.12,
-            hspace = 0.4, wspace = 0.15)
-
     # UM -> IFS comparisons:
     # 5. bl_depth -> sfc_bl_height
 
@@ -1749,13 +1728,33 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     data2['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data2['inversions']['mday']))
     data3['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data3['inversions']['mday']))
 
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(9,7))
+
     #################################################################
     ## create figure and axes instances
     #################################################################
-    ax = plt.gca()
-    plt.subplot(211)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), '--', color = 'grey', label = 'Obs: main inversion')
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'k', label = 'Obs: SML height')
+    ax  = fig.add_axes([0.1,0.56,0.7,0.35])   # left, bottom, width, height
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'k', label = 'Obs_Radiosondes')
     plt.plot(data1['time_hrly'][::6], bldepth1[::6],
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6],
@@ -1768,15 +1767,16 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
-    plt.subplot(212)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), color = 'k', label = 'Obs: main inversion')
-    plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']),
+    ax  = fig.add_axes([0.1,0.1,0.7,0.35])   # left, bottom, width, height
+    plt.plot(np.squeeze(obs['inversions']['doy']), np.squeeze(obs['inversions']['invbase']),
+        color = 'k', label = 'Obs: main inversion')
+    plt.plot(np.squeeze(data1['inversions']['doy'][::6]), np.squeeze(data1['inversions']['invbase'][::6,0]),
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(data2['inversions']['doy']),np.squeeze(data2['inversions']['invbase']),
+    plt.plot(np.squeeze(data2['inversions']['doy'][::6]), np.squeeze(data2['inversions']['invbase'][::6,0]),
         's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
-    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']),
+    plt.plot(np.squeeze(data3['inversions']['doy'][::6]), np.squeeze(data3['inversions']['invbase'][::6,0]),
         '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.legend()
+    # plt.legend()
     plt.title('Main inversion height [m]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
