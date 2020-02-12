@@ -3100,7 +3100,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
             data3[var + '_hrly_UM'][iTim,:] = np.nan
         else:
             fnct_IFS = interp1d(np.squeeze(data3['height'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
-            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]])
+            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
     print ('...')
     print ('IFS(UM Grid) function worked!')
     print (var + ' IFS data now on UM vertical grid')
@@ -3134,7 +3134,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     for iTim in range(0,np.size(obs['sondes']['doy'],0)):
         # print 'iTim = ', str(iTim)
         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]])
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
     print ('...')
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
