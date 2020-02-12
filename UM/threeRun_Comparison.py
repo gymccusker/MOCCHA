@@ -1783,11 +1783,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ax  = fig.add_axes([0.1,0.1,0.65,0.35])   # left, bottom, width, height
     plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'Obs: main inversion')
-    plt.plot(data1['time_hrly'], inv1,
+    plt.plot(data1['time_hrly'][::6], inv1[::6],
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(data2['time_hrly'], inv2,
+    plt.plot(data2['time_hrly'][::6], inv2[::6],
         's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
-    plt.plot(data1['time_hrly'], inv3,
+    plt.plot(data1['time_hrly'][::6], inv3[::6],
         '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     # plt.legend()
     plt.title('Main inversion height [m]')
