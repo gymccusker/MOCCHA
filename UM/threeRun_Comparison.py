@@ -2152,8 +2152,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
 
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
     plt.savefig(fileout, dpi = 300)
-    # plt.show()
-    plt.close()
+    plt.show()
+    # plt.close()
 
 
     ##################################################
@@ -2184,17 +2184,17 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     ### -------------------------------
     ### model anomalies wrt radiosondes
     ### ------------------------------
-    ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.78,0.85,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
         vmin = Tmin, vmax = Tmax)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
-    # plt.ylabel('Z [m]')
+    plt.ylabel('Z [m]')
     plt.title('Sondes(REGRID), T[degC]')
 
-    ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data3['temp_anomalies'] = dat3
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
@@ -2204,10 +2204,10 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.set_cmap('seismic')
-    # plt.ylabel('Z [m]')
+    plt.ylabel('Z [m]')
     plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
 
-    ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.3,0.85,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data1['temp_anomalies'] = dat1
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
@@ -2216,10 +2216,10 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.ylim([0,ymax])
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
-    # plt.ylabel('Z [m]')
+    plt.ylabel('Z [m]')
     plt.title(label1 + ' - Sondes(REGRID), T[K]')
 
-    ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.06,0.85,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data2['temp_anomalies'] = dat2
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
@@ -2229,7 +2229,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
+    plt.ylabel('Z [m]')
     plt.title(label2 + ' - Sondes(REGRID), T[K]')
 
     print ('******')
@@ -2498,7 +2498,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### -------------------------------
     ### model anomalies wrt radiosondes
     ### ------------------------------
-    ax  = fig.add_axes([0.1,0.78,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.78,0.85,0.17])   # left, bottom, width, height
     plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_driftSondes_UM']),
         vmin = 0, vmax = qmax)
     plt.ylim([0,ymax])
@@ -2508,7 +2508,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.ylabel('Z [m]')
     plt.title('Sondes(REGRID),  q [g/kg]')
 
-    ax  = fig.add_axes([0.1,0.54,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data3['q_anomalies'] = dat3
     plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
@@ -2521,7 +2521,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.ylabel('Z [m]')
     plt.title(label3 + '(REGRID) - Sondes(REGRID),  q [g/kg]')
 
-    ax  = fig.add_axes([0.1,0.3,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.3,0.85,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data1['q_anomalies'] = dat1
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], dat1,
@@ -2533,7 +2533,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.ylabel('Z [m]')
     plt.title(label1 + ' - Sondes(REGRID), q [g/kg]')
 
-    ax  = fig.add_axes([0.1,0.06,0.9,0.17])   # left, bottom, width, height
+    ax  = fig.add_axes([0.15,0.06,0.85,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data2['q_anomalies'] = dat2
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], dat2,
