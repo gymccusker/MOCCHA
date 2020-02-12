@@ -1753,7 +1753,8 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ## create figure and axes instances
     #################################################################
     ax = plt.gca()
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), '--', color = 'grey', label = 'Obs: main inversion')
+    plt.subplot(211)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), '--', color = 'grey', label = 'Obs: main inversion')
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'k', label = 'Obs: SML height')
     plt.plot(data1['time_hrly'][::6], bldepth1[::6],
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
@@ -1764,6 +1765,20 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.legend()
     plt.title('BL_depth / sfmlheight [m]')
     ax.set_xlim([doy[0],doy[-1]])
+    # plt.xlabel('Day of year')
+    plt.ylabel('Z [m]')
+
+    plt.subplot(212)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), color = 'k', label = 'Obs: main inversion')
+    plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']),
+        'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+    plt.plot(np.squeeze(data2['inversions']['doy']),np.squeeze(data2['inversions']['invbase']),
+        's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
+    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']),
+        '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
+    plt.legend()
+    plt.title('Main inversion height [m]')
+    ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
@@ -1772,7 +1787,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/BLDepth_timeseries_odenInversions_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_oden_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
