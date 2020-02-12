@@ -1736,6 +1736,10 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ### save in dict for ease
     obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
+    inv1 = np.squeeze(data1['inversions']['invbase'][data1['hrly_flag'],0])
+    inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
+    inv3 = np.squeeze(data3['inversions']['invbase'][data3['hrly_flag'],0])
+
     ##################################################
     ##################################################
     #### create figure and axes instances
@@ -1779,11 +1783,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ax  = fig.add_axes([0.1,0.1,0.65,0.35])   # left, bottom, width, height
     plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'Obs: main inversion')
-    plt.plot(np.squeeze(data1['inversions']['doy'][::6]), np.squeeze(data1['inversions']['invbase'][::6,0]),
+    plt.plot(data1['time_hrly'], inv1,
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(data2['inversions']['doy'][::6]), np.squeeze(data2['inversions']['invbase'][::6,0]),
+    plt.plot(data2['time_hrly'], inv2,
         's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
-    plt.plot(np.squeeze(data3['inversions']['doy'][::6]), np.squeeze(data3['inversions']['invbase'][::6,0]),
+    plt.plot(data1['time_hrly'], inv3,
         '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     # plt.legend()
     plt.title('Main inversion height [m]')
