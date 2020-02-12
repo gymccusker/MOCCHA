@@ -1728,6 +1728,14 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     data2['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data2['inversions']['mday']))
     data3['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data3['inversions']['mday']))
 
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT SONDES FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['inversions']['doy'] >= 225.9, obs['inversions']['doy'] <= 258.0))
+
+    ### save in dict for ease
+    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
+
     ##################################################
     ##################################################
     #### create figure and axes instances
@@ -1748,13 +1756,14 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(9,7))
+    fig = plt.figure(figsize=(10,7))
 
     #################################################################
     ## create figure and axes instances
     #################################################################
-    ax  = fig.add_axes([0.1,0.56,0.7,0.35])   # left, bottom, width, height
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'k', label = 'Obs_Radiosondes')
+    ax  = fig.add_axes([0.1,0.56,0.65,0.35])   # left, bottom, width, height
+    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
+        color = 'k', label = 'Obs_Radiosondes')
     plt.plot(data1['time_hrly'][::6], bldepth1[::6],
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6],
@@ -1767,8 +1776,8 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
-    ax  = fig.add_axes([0.1,0.1,0.7,0.35])   # left, bottom, width, height
-    plt.plot(np.squeeze(obs['inversions']['doy']), np.squeeze(obs['inversions']['invbase']),
+    ax  = fig.add_axes([0.1,0.1,0.65,0.35])   # left, bottom, width, height
+    plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'Obs: main inversion')
     plt.plot(np.squeeze(data1['inversions']['doy'][::6]), np.squeeze(data1['inversions']['invbase'][::6,0]),
         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
@@ -3662,7 +3671,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    np.save('working_dataObs', obs['inversions'])
 
     # -------------------------------------------------------------
     # FIN.
