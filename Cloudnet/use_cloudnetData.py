@@ -146,7 +146,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,5))
+    plt.figure(figsize=(6,5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -1128,11 +1128,11 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
@@ -1482,12 +1482,12 @@ def main():
     # -------------------------------------------------------------
     # Plot timeseries of 1D diagnostics from drift period
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
@@ -1502,7 +1502,7 @@ def main():
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot LWC statistics based on melt/freeze up

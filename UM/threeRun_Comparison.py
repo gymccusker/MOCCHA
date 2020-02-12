@@ -1578,7 +1578,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,5))
+    plt.figure(figsize=(6,5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -1672,7 +1672,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
         # plt.plot(data3['time'], (flx_conv_rain)*3600, color = 'k', label = label3)
     else:
         plt.plot(data3['time'], data3['rainfall_flux'].data + data3['snowfall_flux'].data*3600, color = 'darkorange', label = label3)
-    plt.title('Precipitation flux [mm/hr]')
+    plt.ylabel('Precipitation flux [mm/hr]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([0,2])
     plt.xlabel('Day of year')
@@ -3615,8 +3615,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
