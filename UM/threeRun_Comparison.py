@@ -1765,7 +1765,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     #################################################################
     ## create figure and axes instances
     #################################################################
-    ax  = fig.add_axes([0.1,0.56,0.65,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.1,0.56,0.6,0.37])   # left, bottom, width, height
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
         color = 'k', label = 'Obs_Radiosondes')
     plt.plot(data1['time_hrly'][::6], bldepth1[::6],
@@ -1780,7 +1780,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
-    ax  = fig.add_axes([0.1,0.1,0.65,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.1,0.1,0.6,0.37])   # left, bottom, width, height
     plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'Obs: main inversion')
     plt.plot(data1['time_hrly'][::6], inv1[::6],
@@ -1795,12 +1795,43 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
 
+    ax  = fig.add_axes([0.79,0.58,0.2,0.33])   # left, bottom, width, height
+    ymax1 = 1500
+    xmax1 = ymax1
+    plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][drift]), bldepth1[::6],
+        'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][drift]), bldepth2[::6],
+        's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][drift]), bldepth3[::6],
+        '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
+    plt.xlim([0,xmax1])
+    plt.ylim([0,ymax1])
+    plt.xlabel('Obs$_{SML}$ [m]')
+    plt.ylabel('Model$_{SML}$ [m]')
+
+    ax  = fig.add_axes([0.79,0.12,0.2,0.33])   # left, bottom, width, height
+    ymax2 = 2700
+    xmax2 = ymax2
+    plt.plot([0,xmax2],[0, ymax2], '--', color = 'lightgrey')
+    plt.plot(np.squeeze(obs['inversions']['invbase'][drift]), inv1[::6],
+        'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+    plt.plot(np.squeeze(obs['inversions']['invbase'][drift]), inv2[::6],
+        's', color = 'forestgreen', markeredgecolor = 'darkgreen', label = label2)
+    plt.plot(np.squeeze(obs['inversions']['invbase'][drift]), inv3[::6],
+        '^', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
+    plt.xlim([0,xmax2])
+    plt.ylim([0,ymax2])
+    plt.xlabel('Obs$_{inv}$ [m]')
+    plt.ylabel('Model$_{inv}$ [m]')
+
+
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_oden_metum_ifs_casim-100.svg'
+    fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter_oden_metum_ifs_casim-100.svg'
     plt.savefig(fileout)
     plt.show()
 
