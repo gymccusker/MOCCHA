@@ -271,7 +271,7 @@ def main():
     if platform == 'LAPTOP':
         platformflag = 'laptop'
         um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/'
+        ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/DATA/'
         # misc_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -334,8 +334,8 @@ def main():
     print ('')
 
     name = '20180901_oden_'
-    filename_um = um_root_dir + out_dir1 + name + 'metum.nc'
-    filename_ifs = ifs_root_dir + out_dir4 + name + 'ecmwf.nc'
+    filename_um = um_root_dir + '20180901T1200Z_HighArctic_1p5km_RA2M_CON_pd011_r0.pp'
+    filename_ifs = ifs_root_dir + '20180901_moccha_ecmwf_001.nc'
     print (filename_um)
     print (filename_ifs)
     print ('')
