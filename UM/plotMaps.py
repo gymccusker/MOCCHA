@@ -117,7 +117,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_driftMap(um, ifs, obs):
+def plot_driftMap(um, ifs, ship_data):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -184,13 +184,13 @@ def plot_driftMap(um, ifs, obs):
     #################################################################
     ## plot UM data
     ################################################################
-    iplt.pcolormesh(cube[diag][290:370,150:230])
+    # iplt.pcolormesh(um[diag][290:370,150:230])
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    # qplt.outline(cube[hour,380:500,230:285])          ### original swath
+    qplt.outline(um[0][0,:,:])          ### original swath
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
