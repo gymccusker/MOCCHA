@@ -1743,6 +1743,13 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
         bldepth3 = data3['bl_depth'][data3['hrly_flag']]
 
     #################################################################
+    ## convert model inversion timesteps
+    #################################################################
+    data1['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data1['inversions']['mday']))
+    data2['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data2['inversions']['mday']))
+    data3['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data3['inversions']['mday']))
+
+    #################################################################
     ## create figure and axes instances
     #################################################################
     ax = plt.gca()
