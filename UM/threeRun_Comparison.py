@@ -3313,6 +3313,11 @@ def main():
 
     print ('Load observations inversion height data from Jutta...')
     obs['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/InversionHeights_RSh05int_final_V03.mat')
+    if platform == 'LAPTOP':
+        print ('Load calculated model inversion heights...')
+        obs['um_ra2m_inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_RA2M_inversion_results.mat')
+        obs['um_casim-100_inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_CASIM-100_inversion_results.mat')
+        obs['ecmwf_ifs_inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
     print ('Load foremast data from John...')
     obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
