@@ -3204,7 +3204,7 @@ def main():
     print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### only works on laptop for now
 
