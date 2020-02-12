@@ -117,7 +117,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_driftMap(data1, data3, obs, doy):
+def plot_driftMap(um, ifs, obs):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -357,7 +357,7 @@ def main():
     # -------------------------------------------------------------
     # Plot map
     # -------------------------------------------------------------
-    # figure = plot_driftMap(data1, data3, obs, doy)
+    figure = plot_driftMap(cube_um, cube_ifs, ship_data)
 
 
     # -------------------------------------------------------------
