@@ -2400,7 +2400,11 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],label = 'ECMWF_IFS median')
     plt.legend()
     plt.ylim([0,1e4])
+    plt.xlim([-1.6,1.0])
+    plt.ylabel('Z [m]')
+    plt.xlabel('Temperature anomaly [K]')
     plt.grid('on')
+    plt.title('Total drift')
 
     plt.subplot(132)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1),data1['universal_height'],label = 'UM_RA2M median')
@@ -2408,6 +2412,9 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
+    plt.xlim([-1.6,1.0])
+    plt.xlabel('Temperature anomaly [K]')
+    plt.title('Melt')
 
     plt.subplot(133)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1),data1['universal_height'],label = 'UM_RA2M median')
@@ -2415,6 +2422,9 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
+    plt.xlim([-1.6,1.0])
+    plt.xlabel('Temperature anomaly [K]')
+    plt.title('Freeze')
     plt.show()
 
     # height = np.zeros([np.size(um['temp_anomalies'],0), np.size(um['temp_anomalies'],1)])
