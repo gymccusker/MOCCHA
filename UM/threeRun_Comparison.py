@@ -2403,16 +2403,16 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.grid('on')
 
     plt.subplot(132)
-    plt.plot(np.nanmedian(data1['temp_anomalies'][melt],1),data1['universal_height'],label = 'UM_RA2M median')
-    plt.plot(np.nanmedian(data2['temp_anomalies'][melt],1),data1['universal_height'],label = 'UM_CASIM-100 median')
-    plt.plot(np.nanmedian(data3['temp_anomalies'][melt],1),data1['universal_height'],label = 'ECMWF_IFS median')
+    plt.plot(np.nanmedian(data1['temp_anomalies'][:,melt],1),data1['universal_height'],label = 'UM_RA2M median')
+    plt.plot(np.nanmedian(data2['temp_anomalies'][:,melt],1),data1['universal_height'],label = 'UM_CASIM-100 median')
+    plt.plot(np.nanmedian(data3['temp_anomalies'][:,melt],1),data1['universal_height'],label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
 
     plt.subplot(133)
-    plt.plot(np.nanmedian(data1['temp_anomalies'][freeze],1),data1['universal_height'],label = 'UM_RA2M median')
-    plt.plot(np.nanmedian(data2['temp_anomalies'][freeze],1),data1['universal_height'],label = 'UM_CASIM-100 median')
-    plt.plot(np.nanmedian(data3['temp_anomalies'][freeze],1),data1['universal_height'],label = 'ECMWF_IFS median')
+    plt.plot(np.nanmedian(data1['temp_anomalies'][:,freeze],1),data1['universal_height'],label = 'UM_RA2M median')
+    plt.plot(np.nanmedian(data2['temp_anomalies'][:,freeze],1),data1['universal_height'],label = 'UM_CASIM-100 median')
+    plt.plot(np.nanmedian(data3['temp_anomalies'][:,freeze],1),data1['universal_height'],label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
 
