@@ -3324,7 +3324,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
                 plt.close()
     else:
         for i in range(0, np.size(obs['sondes']['doy_drift'])):
-            plt.plot(np.squeeze(obs['sondes'][varlist[0]][iObs,drift[0][i]]) + 273.15, np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+            plt.plot(np.squeeze(obs['sondes'][varlist[0]][iObs,drift[0][i]]), np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
             plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
             plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
             plt.plot(data3[var + '_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
