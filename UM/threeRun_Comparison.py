@@ -2369,6 +2369,50 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.show()
     # plt.close()
 
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(8,5))
+
+    ####        all model data share a timestamp
+    melt = np.where(np.logical_and(data1['time_hrly'] >= time_radice[0], data1['time_hrly'] < 240.0))
+    freeze = np.where(data1['time_hrly'] >= 240.0)
+
+    plt.subplot(131)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],label = 'UM_RA2M median')
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],label = 'UM_CASIM-100 median')
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],label = 'ECMWF_IFS median')
+    plt.legend()
+    plt.grid('on')
+
+    plt.subplot(132)
+    plt.plot(np.nanmedian(data1['temp_anomalies'][melt],1),data1['universal_height'],label = 'UM_RA2M median')
+    plt.plot(np.nanmedian(data2['temp_anomalies'][melt],1),data1['universal_height'],label = 'UM_CASIM-100 median')
+    plt.plot(np.nanmedian(data3['temp_anomalies'][melt],1),data1['universal_height'],label = 'ECMWF_IFS median')
+    plt.grid('on')
+
+    plt.subplot(133)
+    plt.plot(np.nanmedian(data1['temp_anomalies'][freeze],1),data1['universal_height'],label = 'UM_RA2M median')
+    plt.plot(np.nanmedian(data2['temp_anomalies'][freeze],1),data1['universal_height'],label = 'UM_CASIM-100 median')
+    plt.plot(np.nanmedian(data3['temp_anomalies'][freeze],1),data1['universal_height'],label = 'ECMWF_IFS median')
+    plt.grid('on')
+
     # height = np.zeros([np.size(um['temp_anomalies'],0), np.size(um['temp_anomalies'],1)])
     # for i in range(0,np.size(height,1)): height[:,i] = um['universal_height']
     # plt.figure()
@@ -3347,9 +3391,9 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### save out working data for debugging
     #### ---------------------------------------------------------------
-    np.save('working_data1',data1)
-    np.save('working_data3',data3)
-    np.save('working_dataObs',obs['sondes'])
+    # np.save('working_data1',data1)
+    # np.save('working_data3',data3)
+    # np.save('working_dataObs',obs['sondes'])
 
     return data1, data2, data3, obs, drift
 
@@ -3771,8 +3815,8 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
