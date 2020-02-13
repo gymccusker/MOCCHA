@@ -3307,19 +3307,20 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### INTERPOLATION TESTING - IFS + SONDE + UM_RA2M:
     # print (obs['sondes']['doy_drift'].shape)
     # print (obs['sondes']['temp_allSondes_UM'][drift[0],:].shape)
-    # for i in range(0, np.size(obs['sondes']['doy_drift'])):
-    #     plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
-    #     plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
-    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
-    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
-    #     plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
-    #     plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
-    #     plt.legend()
-    #     plt.savefig('../FIGS/regrid/REGRID_test_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
-    #     if i == 0:
-    #         plt.show()
-    #     else:
-    #         plt.close()
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+        plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+        plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
+        plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
+        plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+        plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+        plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+        plt.legend()
+        plt.savefig('../FIGS/regrid/REGRID_test_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+        if i == 0:
+            plt.show()
+        else:
+            plt.close()
 
     #### ---------------------------------------------------------------
     #### make some dictionary assignments for use later
@@ -3752,9 +3753,9 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
