@@ -2797,7 +2797,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.ylim([0,1e4])
     plt.xlim([-0.05,0.45])
     plt.ylabel('Z [m]')
-    plt.xlabel('median q anomaly [K]')
+    plt.xlabel('median q anomaly [g/kg]')
     plt.grid('on')
     plt.title('Total drift')
 
@@ -2812,7 +2812,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-0.05,0.45])
-    plt.xlabel('median q anomaly [K]')
+    plt.xlabel('median q anomaly [g/kg]')
     plt.title('Melt')
 
     plt.subplot(133)
@@ -2826,7 +2826,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-0.05,0.45])
-    plt.xlabel('median q anomaly [K]')
+    plt.xlabel('median q anomaly [g/kg]')
     plt.title('Freeze')
 
     fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100.svg'
