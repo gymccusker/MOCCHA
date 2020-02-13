@@ -2795,9 +2795,9 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
         color = 'darkorange', label = 'ECMWF_IFS')
     plt.legend()
     plt.ylim([0,1e4])
-    # plt.xlim([-1.6,1.0])
+    plt.xlim([-0.05,0.45])
     plt.ylabel('Z [m]')
-    plt.xlabel('median T anomaly [K]')
+    plt.xlabel('median q anomaly [K]')
     plt.grid('on')
     plt.title('Total drift')
 
@@ -2811,7 +2811,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
         color = 'darkorange', label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
-    # plt.xlim([-1.6,1.0])
+    plt.xlim([-0.05,0.45])
     plt.xlabel('median q anomaly [K]')
     plt.title('Melt')
 
@@ -2825,7 +2825,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
         color = 'darkorange', label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
-    # plt.xlim([-1.6,1.0])
+    plt.xlim([-0.05,0.45])
     plt.xlabel('median q anomaly [K]')
     plt.title('Freeze')
 
