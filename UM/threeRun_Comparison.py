@@ -2391,7 +2391,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     fig = plt.figure(figsize=(8,5))
 
     ####        all model data share a timestamp
-    melt = np.where(data1['time_hrly'] < 240.0))
+    melt = np.where(data1['time_hrly'] < 240.0)
     freeze = np.where(data1['time_hrly'] >= 240.0)
 
     plt.subplot(131)
