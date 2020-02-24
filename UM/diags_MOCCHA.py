@@ -54,6 +54,8 @@ Stash_list = { # paXXX
               'm01s00i150': 'upward_air_velocity',                              # th 1-70 - pc
               'm01s00i002': 'eastward_wind',                                    # th 1-70 - pc
               'm01s00i003': 'northward_wind',                                   # th 1-70 - pc
+              'm01s00i267': 'large_scale_liquid_cloud_area_fraction',
+              'm01s00i268': 'large_scale_ice_cloud_area_fraction'
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',
@@ -68,10 +70,11 @@ Stash_list = { # paXXX
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
               'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
-              # 'm01s00i083': 'activated_soluable_aerosol_in_liquid',
-              # 'm01s00i086': 'activated_soluable_aerosol_in_ice',
-              'm01s00i267': 'large_scale_liquid_cloud_area_fraction',
-              'm01s00i268': 'large_scale_ice_cloud_area_fraction'
+              'm01s00i083': 'number_concentration_of_activated_soluble_aerosol_in_liquid',
+              # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
+              'm01s00i084': 'number_concentration_of_activated_soluble_aerosol_in_rain',
+              'm01s00i088': 'number_concentration_of_activated_soluble_aerosol',
+
 
               # 'm01s03i476': 'atmosphere_boundary_layer_type',
               # 'm01s00i025': 'atmosphere_boundary_layer_thickness',
