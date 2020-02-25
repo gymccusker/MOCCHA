@@ -55,7 +55,7 @@ Stash_list = { # paXXX
               'm01s00i002': 'eastward_wind',                                    # th 1-70 - pc
               'm01s00i003': 'northward_wind',                                   # th 1-70 - pc
               'm01s00i267': 'large_scale_liquid_cloud_area_fraction',
-              'm01s00i268': 'large_scale_ice_cloud_area_fraction'
+              'm01s00i268': 'large_scale_ice_cloud_area_fraction',
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',
@@ -67,20 +67,26 @@ Stash_list = { # paXXX
               'm01s03i460': 'surface_downward_eastward_stress',
               'm01s03i461': 'surface_downward_northward_stress',
               'm01s03i223': 'surface_upward_water_flux',
+              'm01s00i026': 'surface_roughness_length',
+              'm01s03i208': 'bulk_richardson_number',
+              'm01s03i501': 'mixing_length_for_momentum',
+              'm01s03i465': 'explicit_friction_velocity',
+              'm01s03i471': 'BL_momentum_diffusion',
+              'm01s03i471': 'vertical_buoyancy_gradient',
+              'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
               'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
               'm01s00i083': 'number_concentration_of_activated_soluble_aerosol_in_liquid',
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'number_concentration_of_activated_soluble_aerosol_in_rain',
-              'm01s00i088': 'number_concentration_of_activated_soluble_aerosol',
+              'm01s00i088': 'number_concentration_of_activated_soluble_aerosol'
 
 
               # 'm01s03i476': 'atmosphere_boundary_layer_type',
               # 'm01s00i025': 'atmosphere_boundary_layer_thickness',
               # 'm01s03i202': 'downward_heat_flux_in_soil',
               # 'm01s09i217': 'cloud_area_fraction',
-              # 'm01s03i026': 'surface_roughness_length',
               # 'm01s15i201': 'eastward_wind',
               # 'm01s15i202': 'northward_wind',
               # 'm01s04i201': 'large_scale_rainfall_amount',
