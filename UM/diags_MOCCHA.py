@@ -63,7 +63,7 @@ Stash_list = { # paXXX
               'm01s03i219': 'atmosphere_downward_eastward_stress',              # ro 1-70
               'm01s03i220': 'atmosphere_downward_northward_stress',             # ro 1-70
               'm01s03i473': 'turbulent_kinetic_energy',                         # ro 1-70
-              'm01s00i407': 'air_pressure',                                     # ro 1-70
+              # 'm01s00i407': 'air_pressure',                                     # ro 1-70
               'm01s03i460': 'surface_downward_eastward_stress',
               'm01s03i461': 'surface_downward_northward_stress',
               'm01s03i223': 'surface_upward_water_flux',
@@ -72,7 +72,7 @@ Stash_list = { # paXXX
               'm01s03i501': 'mixing_length_for_momentum',
               'm01s03i465': 'explicit_friction_velocity',
               'm01s03i471': 'BL_momentum_diffusion',
-              'm01s03i471': 'vertical_buoyancy_gradient',
+              'm01s03i469': 'vertical_buoyancy_gradient',
               'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
