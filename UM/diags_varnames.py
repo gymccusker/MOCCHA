@@ -55,7 +55,7 @@ Var_list = { # paXXX
               'm01s00i002': 'uwind',                                            # eastward_wind
               'm01s00i003': 'vwind',                                            # northward_wind
               'm01s00i267': 'liquid_cloud_fraction',
-              'm01s00i268': 'ice_cloud_fraction'
+              'm01s00i268': 'ice_cloud_fraction',
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',
@@ -73,7 +73,7 @@ Var_list = { # paXXX
               'm01s00i083': 'qnsolaeroliq',
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'qnsolaerorain',
-              'm01s00i088': 'qnsolaero',
+              'm01s00i088': 'qnsolaero'
               }
 
 
