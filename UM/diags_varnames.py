@@ -72,7 +72,7 @@ Var_list = { # paXXX
               'm01s03i501': 'mixing_length_for_momentum',
               'm01s03i465': 'explicit_friction_velocity',
               'm01s03i471': 'BL_momentum_diffusion',
-              'm01s03i471': 'vertical_buoyancy_gradient',
+              'm01s03i469': 'vertical_buoyancy_gradient',
               'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'qndrop',
