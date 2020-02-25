@@ -57,16 +57,23 @@ Var_list = { # paXXX
               'm01s00i267': 'liquid_cloud_fraction',
               'm01s00i268': 'ice_cloud_fraction',
               # pdXXX -- BOUNDARY LAYER
-              'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
-              'm01s03i363': 'entrainment_rate_for_boundary_layer',
+              'm01s03i362': 'entrainment_rate_SML',
+              'm01s03i363': 'entrainment_rate_BL',
               'm01s03i464': 'obukhov_length',
-              'm01s03i219': 'atmosphere_downward_eastward_stress',
-              'm01s03i220': 'atmosphere_downward_northward_stress',
-              'm01s03i473': 'tke',                                              # turbulent_kinetic_energy
-              'm01s00i407': 'pressure',                                         # air_pressure
+              'm01s03i219': 'atmosphere_downward_eastward_stress',              # ro 1-70
+              'm01s03i220': 'atmosphere_downward_northward_stress',             # ro 1-70
+              'm01s03i473': 'tke',                         # ro 1-70
+              # 'm01s00i407': 'air_pressure',                                     # ro 1-70
               'm01s03i460': 'surface_downward_eastward_stress',
               'm01s03i461': 'surface_downward_northward_stress',
               'm01s03i223': 'surface_upward_water_flux',
+              'm01s00i026': 'surface_roughness_length',
+              'm01s03i208': 'bulk_richardson_number',
+              'm01s03i501': 'mixing_length_for_momentum',
+              'm01s03i465': 'explicit_friction_velocity',
+              'm01s03i471': 'BL_momentum_diffusion',
+              'm01s03i471': 'vertical_buoyancy_gradient',
+              'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'qndrop',
               'm01s00i078': 'qnice',
