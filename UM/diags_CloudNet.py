@@ -789,7 +789,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '13_u-br409_RA1M_CASIM/'
+    out_dir = '12_u-br210_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -822,7 +822,7 @@ def main():
     #### 2, 3, 4, 10, 12, 24, 26, 31, 75, 78, 83, 84, 88, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409,
     #### 1201, 2201, 2391, 2392, 3002, 3025, 3208, 3217, 3219, 3220, 3223, 3234, 3236, 3245, 3247, 3248, 3360,
     #### 3361, 3362, 3363, 3460, 3461, 3464, 3465, 3469, 3471, 3473, 3476, 3501, 4118, 4203, 4204, 5216, 9203,
-    #### 9204, 9205, 16004, 30461 
+    #### 9204, 9205, 16004, 30461
 
     ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
     #### nohup python2.7 diags_CloudNet.py > nohup_u-bn068_diags_CloudNet.out &
