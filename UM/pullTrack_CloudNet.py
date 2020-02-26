@@ -6047,10 +6047,11 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date):
                 else:
                     ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
             if dim_flag == 1:         ### 4D VARIABLE
-                model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                 if stream == '_pd011':
+                    model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                     comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
+                    model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                     comdata = fixHeight(data, cube[k])
                 ncube = Cube(np.transpose(comdata),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
