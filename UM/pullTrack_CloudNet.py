@@ -7526,6 +7526,17 @@ def main():
     #### run on lotus (with batch_pullTrack.bsub):
     #### bsub < batch_pullTrack.bsub
 
+    #### batch_pullTrack:
+    #######         #!/bin/bash
+    #######         #BSUB -q short-serial
+    #######         #BSUB -J u-br210_pullTrack
+    #######         #BSUB -o %J.out
+    #######         #BSUB -e %J.err
+    #######         #BSUB -W 06:00
+    #######
+    #######         python2.7 pullTrack_CloudNet.py
+
+
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
