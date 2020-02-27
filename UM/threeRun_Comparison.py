@@ -1011,9 +1011,9 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(18,12))
+    fig = plt.figure(figsize=(12,10))
 
-    ax  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.7,0.55,0.22])   # left, bottom, width, height
     netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
     netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
     ax = plt.gca()
@@ -1022,24 +1022,24 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
-    plt.legend(bbox_to_anchor=(-0.11, 0.67, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(-0.25, 0.65, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
 
-    ax  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.4,0.55,0.22])   # left, bottom, width, height
     ax = plt.gca()
     yB = [-10, 120]
     # plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
@@ -1049,14 +1049,14 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-3,120])
 
-    ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.1,0.55,0.22])   # left, bottom, width, height
     ax = plt.gca()
     yC = [-90, 10]
     # plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'purple')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
     else:
@@ -1087,7 +1087,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     sw3 = data3['sfc_net_sw'][data3['hrly_flag']]
     lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
 
-    ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.7,0.25,0.22])   # left, bottom, width, height
     yDmax = 0.08
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1 + lw1
@@ -1095,7 +1095,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     crf3 = sw3 + lw3
     sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
     crf2 = sw2 + lw2
-    sns.distplot(crf2, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(crf2, hist=False, color="purple", kde_kws={"shade": True})
     sns.distplot(netLW[subSect] + netSW[subSect], hist=False, color="black")
     # plt.title('Melt')
     # plt.annotate('Melt', xy=(55,0.07), xytext=(55,0.07), fontsize = 14)
@@ -1104,12 +1104,12 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.ylim([0,yDmax])
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.64,0.4,0.22,0.22])   # left, bottom, width, height
+    ax  = fig.add_axes([0.7,0.4,0.25,0.22])   # left, bottom, width, height
     yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(sw1, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(sw2, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(sw2, hist=False, color="purple", kde_kws={"shade": True})
     sns.distplot(netSW[subSect], hist=False, color="black")
     # plt.title('Melt')
     # plt.annotate('Melt', xy=(87,0.07), xytext=(87,0.07), fontsize = 14)
@@ -1119,12 +1119,12 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.xlabel('$SW_{net,surf}$ [W/m2]')
 
     # plt.subplot(212)
-    ax  = fig.add_axes([0.64,0.1,0.22,0.22])   # left, bottom, width, height
-    yFmax = 0.16
+    ax  = fig.add_axes([0.7,0.1,0.25,0.22])   # left, bottom, width, height
+    yFmax = 0.08
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(lw1, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    sns.distplot(lw2, hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(lw2, hist=False, color="purple", kde_kws={"shade": True})
     sns.distplot(netLW[subSect], hist=False, color="black")
     # plt.title('Melt')
     # plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
