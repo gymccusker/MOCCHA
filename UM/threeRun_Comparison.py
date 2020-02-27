@@ -1088,7 +1088,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
 
     ax  = fig.add_axes([0.7,0.7,0.25,0.22])   # left, bottom, width, height
-    yDmax = 0.08
+    yDmax = 0.1
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1 + lw1
     sns.distplot(crf1, hist=False, color="steelblue", kde_kws={"shade": True})
