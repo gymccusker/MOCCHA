@@ -337,6 +337,7 @@ def main():
     ### 10_u-bq791_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+    ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
 
     print '******'
     print ''
