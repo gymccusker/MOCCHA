@@ -7523,6 +7523,9 @@ def main():
     #### run with nohup:
     #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
 
+    #### run on lotus (with batch_pullTrack.bsub):
+    #### bsub < batch_pullTrack.bsub
+
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
