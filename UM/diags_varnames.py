@@ -75,7 +75,7 @@ Var_list = { # paXXX
               'm01s03i469': 'vertical_buoyancy_gradient',
               'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
-              'm01s00i075': 'qndrop',
+              'm01s00i075': 'qnliq',
               'm01s00i078': 'qnice',
               'm01s00i083': 'qnsolaeroliq',
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
