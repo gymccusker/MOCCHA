@@ -1029,7 +1029,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.title('CRF [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
-    plt.legend(bbox_to_anchor=(-0.25, 0.65, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
 
     ax  = fig.add_axes([0.07,0.4,0.55,0.22])   # left, bottom, width, height
@@ -1084,8 +1084,12 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     lw1 = data1['surface_net_LW_radiation'][data1['hrly_flag']]
     sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
     lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
-    sw3 = data3['sfc_net_sw'][data3['hrly_flag']]
-    lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
+    if ifs_flag == True:
+        sw3 = data3['sfc_net_sw'][data3['hrly_flag']]
+        lw3 = data3['sfc_net_lw'][data3['hrly_flag']]
+    else:
+        sw3 = data3['surface_net_SW_radiation'][data3['hrly_flag']]
+        lw3 = data3['surface_net_LW_radiation'][data3['hrly_flag']]
 
     ax  = fig.add_axes([0.7,0.7,0.25,0.22])   # left, bottom, width, height
     yDmax = 0.1
@@ -1120,7 +1124,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.25,0.22])   # left, bottom, width, height
-    yFmax = 0.08
+    yFmax = 0.11
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(lw1, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
@@ -3572,10 +3576,10 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R0/'
+        out_dir1 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '10_u-bq791_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'OUT_25H/'
+        out_dir4 = '11_u-bq798_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -3675,10 +3679,10 @@ def main():
     moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
             # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_',
-            '20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_',
+            '20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
             # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
@@ -3690,8 +3694,8 @@ def main():
 
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
-    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,259)        ## set DOY for CASIM-AeroProf (31st Aug to 14th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
