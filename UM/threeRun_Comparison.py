@@ -1105,7 +1105,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.25,0.22])   # left, bottom, width, height
-    yEmax = 0.08
+    yEmax = 0.14
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(sw1, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
