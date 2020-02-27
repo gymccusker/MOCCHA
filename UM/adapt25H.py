@@ -399,12 +399,12 @@ def main():
             # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
             # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
             # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            # '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc',
-            '20180901_oden_metum.nc',
+            # '20180829_oden_metum.nc','20180830_oden_metum.nc',
+            '20180831_oden_metum.nc','20180901_oden_metum.nc',
             '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
             '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc']#,'20180912_oden_metum.nc','20180913_oden_metum.nc',
-            # '20180914_oden_metum.nc']
+            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
@@ -413,7 +413,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
-    doy = np.arange(244,256)        ## set DOY for subset of moccha figures
+    doy = np.arange(243,259)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
 
     ## Choose month:
