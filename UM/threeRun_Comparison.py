@@ -1765,10 +1765,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ####        all model data share a timestamp
     melt = np.where(np.logical_and(data1['time_hrly'] >= obs['inversions']['doy_drift'][0], data1['time_hrly'] < 240.0))
     freeze = np.where(data1['time_hrly'] >= 240.0)
-    obsmelt = np.squeeze(np.where(obs['inversions']['doy'] < 240.0))
-    obsfreeze = np.squeeze(np.where(obs['inversions']['doy'] >= 240.0))
+    #### allow some leeway in radiosonde timesteps
+    obsmelt = np.where(np.logical_and(obs['inversions']['doy'] >= data1['time_hrly'][0]-0.2, obs['inversions']['doy'] < 240.0))
+    obsfreeze = np.where(np.logical_and(obs['inversions']['doy'] >= 240.0, obs['inversions']['doy'] <= data1['time_hrly'][-1]))
 
-    print ('obsmelt.shape = ', obsmelt.shape)
+    # print ('obsmelt.shape = ', obsmelt.shape)
 
     #### make inversion tempvars to allow for easy subsampling
     inv1 = np.squeeze(data1['inversions']['invbase'][data1['hrly_flag'],0])
@@ -1840,11 +1841,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     blmelt2 = bldepth2[melt]
     blmelt3 = bldepth3[melt]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsmelt]), blmelt1[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt1[::6],
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsmelt]), blmelt2[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt2[::6],
         'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsmelt]), blmelt3[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt3[::6],
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
     plt.ylim([0,ymax1])
@@ -1859,11 +1860,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     blfreeze2 = bldepth2[freeze]
     blfreeze3 = bldepth3[freeze]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsfreeze]), blfreeze1[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze1[::6],
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsfreeze]), blfreeze2[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze2[::6],
         'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][0,obsfreeze]), blfreeze3[::6],
+    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze3[::6],
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
     plt.ylim([0,ymax1])
@@ -1878,11 +1879,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     invmelt2 = inv2[melt]
     invmelt3 = inv3[melt]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsmelt]), invmelt1[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt1[::6],
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsmelt]), invmelt2[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt2[::6],
         'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsmelt]), invmelt3[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt3[::6],
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
     plt.ylim([0,ymax1])
@@ -1897,11 +1898,11 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     invfreeze2 = inv2[freeze]
     invfreeze3 = inv3[freeze]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsfreeze]), invfreeze1[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze1[::6],
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsfreeze]), invfreeze2[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze2[::6],
         'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][0,obsfreeze]), invfreeze3[::6],
+    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze3[::6],
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
     plt.ylim([0,ymax1])
