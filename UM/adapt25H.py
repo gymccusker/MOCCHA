@@ -125,7 +125,8 @@ def combineNC(nc1, nc2, filename1, filename2):
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
     radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
-    flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress']
+    flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
+                'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum']
 
     #################################################################
     ## CREATE NEW NETCDF
