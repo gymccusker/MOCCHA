@@ -3860,7 +3860,7 @@ def main():
     data2['hrly_flag'] = ii
     data3['hrly_flag'] = ii
 
-    #### add override for data2 to allow the use of 24h data for testing purposes
+    #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
         data2['time_hrly'] = data2['time']
         data2['hrly_flag'] = np.arange(len(data2['time_hrly']))
