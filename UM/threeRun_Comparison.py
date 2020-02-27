@@ -1000,6 +1000,11 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
+    #### add override for data2 to allow 24h data to be used for testing purposes
+    if out_dir2[-4:] == '24h/':
+        data2['surface_net_LW_radiation'][data2['surface_net_LW_radiation'] == 0] = np.nan
+        data2['surface_net_SW_radiation'][data2['surface_net_SW_radiation'] == 0] = np.nan
+
     #################################################################
     ## create figure and axes instances
     #################################################################
