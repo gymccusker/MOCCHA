@@ -7521,10 +7521,13 @@ def main():
     ## 13_u-br409_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
 
     #### run with nohup:
-    #### nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
+    ####    nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
 
     #### run on lotus (with batch_pullTrack.bsub):
-    #### bsub < batch_pullTrack.bsub
+    ####    bsub < batch_pullTrack.bsub
+
+    #### check lotus run status with:
+    ####    bjobs
 
     #### batch_pullTrack:
     #######         #!/bin/bash
