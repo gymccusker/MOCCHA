@@ -211,22 +211,22 @@ def plot_driftMap(um, ifs, ship_data):
     trackShip_index = trackShip(ship_data)
 
     ### Plot full track as line plot
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
-             color = 'pink', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'palevioletred', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
+    #          color = 'pink', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'palevioletred', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
              color = 'red', linewidth = 4,
              transform = ccrs.PlateCarree(), label = 'Drift',
