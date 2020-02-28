@@ -190,7 +190,7 @@ def plot_driftMap(um, ifs, ship_data):
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(um[0][0,:,:])          ### original swath
+    # qplt.outline(um[0][0,:,:])          ### original swath
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
@@ -208,7 +208,7 @@ def plot_driftMap(um, ifs, ship_data):
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(ship_data)
     inIce_index = inIce(ship_data)
-    trackShip_index = trackShip(ship_data, date)
+    trackShip_index = trackShip(ship_data)
 
     ### Plot full track as line plot
     plt.plot(ship_data.values[:,6], ship_data.values[:,7], '--',
