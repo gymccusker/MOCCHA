@@ -157,18 +157,11 @@ def plot_driftMap(um, ifs, ship_data):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(6,8))#, dpi=300)
+    plt.figure(figsize=(5,6))#, dpi=300)
     ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    # ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
-    # ax.set_extent([40, 50, 88.4, 88.6], crs=ccrs.PlateCarree())       ### ZOOM
-    ax.set_extent([0, 60, 86.75, 90], crs=ccrs.PlateCarree())     ### SWATH
-    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())    ### WHOLE
-    # ax.set_extent([-180, 180, 70, 90], crs=ccrs.PlateCarree())    ### V LARGE
-    # ax.set_extent([-180, 180, 60, 90], crs=ccrs.PlateCarree())    ### POSTER
-    # ax.set_global()
+    ax.set_extent([20, 45, 88.3, 89.9], crs=ccrs.PlateCarree())     ### SWATH
 
     ### DON'T USE: PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -178,7 +171,6 @@ def plot_driftMap(um, ifs, ship_data):
     ax.add_feature(cartopy.feature.OCEAN, color='white', zorder=0)
     ax.add_feature(cartopy.feature.LAND, color='lightgrey', zorder=0, edgecolor='black')
     ax.add_feature(cartopy.feature.COASTLINE)
-    # ax.set_global()
     ax.gridlines()
 
     #################################################################
@@ -196,11 +188,12 @@ def plot_driftMap(um, ifs, ship_data):
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
     # qplt.outline(cube[diag][290:370,150:230])
 
+    ### Plot um grid centres
+    plt.plot(um[0].dim_coords[2], um[0].dim_coords[1], '.',
+             color = 'k', linewidth = 2,
+             transform = ccrs.PlateCarree(), label = 'Whole',
+             )
 
-
-    # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
-
-            #### MID POINT: (433, 258)
 
     #################################################################
     ## plot ship track
