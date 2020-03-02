@@ -244,7 +244,7 @@ def plot_driftMap(um, ifs, ship_data):
     # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
 
-def readDaily(filenames, date):
+def readDaily(filename, date):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -263,15 +263,15 @@ def readDaily(filenames, date):
     data['lats'] = np.zeros([38])
     data['lons'] = np.zeros([38])
     data['mlevs'] = np.zeros([137])
-    for name in filenames:
-        i = i + 1
-        print( 'i = ' + str(i))
-        dat, cube, diag = readCube(name)
-        # print dat
-        data['pressure'][i, :, :] = dat['pressure'][:, :]
-        data['hgts'][i, :, :] = dat['hgts'][:, :]
-        data['lats'][i] = dat['lats']
-        data['lons'][i] = dat['lons']
+    # for name in filenames:
+    #     i = i + 1
+    #     print( 'i = ' + str(i))
+    dat, cube, diag = readCube(filename)
+    # print dat
+    data['pressure'][i, :, :] = dat['pressure'][:, :]
+    data['hgts'][i, :, :] = dat['hgts'][:, :]
+    data['lats'][i] = dat['lats']
+    data['lons'][i] = dat['lons']
     data['tims'][:] = dat['tims'][:]
     data['mlevs'][:] = dat['mlevs'][:]
     if date == '20180904':
