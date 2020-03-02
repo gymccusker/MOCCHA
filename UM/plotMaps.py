@@ -162,7 +162,7 @@ def plot_driftMap(um, ifs, ship_data):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 50, 88.3, 89.9], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
 
     ### DON'T USE: PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -212,10 +212,11 @@ def plot_driftMap(um, ifs, ship_data):
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
-    plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 81, c = 'darkorange',
+    plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 120, c = 'darkorange',
             label = 'IFS_midpoints',
-            marker = 's',
-            alpha = 0.5,
+            marker = 'x',
+            # alpha = 0.5,
+            linewidth = 3,
             edgecolor = 'saddlebrown',
             transform = ccrs.PlateCarree()
             )
@@ -254,14 +255,14 @@ def plot_driftMap(um, ifs, ship_data):
 
     plt.title('Grid setup')
 
-    plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(-0.05, 0.835, 1., .102), loc=4, ncol=1)
 
     print ('******')
     print ('')
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
+    plt.savefig('../FIGS/Drift_UM_IFS_grids.svg', dpi=100)
     plt.show()
 
 def readDaily(filename, date):
