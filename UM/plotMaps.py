@@ -292,8 +292,40 @@ def readDaily(filenames, date):
                89.59999847, 89.59999847, 89.59999847, 89.59999847, 89.59999847,
                89.59999847, 89.66999817, 89.66999817])
 
-
     return data
+
+def readCube(name):
+
+    ### LOOP OVER FILENAMES TO EXTRACT DIAGNOSTIC OVER ALL GRIDBOXES
+
+    print 'Filename to load is: ' + name
+
+    diag = 24
+
+    data = {}
+    dat = np.zeros([25,137])
+    cube = iris.load(name)
+    print 'Diag will be ' + cube[diag].var_name
+    tims = cube[diag].dim_coords[0].points
+    hgts = cube[35].data
+    lats = cube[40].data
+    lons = cube[41].data
+    if np.sum(cube[diag].shape) > 24:        # if 2D diagnostic
+        mlevs = cube[diag].dim_coords[1].points
+    for t in range(len(tims)):
+        dat[t,:] = tims[t]
+        for k in range(np.size(hgts,1)):
+            dat[:,k] = cube[diag].data[t,k]
+    data[cube[diag].var_name] = dat
+    data['lats'] = lats
+    data['lons'] = lons
+    data['tims'] = tims
+    data['hgts'] = hgts
+    data['mlevs'] = mlevs
+
+    # print data.keys()
+
+    return data, cube, diag
 
 def main():
 
