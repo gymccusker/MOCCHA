@@ -158,7 +158,8 @@ def plot_driftMap(um, ifs, ship_data):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(5,6))#, dpi=300)
-    ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
+    # ax = plt.axes(projection=ccrs.Orthographic(30, 70))    # NP Stereo
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
     ax.set_extent([20, 45, 88.3, 89.9], crs=ccrs.PlateCarree())     ### SWATH
@@ -196,13 +197,25 @@ def plot_driftMap(um, ifs, ship_data):
 
 
     ###---------------------------------------------------------------------------------
+    ### Plot um grid centres
+    ###---------------------------------------------------------------------------------
+    # plt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')#,
+            # label = 'UM_RA2M/CASIM-100',
+            # alpha = 0.8,
+            # edgecolor = 'midnightblue'
+            # # transform = ccrs.PlateCarree()
+            # )
+    # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
+
+    ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
     plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 81, c = 'darkorange',
-            label = 'Grid mid points',
+            label = 'ECMWF_IFS',
             alpha = 0.5,
             edgecolor = 'saddlebrown',
-            transform = ccrs.PlateCarree())
+            transform = ccrs.PlateCarree() 
+            )
 
 
     #################################################################
@@ -232,7 +245,8 @@ def plot_driftMap(um, ifs, ship_data):
     #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
              color = 'k', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Drift',
+             transform = ccrs.PlateCarree(),
+             label = 'AO2018 drift',
              )
 
 
