@@ -189,10 +189,18 @@ def plot_driftMap(um, ifs, ship_data):
     # qplt.outline(cube[diag][290:370,150:230])
 
     ### Plot um grid centres
-    plt.plot(um[0].dim_coords[2], um[0].dim_coords[1], '.',
-             color = 'k', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
+    # plt.plot(um[0].dim_coords[2], um[0].dim_coords[1], '.',
+    #          color = 'k', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+
+
+    ###---------------------------------------------------------------------------------
+    ### Plot ifs grid centres
+    ###---------------------------------------------------------------------------------
+    plt.scatter(data['lons'][:], data['lats'][:], c = 'darkorange',
+            label = 'Grid mid points',
+            transform = ccrs.PlateCarree())
 
 
     #################################################################
@@ -235,6 +243,57 @@ def plot_driftMap(um, ifs, ship_data):
 
     # plt.savefig('FIGS/HighArctic_vPOSTER.svg', dpi=100)
     plt.show()
+
+def readDaily(filenames, date):
+
+    from iris.coords import DimCoord
+    from iris.cube import Cube
+
+    '''
+     function to read in each lat/lon ECMWF IFS (netCDF) file with Iris then
+     output required diagnostics for Cloudnet into a new netCDF
+    '''
+
+    i = -1
+    data = {}
+    data['date'] = date
+    data['pressure'] = np.zeros([38,25,137])
+    data['hgts'] = np.zeros([38,25,137])
+    data['tims'] = np.zeros([25])
+    data['lats'] = np.zeros([38])
+    data['lons'] = np.zeros([38])
+    data['mlevs'] = np.zeros([137])
+    for name in filenames:
+        i = i + 1
+        print 'i = ' + str(i)
+        dat, cube, diag = readCube(name)
+        # print dat
+        data['pressure'][i, :, :] = dat['pressure'][:, :]
+        data['hgts'][i, :, :] = dat['hgts'][:, :]
+        data['lats'][i] = dat['lats']
+        data['lons'][i] = dat['lons']
+    data['tims'][:] = dat['tims'][:]
+    data['mlevs'][:] = dat['mlevs'][:]
+    if date == '20180904':
+        data['lons'][:] = np.array([36.66999817, 38.08000183, 41.54000092, 43.20000076, 45.        ,
+               46.95999908, 45.        , 47.13999939, 45.        , 49.5       ,
+               47.36999893, 50.        , 55.        , 52.93999863, 58.24000168,
+               56.25      , 60.        , 57.86000061, 62.31000137, 30.        ,
+               37.5       , 67.5       , 75.        ,  8.18000031, 16.36000061,
+               24.54999924, 32.72999954, 40.90999985, 57.27000046, 65.44999695,
+               9.        , 18.        , 27.        , 36.        , 45.        ,
+               54.        , 20.        , 30.        ])
+        data['lats'][:] = np.array([88.40000153, 88.47000122, 88.47000122, 88.54000092, 88.61000061,
+               88.68000031, 88.75      , 88.81999969, 88.88999939, 88.88999939,
+               88.95999908, 89.02999878, 89.02999878, 89.09999847, 89.09999847,
+               89.16999817, 89.23999786, 89.30999756, 89.37999725, 89.44999695,
+               89.44999695, 89.44999695, 89.44999695, 89.52999878, 89.52999878,
+               89.52999878, 89.52999878, 89.52999878, 89.52999878, 89.52999878,
+               89.59999847, 89.59999847, 89.59999847, 89.59999847, 89.59999847,
+               89.59999847, 89.66999817, 89.66999817])
+
+
+    return data
 
 def main():
 
@@ -327,6 +386,7 @@ def main():
     print ('')
 
     name = '20180901_oden_'
+    date = name[:8]
     filename_um = um_root_dir + '20180901T1200Z_HighArctic_1p5km_RA2M_CON_pd011_r0.pp'
     filename_ifs = ifs_root_dir + '20180901_moccha_ecmwf_001.nc'
     print (filename_um)
@@ -346,6 +406,11 @@ def main():
     print ('')
     print (cube_ifs)
     print ('')
+
+    # -------------------------------------------------------------
+    # Extract each position file with Iris and write to combined netCDF
+    # -------------------------------------------------------------
+    ifs = readDaily(filename_ifs, date)
 
     # -------------------------------------------------------------
     # Plot map
