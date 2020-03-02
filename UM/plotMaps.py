@@ -205,7 +205,7 @@ def plot_driftMap(um, ifs, ship_data):
             # edgecolor = 'midnightblue'
             # # transform = ccrs.PlateCarree()
             # )
-    # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
+    qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
 
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
@@ -214,7 +214,7 @@ def plot_driftMap(um, ifs, ship_data):
             label = 'ECMWF_IFS',
             alpha = 0.5,
             edgecolor = 'saddlebrown',
-            transform = ccrs.PlateCarree() 
+            transform = ccrs.PlateCarree()
             )
 
 
