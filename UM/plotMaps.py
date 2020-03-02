@@ -168,7 +168,7 @@ def plot_driftMap(um, ifs, ship_data):
     #################################################################
     ## add geographic features/guides for reference
     #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, color='white', zorder=0)
+    ax.add_feature(cartopy.feature.OCEAN, color='lightcyan', zorder=0)
     ax.add_feature(cartopy.feature.LAND, color='lightgrey', zorder=0, edgecolor='black')
     ax.add_feature(cartopy.feature.COASTLINE)
     ax.gridlines()
@@ -198,8 +198,10 @@ def plot_driftMap(um, ifs, ship_data):
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
-    plt.scatter(ifs['lons'][:], ifs['lats'][:], c = 'darkorange',
+    plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 81, c = 'darkorange',
             label = 'Grid mid points',
+            alpha = 0.5,
+            edgecolor = 'saddlebrown',
             transform = ccrs.PlateCarree())
 
 
@@ -229,7 +231,7 @@ def plot_driftMap(um, ifs, ship_data):
     #          transform = ccrs.PlateCarree(),
     #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
+             color = 'k', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Drift',
              )
 
