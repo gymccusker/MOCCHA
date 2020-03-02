@@ -198,7 +198,7 @@ def plot_driftMap(um, ifs, ship_data):
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
-    plt.scatter(data['lons'][:], data['lats'][:], c = 'darkorange',
+    plt.scatter(ifs['lons'][:], ifs['lats'][:], c = 'darkorange',
             label = 'Grid mid points',
             transform = ccrs.PlateCarree())
 
@@ -429,25 +429,27 @@ def main():
     print ('Loading first run diagnostics:')
     cube_um = iris.load(filename_um)
     print ('...')
-    print ('Loading second run diagnostics:')
-    cube_ifs = iris.load(filename_ifs)
+    # print ('Loading second run diagnostics:')
+    # cube_ifs = iris.load(filename_ifs)
     # -------------------------------------------------------------
     print ('...')
 
     print (cube_um)
     print ('')
-    print (cube_ifs)
-    print ('')
+    # print (cube_ifs)
+    # print ('')
 
     # -------------------------------------------------------------
     # Extract each position file with Iris and write to combined netCDF
     # -------------------------------------------------------------
     ifs = readDaily(filename_ifs, date)
 
+    np.save('working_data',ifs)
+
     # -------------------------------------------------------------
     # Plot map
     # -------------------------------------------------------------
-    figure = plot_driftMap(cube_um, cube_ifs, ship_data)
+    figure = plot_driftMap(cube_um, ifs, ship_data)
 
 
     # -------------------------------------------------------------
