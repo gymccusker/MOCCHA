@@ -3374,7 +3374,6 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][ii,:])
     data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][ii,:])
     data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][ii,:])
-    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
     #### explicitly save 6-hourly temperature model profiles and time binning for ease
@@ -3401,6 +3400,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     data3['height'][data3['height'] == -9999] = 0.0
             #### set all heights to zero if flagged. setting to nan caused problems
             ####        further on
+    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
@@ -3416,7 +3416,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
             data3[var + '_hrly_UM'][iTim,:] = np.nan
         else:
             fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
-            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height_hrly'][iUM[0][3:]].data)
+            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
     print ('...')
     print ('IFS(UM Grid) function worked!')
     print (var + ' IFS data now on UM vertical grid')
