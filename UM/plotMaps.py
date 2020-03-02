@@ -265,7 +265,7 @@ def readDaily(filenames, date):
     data['mlevs'] = np.zeros([137])
     for name in filenames:
         i = i + 1
-        print 'i = ' + str(i)
+        print( 'i = ' + str(i))
         dat, cube, diag = readCube(name)
         # print dat
         data['pressure'][i, :, :] = dat['pressure'][:, :]
@@ -298,14 +298,14 @@ def readCube(name):
 
     ### LOOP OVER FILENAMES TO EXTRACT DIAGNOSTIC OVER ALL GRIDBOXES
 
-    print 'Filename to load is: ' + name
+    print( 'Filename to load is: ' + name)
 
     diag = 24
 
     data = {}
     dat = np.zeros([25,137])
     cube = iris.load(name)
-    print 'Diag will be ' + cube[diag].var_name
+    print( 'Diag will be ' + cube[diag].var_name)
     tims = cube[diag].dim_coords[0].points
     hgts = cube[35].data
     lats = cube[40].data
