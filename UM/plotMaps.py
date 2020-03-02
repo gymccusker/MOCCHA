@@ -149,9 +149,9 @@ def plot_driftMap(um, ifs, ship_data):
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=MED_SIZE)
     plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
     # plt.rc('figure',titlesize=LARGE_SIZE)
 
     #################################################################
@@ -162,7 +162,7 @@ def plot_driftMap(um, ifs, ship_data):
     ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
 
     ### set size
-    ax.set_extent([20, 45, 88.3, 89.9], crs=ccrs.PlateCarree())     ### SWATH
+    ax.set_extent([20, 50, 88.3, 89.9], crs=ccrs.PlateCarree())     ### SWATH
 
     ### DON'T USE: PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -205,13 +205,16 @@ def plot_driftMap(um, ifs, ship_data):
             # edgecolor = 'midnightblue'
             # # transform = ccrs.PlateCarree()
             # )
-    qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
+    # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
+    qplt.outline(um[0][0,:,:],
+            color = 'steelblue')
 
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
     plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 81, c = 'darkorange',
-            label = 'ECMWF_IFS',
+            label = 'IFS_midpoints',
+            marker = 's',
             alpha = 0.5,
             edgecolor = 'saddlebrown',
             transform = ccrs.PlateCarree()
@@ -249,8 +252,9 @@ def plot_driftMap(um, ifs, ship_data):
              label = 'AO2018 drift',
              )
 
+    plt.title('Grid setup')
 
-    plt.legend()
+    plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
 
     print ('******')
     print ('')
