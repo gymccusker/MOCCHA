@@ -535,10 +535,17 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     zind2 = np.zeros(np.size(inv2))
     zind3 = np.zeros(np.size(inv3))
     #### fill arrays with height index of main inversion base
-    for k in range(0, inv1):        ### all can go in this loop, inv1 == hourly data
-        zind1[k] = np.where(data1['height'].data == inv1[k])[0][0]
-        zind2[k] = np.where(data2['height'].data == inv2[k])[0][0]
-        zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
+    for k in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
+        # print (k)
+        if np.size(np.where(data1['height'].data == inv1[k])) > 0.0:
+            zind1[k] = np.where(data1['height'].data == inv1[k])[0][0]
+        else:
+            zind1[k] = np.nan
+        if np.size(np.where(data2['height'].data == inv2[k])) > 0.0:
+            zind2[k] = np.where(data2['height'].data == inv2[k])[0][0]
+        else:
+            zind2[k] = np.nan
+        # zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
 
     ##################################################
     ##################################################
