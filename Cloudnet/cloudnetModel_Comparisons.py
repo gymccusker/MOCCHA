@@ -603,6 +603,18 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     scaled_hgts1 = hgts1 / data1['height'][int(data1['inversions']['invbase_kIndex'][i])]
     cv1 = um['Cv'][i,0:int(data1['inversions']['invbase_kIndex'][i]+1)]
 
+    ## Meteorological period definitions from Jutta's paper:
+    ##     "Period 1 covers the time in the MIZ until 4 August 06:00 UTC. Period 2 encompasses
+    ##     the journey into the ice towards the North Pole until 12 August 00:00 UTC. Since cloud
+    ##     radar measurements were not possible during heavy ice breaking because of excessive
+    ##     vibration, cloud characteristics and fog heights are not available during period 2.
+    ##     Period 3 (12 to 17 August) includes the ‘North Pole’ station and the beginning of
+    ##     the ice drift. Period 4 (18 to 27 August) covers the end of the melt and the transition
+    ##     period into the freeze up. The freeze up is covered by period 5 (28 August to 3 September),
+    ##     6 (4 to 7 September) and 7 (8 to 12 September 12:00 UTC). Finally, period 8 (12 September
+    ##     12:00 UTC to 21 September 06:00 UTC) covers the end of the ice drift period and the transit
+    ##     out to the ice edge. "
+
 
     ##################################################
     ##################################################
