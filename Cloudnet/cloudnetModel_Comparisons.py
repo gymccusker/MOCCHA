@@ -546,12 +546,12 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     #### fill arrays with height index of main inversion base
     for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
         # print (i)
-        if np.size(np.where(data1['height'].data == inv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'].data == inv1[i])[0][0]
+        if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
+            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
         else:
             zind1[i] = np.nan
-        if np.size(np.where(data2['height'].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'].data == inv2[i])[0][0]
+        if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
+            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
         else:
             zind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
@@ -579,52 +579,6 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # print (label2 + ' zind2 success rate = ' + str(zind2rate))
     # print (label3 + ' zind3 success rate = ' + str(zind3rate))
     # print ('****')
-
-    #### ---------------------------------------------------------------
-    #### Look at data below main inversion base only
-    #### ---------------------------------------------------------------
-    #### create empty arrays to hold height index
-    zind1 = np.zeros(np.size(inv1))
-    zind2 = np.zeros(np.size(inv2))
-    zind3 = np.zeros(np.size(inv3))#,np.size(data3['height'],1))
-
-    #### fill arrays with height index of main inversion base
-    for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
-        #### ignore 0th entry in um arrays since == 0 (and so not present in cloudnet height array)
-        if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
-        else:
-            zind1[i] = np.nan
-        if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
-        else:
-            zind2[i] = np.nan
-        if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= inv3[i]
-            zind3[i] = np.where(temp == True)[0][-1]
-            # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
-        else:
-            zind3[i] = np.nan
-
-    #### assign height indices to dictionary for later use
-    data1['inversions']['invbase_modelIndex'] = zind1
-    data2['inversions']['invbase_modelIndex'] = zind2
-    data3['inversions']['invbase_modelIndex'] = zind3
-
-    # print (zind3)
-    #### re-check inversion algorithm success rate to make sure no !0 values got dropped
-    zzind1 = np.where(data1['inversions']['invbase_modelIndex'] >= 0.0)  ## non-nan values
-    zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
-    zzind2 = np.where(data2['inversions']['invbase_modelIndex'] >= 0.0)  ## non-nan values
-    zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
-    zzind3 = np.where(data3['inversions']['invbase_modelIndex'] >= 0.0)  ## non-nan values
-    zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
-
-    # print (label1 + ' zind1 success rate = ' + str(zind1rate))
-    # print (label2 + ' zind2 success rate = ' + str(zind2rate))
-    # print (label3 + ' zind3 success rate = ' + str(zind3rate))
-    # print ('****')
-
 
     #### ---------------------------------------------------------------
     #### Use extracted height indices to probe cloudnet data
