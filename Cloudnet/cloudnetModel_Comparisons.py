@@ -901,8 +901,6 @@ def main():
     month_flag = -1
 
 
-
-
 ###################################################################################################################
 ###################################################################################################################
 
@@ -973,7 +971,7 @@ def main():
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
         var_list2 = var_list1
-        if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
+        if ifs_flag: var_list3 = ['temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
         if not ifs_flag: var_list3 = var_list1
 
@@ -999,6 +997,8 @@ def main():
             data1['height'] = nc1.variables['height'][:]
             data2['height'] = nc2.variables['height'][:]
             if not ifs_flag: data3['height'] = nc3.variables['height'][:]
+            data3['height'] = nc3.variables['height'][:]
+            data3['flx_height'] = nc3.variables['flx_height'][:]
 
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
@@ -1027,54 +1027,84 @@ def main():
             nc3.close()
         else:
             if doy[i] in missing_files:
+                print (str(doy[i]))
+                nanarray = np.zeros(24)
+                nanarray[:] = np.nan
+                time_um1 = np.append(time_um1, nanarray)
+                time_um2 = np.append(time_um2, nanarray)
+                if ifs_flag: time_um3 = np.append(time_um3, nanarray)
+                if not ifs_flag: time_um3 = np.append(time_um3, nanarray)
                 for j in range(0,len(var_list1)):
-                    nanarray = np.zeros(24)
-                    nanarray[:] = np.nan
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
+                    if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc1.variables[var_list1[j]]) == 1:
+                        nanarray = np.zeros(24)
+                        nanarray[:] = np.nan
+                        data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray)
+                        data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
+                    elif np.ndim(nc1.variables[var_list1[j]]) == 2:
+                        nanarray = np.zeros([24,71])
+                        nanarray[:] = np.nan
+                        data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
+                        data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
                 for j in range(0,len(var_list3)):
-                    nanarray = np.zeros(24)
-                    nanarray[:] = np.nan
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
+                    print (j)
+                    print (var_list3[j])
+                    np.save('testing', data3)
+                    if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                        nanarray = np.zeros(24)
+                        nanarray[:] = np.nan
+                        data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray)
+                    elif np.ndim(nc3.variables[var_list3[j]]) == 2:
+                        if var_list3[j][:3] == 'flx':
+                            nanarray = np.zeros([24,138])
+                        else:
+                            nanarray = np.zeros([24,137])
+                        nanarray[:] = np.nan
+                        data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
 
-            time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-            time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-            if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
-            if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
-            ## ------------------
-            #### UM
-            ## ------------------
-            for j in range(0,len(var_list1)):
-                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                    # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
-                elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
-            nc1.close()
-            ## ------------------
-            #### um2
-            ## ------------------
-            for j in range(0,len(var_list2)):
-                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list2[j]]) == 1:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:])
-                elif np.ndim(nc2.variables[var_list2[j]]) == 2:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:],0)
-            nc2.close()
-            ## ------------------
-            #### um3 / ifs
-            ## ------------------
-            for j in range(0,len(var_list3)):
-                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:])
-                elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
-            nc3.close()
+            else:
+                time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
+                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+                if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
+                if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
+
+                ## ------------------
+                #### UM
+                ## ------------------
+                for j in range(0,len(var_list1)):
+                    if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc1.variables[var_list1[j]]) == 1:
+                        # data1[cube_um1[j].var_name] = cube_um1[j].data
+                        data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:])
+                    elif np.ndim(nc1.variables[var_list1[j]]) == 2:
+                        data1[var_list1[j]] = np.append(data1[var_list1[j]],nc1.variables[var_list1[j]][:],0)
+                nc1.close()
+                ## ------------------
+                #### um2
+                ## ------------------
+                for j in range(0,len(var_list2)):
+                    if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc2.variables[var_list2[j]]) == 1:
+                        data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:])
+                    elif np.ndim(nc2.variables[var_list2[j]]) == 2:
+                        data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:],0)
+                nc2.close()
+                ## ------------------
+                #### um3 / ifs
+                ## ------------------
+                for j in range(0,len(var_list3)):
+                    if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                        data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:])
+                    elif np.ndim(nc3.variables[var_list3[j]]) == 2:
+                        data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
+                nc3.close()
 
 ###################################################################################################################
 ### ----------------------------------------------------------------------------------------------------------------
