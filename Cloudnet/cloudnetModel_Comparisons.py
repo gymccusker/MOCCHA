@@ -452,7 +452,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -581,8 +581,28 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # print ('****')
 
     #### ---------------------------------------------------------------
+    #### prepare cloudnet data
+    #### ---------------------------------------------------------------
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+
+    #### ---------------------------------------------------------------
     #### Use extracted height indices to probe cloudnet data
     #### ---------------------------------------------------------------
+    # um['scaled_height'] =
+    ### try i = 0 first to see if it works
+    i = 0
+    hgts1 = data1['height'][0:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    scaled_hgts1 = hgts1 / data1['height'][int(data1['inversions']['invbase_kIndex'][i])]
+    cv1 = um['Cv'][i,0:int(data1['inversions']['invbase_kIndex'][i]+1)]
+
 
     ##################################################
     ##################################################
@@ -604,11 +624,33 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(13,7))
+    fig = plt.figure(figsize=(5,7))
+    ax = plt.gca()
 
-    plt.plot(data1['time_hrly'], zind1)
-    plt.plot(data2['time_hrly'], zind2)
-    plt.plot(data3['time_hrly'], zind3)
+    # plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+    #     np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
+    #     np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
+    # plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+    #     np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    # ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
+    #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
+    # plt.xlabel('Cloud Fraction')
+    # plt.ylabel('Height [m]')
+    # plt.ylim([0,10000])
+    # plt.xlim([0,1])
+    # plt.legend()
+
+    plt.plot(data1['inversions']['invbase_kIndex'])
+    plt.plot(data2['inversions']['invbase_kIndex'])
+    plt.plot(data3['inversions']['invbase_kIndex'])
+
+
+
 
     print ('******')
     print ('')
@@ -1287,7 +1329,7 @@ def main():
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
-    figure = plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_scaledBL(data1, data2, data3,um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
