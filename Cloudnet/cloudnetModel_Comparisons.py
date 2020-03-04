@@ -545,7 +545,10 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
             zind2[k] = np.where(data2['height'].data == inv2[k])[0][0]
         else:
             zind2[k] = np.nan
-        # zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
+        if np.size(np.where(data3['height'].data == inv3[k])) > 0.0:
+            zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
+        else:
+            zind3[k] = np.nan
 
     ##################################################
     ##################################################
