@@ -514,13 +514,15 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(data1['inversions']['invbase'] >= 0.0)  ## non-nan values
-    data1['inversions']['successRate'] = (np.size(ind1[0]) / np.size(data1['inversions']['invbase'],0)) * 100.0
+    data1['inversions']['successRate'] = (np.size(ind1[0]) / np.float(np.size(data1['inversions']['invbase'],0))) * 100.0
     ind2 = np.where(data2['inversions']['invbase'] >= 0.0)  ## non-nan values
-    data2['inversions']['successRate'] = (np.size(ind2[0]) / np.size(data2['inversions']['invbase'],0)) * 100.0
+    data2['inversions']['successRate'] = (np.size(ind2[0]) / np.float(np.size(data2['inversions']['invbase'],0))) * 100.0
     ind3 = np.where(data3['inversions']['invbase'] >= 0.0)  ## non-nan values
-    data3['inversions']['successRate'] = (np.size(ind3[0]) / np.size(data3['inversions']['invbase'],0)) * 100.0
+    data3['inversions']['successRate'] = (np.size(ind3[0]) / np.float(np.size(data3['inversions']['invbase'],0))) * 100.0
 
-    print (label1 + ' inversion algorithm success rate = ' + data1['inversions']['successRate'])
+    print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
+    print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
+    print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
 
     ##################################################
     ##################################################
