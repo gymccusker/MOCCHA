@@ -512,6 +512,16 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase'][data3['hrly_flag'],0])
 
+    #### calculate inversion algorithm success rate
+    ind1 = np.where(data1['inversions']['invbase'] >= 0.0)  ## non-nan values
+    data1['inversions']['successRate'] = (np.size(ind1[0]) / np.size(data1['inversions']['invbase'],0)) * 100.0
+    ind2 = np.where(data2['inversions']['invbase'] >= 0.0)  ## non-nan values
+    data2['inversions']['successRate'] = (np.size(ind2[0]) / np.size(data2['inversions']['invbase'],0)) * 100.0
+    ind3 = np.where(data3['inversions']['invbase'] >= 0.0)  ## non-nan values
+    data3['inversions']['successRate'] = (np.size(ind3[0]) / np.size(data3['inversions']['invbase'],0)) * 100.0
+
+    print (label1 + ' inversion algorithm success rate = ' + data1['inversions']['successRate'])
+
     ##################################################
     ##################################################
     #### create figure and axes instances
@@ -534,23 +544,6 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### -------------------------------
     fig = plt.figure(figsize=(13,7))
 
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-    ax  = fig.add_axes([0.08,0.56,0.45,0.36])   # left, bottom, width, height
-    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
-        color = 'k', label = 'Obs_Radiosondes')
-    plt.plot(data1['time_hrly'][::6], bldepth1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(data2['time_hrly'][::6], bldepth2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(data3['time_hrly'][::6], bldepth3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.legend(bbox_to_anchor=(0.0, 0.67, 1., .102), loc=4, ncol=2)
-    plt.title('BL_depth / sfmlheight [m]')
-    ax.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-    plt.ylabel('Z [m]')
 
     ax  = fig.add_axes([0.08,0.1,0.45,0.36])   # left, bottom, width, height
     plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
@@ -566,86 +559,6 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
-
-    #### -----------------------------------------------------------------
-    #### scatterplots
-    #### -----------------------------------------------------------------
-    ax  = fig.add_axes([0.6,0.64,0.15,0.22])   # left, bottom, width, height
-    ymax1 = 750
-    xmax1 = ymax1
-    blmelt1 = bldepth1[melt]
-    blmelt2 = bldepth2[melt]
-    blmelt3 = bldepth3[melt]
-    plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.xlim([0,xmax1])
-    plt.ylim([0,ymax1])
-    plt.xlabel('Obs$_{SML}$ [m]')
-    plt.ylabel('Model$_{SML}$ [m]')
-    plt.title('Melt')
-
-    ax  = fig.add_axes([0.83,0.64,0.15,0.22])   # left, bottom, width, height
-    ymax1 = 1500
-    xmax1 = ymax1
-    blfreeze1 = bldepth1[freeze]
-    blfreeze2 = bldepth2[freeze]
-    blfreeze3 = bldepth3[freeze]
-    plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.xlim([0,xmax1])
-    plt.ylim([0,ymax1])
-    plt.xlabel('Obs$_{SML}$ [m]')
-    plt.ylabel('Model$_{SML}$ [m]')
-    plt.title('Freeze')
-
-    ax  = fig.add_axes([0.6,0.18,0.15,0.22])   # left, bottom, width, height
-    ymax1 = 2700
-    xmax1 = ymax1
-    invmelt1 = inv1[melt]
-    invmelt2 = inv2[melt]
-    invmelt3 = inv3[melt]
-    plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.xlim([0,xmax1])
-    plt.ylim([0,ymax1])
-    plt.xlabel('Obs$_{inv}$ [m]')
-    plt.ylabel('Model$_{inv}$ [m]')
-    plt.title('Melt')
-
-    ax  = fig.add_axes([0.83,0.18,0.15,0.22])   # left, bottom, width, height
-    ymax1 = 2700
-    xmax1 = ymax1
-    invfreeze1 = inv1[freeze]
-    invfreeze2 = inv2[freeze]
-    invfreeze3 = inv3[freeze]
-    plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    plt.xlim([0,xmax1])
-    plt.ylim([0,ymax1])
-    plt.xlabel('Obs$_{inv}$ [m]')
-    plt.ylabel('Model$_{inv}$ [m]')
-    plt.title('Freeze')
-
 
     print ('******')
     print ('')
