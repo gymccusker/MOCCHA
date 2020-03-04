@@ -580,6 +580,10 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # print (label3 + ' zind3 success rate = ' + str(zind3rate))
     # print ('****')
 
+    #### ---------------------------------------------------------------
+    #### Use extracted height indices to probe cloudnet data
+    #### ---------------------------------------------------------------
+
     ##################################################
     ##################################################
     #### create figure and axes instances
