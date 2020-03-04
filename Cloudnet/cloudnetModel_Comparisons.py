@@ -568,12 +568,12 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # print (zind3)
     #### re-check inversion algorithm success rate to make sure no !0 values got dropped
-    ind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind1rate = np.size(ind1) / np.float(np.size(inv1)) * 100.0
-    ind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind2rate = np.size(ind2) / np.float(np.size(inv2)) * 100.0
-    ind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind3rate = np.size(ind3) / np.float(np.size(inv3)) * 100.0
+    zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
+    zzind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
+    zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
 
     print (label1 + ' zind1 success rate = ' + str(zind1rate))
     print (label2 + ' zind2 success rate = ' + str(zind2rate))
@@ -1284,6 +1284,20 @@ def main():
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
     figure = plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
+    # -------------------------------------------------------------
+    # save out working data for debugging purposes
+    # -------------------------------------------------------------
+    ### model/measurement data
+    np.save('working_data1', data1)
+    np.save('working_data2', data2)
+    np.save('working_data3', data3)
+    np.save('working_dataObs', obs['sondes'])
+
+    ### cloudnet
+    np.save('working_um_data', um_data)
+    np.save('working_ifs_data', ifs_data)
+    if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
     # -------------------------------------------------------------
     # FIN.
