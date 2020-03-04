@@ -507,6 +507,9 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # print ('obsmelt.shape = ', obsmelt.shape)
 
+    #### ---------------------------------------------------------------
+    #### prepare model inversion data
+    #### ---------------------------------------------------------------
     #### make inversion tempvars to allow for easy subsampling
     inv1 = np.squeeze(data1['inversions']['invbase'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
@@ -523,6 +526,19 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
     print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
     print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
+
+    #### ---------------------------------------------------------------
+    #### Look at data below main inversion base only
+    #### ---------------------------------------------------------------
+    #### create empty arrays to hold height index
+    zind1 = np.zeros(np.size(inv1))
+    zind2 = np.zeros(np.size(inv2))
+    zind3 = np.zeros(np.size(inv3))
+    #### fill arrays with height index of main inversion base
+    for k in range(0, inv1):        ### all can go in this loop, inv1 == hourly data
+        zind1[k] = np.where(data1['height'].data == inv1[k])[0][0]
+        zind2[k] = np.where(data2['height'].data == inv2[k])[0][0]
+        zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
 
     ##################################################
     ##################################################
@@ -546,21 +562,20 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### -------------------------------
     fig = plt.figure(figsize=(13,7))
 
-
-    ax  = fig.add_axes([0.08,0.1,0.45,0.36])   # left, bottom, width, height
-    plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
-        color = 'k', label = 'Obs: main inversion')
-    plt.plot(data1['time_hrly'][::6], inv1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(data2['time_hrly'][::6], inv2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    plt.plot(data1['time_hrly'][::6], inv3[::6],
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.legend()
-    plt.title('Main inversion height [m]')
-    ax.set_xlim([doy[0],doy[-1]])
-    plt.xlabel('Day of year')
-    plt.ylabel('Z [m]')
+    # ax  = fig.add_axes([0.08,0.1,0.45,0.36])   # left, bottom, width, height
+    # plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
+    #     color = 'k', label = 'Obs: main inversion')
+    # plt.plot(data1['time_hrly'][::6], inv1[::6],
+    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+    # plt.plot(data2['time_hrly'][::6], inv2[::6],
+    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+    # plt.plot(data1['time_hrly'][::6], inv3[::6],
+    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
+    # # plt.legend()
+    # plt.title('Main inversion height [m]')
+    # ax.set_xlim([doy[0],doy[-1]])
+    # plt.xlabel('Day of year')
+    # plt.ylabel('Z [m]')
 
     print ('******')
     print ('')
