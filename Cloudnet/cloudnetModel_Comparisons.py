@@ -554,10 +554,14 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
             zind2[i] = np.where(data2['height'].data == inv2[i])[0][0]
         else:
             zind2[i] = np.nan
-        if np.size(np.where(data3['height_hrly'][i].data == inv3[i])) > 0.0:
-            zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
+        if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
+            temp = data3['height_hrly'][i,:].data <= inv3[i]
+            zind3[i] = np.where(temp == True)[0][-1]
+            # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
         else:
             zind3[i] = np.nan
+
+    print (zind3)
 
     ##################################################
     ##################################################
@@ -581,20 +585,9 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### -------------------------------
     fig = plt.figure(figsize=(13,7))
 
-    # ax  = fig.add_axes([0.08,0.1,0.45,0.36])   # left, bottom, width, height
-    # plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
-    #     color = 'k', label = 'Obs: main inversion')
-    # plt.plot(data1['time_hrly'][::6], inv1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(data2['time_hrly'][::6], inv2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(data1['time_hrly'][::6], inv3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # # plt.legend()
-    # plt.title('Main inversion height [m]')
-    # ax.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
+    plt.plot(data1['time_hrly'], zind1)
+    plt.plot(data2['time_hrly'], zind2)
+    plt.plot(data3['time_hrly'], zind3)
 
     print ('******')
     print ('')
