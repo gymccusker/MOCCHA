@@ -529,27 +529,35 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('****')
 
     #### ---------------------------------------------------------------
+    #### remove flagged IFS heights
+    #### ---------------------------------------------------------------
+    data3['height'][data3['height'] == -9999] = 0.0
+            #### set all heights to zero if flagged. setting to nan caused problems
+            ####        further on
+    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
+
+    #### ---------------------------------------------------------------
     #### Look at data below main inversion base only
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
     zind1 = np.zeros(np.size(inv1))
     zind2 = np.zeros(np.size(inv2))
-    zind3 = np.zeros(np.size(inv3))
+    zind3 = np.zeros(np.size(inv3))#,np.size(data3['height'],1))
     #### fill arrays with height index of main inversion base
-    for k in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
-        # print (k)
-        if np.size(np.where(data1['height'].data == inv1[k])) > 0.0:
-            zind1[k] = np.where(data1['height'].data == inv1[k])[0][0]
+    for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
+        # print (i)
+        if np.size(np.where(data1['height'].data == inv1[i])) > 0.0:
+            zind1[i] = np.where(data1['height'].data == inv1[i])[0][0]
         else:
-            zind1[k] = np.nan
-        if np.size(np.where(data2['height'].data == inv2[k])) > 0.0:
-            zind2[k] = np.where(data2['height'].data == inv2[k])[0][0]
+            zind1[i] = np.nan
+        if np.size(np.where(data2['height'].data == inv2[i])) > 0.0:
+            zind2[i] = np.where(data2['height'].data == inv2[i])[0][0]
         else:
-            zind2[k] = np.nan
-        if np.size(np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])) > 0.0:
-            zind3[k] = np.where(data3['height'][np.squeeze(data3['hrly_flag']),0].data == inv3[k])[0][0]
+            zind2[i] = np.nan
+        if np.size(np.where(data3['height_hrly'][i].data == inv3[i])) > 0.0:
+            zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
         else:
-            zind3[k] = np.nan
+            zind3[i] = np.nan
 
     ##################################################
     ##################################################
