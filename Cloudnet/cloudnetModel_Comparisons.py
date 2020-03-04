@@ -534,7 +534,7 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     data3['height'][data3['height'] == -9999] = 0.0
             #### set all heights to zero if flagged. setting to nan caused problems
             ####        further on
-    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
+    data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
     #### Look at data below main inversion base only
