@@ -608,7 +608,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ##     the journey into the ice towards the North Pole until 12 August 00:00 UTC. Since cloud
     ##     radar measurements were not possible during heavy ice breaking because of excessive
     ##     vibration, cloud characteristics and fog heights are not available during period 2.
-    ##     Period 3 (12 to 17 August) includes the ‘North Pole’ station and the beginning of
+    ##     Period 3 (12 to 17 August) includes the 'North Pole' station and the beginning of
     ##     the ice drift. Period 4 (18 to 27 August) covers the end of the melt and the transition
     ##     period into the freeze up. The freeze up is covered by period 5 (28 August to 3 September),
     ##     6 (4 to 7 September) and 7 (8 to 12 September 12:00 UTC). Finally, period 8 (12 September
@@ -885,6 +885,7 @@ def main():
     Sep_missing_files = []
 
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
+    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -896,8 +897,10 @@ def main():
 
     ## Choose month:
     names = moccha_names
-    missing_files = moccha_missing_files
+    # missing_files = moccha_missing_files
     month_flag = -1
+
+
 
 
 ###################################################################################################################
@@ -1023,11 +1026,21 @@ def main():
                     data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
             nc3.close()
         else:
-            if month_flag == -1:
-                time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-                if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
-                if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
+            if doy[i] in missing_files:
+                for j in range(0,len(var_list1)):
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
+                for j in range(0,len(var_list3)):
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
+
+            time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
+            time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+            if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
+            if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
             ## ------------------
             #### UM
             ## ------------------
