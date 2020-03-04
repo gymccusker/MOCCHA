@@ -575,10 +575,10 @@ def plot_scaledBL(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
     zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
 
-    print (label1 + ' zind1 success rate = ' + str(zind1rate))
-    print (label2 + ' zind2 success rate = ' + str(zind2rate))
-    print (label3 + ' zind3 success rate = ' + str(zind3rate))
-    print ('****')
+    # print (label1 + ' zind1 success rate = ' + str(zind1rate))
+    # print (label2 + ' zind2 success rate = ' + str(zind2rate))
+    # print (label3 + ' zind3 success rate = ' + str(zind3rate))
+    # print ('****')
 
     ##################################################
     ##################################################
