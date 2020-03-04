@@ -614,7 +614,15 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ##     6 (4 to 7 September) and 7 (8 to 12 September 12:00 UTC). Finally, period 8 (12 September
     ##     12:00 UTC to 21 September 06:00 UTC) covers the end of the ice drift period and the transit
     ##     out to the ice edge. "
+    #######         from Jutta: so if there is no time stamp mentioned it is eg. P4 18.08 0000UTC - 27.08 23:59 UTC , P5 then is 28.08 00UTC until 03.09 23:59 UTC...
 
+    ### define met periods wrt cloudnet timestamps for ease (all runs should be able to use same indexing)
+    p3 = np.where(um['time'] < 230.0)
+    p4 = np.where(np.logical_and(um['time'] >= 230.0, um['time'] < 240.0))
+    p5 = np.where(np.logical_and(um['time'] >= 240.0, um['time'] < 247.0))
+    p6 = np.where(np.logical_and(um['time'] >= 247.0, um['time'] < 251.0))
+    p7 = np.where(np.logical_and(um['time'] >= 251.0, um['time'] < 255.5))
+    p8 = np.where(um['time'] >= 255.5)
 
     ##################################################
     ##################################################
