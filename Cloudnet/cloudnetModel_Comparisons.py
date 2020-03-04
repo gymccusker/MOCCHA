@@ -682,6 +682,76 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # plt.savefig(fileout)
     plt.show()
 
+def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    ###################################
+    ## PLOT TIMESERIES
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWP timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	SET UP FIGURE PROPERTIES
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(8,4.5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+
+    #### set flagged and bad data to nans
+    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
+    # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
+    # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
+    # obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
+    # obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+
+    # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+    plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
+        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
+        'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][::3],misc_data['model_lwp'][::3]*1e3,
+        'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
+    plt.xlabel('Day of Year')
+    plt.ylabel('LWP [g/m2]')
+    # plt.ylim([0,10000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+    plt.savefig(fileout)
+    plt.show()
+
 def main():
 
     START_TIME = time.time()
@@ -751,11 +821,11 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
         cn_obs_out_dir = cn_ifs_out_dir
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -1442,9 +1512,14 @@ def main():
     # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
+    # plot LWP timeseries with missing files accounted for
+    # -------------------------------------------------------------
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
+
+    # -------------------------------------------------------------
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
-    figure = plot_scaledBL(data1, data2, data3,um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
