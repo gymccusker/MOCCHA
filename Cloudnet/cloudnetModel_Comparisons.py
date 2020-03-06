@@ -601,7 +601,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     i = 0
     hgts1 = data1['height'][0:int(data1['inversions']['invbase_kIndex'][i]+1)]
     scaled_hgts1 = hgts1 / data1['height'][int(data1['inversions']['invbase_kIndex'][i])]
-    cv1 = um['Cv'][i,0:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    cv1 = um_data['Cv'][i,0:int(data1['inversions']['invbase_kIndex'][i]+1)]
 
     ## Meteorological period definitions from Jutta's paper:
     ##     "Period 1 covers the time in the MIZ until 4 August 06:00 UTC. Period 2 encompasses
@@ -617,12 +617,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #######         from Jutta: so if there is no time stamp mentioned it is eg. P4 18.08 0000UTC - 27.08 23:59 UTC , P5 then is 28.08 00UTC until 03.09 23:59 UTC...
 
     ### define met periods wrt cloudnet timestamps for ease (all runs should be able to use same indexing)
-    p3 = np.where(um['time'] < 230.0)
-    p4 = np.where(np.logical_and(um['time'] >= 230.0, um['time'] < 240.0))
-    p5 = np.where(np.logical_and(um['time'] >= 240.0, um['time'] < 247.0))
-    p6 = np.where(np.logical_and(um['time'] >= 247.0, um['time'] < 251.0))
-    p7 = np.where(np.logical_and(um['time'] >= 251.0, um['time'] < 255.5))
-    p8 = np.where(um['time'] >= 255.5)
+    p3 = np.where(um_data['time'] < 230.0)
+    p4 = np.where(np.logical_and(um_data['time'] >= 230.0, um_data['time'] < 240.0))
+    p5 = np.where(np.logical_and(um_data['time'] >= 240.0, um_data['time'] < 247.0))
+    p6 = np.where(np.logical_and(um_data['time'] >= 247.0, um_data['time'] < 251.0))
+    p7 = np.where(np.logical_and(um_data['time'] >= 251.0, um_data['time'] < 255.5))
+    p8 = np.where(um_data['time'] >= 255.5)
 
     ##################################################
     ##################################################
