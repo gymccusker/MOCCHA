@@ -1145,11 +1145,11 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
         cn_obs_out_dir = cn_ifs_out_dir
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -1347,7 +1347,7 @@ def main():
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
         var_list2 = var_list1
-        if ifs_flag: var_list3 = ['temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
+        if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
         if not ifs_flag: var_list3 = var_list1
 
@@ -1444,8 +1444,8 @@ def main():
                 data1['height'] = nc1.variables['height'][:]
                 data2['height'] = nc2.variables['height'][:]
                 if not ifs_flag: data3['height'] = nc3.variables['height'][:]
-                data3['height'] = nc3.variables['height'][:]
-                data3['flx_height'] = nc3.variables['flx_height'][:]
+                # data3['height'] = nc3.variables['height'][:]
+                # data3['flx_height'] = nc3.variables['flx_height'][:]
 
                 for j in range(0,len(var_list1)):
                     if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
