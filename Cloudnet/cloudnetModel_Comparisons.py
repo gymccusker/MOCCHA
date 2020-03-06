@@ -1330,7 +1330,7 @@ def main():
         elif cn_um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
             cn_out_dir = 'lwc-scaled-metum-grid'
         elif cn_um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
-            out_dir = 'iwc-Z-T-metum-grid'
+            cn_out_dir = 'iwc-Z-T-metum-grid'
         cn_filename_um = cn_um_dir + cn_um_out_dir + names[i] + cn_out_dir + '.nc'
         cn_filename_ifs = cn_ifs_dir + cn_ifs_out_dir + names[i] + cn_ifs_out_dir[:-6] + '.nc'
         cn_filename_obs = cn_obs_dir + cn_obs_out_dir + names[i] + cn_obs_out_dir[:-6] + '.nc'
