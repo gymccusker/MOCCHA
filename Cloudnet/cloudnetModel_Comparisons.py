@@ -624,9 +624,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # um['scaled_height'] =
     ### try i = 0 first to see if it works
     i = 0
-    hgts1 = data1['height'][0:int(data1['inversions']['invbase_kIndex'][i]+1)]
-    scaled_hgts1 = hgts1 / data1['height'][int(data1['inversions']['invbase_kIndex'][i])]
-    cv1 = np.nanmean(um_data['Cv'][np.squeeze(p3),0:int(data1['inversions']['invbase_kIndex'][i]+1)],0)
+    for i in range(0,5):#np.size(um_data['height'],0)):
+        hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        print (hgts1.shape)
+        data1['scaled_hgts'] = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+        print (data1['scaled_hgts'])
+        data1['scaled_Cv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        print (data1['scaled_Cv'])
 
     ##################################################
     ##################################################
@@ -651,7 +655,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     fig = plt.figure(figsize=(5,7))
     ax = plt.gca()
 
-    plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(data1['scaled_Cv'],data1['scaled_hgts'])
+
+    # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
     # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
     #     np.nanmean(um_data['Cv'][p3],0) + np.nanstd(um_data['Cv'][p3],0), color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
