@@ -641,8 +641,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### find Cv values below the BL inversion
     data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (data1['blCv'])
+    scaledCv = {}
     for k in range(len(Zpts)):
         tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - 0.05, scaled_hgts < Zpts[k] + 0.05))
+        print (tempvar[0].shape)
+        scaledCv[k] = data1['blCv'][tempvar]
+    print (scaledCv)
         # data1['scaled_Cv'][i,k] = data1['blCv'][i,k]
 
 
@@ -670,7 +674,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     fig = plt.figure(figsize=(5,7))
     ax = plt.gca()
 
-    plt.plot(data1['blCv'],data1['scaled_hgts'])
+    # plt.plot(data1['blCv'],data1['scaled_hgts'])
 
     # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
     # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
