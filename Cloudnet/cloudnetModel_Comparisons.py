@@ -641,7 +641,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### find Cv values below the BL inversion
     data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (data1['blCv'])
-    for k in range(len(Zpts):
+    for k in range(len(Zpts)):
         tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - 0.05, scaled_hgts < Zpts[k] + 0.05))
         # data1['scaled_Cv'][i,k] = data1['blCv'][i,k]
 
