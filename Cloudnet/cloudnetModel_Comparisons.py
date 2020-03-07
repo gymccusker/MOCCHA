@@ -623,17 +623,25 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     # um['scaled_height'] =
     ### try i = 0 first to see if it works
-    i = 0
-    for i in range(0,5):#np.size(um_data['height'],0)):
-        ### create array of height points under the identified inversion
-        hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        print (hgts1.shape)
-        ### scale BL height array by the inversion depth to give range Z 0-1 (1 = inversion height)
-        data1['scaled_hgts'] = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-        print (data1['scaled_hgts'])
-        ### find Cv values below the BL inversion
-        data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        print (data1['blCv'])
+    i = 20
+    # for i in range(0,5):#np.size(um_data['height'],0)):
+
+    ### create array of height points under the identified inversion
+    hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    print (hgts1.shape)
+    ### scale BL height array by the inversion depth to give range Z 0-1 (1 = inversion height)
+    data1['scaled_hgts'] = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+    print (data1['scaled_hgts'])
+    ### find Cv values below the BL inversion
+    data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    print (data1['blCv'])
+
+    ### define scaledZ array to sort data in to
+    ###     will act as mid point of vertical "boxes" of width 0.1
+    Zpts = np.arange(0.05,1.05,0.1)
+    #### define empty array of nans to fill with scaled data
+    data1['scaled_Cv'] = np.zeros([np.size(um_data['height'],0),len(Zpts)])
+    data1['scaled_Cv'][:] = np.nan
 
     ##################################################
     ##################################################
@@ -658,7 +666,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     fig = plt.figure(figsize=(5,7))
     ax = plt.gca()
 
-    plt.plot(data1['scaled_Cv'],data1['scaled_hgts'])
+    plt.plot(data1['blCv'],data1['scaled_hgts'])
 
     # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
     # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
@@ -674,7 +682,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
     # plt.xlabel('Cloud Fraction')
     # plt.ylabel('Height [m]')
-    # plt.ylim([0,10000])
+    plt.ylim([0,1])
     # plt.xlim([0,1])
     # plt.legend()
 
