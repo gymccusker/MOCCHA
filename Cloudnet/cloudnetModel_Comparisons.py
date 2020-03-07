@@ -621,7 +621,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### Use extracted height indices to probe cloudnet data
     #### ---------------------------------------------------------------
-    # um['scaled_height'] =
+    ### define scaledZ array to sort data in to
+    ###     will act as mid point of vertical "boxes" of width 0.1
+    Zpts = np.arange(0.05,1.05,0.1)
+    #### define empty array of nans to fill with scaled data
+    data1['scaled_Cv'] = np.zeros([np.size(um_data['height'],0),len(Zpts)])
+    data1['scaled_Cv'][:] = np.nan
+
     ### try i = 0 first to see if it works
     i = 20
     # for i in range(0,5):#np.size(um_data['height'],0)):
@@ -629,19 +635,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### create array of height points under the identified inversion
     hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (hgts1.shape)
-    ### scale BL height array by the inversion depth to give range Z 0-1 (1 = inversion height)
-    data1['scaled_hgts'] = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-    print (data1['scaled_hgts'])
+    ### scale BL height array by the inversion depth to give range Z 0-1 (1 = inversion height) (temporary variable)
+    scaled_hgts = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+    print (scaled_hgts)
     ### find Cv values below the BL inversion
     data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (data1['blCv'])
+    for k in range(len(Zpts):
+        tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - 0.05, scaled_hgts < Zpts[k] + 0.05))
+        # data1['scaled_Cv'][i,k] = data1['blCv'][i,k]
 
-    ### define scaledZ array to sort data in to
-    ###     will act as mid point of vertical "boxes" of width 0.1
-    Zpts = np.arange(0.05,1.05,0.1)
-    #### define empty array of nans to fill with scaled data
-    data1['scaled_Cv'] = np.zeros([np.size(um_data['height'],0),len(Zpts)])
-    data1['scaled_Cv'][:] = np.nan
+
 
     ##################################################
     ##################################################
