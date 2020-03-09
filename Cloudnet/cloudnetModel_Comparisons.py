@@ -534,9 +534,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
-    for i in range(0, np.size(obsinv)):        ### time loop
-        if np.size(np.where(obs_data['height'][i] <= obsinv[i])) > 0.0:
-            obsind[i] = np.where(obs_data['height'][i] <= obsinv[i])[0][0]
+    for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
+        if np.size(np.where(obs_data['height'][i,:] <= obsinv[i])) > 0.0:
+            obsind[i] = np.where(obs_data['height'][i,:] <= obsinv[i])[0][0]
         else:
             obsind[i] = np.nan
 
