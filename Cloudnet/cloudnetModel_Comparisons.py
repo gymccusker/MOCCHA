@@ -569,6 +569,10 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
         else:
             zind3[i] = np.nan
+        if np.size(np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])) > 0.0:
+            obsind[i] = np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])[0][0]
+        else:
+            obsind[i] = np.nan
 
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
@@ -1975,7 +1979,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['inversions'])
+    np.save('working_dataObs', obs['sondes'])
 
     ### cloudnet
     np.save('working_um_data', um_data)
