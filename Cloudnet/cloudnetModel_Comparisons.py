@@ -626,13 +626,16 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
-    #### define empty array of nans to fill with scaled data (and save new height array into dictionary)
-    data1['scaledZ'] = Zpts
+    #### define empty array of nans to fill with scaled data
     data1['scaledCv'] = {}
     data1['scaledCv']['binned'] = {}
     data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
     data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
     data1['scaledCv']['median'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['median'][:] = np.nan
+
+    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
+    data1['scaledZ'] = Zpts
+    data1['scaledTime'] = um_data['time']
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
