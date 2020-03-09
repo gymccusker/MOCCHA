@@ -637,93 +637,95 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
     # i = 110
-    for i in range(0,25):#np.size(um_data['height'],0)):
+    for i in range(0,np.size(um_data['height'],0)):     ## loop over time
+        print ()
+        print(str(i) + 'th timestep:')
 
         ### create new dictionary entry for i-th timestep
-
         data1['scaledCv']['binned']['t' + str(i)] = {}
+
         ### create array of height points under the identified inversion
         hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        print (hgts1.shape)
+        # print (hgts1.shape)
 
         ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
         scaled_hgts = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-        print (scaled_hgts)
+        # print (scaled_hgts)
 
         ### find Cv values below the BL inversion
         blCv = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        print (blCv)
+        # print (blCv)
 
         ### bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-            print (tempvar[0].shape)
+            # print (tempvar[0].shape)
             data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
             if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-        ##################################################
-        ##################################################
-        #### create figure and axes instances
-        ##################################################
-        ##################################################
-
-        SMALL_SIZE = 12
-        MED_SIZE = 14
-        LARGE_SIZE = 16
-
-        plt.rc('font',size=MED_SIZE)
-        plt.rc('axes',titlesize=MED_SIZE)
-        plt.rc('axes',labelsize=MED_SIZE)
-        plt.rc('xtick',labelsize=MED_SIZE)
-        plt.rc('ytick',labelsize=MED_SIZE)
-        plt.rc('legend',fontsize=MED_SIZE)
-
-        ### -------------------------------
-        ### Build figure (timeseries)
-        ### -------------------------------
-        fig = plt.figure(figsize=(5,7))
-        ax = plt.gca()
-
-        # plt.plot(data1['blCv'],data1['scaled_hgts'])
-
-        # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
-        # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
-        #     np.nanmean(um_data['Cv'][p3],0) + np.nanstd(um_data['Cv'][p3],0), color = 'lightgrey', alpha = 0.5)
-        # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-        # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
-        #     np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
-        # plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-        # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
-        #     np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
-        # plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-        # ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
-        #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
-        # plt.xlabel('Cloud Fraction')
-        # plt.ylabel('Height [m]')
+        # ##################################################
+        # ##################################################
+        # #### create figure and axes instances
+        # ##################################################
+        # ##################################################
+        #
+        # SMALL_SIZE = 12
+        # MED_SIZE = 14
+        # LARGE_SIZE = 16
+        #
+        # plt.rc('font',size=MED_SIZE)
+        # plt.rc('axes',titlesize=MED_SIZE)
+        # plt.rc('axes',labelsize=MED_SIZE)
+        # plt.rc('xtick',labelsize=MED_SIZE)
+        # plt.rc('ytick',labelsize=MED_SIZE)
+        # plt.rc('legend',fontsize=MED_SIZE)
+        #
+        # ### -------------------------------
+        # ### Build figure (timeseries)
+        # ### -------------------------------
+        # fig = plt.figure(figsize=(5,7))
+        # ax = plt.gca()
+        #
+        # # plt.plot(data1['blCv'],data1['scaled_hgts'])
+        #
+        # # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
+        # # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
+        # #     np.nanmean(um_data['Cv'][p3],0) + np.nanstd(um_data['Cv'][p3],0), color = 'lightgrey', alpha = 0.5)
+        # # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+        # # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
+        # #     np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
+        # # plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        # # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+        # #     np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+        # # plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+        # # ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
+        # #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
+        # # plt.xlabel('Cloud Fraction')
+        # # plt.ylabel('Height [m]')
+        # # plt.ylim([0,1])
+        # # plt.xlim([0,1])
+        # # plt.legend()
+        #
+        # # plt.plot(data1['inversions']['invbase_kIndex'])
+        # # plt.plot(data2['inversions']['invbase_kIndex'])
+        # # plt.plot(data3['inversions']['invbase_kIndex'])
+        #
+        # # plt.subplot(121)
+        # plt.plot(blCv, scaled_hgts)
+        # plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
         # plt.ylim([0,1])
-        # plt.xlim([0,1])
-        # plt.legend()
-
-        # plt.plot(data1['inversions']['invbase_kIndex'])
-        # plt.plot(data2['inversions']['invbase_kIndex'])
-        # plt.plot(data3['inversions']['invbase_kIndex'])
-
-        # plt.subplot(121)
-        plt.plot(blCv, scaled_hgts)
-        plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
-        plt.ylim([0,1])
-
-        print ('******')
-        print ('')
-        print ('Finished plotting! :)')
-        print ('')
-
-        fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
-        # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
-        # plt.savefig(fileout)
-        plt.show()
+        #
+        # print ('******')
+        # print ('')
+        # print ('Finished plotting! :)')
+        # print ('')
+        #
+        # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
+        # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
+        # # plt.savefig(fileout)
+        # plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
