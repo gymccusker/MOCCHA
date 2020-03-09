@@ -663,12 +663,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
     data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
     data2['scaledCv']['median'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['median'][:] = np.nan
+    data3['scaledCv'] = {}
+    data3['scaledCv']['binned'] = {}
+    data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
+    data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
+    data3['scaledCv']['median'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['median'][:] = np.nan
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
     data1['scaledTime'] = um_data['time']
     data2['scaledZ'] = Zpts
     data2['scaledTime'] = misc_data['time']
+    data3['scaledZ'] = Zpts
+    data3['scaledTime'] = ifs_data['time']
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
@@ -680,6 +687,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### create new dictionary entry for i-th timestep
         data1['scaledCv']['binned']['t' + str(i)] = {}
         data2['scaledCv']['binned']['t' + str(i)] = {}
+        data3['scaledCv']['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
@@ -693,13 +701,21 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
         else:
             continue
+        if data3['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
 
         ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
         scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
         scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
+        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+
         ## find Cv values below the BL inversion
         blCv1 = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
         blCv2 = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        blCv3 = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
@@ -772,6 +788,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
         # plt.ylim([0,1])
 
+        plt.subplot(211)
+        plt.pcolor(um_data['time'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+        plt.subplot(212)
+        plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+
         # print ('******')
         # print ('')
         # print ('Finished plotting! :)')
@@ -780,7 +801,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
         # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
         # # plt.savefig(fileout)
-        # plt.show()
+        plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
