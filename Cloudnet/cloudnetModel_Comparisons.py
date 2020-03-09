@@ -645,7 +645,10 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         data1['scaledCv']['binned']['t' + str(i)] = {}
 
         ### create array of height points under the identified inversion
-        hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
         # print (hgts1.shape)
 
         ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
