@@ -509,7 +509,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
     #### ------------------------------------------------------------------------------
-    obsinv = np.squeeze(obs['inversions']['invbase'])
+    obsinv = np.squeeze(obs['inversions']['invbase'][drift])
     obsind = np.zeros(np.size(obsinv))
 
     #### ------------------------------------------------------------------------------
@@ -520,11 +520,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### remove DOY 230, 253, 257 manually for now
     nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
     obs['inversions']['doy_drift'][nanindices] = np.nan
-    obs['inversions']['invbase'][:,nanindices] = np.nan
+    obsinv[nanindices] = np.nan
 
     ### save ~6hourly data from sondes
     obs['inversions']['TimesForCloudnet'] = obs['inversions']['doy_drift'][~np.isnan(obs['inversions']['doy_drift'])]
-    obs['inversions']['InvBasesForCloudnet'] = obs['inversions']['invbase'][~np.isnan(obs['inversions']['invbase'])]
+    obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
 
     #### ------------------------------------------------------------------------------
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
