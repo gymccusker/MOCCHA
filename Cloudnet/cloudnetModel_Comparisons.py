@@ -515,7 +515,16 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     #### need to identify what cloudnet indices correspond to radiosondes
     #### ------------------------------------------------------------------------------
+    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
+    #### remove DOY 230, 253, 257 manually for now
+    nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
+    obs['inversions']['doy_drift'][nanindices] = np.nan
+    obs['inversions']['invbase'][nanindices] = np.nan
+
+    ### save ~6hourly data from sondes
+    obs['inversions']['TimesForCloudnet'] = obs['inversions']['doy_drift'][~np.isnan(obs['inversions']['doy_drift'])]
+    obs['inversions']['InvBasesForCloudnet'] = obs['inversions']['invbase'][~np.isnan(obs['inversions']['invbase'])]
 
     #### ------------------------------------------------------------------------------
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
