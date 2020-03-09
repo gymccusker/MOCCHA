@@ -673,7 +673,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
     # i = 110
-    for i in range(0,20):#np.size(um_data['height'],0)):     ## loop over time
+    for i in range(0,np.size(um_data['height'],0)):     ## loop over time
         print ()
         print(str(i) + 'th timestep:')
 
@@ -759,18 +759,18 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # ##################################################
         # ##################################################
 
-        fig = plt.figure(figsize=(5,7))
-        ax = plt.gca()
-
-        plt.subplot(121)
-        plt.plot(blCv1, scaled_hgts1)
-        plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
-        plt.ylim([0,1])
-
-        plt.subplot(122)
-        plt.plot(blCv2, scaled_hgts2)
-        plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
-        plt.ylim([0,1])
+        # fig = plt.figure(figsize=(5,7))
+        # ax = plt.gca()
+        #
+        # plt.subplot(121)
+        # plt.plot(blCv1, scaled_hgts1)
+        # plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
+        # plt.ylim([0,1])
+        #
+        # plt.subplot(122)
+        # plt.plot(blCv2, scaled_hgts2)
+        # plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
+        # plt.ylim([0,1])
 
         # print ('******')
         # print ('')
@@ -780,7 +780,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
         # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
         # # plt.savefig(fileout)
-        plt.show()
+        # plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
