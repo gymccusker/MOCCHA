@@ -652,21 +652,28 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
-    #### define empty array of nans to fill with scaled data
+    #### define empty arrays of nans to fill with scaled data
     data1['scaledCv'] = {}
     data1['scaledCv']['binned'] = {}
     data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
     data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
     data1['scaledCv']['median'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['median'][:] = np.nan
+    data2['scaledCv'] = {}
+    data2['scaledCv']['binned'] = {}
+    data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
+    data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
+    data2['scaledCv']['median'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['median'][:] = np.nan
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
     data1['scaledTime'] = um_data['time']
+    data2['scaledZ'] = Zpts
+    data2['scaledTime'] = misc_data['time']
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
     # i = 110
-    for i in range(0,np.size(um_data['height'],0)):     ## loop over time
+    for i in range(0,20):#np.size(um_data['height'],0)):     ## loop over time
         print ()
         print(str(i) + 'th timestep:')
 
@@ -676,125 +683,92 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
         ###-----------------------------------------------------------------------------------------
-        # ### create array of height points under the identified inversion
-        # if data1['inversions']['invbase_kIndex'][i] >= 0.0:
-        #     hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        # else:
-        #     continue
-        # # print (hgts1.shape)
-
-        # ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        # scaled_hgts = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-        ### find Cv values below the BL inversion
-        # blCv = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        ### bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        # for k in range(len(Zpts)):
-        #     tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-        #     # print (tempvar[0].shape)
-        #     data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
-        #     if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-        #         data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-        #     data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-
-        ###-----------------------------------------------------------------------------------------
-        ### for surface mixed layer height
-        ###-----------------------------------------------------------------------------------------
-        ### create array of height points under surface mixed layer height
-        if data1['inversions']['sfml_kIndex'][i] >= 0.0:
-            hgts1 = um_data['height'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        ### create array of height points under the identified inversion
+        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
         else:
             continue
-        if data2['inversions']['sfml_kIndex'][i] >= 0.0:
-            hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
-        else:
-            continue
+        # print (hgts1.shape)
 
-        ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
-        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
-        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
-
-        ### find Cv values within the sfml
-        blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
-        blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
-
-        ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
+        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+        ## find Cv values below the BL inversion
+        blCv1 = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
-
-            ### bin Cv for UM_RA2M
+            # print (tempvar[0].shape)
             data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
             if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-            ### bin Cv for UM_CASIM-100
-            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv2[tempvar2]
-            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        ###-----------------------------------------------------------------------------------------
+        ### for surface mixed layer height
+        ###-----------------------------------------------------------------------------------------
+        # ### create array of height points under surface mixed layer height
+        # if data1['inversions']['sfml_kIndex'][i] >= 0.0:
+        #     hgts1 = um_data['height'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        # else:
+        #     continue
+        # if data2['inversions']['sfml_kIndex'][i] >= 0.0:
+        #     hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        # else:
+        #     continue
+        #
+        # ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
+        # scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
+        # scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
+        #
+        # ### find Cv values within the sfml
+        # blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        # blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        #
+        # ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
+        # for k in range(len(Zpts)):
+        #     tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+        #     tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+        #
+        #     ### bin Cv for UM_RA2M
+        #     data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
+        #     if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+        #         data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #     data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #
+        #     ### bin Cv for UM_CASIM-100
+        #     data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv2[tempvar2]
+        #     if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+        #         data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #     data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-    # ##################################################
-    # ##################################################
-    # #### create figure and axes instances
-    # ##################################################
-    # ##################################################
-    #
-    # SMALL_SIZE = 12
-    # MED_SIZE = 14
-    # LARGE_SIZE = 16
-    #
-    # plt.rc('font',size=MED_SIZE)
-    # plt.rc('axes',titlesize=MED_SIZE)
-    # plt.rc('axes',labelsize=MED_SIZE)
-    # plt.rc('xtick',labelsize=MED_SIZE)
-    # plt.rc('ytick',labelsize=MED_SIZE)
-    # plt.rc('legend',fontsize=MED_SIZE)
-    #
-    # ### -------------------------------
-    # ### Build figure (timeseries)
-    # ### -------------------------------
-    # fig = plt.figure(figsize=(5,7))
-    # ax = plt.gca()
-    #
-    # # plt.plot(data1['blCv'],data1['scaled_hgts'])
-    #
-    # # plt.plot(np.nanmean(um_data['Cv'][p3],0),um_data['height'][0,:]/np.nanmax(um_data['height'][0,:]), 'k--', linewidth = 3, label = 'Obs')
-    # # ax.fill_betweenx(np.nanmean(um_data['height'][p3],0),np.nanmean(um_data['Cv'][p3],0) - np.nanstd(um_data['Cv'][p3],0),
-    # #     np.nanmean(um_data['Cv'][p3],0) + np.nanstd(um_data['Cv'][p3],0), color = 'lightgrey', alpha = 0.5)
-    # # plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    # # ax.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_Cv_filtered'],0) - np.nanstd(um_data['model_Cv_filtered'],0),
-    # #     np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), color = 'lightblue', alpha = 0.4)
-    # # plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    # # ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
-    # #     np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
-    # # plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    # # ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
-    # #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
-    # # plt.xlabel('Cloud Fraction')
-    # # plt.ylabel('Height [m]')
-    # # plt.ylim([0,1])
-    # # plt.xlim([0,1])
-    # # plt.legend()
-    #
-    # # plt.plot(data1['inversions']['invbase_kIndex'])
-    # # plt.plot(data2['inversions']['invbase_kIndex'])
-    # # plt.plot(data3['inversions']['invbase_kIndex'])
-    #
-    # # plt.subplot(121)
-    # plt.plot(blCv, scaled_hgts)
-    # plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
-    # plt.ylim([0,1])
-    #
-    # print ('******')
-    # print ('')
-    # print ('Finished plotting! :)')
-    # print ('')
-    #
-    # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
-    # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
-    # # plt.savefig(fileout)
-    # plt.show()
+        # ##################################################
+        # ##################################################
+        # #### create figure and axes instances
+        # ##################################################
+        # ##################################################
+
+        fig = plt.figure(figsize=(5,7))
+        ax = plt.gca()
+
+        plt.subplot(121)
+        plt.plot(blCv1, scaled_hgts1)
+        plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
+        plt.ylim([0,1])
+
+        plt.subplot(122)
+        plt.plot(blCv2, scaled_hgts2)
+        plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
+        plt.ylim([0,1])
+
+        # print ('******')
+        # print ('')
+        # print ('Finished plotting! :)')
+        # print ('')
+        #
+        # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
+        # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
+        # # plt.savefig(fileout)
+        plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
