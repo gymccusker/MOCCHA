@@ -637,7 +637,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
     # i = 110
-    for i in range(0,5):#np.size(um_data['height'],0)):
+    for i in range(0,25):#np.size(um_data['height'],0)):
 
         ### create new dictionary entry for i-th timestep
 
@@ -712,7 +712,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
         # plt.subplot(121)
         plt.plot(blCv, scaled_hgts)
-        plt.plot(data1['scaledCv']['mean'], Zpts, 'o-')
+        plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
         plt.ylim([0,1])
 
         print ('******')
