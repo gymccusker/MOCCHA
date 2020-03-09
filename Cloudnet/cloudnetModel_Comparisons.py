@@ -517,6 +517,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
     sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
     sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
+    obsinv = np.squeeze(obs['inversions']['invbase'])
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
@@ -548,6 +549,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     mlind1 = np.zeros(np.size(sfml1))
     mlind2 = np.zeros(np.size(sfml2))
     mlind3 = np.zeros(np.size(sfml3))
+    obsind = np.zeros(np.size(obsinv))
 
     #### fill arrays with height index of main inversion base / sfml height
     for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
