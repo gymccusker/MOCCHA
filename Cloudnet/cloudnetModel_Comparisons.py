@@ -704,22 +704,35 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             hgts1 = um_data['height'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
         else:
             continue
+        if data2['inversions']['sfml_kIndex'][i] >= 0.0:
+            hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        else:
+            continue
 
         ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
-        scaled_hgts = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
+        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
+        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
 
         ### find Cv values within the sfml
-        blCv = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
-        # print (blCv)
+        blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
 
         ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
-            tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-            # print (tempvar[0].shape)
-            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
+            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+
+            ### bin Cv for UM_RA2M
+            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
             if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            ### bin Cv for UM_CASIM-100
+            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv2[tempvar2]
+            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     # ##################################################
     # ##################################################
