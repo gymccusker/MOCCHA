@@ -629,18 +629,23 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['scaled_Cv'][:] = np.nan
 
     ### try i = 0 first to see if it works
+    ### this will go into a loop once tested
     i = 20
     # for i in range(0,5):#np.size(um_data['height'],0)):
 
     ### create array of height points under the identified inversion
     hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (hgts1.shape)
-    ### scale BL height array by the inversion depth to give range Z 0-1 (1 = inversion height) (temporary variable)
+
+    ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
     scaled_hgts = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
     print (scaled_hgts)
+
     ### find Cv values below the BL inversion
     data1['blCv'] = um_data['Cv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
     print (data1['blCv'])
+
+    ### bin scaled BL heights into pre-set Zpts array so every timestep can be compared
     scaledCv = {}
     for k in range(len(Zpts)):
         tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - 0.05, scaled_hgts < Zpts[k] + 0.05))
