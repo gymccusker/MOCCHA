@@ -506,6 +506,62 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obsfreeze = np.where(np.logical_and(obs['inversions']['doy'] >= 240.0, obs['inversions']['doy'] <= data1['time_hrly'][-1]))
 
     # print ('obsmelt.shape = ', obsmelt.shape)
+    obsinv = np.squeeze(obs['inversions']['invbase'])
+    obsind = np.zeros(np.size(obsinv))
+
+    #### ------------------------------------------------------------------------------
+    #### fill obs array with Cloudnet height index of main inversion base / sfml height
+    #### ------------------------------------------------------------------------------
+    ### define scaledZ array to sort data in to
+    ###     will act as mid point of vertical "boxes" of width 0.1
+    Zpts = np.arange(0.02,1.02,0.04)
+    binres = 0.04
+
+    for i in range(0, np.size(obsinv)):        ### all can go in this loop, obsinv == 6-hourly data
+        if np.size(np.where(obs_data['height'][i] <= obsinv[i])) > 0.0:
+            obsind[i] = np.where(obs_data['height'][i] <= obsinv[i])[0][0]
+        else:
+            obsind[i] = np.nan
+
+    obs['inversions']['invbase_kIndex'] = obsind
+
+    obs['scaledCv'] = {}
+    obs['scaledCv']['binned'] = {}
+    obs['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['mean'][:] = np.nan
+    obs['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['stdev'][:] = np.nan
+    obs['scaledCv']['median'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['median'][:] = np.nan
+    obs['scaledZ'] = Zpts
+    obs['scaledTime'] = obs_data['time']
+
+    # ###
+    # for i in range(0,np.size(obs['doy'],1)):     ## loop over radiosonde time
+    #     print(str(i) + 'th timestep (radiosonde):')
+    #
+    #     ### create new dictionary entry for i-th timestep
+    #     obs['scaledCv']['binned']['t' + str(i)] = {}
+    #
+    #     ###-----------------------------------------------------------------------------------------
+    #     ### for main inversion
+    #     ###-----------------------------------------------------------------------------------------
+    #     ### create array of height points under the identified inversion
+    #     if obs['inversions']['invbase_kIndex'][i] >= 0.0:
+    #         hgts = obs_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    #     else:
+    #         continue
+    #
+    #     ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+    #     scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+    #
+    #     # find Cv values below the BL inversion
+    #     blCv1 = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+    #
+    #     ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+    #     for k in range(len(Zpts)):
+    #         tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+    #         data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
+    #         if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+    #             data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+    #         data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     #### ---------------------------------------------------------------
     #### prepare model inversion data
@@ -517,7 +573,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
     sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
     sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
-    obsinv = np.squeeze(obs['inversions']['invbase'])
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
@@ -540,7 +595,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
-    #### Look at data below main inversion base only - model data first
+    #### Look at data below main inversion base only - model data
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
     zind1 = np.zeros(np.size(inv1))
@@ -549,15 +604,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     mlind1 = np.zeros(np.size(sfml1))
     mlind2 = np.zeros(np.size(sfml2))
     mlind3 = np.zeros(np.size(sfml3))
-    obsind = np.zeros(np.size(obsinv))
-
-    #### ------------------------------------------------------------------------------
-    #### fill obs arrays with height index of main inversion base / sfml height
-    for i in range(0, np.size(obsinv)):        ### all can go in this loop, inv1 == hourly data
-        if np.size(np.where(obs_data['height'][i] <= obsinv[i])) > 0.0:
-            obsind[i] = np.where(obs_data['height'][i] <= obsinv[i])[0][0]
-        else:
-            obsind[i] = np.nan
 
     #### ------------------------------------------------------------------------------
     #### fill model arrays with height index of main inversion base / sfml height
@@ -602,7 +648,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['inversions']['sfml_kIndex'] = mlind1
     data2['inversions']['sfml_kIndex'] = mlind2
     data3['inversions']['sfml_kIndex'] = mlind3
-    obs['inversions']['invbase_kIndex'] = obsind
 
     # print (zind3)
     #### re-check inversion algorithm success rate to make sure no !0 values got dropped
@@ -659,10 +704,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### Use extracted height indices to probe cloudnet data
     #### ---------------------------------------------------------------
-    ### define scaledZ array to sort data in to
-    ###     will act as mid point of vertical "boxes" of width 0.1
-    Zpts = np.arange(0.02,1.02,0.04)
-    binres = 0.04
 
     #### define empty arrays of nans to fill with scaled data
     data1['scaledCv'] = {}
@@ -680,12 +721,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
     data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['scaledCv']['median'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['median'][:] = np.nan
-    obs['scaledCv'] = {}
-    obs['scaledCv']['binned'] = {}
-    obs['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['mean'][:] = np.nan
-    obs['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['stdev'][:] = np.nan
-    obs['scaledCv']['median'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['median'][:] = np.nan
-
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
@@ -694,40 +729,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['scaledTime'] = misc_data['time']
     data3['scaledZ'] = Zpts
     data3['scaledTime'] = ifs_data['time']
-    obs['scaledZ'] = Zpts
-    obs['scaledTime'] = obs_data['time']
-
-    ### try i = 0 first to see if it works
-    ### this will go into a loop once tested
-    # i = 110
-    for i in range(0,np.size(obs['doy'],1)):     ## loop over radiosonde time
-        print(str(i) + 'th timestep (radiosonde):')
-
-        ### create new dictionary entry for i-th timestep
-        obs['scaledCv']['binned']['t' + str(i)] = {}
-
-        ###-----------------------------------------------------------------------------------------
-        ### for main inversion
-        ###-----------------------------------------------------------------------------------------
-        ### create array of height points under the identified inversion
-        if obs['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts = obs_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        else:
-            continue
-
-        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-
-        # find Cv values below the BL inversion
-        blCv1 = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-
-        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        for k in range(len(Zpts)):
-            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
-            if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
@@ -2031,6 +2032,7 @@ def main():
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
     if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
+    np.save('working_obs_data', obs_data)
 
     # -------------------------------------------------------------
     # FIN.
