@@ -650,7 +650,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     for k in range(len(Zpts)):
         tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - 0.05, scaled_hgts < Zpts[k] + 0.05))
         print (tempvar[0].shape)
-        scaledCv[k] = blCv[tempvar]
+        scaledCv[Zpts[k]] = blCv[tempvar]
     print (scaledCv)
         # data1['scaled_Cv'][i,k] = data1['blCv'][i,k]
 
@@ -695,13 +695,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #     np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
     # plt.xlabel('Cloud Fraction')
     # plt.ylabel('Height [m]')
-    plt.ylim([0,1])
+    # plt.ylim([0,1])
     # plt.xlim([0,1])
     # plt.legend()
 
     # plt.plot(data1['inversions']['invbase_kIndex'])
     # plt.plot(data2['inversions']['invbase_kIndex'])
     # plt.plot(data3['inversions']['invbase_kIndex'])
+
+    # plt.subplot(121)
+    plt.plot(blCv, scaled_hgts)
+    plt.ylim([0,1])
 
     print ('******')
     print ('')
