@@ -534,7 +534,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs['scaledTime'] = obs_data['time']
 
     ###
-    for i in range(0,np.size(obs['doy'],1)):     ## loop over cloudnet time
+    for i in range(0,np.size(obs['inversions']['doy'],1)):     ## loop over cloudnet time
         print(str(i) + 'th timestep (radiosonde):')
 
         ### create new dictionary entry for i-th timestep
@@ -1524,10 +1524,18 @@ def main():
             print (str(doy[i]))
             nanarray = np.zeros(24)
             nanarray[:] = np.nan
-            time_um1 = np.append(time_um1, nanarray)
-            time_um2 = np.append(time_um2, nanarray)
-            if ifs_flag: time_um3 = np.append(time_um3, nanarray)
-            if not ifs_flag: time_um3 = np.append(time_um3, nanarray)
+            # time_um1 = np.append(time_um1, nanarray)
+            # time_um2 = np.append(time_um2, nanarray)
+            timarray = np.arange(0.041666666666666664,1.01,0.041666666666666664)
+            time_um1 = np.append(time_um1, doy[i] + timarray)
+            time_um2 = np.append(time_um2, doy[i] + timarray)
+            if ifs_flag:
+                # time_um3 = np.append(time_um3, nanarray)
+                time_um3 = np.append(time_um3, doy[i] + timarray)
+            # if not ifs_flag:
+            #     # time_um3 = np.append(time_um3, nanarray)
+            #     time_um3 = np.append(time_um3, float(filename_um3[-16:-14]) + timarray)
+
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -2026,7 +2034,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    np.save('working_dataObs', obs['inversions'])
 
     ### cloudnet
     np.save('working_um_data', um_data)
