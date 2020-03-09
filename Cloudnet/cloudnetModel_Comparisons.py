@@ -506,9 +506,16 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obsmelt = np.where(np.logical_and(obs['inversions']['doy'] >= data1['time_hrly'][0]-0.2, obs['inversions']['doy'] < 240.0))
     obsfreeze = np.where(np.logical_and(obs['inversions']['doy'] >= 240.0, obs['inversions']['doy'] <= data1['time_hrly'][-1]))
 
-    # print ('obsmelt.shape = ', obsmelt.shape)
+    #### ------------------------------------------------------------------------------
+    #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
+    #### ------------------------------------------------------------------------------
     obsinv = np.squeeze(obs['inversions']['invbase'])
     obsind = np.zeros(np.size(obsinv))
+
+    #### ------------------------------------------------------------------------------
+    #### need to identify what cloudnet indices correspond to radiosondes
+    #### ------------------------------------------------------------------------------
+    obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
     #### ------------------------------------------------------------------------------
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
