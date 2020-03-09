@@ -501,6 +501,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ####        all model data share a timestamp
     melt = np.where(np.logical_and(data1['time_hrly'] >= obs['inversions']['doy_drift'][0], data1['time_hrly'] < 240.0))
     freeze = np.where(data1['time_hrly'] >= 240.0)
+
     #### allow some leeway in radiosonde timesteps
     obsmelt = np.where(np.logical_and(obs['inversions']['doy'] >= data1['time_hrly'][0]-0.2, obs['inversions']['doy'] < 240.0))
     obsfreeze = np.where(np.logical_and(obs['inversions']['doy'] >= 240.0, obs['inversions']['doy'] <= data1['time_hrly'][-1]))
@@ -517,7 +518,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
-    for i in range(0, np.size(obsinv)):        ### all can go in this loop, obsinv == 6-hourly data
+    for i in range(0, np.size(obsinv)):        ### time loop
         if np.size(np.where(obs_data['height'][i] <= obsinv[i])) > 0.0:
             obsind[i] = np.where(obs_data['height'][i] <= obsinv[i])[0][0]
         else:
@@ -534,7 +535,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs['scaledTime'] = obs_data['time']
 
     ###
-    for i in range(0,np.size(obs['inversions']['doy'],1)):     ## loop over cloudnet time
+    for i in range(0,np.size(obs['inversions']['doy'],1)):     ## loop over radiosonde time
         print(str(i) + 'th timestep (radiosonde):')
 
         ### create new dictionary entry for i-th timestep
