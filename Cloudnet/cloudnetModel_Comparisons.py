@@ -623,8 +623,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    Zpts = np.arange(0.05,1.05,0.1)
-    binres = 0.1
+    Zpts = np.arange(0.02,1.02,0.04)
+    binres = 0.04
     #### define empty array of nans to fill with scaled data
     data1['scaled_Cv'] = np.zeros([np.size(um_data['height'],0),len(Zpts)])
     data1['scaled_Cv'][:] = np.nan
@@ -656,9 +656,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
         print (tempvar[0].shape)
         data1['scaledCv']['binned'][Zpts[k]] = blCv[tempvar]
-        data1['scaledCv']['mean'][k] = np.nanmean(data1['scaledCv']['binned'][Zpts[k]])
+        if np.size(data1['scaledCv']['binned'][Zpts[k]]) > 0: data1['scaledCv']['mean'][k] = np.nanmean(data1['scaledCv']['binned'][Zpts[k]])
         data1['scaledCv']['stdev'][k] = np.nanstd(data1['scaledCv']['binned'][Zpts[k]])
-        data1['scaledCv']['median'][k] = np.nanmedian(data1['scaledCv']['binned'][Zpts[k]])
+        # data1['scaledCv']['median'][k] = np.nanmedian(data1['scaledCv']['binned'][Zpts[k]])
     # print (scaledCv)
         # data1['scaled_Cv'][i,k] = data1['blCv'][i,k]
 
