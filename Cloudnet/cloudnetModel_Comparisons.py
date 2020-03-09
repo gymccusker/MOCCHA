@@ -1524,17 +1524,11 @@ def main():
             print (str(doy[i]))
             nanarray = np.zeros(24)
             nanarray[:] = np.nan
-            # time_um1 = np.append(time_um1, nanarray)
-            # time_um2 = np.append(time_um2, nanarray)
             timarray = np.arange(0.041666666666666664,1.01,0.041666666666666664)
             time_um1 = np.append(time_um1, doy[i] + timarray)
             time_um2 = np.append(time_um2, doy[i] + timarray)
             if ifs_flag:
-                # time_um3 = np.append(time_um3, nanarray)
                 time_um3 = np.append(time_um3, doy[i] + timarray)
-            # if not ifs_flag:
-            #     # time_um3 = np.append(time_um3, nanarray)
-            #     time_um3 = np.append(time_um3, float(filename_um3[-16:-14]) + timarray)
 
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
