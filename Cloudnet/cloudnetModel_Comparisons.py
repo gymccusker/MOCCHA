@@ -551,6 +551,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     mlind3 = np.zeros(np.size(sfml3))
     obsind = np.zeros(np.size(obsinv))
 
+    #### ------------------------------------------------------------------------------
     #### fill obs arrays with height index of main inversion base / sfml height
     for i in range(0, np.size(obsinv)):        ### all can go in this loop, inv1 == hourly data
         if np.size(np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])) > 0.0:
@@ -558,6 +559,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         else:
             obsind[i] = np.nan
 
+    #### ------------------------------------------------------------------------------
     #### fill model arrays with height index of main inversion base / sfml height
     for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
 
@@ -600,6 +602,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['inversions']['sfml_kIndex'] = mlind1
     data2['inversions']['sfml_kIndex'] = mlind2
     data3['inversions']['sfml_kIndex'] = mlind3
+    obs['inversions']['invbase_kIndex'] = obsind
 
     # print (zind3)
     #### re-check inversion algorithm success rate to make sure no !0 values got dropped
@@ -677,6 +680,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
     data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['scaledCv']['median'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['median'][:] = np.nan
+    obs['scaledCv'] = {}
+    obs['scaledCv']['binned'] = {}
+    obs['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['mean'][:] = np.nan
+    obs['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['stdev'][:] = np.nan
+    obs['scaledCv']['median'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['median'][:] = np.nan
+
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
@@ -685,11 +694,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['scaledTime'] = misc_data['time']
     data3['scaledZ'] = Zpts
     data3['scaledTime'] = ifs_data['time']
+    obs['scaledZ'] = Zpts
+    obs['scaledTime'] = obs_data['time']
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
     # i = 110
-    for i in range(0,np.size(um_data['height'],0)):     ## loop over time
+    for i in range(0,np.size(um_data['time'])):     ## loop over time
         print ()
         print(str(i) + 'th timestep:')
 
@@ -792,17 +803,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### timeseries
     plt.subplot(311)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
     plt.subplot(312)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data2['scaledTime'][::6],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
     plt.subplot(313)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
     plt.show()
 
     ### profiles
-    plt.plot(np.nanmean(data1['scaledCv']['mean'],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data2['scaledCv']['mean'],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data3['scaledCv']['mean'],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label1)
     plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
