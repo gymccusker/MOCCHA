@@ -689,29 +689,29 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         data2['scaledCv']['binned']['t' + str(i)] = {}
         data3['scaledCv']['binned']['t' + str(i)] = {}
 
-        # ###-----------------------------------------------------------------------------------------
-        # ### for main inversion
-        # ###-----------------------------------------------------------------------------------------
-        # ### create array of height points under the identified inversion
-        # if data1['inversions']['invbase_kIndex'][i] >= 0.0:
-        #     hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        # else:
-        #     continue
-        # if data2['inversions']['invbase_kIndex'][i] >= 0.0:
-        #     hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
-        # else:
-        #     continue
-        # if data3['inversions']['invbase_kIndex'][i] >= 0.0:
-        #     hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
-        # else:
-        #     continue
-        #
-        # ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        # scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-        # scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
-        # scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
-        #
-        # ## find Cv values below the BL inversion
+        ###-----------------------------------------------------------------------------------------
+        ### for main inversion
+        ###-----------------------------------------------------------------------------------------
+        ### create array of height points under the identified inversion
+        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
+        if data2['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
+        if data3['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
+
+        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
+        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+
+        ## find Cv values below the BL inversion
         # blCv1 = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
         # blCv2 = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
         # blCv3 = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
@@ -738,42 +738,42 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         #     data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
         ###-----------------------------------------------------------------------------------------
-        ### for surface mixed layer height
+        ### for surface mixed layer height - not working yet
         ###-----------------------------------------------------------------------------------------
-        ### create array of height points under surface mixed layer height
-        if data1['inversions']['sfml_kIndex'][i] >= 0.0:
-            hgts1 = um_data['height'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
-        else:
-            continue
-        if data2['inversions']['sfml_kIndex'][i] >= 0.0:
-            hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
-        else:
-            continue
-
-        ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
-        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
-        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
-
-        ### find Cv values within the sfml
-        blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
-        blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
-
-        ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
-        for k in range(len(Zpts)):
-            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
-
-            ### bin Cv for UM_RA2M
-            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
-            if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-
-            ### bin Cv for UM_CASIM-100
-            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv2[tempvar2]
-            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        # ### create array of height points under surface mixed layer height
+        # if data1['inversions']['sfml_kIndex'][i] >= 0.0:
+        #     hgts1 = um_data['height'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        # else:
+        #     continue
+        # if data2['inversions']['sfml_kIndex'][i] >= 0.0:
+        #     hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        # else:
+        #     continue
+        #
+        # ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
+        # scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
+        # scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
+        #
+        # ### find Cv values within the sfml
+        # blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        # blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        #
+        # ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
+        # for k in range(len(Zpts)):
+        #     tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+        #     tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+        #
+        #     ### bin Cv for UM_RA2M
+        #     data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
+        #     if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+        #         data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #     data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #
+        #     ### bin Cv for UM_CASIM-100
+        #     data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv2[tempvar2]
+        #     if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+        #         data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #     data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     # ##################################################
     # ##################################################
@@ -795,7 +795,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # plt.ylim([0,1])
 
     plt.subplot(311)
-    plt.pcolor(um_data['time'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(312)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(313)
