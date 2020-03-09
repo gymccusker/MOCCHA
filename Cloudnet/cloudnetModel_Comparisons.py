@@ -551,7 +551,14 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     mlind3 = np.zeros(np.size(sfml3))
     obsind = np.zeros(np.size(obsinv))
 
-    #### fill arrays with height index of main inversion base / sfml height
+    #### fill obs arrays with height index of main inversion base / sfml height
+    for i in range(0, np.size(obsinv)):        ### all can go in this loop, inv1 == hourly data
+        if np.size(np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])) > 0.0:
+            obsind[i] = np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])[0][0]
+        else:
+            obsind[i] = np.nan
+
+    #### fill model arrays with height index of main inversion base / sfml height
     for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
 
         ### main inversion base assignments
@@ -569,10 +576,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
         else:
             zind3[i] = np.nan
-        if np.size(np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])) > 0.0:
-            obsind[i] = np.where(obs['sondes']['gpsaltitude'][i] <= obsinv[i])[0][0]
-        else:
-            obsind[i] = np.nan
 
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
