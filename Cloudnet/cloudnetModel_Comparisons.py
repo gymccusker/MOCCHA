@@ -631,7 +631,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
-    i = 20
+    i = 110
     # for i in range(0,5):#np.size(um_data['height'],0)):
 
     ### create array of height points under the identified inversion
