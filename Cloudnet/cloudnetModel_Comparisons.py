@@ -720,6 +720,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         for k in range(len(Zpts)):
             tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
             tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+            tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
 
             data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
             if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
@@ -730,6 +731,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv3[tempvar3]
+            if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
         ###-----------------------------------------------------------------------------------------
         ### for surface mixed layer height
@@ -769,39 +775,41 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         #         data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
         #     data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-        # ##################################################
-        # ##################################################
-        # #### create figure and axes instances
-        # ##################################################
-        # ##################################################
+    # ##################################################
+    # ##################################################
+    # #### create figure and axes instances
+    # ##################################################
+    # ##################################################
 
-        # fig = plt.figure(figsize=(5,7))
-        # ax = plt.gca()
-        #
-        # plt.subplot(121)
-        # plt.plot(blCv1, scaled_hgts1)
-        # plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
-        # plt.ylim([0,1])
-        #
-        # plt.subplot(122)
-        # plt.plot(blCv2, scaled_hgts2)
-        # plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
-        # plt.ylim([0,1])
+    # fig = plt.figure(figsize=(5,7))
+    # ax = plt.gca()
+    #
+    # plt.subplot(121)
+    # plt.plot(blCv1, scaled_hgts1)
+    # plt.plot(data1['scaledCv']['mean'][i,:], Zpts, 'o-')
+    # plt.ylim([0,1])
+    #
+    # plt.subplot(122)
+    # plt.plot(blCv2, scaled_hgts2)
+    # plt.plot(data2['scaledCv']['mean'][i,:], Zpts, 'o-')
+    # plt.ylim([0,1])
 
-        plt.subplot(211)
-        plt.pcolor(um_data['time'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
-        plt.subplot(212)
-        plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(311)
+    plt.pcolor(um_data['time'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(312)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(313)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
 
-        # print ('******')
-        # print ('')
-        # print ('Finished plotting! :)')
-        # print ('')
-        #
-        # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
-        # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
-        # # plt.savefig(fileout)
-        plt.show()
+    # print ('******')
+    # print ('')
+    # print ('Finished plotting! :)')
+    # print ('')
+    #
+    # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
+    # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
+    # # plt.savefig(fileout)
+    plt.show()
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
