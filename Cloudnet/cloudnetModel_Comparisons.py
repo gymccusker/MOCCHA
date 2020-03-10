@@ -538,7 +538,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
-    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet']))
+    ### initialise array to hold height indices, set all to nan before filling
+    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
+
     ### look for altitudes < invbase in obs cloudnet data
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
         #### check if there are any height levels below the inversion
