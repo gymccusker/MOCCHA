@@ -557,8 +557,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### initialise scaled arrays in dictionary
     obs['inversions']['scaledCv'] = {}
     obs['inversions']['scaledCv']['binned'] = {}
-    obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
-    obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
+    obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
+    obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
     obs['inversions']['scaledZ'] = Zpts
     obs['inversions']['scaledTime'] = obs_data['time_6hrly']
 
