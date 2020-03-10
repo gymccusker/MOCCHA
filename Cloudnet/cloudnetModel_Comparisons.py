@@ -582,15 +582,15 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        blCv1 = obs_data['Cv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        blCv = obs_data['Cv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
 
-        # ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        # for k in range(len(Zpts)):
-        #     tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-        #     data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv1[tempvar1]
-        #     if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-        #         data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-        #     data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+        for k in range(len(Zpts)):
+            tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
+            obs['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
+            if np.size(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                obs['scaledCv']['mean'][i,k] = np.nanmean(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            obs['scaledCv']['stdev'][i,k] = np.nanstd(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     #### ---------------------------------------------------------------
     #### prepare model inversion data
