@@ -891,7 +891,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### um_ra2m
     plt.subplot(211)
     plt.pcolor(um_data['time'][::6].data,um_data['height'][0,:].data,np.transpose(data1['blCv'][::6,:])); plt.ylim([0,3e3])
-    plt.plot(data1['inversions']['doy'],np.squeeze(data1['inversions']['invbase']),'r')
+    # plt.plot(data1['inversions']['doy'],np.squeeze(data1['inversions']['invbase']),'r')
+    plt.plot(data1['time_hrly'][::6],data1['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:])); plt.ylim([0,1])
@@ -901,7 +902,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### um_casim-100
     plt.subplot(211)
     plt.pcolor(misc_data['time'][::6].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'][::6,:])); plt.ylim([0,3e3])
-    plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
+    # plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['sfmlheight']),'r')
+    plt.plot(data2['time_hrly'][::6],data2['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data2['scaledTime'][::6],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'][::6,:])); plt.ylim([0,1])
