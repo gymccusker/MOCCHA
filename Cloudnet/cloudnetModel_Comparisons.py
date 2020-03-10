@@ -881,14 +881,15 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
     plt.subplot(212)
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.show()
 
     ### um_ra2m
     plt.subplot(211)
-    plt.pcolor(um_data['time'][::6].data,um_data['height'][0,:].data,np.transpose(um_data['blCv'][::6].data)); plt.ylim([0,1e4])
+    plt.pcolor(um_data['time'][::6].data,um_data['height'][0,:].data,np.transpose(data1['blCv'][::6].data)); plt.ylim([0,1e4])
     plt.plot(np.squeeze(data1['inversions']['doy'][drift]),np.squeeze(data1['inversions']['invbase'][drift]),'r')
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
-
+    plt.show()
 
     ### profiles
     plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
