@@ -482,6 +482,20 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     else:
         bldepth3 = data3['bl_depth'][data3['hrly_flag']]
 
+
+    #### ---------------------------------------------------------------
+    #### prepare cloudnet data
+    #### ---------------------------------------------------------------
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+
     #################################################################
     ## convert model inversion timesteps
     #################################################################
@@ -690,19 +704,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # print (label2 + ' zind2 success rate = ' + str(zind2rate))
     # print (label3 + ' zind3 success rate = ' + str(zind3rate))
     # print ('****')
-
-    #### ---------------------------------------------------------------
-    #### prepare cloudnet data
-    #### ---------------------------------------------------------------
-
-    #### set flagged um_data to nans
-    um_data['Cv'][um_data['Cv'] == -999] = np.nan
-    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
-    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
-    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
-    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
     #### ---------------------------------------------------------------
     #### Define meteorological periods from Jutta's paper
