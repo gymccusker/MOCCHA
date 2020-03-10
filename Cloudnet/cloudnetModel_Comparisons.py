@@ -510,7 +510,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
     #### ------------------------------------------------------------------------------
     obsinv = np.squeeze(obs['inversions']['invbase'][drift])
-    obsind = np.zeros(np.size(obsinv))
 
     #### ------------------------------------------------------------------------------
     #### need to identify what cloudnet indices correspond to radiosondes
@@ -539,10 +538,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
+    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet']))
     ### look for altitudes < invbase in obs cloudnet data
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
-        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obsinv[i])) > 0.0:
-            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obsinv[i])[0][0]
+        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
+            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][0]
         else:
             obsind[i] = np.nan
 
