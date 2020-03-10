@@ -926,7 +926,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ecmwf_ifs
     plt.subplot(211)
     plt.pcolor(ifs_data['time'][::6].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'][::6,:])); plt.ylim([0,3e3])
-    plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
+    # plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
+    plt.plot(data3['time_hrly'][::6],data3['sfc_bl_height'][data3['hrly_flag']][::6],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:])); plt.ylim([0,1])
