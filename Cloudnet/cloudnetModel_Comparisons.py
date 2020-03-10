@@ -516,7 +516,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### need to identify what cloudnet indices correspond to radiosondes
     #### ------------------------------------------------------------------------------
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
-    obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
+
     #### remove DOY 230, 253, 257 manually for now
     nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
     obs['inversions']['doy_drift'][nanindices] = np.nan
@@ -534,6 +534,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
+    ### use 6hourly cloudnet data to compare radiosonde inversion heights to
+    obs_data['height_6hrly'] = obs_data['height'][::6,:]
+    obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
+    obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
+
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
         if np.size(np.where(obs_data['height'][i,:] <= obsinv[i])) > 0.0:
             obsind[i] = np.where(obs_data['height'][i,:] <= obsinv[i])[0][0]
@@ -543,11 +548,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### save inversion base index into dictionary
     obs['inversions']['invbase_kIndex'] = obsind
 
+    ### initialise scaled arrays in dictionary
     obs['scaledCv'] = {}
     obs['scaledCv']['binned'] = {}
     obs['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['mean'][:] = np.nan
     obs['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['stdev'][:] = np.nan
-    # obs['scaledCv']['median'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['median'][:] = np.nan
     obs['scaledZ'] = Zpts
     obs['scaledTime'] = obs_data['time']
 
