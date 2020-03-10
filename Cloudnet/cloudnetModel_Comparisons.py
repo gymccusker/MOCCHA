@@ -687,17 +687,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
             mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][-1]
-        # else:
-        #     mlind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data <= sfml2[i])) > 0.0:
             mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][-1]
-        # else:
-        #     mlind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= sfml3[i]
             mlind3[i] = np.where(temp == True)[0][-1]
-        # else:
-        #     mlind3[i] = np.nan
 
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
