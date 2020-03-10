@@ -927,7 +927,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### obs
     plt.subplot(211)
-    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['blCv'])); plt.ylim([0,1e3])
+    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['blCv'])); plt.ylim([0,3e3])
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']),'r')
     plt.xlim([226,258])
@@ -938,7 +938,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### um_ra2m
     plt.subplot(211)
-    plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,1e3])
+    plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
     plt.plot(data1['inversions']['doy'],np.squeeze(data1['inversions']['invbase']),'r')
     # plt.plot(data1['time_hrly'][::6],data1['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
@@ -949,7 +949,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### um_casim-100
     plt.subplot(211)
-    plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,1e3])
+    plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
     plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
     # plt.plot(data2['time_hrly'][::6],data2['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
@@ -960,7 +960,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### ecmwf_ifs
     plt.subplot(211)
-    plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,1e3])
+    plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
     plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
     # plt.plot(data3['time_hrly'][::6],data3['sfc_bl_height'][data3['hrly_flag']][::6],'r')
     plt.xlim([226,258])
