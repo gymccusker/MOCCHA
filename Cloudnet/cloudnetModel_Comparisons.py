@@ -541,9 +541,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet']))
     ### look for altitudes < invbase in obs cloudnet data
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
+        #### check if there are any height levels below the inversion
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
-            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][0]
+            ### if there is, set obsind to the last level before the inversion
+            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][-1]
         else:
+            ### if there is not, set obsind to nan
             obsind[i] = np.nan
 
     ### save inversion base index into dictionary
@@ -651,11 +654,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
-            mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][0]
+            mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][-1]
         else:
             mlind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data <= sfml2[i])) > 0.0:
-            mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][0]
+            mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][-1]
         else:
             mlind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
