@@ -832,19 +832,26 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             hgts2 = misc_data['height'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
         else:
             continue
+        if data3['inversions']['sfml_kIndex'][i] >= 0.0:
+            hgts3 = ifs_data['height'][i,:int(data3['inversions']['sfml_kIndex'][i]+1)]
+        else:
+            continue
 
         ### scale sfml height array by the depth to give range Z 0 to 1 (1 = sfml) (temporary variable)
         scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['sfml_kIndex'][i])]
         scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
+        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['sfml_kIndex'][i])]
 
         ### find Cv values within the sfml
         data1['blCv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
         data2['blCv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        data3['blCv'][i,:int(data3['inversions']['sfml_kIndex'][i]+1)] = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['sfml_kIndex'][i]+1)]
 
         ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
         for k in range(0,len(Zpts)):
             tempvar1 = np.where(np.logical_and(scaled_hgts1 > Zpts[k] - binres/2.0, scaled_hgts1 <= Zpts[k] + binres/2.0))
             tempvar2 = np.where(np.logical_and(scaled_hgts2 > Zpts[k] - binres/2.0, scaled_hgts2 <= Zpts[k] + binres/2.0))
+            tempvar3 = np.where(np.logical_and(scaled_hgts3 > Zpts[k] - binres/2.0, scaled_hgts3 <= Zpts[k] + binres/2.0))
 
             ### bin Cv for UM_RA2M
             data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
@@ -856,7 +863,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data2['blCv'][i,tempvar2]
             if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k
+
+            data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data3['blCv'][i,tempvar3]
+            if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     ##################################################
     ##################################################
@@ -912,14 +924,14 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.show()
 
     ### ecmwf_ifs
-    # plt.subplot(211)
-    # plt.pcolor(ifs_data['time'][::6].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'][::6,:])); plt.ylim([0,3e3])
-    # plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
-    # plt.xlim([226,258])
-    # plt.subplot(212)
-    # plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:])); plt.ylim([0,1])
-    # plt.xlim([226,258])
-    # plt.show()
+    plt.subplot(211)
+    plt.pcolor(ifs_data['time'][::6].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'][::6,:])); plt.ylim([0,3e3])
+    plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
 
     ### profiles
     plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
