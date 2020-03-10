@@ -670,9 +670,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### Look at data below main inversion base only - model data
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
-    zind1 = np.zeros(np.size(inv1))
-    zind2 = np.zeros(np.size(inv2))
-    zind3 = np.zeros(np.size(inv3))#,np.size(data3['height'],1))
+    zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
+    zind2 = np.zeros(np.size(inv2)); zind2[:] = np.nan
+    zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
     mlind1 = np.zeros(np.size(sfml1))
     mlind2 = np.zeros(np.size(sfml2))
     mlind3 = np.zeros(np.size(sfml3))
@@ -684,18 +684,18 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### main inversion base assignments
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
             zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
-        else:
-            zind1[i] = np.nan
+        # else:
+        #     zind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
             zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
-        else:
-            zind2[i] = np.nan
+        # else:
+        #     zind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= inv3[i]
             zind3[i] = np.where(temp == True)[0][-1]
             # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
-        else:
-            zind3[i] = np.nan
+        # else:
+        #     zind3[i] = np.nan
 
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
