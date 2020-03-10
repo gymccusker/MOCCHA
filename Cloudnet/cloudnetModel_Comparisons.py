@@ -508,15 +508,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### save in dict for ease
     obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
-    #### split into melt and freeze:
-    ####        all model data share a timestamp
-    melt = np.where(np.logical_and(data1['time_hrly'] >= obs['inversions']['doy_drift'][0], data1['time_hrly'] < 240.0))
-    freeze = np.where(data1['time_hrly'] >= 240.0)
-
-    #### allow some leeway in radiosonde timesteps
-    obsmelt = np.where(np.logical_and(obs['inversions']['doy'] >= data1['time_hrly'][0]-0.2, obs['inversions']['doy'] < 240.0))
-    obsfreeze = np.where(np.logical_and(obs['inversions']['doy'] >= 240.0, obs['inversions']['doy'] <= data1['time_hrly'][-1]))
-
     #### ------------------------------------------------------------------------------
     #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
     #### ------------------------------------------------------------------------------
@@ -534,7 +525,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obsinv[nanindices] = np.nan
     obsmlh[nanindices] = np.nan
 
-    ### save ~6hourly data from sondes
+    ### save non-nan values to dictionary
     obs['inversions']['TimesForCloudnet'] = obs['inversions']['doy_drift'][~np.isnan(obs['inversions']['doy_drift'])]
     obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
     obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
@@ -544,7 +535,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    binres = 0.08
+    binres = 0.04
     Zpts = np.arange(0.0 + binres/2.0, 1.0 + binres/2.0, binres)
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
@@ -557,21 +548,26 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
 
     ### look for altitudes < invbase in obs cloudnet data
-    for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
+    for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop (from radiosondes)
         #### check if there are any height levels below the inversion
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
             ### if there is, set obsind to the last level before the inversion
             obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][-1]
-        else:
-            ### if there is not, set obsind to nan
-            obsind[i] = np.nan
+        # else:
+        #     ### if there is not, set obsind to nan
+        #     obsind[i] = np.nan
         #### check if there are any height levels below the sfmlheight
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
             ### if there is, set obssfml to the last level before the sfmlheight
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
-        else:
-            ### if there is not, set obsind to nan
-            obssfml[i] = np.nan
+        # else:
+        #     ### if there is not, set obsind to nan
+        #     obssfml[i] = np.nan
+
+    plt.figure()
+    for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']))
+    plt.show()
 
     ### save inversion base index into dictionary
     obs['inversions']['invbase_kIndex'] = obsind
@@ -916,13 +912,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(412)
     plt.title(label1)
-    plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(413)
     plt.title(label2)
-    plt.pcolor(data2['scaledTime'][::6],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(414)
     plt.title(label3)
-    plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.show()
 
     ### obs
