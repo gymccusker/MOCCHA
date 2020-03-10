@@ -521,6 +521,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
     #### ------------------------------------------------------------------------------
     obsinv = np.squeeze(obs['inversions']['invbase'][drift])
+    obsmlh = np.squeeze(obs['inversions']['sfmlheight'][drift])
 
     #### ------------------------------------------------------------------------------
     #### need to identify what cloudnet indices correspond to radiosondes
@@ -531,10 +532,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
     obs['inversions']['doy_drift'][nanindices] = np.nan
     obsinv[nanindices] = np.nan
+    obsmlh[nanindices] = np.nan
 
     ### save ~6hourly data from sondes
     obs['inversions']['TimesForCloudnet'] = obs['inversions']['doy_drift'][~np.isnan(obs['inversions']['doy_drift'])]
     obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
+    obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
 
     #### ------------------------------------------------------------------------------
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
@@ -551,6 +554,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### initialise array to hold height indices, set all to nan before filling
     obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
+    obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
 
     ### look for altitudes < invbase in obs cloudnet data
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop
@@ -561,9 +565,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         else:
             ### if there is not, set obsind to nan
             obsind[i] = np.nan
+        #### check if there are any height levels below the sfmlheight
+        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
+            ### if there is, set obssfml to the last level before the sfmlheight
+            obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
+        else:
+            ### if there is not, set obsind to nan
+            obssfml[i] = np.nan
 
     ### save inversion base index into dictionary
     obs['inversions']['invbase_kIndex'] = obsind
+    obs['inversions']['sfmlheight_kIndex'] = obssfml
 
     ### initialise scaled arrays in dictionary
     obs['inversions']['scaledCv'] = {}
@@ -580,20 +592,43 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### create new dictionary entry for i-th timestep
         obs['inversions']['scaledCv']['binned']['t' + str(i)] = {}
 
+        # ###-----------------------------------------------------------------------------------------
+        # ### for main inversion
+        # ###-----------------------------------------------------------------------------------------
+        # ### create array of height points under the identified inversion
+        # if obs['inversions']['invbase_kIndex'][i] >= 0.0:
+        #     hgts = obs_data['height'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        # else:
+        #     continue
+        #
+        # ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        # scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
+        #
+        # # find Cv values below the BL inversion
+        # blCv = obs_data['Cv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        #
+        # ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+        # for k in range(len(Zpts)):
+        #     tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
+        #     obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
+        #     if np.size(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+        #         obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+        #     obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
         ###-----------------------------------------------------------------------------------------
-        ### for main inversion
+        ### for surface mixed layer
         ###-----------------------------------------------------------------------------------------
         ### create array of height points under the identified inversion
-        if obs['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts = obs_data['height'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        if obs['inversions']['sfmlheight_kIndex'][i] >= 0.0:
+            hgts = obs_data['height'][i,:int(obs['inversions']['sfmlheight_kIndex'][i]+1)]
         else:
             continue
 
         ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
+        scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['sfmlheight_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        blCv = obs_data['Cv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        blCv = obs_data['Cv'][i,:int(obs['inversions']['sfmlheight_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
