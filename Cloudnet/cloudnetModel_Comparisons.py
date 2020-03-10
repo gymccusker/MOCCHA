@@ -794,9 +794,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        data1['blCv'][i,:] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        data2['blCv'][i,:] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
-        data3['blCv'][i,:] = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+        data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        data2['blCv'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        data3['blCv'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
