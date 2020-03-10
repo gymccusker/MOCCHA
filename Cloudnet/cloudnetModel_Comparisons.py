@@ -667,9 +667,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
     zind2 = np.zeros(np.size(inv2)); zind2[:] = np.nan
     zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
-    mlind1 = np.zeros(np.size(sfml1))
-    mlind2 = np.zeros(np.size(sfml2))
-    mlind3 = np.zeros(np.size(sfml3))
+    mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
+    mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
+    mlind3 = np.zeros(np.size(sfml3)); mlind1[:] = np.nan
 
     #### ------------------------------------------------------------------------------
     #### fill model arrays with height index of main inversion base / sfml height
@@ -677,11 +677,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
         ### main inversion base assignments
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
+            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0] + 1
         # else:
         #     zind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
+            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0] + 1
         # else:
         #     zind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
@@ -694,17 +694,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
             mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][-1]
-        else:
-            mlind1[i] = np.nan
+        # else:
+        #     mlind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data <= sfml2[i])) > 0.0:
             mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][-1]
-        else:
-            mlind2[i] = np.nan
+        # else:
+        #     mlind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= sfml3[i]
             mlind3[i] = np.where(temp == True)[0][-1]
-        else:
-            mlind3[i] = np.nan
+        # else:
+        #     mlind3[i] = np.nan
 
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
