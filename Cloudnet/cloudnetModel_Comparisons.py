@@ -487,7 +487,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### prepare cloudnet data
     #### ---------------------------------------------------------------
 
-    #### set flagged um_data to nans
+    #### set flagged data to nans
     obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -508,7 +508,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### save in dict for ease
     obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
-    #### split into melt and freeze in scatter plots:
+    #### split into melt and freeze:
     ####        all model data share a timestamp
     melt = np.where(np.logical_and(data1['time_hrly'] >= obs['inversions']['doy_drift'][0], data1['time_hrly'] < 240.0))
     freeze = np.where(data1['time_hrly'] >= 240.0)
@@ -541,7 +541,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    Zpts = np.arange(0.02,1.02,0.04)
+    Zpts = np.arange(0.02,1.02,0.02)
     binres = 0.04
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
