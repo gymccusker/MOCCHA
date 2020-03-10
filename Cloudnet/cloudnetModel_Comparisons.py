@@ -837,8 +837,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['sfml_kIndex'][i])]
 
         ### find Cv values within the sfml
-        blCv1 = um_data['Cv'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
-        blCv2 = misc_data['Cv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
+        blCv1 = um_data['model_Cv_filtered'][i,:int(data1['inversions']['sfml_kIndex'][i]+1)]
+        blCv2 = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
 
         ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
