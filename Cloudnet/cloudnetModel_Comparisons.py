@@ -737,19 +737,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
     data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
     data1['blCv'] = np.zeros([np.size(um_data['height'],0),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
-    # data1['scaledCv']['median'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['median'][:] = np.nan
+
     data2['scaledCv'] = {}
     data2['scaledCv']['binned'] = {}
     data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
     data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
     data2['blCv'] = np.zeros([np.size(misc_data['height'],0),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
-    # data2['scaledCv']['median'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['median'][:] = np.nan
+
     data3['scaledCv'] = {}
     data3['scaledCv']['binned'] = {}
     data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
     data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
-    # data3['scaledCv']['median'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['median'][:] = np.nan
+    
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
