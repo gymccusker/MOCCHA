@@ -560,7 +560,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
     obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
     obs['inversions']['scaledZ'] = Zpts
-    obs['inversions']['scaledTime'] = obs_data['time']
+    obs['inversions']['scaledTime'] = obs_data['time_6hrly']
 
     ###
     for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
@@ -864,7 +864,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### timeseries
     plt.subplot(412)
-    plt.pcolor(obs['scaledTime'],obs['scaledZ'],np.transpose(obs['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(412)
     plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
     plt.subplot(413)
