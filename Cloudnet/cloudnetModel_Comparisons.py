@@ -540,6 +540,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         else:
             obsind[i] = np.nan
 
+    ### save inversion base index into dictionary
     obs['inversions']['invbase_kIndex'] = obsind
 
     obs['scaledCv'] = {}
