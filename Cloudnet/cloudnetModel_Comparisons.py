@@ -563,7 +563,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs['scaledTime'] = obs_data['time']
 
     ###
-    for i in range(0,np.size(obs['TimesForCloudnet'])):     ## loop over radiosonde time
+    for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
         print(str(i) + 'th timestep (radiosonde):')
 
         ### create new dictionary entry for i-th timestep
