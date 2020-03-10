@@ -864,11 +864,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ##################################################
 
     ### timeseries
-    plt.subplot(311)
+    plt.subplot(412)
+    plt.pcolor(obs['scaledTime'],obs['scaledZ'],np.transpose(obs['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(412)
     plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
-    plt.subplot(312)
+    plt.subplot(413)
     plt.pcolor(data2['scaledTime'][::6],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
-    plt.subplot(313)
+    plt.subplot(414)
     plt.pcolor(data3['scaledTime'][::6],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
     plt.show()
 
