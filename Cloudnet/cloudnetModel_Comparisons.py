@@ -880,7 +880,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs_data['Cv_6hrly'].data)); plt.ylim([0,1e4])
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
     plt.subplot(212)
-    plt.pcolor(obs['scaledTime'],obs['scaledZ'],np.transpose(obs['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean'])); plt.ylim([0,1])
 
     ### um_ra2m
     plt.subplot(211)
