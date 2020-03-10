@@ -553,16 +553,10 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
             ### if there is, set obsind to the last level before the inversion
             obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][-1]
-        # else:
-        #     ### if there is not, set obsind to nan
-        #     obsind[i] = np.nan
         #### check if there are any height levels below the sfmlheight
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
             ### if there is, set obssfml to the last level before the sfmlheight
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
-        # else:
-        #     ### if there is not, set obsind to nan
-        #     obssfml[i] = np.nan
 
     plt.figure()
     for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
