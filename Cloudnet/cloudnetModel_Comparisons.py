@@ -544,7 +544,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     binres = 0.1
     Zpts = np.arange(0.05,1.05,binres)
 
-
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
     obs_data['height_6hrly'] = obs_data['height'][::6,:]
     obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
@@ -751,7 +750,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
 
-
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
     data1['scaledTime'] = um_data['time']
@@ -894,7 +892,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### obs
     plt.subplot(211)
     plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs_data['Cv_6hrly'].data)); plt.ylim([0,1e4])
-    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
+    # plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
+    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean'])); plt.ylim([0,1])
