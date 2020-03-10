@@ -784,7 +784,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         data3['scaledCv']['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
-        ### for main inversion
+        ### for main inversion -- double checked up to here
         ###-----------------------------------------------------------------------------------------
         ### create array of height points under the identified inversion
         if data1['inversions']['invbase_kIndex'][i] >= 0.0:
