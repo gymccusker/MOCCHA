@@ -541,8 +541,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    binres = 0.04
-    Zpts = np.arange(0.02,1.02,binres)
+    binres = 0.1
+    Zpts = np.arange(0.05,1.05,binres)
 
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
@@ -842,9 +842,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         data2['blCv'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['sfml_kIndex'][i]+1)]
 
         ### bin scaled sfml heights into pre-set Zpts array so every timestep can be compared
-        for k in range(len(Zpts)):
-            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+        for k in range(0,len(Zpts)):
+            tempvar1 = np.where(np.logical_and(scaled_hgts1 > Zpts[k] - binres/2.0, scaled_hgts1 <= Zpts[k] + binres/2.0))
+            tempvar2 = np.where(np.logical_and(scaled_hgts2 > Zpts[k] - binres/2.0, scaled_hgts2 <= Zpts[k] + binres/2.0))
 
             ### bin Cv for UM_RA2M
             data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
@@ -891,7 +891,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### um_ra2m
     plt.subplot(211)
-    plt.pcolor(um_data['time'][::6].data,um_data['height'][0,:].data,np.transpose(data1['blCv'][::6,:])); plt.ylim([0,3e3])
+    plt.pcolor(um_data['time'][::6].data,um_data['height'][0,:].data,np.transpose(data1['blCv'][::6,:])); plt.ylim([0,1e3])
     # plt.plot(data1['inversions']['doy'],np.squeeze(data1['inversions']['invbase']),'r')
     plt.plot(data1['time_hrly'][::6],data1['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
@@ -902,7 +902,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     ### um_casim-100
     plt.subplot(211)
-    plt.pcolor(misc_data['time'][::6].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'][::6,:])); plt.ylim([0,3e3])
+    plt.pcolor(misc_data['time'][::6].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'][::6,:])); plt.ylim([0,1e3])
     # plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['sfmlheight']),'r')
     plt.plot(data2['time_hrly'][::6],data2['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
