@@ -541,7 +541,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    Zpts = np.arange(0.02,1.02,0.02)
+    Zpts = np.arange(0.02,1.02,0.04)
     binres = 0.04
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
