@@ -678,18 +678,11 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### main inversion base assignments
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
             zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0] + 1
-        # else:
-        #     zind1[i] = np.nan
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
             zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0] + 1
-        # else:
-        #     zind2[i] = np.nan
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= inv3[i]
             zind3[i] = np.where(temp == True)[0][-1]
-            # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
-        # else:
-        #     zind3[i] = np.nan
 
         ### surface mixed layer height assignments
         if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
