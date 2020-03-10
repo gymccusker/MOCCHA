@@ -863,7 +863,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ##################################################
 
     ### timeseries
-    plt.subplot(412)
+    plt.subplot(411)
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(412)
     plt.pcolor(data1['scaledTime'][::6],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'][::6,:]), vmin = 0, vmax = 1)
@@ -874,6 +874,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.show()
 
     ### profiles
+    plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs'')
     plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
     plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label1)
     plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label1)
