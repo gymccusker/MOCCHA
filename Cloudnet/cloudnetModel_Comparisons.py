@@ -555,19 +555,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     obs['inversions']['invbase_kIndex'] = obsind
 
     ### initialise scaled arrays in dictionary
-    obs['scaledCv'] = {}
-    obs['scaledCv']['binned'] = {}
-    obs['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['mean'][:] = np.nan
-    obs['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['scaledCv']['stdev'][:] = np.nan
-    obs['scaledZ'] = Zpts
-    obs['scaledTime'] = obs_data['time']
+    obs['inversions']['scaledCv'] = {}
+    obs['inversions']['scaledCv']['binned'] = {}
+    obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
+    obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['height'],0),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
+    obs['inversions']['scaledZ'] = Zpts
+    obs['inversions']['scaledTime'] = obs_data['time']
 
     ###
     for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
         print(str(i) + 'th timestep (radiosonde):')
 
         ### create new dictionary entry for i-th timestep
-        obs['scaledCv']['binned']['t' + str(i)] = {}
+        obs['inversions']['scaledCv']['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
@@ -587,10 +587,10 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-            obs['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
-            if np.size(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                obs['scaledCv']['mean'][i,k] = np.nanmean(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            obs['scaledCv']['stdev'][i,k] = np.nanstd(obs['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]] = blCv[tempvar]
+            if np.size(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     #### ---------------------------------------------------------------
     #### prepare model inversion data
@@ -666,7 +666,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= sfml3[i]
             mlind3[i] = np.where(temp == True)[0][-1]
-            # zind3[i] = np.where(data3['height_hrly'][i,:].data == inv3[i])[0][0]
         else:
             mlind3[i] = np.nan
 
