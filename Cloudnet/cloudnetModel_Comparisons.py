@@ -651,6 +651,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
 
     #### make inversion tempvars to allow for easy subsampling
+    tim1 = np.squeeze(data1['inversions']['doy_drift'][data1['hrly_flag']])
+    tim2 = np.squeeze(data2['inversions']['doy_drift'][data2['hrly_flag']])
+    tim3 = np.squeeze(data3['inversions']['doy_drift'][data3['hrly_flag']])
     inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
@@ -697,7 +700,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
             zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0] 
+            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= inv3[i]
             zind3[i] = np.where(temp == True)[0][-1]
@@ -724,19 +727,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.title(label1)
     for i in range(0, np.size(zind1)):
         if ~np.isnan(zind1[i]): plt.plot(data1['time_hrly'][i],data1['height'][int(zind1[i])],'o')
-    plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']))
+    plt.plot(np.squeeze(data1['inversions']['doy_drift']),np.squeeze(data1['inversions']['invbase_drift']))
     plt.ylim([0,3e3])
     plt.subplot(312)
     plt.title(label2)
     for i in range(0, np.size(zind2)):
         if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
-    plt.plot(np.squeeze(data2['inversions']['doy']),np.squeeze(data2['inversions']['invbase']))
+    plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
     plt.ylim([0,3e3])
     plt.subplot(313)
     plt.title(label3)
     for i in range(0, np.size(zind3)):
-        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height'][i,int(zind3[i])],'o')
-    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']))
+        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
+    plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
     plt.ylim([0,3e3])
     plt.show()
 
