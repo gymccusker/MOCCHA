@@ -741,19 +741,20 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); #data1['scaledCv']['inversion_Tindex'][:] = np.nan
     data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); #data2['scaledCv']['inversion_Tindex'][:] = np.nan
-    data1['scaledCv']['CNinversion'] = np.zeros(np.size(inv1)); #cninv1[:] = np.nan
+    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(inv1)); #cninv1[:] = np.nan
     data2['scaledCv']['CNinversion'] = np.zeros(np.size(inv2)); #cninv2[:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
         if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
         if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
-            data1['scaledCv']['CNinversion'][i] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
-            index1 = np.where(data1['scaledCv']['CNinversion']>0)
+            data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
+            # index1 = np.where(data1['scaledCv']['CNinversion']>0)
 
     ### ignore nans to produce array of same size as um_data['time']
     # data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
