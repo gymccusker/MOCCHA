@@ -704,7 +704,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.figure()
     plt.subplot(311)
     plt.title(label1)
-    for i in range(0, np.size(zind1)): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
+    for i in range(0, np.size(zind1)):
+        if ~np.isnan(zind1[i]): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
     plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']))
     plt.subplot(312)
     plt.title(label2)
@@ -713,7 +714,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.subplot(313)
     plt.title(label3)
     for i in range(0, np.size(zind3)): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
-    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']))    
+    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']))
     plt.show()
 
     # print (zind3)
