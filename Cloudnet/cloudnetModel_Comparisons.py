@@ -685,7 +685,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### Look at data below main inversion base only - model data
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
-    zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
+    # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
+    zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
     zind2 = np.zeros(np.size(inv2)); zind2[:] = np.nan
     zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
     mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
@@ -697,6 +698,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
 
         ### main inversion base assignments
+        # tempind = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3)):
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
             zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
@@ -812,6 +814,26 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['scaledTime'] = misc_data['time']
     data3['scaledZ'] = Zpts
     data3['scaledTime'] = ifs_data['time']
+
+    ### ------------------------------------------------------------------------------------------
+    ### find cloudnet timesteps which match the inversion timesteps
+    ### ------------------------------------------------------------------------------------------
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
+
+    for i in range(0, len(inv1)):
+        ## find the cloudnet timestep which matches the inversion timestep
+        if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
+            data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
+        if np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
+            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0]
+        # if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
+        #     data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
+
+    ### remove nans to produce array of same size as um_data['time']
+    data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
+    data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
+
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
