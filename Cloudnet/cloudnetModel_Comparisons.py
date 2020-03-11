@@ -637,10 +637,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ONLY LOOK AT DATA FROM THE DRIFT
     #### ---------------------------------------------------------------
     driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 259.0))
-    data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod][1:-2]
-    data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod][1:-2]
-    # data2['inversions']['doy_drift'] = data2['inversions']['doy'][drift][1:-2]
-    # data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][drift][1:-2]
+    print (driftmod[0].shape)
+    print (driftmod[0][-1])
+    data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
+    data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
+    data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
+    data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
     # data3['inversions']['doy_drift'] = data3['inversions']['doy'][drift][1:]
     # data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][drift][1:-2]
 
