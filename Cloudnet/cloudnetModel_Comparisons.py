@@ -686,7 +686,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
     # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
-    zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
+    zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
     zind2 = np.zeros(np.size(inv2)); zind2[:] = np.nan
     zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
     mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
@@ -820,6 +820,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
     data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
+    cninv1 = np.zeros(np.size(inv1)); cninv1[:] = np.nan
 
     for i in range(0, len(inv1)):
         ## find the cloudnet timestep which matches the inversion timestep
@@ -830,10 +831,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
         #     data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
 
+    ### use inversion_Tindices to define new inversion array for looping over
+    cninv1[data1['scaledCv']['inversion_Tindex']] = inv1[data1['scaledCv']['inversion_Tindex']]
+
     ### remove nans to produce array of same size as um_data['time']
     data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
     data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
-
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
@@ -2146,15 +2149,15 @@ def main():
     # save out working data for debugging purposes
     # -------------------------------------------------------------
     ### model/measurement data
-    np.save('working_data1', data1)
-    np.save('working_data2', data2)
-    np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
-
-    ### cloudnet
-    np.save('working_um_data', um_data)
-    np.save('working_ifs_data', ifs_data)
-    if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
+    # np.save('working_data1', data1)
+    # np.save('working_data2', data2)
+    # np.save('working_data3', data3)
+    # np.save('working_dataObs', obs['sondes'])
+    #
+    # ### cloudnet
+    # np.save('working_um_data', um_data)
+    # np.save('working_ifs_data', ifs_data)
+    # if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
 
 ###################################################################################################################
