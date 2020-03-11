@@ -559,6 +559,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
 
     plt.figure()
+    plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
     for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']))
     plt.show()
@@ -705,16 +706,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     plt.subplot(311)
     plt.title(label1)
     for i in range(0, np.size(zind1)):
-        if ~np.isnan(zind1[i]): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
+        if ~np.isnan(zind1[i]): plt.plot(data1['time_hrly'][i],data1['height'][int(zind1[i])],'o')
     plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']))
     plt.subplot(312)
     plt.title(label2)
-    for i in range(0, np.size(zind2)): plt.plot(misc_data['time'][i],misc_data['height'][i,int(zind2[i])],'o')
+    for i in range(0, np.size(zind2)):
+        if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
     plt.plot(np.squeeze(data2['inversions']['doy']),np.squeeze(data2['inversions']['invbase']))
     plt.subplot(313)
     plt.title(label3)
-    for i in range(0, np.size(zind3)): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
+    for i in range(0, np.size(zind3)):
+        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height'][i,int(zind3[i])],'o')
     plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']))
+    plt.ylim([0,1e4])
     plt.show()
 
     # print (zind3)
