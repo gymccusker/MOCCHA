@@ -753,6 +753,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
             data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
 
+    # data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
+    ### find time indices which are NOT nans (and save array location)
+    nanindex = np.where(data1['scaledCv']['inversion_Tindex'] >= 0.0)
+    data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][nanindex]
+    data1['scaledCv']['inversionForCloudnet'] = data1['scaledCv']['inversionForCloudnet'][nanindex]
+
     np.save('working_data1', data1)
 
     #### ---------------------------------------------------------------
@@ -760,9 +766,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### create empty arrays to hold height index
     # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
-    zind1 = np.zeros(np.size(cninv1)); zind1[:] = np.nan
-    zind2 = np.zeros(np.size(cninv2)); zind2[:] = np.nan
-    zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
+    zind1 = np.zeros(np.size(data1['scaledCv']['inversionForCloudnet'])); zind1[:] = np.nan
+    # zind2 = np.zeros(np.size(cninv2)); zind2[:] = np.nan
+    # zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
     # mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
     # mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
     # mlind3 = np.zeros(np.size(sfml3)); mlind1[:] = np.nan
@@ -770,16 +776,16 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ------------------------------------------------------------------------------
     #### fill model arrays with height index of main inversion base / sfml height
     #### ------------------------------------------------------------------------------
-    for i in range(0, np.size(cninv1)):        ### all can go in this loop, inv1 == hourly data
+    for i in range(0, np.size(data1['scaledCv']['inversionForCloudnet'])):        ### all can go in this loop, inv1 == hourly data
 
         ### main inversion base assignments
-        if np.size(np.where(data1['height'][1:].data == cninv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == cninv1[i])[0][0]
-        if np.size(np.where(data2['height'][1:].data == cninv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == cninv2[i])[0][0]
-        if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= inv3[i]
-            zind3[i] = np.where(temp == True)[0][-1]
+        if np.size(np.where(data1['height'][1:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind1[i] = np.where(data1['height'][1:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
+        # if np.size(np.where(data2['height'][1:].data == cninv2[i])) > 0.0:
+        #     zind2[i] = np.where(data2['height'][1:].data == cninv2[i])[0][0]
+        # if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
+        #     temp = data3['height_hrly'][i,:].data <= inv3[i]
+        #     zind3[i] = np.where(temp == True)[0][-1]
 
         # ### surface mixed layer height assignments
         # if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
@@ -792,8 +798,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
-    data2['inversions']['invbase_kIndex'] = zind2
-    data3['inversions']['invbase_kIndex'] = zind3
+    # data2['inversions']['invbase_kIndex'] = zind2
+    # data3['inversions']['invbase_kIndex'] = zind3
     # data1['inversions']['sfml_kIndex'] = mlind1
     # data2['inversions']['sfml_kIndex'] = mlind2
     # data3['inversions']['sfml_kIndex'] = mlind3
@@ -805,18 +811,18 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if ~np.isnan(zind1[i]): plt.plot(data1['time_hrly'][i],data1['height'][int(zind1[i])],'o')
     plt.plot(np.squeeze(data1['inversions']['doy_drift']),np.squeeze(data1['inversions']['invbase_drift']))
     plt.ylim([0,3e3])
-    plt.subplot(312)
-    plt.title(label2)
-    for i in range(0, np.size(zind2)):
-        if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
-    plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
-    plt.ylim([0,3e3])
-    plt.subplot(313)
-    plt.title(label3)
-    for i in range(0, np.size(zind3)):
-        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
-    plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
-    plt.ylim([0,3e3])
+    # plt.subplot(312)
+    # plt.title(label2)
+    # for i in range(0, np.size(zind2)):
+    #     if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
+    # plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
+    # plt.ylim([0,3e3])
+    # plt.subplot(313)
+    # plt.title(label3)
+    # for i in range(0, np.size(zind3)):
+    #     if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
+    # plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
+    # plt.ylim([0,3e3])
     plt.show()
 
     # print (zind3)
@@ -827,11 +833,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
     zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
     zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
-
-    # print (label1 + ' zind1 success rate = ' + str(zind1rate))
-    # print (label2 + ' zind2 success rate = ' + str(zind2rate))
-    # print (label3 + ' zind3 success rate = ' + str(zind3rate))
-    # print ('****')
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
