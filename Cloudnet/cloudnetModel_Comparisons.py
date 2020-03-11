@@ -633,7 +633,19 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### prepare model inversion data
     #### ---------------------------------------------------------------
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT DATA FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
+
+    ### save in dict for ease
+    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
+
+
     #### make inversion tempvars to allow for easy subsampling
+
+
+
     inv1 = np.squeeze(data1['inversions']['invbase'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase'][data3['hrly_flag'],0])
