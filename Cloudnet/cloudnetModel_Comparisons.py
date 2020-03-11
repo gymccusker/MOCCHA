@@ -649,7 +649,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### save in dict for ease
     # obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
-
     #### make inversion tempvars to allow for easy subsampling
     tim1 = np.squeeze(data1['inversions']['doy_drift'][data1['hrly_flag']])
     tim2 = np.squeeze(data2['inversions']['doy_drift'][data2['hrly_flag']])
@@ -680,84 +679,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data3['height'][data3['height'] == -9999] = 0.0
             #### set all heights to zero if flagged. setting to nan caused problems further on
     data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
-
-    #### ---------------------------------------------------------------
-    #### Look at data below main inversion base only - model data
-    #### ---------------------------------------------------------------
-    #### create empty arrays to hold height index
-    # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
-    zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
-    zind2 = np.zeros(np.size(inv2)); zind2[:] = np.nan
-    zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
-    mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
-    mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
-    mlind3 = np.zeros(np.size(sfml3)); mlind1[:] = np.nan
-
-    #### ------------------------------------------------------------------------------
-    #### fill model arrays with height index of main inversion base / sfml height
-    for i in range(0, np.size(inv1)):        ### all can go in this loop, inv1 == hourly data
-
-        ### main inversion base assignments
-        # tempind = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3)):
-        if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
-        if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
-        if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= inv3[i]
-            zind3[i] = np.where(temp == True)[0][-1]
-
-        ### surface mixed layer height assignments
-        if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
-            mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][-1]
-        if np.size(np.where(data2['height'][1:].data <= sfml2[i])) > 0.0:
-            mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][-1]
-        if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= sfml3[i]
-            mlind3[i] = np.where(temp == True)[0][-1]
-
-    #### assign height indices to dictionary for later use
-    data1['inversions']['invbase_kIndex'] = zind1
-    data2['inversions']['invbase_kIndex'] = zind2
-    data3['inversions']['invbase_kIndex'] = zind3
-    data1['inversions']['sfml_kIndex'] = mlind1
-    data2['inversions']['sfml_kIndex'] = mlind2
-    data3['inversions']['sfml_kIndex'] = mlind3
-
-    plt.figure()
-    plt.subplot(311)
-    plt.title(label1)
-    for i in range(0, np.size(zind1)):
-        if ~np.isnan(zind1[i]): plt.plot(data1['time_hrly'][i],data1['height'][int(zind1[i])],'o')
-    plt.plot(np.squeeze(data1['inversions']['doy_drift']),np.squeeze(data1['inversions']['invbase_drift']))
-    plt.ylim([0,3e3])
-    plt.subplot(312)
-    plt.title(label2)
-    for i in range(0, np.size(zind2)):
-        if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
-    plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
-    plt.ylim([0,3e3])
-    plt.subplot(313)
-    plt.title(label3)
-    for i in range(0, np.size(zind3)):
-        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
-    plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
-    plt.ylim([0,3e3])
-    plt.show()
-
-    # print (zind3)
-    #### re-check inversion algorithm success rate to make sure no !0 values got dropped
-    zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
-    zzind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
-    zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
-
-    # print (label1 + ' zind1 success rate = ' + str(zind1rate))
-    # print (label2 + ' zind2 success rate = ' + str(zind2rate))
-    # print (label3 + ' zind3 success rate = ' + str(zind3rate))
-    # print ('****')
 
     #### ---------------------------------------------------------------
     #### Define meteorological periods from Jutta's paper
@@ -821,6 +742,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
     data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
     cninv1 = np.zeros(np.size(inv1)); cninv1[:] = np.nan
+    cninv2 = np.zeros(np.size(inv2)); cninv2[:] = np.nan
 
     for i in range(0, len(inv1)):
         ## find the cloudnet timestep which matches the inversion timestep
@@ -834,10 +756,93 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### use inversion_Tindices to define new inversion array for looping over
         if data1['scaledCv']['inversion_Tindex'][i] > 0.0:
             cninv1[int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
+        if data2['scaledCv']['inversion_Tindex'][i] > 0.0:
+            cninv2[int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[int(data2['scaledCv']['inversion_Tindex'][i])]
 
-    ### remove nans to produce array of same size as um_data['time']
+    ### ignore nans to produce array of same size as um_data['time']
     data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
     data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
+    cninv1 = cninv1[~np.isnan(cninv1)]
+    cninv2 = cninv2[~np.isnan(cninv2)]
+
+    #### ---------------------------------------------------------------
+    #### Look at data below main inversion base only - model data
+    #### ---------------------------------------------------------------
+    #### create empty arrays to hold height index
+    # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
+    zind1 = np.zeros(np.size(cninv1)); zind1[:] = np.nan
+    zind2 = np.zeros(np.size(cninv2)); zind2[:] = np.nan
+    zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
+    # mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
+    # mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
+    # mlind3 = np.zeros(np.size(sfml3)); mlind1[:] = np.nan
+
+    #### ------------------------------------------------------------------------------
+    #### fill model arrays with height index of main inversion base / sfml height
+    #### ------------------------------------------------------------------------------
+    for i in range(0, np.size(cninv1)):        ### all can go in this loop, inv1 == hourly data
+
+        ### main inversion base assignments
+        # tempind = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3)):
+        if np.size(np.where(data1['height'][1:].data == cninv1[i])) > 0.0:
+            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
+        if np.size(np.where(data2['height'][1:].data == cninv2[i])) > 0.0:
+            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
+        if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
+            temp = data3['height_hrly'][i,:].data <= inv3[i]
+            zind3[i] = np.where(temp == True)[0][-1]
+
+        # ### surface mixed layer height assignments
+        # if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
+        #     mlind1[i] = np.where(data1['height'][1:].data <= sfml1[i])[0][-1]
+        # if np.size(np.where(data2['height'][1:].data <= sfml2[i])) > 0.0:
+        #     mlind2[i] = np.where(data2['height'][1:].data <= sfml2[i])[0][-1]
+        # if np.size(np.where(data3['height_hrly'][i].data <= sfml3[i])) > 0.0:
+        #     temp = data3['height_hrly'][i,:].data <= sfml3[i]
+        #     mlind3[i] = np.where(temp == True)[0][-1]
+
+    #### assign height indices to dictionary for later use
+    data1['inversions']['invbase_kIndex'] = zind1
+    data2['inversions']['invbase_kIndex'] = zind2
+    data3['inversions']['invbase_kIndex'] = zind3
+    # data1['inversions']['sfml_kIndex'] = mlind1
+    # data2['inversions']['sfml_kIndex'] = mlind2
+    # data3['inversions']['sfml_kIndex'] = mlind3
+
+    plt.figure()
+    plt.subplot(311)
+    plt.title(label1)
+    for i in range(0, np.size(zind1)):
+        if ~np.isnan(zind1[i]): plt.plot(data1['time_hrly'][i],data1['height'][int(zind1[i])],'o')
+    plt.plot(np.squeeze(data1['inversions']['doy_drift']),np.squeeze(data1['inversions']['invbase_drift']))
+    plt.ylim([0,3e3])
+    plt.subplot(312)
+    plt.title(label2)
+    for i in range(0, np.size(zind2)):
+        if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
+    plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
+    plt.ylim([0,3e3])
+    plt.subplot(313)
+    plt.title(label3)
+    for i in range(0, np.size(zind3)):
+        if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
+    plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
+    plt.ylim([0,3e3])
+    plt.show()
+
+    # print (zind3)
+    #### re-check inversion algorithm success rate to make sure no !0 values got dropped
+    zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
+    zzind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
+    zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
+    zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
+
+    # print (label1 + ' zind1 success rate = ' + str(zind1rate))
+    # print (label2 + ' zind2 success rate = ' + str(zind2rate))
+    # print (label3 + ' zind3 success rate = ' + str(zind3rate))
+    # print ('****')
 
     ### try i = 0 first to see if it works
     ### this will go into a loop once tested
