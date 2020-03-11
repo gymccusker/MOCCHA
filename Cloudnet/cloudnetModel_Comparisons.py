@@ -636,17 +636,23 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT DATA FROM THE DRIFT
     #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
+    driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 259.0))
+    data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod][1:-2]
+    data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod][1:-2]
+    # data2['inversions']['doy_drift'] = data2['inversions']['doy'][drift][1:-2]
+    # data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][drift][1:-2]
+    # data3['inversions']['doy_drift'] = data3['inversions']['doy'][drift][1:]
+    # data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][drift][1:-2]
 
     ### save in dict for ease
-    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
+    # obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
 
     #### make inversion tempvars to allow for easy subsampling
 
 
 
-    inv1 = np.squeeze(data1['inversions']['invbase'][data1['hrly_flag'],0])
+    inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase'][data3['hrly_flag'],0])
     sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
@@ -948,7 +954,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### um_ra2m
     plt.subplot(211)
     plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
-    plt.plot(data1['inversions']['doy'],np.squeeze(data1['inversions']['invbase']),'r')
+    plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
     # plt.plot(data1['time_hrly'][::6],data1['bl_depth'][data1['hrly_flag']][::6],'r')
     plt.xlim([226,258])
     plt.subplot(212)
