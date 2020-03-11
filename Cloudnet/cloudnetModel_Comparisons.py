@@ -643,20 +643,17 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
     data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
     data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
-    # data3['inversions']['doy_drift'] = data3['inversions']['doy'][drift][1:]
-    # data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][drift][1:-2]
+    data3['inversions']['doy_drift'] = data3['inversions']['doy'][driftmod[0][1:-2]]
+    data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0]][1:-2]]
 
     ### save in dict for ease
     # obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
 
     #### make inversion tempvars to allow for easy subsampling
-
-
-
     inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
-    inv2 = np.squeeze(data2['inversions']['invbase'][data2['hrly_flag'],0])
-    inv3 = np.squeeze(data3['inversions']['invbase'][data3['hrly_flag'],0])
+    inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
+    inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
     sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
     sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
     sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
