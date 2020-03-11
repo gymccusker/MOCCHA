@@ -896,6 +896,7 @@ def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data,
 
     ### obs
     plt.subplot(211)
+    plt.title('Obs - 6hourly because inversions from radiosondes')
     plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['blCv'])); plt.ylim([0,3e3])
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
     plt.xlim([226,258])
@@ -906,6 +907,7 @@ def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data,
 
     ### um_ra2m
     plt.subplot(211)
+    plt.title(label1)
     plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
     plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
     plt.xlim([226,258])
@@ -916,6 +918,7 @@ def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data,
 
     ### um_casim-100
     plt.subplot(211)
+    plt.title(label2)
     plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
     plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
     plt.xlim([226,258])
@@ -926,6 +929,7 @@ def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data,
 
     ### ecmwf_ifs
     plt.subplot(211)
+    plt.title(label3)
     plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
     plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
     plt.xlim([226,258])
@@ -1431,7 +1435,6 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
     plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
     plt.legend()
     plt.show()
-
 
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
@@ -2603,8 +2606,8 @@ def main():
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
-    # figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
