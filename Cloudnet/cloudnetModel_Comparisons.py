@@ -831,8 +831,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
         #     data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
 
-    ### use inversion_Tindices to define new inversion array for looping over
-    cninv1[data1['scaledCv']['inversion_Tindex']] = inv1[data1['scaledCv']['inversion_Tindex']]
+        ### use inversion_Tindices to define new inversion array for looping over
+        if data1['scaledCv']['inversion_Tindex'][i] > 0.0:
+            cninv1[int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
 
     ### remove nans to produce array of same size as um_data['time']
     data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
