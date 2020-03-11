@@ -741,6 +741,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
     data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
+    data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
+
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
@@ -752,18 +755,30 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
+        if np.floor(tim2[i]) in missing_files:
+            ### don't assign a cloudnet index for missing files
+            ### instead, set inv1 to nan at these times
+            inv2[i] = np.nan
+            continue
+        elif np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0][0]
+
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
         if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
             data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
+        if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
 
     ### find time indices which are NOT nans (and save array location)
-    nanindex = np.where(data1['scaledCv']['inversion_Tindex'] >= 0.0)
-    data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][nanindex]
-    data1['scaledCv']['inversionForCloudnet'] = data1['scaledCv']['inversionForCloudnet'][nanindex]
+    # nanindex = np.where(data1['scaledCv']['inversion_Tindex'] >= 0.0)
+    # data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][nanindex]
+    # data1['scaledCv']['inversionForCloudnet'] = data1['scaledCv']['inversionForCloudnet'][nanindex]
 
     np.save('working_data1', data1)
+    np.save('working_data1', data2)
 
     #### ---------------------------------------------------------------
     #### Look at data below main inversion base only - model data
@@ -771,7 +786,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### create empty arrays to hold height index
     # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
     zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
-    # zind2 = np.zeros(np.size(cninv2)); zind2[:] = np.nan
+    zind2 = np.zeros(np.size(misc_data['time'])); zind2[:] = np.nan
     # zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
     # mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
     # mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
@@ -785,8 +800,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ### main inversion base assignments
         if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
             zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
-        # if np.size(np.where(data2['height'][1:].data == cninv2[i])) > 0.0:
-        #     zind2[i] = np.where(data2['height'][1:].data == cninv2[i])[0][0]
+        if np.size(np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind2[i] = np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
         # if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
         #     temp = data3['height_hrly'][i,:].data <= inv3[i]
         #     zind3[i] = np.where(temp == True)[0][-1]
@@ -802,7 +817,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
-    # data2['inversions']['invbase_kIndex'] = zind2
+    data2['inversions']['invbase_kIndex'] = zind2
     # data3['inversions']['invbase_kIndex'] = zind3
     # data1['inversions']['sfml_kIndex'] = mlind1
     # data2['inversions']['sfml_kIndex'] = mlind2
@@ -815,12 +830,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if ~np.isnan(zind1[i]): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
     plt.plot(tim1[:-22],inv1[:-22])
     plt.ylim([0,3e3])
-    # plt.subplot(312)
-    # plt.title(label2)
-    # for i in range(0, np.size(zind2)):
-    #     if ~np.isnan(zind2[i]): plt.plot(data2['time_hrly'][i],data2['height'][int(zind2[i])],'o')
-    # plt.plot(np.squeeze(data2['inversions']['doy_drift']),np.squeeze(data2['inversions']['invbase_drift']))
-    # plt.ylim([0,3e3])
+    plt.subplot(312)
+    plt.title(label2)
+    for i in range(0, np.size(zind2)):
+        if ~np.isnan(zind2[i]): plt.plot(misc_data['time'][i],misc_data['height'][int(zind2[i])],'o')
+    plt.plot(tim2[:-22], inv2[:-22])
+    plt.ylim([0,3e3])
     # plt.subplot(313)
     # plt.title(label3)
     # for i in range(0, np.size(zind3)):
