@@ -637,8 +637,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ONLY LOOK AT DATA FROM THE DRIFT
     #### ---------------------------------------------------------------
     driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 259.0))
-    print (driftmod[0].shape)
-    print (driftmod[0][-1])
+    # print (driftmod[0].shape)
+    # print (driftmod[0][-1])
     data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
     data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
     data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
@@ -656,9 +656,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
-    sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
-    sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
-    sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
+    # sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
+    # sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
+    # sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
@@ -744,7 +744,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     cninv1 = np.zeros(np.size(inv1)); cninv1[:] = np.nan
     cninv2 = np.zeros(np.size(inv2)); cninv2[:] = np.nan
 
-    for i in range(0, len(inv1)):
+    for i in range(0, len(tim1)):
         ## find the cloudnet timestep which matches the inversion timestep
         if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
             data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
@@ -753,7 +753,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         # if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
         #     data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
 
-        ### use inversion_Tindices to define new inversion array for looping over
+        ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
+        ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
         if data1['scaledCv']['inversion_Tindex'][i] > 0.0:
             cninv1[int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
         if data2['scaledCv']['inversion_Tindex'][i] > 0.0:
@@ -764,6 +765,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
     cninv1 = cninv1[~np.isnan(cninv1)]
     cninv2 = cninv2[~np.isnan(cninv2)]
+
+    # print('cninv1.shape = ' + str(cninv1.shape))
 
     #### ---------------------------------------------------------------
     #### Look at data below main inversion base only - model data
@@ -783,11 +786,10 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     for i in range(0, np.size(cninv1)):        ### all can go in this loop, inv1 == hourly data
 
         ### main inversion base assignments
-        # tempind = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3)):
         if np.size(np.where(data1['height'][1:].data == cninv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
+            zind1[i] = np.where(data1['height'][1:].data == cninv1[i])[0][0]
         if np.size(np.where(data2['height'][1:].data == cninv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0]
+            zind2[i] = np.where(data2['height'][1:].data == cninv2[i])[0][0]
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= inv3[i]
             zind3[i] = np.where(temp == True)[0][-1]
