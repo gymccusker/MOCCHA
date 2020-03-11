@@ -636,7 +636,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT DATA FROM THE DRIFT
     #### ---------------------------------------------------------------
-    driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 259.0))
+    driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
     # print (driftmod[0].shape)
     # print (driftmod[0][-1])
     data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
@@ -739,12 +739,15 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
     ### ------------------------------------------------------------------------------------------
-    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1[:-22])); data1['scaledCv']['inversion_Tindex'][:] = np.nan
-    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(inv1[:-22])); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
 
-    for i in range(0, len(tim1[:-22])):
+    for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
-        if np.round(tim1[i],0) in missing_files:
+        if np.floor(tim1[i]) in missing_files:
+            ### don't assign a cloudnet index for missing files
+            ### instead, set inv1 to nan at these times
+            inv1[i] = np.nan
             continue
         elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
