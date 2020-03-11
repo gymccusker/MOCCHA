@@ -607,29 +607,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
                 obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-        # ###-----------------------------------------------------------------------------------------
-        # ### for surface mixed layer
-        # ###-----------------------------------------------------------------------------------------
-        # ### create array of height points under the identified inversion
-        # if obs['inversions']['sfmlheight_kIndex'][i] >= 0.0:
-        #     hgts = obs_data['height'][i,:int(obs['inversions']['sfmlheight_kIndex'][i]+1)]
-        # else:
-        #     continue
-        #
-        # ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        # scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['sfmlheight_kIndex'][i])]
-        #
-        # # find Cv values below the BL inversion
-        # obs['blCv'][i,:int(obs['inversions']['sfmlheight_kIndex'][i]+1)] = obs_data['Cv'][i,:int(obs['inversions']['sfmlheight_kIndex'][i]+1)]
-        #
-        # ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        # for k in range(len(Zpts)):
-        #     tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-        #     obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]] = obs['blCv'][i,tempvar]
-        #     if np.size(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-        #         obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-        #     obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-
     #### ---------------------------------------------------------------
     #### prepare model inversion data
     #### ---------------------------------------------------------------
@@ -637,17 +614,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### ONLY LOOK AT DATA FROM THE DRIFT
     #### ---------------------------------------------------------------
     driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
-    # print (driftmod[0].shape)
-    # print (driftmod[0][-1])
     data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
     data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
     data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
     data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
     data3['inversions']['doy_drift'] = data3['inversions']['doy'][driftmod[0][1:-2]]
     data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0][1:-2]]
-
-    ### save in dict for ease
-    # obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
     #### make inversion tempvars to allow for easy subsampling
     tim1 = np.squeeze(data1['inversions']['doy_drift'][data1['hrly_flag']])
@@ -656,9 +628,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
     inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
     inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
-    # sfml1 = np.squeeze(data1['bl_depth'][data1['hrly_flag']])
-    # sfml2 = np.squeeze(data2['bl_depth'][data2['hrly_flag']])
-    # sfml3 = np.squeeze(data3['sfc_bl_height'][data3['hrly_flag']])
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
