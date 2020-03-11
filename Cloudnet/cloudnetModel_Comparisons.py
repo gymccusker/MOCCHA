@@ -743,7 +743,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
     data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
     data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
-
+    data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversion_Tindex'][:] = np.nan
+    data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
@@ -763,6 +764,14 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         elif np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0][0]
+        if np.floor(tim3[i]) in missing_files:
+            ### don't assign a cloudnet index for missing files
+            ### instead, set inv1 to nan at these times
+            inv3[i] = np.nan
+            continue
+        elif np.size(np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))[0][0]
 
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
@@ -771,6 +780,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
         if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
             data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
+        if data3['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data3['scaledCv']['inversionForCloudnet'][int(data3['scaledCv']['inversion_Tindex'][i])] = inv3[i]
 
     ### find time indices which are NOT nans (and save array location)
     # nanindex = np.where(data1['scaledCv']['inversion_Tindex'] >= 0.0)
@@ -778,7 +789,8 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # data1['scaledCv']['inversionForCloudnet'] = data1['scaledCv']['inversionForCloudnet'][nanindex]
 
     np.save('working_data1', data1)
-    np.save('working_data1', data2)
+    np.save('working_data2', data2)
+    np.save('working_data3', data3)
 
     #### ---------------------------------------------------------------
     #### Look at data below main inversion base only - model data
@@ -787,7 +799,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     # zind1 = np.zeros(np.size(inv1)); zind1[:] = np.nan
     zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
     zind2 = np.zeros(np.size(misc_data['time'])); zind2[:] = np.nan
-    # zind3 = np.zeros(np.size(inv3)); zind3[:] = np.nan
+    zind3 = np.zeros(np.size(ifs_data['time'])); zind3[:] = np.nan
     # mlind1 = np.zeros(np.size(sfml1)); mlind1[:] = np.nan
     # mlind2 = np.zeros(np.size(sfml2)); mlind1[:] = np.nan
     # mlind3 = np.zeros(np.size(sfml3)); mlind1[:] = np.nan
@@ -802,9 +814,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
             zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
         if np.size(np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
             zind2[i] = np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
-        # if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
-        #     temp = data3['height_hrly'][i,:].data <= inv3[i]
-        #     zind3[i] = np.where(temp == True)[0][-1]
+        if np.size(np.where(data3['height_hrly'][i].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            temp = data3['height_hrly'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
+            zind3[i] = np.where(temp == True)[0][-1]
 
         # ### surface mixed layer height assignments
         # if np.size(np.where(data1['height'][1:].data <= sfml1[i])) > 0.0:
@@ -818,7 +830,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
     data2['inversions']['invbase_kIndex'] = zind2
-    # data3['inversions']['invbase_kIndex'] = zind3
+    data3['inversions']['invbase_kIndex'] = zind3
     # data1['inversions']['sfml_kIndex'] = mlind1
     # data2['inversions']['sfml_kIndex'] = mlind2
     # data3['inversions']['sfml_kIndex'] = mlind3
@@ -836,12 +848,12 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         if ~np.isnan(zind2[i]): plt.plot(misc_data['time'][i],misc_data['height'][i,int(zind2[i])],'o')
     plt.plot(tim2[:-22], inv2[:-22])
     plt.ylim([0,3e3])
-    # plt.subplot(313)
-    # plt.title(label3)
-    # for i in range(0, np.size(zind3)):
-    #     if ~np.isnan(zind3[i]): plt.plot(data3['time_hrly'][i],data3['height_hrly'][i,int(zind3[i])],'o')
-    # plt.plot(np.squeeze(data3['inversions']['doy_drift']),np.squeeze(data3['inversions']['invbase_drift']))
-    # plt.ylim([0,3e3])
+    plt.subplot(313)
+    plt.title(label3)
+    for i in range(0, np.size(zind3)):
+        if ~np.isnan(zind3[i]): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
+    plt.plot(tim3[:-22], inv3[:-22])
+    plt.ylim([0,3e3])
     plt.show()
 
     # print (zind3)
