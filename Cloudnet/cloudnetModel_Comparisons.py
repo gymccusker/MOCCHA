@@ -701,6 +701,21 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['inversions']['sfml_kIndex'] = mlind2
     data3['inversions']['sfml_kIndex'] = mlind3
 
+    plt.figure()
+    plt.subplot(311)
+    plt.title(label1)
+    for i in range(0, np.size(zind1)): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
+    plt.plot(np.squeeze(data1['inversions']['doy']),np.squeeze(data1['inversions']['invbase']))
+    plt.subplot(312)
+    plt.title(label2)
+    for i in range(0, np.size(zind2)): plt.plot(misc_data['time'][i],misc_data['height'][i,int(zind2[i])],'o')
+    plt.plot(np.squeeze(data2['inversions']['doy']),np.squeeze(data2['inversions']['invbase']))
+    plt.subplot(313)
+    plt.title(label3)
+    for i in range(0, np.size(zind3)): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
+    plt.plot(np.squeeze(data3['inversions']['doy']),np.squeeze(data3['inversions']['invbase']))    
+    plt.show()
+
     # print (zind3)
     #### re-check inversion algorithm success rate to make sure no !0 values got dropped
     zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
