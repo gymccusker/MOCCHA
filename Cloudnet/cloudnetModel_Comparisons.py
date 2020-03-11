@@ -644,7 +644,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
     data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
     data3['inversions']['doy_drift'] = data3['inversions']['doy'][driftmod[0][1:-2]]
-    data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0]][1:-2]]
+    data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0][1:-2]]
 
     ### save in dict for ease
     # obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
