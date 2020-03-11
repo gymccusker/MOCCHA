@@ -739,7 +739,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
     ### ------------------------------------------------------------------------------------------
-    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); #data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
     data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(inv1)); #cninv1[:] = np.nan
 
     for i in range(0, len(tim1)):
@@ -752,7 +752,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
         if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
             data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
-
 
     np.save('working_data1', data1)
 
