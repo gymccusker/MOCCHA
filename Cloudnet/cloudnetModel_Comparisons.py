@@ -744,11 +744,13 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
     for i in range(0, len(tim1[:-22])):
         ## find the cloudnet time INDEX which matches the inversion timestep
-        if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
+        if np.round(tim1[i],0) in missing_files:
+            continue
+        elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
-        else:
-            continue
+        # else:
+        #     continue
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
@@ -759,7 +761,7 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     nanindex = np.where(data1['scaledCv']['inversion_Tindex'] >= 0.0)
     data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][nanindex]
     data1['scaledCv']['inversionForCloudnet'] = data1['scaledCv']['inversionForCloudnet'][nanindex]
-    
+
     np.save('working_data1', data1)
 
     #### ---------------------------------------------------------------
