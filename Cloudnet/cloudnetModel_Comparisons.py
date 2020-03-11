@@ -739,34 +739,38 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
     ### ------------------------------------------------------------------------------------------
-    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
-    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
-    cninv1 = np.zeros(np.size(inv1)); cninv1[:] = np.nan
-    cninv2 = np.zeros(np.size(inv2)); cninv2[:] = np.nan
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv1)); #data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(inv2)); #data2['scaledCv']['inversion_Tindex'][:] = np.nan
+    data1['scaledCv']['CNinversion'] = np.zeros(np.size(inv1)); #cninv1[:] = np.nan
+    data2['scaledCv']['CNinversion'] = np.zeros(np.size(inv2)); #cninv2[:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet timestep which matches the inversion timestep
         if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
-            data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
+            data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
         if np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
-            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0]
+            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0][0]
         # if np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
         #     data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0]
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
         if data1['scaledCv']['inversion_Tindex'][i] > 0.0:
-            cninv1[int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
+            data1['scaledCv']['CNinversion'][i] = inv1[int(data1['scaledCv']['inversion_Tindex'][i])]
         if data2['scaledCv']['inversion_Tindex'][i] > 0.0:
-            cninv2[int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[int(data2['scaledCv']['inversion_Tindex'][i])]
+            data2['scaledCv']['CNinversion'][i] = inv2[int(data2['scaledCv']['inversion_Tindex'][i])]
 
     ### ignore nans to produce array of same size as um_data['time']
-    data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
-    data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
-    cninv1 = cninv1[~np.isnan(cninv1)]
-    cninv2 = cninv2[~np.isnan(cninv2)]
+    # data1['scaledCv']['inversion_Tindex'] = data1['scaledCv']['inversion_Tindex'][~np.isnan(data1['scaledCv']['inversion_Tindex'])]
+    # data2['scaledCv']['inversion_Tindex'] = data2['scaledCv']['inversion_Tindex'][~np.isnan(data2['scaledCv']['inversion_Tindex'])]
+    # cninv1 = cninv1[~np.isnan(cninv1)]
+    # cninv2 = cninv2[~np.isnan(cninv2)]
 
-    # print('cninv1.shape = ' + str(cninv1.shape))
+    print('cninv1.shape with zeros = ' + str(data1['scaledCv']['CNinversion'].shape))
+    data1['scaledCv']['CNinversion'] = data1['scaledCv']['CNinversion'][data1['scaledCv']['CNinversion'] > 0.0]
+    print('cninv1.shape without zeros = ' + str(data1['scaledCv']['CNinversion'].shape))
+
+    np.save(data1, 'working_data1')
 
     #### ---------------------------------------------------------------
     #### Look at data below main inversion base only - model data
