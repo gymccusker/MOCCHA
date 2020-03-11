@@ -695,9 +695,9 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
 
         ### main inversion base assignments
         if np.size(np.where(data1['height'][1:].data == inv1[i])) > 0.0:
-            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0] + 1
+            zind1[i] = np.where(data1['height'][1:].data == inv1[i])[0][0]
         if np.size(np.where(data2['height'][1:].data == inv2[i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0] + 1
+            zind2[i] = np.where(data2['height'][1:].data == inv2[i])[0][0] 
         if np.size(np.where(data3['height_hrly'][i].data <= inv3[i])) > 0.0:
             temp = data3['height_hrly'][i,:].data <= inv3[i]
             zind3[i] = np.where(temp == True)[0][-1]
