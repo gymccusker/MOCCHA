@@ -752,8 +752,6 @@ def plot_scaledBL(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, m
         elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
-        # else:
-        #     continue
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
