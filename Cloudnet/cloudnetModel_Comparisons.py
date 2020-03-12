@@ -1036,7 +1036,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
     obs_data['height_6hrly'] = obs_data['height'][::6,:]
-    obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
+    obs_data['LWC_6hrly'] = obs_data['lwc'][::6,:]
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
     ### initialise array to hold height indices, set all to nan before filling
@@ -1065,20 +1065,20 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
     obs['inversions']['sfmlheight_kIndex'] = obssfml
 
     ### initialise scaled arrays in dictionary
-    obs['inversions']['scaledCv'] = {}
-    obs['inversions']['scaledCv']['binned'] = {}
-    obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
-    obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
+    obs['inversions']['scaledLWC'] = {}
+    obs['inversions']['scaledLWC']['binned'] = {}
+    obs['inversions']['scaledLWC']['mean'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledLWC']['mean'][:] = np.nan
+    obs['inversions']['scaledLWC']['stdev'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledLWC']['stdev'][:] = np.nan
     obs['inversions']['scaledZ'] = Zpts
     obs['inversions']['scaledTime'] = obs_data['time_6hrly']
-    obs['inversions']['blCv'] = np.zeros([np.size(obs_data['height_6hrly'],0),np.size(obs_data['height_6hrly'],1)]); obs['inversions']['blCv'][:] = np.nan
+    obs['inversions']['blLWC'] = np.zeros([np.size(obs_data['height_6hrly'],0),np.size(obs_data['height_6hrly'],1)]); obs['inversions']['blLWC'][:] = np.nan
 
     ###
     for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
         print(str(i) + 'th timestep (radiosonde):')
 
         ### create new dictionary entry for i-th timestep
-        obs['inversions']['scaledCv']['binned']['t' + str(i)] = {}
+        obs['inversions']['scaledLWC']['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
@@ -1093,15 +1093,15 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
         scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i])]
+        obs['inversions']['blLWC'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['LWC_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i])]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-            obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]] = obs['inversions']['blCv'][i,tempvar]
-            if np.size(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]] = obs['inversions']['blLWC'][i,tempvar]
+            if np.size(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                obs['inversions']['scaledLWC']['mean'][i,k] = np.nanmean(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
+            obs['inversions']['scaledLWC']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
 
     #### ---------------------------------------------------------------
     #### prepare model inversion data
