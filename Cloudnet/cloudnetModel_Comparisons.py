@@ -1031,7 +1031,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
     ###     will act as mid point of vertical "boxes" of width 0.1
-    binres = 0.04
+    binres = 0.1
     Zpts = np.arange(0.0 + binres/2.0, 1.0 + binres/2.0, binres)
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
@@ -1392,6 +1392,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### obs
     plt.subplot(211)
+    plt.title('Obs')
     plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['blLWC'])); plt.ylim([0,3e3])
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
     plt.xlim([226,258])
@@ -1402,6 +1403,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### um_ra2m
     plt.subplot(211)
+    plt.title(label1)
     plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blLWC'])); plt.ylim([0,3e3])
     plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
     plt.xlim([226,258])
@@ -1412,6 +1414,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### um_casim-100
     plt.subplot(211)
+    plt.title(label2)
     plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blLWC'])); plt.ylim([0,3e3])
     plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
     plt.xlim([226,258])
@@ -1422,6 +1425,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### ecmwf_ifs
     plt.subplot(211)
+    plt.title(label3)
     plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blLWC'])); plt.ylim([0,3e3])
     plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
     plt.xlim([226,258])
