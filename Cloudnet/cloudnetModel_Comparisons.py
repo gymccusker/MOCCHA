@@ -1905,13 +1905,21 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
         cn_obs_out_dir = cn_ifs_out_dir
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
+
+        # cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        # cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+        # cn_obs_out_dir = cn_ifs_out_dir
+        # if cn_misc_flag == 0:       ## flag to compare cloudnet model data
+        #     cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+        # elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
+        #     cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         cn_um_out_dir = 'cloud-fraction-metum-grid/2018/'
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
@@ -2612,8 +2620,8 @@ def main():
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
-    # figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
