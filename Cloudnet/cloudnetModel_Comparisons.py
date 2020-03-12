@@ -1036,7 +1036,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### use 6hourly cloudnet data to compare radiosonde inversion heights to
     obs_data['height_6hrly'] = obs_data['height'][::6,:]
-    obs_data['LWC_6hrly'] = obs_data['lwc'][::6,:]
+    obs_data['LWC_6hrly'] = obs_data['lwc'][::6,:]*1e3  ### g/kg
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
     ### initialise array to hold height indices, set all to nan before filling
@@ -1344,9 +1344,9 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
         scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        data1['blLWC'][i,:int(data1['inversions']['invbase_kIndex'][i])] = um_data['model_lwc'][i,:int(data1['inversions']['invbase_kIndex'][i])]
-        data2['blLWC'][i,:int(data2['inversions']['invbase_kIndex'][i])] = misc_data['model_lwc'][i,:int(data2['inversions']['invbase_kIndex'][i])]
-        data3['blLWC'][i,:int(data3['inversions']['invbase_kIndex'][i])] = ifs_data['model_lwc'][i,:int(data3['inversions']['invbase_kIndex'][i])]
+        data1['blLWC'][i,:int(data1['inversions']['invbase_kIndex'][i])] = um_data['model_lwc'][i,:int(data1['inversions']['invbase_kIndex'][i])]*1e3
+        data2['blLWC'][i,:int(data2['inversions']['invbase_kIndex'][i])] = misc_data['model_lwc'][i,:int(data2['inversions']['invbase_kIndex'][i])]*1e3
+        data3['blLWC'][i,:int(data3['inversions']['invbase_kIndex'][i])] = ifs_data['model_lwc'][i,:int(data3['inversions']['invbase_kIndex'][i])]*1e3
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
