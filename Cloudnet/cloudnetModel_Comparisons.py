@@ -1432,9 +1432,9 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
 
     ### profiles
     plt.plot(np.nanmean(obs['inversions']['scaledLWC']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
-    plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
-    plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
+    plt.plot(np.nanmean(data1['scaledLWC']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data2['scaledLWC']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
+    plt.plot(np.nanmean(data3['scaledLWC']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
     plt.legend()
     plt.show()
 
