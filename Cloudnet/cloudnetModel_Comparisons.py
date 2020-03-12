@@ -981,7 +981,7 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
     #### prepare cloudnet data
     #### ---------------------------------------------------------------
 
-    #### set flagged data to nans
+    #### set flagged data (and zeros) to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
