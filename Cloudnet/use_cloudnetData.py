@@ -1217,11 +1217,11 @@ def main():
 
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
     # doy = np.arange(226,258)        ## set DOY for subset of moccha figures
     # doy = np.arange(244,255)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
-    doy = np.arange(244,254)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
+    # doy = np.arange(244,254)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
 
     ## Flag for individual file or monthly:
     combine = 1
