@@ -3599,7 +3599,7 @@ def write_reGrid(data1, data2, data3, obs, var):
         dat0.units = 'K'
         dat0.long_name = 'temperature'
     elif var == 'q':
-        dat0.units = 'kg/kg'
+        dat0.units = 'g/kg'
         dat0.long_name = 'water vapour mixing ratio'
     dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:]
 
@@ -3665,10 +3665,11 @@ def write_reGrid(data1, data2, data3, obs, var):
     if var == 'temp':
         dat1.units = 'K'
         dat1.long_name = 'temperature'
+        dat1[:,:] = data1[var + '_6hrly'][:,data1['universal_height_UMindex']]
     elif var == 'q':
-        dat1.units = 'kg/kg'
+        dat1.units = 'g/kg'
         dat1.long_name = 'water vapour mixing ratio'
-    dat1[:,:] = data1[var + '_6hrly'][:,data1['universal_height_UMindex']]
+        dat1[:,:] = data1[var + '_6hrly'][:,data1['universal_height_UMindex']]*1e3
 
     nc1.title = 'UM_RA2M ' + var + ' data for the AO2018 drift period.'
     nc1.description = var + ' data up to 10 km, referencing UM vertical grid.'
@@ -3731,10 +3732,11 @@ def write_reGrid(data1, data2, data3, obs, var):
     if var == 'temp':
         dat2.units = 'K'
         dat2.long_name = 'temperature'
+        dat2[:,:] = data2[var + '_6hrly'][:,data1['universal_height_UMindex']]
     elif var == 'q':
-        dat2.units = 'kg/kg'
+        dat2.units = 'g/kg'
         dat2.long_name = 'water vapour mixing ratio'
-    dat2[:,:] = data2[var + '_6hrly'][:,data1['universal_height_UMindex']]
+        dat2[:,:] = data2[var + '_6hrly'][:,data1['universal_height_UMindex']]*1e3
 
     nc2.title = 'UM_CASIM-100 ' + var + ' data for the AO2018 drift period.'
     nc2.description = var + ' data up to 10 km, referencing UM vertical grid.'
@@ -3798,10 +3800,11 @@ def write_reGrid(data1, data2, data3, obs, var):
     if var == 'temp':
         dat3.units = 'K'
         dat3.long_name = 'temperature'
+        dat3[:,:] = data3[var + '_6hrly_UM'][:,:]
     elif var == 'q':
-        dat3.units = 'kg/kg'
+        dat3.units = 'g/kg'
         dat3.long_name = 'water vapour mixing ratio'
-    dat3[:,:] = data3[var + '_6hrly_UM'][:,:]
+        dat3[:,:] = data3[var + '_6hrly_UM'][:,:]*1e3
 
     nc3.title = 'ECMWF_IFS interpolated ' + var + ' data for the AO2018 drift period.'
     nc3.description = var + ' data up to 10 km, interpolated on to the UM vertical grid.'
