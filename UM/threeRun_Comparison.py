@@ -1433,7 +1433,6 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.title('$LW_{net,surf}$ [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
-    plt.xlabel('Day of year')
     plt.ylim([-90,5])
 
     ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
@@ -1452,6 +1451,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     ax.set_xlim([doy[0],doy[-1]])
     plt.legend(bbox_to_anchor=(-0.11, 0.67, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
+    plt.xlabel('Day of year')    
 
     ### -------------------------------
     ### Build figure (PDFs)
