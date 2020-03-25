@@ -3550,9 +3550,9 @@ def write_reGrid(data1, data2, data3, obs):
     ## Open File
     ###################################
     nc1 = Dataset(outfiles[1], 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print nc1.file_format
-    print ''
+    print ('')
+    print (nc1.file_format)
+    print ('')
 
     ###################################
     ## Switch off automatic filling
