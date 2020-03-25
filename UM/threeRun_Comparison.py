@@ -3598,10 +3598,11 @@ def write_reGrid(data1, data2, data3, obs, var):
     if var == 'temp':
         dat0.units = 'K'
         dat0.long_name = 'temperature'
+        dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:] + 273.15
     elif var == 'q':
         dat0.units = 'g/kg'
         dat0.long_name = 'water vapour mixing ratio'
-    dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:]
+        dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:]
 
     nc0.title = 'Radiosonde interpolated ' + var + ' data for the AO2018 drift period.'
     nc0.description = var + ' data up to 10 km, interpolated on to the UM vertical grid.'
@@ -4248,8 +4249,8 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
