@@ -3541,7 +3541,7 @@ def write_reGrid(data1, data2, data3, obs):
 
     print ('******')
     print ('')
-    print ('Writing out data:'')
+    print ('Writing out data:')
     print ('')
 
     outfiles = ['REGRID-SONDES.nc','REGRID-UM_RA2M.nc','REGRID-UM_CASIM-100.nc','REGRID-ECMWF_IFS.nc']
