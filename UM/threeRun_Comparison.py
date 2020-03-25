@@ -3522,9 +3522,10 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### save out working data for debugging
     #### ---------------------------------------------------------------
-    # np.save('working_data1',data1)
-    # np.save('working_data3',data3)
-    # np.save('working_dataObs',obs['sondes'])
+    np.save('working_data1',data1)
+    np.save('working_data2',data2)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
     outfiles = write_reGrid(data1, data2, data3, obs, var)
 
     return data1, data2, data3, obs, drift
@@ -3569,13 +3570,15 @@ def write_reGrid(data1, data2, data3, obs, var):
     ## Dimensions variables
     ###################################
     #### forecast_period
+    tempvar = np.zeros(np.size(obs['sondes']['doy_drift']))
+    tempvar[:] = obs['sondes']['doy_drift'][:]
     times = nc0.createVariable('time', np.float64, ('time',), fill_value='-9999')
     times.scale_factor = float(1)
     times.add_offset = float(0)
     times.comment = 'DOY in AO2018 drift.'
     times.units = 'hours'
     times.long_name = 'time'
-    times[:] = obs['sondes']['doy_drift'][:]
+    times[:] = tempvar[:]
 
     #### height
     height = nc0.createVariable('height', np.float64, ('height',), fill_value='-9999')
@@ -4255,7 +4258,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['inversions'])
+    np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
     # FIN.
