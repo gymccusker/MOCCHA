@@ -3603,7 +3603,7 @@ def write_reGrid(data1, data2, data3, obs, var):
         dat0.long_name = 'water vapour mixing ratio'
     dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:]
 
-    nc0.title = 'Radiosonde ' + var + ' interpolated data for the AO2018 drift period.'
+    nc0.title = 'Radiosonde interpolated ' + var + ' data for the AO2018 drift period.'
     nc0.description = var + ' data up to 10 km, interpolated on to the UM vertical grid.'
     nc0.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (netCDF4).'
     nc0.project = 'Arctic Ocean 2018 (AO2018) expedition.'
@@ -3803,7 +3803,7 @@ def write_reGrid(data1, data2, data3, obs, var):
         dat3.long_name = 'water vapour mixing ratio'
     dat3[:,:] = data3[var + '_6hrly_UM'][:,:]
 
-    nc3.title = 'ECMWF_IFS ' + var + ' interpolated data for the AO2018 drift period.'
+    nc3.title = 'ECMWF_IFS interpolated ' + var + ' data for the AO2018 drift period.'
     nc3.description = var + ' data up to 10 km, interpolated on to the UM vertical grid.'
     nc3.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (netCDF4).'
     nc3.project = 'Arctic Ocean 2018 (AO2018) expedition.'
