@@ -2857,9 +2857,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
-
-    import iris.plot as iplt
+def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):    import iris.plot as iplt
     import iris.quickplot as qplt
     import iris.analysis.cartography
     import cartopy.crs as ccrs
@@ -3525,8 +3523,87 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     # np.save('working_data1',data1)
     # np.save('working_data3',data3)
     # np.save('working_dataObs',obs['sondes'])
+    outfiles = write_reGrid(data1, data2, data3, obs, varlist)
 
     return data1, data2, data3, obs, drift
+
+def write_reGrid(data1, data2, data3, obs):
+
+    #################################################################
+    ## Write regridded data to netCDF
+    #################################################################
+
+    from netCDF4 import num2date, date2num
+    import time
+    from datetime import datetime, timedelta
+
+    print ('******')
+    print ('')
+    print ('Writing out data:'')
+    print ('')
+
+    outfiles = ['REGRID-SONDES.nc','REGRID-UM_RA2M.nc','REGRID-UM_CASIM-100.nc','REGRID-ECMWF_IFS.nc']
+
+    ###################################
+    ## Open File
+    ###################################
+    nc1 = Dataset(outfiles[1], 'w', format ='NETCDF4_CLASSIC')
+    print ''
+    print nc1.file_format
+    print ''
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    nc1.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    ####################################
+    times = nc1.createDimension('time', np.size(data['time_6hrly']))
+    height = nc1.createDimension('time', np.size(data1['universal_height']))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    times = nc1.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    times.scale_factor = float(1)
+    times.add_offset = float(0)
+    times.comment = 'DOY in AO2018 drift.'
+    times.units = 'hours'
+    times.long_name = 'time'
+    times[:] = data1['time_6hrly'][:]
+
+    #### height
+    height = nc1.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = 'Height interpolated on to UM vertical grid (where appropriate)'
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = data1['universal_height'][:]
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    dat1 = nc1.createVariable(varlist[1], np.float64, ('time','height',), fill_value='-9999')
+    dat1.scale_factor = float(1)
+    dat1.add_offset = float(0)
+    if var == 'temp':
+        dat1.units = 'K'
+        dat1.long_name = 'temperature'
+    elif var == 'q':
+        dat1.units = 'kg/kg'
+        dat1.long_name = 'water vapour mixing ratio'
+    dat1[:,:] = data1[var + '_6hrly'][:]
+
+    ###################################
+    ## Write out file
+    ###################################
+    nc1.close()
+
+    return outfiles
 
 def main():
 
@@ -3954,9 +4031,9 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
