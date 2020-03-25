@@ -3664,7 +3664,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     elif var == 'q':
         dat2.units = 'kg/kg'
         dat2.long_name = 'water vapour mixing ratio'
-    dat2[:,:] = data2[var + '_6hrly'][:,data2['universal_height_UMindex']]
+    dat2[:,:] = data2[var + '_6hrly'][:,data1['universal_height_UMindex']]
 
     nc2.title = 'UM_CASIM-100 ' + var + ' data for the AO2018 drift period.'
     nc2.description = var + ' data up to 10 km, referencing UM vertical grid.'
