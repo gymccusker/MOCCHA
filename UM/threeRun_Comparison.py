@@ -3678,6 +3678,73 @@ def write_reGrid(data1, data2, data3, obs, var):
     ###################################
     nc2.close()
 
+
+    ###################################
+    ## Open File
+    ###################################
+    nc3 = Dataset(outfiles[3], 'w', format ='NETCDF4_CLASSIC')
+    print ('')
+    print (nc3.file_format)
+    print ('')
+
+    ###################################
+    ## Switch off automatic filling
+    ###################################
+    nc3.set_fill_off()
+
+    ###################################
+    ## Data dimensions
+    ####################################
+    times = nc3.createDimension('time', np.size(data3['time_6hrly']))
+    height = nc3.createDimension('height', np.size(data1['universal_height']))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    times = nc3.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    times.scale_factor = float(1)
+    times.add_offset = float(0)
+    times.comment = 'DOY in AO2018 drift.'
+    times.units = 'hours'
+    times.long_name = 'time'
+    times[:] = data3['time_6hrly_UM'][:]
+
+    #### height
+    height = nc3.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = 'Height interpolated on to UM vertical grid (where appropriate)'
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = data1['universal_height'][:]
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    dat3 = nc3.createVariable(var, np.float64, ('time','height',), fill_value='-9999')
+    dat3.scale_factor = float(1)
+    dat3.add_offset = float(0)
+    if var == 'temp':
+        dat3.units = 'K'
+        dat3.long_name = 'temperature'
+    elif var == 'q':
+        dat3.units = 'kg/kg'
+        dat3.long_name = 'water vapour mixing ratio'
+    dat3[:,:] = data3[var + '_6hrly'][:,data1['universal_height_UMindex']]
+
+    nc3.title = 'ECMWF_IFS ' + var + ' data for the AO2018 drift period.'
+    nc3.description = var + ' data up to 10 km, referencing UM vertical grid.'
+    nc3.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (netCDF4).'
+    nc3.project = 'Arctic Ocean 2018 (AO2018) expedition.'
+    nc3.comment = 'Revision no. 0: Preliminary data.'
+    nc3.institution = 'University of Leeds.'
+
+    ###################################
+    ## Write out file
+    ###################################
+    nc3.close()
+
     return outfiles
 
 def main():
