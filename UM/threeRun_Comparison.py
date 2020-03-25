@@ -3589,7 +3589,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     ###################################
     ## Create DIAGNOSTICS
     ###################################
-    dat1 = nc1.createVariable(varlist[1], np.float64, ('time','height',), fill_value='-9999')
+    dat1 = nc1.createVariable(var, np.float64, ('time','height',), fill_value='-9999')
     dat1.scale_factor = float(1)
     dat1.add_offset = float(0)
     if var == 'temp':
