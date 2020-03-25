@@ -3562,7 +3562,7 @@ def write_reGrid(data1, data2, data3, obs, varlist):
     ###################################
     ## Data dimensions
     ####################################
-    times = nc1.createDimension('time', np.size(data['time_6hrly']))
+    times = nc1.createDimension('time', np.size(data1['time_6hrly']))
     height = nc1.createDimension('time', np.size(data1['universal_height']))
 
     ###################################
