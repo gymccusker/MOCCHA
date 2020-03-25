@@ -3525,11 +3525,11 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     # np.save('working_data1',data1)
     # np.save('working_data3',data3)
     # np.save('working_dataObs',obs['sondes'])
-    outfiles = write_reGrid(data1, data2, data3, obs, varlist)
+    outfiles = write_reGrid(data1, data2, data3, obs, var)
 
     return data1, data2, data3, obs, drift
 
-def write_reGrid(data1, data2, data3, obs, varlist):
+def write_reGrid(data1, data2, data3, obs, var):
 
     #################################################################
     ## Write regridded data to netCDF
@@ -3592,10 +3592,10 @@ def write_reGrid(data1, data2, data3, obs, varlist):
     dat1 = nc1.createVariable(varlist[1], np.float64, ('time','height',), fill_value='-9999')
     dat1.scale_factor = float(1)
     dat1.add_offset = float(0)
-    if varlist[0] == 'temperature':
+    if var == 'temp':
         dat1.units = 'K'
         dat1.long_name = 'temperature'
-    elif varlist[0] == 'mr':
+    elif var == 'q':
         dat1.units = 'kg/kg'
         dat1.long_name = 'water vapour mixing ratio'
     dat1[:,:] = data1[var + '_6hrly'][:]
