@@ -3529,7 +3529,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
 
     return data1, data2, data3, obs, drift
 
-def write_reGrid(data1, data2, data3, obs):
+def write_reGrid(data1, data2, data3, obs, varlist):
 
     #################################################################
     ## Write regridded data to netCDF
