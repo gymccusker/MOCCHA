@@ -3708,7 +3708,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     times.comment = 'DOY in AO2018 drift.'
     times.units = 'hours'
     times.long_name = 'time'
-    times[:] = data3['time_6hrly_UM'][:]
+    times[:] = data3['time_6hrly'][:]
 
     #### height
     height = nc3.createVariable('height', np.float64, ('height',), fill_value='-9999')
@@ -3731,7 +3731,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     elif var == 'q':
         dat3.units = 'kg/kg'
         dat3.long_name = 'water vapour mixing ratio'
-    dat3[:,:] = data3[var + '_6hrly'][:,data1['universal_height_UMindex']]
+    dat3[:,:] = data3[var + '_6hrly_UM'][:,:]
 
     nc3.title = 'ECMWF_IFS ' + var + ' data for the AO2018 drift period.'
     nc3.description = var + ' data up to 10 km, referencing UM vertical grid.'
