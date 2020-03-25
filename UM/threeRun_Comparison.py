@@ -3598,7 +3598,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     elif var == 'q':
         dat1.units = 'kg/kg'
         dat1.long_name = 'water vapour mixing ratio'
-    dat1[:,:] = data1[var + '_6hrly'][:]
+    dat1[:,:] = data1[var + '_6hrly'][:,data1['universal_height_UMindex']]
 
     ###################################
     ## Write out file
