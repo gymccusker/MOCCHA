@@ -3592,10 +3592,10 @@ def write_reGrid(data1, data2, data3, obs, varlist):
     dat1 = nc1.createVariable(varlist[1], np.float64, ('time','height',), fill_value='-9999')
     dat1.scale_factor = float(1)
     dat1.add_offset = float(0)
-    if var == 'temp':
+    if varlist[0] == 'temperature':
         dat1.units = 'K'
         dat1.long_name = 'temperature'
-    elif var == 'q':
+    elif varlist[0] == 'mr':
         dat1.units = 'kg/kg'
         dat1.long_name = 'water vapour mixing ratio'
     dat1[:,:] = data1[var + '_6hrly'][:]
