@@ -3562,7 +3562,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     ###################################
     ## Data dimensions
     ####################################
-    times = nc0.createDimension('time', np.size(obs['doy_drift']))
+    times = nc0.createDimension('time', np.size(obs['sondes']['doy_drift']))
     height = nc0.createDimension('height', np.size(data1['universal_height']))
 
     ###################################
@@ -3575,7 +3575,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     times.comment = 'DOY in AO2018 drift.'
     times.units = 'hours'
     times.long_name = 'time'
-    times[:] = obs['doy_drift'][:]
+    times[:] = obs['sondes']['doy_drift'][:]
 
     #### height
     height = nc0.createVariable('height', np.float64, ('height',), fill_value='-9999')
@@ -3598,7 +3598,7 @@ def write_reGrid(data1, data2, data3, obs, var):
     elif var == 'q':
         dat0.units = 'kg/kg'
         dat0.long_name = 'water vapour mixing ratio'
-    dat0[:,:] = obs[var + '_driftSondes_UM'][:,:]
+    dat0[:,:] = obs['sondes'][var + '_driftSondes_UM'][:,:]
 
     nc0.title = 'Radiosonde ' + var + ' interpolated data for the AO2018 drift period.'
     nc0.description = var + ' data up to 10 km, interpolated on to the UM vertical grid.'
