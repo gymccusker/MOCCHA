@@ -2857,7 +2857,9 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):    import iris.plot as iplt
+def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+
+    import iris.plot as iplt
     import iris.quickplot as qplt
     import iris.analysis.cartography
     import cartopy.crs as ccrs
