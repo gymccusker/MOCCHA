@@ -3600,6 +3600,13 @@ def write_reGrid(data1, data2, data3, obs, var):
         dat1.long_name = 'water vapour mixing ratio'
     dat1[:,:] = data1[var + '_6hrly'][:,data1['universal_height_UMindex']]
 
+    nc1.title = 'UM_RA2M ' + var + ' data for the AO2018 drift period.'
+    nc1.description = var + 'data up to 10 km, referencing UM vertical grid.'
+    nc1.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young <G.Young1@leeds.ac.uk> using Python (netCDF4).'
+    nc1.project = 'Arctic Ocean 2018 (AO2018) expedition.'
+    nc1.comment = 'Revision no. 0: Preliminary data.'
+    nc1.institution = 'University of Leeds.'
+
     ###################################
     ## Write out file
     ###################################
