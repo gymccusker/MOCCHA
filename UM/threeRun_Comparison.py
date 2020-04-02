@@ -3868,6 +3868,22 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     np.save('working_data3',data3)
     np.save('working_dataObs',obs['sondes'])
 
+    # #### ---------------------------------------------------------------
+    # #### Save out line profiles for reference
+    # #### ---------------------------------------------------------------
+    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
+    #     fig = plt.figure()
+    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
+    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
+
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
@@ -3878,6 +3894,24 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'thetaE')
     print ('')
     print ('Done!')
+
+    #### ---------------------------------------------------------------
+    #### Save out line profiles for reference
+    #### ---------------------------------------------------------------
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+        plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+        plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
+        plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
+        plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+        plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+        plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+        plt.legend()
+        plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+        if i == 0:
+            plt.show()
+        else:
+            plt.close()
 
 def main():
 
