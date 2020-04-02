@@ -3915,6 +3915,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     print ('Done!')
 
     #### ---------------------------------------------------------------
+    #### calculate differences in thetaE profiles
+    #### ---------------------------------------------------------------
+    data1['thetaE_6hrlyDiff'] = data1['thetaE_6hrly'][0,1:].data - data1['thetaE_6hrly'][0,0:-1].data
+
+    #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
