@@ -3936,21 +3936,24 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### save inversion positions
     #### ---------------------------------------------------------------
+    lt3000 = np.where(data1['universal_height'] <= 3000)
     obs['sondes']['thetaE_inversions'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0),np.size(obs['sondes']['thetaE_Diff'],1)])
     data1['thetaE_inversions'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0),np.size(data1['thetaE_6hrlyDiff'],1)])
     data2['thetaE_inversions'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0),np.size(data2['thetaE_6hrlyDiff'],1)])
     data3['thetaE_inversions'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0),np.size(data3['thetaE_6hrlyDiff'],1)])
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-        obs['sondes']['thetaE_inversionsID'] = np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)
-        data1['thetaE_inversionsID'] = np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)
-        data2['thetaE_inversionsID'] = np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)
-        data3['thetaE_inversionsID'] = np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)
+        obs['sondes']['thetaE_inversionsID'][i,:] = np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)
+        data1['thetaE_inversionsID'][i,:] = np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)
+        data2['thetaE_inversionsID'][i,:] = np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)
+        data3['thetaE_inversionsID'][i,:] = np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)
 
-    #### ---------------------------------------------------------------
-    #### find strongest inversion <3000m
-    #### ---------------------------------------------------------------
-    lt3000 = np.where(data1['height'] <= 3000)
-    np.where(np.squeeze(data1['thetaE_6hrlyDiff'][0,lt3000]) == np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][0,lt3000])))
+        #### ---------------------------------------------------------------
+        #### find strongest inversion <3000m
+        #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbaseID'] = np.where(np.squeeze(obs'sondes']['thetaE_Diff'][0,lt3000]) == np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][0,lt3000])))
+        data1['thetaE_invbaseID'] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][0,lt3000]) == np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][0,lt3000])))
+        data2['thetaE_invbaseID'] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][0,lt3000]) == np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][0,lt3000])))
+        data3['thetaE_invbaseID'] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][0,lt3000]) == np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][0,lt3000])))
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
@@ -3958,6 +3961,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k', label = 'sonde-interpd')
+        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,obs['sondes']['thetaE_invbaseID'][i]]),
+            np.squeeze(data1['universal_height'][obs['sondes']['thetaE_invbaseID'][i]]),
+            'o', color = 'k', label = 'sonde-interpd > ' + str(thresh))
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
             np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
             'o', color = 'k', label = 'sonde-interpd > ' + str(thresh))
