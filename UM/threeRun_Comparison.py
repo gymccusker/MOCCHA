@@ -3925,7 +3925,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### choose "inversion" gradient threshold
     #### ---------------------------------------------------------------
-    thresh = 1.3
+    thresh = 1.2
 
     #### ---------------------------------------------------------------
     #### save inversion positions
