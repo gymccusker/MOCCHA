@@ -3917,7 +3917,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### calculate differences in thetaE profiles
     #### ---------------------------------------------------------------
-    obs['sondes']['thetaE_Diff'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:].data - obs['sondes']['thetaE_driftSondes_UM'][:,0:-1].data
+    obs['sondes']['thetaE_Diff'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:] - obs['sondes']['thetaE_driftSondes_UM'][:,0:-1]
     data1['thetaE_6hrlyDiff'] = data1['thetaE_6hrly'][:,1:].data - data1['thetaE_6hrly'][:,0:-1].data
     data2['thetaE_6hrlyDiff'] = data2['thetaE_6hrly'][:,1:].data - data2['thetaE_6hrly'][:,0:-1].data
     data3['thetaE_6hrlyDiff'] = data3['thetaE_6hrly'][:,1:].data - data3['thetaE_6hrly'][:,0:-1].data
