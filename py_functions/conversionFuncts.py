@@ -5,7 +5,6 @@ Functions for data conversion
 """
 
 import numpy as np
-from scipy.interpolate import interp1d
 # from __future__ import print_function
 
 def reGrid_Sondes(data1, data2, data3, obs, doy, var):
@@ -13,6 +12,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     """
     Function to convert radiosonde and IFS data onto UM vertical grid
     """
+
+    from scipy.interpolate import interp1d
 
     ### 6-hourly time binning for model
     ### um['time'][:24:6].data
