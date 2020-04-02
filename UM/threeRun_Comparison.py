@@ -3914,6 +3914,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     print ('')
     print ('Done!')
 
+    #### ---------------------------------------------------------------
+    #### save quicklooks for reference
+    #### ---------------------------------------------------------------
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k', label = 'sonde-interpd')
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
