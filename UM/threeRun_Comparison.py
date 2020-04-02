@@ -2904,13 +2904,12 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     #### ---------------------------------------------------------------
     #### calculate equivalent potential temperature
     #### ---------------------------------------------------------------
-    data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'], data1['time'], data1['height'])
-    data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'], data2['time'], data2['height'])
-    data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'], data3['time'], np.squeeze(data3['height'][0,:]))
+    data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'])
+    data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'])
+    data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'])
 
     obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(np.transpose(obs['sondes']['temperature'])+273.15,
-        np.transpose(obs['sondes']['pressure'])*1e2, np.transpose(obs['sondes']['mr'])/1e3,
-        obs['sondes']['doy'], obs['sondes']['gpsaltitude'])
+        np.transpose(obs['sondes']['pressure'])*1e2, np.transpose(obs['sondes']['mr'])/1e3)
 
     obs['sondes']['thetaE'] = np.transpose(obs['sondes']['thetaE'])         ### for consistency with original sonde dimensions
 
