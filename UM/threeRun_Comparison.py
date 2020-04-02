@@ -3512,8 +3512,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
                 plt.close()
     elif var == 'thetaE':
         for i in range(0, np.size(obs['sondes']['doy_drift'])):
-            plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
-            plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+            plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+            plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
             plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
             plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
             plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
