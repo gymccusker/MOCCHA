@@ -3936,7 +3936,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### save inversion positions
     #### ---------------------------------------------------------------
-    lt3000 = np.where(data1['universal_height'] <= 3000)
+    lt3000 = np.where(data1['universal_height'] < 3000)
     obs['sondes']['thetaE_inversionsID'] = {}
     data1['thetaE_inversionsID'] = {}
     data2['thetaE_inversionsID'] = {}
