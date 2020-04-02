@@ -3946,10 +3946,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-        obs['sondes']['thetaE_inversionsID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)
-        data1['thetaE_inversionsID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)
-        data2['thetaE_inversionsID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)
-        data3['thetaE_inversionsID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)
+        # obs['sondes']['thetaE_inversionsID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)
+        # data1['thetaE_inversionsID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)
+        # data2['thetaE_inversionsID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)
+        # data3['thetaE_inversionsID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)
 
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
