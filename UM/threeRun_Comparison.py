@@ -3920,7 +3920,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     obs['sondes']['thetaE_Diff'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:] - obs['sondes']['thetaE_driftSondes_UM'][:,0:-1]
     data1['thetaE_6hrlyDiff'] = data1['thetaE_6hrly'][:,1:].data - data1['thetaE_6hrly'][:,0:-1].data
     data2['thetaE_6hrlyDiff'] = data2['thetaE_6hrly'][:,1:].data - data2['thetaE_6hrly'][:,0:-1].data
-    data3['thetaE_6hrlyDiff'] = data3['thetaE_6hrly'][:,1:].data - data3['thetaE_6hrly'][:,0:-1].data
+    data3['thetaE_6hrlyDiff'] = data3['thetaE_6hrly_UM'][:,1:].data - data3['thetaE_6hrly_UM'][:,0:-1].data
 
     #### ---------------------------------------------------------------
     #### calculate differences in thetaE profiles on UM grid
@@ -3945,8 +3945,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             'o', color = 'k', label = 'sonde-interpd > ' + str(thresh))
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
-        plt.plot(np.squeeze(data3['thetaE_6hrly'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            np.squeeze(data3['height'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
+        plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
+            data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
             'o', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
 
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue', label = 'um_ra2m')
