@@ -3522,7 +3522,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
             plt.xlabel('$\Theta_{E}$ [K]')
             plt.ylabel('Z [m]')
             plt.ylim([0,3000])
-            plt.xlim([270,320])
+            plt.xlim([260,320])
             plt.legend()
             plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
             if i == 0:
