@@ -3931,7 +3931,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### choose "inversion" gradient threshold
     #### ---------------------------------------------------------------
-    thresh = 1.2
+    thresh = 2.0
 
     #### ---------------------------------------------------------------
     #### save inversion positions
@@ -3970,9 +3970,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
             np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
             'o', color = 'k', label = 'sonde-interpd > ' + str(thresh))
-        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,obs['sondes']['thetaE_invbaseID'][i]]),
-            np.squeeze(data1['universal_height'][obs['sondes']['thetaE_invbaseID'][i]]),
-            '*', color = 'k', label = 'sonde-interpd > ' + str(thresh))
+        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_invbaseID'][i])]),
+            np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]),
+            's', markersize = 8, color = 'k', label = 'sonde-interpd max d$\Theta_{E}$')
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
         plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
