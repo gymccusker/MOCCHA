@@ -3940,9 +3940,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k', label = 'sonde-interpd')
-        # plt.plot(np.squeeze(obs['sondes']['thetaE'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-        #     np.squeeze(data3['height'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-        #     'o', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
+        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
+            np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
+            'o', color = 'k', label = 'sonde-interpd > ' + str(thresh))
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
