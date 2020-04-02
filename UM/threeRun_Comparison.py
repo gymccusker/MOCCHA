@@ -3942,11 +3942,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
-    obs['sondes']['thetaE_invbaseJVID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
-    data1['thetaE_invbaseJVID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
-    data2['thetaE_invbaseJVID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
-    data3['thetaE_invbaseJVID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
-    data3['thetaE_invbaseJVID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    # obs['sondes']['thetaE_invbaseJVID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    # data1['thetaE_invbaseJVID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    # data2['thetaE_invbaseJVID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    # data3['thetaE_invbaseJVID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    # data3['thetaE_invbaseJVID'][:] = np.nan           ## fill with nans to account for missing files when populating
 
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         #### ---------------------------------------------------------------
