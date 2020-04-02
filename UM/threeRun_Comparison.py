@@ -3962,10 +3962,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### compare with inversion identified with JV's code
         #### ---------------------------------------------------------------
         # obs['sondes']['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == obs['inversions']['invbase'][i])
-        data1['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data1['inversions']['invbase'][i])[0][0]
-        data2['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data2['inversions']['invbase'][i])[0][0]
-        if np.nanmax(data3['inversions']['invbase'][i]) >= 0.0:
-            data3['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data3['inversions']['invbase'][i])[0][0]
+        # data1['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data1['inversions']['invbase'][i])[0][0]
+        # data2['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data2['inversions']['invbase'][i])[0][0]
+        # if np.nanmax(data3['inversions']['invbase'][i]) >= 0.0:
+        #     data3['thetaE_invbaseJVID'][i] = np.where(data1['universal_height'] == data3['inversions']['invbase'][i])[0][0]
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
