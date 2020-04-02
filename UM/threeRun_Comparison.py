@@ -3923,6 +3923,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data3['thetaE_6hrlyDiff'] = data3['thetaE_6hrly_UM'][:,1:] - data3['thetaE_6hrly_UM'][:,0:-1]
 
     #### ---------------------------------------------------------------
+    #### build bespoke thetaE arrays for casim-100 and ra2m on universal  (for ease)
+    #### ---------------------------------------------------------------
+    data1['thetaE_6hrly_UM'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
+    data2['thetaE_6hrly_UM'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
+
+    #### ---------------------------------------------------------------
     #### choose "inversion" gradient threshold
     #### ---------------------------------------------------------------
     thresh = 1.2
@@ -3962,12 +3968,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             'o', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
 
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue', label = 'um_ra2m')
-        plt.plot(np.squeeze(data1['thetaE_6hrly'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)]),
+        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)]),
             data1['universal_height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)],
             'o', color = 'steelblue', label = 'um_ra2m > ' + str(thresh))
 
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen', label = 'um_casim-100')
-        plt.plot(np.squeeze(data2['thetaE_6hrly'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)]),
+        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)]),
             data1['universal_height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)],
             'o', color = 'forestgreen', label = 'um_casim-100 > ' + str(thresh))
 
