@@ -30,7 +30,7 @@ def calcAirDensity(temperature, pressure):
 
     return rho
 
-def calcThetaE(temperature, pressure, q, tim, height):
+def calcThetaE(temperature, pressure, q):
 
     """
     Function to calculate equivalent potential temperature
