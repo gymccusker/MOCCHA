@@ -3914,6 +3914,23 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     print ('')
     print ('Done!')
 
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k', label = 'sonde-interpd')
+        plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
+        plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['universal_height'], color = 'steelblue', label = 'um_ra2m')
+        plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['universal_height'], color = 'forestgreen', label = 'um_casim-100')
+        plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+        plt.xlabel('$\Theta_{E}$ [K]')
+        plt.ylabel('Z [m]')
+        plt.ylim([0,3000])
+        plt.xlim([260,320])
+        plt.legend()
+        plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+        if i == 0:
+            plt.show()
+        else:
+            plt.close()
+
 def main():
 
     START_TIME = time.time()
