@@ -3942,15 +3942,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            np.squeeze(data3['height'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]), 'o', color = 'darkorange')
+            np.squeeze(data3['height'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
+            'o', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
 
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue', label = 'um_ra2m')
         plt.plot(np.squeeze(data1['thetaE_6hrly'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data1['height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)], 'o', color = 'steelblue')
+            data1['height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)],
+            'o', color = 'steelblue', label = 'um_ra2m > ' + str(thresh))
 
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen', label = 'um_casim-100')
         plt.plot(np.squeeze(data2['thetaE_6hrly'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data2['height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)], 'o', color = 'forestgreen')
+            data2['height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)],
+            'o', color = 'forestgreen', label = 'um_ra2m > ' + str(thresh))
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
