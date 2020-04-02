@@ -3946,7 +3946,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange', label = 'ifs-interpd')
         plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
+            data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)],
             'o', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
 
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue', label = 'um_ra2m')
