@@ -3944,12 +3944,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### save inversion positions
     #### ---------------------------------------------------------------
+    #### initialise arrays
     lt3000 = np.where(data1['universal_height'] < 3000)
     obs['sondes']['thetaE_invbaseID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
     data1['thetaE_invbaseID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_invbase'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_invbase'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_invbase'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbase'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbase'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['thetaE_2ndinvID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
     data1['thetaE_2ndinvID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
     data2['thetaE_2ndinvID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
@@ -3961,6 +3967,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data3['thetaE_decoupID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_decoupID'][:] = np.nan           ## fill with nans to account for missing files when populating
 
+    #### find maximum dThetaE
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
@@ -3984,6 +3991,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
             data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
             data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+
+        #### ---------------------------------------------------------------
+        #### save timeseries of invbase heights
+        #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
+        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
+        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
+        data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
         #### ---------------------------------------------------------------
         #### find if secondary (decoupled) layer exists below main inversion
@@ -4077,6 +4092,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.show()
         else:
             plt.close()
+
+    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'])
 
     return data1, data2, data3, obs
 
