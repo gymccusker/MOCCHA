@@ -4000,18 +4000,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] == np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] == np.sort(data1['thetaE_6hrlyDiff'][i,:int(data1['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
-        ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
-        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])-1] > thresh:
-            # obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])-1] > thresh:
-            # data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])-1] > thresh:
-            # data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])-1] > thresh:
-                # data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        #     data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        # ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
+        # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])-1] > thresh:
+        #     # obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])-1] > thresh:
+        #     # data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])-1] > thresh:
+        #     # data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        #     if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])-1] > thresh:
+        #         # data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
@@ -4037,6 +4037,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_invbaseID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_invbaseID'][i])]),
                 's', markersize = 8, color = 'darkorange', label = 'ifs-interpd max d$\Theta_{E}$')
+        if data3['thetaE_2ndinvID'][i] >= 0.0:     ### ignore nans (missing files)        
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_2ndinvID'][i])]),
                 'o', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$')
