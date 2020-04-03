@@ -3841,8 +3841,9 @@ def write_reGrid(data1, data2, data3, obs, var):
 def checkInvbaseBelow(invbaseID, thetaEDiff, thresh):
 
     if np.nanmax(thetaEDiff) >= 0.0:
-        if thetaEDiff[int(invbaseID)-1] > thresh:
-            invbaseID = int(invbaseID) - 1
+        if int(invbaseID) > 0:
+            if thetaEDiff[int(invbaseID)-1] > thresh:
+                invbaseID = int(invbaseID) - 1
 
     return invbaseID
 
