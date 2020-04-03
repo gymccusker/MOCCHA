@@ -3838,6 +3838,14 @@ def write_reGrid(data1, data2, data3, obs, var):
 
     return outfiles
 
+def checkInvbaseBelow(invbaseID, thetaEDiff, thresh):
+
+    if np.nanmax(thetaEDiff) >= 0.0:
+        if thetaEDiff[invbaseID-1] > thresh:
+            invbaseID = int(invbaseID) - 1
+
+    return invbaseID
+
 def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     print ('******')
@@ -3931,7 +3939,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### choose "inversion" gradient threshold (K)
     #### ---------------------------------------------------------------
-    thresh = 1.5
+    thresh = 1.7
 
     #### ---------------------------------------------------------------
     #### save inversion positions
@@ -3964,7 +3972,20 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) == np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
 
         #### ---------------------------------------------------------------
-        #### check if strong gradient starts at i-1
+        #### check if strong gradient starts at i-index -1
+        #### ---------------------------------------------------------------
+        # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
+        #     obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
+        obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
+            data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
+        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
+            data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
+                data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        #### ---------------------------------------------------------------
+        #### check if strong gradient starts at i-index -2
         #### ---------------------------------------------------------------
         if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
             obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
@@ -3976,7 +3997,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
                 data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
         #### ---------------------------------------------------------------
-        #### check if strong gradient starts at i-2
+        #### check if strong gradient starts at i-index -3 (for good measure!)
         #### ---------------------------------------------------------------
         if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
             obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
