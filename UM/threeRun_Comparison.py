@@ -4011,8 +4011,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
         data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
 
+        np.save('working_dataObs',obs['sondes'])
+
         ### 2. check for second strongest inversion below invbaseID (index = 1)
-        obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] == np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
+            np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] == np.sort(data1['thetaE_6hrlyDiff'][i,:int(data1['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
