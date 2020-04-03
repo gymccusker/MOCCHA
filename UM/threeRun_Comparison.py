@@ -3543,7 +3543,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     np.save('working_data2',data2)
     np.save('working_data3',data3)
     np.save('working_dataObs',obs['sondes'])
-    outfiles = write_reGrid(data1, data2, data3, obs, var)
+    # outfiles = write_reGrid(data1, data2, data3, obs, var)
 
     return data1, data2, data3, obs, drift
 
