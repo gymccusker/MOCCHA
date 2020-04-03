@@ -4027,7 +4027,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             's', markersize = 8, color = 'k', label = 'sonde-interpd max d$\Theta_{E}$')
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_2ndinvID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])]),
-            'o', markersize = 8, color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$')
+            'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$')
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
         plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
@@ -4037,7 +4037,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_invbaseID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_invbaseID'][i])]),
                 's', markersize = 8, color = 'darkorange', label = 'ifs-interpd max d$\Theta_{E}$')
-        if data3['thetaE_2ndinvID'][i] >= 0.0:     ### ignore nans (missing files)        
+        if data3['thetaE_2ndinvID'][i] >= 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_2ndinvID'][i])]),
                 'o', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$')
