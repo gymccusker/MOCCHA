@@ -3929,9 +3929,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_6hrly_UM'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
 
     #### ---------------------------------------------------------------
-    #### choose "inversion" gradient threshold
+    #### choose "inversion" gradient threshold (K)
     #### ---------------------------------------------------------------
-    thresh = 2.0
+    thresh = 1.8
 
     #### ---------------------------------------------------------------
     #### save inversion positions
