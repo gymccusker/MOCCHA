@@ -3947,6 +3947,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_2ndinvID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_2ndinvID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_2ndinvID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_decoupID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_decoupID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_decoupID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupID'][:] = np.nan           ## fill with nans to account for missing files when populating
 
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         #### ---------------------------------------------------------------
@@ -3997,6 +4002,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
             data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
