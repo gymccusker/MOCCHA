@@ -3978,6 +3978,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
                 data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
 
+        #### ---------------------------------------------------------------
+        #### find if secondary (decoupled) layer exists below main inversion
+        #### ---------------------------------------------------------------
+        # temp[::-1].sort()
+        # np.sort(temp)[::-1]
+        ### sort differences by magnitude
+        data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+
+
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
