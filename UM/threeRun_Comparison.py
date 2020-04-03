@@ -3998,7 +3998,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
         data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
         data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
-        data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
+        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
         #### ---------------------------------------------------------------
         #### find if secondary (decoupled) layer exists below main inversion
@@ -4094,6 +4094,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.close()
 
     plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'])
+    plt.xlabel('DOY')
+    plt.ylabel('Inversion base height [m]')
+    plt.show()
 
     return data1, data2, data3, obs
 
