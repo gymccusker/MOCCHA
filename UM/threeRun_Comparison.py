@@ -3981,12 +3981,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### find if secondary (decoupled) layer exists below main inversion
         #### ---------------------------------------------------------------
-        # temp[::-1].sort()
-        # np.sort(temp)[::-1]
-        ### sort differences by magnitude
+        ### 1. sort differences by magnitude
+        obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
         data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
         data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
         data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        ### 2. check if inversion >2K exists below invbaseID
 
 
     #### ---------------------------------------------------------------
