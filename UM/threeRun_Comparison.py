@@ -3978,7 +3978,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
                 data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
 
-
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
@@ -4020,7 +4019,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
         plt.ylabel('Z [m]')
-        plt.ylim([0,3000])
+        plt.ylim([0,3100])
         plt.xlim([260,320])
         plt.legend()
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
