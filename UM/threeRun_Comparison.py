@@ -4093,7 +4093,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         else:
             plt.close()
 
-    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'])
+    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'], 'k')
+    plt.plot(data1['time_6hrly'], data1['thetaE_invbase'], color = 'steelblue')
+    plt.plot(data2['time_6hrly'], data2['thetaE_invbase'], color = 'forestgreen')
+    plt.plot(data3['time_6hrly'], data3['thetaE_invbase'], color = 'darkorange')
     plt.xlabel('DOY')
     plt.ylabel('Inversion base height [m]')
     plt.show()
