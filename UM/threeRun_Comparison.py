@@ -4020,7 +4020,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
         #     if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
         #         data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
-        for n in range(0,4):
+        for n in range(0,7):
             print(n)
             obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
             data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
