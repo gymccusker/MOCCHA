@@ -3965,49 +3965,65 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
         #### ---------------------------------------------------------------
-        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,lt3000]) == np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,lt3000])))[0][0]
-        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,lt3000]) == np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
-        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,lt3000]) == np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,lt3000])))[0][0]
+        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) == np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
 
         #### ---------------------------------------------------------------
-        #### check if strong gradient starts at i-index -1
+        #### check if strong gradient starts at i-index -1 (can reference full thetaE_Diff array since height in ascending order)
         #### ---------------------------------------------------------------
         # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
         #     obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
+        #     data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
+        #     data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        #     if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
+        #         data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
         obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
-            data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
-            data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
-                data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+        data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+        data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+
         #### ---------------------------------------------------------------
         #### check if strong gradient starts at i-index -2
         #### ---------------------------------------------------------------
-        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
-            obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
-            data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
-            data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
-                data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
+        #     obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
+        #     data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
+        #     data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        #     if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
+        #         data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+        data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+        data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+        data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
         #### ---------------------------------------------------------------
         #### check if strong gradient starts at i-index -3 (for good measure!)
         #### ---------------------------------------------------------------
-        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
-            obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
-            data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
-            data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
-                data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i])-1] > thresh:
+        #     obs['sondes']['thetaE_invbaseID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) - 1
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i])-1] > thresh:
+        #     data1['thetaE_invbaseID'][i] = int(data1['thetaE_invbaseID'][i]) - 1
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i])-1] > thresh:
+        #     data2['thetaE_invbaseID'][i] = int(data2['thetaE_invbaseID'][i]) - 1
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        #     if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i])-1] > thresh:
+        #         data3['thetaE_invbaseID'][i] = int(data3['thetaE_invbaseID'][i]) - 1
+        obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+        data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+        data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+        data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)        
 
         #### ---------------------------------------------------------------
         #### find if secondary (decoupled) layer exists below main inversion
