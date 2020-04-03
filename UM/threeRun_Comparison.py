@@ -3942,6 +3942,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_2ndinvID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_2ndinvID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_2ndinvID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_2ndinvID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_2ndinvID'][:] = np.nan           ## fill with nans to account for missing files when populating
 
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         #### ---------------------------------------------------------------
@@ -3987,10 +3992,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
         data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
         ### 2. check for second strongest inversion below invbaseID
-        obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] == np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][0])+1])[::-1][1])
-        data1['thetaE_decoupID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] == np.sort(data1['thetaE_6hrlyDiff'][i,:int(data1['thetaE_invbaseID'][0])+1])[::-1][1])
-        data2['thetaE_decoupID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][0])+1])[::-1][1])
-        data3['thetaE_decoupID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][0])+1])[::-1][1])
+        obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] == np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][0])+1])[::-1][1])
+        data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] == np.sort(data1['thetaE_6hrlyDiff'][i,:int(data1['thetaE_invbaseID'][0])+1])[::-1][1])
+        data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][0])+1])[::-1][1])
+        data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][0])+1])[::-1][1])
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
