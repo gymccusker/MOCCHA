@@ -3987,8 +3987,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
         #### ---------------------------------------------------------------
         for n in range(0,7):
-            print(n)
-            print('i = ' + str(i))
+            # print(n)
+            # print('i = ' + str(i))
             obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
             data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
             data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
@@ -4102,12 +4102,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         else:
             plt.close()
 
-    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'], 'k')
-    plt.plot(data1['time_6hrly'], data1['thetaE_invbase'], color = 'steelblue')
-    plt.plot(data2['time_6hrly'], data2['thetaE_invbase'], color = 'forestgreen')
-    plt.plot(data3['time_6hrly'], data3['thetaE_invbase'], color = 'darkorange')
+    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'], 'k', label = 'radiosondes')
+    plt.plot(data1['time_6hrly'], data1['thetaE_invbase'], '^', color = 'steelblue', label = 'um_ra2m')
+    plt.plot(data2['time_6hrly'], data2['thetaE_invbase'], 'v', color = 'forestgreen', label = 'um_casim-100')
+    plt.plot(data3['time_6hrly'], data3['thetaE_invbase'], 'd', color = 'darkorange', label = 'ecmwf_ifs')
     plt.xlabel('DOY')
     plt.ylabel('Inversion base height [m]')
+    plt.savefig('../FIGS/inversionIdent/InvbaseTS.png')
     plt.show()
 
     return data1, data2, data3, obs
