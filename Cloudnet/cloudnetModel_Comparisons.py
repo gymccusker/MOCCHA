@@ -1529,6 +1529,95 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_fl
 
     print ('******')
     print ('')
+    print ('Comparing observed Cv based on grid results interpolated on to:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
+            hspace = 0.22, wspace = 0.1)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
+    plt.xlabel('Cloud Fraction')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    # plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_GridComparison_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
     print ('Plotting Cv statistics based on melt/freeze up periods:')
     print ('')
 
@@ -1909,14 +1998,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'iwc-Z-T-metum-grid/2018/'
+            cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -2612,11 +2701,16 @@ def main():
     # figure = plot_LWP(um_data, ifs_data, misc_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
+    # make obs comparison fig between um and ifs grids
+    # -------------------------------------------------------------
+    figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+
+    # -------------------------------------------------------------
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
