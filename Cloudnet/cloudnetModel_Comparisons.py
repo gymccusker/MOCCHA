@@ -453,6 +453,498 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
+def reGrid_Sondes(data1, data2, data3, obs, doy, var):
+
+    from scipy.interpolate import interp1d
+
+    ### 6-hourly time binning for model
+    ### um['time'][:24:6].data
+    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
+    ###     need to pick out where we have a repeated time value, then remove it so
+    ###     that the time array can be indexed easily
+
+    #### ---------------------------------------------------------------
+    ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
+    #### ---------------------------------------------------------------
+    if var == 'temp':
+        varlist = ['temperature','temperature','temperature','temperature']
+    elif var == 'thetaE':
+        # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
+        varlist = ['thetaE','thetaE','thetaE','thetaE']         # use sonde calculated thetaE
+    elif var == 'theta':
+        # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
+        varlist = ['theta','theta','theta','theta']         # use sonde calculated theta
+    elif var == 'q':
+        varlist = ['mr','q','q','q']
+
+    ### stop double counting of 0000 and 2400 from model data
+    temp = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp[i] = data1['time'][i]
+    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
+    #### ---------------------------------------------------------------
+    #### save hourly temperature model profiles (using the ii index defined by the time indices)
+    #### ---------------------------------------------------------------
+    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][ii,:])
+    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][ii,:])
+    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][ii,:])
+
+    #### ---------------------------------------------------------------
+    #### explicitly save 6-hourly temperature model profiles and time binning for ease
+    #### ---------------------------------------------------------------
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
+    data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
+    data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
+
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    iTim = 0        ### initialised
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
+    iUM = np.where(data1['height'] <= 11000)
+    iIFS = np.where(data3['height'][iTim,:] <= 11000)
+
+    #### ---------------------------------------------------------------
+    #### remove flagged IFS heights
+    #### ---------------------------------------------------------------
+    data3['height'][data3['height'] == -9999] = 0.0
+            #### set all heights to zero if flagged. setting to nan caused problems
+            ####        further on
+    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION
+    #### ---------------------------------------------------------------
+    print ('')
+    print ('Defining IFS temperature profile as a function:')
+    print ('using ifs.height[i,:] to define temperature profiles...')
+    data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(data3['time_hrly'],0)):
+        # print (iTim)
+        iIFSind = np.where(data3['height_hrly'][iTim,:] <= 11000)
+        if np.all(data3['height_hrly'][iTim,:] == 0.0):
+            data3[var + '_hrly_UM'][iTim,:] = np.nan
+        else:
+            fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
+            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+    print ('...')
+    print ('IFS(UM Grid) function worked!')
+    print (var + ' IFS data now on UM vertical grid')
+    print ('*****')
+    ### assign for easier indexing later
+    data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
+    data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
+    data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
+
+    #### INTERPOLATION TESTING:
+    # print (data3['temp_hrly_UM'].shape)
+    # print (data3['time_hrly'][::6].shape)
+    # print (data1['temp_hrly'][:,iUM[0][3:]].shape)
+    # print (data1['time_hrly'][::6].shape)
+    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
+    #     fig = plt.figure()
+    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
+    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
+
+    print ('')
+    print ('Defining Sonde temperature profile as a function for the UM:')
+    obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+        # print 'iTim = ', str(iTim)
+        fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+    print ('...')
+    print ('Sonde(UM Grid) function worked!')
+    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('*****')
+    #
+    # print ('')
+    # print ('Defining Sonde temperature profile as a function for the IFS:')
+    # obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
+    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+    #     # print 'iTim = ', str(iTim)
+    #     iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    #     fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+    #     obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
+    # print ('...')
+    # print ('Sonde(IFS Grid) function worked!')
+    # print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
+    # print ('*****')
+
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT SONDES FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+
+    ### save in dict for ease
+    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+    obs['sondes']['drift'] = drift
+    obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
+
+    #### INTERPOLATION TESTING - IFS + SONDE + UM_RA2M:
+    # print (obs['sondes']['doy_drift'].shape)
+    # print (obs['sondes']['temp_allSondes_UM'][drift[0],:].shape)
+    # if var == 'temp':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
+    #         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
+    #         plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+    #         plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+    #         plt.legend()
+    #         plt.savefig('../FIGS/regrid/REGRID_Ttest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+    # elif var == 'q':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['mr'][iObs,drift[0][i]]), np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS])*1e3,np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
+    #         plt.plot(data3[var + '_6hrly_UM'][i,:]*1e3,data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
+    #         plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+    #         plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+    #         plt.legend()
+    #         plt.savefig('../FIGS/regrid/REGRID_Qtest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+    # elif var == 'thetaE':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'darkorange', label = 'ifs-Zindexed')
+    #         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'darkorange', label = 'ifs-interpd')
+    #         plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
+    #         plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+    #         plt.xlabel('$\Theta_{E}$ [K]')
+    #         plt.ylabel('Z [m]')
+    #         plt.ylim([0,3000])
+    #         plt.xlim([260,320])
+    #         plt.legend()
+    #         plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+
+    #### ---------------------------------------------------------------
+    #### make some dictionary assignments for use later
+    #### ---------------------------------------------------------------
+    data1['universal_height'] = data1['height'][iUM[0][3:]]
+    data1['universal_height_UMindex'] = iUM[0][3:]
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data2',data2)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
+
+    return data1, data2, data3, obs, drift
+
+def checkInvbaseBelow(invbaseID, thetaEDiff, thresh):
+
+    if np.nanmax(thetaEDiff) >= 0.0:
+        if int(invbaseID)-1 > 0:        ### so we don't get a negative index
+            if thetaEDiff[int(invbaseID)-1] > thresh:
+                invbaseID = int(invbaseID) - 1
+
+    return invbaseID
+
+def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+
+    print ('******')
+    print ('')
+    print ('Identifying stable layers from thetaE profiles:')
+    print ('')
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    #### set flagged values to nans
+    data1['temperature'][data1['temperature'] == -9999] = np.nan
+    data2['temperature'][data2['temperature'] == -9999] = np.nan
+    data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data1['pressure'][data1['pressure'] == -9999] = np.nan
+    data2['pressure'][data2['pressure'] == -9999] = np.nan
+    data3['pressure'][data3['pressure'] <= 0] = np.nan
+    data1['q'][data1['q'] == -9999] = np.nan
+    data2['q'][data2['q'] == -9999] = np.nan
+    data3['q'][data3['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### calculate equivalent potential temperature
+    #### ---------------------------------------------------------------
+    data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'])
+    data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'])
+    data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'])
+
+    obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(np.transpose(obs['sondes']['temperature'])+273.15,
+        np.transpose(obs['sondes']['pressure'])*1e2, np.transpose(obs['sondes']['mr'])/1e3)
+
+    obs['sondes']['thetaE'] = np.transpose(obs['sondes']['thetaE'])         ### for consistency with original sonde dimensions
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
+
+    # #### ---------------------------------------------------------------
+    # #### Save out line profiles for reference
+    # #### ---------------------------------------------------------------
+    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
+    #     fig = plt.figure()
+    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
+    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
+    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'thetaE')
+    print ('')
+    print ('Done!')
+
+    #### ---------------------------------------------------------------
+    #### calculate differences in thetaE profiles
+    #### ---------------------------------------------------------------
+    obs['sondes']['thetaE_Diff'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:] - obs['sondes']['thetaE_driftSondes_UM'][:,0:-1]
+    data1['thetaE_6hrlyDiff'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
+    data2['thetaE_6hrlyDiff'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
+    data3['thetaE_6hrlyDiff'] = data3['thetaE_6hrly_UM'][:,1:] - data3['thetaE_6hrly_UM'][:,0:-1]
+
+    #### ---------------------------------------------------------------
+    #### build bespoke thetaE arrays for casim-100 and ra2m on universal  (for ease)
+    #### ---------------------------------------------------------------
+    data1['thetaE_6hrly_UM'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
+    data2['thetaE_6hrly_UM'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
+
+    #### ---------------------------------------------------------------
+    #### choose "inversion" gradient threshold (K)
+    #### ---------------------------------------------------------------
+    thresh = 1.7
+
+    #### ---------------------------------------------------------------
+    #### save inversion positions
+    #### ---------------------------------------------------------------
+    #### initialise arrays
+    lt3000 = np.where(data1['universal_height'] < 3000)
+    obs['sondes']['thetaE_invbaseID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_invbaseID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_invbaseID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbaseID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_invbase'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_invbase'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_invbase'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbase'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_invbase'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_2ndinvID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_2ndinvID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_2ndinvID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_2ndinvID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_2ndinvID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_decoupID'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_decoupID'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_decoupID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupID'][:] = np.nan           ## fill with nans to account for missing files when populating
+
+    #### find maximum dThetaE
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        #### ---------------------------------------------------------------
+        #### find strongest inversion <3000m
+        #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,lt3000])))[0][0]
+        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) ==
+                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+
+        #### ---------------------------------------------------------------
+        #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
+        #### ---------------------------------------------------------------
+        for n in range(0,7):
+            # print(n)
+            # print('i = ' + str(i))
+            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+
+        #### ---------------------------------------------------------------
+        #### save timeseries of invbase heights
+        #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
+        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
+        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
+        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
+
+        #### ---------------------------------------------------------------
+        #### find if secondary (decoupled) layer exists below main inversion
+        #### ---------------------------------------------------------------
+        ### 1. sort differences by magnitude
+        obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
+        data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+
+        np.save('working_dataObs',obs['sondes'])
+
+        ### 2. check for second strongest inversion below invbaseID (index = 1)
+        if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
+            obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
+                np.sort(obs['sondes']['thetaE_Diff'][i,:int(obs['sondes']['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] == np.sort(data1['thetaE_6hrlyDiff'][i,:int(data1['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] == np.sort(data2['thetaE_6hrlyDiff'][i,:int(data2['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+            data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
+
+        ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
+        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < thresh:
+            obs['sondes']['thetaE_2ndinvID'][i] = 0
+        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < thresh:
+            data1['thetaE_2ndinvID'][i] = 0
+        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < thresh:
+            data2['thetaE_2ndinvID'][i] = 0
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < thresh:
+                data3['thetaE_2ndinvID'][i] = 0
+
+        ### 4. check if there's a similarly strong inversion at the level below
+        # obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+        # data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+        # data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+        # data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+
+    #### ---------------------------------------------------------------
+    #### save quicklooks for reference
+    #### ---------------------------------------------------------------
+    i = 0
+    # for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #     plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
+    #     plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
+    #         np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
+    #         '+', color = 'k', label = 'sonde-interpd > ' + str(thresh))
+    #     plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_invbaseID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]),
+    #         's', markersize = 8, color = 'k', label = 'sonde-interpd max d$\Theta_{E}$')
+    #     plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_2ndinvID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])]),
+    #         'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$ > ' + str(thresh))
+    #
+    #     plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
+    #     plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
+    #         data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)],
+    #         '+', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
+    #     if data3['thetaE_invbaseID'][i] >= 0.0:     ### ignore nans (missing files)
+    #         plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_invbaseID'][i])]),
+    #             np.squeeze(data1['universal_height'][int(data3['thetaE_invbaseID'][i])]),
+    #             's', markersize = 8, color = 'darkorange', label = 'ifs-interpd max d$\Theta_{E}$')
+    #     if data3['thetaE_2ndinvID'][i] >= 0.0:     ### ignore nans (missing files)
+    #         plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_2ndinvID'][i])]),
+    #             np.squeeze(data1['universal_height'][int(data3['thetaE_2ndinvID'][i])]),
+    #             'o', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$ > ' + str(thresh))
+    #
+    #     plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
+    #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)]),
+    #         data1['universal_height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)],
+    #         '+', color = 'steelblue', label = 'um_ra2m > ' + str(thresh))
+    #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_invbaseID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(data1['thetaE_invbaseID'][i])]),
+    #         's', markersize = 8, color = 'steelblue', label = 'um_ra2m max d$\Theta_{E}$')
+    #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_2ndinvID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(data1['thetaE_2ndinvID'][i])]),
+    #         'o', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(thresh))
+    #
+    #     plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
+    #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)]),
+    #         data1['universal_height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)],
+    #         '+', color = 'forestgreen', label = 'um_casim-100 > ' + str(thresh))
+    #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_invbaseID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(data2['thetaE_invbaseID'][i])]),
+    #         's', markersize = 8, color = 'forestgreen', label = 'um_casim-100 max d$\Theta_{E}$')
+    #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_2ndinvID'][i])]),
+    #         np.squeeze(data1['universal_height'][int(data2['thetaE_2ndinvID'][i])]),
+    #         'o', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(thresh))
+    #
+    #     plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+    #     plt.xlabel('$\Theta_{E}$ [K]')
+    #     plt.ylabel('Z [m]')
+    #     plt.ylim([0,3100])
+    #     plt.xlim([260,320])
+    #     plt.legend()
+    #     plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
+
+    plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'],
+        'ks-', label = 'radiosondes')
+    plt.plot(data1['time_6hrly'], data1['thetaE_invbase'],
+        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
+    plt.plot(data2['time_6hrly'], data2['thetaE_invbase'],
+        'v', color = 'forestgreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+    plt.plot(data3['time_6hrly'], data3['thetaE_invbase'],
+        'd', color = 'darkorange',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
+    plt.xlabel('DOY')
+    plt.ylabel('Inversion base height [m]')
+    # plt.savefig('../FIGS/inversionIdent/InvbaseTS.png')
+    plt.show()
+
+    return data1, data2, data3, obs
+
 def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     ###################################
@@ -2704,7 +3196,7 @@ def main():
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
     # -------------------------------------------------------------
-    figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # plot cloudnet split season figures with missing files accounted for
@@ -2716,6 +3208,11 @@ def main():
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
     # -------------------------------------------------------------
+    # -------------------------------------------------------------
+    # Identify inversions in model / radiosonde data
+    # -------------------------------------------------------------
+    data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
     # figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
