@@ -4009,7 +4009,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
             if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
                 obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
-                    np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][0])[0][0]
+                    np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
         if np.size(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
             data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] ==
                 np.sort(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
