@@ -4007,16 +4007,19 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         ## 1. check for second strongest inversion above invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
-            print (i)
-            obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
-                np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][0])[0][0]
-        data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] ==
-            np.sort(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
-        data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] ==
-            np.sort(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
+            if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
+                obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
+                    np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][0])[0][0]
+        if np.size(data1['thetaE_Diff'][i,int(data1['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
+            data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] ==
+                np.sort(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
+        if np.size(data2['thetaE_Diff'][i,int(data2['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
+            data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] ==
+                np.sort(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
-                np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
+            if np.size(data3['thetaE_Diff'][i,int(data3['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
+                data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
+                    np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
 
         ### 2. check if second strongest inversion is greater than chosen threshold: if so, label as top of decoupled stable layer
         if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < thresh:
