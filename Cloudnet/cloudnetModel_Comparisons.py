@@ -1911,7 +1911,7 @@ def main():
     if platform == 'LAPTOP':
         cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
-        if obs_switch = 'IFS':
+        if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
             cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
@@ -1928,9 +1928,9 @@ def main():
     elif platform == 'JASMIN':
         cn_um_out_dir = 'cloud-fraction-metum-grid/2018/'
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
-        if obs_switch = 'IFS':
+        if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
-        elif obs_switch = 'UM':
+        elif obs_switch == 'UM':
             cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
             cn_misc_out_dir = cn_um_out_dir
