@@ -1615,7 +1615,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
