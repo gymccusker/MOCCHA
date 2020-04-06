@@ -1721,7 +1721,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1909,14 +1909,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
+            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
 
@@ -2472,11 +2472,11 @@ def main():
             ###     LOAD IN OBS DATA
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
-            if cn_obs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
+            if cn_obs_out_dir[:14] == 'cloud_fraction':
                 cn_var_list = ['height','Cv']   ### time always read in separately
-            elif cn_obs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
+            elif cn_obs_out_dir[:3] == 'lwc':
                 cn_var_list = ['height','lwc','lwp']   ### time always read in separately
-            elif cn_obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
+            elif cn_obs_out_dir[:3] == 'iwc':
                 cn_var_list = ['height','iwc']   ### time always read in separately
 
             if i == 0:
@@ -2622,8 +2622,8 @@ def main():
     # -------------------------------------------------------------
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
