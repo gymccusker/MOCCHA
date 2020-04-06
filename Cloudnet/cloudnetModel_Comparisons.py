@@ -1963,8 +1963,8 @@ def main():
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         cn_um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
-        # cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
-        cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
+        cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+        # cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
