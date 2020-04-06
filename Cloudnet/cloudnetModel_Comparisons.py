@@ -1810,10 +1810,10 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
     ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
     ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
@@ -1833,7 +1833,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
@@ -1909,24 +1909,16 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
+            cn_obs_out_dir = 'iwc-Z-T-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
-
-        # cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-        # cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
-        # cn_obs_out_dir = cn_ifs_out_dir
-        # if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-        #     cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
-        # elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
-        #     cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         cn_um_out_dir = 'cloud-fraction-metum-grid/2018/'
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
@@ -2623,8 +2615,8 @@ def main():
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
