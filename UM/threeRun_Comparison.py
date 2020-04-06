@@ -3842,7 +3842,7 @@ def checkInvbaseBelow(invbaseID, thetaEDiff, thresh):
 
     if np.nanmax(thetaEDiff) >= 0.0:
         if int(invbaseID)-1 > 0:        ### so we don't get a negative index
-            if np.round(thetaEDiff[int(invbaseID)-1],0) > thresh:
+            if thetaEDiff[int(invbaseID)-1] > thresh:
                 invbaseID = int(invbaseID) - 1
 
     return invbaseID
@@ -4034,10 +4034,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_2ndinvID'][i] = 0
 
         ### 4. check if there's a similarly strong inversion at the level below
-        # obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
-        data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
-        data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
-        data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+        for n in range(0,3):
+            obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
+            data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
+            data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
+            data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
