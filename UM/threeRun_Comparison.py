@@ -3981,14 +3981,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,:27]) ==
-                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,:27])))[0][0]
+                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,1:27])))[0][0]
         data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,:27]) ==
-                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,:27])))[0][0]
+                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,1:27])))[0][0]
         data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,:27]) ==
-                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,:27])))[0][0]
+                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,1:27])))[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
             data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,:27]) ==
-                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,:27])))[0][0]
+                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,1:27])))[0][0]
+
+        #### ---------------------------------------------------------------
+        #### increment by 1 so that we can reference the height array from 0
+        #### ---------------------------------------------------------------
 
         #### ---------------------------------------------------------------
         #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
@@ -4006,6 +4010,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
+
         ## 1. check for second strongest inversion above invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
             if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
