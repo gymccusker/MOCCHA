@@ -3996,14 +3996,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],sthresh)
 
         #### ---------------------------------------------------------------
-        #### save timeseries of invbase heights
-        #### ---------------------------------------------------------------
-        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
-        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
-        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
-        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
-
-        #### ---------------------------------------------------------------
         #### find if inversion exists above "main" inversion (but still below 3km)
         #### ---------------------------------------------------------------
         ## 1. check for second strongest inversion above invbaseID (index = 1)
@@ -4126,6 +4118,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
         #     data2['thetaE_decoupID'][i] = checkInvbaseBelow(data2['thetaE_decoupID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
         #     data3['thetaE_decoupID'][i] = checkInvbaseBelow(data3['thetaE_decoupID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
+
+        #### ---------------------------------------------------------------
+        #### save timeseries of invbase heights
+        #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
+        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
+        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
+        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
