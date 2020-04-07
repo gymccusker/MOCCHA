@@ -4227,6 +4227,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         else:
             plt.close()
 
+    fig = plt.figure(figsize=(8,6))
+    ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
     plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'],
         'ks-', label = 'radiosondes')
     plt.plot(data1['time_6hrly'], data1['thetaE_invbase'],
@@ -4237,6 +4239,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         'd', color = 'darkorange',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
     plt.xlabel('DOY')
     plt.ylabel('Inversion base height [m]')
+    plt.legend()
+
+    ax  = fig.add_axes([0.2,0.65,0.3,0.7])   # left, bottom, width, height
+    plt.plot(obs['sondes']['thetaE_invbase'],data1['thetaE_invbase'],
+        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
+    plt.plot(obs['sondes']['thetaE_invbase'], data2['thetaE_invbase'],
+        'v', color = 'forestgreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+    plt.plot(obs['sondes']['thetaE_invbase'], data3['thetaE_invbase'],
+        'd', color = 'darkorange',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
+    plt.xlabel('Obs')
+    plt.ylabel('Models')
     plt.savefig('../FIGS/inversionIdent/InvbaseTS.png')
     plt.show()
 
