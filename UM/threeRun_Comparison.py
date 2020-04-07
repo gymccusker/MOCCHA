@@ -4092,16 +4092,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ### 3. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
         if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
-            if obs['sondes']['thetaE_decoupID'][i] > 5: obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            if obs['sondes']['thetaE_decoupID'][i] > 6: obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
             obs['sondes']['thetaE_decoupID'][i] = 0
         if data1['thetaE_invbaseID'][i]-1 == data1['thetaE_decoupID'][i]:
-            if data1['thetaE_decoupID'][i] > 5: data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
+            if data1['thetaE_decoupID'][i] > 6: data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
             data1['thetaE_decoupID'][i] = 0
         if data2['thetaE_invbaseID'][i]-1 == data2['thetaE_decoupID'][i]:
-            if data2['thetaE_decoupID'][i] > 5: data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
+            if data2['thetaE_decoupID'][i] > 6: data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
             data2['thetaE_decoupID'][i] = 0
         if data3['thetaE_invbaseID'][i]-1 == data3['thetaE_decoupID'][i]:
-            if data3['thetaE_decoupID'][i] > 5: data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
+            if data3['thetaE_decoupID'][i] > 6: data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
             data3['thetaE_decoupID'][i] = 0
 
 
