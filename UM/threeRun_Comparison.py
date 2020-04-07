@@ -4025,15 +4025,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
 
         ### 2. check if second strongest inversion is greater than chosen dthreshold: if so, label as top of decoupled stable layer
-        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < sthresh:
+        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < sthresh:
             obs['sondes']['thetaE_2ndinvID'][i] = 0
-        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])],0) < sthresh:
+        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
             data1['thetaE_2ndinvID'][i] = 0
-        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])],0) < sthresh:
+        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
             data2['thetaE_2ndinvID'][i] = 0
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
             if data3['thetaE_2ndinvID'][i] >= 0.0:
-                if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < sthresh:
+                if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
                     data3['thetaE_2ndinvID'][i] = 0
 
         ### 3. check if the main inversion is at the level below. if it is, look for 3rd biggest dThetaE
@@ -4060,7 +4060,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
         #### ---------------------------------------------------------------
-        #### find if secondary (decoupled) layer exists below main inversion
+        #### find if decoupled layer exists below main inversion
         #### ---------------------------------------------------------------
         ### 1. sort differences by magnitude for debugging
         obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
