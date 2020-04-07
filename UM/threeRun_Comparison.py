@@ -3939,8 +3939,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
     #### ---------------------------------------------------------------
     #### choose "inversion" gradient dthreshold (K)
+    ####        dthresh = threshold for top of decoupled surface layer (smaller than sthresh)
+    ####        sthresh = threshold for secondary inversion above main inversion layer (used for main and secondary inversion)
     #### ---------------------------------------------------------------
     dthresh = 1.0
+    sthresh = 2.0
 
     #### ---------------------------------------------------------------
     #### save inversion positions
@@ -3989,10 +3992,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         for n in range(0,7):
             # print(n)
             # print('i = ' + str(i))
-            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
-            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
-            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
-            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
+            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],sthresh)
+            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],sthresh)
+            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],sthresh)
+            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],sthresh)
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
@@ -4022,14 +4025,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
 
         ### 2. check if second strongest inversion is greater than chosen dthreshold: if so, label as top of decoupled stable layer
-        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < dthresh:
+        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < sthresh:
             obs['sondes']['thetaE_2ndinvID'][i] = 0
-        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])],0) < dthresh:
+        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])],0) < sthresh:
             data1['thetaE_2ndinvID'][i] = 0
-        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])],0) < dthresh:
+        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])],0) < sthresh:
             data2['thetaE_2ndinvID'][i] = 0
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < dthresh:
+            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < sthresh:
                 data3['thetaE_2ndinvID'][i] = 0
 
         ### 3. check if the main inversion is at the level below. if it is, look for 3rd biggest dThetaE
