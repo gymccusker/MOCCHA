@@ -4109,7 +4109,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
             data3['thetaE_decoupID'][i] = 0
 
-
         ### 4. check if second strongest inversion is greater than decoupling threshold:
         ###             if so, label as top of decoupled stable layer
         ###             if not, set to zero
@@ -4159,7 +4158,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data2['thetaE_2ndinvID'][i] = np.nan
                 data2['thetaE_decoupID'][i] = temp1
         if np.logical_and(data3['thetaE_invbaseID'][i] >= 0.0, data3['thetaE_2ndinvID'][i] > 0.0):
-            print (i)
+            # print (i)
             if np.logical_and(data1['universal_height'][int(data3['thetaE_invbaseID'][i])] < hthresh,
                 data1['universal_height'][int(data3['thetaE_2ndinvID'][i])] > hthresh):
                     temp1 = data3['thetaE_invbaseID'][i]; temp2 = data3['thetaE_2ndinvID'][i]
