@@ -4096,15 +4096,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
             obs['sondes']['thetaE_decoupID'][i] = 0
         if data1['thetaE_invbaseID'][i]-1 == data1['thetaE_decoupID'][i]:
-            if data1['thetaE_Diff'][i,int(data1['thetaE_decoupID'][i])] > sthresh:
+            if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])] > sthresh:
                 data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
             data1['thetaE_decoupID'][i] = 0
         if data2['thetaE_invbaseID'][i]-1 == data2['thetaE_decoupID'][i]:
-            if data2['thetaE_Diff'][i,int(data2['thetaE_decoupID'][i])] > sthresh:
+            if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_decoupID'][i])] > sthresh:
                 data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
             data2['thetaE_decoupID'][i] = 0
         if data3['thetaE_invbaseID'][i]-1 == data3['thetaE_decoupID'][i]:
-            if data3['thetaE_Diff'][i,int(data3['thetaE_decoupID'][i])] > sthresh: 
+            if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_decoupID'][i])] > sthresh:
                 data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
             data3['thetaE_decoupID'][i] = 0
 
