@@ -3991,8 +3991,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,1:27])))[0][0]
 
         #### ---------------------------------------------------------------
-        #### increment by 1 so that we can reference the height array from 0
+        #### increment each invbaseID by 1 so that we can reference the height array from 0
         #### ---------------------------------------------------------------
+        obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_invbaseID'][i] + 1
+        data1['thetaE_invbaseID'][i] = data1['thetaE_invbaseID'][i] + 1
+        data2['thetaE_invbaseID'][i] = data2['thetaE_invbaseID'][i] + 1
+        data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
 
         #### ---------------------------------------------------------------
         #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
