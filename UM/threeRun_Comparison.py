@@ -3982,7 +3982,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
         data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,lt3000]) ==
                 np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
             data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) ==
                 np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
 
@@ -3990,8 +3990,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
         #### ---------------------------------------------------------------
         for n in range(0,7):
-            # print(n)
-            # print('i = ' + str(i))
             obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],sthresh)
             data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],sthresh)
             data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],sthresh)
