@@ -3892,9 +3892,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### save out working data for debugging
     #### ---------------------------------------------------------------
-    np.save('working_data1',data1)
-    np.save('working_data3',data3)
-    np.save('working_dataObs',obs['sondes'])
+    # np.save('working_data1',data1)
+    # np.save('working_data3',data3)
+    # np.save('working_dataObs',obs['sondes'])
 
     # #### ---------------------------------------------------------------
     # #### Save out line profiles for reference
