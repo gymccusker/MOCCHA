@@ -4157,12 +4157,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data2['thetaE_2ndinvID'][i] = 0
                 data2['thetaE_decoupID'][i] = temp1
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000] >= 0.0):
+            print (i)
             if np.logical_and(data1['universal_height'][int(data3['thetaE_invbaseID'][i])] < hthresh,
                 data1['universal_height'][int(data3['thetaE_2ndinvID'][i])] > hthresh):
                     temp1 = data3['thetaE_invbaseID'][i]; temp2 = data3['thetaE_2ndinvID'][i]
                     data3['thetaE_invbaseID'][i] = temp2
                     data3['thetaE_2ndinvID'][i] = 0
-                    data3['thetaE_decoupID'][i] = temp1                
+                    data3['thetaE_decoupID'][i] = temp1
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
