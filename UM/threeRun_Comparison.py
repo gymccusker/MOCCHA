@@ -4004,7 +4004,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
         #### ---------------------------------------------------------------
-        #### find if inversion exists above "main" inversion
+        #### find if inversion exists above "main" inversion (but still below 3km)
         #### ---------------------------------------------------------------
         ## 1. check for second strongest inversion above invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
@@ -4022,17 +4022,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
 
-        ### 2. check if second strongest inversion is greater than chosen dthreshold: if so, label as top of decoupled stable layer
-        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < sthresh:
-            obs['sondes']['thetaE_2ndinvID'][i] = 0
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
-            data1['thetaE_2ndinvID'][i] = 0
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
-            data2['thetaE_2ndinvID'][i] = 0
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
-            if data3['thetaE_2ndinvID'][i] >= 0.0:
-                if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
-                    data3['thetaE_2ndinvID'][i] = 0
+        ### 2. check if second strongest inversion is greater than chosen threshold: if so, label as top of decoupled stable layer (NOT DONE YET)
+        # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < sthresh:
+        #     obs['sondes']['thetaE_2ndinvID'][i] = 0
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
+        #     data1['thetaE_2ndinvID'][i] = 0
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
+        #     data2['thetaE_2ndinvID'][i] = 0
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
+        #     if data3['thetaE_2ndinvID'][i] >= 0.0:
+        #         if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
+        #             data3['thetaE_2ndinvID'][i] = 0
 
         ### 3. check if the main inversion is at the level below. if it is, look for 3rd biggest dThetaE
         if obs['sondes']['thetaE_2ndinvID'][i]-1 == obs['sondes']['thetaE_invbaseID'][i]:
@@ -4051,6 +4051,19 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             if np.size(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
                 data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
+
+        ### 4. check if second strongest inversion is greater than chosen threshold: if not, set index to zero (indicating no notable secondary inv above)
+        if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < sthresh:
+            obs['sondes']['thetaE_2ndinvID'][i] = 0
+        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
+            data1['thetaE_2ndinvID'][i] = 0
+        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
+            data2['thetaE_2ndinvID'][i] = 0
+        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
+            if data3['thetaE_2ndinvID'][i] >= 0.0:
+                if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
+                    data3['thetaE_2ndinvID'][i] = 0
+
         # for n in range(0,3):
         #     obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
         #     data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
@@ -4077,7 +4090,22 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
             data3['thetaE_decoupID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
 
-        ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
+        ### 3. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
+        if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
+            obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            obs['sondes']['thetaE_decoupID'][i] = 0
+        if data1['thetaE_invbaseID'][i]-1 == data1['thetaE_decoupID'][i]:
+            data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
+            data1['thetaE_decoupID'][i] = 0
+        if data2['thetaE_invbaseID'][i]-1 == data2['thetaE_decoupID'][i]:
+            data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
+            data2['thetaE_decoupID'][i] = 0
+        if data3['thetaE_invbaseID'][i]-1 == data3['thetaE_decoupID'][i]:
+            data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
+            data3['thetaE_decoupID'][i] = 0
+
+
+        ### 4. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
         if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])],0) < dthresh:
             obs['sondes']['thetaE_decoupID'][i] = 0
         if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])],0) < dthresh:
@@ -4089,11 +4117,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_decoupID'][i] = 0
 
         ### 4. check if there's a similarly strong inversion at the level below
-        for n in range(0,3):
-            obs['sondes']['thetaE_decoupID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_decoupID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
-            data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
-            data2['thetaE_decoupID'][i] = checkInvbaseBelow(data2['thetaE_decoupID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
-            data3['thetaE_decoupID'][i] = checkInvbaseBelow(data3['thetaE_decoupID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
+        # for n in range(0,3):
+        #     obs['sondes']['thetaE_decoupID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_decoupID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
+        #     data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
+        #     data2['thetaE_decoupID'][i] = checkInvbaseBelow(data2['thetaE_decoupID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
+        #     data3['thetaE_decoupID'][i] = checkInvbaseBelow(data3['thetaE_decoupID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
