@@ -4033,6 +4033,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data2['thetaE_2ndinvID'][i] = 0
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
             print (i)
+            np.save('working_data3',data3)
             if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < sthresh:
                 data3['thetaE_2ndinvID'][i] = 0
 
