@@ -3976,15 +3976,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
         #### ---------------------------------------------------------------
-        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,lt3000]) ==
-                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,lt3000])))[0][0]
-        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,lt3000]) ==
-                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
-        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,lt3000]) ==
-                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,1:27]) ==
+                np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,1:27])))[0][0]
+        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,1:27]) ==
+                np.squeeze(np.nanmax(data1['thetaE_6hrlyDiff'][i,1:27])))[0][0]
+        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['thetaE_6hrlyDiff'][i,1:27]) ==
+                np.squeeze(np.nanmax(data2['thetaE_6hrlyDiff'][i,1:27])))[0][0]
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
-            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,lt3000]) ==
-                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000])))[0][0]
+            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['thetaE_6hrlyDiff'][i,1:27]) ==
+                np.squeeze(np.nanmax(data3['thetaE_6hrlyDiff'][i,1:27])))[0][0]
 
         #### ---------------------------------------------------------------
         #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
