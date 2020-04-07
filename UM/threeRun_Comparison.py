@@ -3973,9 +3973,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
     #### find maximum dThetaE
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
         #### ---------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['thetaE_Diff'][i,:27]) ==
                 np.squeeze(np.nanmax(obs['sondes']['thetaE_Diff'][i,:27])))[0][0]
         data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['thetaE_6hrlyDiff'][i,:27]) ==
@@ -3995,9 +3999,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],sthresh)
             data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],sthresh)
 
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find if inversion exists above "main" inversion (but still below 3km)
         #### ---------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         ## 1. check for second strongest inversion above invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
             if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
@@ -4062,9 +4070,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
         #     data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find if decoupled layer exists below main inversion
         #### ---------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
         ### 1. sort differences by magnitude for debugging
         obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
         data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
