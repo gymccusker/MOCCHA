@@ -3838,11 +3838,11 @@ def write_reGrid(data1, data2, data3, obs, var):
 
     return outfiles
 
-def checkInvbaseBelow(invbaseID, thetaEDiff, thresh):
+def checkInvbaseBelow(invbaseID, thetaEDiff, dthresh):
 
     if np.nanmax(thetaEDiff) >= 0.0:
         if int(invbaseID)-1 > 0:        ### so we don't get a negative index
-            if thetaEDiff[int(invbaseID)-1] > thresh:
+            if thetaEDiff[int(invbaseID)-1] > dthresh:
                 invbaseID = int(invbaseID) - 1
 
     return invbaseID
@@ -3938,9 +3938,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_6hrly_UM'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
 
     #### ---------------------------------------------------------------
-    #### choose "inversion" gradient threshold (K)
+    #### choose "inversion" gradient dthreshold (K)
     #### ---------------------------------------------------------------
-    thresh = 1.0
+    dthresh = 1.0
 
     #### ---------------------------------------------------------------
     #### save inversion positions
@@ -3989,10 +3989,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         for n in range(0,7):
             # print(n)
             # print('i = ' + str(i))
-            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
-            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
-            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
-            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
+            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
+            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
+            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
@@ -4021,15 +4021,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
 
-        ### 2. check if second strongest inversion is greater than chosen threshold: if so, label as top of decoupled stable layer
-        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < thresh:
+        ### 2. check if second strongest inversion is greater than chosen dthreshold: if so, label as top of decoupled stable layer
+        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])],0) < dthresh:
             obs['sondes']['thetaE_2ndinvID'][i] = 0
-        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])],0) < thresh:
+        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])],0) < dthresh:
             data1['thetaE_2ndinvID'][i] = 0
-        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])],0) < thresh:
+        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])],0) < dthresh:
             data2['thetaE_2ndinvID'][i] = 0
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < thresh:
+            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])],0) < dthresh:
                 data3['thetaE_2ndinvID'][i] = 0
 
         ### 3. check if the main inversion is at the level below. if it is, look for 3rd biggest dThetaE
@@ -4050,10 +4050,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
                     np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
         # for n in range(0,3):
-        #     obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
-        #     data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
-        #     data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
-        #     data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+        #     obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
+        #     data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
+        #     data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
+        #     data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
         #### ---------------------------------------------------------------
         #### find if secondary (decoupled) layer exists below main inversion
@@ -4076,22 +4076,22 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_decoupID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
 
         ### 3. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
-        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])],0) < thresh:
+        if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])],0) < dthresh:
             obs['sondes']['thetaE_decoupID'][i] = 0
-        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])],0) < thresh:
+        if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])],0) < dthresh:
             data1['thetaE_decoupID'][i] = 0
-        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_decoupID'][i])],0) < thresh:
+        if np.round(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_decoupID'][i])],0) < dthresh:
             data2['thetaE_decoupID'][i] = 0
         if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:
-            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_decoupID'][i])],0) < thresh:
+            if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_decoupID'][i])],0) < dthresh:
                 data3['thetaE_decoupID'][i] = 0
 
         ### 4. check if there's a similarly strong inversion at the level below
         for n in range(0,3):
-            obs['sondes']['thetaE_decoupID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_decoupID'][i],obs['sondes']['thetaE_Diff'][i],thresh)
-            data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],thresh)
-            data2['thetaE_decoupID'][i] = checkInvbaseBelow(data2['thetaE_decoupID'][i],data2['thetaE_6hrlyDiff'][i],thresh)
-            data3['thetaE_decoupID'][i] = checkInvbaseBelow(data3['thetaE_decoupID'][i],data3['thetaE_6hrlyDiff'][i],thresh)
+            obs['sondes']['thetaE_decoupID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_decoupID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
+            data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
+            data2['thetaE_decoupID'][i] = checkInvbaseBelow(data2['thetaE_decoupID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
+            data3['thetaE_decoupID'][i] = checkInvbaseBelow(data3['thetaE_decoupID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
@@ -4099,23 +4099,23 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
-        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
-            np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>thresh)]),
-            '+', color = 'k', label = 'sonde-interpd > ' + str(thresh))
+        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>dthresh)]),
+            np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>dthresh)]),
+            '+', color = 'k', label = 'sonde-interpd > ' + str(dthresh))
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'k', label = 'sonde-interpd max d$\Theta_{E}$')
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_2ndinvID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])]),
-            'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$ > ' + str(thresh))
+            'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$ > ' + str(dthresh))
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_decoupID'][i])]),
-            'v', markersize = 8, color = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$ > ' + str(thresh))
+            'v', markersize = 8, color = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
-        plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>thresh)],
-            '+', color = 'darkorange', label = 'ifs-interpd > ' + str(thresh))
+        plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>dthresh)]),
+            data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>dthresh)],
+            '+', color = 'darkorange', label = 'ifs-interpd > ' + str(dthresh))
         if data3['thetaE_invbaseID'][i] >= 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_invbaseID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_invbaseID'][i])]),
@@ -4123,39 +4123,39 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data3['thetaE_2ndinvID'][i] >= 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_2ndinvID'][i])]),
-                'o', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$ > ' + str(thresh))
+                'o', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$ > ' + str(dthresh))
         if data3['thetaE_decoupID'][i] >= 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['thetaE_decoupID'][i])]),
-                'v', markersize = 8, color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$ > ' + str(thresh))
+                'v', markersize = 8, color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
-        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data1['universal_height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>thresh)],
-            '+', color = 'steelblue', label = 'um_ra2m > ' + str(thresh))
+        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>dthresh)]),
+            data1['universal_height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>dthresh)],
+            '+', color = 'steelblue', label = 'um_ra2m > ' + str(dthresh))
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'steelblue', label = 'um_ra2m max d$\Theta_{E}$')
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_2ndinvID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['thetaE_2ndinvID'][i])]),
-            'o', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(thresh))
+            'o', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(dthresh))
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['thetaE_decoupID'][i])]),
-            'v', markersize = 8, color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$ > ' + str(thresh))
+            'v', markersize = 8, color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
-        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)]),
-            data1['universal_height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>thresh)],
-            '+', color = 'forestgreen', label = 'um_casim-100 > ' + str(thresh))
+        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>dthresh)]),
+            data1['universal_height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>dthresh)],
+            '+', color = 'forestgreen', label = 'um_casim-100 > ' + str(dthresh))
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'forestgreen', label = 'um_casim-100 max d$\Theta_{E}$')
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_2ndinvID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['thetaE_2ndinvID'][i])]),
-            'o', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(thresh))
+            'o', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(dthresh))
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['thetaE_decoupID'][i])]),
-            'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(thresh))
+            'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
