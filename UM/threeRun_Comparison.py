@@ -4142,19 +4142,19 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])] > hthresh):
                 temp1 = obs['sondes']['thetaE_invbaseID'][i]; temp2 = obs['sondes']['thetaE_2ndinvID'][i]
                 obs['sondes']['thetaE_invbaseID'][i] = temp2
-                obs['sondes']['thetaE_2ndinvID'][i] = 0
+                obs['sondes']['thetaE_2ndinvID'][i] = np.nan
                 obs['sondes']['thetaE_decoupID'][i] = temp1
         if np.logical_and(data1['universal_height'][int(data1['thetaE_invbaseID'][i])] < hthresh,
             data1['universal_height'][int(data1['thetaE_2ndinvID'][i])] > hthresh):
                 temp1 = data1['thetaE_invbaseID'][i]; temp2 = data1['thetaE_2ndinvID'][i]
                 data1['thetaE_invbaseID'][i] = temp2
-                data1['thetaE_2ndinvID'][i] = 0
+                data1['thetaE_2ndinvID'][i] = np.nan
                 data1['thetaE_decoupID'][i] = temp1
         if np.logical_and(data1['universal_height'][int(data2['thetaE_invbaseID'][i])] < hthresh,
             data1['universal_height'][int(data2['thetaE_2ndinvID'][i])] > hthresh):
                 temp1 = data2['thetaE_invbaseID'][i]; temp2 = data2['thetaE_2ndinvID'][i]
                 data2['thetaE_invbaseID'][i] = temp2
-                data2['thetaE_2ndinvID'][i] = 0
+                data2['thetaE_2ndinvID'][i] = np.nan
                 data2['thetaE_decoupID'][i] = temp1
         if np.logical_and(data3['thetaE_invbaseID'][i] >= 0.0, data3['thetaE_2ndinvID'][i] > 0.0):
             print (i)
@@ -4162,7 +4162,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data1['universal_height'][int(data3['thetaE_2ndinvID'][i])] > hthresh):
                     temp1 = data3['thetaE_invbaseID'][i]; temp2 = data3['thetaE_2ndinvID'][i]
                     data3['thetaE_invbaseID'][i] = temp2
-                    data3['thetaE_2ndinvID'][i] = 0
+                    data3['thetaE_2ndinvID'][i] = np.nan
                     data3['thetaE_decoupID'][i] = temp1
 
         #### ---------------------------------------------------------------
