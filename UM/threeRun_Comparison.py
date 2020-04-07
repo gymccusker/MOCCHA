@@ -4102,6 +4102,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+        fig = plt.figure(figsize=(8,6))
+        ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
             np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
@@ -4167,6 +4169,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.ylim([0,3100])
         plt.xlim([260,320])
         # plt.legend()
+        plt.legend(bbox_to_anchor=(0.5, 0.1, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
