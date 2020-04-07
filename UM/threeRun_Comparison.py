@@ -4092,7 +4092,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ### 3. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
         if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
-            obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            if obs['sondes']['thetaE_decoupID'][i] > 4: obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
             obs['sondes']['thetaE_decoupID'][i] = 0
         if data1['thetaE_invbaseID'][i]-1 == data1['thetaE_decoupID'][i]:
             data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
