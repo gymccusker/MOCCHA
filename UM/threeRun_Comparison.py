@@ -4110,7 +4110,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_decoupID'][i] = 0
 
 
-        ### 4. check if second strongest inversion is greater than 2K: if so, label as top of decoupled stable layer
+        ### 4. check if second strongest inversion is greater than decoupling threshold:
+        ###             if so, label as top of decoupled stable layer
+        ###             if not, set to zero
         if np.round(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])],0) < dthresh:
             obs['sondes']['thetaE_decoupID'][i] = 0
         if np.round(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])],0) < dthresh:
