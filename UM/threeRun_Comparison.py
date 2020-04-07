@@ -4187,9 +4187,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'k', label = 'sonde-interpd max d$\Theta_{E}$')
-        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_2ndinvID'][i])]),
-            np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])]),
-            'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$ > ' + str(sthresh))
+        if obs['sondes']['thetaE_2ndinvID'][i] >= 0.0:
+            plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_2ndinvID'][i])]),
+                np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_2ndinvID'][i])]),
+                'o', color = 'k', label = 'sonde-interpd 2nd max d$\Theta_{E}$ > ' + str(sthresh))
         plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_decoupID'][i])]),
             'v', markersize = 8, color = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
@@ -4218,9 +4219,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'steelblue', label = 'um_ra2m max d$\Theta_{E}$')
-        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_2ndinvID'][i])]),
-            np.squeeze(data1['universal_height'][int(data1['thetaE_2ndinvID'][i])]),
-            'o', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(sthresh))
+        if data1['thetaE_2ndinvID'][i] >= 0.0:
+            plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_2ndinvID'][i])]),
+                np.squeeze(data1['universal_height'][int(data1['thetaE_2ndinvID'][i])]),
+                'o', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(sthresh))
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['thetaE_decoupID'][i])]),
             'v', markersize = 8, color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$ > ' + str(dthresh))
@@ -4232,9 +4234,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['thetaE_invbaseID'][i])]),
             's', markersize = 8, color = 'forestgreen', label = 'um_casim-100 max d$\Theta_{E}$')
-        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_2ndinvID'][i])]),
-            np.squeeze(data1['universal_height'][int(data2['thetaE_2ndinvID'][i])]),
-            'o', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(sthresh))
+        if data3['thetaE_2ndinvID'][i] >= 0.0:
+            plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_2ndinvID'][i])]),
+                np.squeeze(data1['universal_height'][int(data2['thetaE_2ndinvID'][i])]),
+                'o', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(sthresh))
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_decoupID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['thetaE_decoupID'][i])]),
             'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
