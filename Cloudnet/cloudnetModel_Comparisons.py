@@ -524,7 +524,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     temp_inv[:nanindices[0]] = obsinv[:nanindices[0]]
     temp_inv[nanindices[3]+1:nanindices[4]] = obsinv[nanindices[3]+1:nanindices[4]]
     temp_inv[nanindices[7]+1:nanindices[8]] = obsinv[nanindices[7]+1:nanindices[8]]
-    temp_sfml = np.zeros(len(obsfml))
+    temp_sfml = np.zeros(len(obsmlh))
     temp_sfml[:] = np.nan
     temp_sfml[:nanindices[0]] = obsmlh[:nanindices[0]]
     temp_sfml[nanindices[3]+1:nanindices[4]] = obsmlh[nanindices[3]+1:nanindices[4]]
