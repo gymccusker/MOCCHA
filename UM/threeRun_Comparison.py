@@ -4154,10 +4154,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             if np.round(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_decoupID'][i])],0) < dthresh:
                 data3['thetaE_decoupID'][i] = 0
 
-        ### 4. check if decoupID is the lowest strong inversion
-
-
-
         # for n in range(0,3):
         #     obs['sondes']['thetaE_decoupID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_decoupID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
         #     data1['thetaE_decoupID'][i] = checkInvbaseBelow(data1['thetaE_decoupID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
