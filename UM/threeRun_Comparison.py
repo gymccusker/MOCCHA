@@ -4214,6 +4214,19 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
             data3['thetaE_decoupID'][i] = 0.0
 
+        ### if both the decoupled and main invs below 325m, then it's not really "decoupled" and likely the primary inversion
+        if np.logical_and(obs['sondes']['thetaE_decoupID'][i] <= 6.0, obs['sondes']['thetaE_invbaseID'][i] <= 6.0): ### 325m
+            obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            obs['sondes']['thetaE_decoupID'][i] = 0.0
+        if np.logical_and(data1['thetaE_decoupID'][i] <= 6.0, data1['thetaE_invbaseID'][i] <= 6.0): ### 325m
+            data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
+            data1['thetaE_decoupID'][i] = 0.0
+        if np.logical_and(data2['thetaE_decoupID'][i] <= 6.0, data2['thetaE_invbaseID'][i] <= 6.0): ### 325m
+            data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
+            data2['thetaE_decoupID'][i] = 0.0
+        if np.logical_and(data3['thetaE_decoupID'][i] <= 6.0, data3['thetaE_invbaseID'][i] <= 6.0): ### 325m
+            data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
+            data3['thetaE_decoupID'][i] = 0.0
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
