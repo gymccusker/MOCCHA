@@ -4179,6 +4179,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                     data3['thetaE_2ndinvID'][i] = np.nan
                     data3['thetaE_decoupID'][i] = temp1
 
+        ### if the decoupled inv is above 1km, then it's not really "decoupled" and likely the primary inversion
+        if obs['sondes']['thetaE_decoupID'][i] > 13.0: ### 955m
+            obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            obs['sondes']['thetaE_decoupID'][i] = 0.0
+
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
         #### ---------------------------------------------------------------
