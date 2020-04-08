@@ -4075,7 +4075,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         # ### 1. Look for first inversion > dthresh, avoiding index = 0 (so decoupID is incremented by one to reference full Z array later)
-        print(i)
         if np.size(np.where(obs['sondes']['thetaE_Diff'][i,1:27] > dthresh)) > 0:
             obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,1:27] > dthresh)[0][0]
             obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
@@ -4171,7 +4170,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data2['thetaE_2ndinvID'][i] = np.nan
                 data2['thetaE_decoupID'][i] = temp1
         if np.logical_and(data3['thetaE_invbaseID'][i] >= 0.0, data3['thetaE_2ndinvID'][i] > 0.0):
-            # print (i)
             if np.logical_and(data1['universal_height'][int(data3['thetaE_invbaseID'][i])] < hthresh,
                 data1['universal_height'][int(data3['thetaE_2ndinvID'][i])] > hthresh):
                     temp1 = data3['thetaE_invbaseID'][i]; temp2 = data3['thetaE_2ndinvID'][i]
@@ -4183,6 +4181,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if obs['sondes']['thetaE_decoupID'][i] > 13.0: ### 955m
             obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
             obs['sondes']['thetaE_decoupID'][i] = 0.0
+        if data1['thetaE_decoupID'][i] > 13.0: ### 955m
+            data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
+            data1['thetaE_decoupID'][i] = 0.0
+        if data2['thetaE_decoupID'][i] > 13.0: ### 955m
+            data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
+            data2['thetaE_decoupID'][i] = 0.0
+        if data3['thetaE_decoupID'][i] > 13.0: ### 955m
+            data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
+            data3['thetaE_decoupID'][i] = 0.0
+
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase heights
