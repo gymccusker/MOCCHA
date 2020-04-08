@@ -3942,7 +3942,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ####        dthresh = threshold for top of decoupled surface layer (smaller than sthresh)
     ####        sthresh = threshold for secondary inversion above main inversion layer (used for main and secondary inversion)
     #### ---------------------------------------------------------------
-    dthresh = 1.5
+    dthresh = 1.0
     sthresh = 2.0
 
     #### ---------------------------------------------------------------
@@ -4075,7 +4075,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         # ### 1. Look for first inversion > dthresh, avoiding index = 0 (so decoupID is incremented by one to reference full Z array later)
-        obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][0,1:27] > dthresh)[0][0]
+        obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,1:27] > dthresh)[0][0]
         obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
 
         # obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
