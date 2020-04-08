@@ -4101,10 +4101,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ### 2. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
         ###            change only made if original decoupID also greater than sthresh
-        # if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
-        #     if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])] > sthresh:
-        #         obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
-            # obs['sondes']['thetaE_decoupID'][i] = 0
+        if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
+            if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])] > sthresh:
+                obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+            obs['sondes']['thetaE_decoupID'][i] = 0
         if data1['thetaE_invbaseID'][i]-1 == data1['thetaE_decoupID'][i]:
             if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_decoupID'][i])] > sthresh:
                 data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
