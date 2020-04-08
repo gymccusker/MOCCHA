@@ -3108,6 +3108,7 @@ def main():
     # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
     print ('Load calculated model inversion heights...')
+    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions.npy').item()
     data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions.npy').item()
     data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions.npy').item()
     data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions.npy').item()
