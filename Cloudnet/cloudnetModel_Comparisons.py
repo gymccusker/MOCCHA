@@ -499,9 +499,16 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     drift = np.where(np.logical_and(obs['inversions']['thetaE']['time'] >= 225.9, obs['inversions']['thetaE']['time'] <= 258.0))
 
     #### ------------------------------------------------------------------------------
+    #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
+    #### ------------------------------------------------------------------------------
+    obsinv = obs['inversions']['thetaE']['invbase']
+    obsmlh = obs['inversions']['thetaE']['sfmlheight']
+
+    #### ------------------------------------------------------------------------------
     #### need to identify what cloudnet indices correspond to radiosondes
     #### ------------------------------------------------------------------------------
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
+    temp_time = obs['inversions']['thetaE']['time']         #### temporary time array for indexing
 
     #### remove DOY 230, 253, 257 manually for now
     nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
@@ -510,7 +517,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     obsmlh[nanindices] = np.nan
 
     ### save non-nan values to dictionary
-    obs['inversions']['TimesForCloudnet'] = obs['inversions']['time'][~np.isnan(obs['inversions']['thetaE']['time'])]
+    obs['inversions']['TimesForCloudnet'] = obs['inversions']['thetaE']['time'][~np.isnan(obs['inversions']['thetaE']['time'])]
     obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
     obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
 
