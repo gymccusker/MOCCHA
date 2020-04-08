@@ -3970,6 +3970,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_decoupID'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
     data3['thetaE_decoupID'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
     data3['thetaE_decoupID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['thetaE_decoupleZ'] = np.zeros([np.size(obs['sondes']['thetaE_Diff'],0)])
+    data1['thetaE_decoupleZ'] = np.zeros([np.size(data1['thetaE_6hrlyDiff'],0)])
+    data2['thetaE_decoupleZ'] = np.zeros([np.size(data2['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupleZ'] = np.zeros([np.size(data3['thetaE_6hrlyDiff'],0)])
+    data3['thetaE_decoupleZ'][:] = np.nan           ## fill with nans to account for missing files when populating
 
     #### find maximum dThetaE
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
@@ -4258,19 +4263,24 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['thetaE_decoupID'][i] = 0.0
 
         #### ---------------------------------------------------------------
-        #### save timeseries of invbase heights
+        #### save timeseries of invbase and decoupleZ heights
         #### ---------------------------------------------------------------
         obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
         data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
         data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
         if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
+        obs['sondes']['thetaE_decoupleZ'][i] = data1['universal_height'][int(obs['sondes']['thetaE_decoupID'][i])]
+        data1['thetaE_decoupleZ'][i] = data1['universal_height'][int(data1['thetaE_decoupID'][i])]
+        data2['thetaE_decoupleZ'][i] = data1['universal_height'][int(data2['thetaE_decoupID'][i])]
+        if data3['thetaE_decoupID'][i] >= 0.0: data3['thetaE_decoupleZ'][i] = data1['universal_height'][int(data3['thetaE_decoupID'][i])]
+
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-        fig = plt.figure(figsize=(8,6))
+        fig = plt.figure(figsize=(9,6))
         ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
         # plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
@@ -4373,13 +4383,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     drift = np.where(np.logical_and(obs['inversions']['doy'] >= 225.9, obs['inversions']['doy'] <= 258.0))
     ### save in dict for ease
     obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
-    
+
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
     fig = plt.figure(figsize=(13,7))
     ax  = fig.add_axes([0.1,0.15,0.55,0.7])   # left, bottom, width, height
-    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
+    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'JV_Radiosondes')
     plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'],
         'ks', label = 'radiosondes')
@@ -4408,131 +4418,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig('../FIGS/inversionIdent/InvbaseTS.png')
     plt.show()
 
+    ###---------------------------------------------------------------------------------------------
+    ###         Save inversions to numpy dictionary
+    ###---------------------------------------------------------------------------------------------
 
-    #
-    # #################################################################
-    # ## create figure and axes instances
-    # #################################################################
-    # ax  = fig.add_axes([0.08,0.56,0.45,0.36])   # left, bottom, width, height
-    # plt.plot([0, 3000],[0, 3000], '--', color = 'lightgrey')
-    # plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
-    #     color = 'k', label = 'Obs_Radiosondes')
-    # plt.plot(data1['time_hrly'][::6], bldepth1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(data2['time_hrly'][::6], bldepth2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(data3['time_hrly'][::6], bldepth3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.legend(bbox_to_anchor=(0.0, 0.67, 1., .102), loc=4, ncol=2)
-    # plt.title('BL_depth / sfmlheight [m]')
-    # ax.set_xlim([doy[0],doy[-1]])
-    # # plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
-
-    # ax  = fig.add_axes([0.08,0.1,0.45,0.36])   # left, bottom, width, height
-    # plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
-    #     color = 'k', label = 'Obs: main inversion')
-    # plt.plot(data1['time_hrly'][::6], inv1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(data2['time_hrly'][::6], inv2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(data1['time_hrly'][::6], inv3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # # plt.legend()
-    # plt.title('Main inversion height [m]')
-    # ax.set_xlim([doy[0],doy[-1]])
-    # plt.xlabel('Day of year')
-    # plt.ylabel('Z [m]')
-
-    # #### -----------------------------------------------------------------
-    # #### scatterplots
-    # #### -----------------------------------------------------------------
-    # ax  = fig.add_axes([0.6,0.64,0.15,0.22])   # left, bottom, width, height
-    # ymax1 = 750
-    # xmax1 = ymax1
-    # blmelt1 = bldepth1[melt]
-    # blmelt2 = bldepth2[melt]
-    # blmelt3 = bldepth3[melt]
-    # plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.xlim([0,xmax1])
-    # plt.ylim([0,ymax1])
-    # plt.xlabel('Obs$_{SML}$ [m]')
-    # plt.ylabel('Model$_{SML}$ [m]')
-    # plt.title('Melt')
-    #
-    # ax  = fig.add_axes([0.83,0.64,0.15,0.22])   # left, bottom, width, height
-    # ymax1 = 1500
-    # xmax1 = ymax1
-    # blfreeze1 = bldepth1[freeze]
-    # blfreeze2 = bldepth2[freeze]
-    # blfreeze3 = bldepth3[freeze]
-    # plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.xlim([0,xmax1])
-    # plt.ylim([0,ymax1])
-    # plt.xlabel('Obs$_{SML}$ [m]')
-    # plt.ylabel('Model$_{SML}$ [m]')
-    # plt.title('Freeze')
-    #
-    # ax  = fig.add_axes([0.6,0.18,0.15,0.22])   # left, bottom, width, height
-    # ymax1 = 2700
-    # xmax1 = ymax1
-    # invmelt1 = inv1[melt]
-    # invmelt2 = inv2[melt]
-    # invmelt3 = inv3[melt]
-    # plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.xlim([0,xmax1])
-    # plt.ylim([0,ymax1])
-    # plt.xlabel('Obs$_{inv}$ [m]')
-    # plt.ylabel('Model$_{inv}$ [m]')
-    # plt.title('Melt')
-    #
-    # ax  = fig.add_axes([0.83,0.18,0.15,0.22])   # left, bottom, width, height
-    # ymax1 = 2700
-    # xmax1 = ymax1
-    # invfreeze1 = inv1[freeze]
-    # invfreeze2 = inv2[freeze]
-    # invfreeze3 = inv3[freeze]
-    # plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze1[::6],
-    #     '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze2[::6],
-    #     'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
-    # plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze3[::6],
-    #     'd', color = 'darkorange', markeredgecolor = 'saddlebrown',  label = label3)
-    # plt.xlim([0,xmax1])
-    # plt.ylim([0,ymax1])
-    # plt.xlabel('Obs$_{inv}$ [m]')
-    # plt.ylabel('Model$_{inv}$ [m]')
-    # plt.title('Freeze')
-    #
-    #
-    # print ('******')
-    # print ('')
-    # print ('Finished plotting! :)')
-    # print ('')
-    #
-    # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_oden_metum_ifs_casim-100.svg'
-    # # fileout = '../FIGS/comparisons/BLDepth_calcInvHeights_timeseries_wScatter-SplitSeason_metum.svg'
-    # plt.savefig(fileout)
-    # plt.show()
+    data_obs = {}
+    data_obs['invbase'] = obs['sondes']['thetaE_invbase'][:]
+    data_obs['time'] = obs['sondes']['doy_drift'][:]
+    data_obs['decoupleZ']
 
 
     return data1, data2, data3, obs
