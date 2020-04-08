@@ -4075,9 +4075,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         # ### 1. Look for first inversion > dthresh, avoiding index = 0 (so decoupID is incremented by one to reference full Z array later)
-        if obs['sondes']['thetaE_invbaseID'][i] > 0.0:
-            obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][0,1:int(obs['sondes']['thetaE_invbaseID'][i])] > dthresh)[0][0]
-            obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
+        obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][0,1:27] > dthresh)[0][0]
+        obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
 
         # obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
         # data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
