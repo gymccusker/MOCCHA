@@ -3998,15 +3998,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         data2['thetaE_invbaseID'][i] = data2['thetaE_invbaseID'][i] + 1
         data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
 
-        #### ---------------------------------------------------------------
-        #### check if strong gradient starts at lower i-index (repeat 7x for good measure!)
-        #### ---------------------------------------------------------------
-        for n in range(0,7):
-            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],sthresh)
-            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],sthresh)
-            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],sthresh)
-            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],sthresh)
-
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
@@ -4018,8 +4009,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         ## 1. check for second strongest inversion above invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
             # if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
-            if np.size(np.where(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]+1)27] > sthresh)) > 0:
-                obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]+1):27] > sthresh)[0][0]
+            if np.size(np.where(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]+1):27] > sthresh)) > 0:
+                temp = np.where(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]+1):27] > sthresh)
+                print(i)
+                if temp[0][0] > 0.0:
+                    obs['sondes']['thetaE_2ndinvID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]+1) + temp[0][0]
+                elif temp[0][0] == 0.0:
+                    obs['sondes']['thetaE_2ndinvID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]+1) + temp[0][1]
                 # obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
                 #     np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][1])[0][0]
         if np.size(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27]) > 1:   ## can only look for 2nd highest if there are >1 indices available
@@ -4068,6 +4064,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     data1['thetaE_2ndinvID'][i] = checkInvbaseBelow(data1['thetaE_2ndinvID'][i],data1['thetaE_6hrlyDiff'][i],dthresh)
         #     data2['thetaE_2ndinvID'][i] = checkInvbaseBelow(data2['thetaE_2ndinvID'][i],data2['thetaE_6hrlyDiff'][i],dthresh)
         #     data3['thetaE_2ndinvID'][i] = checkInvbaseBelow(data3['thetaE_2ndinvID'][i],data3['thetaE_6hrlyDiff'][i],dthresh)
+
+        #### ---------------------------------------------------------------
+        #### INVBASE: check if strong gradient starts at lower i-index (repeat 7x for good measure!)
+        #### ---------------------------------------------------------------
+        for n in range(0,7):
+            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['thetaE_Diff'][i],sthresh)
+            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['thetaE_6hrlyDiff'][i],sthresh)
+            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['thetaE_6hrlyDiff'][i],sthresh)
+            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['thetaE_6hrlyDiff'][i],sthresh)
 
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
