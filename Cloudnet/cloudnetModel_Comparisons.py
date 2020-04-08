@@ -500,9 +500,9 @@ def plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data,
     # data1['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data1['inversions']['mday']))
     # data2['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data2['inversions']['mday']))
     # data3['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data3['inversions']['mday']))
-    data1['inversions']['doy'] = data1['inversions']['time'])
-    data2['inversions']['doy'] = data2['inversions']['time'])
-    data3['inversions']['doy'] = data3['inversions']['time'])    
+    data1['inversions']['doy'] = data1['inversions']['time']
+    data2['inversions']['doy'] = data2['inversions']['time']
+    data3['inversions']['doy'] = data3['inversions']['time']
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
