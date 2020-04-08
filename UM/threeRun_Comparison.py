@@ -4057,7 +4057,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                         elif temp[0][0] == 0.0:
                             data3['thetaE_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][1]
 
-
         ### 2. check if the main inversion is at the level below. if it is, look for 3rd biggest dThetaE
         # if obs['sondes']['thetaE_2ndinvID'][i]-1 == obs['sondes']['thetaE_invbaseID'][i]:
         #     if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
@@ -4240,21 +4239,22 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_decoupID'][i] = 0.0
 
         ### if both the decoupled and main invs below 325m, then it's not really "decoupled" and likely the primary inversion
-        if np.logical_and(obs['sondes']['thetaE_decoupID'][i] <= 6.0, obs['sondes']['thetaE_invbaseID'][i] <= 6.0): ### 325m
+        hind = 6.0
+        if np.logical_and(obs['sondes']['thetaE_decoupID'][i] <= hind, obs['sondes']['thetaE_invbaseID'][i] <= hind): ### 325m
             if obs['sondes']['thetaE_decoupID'][i] > 0.0:
-                obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
+                # obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
                 obs['sondes']['thetaE_decoupID'][i] = 0.0
-        if np.logical_and(data1['thetaE_decoupID'][i] <= 6.0, data1['thetaE_invbaseID'][i] <= 6.0): ### 325m
+        if np.logical_and(data1['thetaE_decoupID'][i] <= hind, data1['thetaE_invbaseID'][i] <= hind):
             if data1['thetaE_decoupID'][i] > 0.0:
-                data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
+                # data1['thetaE_invbaseID'][i] = data1['thetaE_decoupID'][i]
                 data1['thetaE_decoupID'][i] = 0.0
-        if np.logical_and(data2['thetaE_decoupID'][i] <= 6.0, data2['thetaE_invbaseID'][i] <= 6.0): ### 325m
+        if np.logical_and(data2['thetaE_decoupID'][i] <= hind, data2['thetaE_invbaseID'][i] <= hind):
             if data2['thetaE_decoupID'][i] > 0.0:
-                data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
+                # data2['thetaE_invbaseID'][i] = data2['thetaE_decoupID'][i]
                 data2['thetaE_decoupID'][i] = 0.0
-        if np.logical_and(data3['thetaE_decoupID'][i] <= 6.0, data3['thetaE_invbaseID'][i] <= 6.0): ### 325m
+        if np.logical_and(data3['thetaE_decoupID'][i] <= hind, data3['thetaE_invbaseID'][i] <= hind):
             if data1['thetaE_decoupID'][i] > 0.0:
-                data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
+                # data3['thetaE_invbaseID'][i] = data3['thetaE_decoupID'][i]
                 data3['thetaE_decoupID'][i] = 0.0
 
         #### ---------------------------------------------------------------
