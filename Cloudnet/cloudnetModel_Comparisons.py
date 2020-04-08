@@ -619,25 +619,16 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
 
     #### ---------------------------------------------------------------
     #### prepare model inversion data
+    ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
     #### ---------------------------------------------------------------
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT DATA FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
-    data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
-    data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
-    data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
-    data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
-    data3['inversions']['doy_drift'] = data3['inversions']['doy'][driftmod[0][1:-2]]
-    data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0][1:-2]]
 
     #### make inversion tempvars to allow for easy subsampling
-    tim1 = np.squeeze(data1['inversions']['doy_drift'][data1['hrly_flag']])
-    tim2 = np.squeeze(data2['inversions']['doy_drift'][data2['hrly_flag']])
-    tim3 = np.squeeze(data3['inversions']['doy_drift'][data3['hrly_flag']])
-    inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
-    inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
-    inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
+    tim1 = data1['inversions']['time']
+    tim2 = data2['inversions']['time']
+    tim3 = data3['inversions']['time']
+    inv1 = data1['inversions']['invbase']
+    inv2 = data2['inversions']['invbase']
+    inv3 = data3['inversions']['invbase']
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
