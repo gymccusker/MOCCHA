@@ -2625,10 +2625,15 @@ def main():
     #################################################################
     ## load calculated model inversion heights
     #################################################################
+    # print ('Load calculated model inversion heights...')
+    # data1['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_RA2M_inversion_results.mat')
+    # data2['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_CASIM-100_inversion_results.mat')
+    # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
+
     print ('Load calculated model inversion heights...')
-    data1['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_RA2M_inversion_results.mat')
-    data2['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_CASIM-100_inversion_results.mat')
-    data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
+    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions.npy').item()
+    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions.npy').item()
+    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions.npy').item()
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -2719,7 +2724,7 @@ def main():
     # -------------------------------------------------------------
     # Identify inversions in model / radiosonde data
     # -------------------------------------------------------------
-    figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBLCv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
