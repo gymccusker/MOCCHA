@@ -4063,30 +4063,30 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     if np.size(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
         #         obs['sondes']['thetaE_2ndinvID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,:] ==
         #             np.sort(obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
-        if data1['thetaE_2ndinvID'][i]-1 == data1['thetaE_invbaseID'][i]:
-            if np.size(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
-                data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] ==
-                    np.sort(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
-        if data2['thetaE_2ndinvID'][i]-1 == data2['thetaE_invbaseID'][i]:
-            if np.size(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
-                data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] ==
-                    np.sort(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
-        if data3['thetaE_2ndinvID'][i]-1 == data3['thetaE_invbaseID'][i]:
-            if np.size(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
-                data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
-                    np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
+        # if data1['thetaE_2ndinvID'][i]-1 == data1['thetaE_invbaseID'][i]:
+        #     if np.size(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
+        #         data1['thetaE_2ndinvID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,:] ==
+        #             np.sort(data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
+        # if data2['thetaE_2ndinvID'][i]-1 == data2['thetaE_invbaseID'][i]:
+        #     if np.size(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
+        #         data2['thetaE_2ndinvID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,:] ==
+        #             np.sort(data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
+        # if data3['thetaE_2ndinvID'][i]-1 == data3['thetaE_invbaseID'][i]:
+        #     if np.size(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27]) > 2:   ## can only look for 2nd highest if there are >1 indices available
+        #         data3['thetaE_2ndinvID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] ==
+        #             np.sort(data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_invbaseID'][i]):27])[::-1][2])[0][0]
 
         ### 4. check if second strongest inversion is greater than chosen threshold: if not, set index to zero (indicating no notable secondary inv above)
         # if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_2ndinvID'][i])] < sthresh:
         #     obs['sondes']['thetaE_2ndinvID'][i] = 0
-        if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
-            data1['thetaE_2ndinvID'][i] = 0
-        if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
-            data2['thetaE_2ndinvID'][i] = 0
-        if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
-            if data3['thetaE_2ndinvID'][i] >= 0.0:
-                if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
-                    data3['thetaE_2ndinvID'][i] = 0
+        # if data1['thetaE_6hrlyDiff'][i,int(data1['thetaE_2ndinvID'][i])] < sthresh:
+        #     data1['thetaE_2ndinvID'][i] = 0
+        # if data2['thetaE_6hrlyDiff'][i,int(data2['thetaE_2ndinvID'][i])] < sthresh:
+        #     data2['thetaE_2ndinvID'][i] = 0
+        # if np.nanmax(data3['thetaE_6hrlyDiff'][i,lt3000]) >= 0.0:       ### if the file is not missing (filled with nans)
+        #     if data3['thetaE_2ndinvID'][i] >= 0.0:
+        #         if data3['thetaE_6hrlyDiff'][i,int(data3['thetaE_2ndinvID'][i])] < sthresh:
+        #             data3['thetaE_2ndinvID'][i] = 0
 
         # for n in range(0,3):
         #     obs['sondes']['thetaE_2ndinvID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_2ndinvID'][i],obs['sondes']['thetaE_Diff'][i],dthresh)
