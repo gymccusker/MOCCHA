@@ -4094,7 +4094,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data2['thetaE_decoupID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,1:27] > dthresh)[0][0]
             data2['thetaE_decoupID'][i] = data2['thetaE_decoupID'][i] + 1.0
         else:       ## only round up to dthresh if we need to!
-            data2['thetaE_decoupID'][i] = np.where(np.round(data2'thetaE_6hrlyDiff'][i,1:27],0) >= dthresh)[0][0]
+            data2['thetaE_decoupID'][i] = np.where(np.round(data2[]'thetaE_6hrlyDiff'][i,1:27],0) >= dthresh)[0][0]
             data2['thetaE_decoupID'][i] = data2['thetaE_decoupID'][i] + 1.0
         ### ecmwf_ifs
         if np.size(np.where(data3['thetaE_6hrlyDiff'][i,1:27] > dthresh)) > 0:
