@@ -3942,7 +3942,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ####        dthresh = threshold for top of decoupled surface layer (smaller than sthresh)
     ####        sthresh = threshold for secondary inversion above main inversion layer (used for main and secondary inversion)
     #### ---------------------------------------------------------------
-    dthresh = 1.0
+    dthresh = 1.5
     sthresh = 2.0
 
     #### ---------------------------------------------------------------
