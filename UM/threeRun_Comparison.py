@@ -4074,13 +4074,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        ### 1. sort differences by magnitude for debugging
-        obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
-        data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
-        data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
-        data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
-
-        np.save('working_dataObs',obs['sondes'])
+        # ### 1. sort differences by magnitude for debugging
+        # obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
+        # data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        # data2['thetaE_orderedInv'] = np.sort(data2['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        # data3['thetaE_orderedInv'] = np.sort(data3['thetaE_6hrlyDiff'][:,lt3000[::-1]])
+        #
+        # np.save('working_dataObs',obs['sondes'])
 
         ### 2. check for second strongest inversion below invbaseID (index = 1)
         if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
@@ -4092,6 +4092,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_decoupID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,:] == np.sort(data3['thetaE_6hrlyDiff'][i,:int(data3['thetaE_invbaseID'][i])+1])[::-1][1])[0][0]
 
         ### 3. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
+        ###            change only made if original decoupID also greater than sthresh
         if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['thetaE_decoupID'][i]:
             if obs['sondes']['thetaE_Diff'][i,int(obs['sondes']['thetaE_decoupID'][i])] > sthresh:
                 obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_decoupID'][i]
