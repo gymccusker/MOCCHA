@@ -4075,12 +4075,34 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         # ### 1. Look for first inversion > dthresh, avoiding index = 0 (so decoupID is incremented by one to reference full Z array later)
+        ### obs
         if np.size(np.where(obs['sondes']['thetaE_Diff'][i,1:27] > dthresh)) > 0:
             obs['sondes']['thetaE_decoupID'][i] = np.where(obs['sondes']['thetaE_Diff'][i,1:27] > dthresh)[0][0]
             obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
         else:       ## only round up to dthresh if we need to!
             obs['sondes']['thetaE_decoupID'][i] = np.where(np.round(obs['sondes']['thetaE_Diff'][i,1:27],0) >= dthresh)[0][0]
             obs['sondes']['thetaE_decoupID'][i] = obs['sondes']['thetaE_decoupID'][i] + 1.0
+        ### um_ra2m
+        if np.size(np.where(data1['thetaE_6hrlyDiff'][i,1:27] > dthresh)) > 0:
+            data1['thetaE_decoupID'][i] = np.where(data1['thetaE_6hrlyDiff'][i,1:27] > dthresh)[0][0]
+            data1['thetaE_decoupID'][i] = data1['thetaE_decoupID'][i] + 1.0
+        else:       ## only round up to dthresh if we need to!
+            data1['thetaE_decoupID'][i] = np.where(np.round(data1['thetaE_6hrlyDiff'][i,1:27],0) >= dthresh)[0][0]
+            data1['thetaE_decoupID'][i] = data1['thetaE_decoupID'][i] + 1.0
+        ### um_casim-100
+        if np.size(np.where(data2['thetaE_6hrlyDiff'][i,1:27] > dthresh)) > 0:
+            data2['thetaE_decoupID'][i] = np.where(data2['thetaE_6hrlyDiff'][i,1:27] > dthresh)[0][0]
+            data2['thetaE_decoupID'][i] = data2['thetaE_decoupID'][i] + 1.0
+        else:       ## only round up to dthresh if we need to!
+            data2['thetaE_decoupID'][i] = np.where(np.round(data2'thetaE_6hrlyDiff'][i,1:27],0) >= dthresh)[0][0]
+            data2['thetaE_decoupID'][i] = data2['thetaE_decoupID'][i] + 1.0
+        ### ecmwf_ifs
+        if np.size(np.where(data3['thetaE_6hrlyDiff'][i,1:27] > dthresh)) > 0:
+            data3['thetaE_decoupID'][i] = np.where(data3['thetaE_6hrlyDiff'][i,1:27] > dthresh)[0][0]
+            data3['thetaE_decoupID'][i] = data3['thetaE_decoupID'][i] + 1.0
+        else:       ## only round up to dthresh if we need to!
+            data3['thetaE_decoupID'][i] = np.where(np.round(data3['thetaE_6hrlyDiff'][i,1:27],0) >= dthresh)[0][0]
+            data3['thetaE_decoupID'][i] = data3['thetaE_decoupID'][i] + 1.0
 
         # obs['sondes']['thetaE_orderedInv'] = np.sort(obs['sondes']['thetaE_Diff'][:,lt3000[::-1]])
         # data1['thetaE_orderedInv'] = np.sort(data1['thetaE_6hrlyDiff'][:,lt3000[::-1]])
