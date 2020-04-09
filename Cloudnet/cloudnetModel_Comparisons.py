@@ -589,7 +589,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     obs['inversions']['scaledTime'] = obs_data['time_6hrly']
     obs['inversions']['blCv'] = np.zeros([np.size(obs_data['height_6hrly'],0),np.size(obs_data['height_6hrly'],1)]); obs['inversions']['blCv'][:] = np.nan
 
-    ###
+    ### fill arrays with cloudnet data below each invbase
     for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
         print(str(i) + 'th timestep (radiosonde):')
 
@@ -600,6 +600,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
         ### for main inversion
         ###-----------------------------------------------------------------------------------------
         ### create array of height points under the identified inversion
+        ###         +1 includes invbase in array
         if obs['inversions']['invbase_kIndex'][i] >= 0.0:
             hgts = obs_data['height_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
         else:
