@@ -828,24 +828,12 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     plt.ylim([0,3e3])
     plt.show()
 
-    # # print (zind3)
-    # #### re-check inversion algorithm success rate to make sure no !0 values got dropped
-    # zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    # zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
-    # zzind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    # zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
-    # zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    # zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
-    #
-
     ### set 6 hourly cloudnet Cv arrays as tempvars
     ra2m_Cv = um_data['model_Cv_filtered'][::6,:]
     casim_Cv = misc_data['model_Cv_filtered'][::6,:]
     ifs_Cv = ifs_data['model_snow_Cv_filtered'][::6,:]
 
-    # ### try i = 0 first to see if it works
-    # ### this will go into a loop once tested
-    # # i = 110
+    ### find all Cv data below identified inversion
     for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
         print ()
         print(str(i) + 'th timestep (model data):')
@@ -935,44 +923,44 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     plt.xlim([226,258])
     plt.show()
 
-    # ### um_ra2m
-    # plt.subplot(211)
-    # plt.title(label1)
-    # plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
-    # plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
-    # plt.xlim([226,258])
-    # plt.subplot(212)
-    # plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
-    # plt.xlim([226,258])
-    # plt.show()
+    ### um_ra2m
+    plt.subplot(211)
+    plt.title(label1)
+    plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
 
-    # ### um_casim-100
-    # plt.subplot(211)
-    # plt.title(label2)
-    # plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
-    # plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
-    # plt.xlim([226,258])
-    # plt.subplot(212)
-    # plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'])); plt.ylim([0,1])
-    # plt.xlim([226,258])
-    # plt.show()
+    ### um_casim-100
+    plt.subplot(211)
+    plt.title(label2)
+    plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
 
-    # ### ecmwf_ifs
-    # plt.subplot(211)
-    # plt.title(label3)
-    # plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
-    # plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
-    # plt.xlim([226,258])
-    # plt.subplot(212)
-    # plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'])); plt.ylim([0,1])
-    # plt.xlim([226,258])
-    # plt.show()
+    ### ecmwf_ifs
+    plt.subplot(211)
+    plt.title(label3)
+    plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
 
     ### profiles
     plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
-    # plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
-    # plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
-    # plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
+    plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
+    plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
     plt.legend()
     plt.show()
 
