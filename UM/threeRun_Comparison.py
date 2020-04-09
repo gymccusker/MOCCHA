@@ -4426,24 +4426,28 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data_obs['invbase'] = obs['sondes']['thetaE_invbase'][:]
     data_obs['time'] = obs['sondes']['doy_drift'][:]
     data_obs['sfmlheight'] = obs['sondes']['thetaE_decoupleZ'][:]
+    data_obs['height'] = data1['universal_height']
     np.save('obs_inversions', data_obs)
 
     data_1 = {}
     data_1['invbase'] = data1['thetaE_invbase'][:]
     data_1['time'] = data1['time_6hrly'][:]
     data_1['sfmlheight'] = data1['thetaE_decoupleZ'][:]
+    data_1['height'] = data1['universal_height']
     np.save('um_ra2m_inversions', data_1)
 
     data_2 = {}
     data_2['invbase'] = data2['thetaE_invbase'][:]
     data_2['time'] = data2['time_6hrly'][:]
     data_2['sfmlheight'] = data2['thetaE_decoupleZ'][:]
+    data_2['height'] = data1['universal_height']
     np.save('um_casim-100_inversions', data_2)
 
     data_3 = {}
     data_3['invbase'] = data3['thetaE_invbase'][:]
     data_3['time'] = data3['time_6hrly'][:]
     data_3['sfmlheight'] = data3['thetaE_decoupleZ'][:]
+    data_3['height'] = data1['universal_height']
     np.save('ecmwf_ifs_inversions', data_3)
 
     return data1, data2, data3, obs
