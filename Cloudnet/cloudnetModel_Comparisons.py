@@ -617,32 +617,32 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
                 obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
-    # #### ---------------------------------------------------------------
-    # #### prepare model inversion data
-    # ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
-    # #### ---------------------------------------------------------------
-    #
-    # #### make inversion tempvars to allow for easy subsampling
-    # tim1 = data1['inversions']['time']
-    # tim2 = data2['inversions']['time']
-    # tim3 = data3['inversions']['time']
-    # inv1 = data1['inversions']['invbase']
-    # inv2 = data2['inversions']['invbase']
-    # inv3 = data3['inversions']['invbase']
-    #
-    # #### calculate inversion algorithm success rate
-    # ind1 = np.where(inv1 >= 0.0)  ## non-nan values
-    # data1['inversions']['successRate'] = np.size(ind1[0]) / np.float(np.size(inv1)) * 100.0
-    # ind2 = np.where(inv2 >= 0.0)  ## non-nan values
-    # data2['inversions']['successRate'] = np.size(ind2[0]) / np.float(np.size(inv2)) * 100.0
-    # ind3 = np.where(inv3 >= 0.0)  ## non-nan values
-    # data3['inversions']['successRate'] = np.size(ind3[0]) / np.float(np.size(inv3)) * 100.0
-    #
-    # print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
-    # print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
-    # print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
-    # print ('****')
-    #
+    #### ---------------------------------------------------------------
+    #### prepare model inversion data
+    ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
+    #### ---------------------------------------------------------------
+
+    #### make inversion tempvars to allow for easy subsampling
+    tim1 = data1['inversions']['time']
+    tim2 = data2['inversions']['time']
+    tim3 = data3['inversions']['time']
+    inv1 = data1['inversions']['invbase']
+    inv2 = data2['inversions']['invbase']
+    inv3 = data3['inversions']['invbase']
+
+    #### calculate inversion algorithm success rate
+    ind1 = np.where(inv1 >= 0.0)  ## non-nan values
+    data1['inversions']['successRate'] = np.size(ind1[0]) / np.float(np.size(inv1)) * 100.0
+    ind2 = np.where(inv2 >= 0.0)  ## non-nan values
+    data2['inversions']['successRate'] = np.size(ind2[0]) / np.float(np.size(inv2)) * 100.0
+    ind3 = np.where(inv3 >= 0.0)  ## non-nan values
+    data3['inversions']['successRate'] = np.size(ind3[0]) / np.float(np.size(inv3)) * 100.0
+    
+    print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
+    print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
+    print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
+    print ('****')
+
     # #### ---------------------------------------------------------------
     # #### remove flagged IFS heights
     # #### ---------------------------------------------------------------
