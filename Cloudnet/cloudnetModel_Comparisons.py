@@ -536,6 +536,8 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     obsmlh = temp_sfml
 
     ### save non-nan values to dictionary
+    ###         these arrays will be used for picking out inversions in the cloudnet files
+    ###             (and so miss out dates where we're missing cloudnet data)
     obs['inversions']['TimesForCloudnet'] = obs['inversions']['thetaE']['time'][~np.isnan(obs['inversions']['thetaE']['time'])]
     obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
     obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
