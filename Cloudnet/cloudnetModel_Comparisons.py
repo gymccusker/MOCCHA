@@ -758,29 +758,29 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
             data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data2['scaledTime'],3) == np.round(tim2[i],3))[0][0]
         if np.size(np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-            data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data1['scaledTime'],3) == np.round(tim3[i],3))[0][0]
-    #
-    #
-    #     ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
-    #     ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
-    #     if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
-    #         data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
-    #     if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
-    #         data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
-    #     if data3['scaledCv']['inversion_Tindex'][i] >= 0.0:
-    #         data3['scaledCv']['inversionForCloudnet'][int(data3['scaledCv']['inversion_Tindex'][i])] = inv3[i]
+            data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))[0][0]
+
+
+        ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
+        ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
+        if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
+        if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
+        if data3['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data3['scaledCv']['inversionForCloudnet'][int(data3['scaledCv']['inversion_Tindex'][i])] = inv3[i]
     #
     # np.save('working_data1', data1)
     # np.save('working_data2', data2)
     # np.save('working_data3', data3)
     #
-    # #### ---------------------------------------------------------------
-    # #### Look at data below main inversion base only - model data
-    # #### ---------------------------------------------------------------
-    # #### create empty arrays to hold height index
-    # zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
-    # zind2 = np.zeros(np.size(misc_data['time'])); zind2[:] = np.nan
-    # zind3 = np.zeros(np.size(ifs_data['time'])); zind3[:] = np.nan
+    #### ---------------------------------------------------------------
+    #### Look at data below main inversion base only - model data
+    #### ---------------------------------------------------------------
+    #### create empty arrays to hold height index
+    zind1 = np.zeros(np.size(data1['scaledTime'])); zind1[:] = np.nan
+    zind2 = np.zeros(np.size(data2['scaledTime'])); zind2[:] = np.nan
+    zind3 = np.zeros(np.size(data3['scaledTime'])); zind3[:] = np.nan
     #
     # #### ------------------------------------------------------------------------------
     # #### fill model arrays with height index of main inversion base / sfml height
