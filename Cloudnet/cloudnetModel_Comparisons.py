@@ -700,25 +700,25 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
     data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
-    
-    # ### save new height and cloudnet time array into dictionary (latter to account for missing files)
-    # data1['scaledZ'] = Zpts
-    # data1['scaledTime'] = um_data['time']
-    # data2['scaledZ'] = Zpts
-    # data2['scaledTime'] = misc_data['time']
-    # data3['scaledZ'] = Zpts
-    # data3['scaledTime'] = ifs_data['time']
-    #
-    # ### ------------------------------------------------------------------------------------------
-    # ### find cloudnet timesteps which match the inversion timesteps
-    # ### ------------------------------------------------------------------------------------------
-    # data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
-    # data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
-    # data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
-    # data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
-    # data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversion_Tindex'][:] = np.nan
-    # data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
-    #
+
+    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
+    data1['scaledZ'] = Zpts
+    data1['scaledTime'] = um_data['time'].data[::6]
+    data2['scaledZ'] = Zpts
+    data2['scaledTime'] = misc_data['time'].data[::6]
+    data3['scaledZ'] = Zpts
+    data3['scaledTime'] = ifs_data['time'].data[::6]
+
+    ### ------------------------------------------------------------------------------------------
+    ### find cloudnet timesteps which match the inversion timesteps
+    ### ------------------------------------------------------------------------------------------
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversion_Tindex'][:] = np.nan
+    data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim2)); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversion_Tindex'][:] = np.nan
+    data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(tim3)); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
+
     # for i in range(0, len(tim1)):
     #     ## find the cloudnet time INDEX which matches the inversion timestep
     #     if np.floor(tim1[i]) in missing_files:
