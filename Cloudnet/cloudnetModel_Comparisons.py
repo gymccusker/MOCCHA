@@ -493,10 +493,10 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT SONDES FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['inversions']['thetaE']['time'] >= 225.9, obs['inversions']['thetaE']['time'] <= 258.0))
+    # #### ---------------------------------------------------------------
+    # #### ONLY LOOK AT SONDES FROM THE DRIFT
+    # #### ---------------------------------------------------------------
+    # drift = np.where(np.logical_and(obs['inversions']['thetaE']['time'] >= 225.9, obs['inversions']['thetaE']['time'] <= 258.0))
 
     #### ------------------------------------------------------------------------------
     #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
