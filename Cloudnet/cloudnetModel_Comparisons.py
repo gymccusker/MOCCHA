@@ -714,6 +714,14 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     #### Use extracted height indices to probe cloudnet data
     #### ---------------------------------------------------------------
 
+    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
+    data1['scaledZ'] = Zpts
+    data1['scaledTime'] = um_data['time'].data[::6]
+    data2['scaledZ'] = Zpts
+    data2['scaledTime'] = misc_data['time'].data[::6]
+    data3['scaledZ'] = Zpts
+    data3['scaledTime'] = ifs_data['time'].data[::6]
+
     #### define empty arrays of nans to fill with scaled data
     data1['scaledCv'] = {}
     data1['scaledCv']['binned'] = {}
@@ -732,14 +740,6 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     data3['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
     data3['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
     data3['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
-
-    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
-    data1['scaledZ'] = Zpts
-    data1['scaledTime'] = um_data['time'].data[::6]
-    data2['scaledZ'] = Zpts
-    data2['scaledTime'] = misc_data['time'].data[::6]
-    data3['scaledZ'] = Zpts
-    data3['scaledTime'] = ifs_data['time'].data[::6]
 
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
