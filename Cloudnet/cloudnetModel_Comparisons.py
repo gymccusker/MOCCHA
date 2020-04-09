@@ -717,21 +717,21 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     #### define empty arrays of nans to fill with scaled data
     data1['scaledCv'] = {}
     data1['scaledCv']['binned'] = {}
-    data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
-    data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
-    data1['blCv'] = np.zeros([np.size(um_data['height'],0),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
+    data1['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
+    data1['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
+    data1['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
 
     data2['scaledCv'] = {}
     data2['scaledCv']['binned'] = {}
     data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
     data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
-    data2['blCv'] = np.zeros([np.size(misc_data['height'],0),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
+    data2['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
 
     data3['scaledCv'] = {}
     data3['scaledCv']['binned'] = {}
-    data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
-    data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
-    data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
+    data3['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
+    data3['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
+    data3['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
 
     ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     data1['scaledZ'] = Zpts
@@ -840,62 +840,62 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     # ### try i = 0 first to see if it works
     # ### this will go into a loop once tested
     # # i = 110
-    # for i in range(0,np.size(um_data['time'])):     ## loop over time
-    #     print ()
-    #     print(str(i) + 'th timestep (model data):')
-    #
-    #     ### create new dictionary entry for i-th timestep
-    #     data1['scaledCv']['binned']['t' + str(i)] = {}
-    #     data2['scaledCv']['binned']['t' + str(i)] = {}
-    #     data3['scaledCv']['binned']['t' + str(i)] = {}
-    #
-    #     ###-----------------------------------------------------------------------------------------
-    #     ### for main inversion
-    #     ###-----------------------------------------------------------------------------------------
-    #     ### create array of height points under the identified inversion
-    #     if data1['inversions']['invbase_kIndex'][i] >= 0.0:
-    #         hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i])]
-    #     else:
-    #         continue
-    #     if data2['inversions']['invbase_kIndex'][i] >= 0.0:
-    #         hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i])]
-    #     else:
-    #         continue
-    #     if data3['inversions']['invbase_kIndex'][i] >= 0.0:
-    #         hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i])]
-    #     else:
-    #         continue
-    #
-    #     ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-    #     scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-    #     scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
-    #     scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
-    #
-    #     # find Cv values below the BL inversion
-    #     data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i])] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i])]
-    #     data2['blCv'][i,:int(data2['inversions']['invbase_kIndex'][i])] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i])]
-    #     data3['blCv'][i,:int(data3['inversions']['invbase_kIndex'][i])] = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i])]
-    #
-    #     ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-    #     for k in range(len(Zpts)):
-    #         tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-    #         tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
-    #         tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
-    #
-    #         data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
-    #         if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-    #             data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-    #         data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-    #
-    #         data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data2['blCv'][i,tempvar2]
-    #         if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-    #             data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-    #         data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-    #
-    #         data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data3['blCv'][i,tempvar3]
-    #         if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-    #             data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-    #         data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+    for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
+        print ()
+        print(str(i) + 'th timestep (model data):')
+
+        ### create new dictionary entry for i-th timestep
+        data1['scaledCv']['binned']['t' + str(i)] = {}
+        data2['scaledCv']['binned']['t' + str(i)] = {}
+        data3['scaledCv']['binned']['t' + str(i)] = {}
+
+        ###-----------------------------------------------------------------------------------------
+        ### for main inversion
+        ###-----------------------------------------------------------------------------------------
+        ### create array of height points under the identified inversion
+        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+        if data2['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+        if data3['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+
+        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
+        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+
+        # find Cv values below the BL inversion
+        data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        data2['blCv'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = misc_data['model_Cv_filtered'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        data3['blCv'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_data['model_snow_Cv_filtered'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+
+        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+        for k in range(len(Zpts)):
+            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+            tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
+
+            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
+            if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data2['blCv'][i,tempvar2]
+            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data3['blCv'][i,tempvar3]
+            if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
     ##################################################
     ##################################################
@@ -909,13 +909,13 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(412)
     plt.title(label1)
-    # plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(413)
     plt.title(label2)
-    # plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.subplot(414)
     plt.title(label3)
-    # plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
     plt.show()
 
     ### obs
