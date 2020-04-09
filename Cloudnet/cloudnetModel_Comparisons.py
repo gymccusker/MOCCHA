@@ -748,32 +748,17 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversion_Tindex'][:] = np.nan
     data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
 
-    # for i in range(0, len(tim1)):
-    #     ## find the cloudnet time INDEX which matches the inversion timestep
-    #     if np.floor(tim1[i]) in missing_files:
-    #         ### don't assign a cloudnet index for missing files
-    #         ### instead, set inv1 to nan at these times
-    #         inv1[i] = np.nan
-    #         continue
-    #     elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
-    #         ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-    #         data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
-    #     if np.floor(tim2[i]) in missing_files:
-    #         ### don't assign a cloudnet index for missing files
-    #         ### instead, set inv1 to nan at these times
-    #         inv2[i] = np.nan
-    #         continue
-    #     elif np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
-    #         ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-    #         data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0][0]
-    #     if np.floor(tim3[i]) in missing_files:
-    #         ### don't assign a cloudnet index for missing files
-    #         ### instead, set inv1 to nan at these times
-    #         inv3[i] = np.nan
-    #         continue
-    #     elif np.size(np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))) > 0:
-    #         ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-    #         data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))[0][0]
+    for i in range(0, len(tim1)):
+        ## find the cloudnet time INDEX which matches the inversion timestep
+        if np.size(np.where(np.round(data1['scaledTime'],3) == np.round(tim1[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data1['scaledTime'],3) == np.round(tim1[i],3))[0][0]
+        if np.size(np.where(np.round(data2['scaledTime'],3) == np.round(tim2[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data2['scaledTime'],3) == np.round(tim2[i],3))[0][0]
+        if np.size(np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data1['scaledTime'],3) == np.round(tim3[i],3))[0][0]
     #
     #
     #     ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
