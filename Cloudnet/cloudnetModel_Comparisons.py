@@ -677,30 +677,30 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     # p6 = np.where(np.logical_and(um_data['time'] >= 247.0, um_data['time'] < 251.0))
     # p7 = np.where(np.logical_and(um_data['time'] >= 251.0, um_data['time'] < 255.5))
     # p8 = np.where(um_data['time'] >= 255.5)
-    #
-    # #### ---------------------------------------------------------------
-    # #### Use extracted height indices to probe cloudnet data
-    # #### ---------------------------------------------------------------
-    #
-    # #### define empty arrays of nans to fill with scaled data
-    # data1['scaledCv'] = {}
-    # data1['scaledCv']['binned'] = {}
-    # data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
-    # data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
-    # data1['blCv'] = np.zeros([np.size(um_data['height'],0),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
-    #
-    # data2['scaledCv'] = {}
-    # data2['scaledCv']['binned'] = {}
-    # data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
-    # data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
-    # data2['blCv'] = np.zeros([np.size(misc_data['height'],0),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
-    #
-    # data3['scaledCv'] = {}
-    # data3['scaledCv']['binned'] = {}
-    # data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
-    # data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
-    # data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
-    #
+
+    #### ---------------------------------------------------------------
+    #### Use extracted height indices to probe cloudnet data
+    #### ---------------------------------------------------------------
+
+    #### define empty arrays of nans to fill with scaled data
+    data1['scaledCv'] = {}
+    data1['scaledCv']['binned'] = {}
+    data1['scaledCv']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
+    data1['scaledCv']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
+    data1['blCv'] = np.zeros([np.size(um_data['height'],0),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
+
+    data2['scaledCv'] = {}
+    data2['scaledCv']['binned'] = {}
+    data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
+    data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
+    data2['blCv'] = np.zeros([np.size(misc_data['height'],0),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
+
+    data3['scaledCv'] = {}
+    data3['scaledCv']['binned'] = {}
+    data3['scaledCv']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
+    data3['scaledCv']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
+    data3['blCv'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
+    
     # ### save new height and cloudnet time array into dictionary (latter to account for missing files)
     # data1['scaledZ'] = Zpts
     # data1['scaledTime'] = um_data['time']
