@@ -610,7 +610,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
         scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i])]
+        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
