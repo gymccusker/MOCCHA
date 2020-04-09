@@ -625,13 +625,42 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
     #### ---------------------------------------------------------------
 
-    #### make inversion tempvars to allow for easy subsampling
-    tim1 = data1['inversions']['time']
-    tim2 = data2['inversions']['time']
-    tim3 = data3['inversions']['time']
-    inv1 = data1['inversions']['invbase']
-    inv2 = data2['inversions']['invbase']
-    inv3 = data3['inversions']['invbase']
+    ### need to build new arrays manually, isn't allowing indexing + ==nan for some reason...
+    ####        time
+    tim1 = np.zeros(len(data1['inversions']['time']))
+    tim1[:] = np.nan
+    tim1[:nanindices[0]] = data1['inversions']['time'][:nanindices[0]]
+    tim1[nanindices[3]+1:nanindices[4]] = data1['inversions']['time'][nanindices[3]+1:nanindices[4]]
+    tim1[nanindices[7]+1:nanindices[8]] = data1['inversions']['time'][nanindices[7]+1:nanindices[8]]
+    tim2 = tim1
+    tim3 = tim1
+    ####        inversions
+    inv1 = np.zeros(len(data1['inversions']['invbase']))
+    inv1[:] = np.nan
+    inv1[:nanindices[0]] = data1['inversions']['invbase'][:nanindices[0]]
+    inv1[nanindices[3]+1:nanindices[4]] = data1['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv1[nanindices[7]+1:nanindices[8]] = data1['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv2 = np.zeros(len(data2['inversions']['invbase']))
+    inv2[:] = np.nan
+    inv2[:nanindices[0]] = data2['inversions']['invbase'][:nanindices[0]]
+    inv2[nanindices[3]+1:nanindices[4]] = data2['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv2[nanindices[7]+1:nanindices[8]] = data2['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv3 = np.zeros(len(data3['inversions']['invbase']))
+    inv3[:] = np.nan
+    inv3[:nanindices[0]] = data3['inversions']['invbase'][:nanindices[0]]
+    inv3[nanindices[3]+1:nanindices[4]] = data3['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv3[nanindices[7]+1:nanindices[8]] = data3['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+
+    ### save non-nan values
+    ###         these arrays will be used for picking out inversions in the cloudnet files
+    ###             (and so miss out dates where we're missing cloudnet data)
+    tim1 = tim1[~np.isnan(tim1)]
+    tim2 = tim2[~np.isnan(tim2)]
+    tim3 = tim3[~np.isnan(tim3)]
+    inv1 = inv1[~np.isnan(inv1)]
+    inv2 = inv2[~np.isnan(inv2)]
+    inv3 = inv3[~np.isnan(inv3)]
+
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
