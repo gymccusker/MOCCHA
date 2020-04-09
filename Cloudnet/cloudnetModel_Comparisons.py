@@ -665,7 +665,6 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     inv2 = inv2[~np.isnan(inv2)]
     inv3 = inv3[~np.isnan(inv3)]
 
-
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
     data1['inversions']['successRate'] = np.size(ind1[0]) / np.float(np.size(inv1)) * 100.0
@@ -785,21 +784,21 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     zind1 = np.zeros(np.size(data1['scaledTime'])); zind1[:] = np.nan
     zind2 = np.zeros(np.size(data2['scaledTime'])); zind2[:] = np.nan
     zind3 = np.zeros(np.size(data3['scaledTime'])); zind3[:] = np.nan
-    #
-    # #### ------------------------------------------------------------------------------
-    # #### fill model arrays with height index of main inversion base / sfml height
-    # #### ------------------------------------------------------------------------------
-    # for i in range(0, np.size(um_data['time'])):        ### all can go in this loop, um_data['time'] == hourly data
-    #
-    #     ### main inversion base assignments
-    #     if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-    #         zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
-    #     if np.size(np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-    #         zind2[i] = np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
-    #     if np.size(np.where(data3['height_hrly'][i].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-    #         temp = data3['height_hrly'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
-    #         zind3[i] = np.where(temp == True)[0][-1]
-    #
+
+    #### ------------------------------------------------------------------------------
+    #### fill model arrays with height index of main inversion base / sfml height
+    #### ------------------------------------------------------------------------------
+    for i in range(0, np.size(data1['scaledTime'])):        ### all can go in this loop, data1['scaledTime'] == 6-hourly data
+
+        ### main inversion base assignments
+        if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind2[i] = np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(data3['height_hrly'][i].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            temp = data3['height_hrly'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
+            zind3[i] = np.where(temp == True)[0][-1]
+
     # #### assign height indices to dictionary for later use
     # data1['inversions']['invbase_kIndex'] = zind1
     # data2['inversions']['invbase_kIndex'] = zind2
