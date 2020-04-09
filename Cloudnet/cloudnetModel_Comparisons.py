@@ -891,6 +891,9 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
                 data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
             data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
 
+    ### save working data for debug
+    np.save('working_data1', data1)
+
     ##################################################
     ##################################################
     #### figures
@@ -957,10 +960,20 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     plt.show()
 
     ### profiles
-    plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'][obs['inversions']['scaledCv']['mean']>0,:],0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
-    plt.plot(np.nanmean(data1['scaledCv']['mean'][data1['scaledCv']['mean']>0,:],0),data1['scaledZ'], '^-', color = 'steelblue', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data2['scaledCv']['mean'][data2['scaledCv']['mean']>0,:],0),data2['scaledZ'], 'v-', color = 'forestgreen', linewidth = 2, label = label2)
-    plt.plot(np.nanmean(data3['scaledCv']['mean'][data3['scaledCv']['mean']>0,:],0),data3['scaledZ'], 'd-', color = 'darkorange', linewidth = 2, label = label3)
+    ###         loop through and set all zeros to nans
+    obsmean = obs['inversions']['scaledCv']['mean']
+    ra2mmean = data1['scaledCv']['mean']
+    casimmean = data2['scaledCv']['mean']
+    ifsmean = data3['scaledCv']['mean']
+    # for i in range(0, len(data1['scaledTime'])):
+    #     obsmean[i,obs['inversions']['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     ra2mmean[i,data1['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     casimmean[i,data2['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     ifsmean[i,data3['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
+    plt.plot(np.nanmean(ra2mmean,0),data1['scaledZ'], '^-', color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(casimmean,0),data2['scaledZ'], 'v-', color = 'forestgreen', linewidth = 2, label = label2)
+    plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-', color = 'darkorange', linewidth = 2, label = label3)
     plt.legend()
     plt.show()
 
