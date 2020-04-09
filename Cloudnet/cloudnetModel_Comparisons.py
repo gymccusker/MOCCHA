@@ -610,7 +610,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
         scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
@@ -652,7 +652,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     # data3['height'][data3['height'] == -9999] = 0.0
     #         #### set all heights to zero if flagged. setting to nan caused problems further on
     # data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
-    #
+
     # #### ---------------------------------------------------------------
     # #### Define meteorological periods from Jutta's paper
     # #### ---------------------------------------------------------------
