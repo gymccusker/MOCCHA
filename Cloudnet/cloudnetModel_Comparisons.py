@@ -841,7 +841,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ### set 6 hourly cloudnet Cv arrays as tempvars
     ra2m_Cv = um_data['model_Cv_filtered'][::6,:]
     casim_Cv = misc_data['model_Cv_filtered'][::6,:]
-    ifs_Cv = misc_data['model_snow_Cv_filtered'][::6,:]
+    ifs_Cv = ifs_data['model_snow_Cv_filtered'][::6,:]
 
     # ### try i = 0 first to see if it works
     # ### this will go into a loop once tested
