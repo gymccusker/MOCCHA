@@ -791,12 +791,15 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     for i in range(0, np.size(data1['scaledTime'])):        ### all can go in this loop, data1['scaledTime'] == 6-hourly data
 
         ### main inversion base assignments
+        ###         (1) find where UM height array matches the invbase index for index i
+        ###         (2) find where UM height array matches the invbase index for index i
+        ###         (3) find where IFS height array is less than or equal to the UM-gridded invbase index for index i
         if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
             zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(data3['height_hrly'][i].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
+        if np.size(np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind2[i] = np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            temp = ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
             zind3[i] = np.where(temp == True)[0][-1]
 
     # #### assign height indices to dictionary for later use
