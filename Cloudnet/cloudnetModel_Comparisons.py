@@ -731,8 +731,8 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
 
     data2['scaledCv'] = {}
     data2['scaledCv']['binned'] = {}
-    data2['scaledCv']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
-    data2['scaledCv']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
+    data2['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
+    data2['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
     data2['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
 
     data3['scaledCv'] = {}
