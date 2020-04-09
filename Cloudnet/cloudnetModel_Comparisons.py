@@ -802,32 +802,32 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
             temp = ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
             zind3[i] = np.where(temp == True)[0][-1]
 
-    # #### assign height indices to dictionary for later use
-    # data1['inversions']['invbase_kIndex'] = zind1
-    # data2['inversions']['invbase_kIndex'] = zind2
-    # data3['inversions']['invbase_kIndex'] = zind3
-    #
-    # plt.figure()
-    # plt.subplot(311)
-    # plt.title(label1)
-    # for i in range(0, np.size(zind1)):
-    #     if ~np.isnan(zind1[i]): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
-    # plt.plot(tim1[:-22],inv1[:-22])
-    # plt.ylim([0,3e3])
-    # plt.subplot(312)
-    # plt.title(label2)
-    # for i in range(0, np.size(zind2)):
-    #     if ~np.isnan(zind2[i]): plt.plot(misc_data['time'][i],misc_data['height'][i,int(zind2[i])],'o')
-    # plt.plot(tim2[:-22], inv2[:-22])
-    # plt.ylim([0,3e3])
-    # plt.subplot(313)
-    # plt.title(label3)
-    # for i in range(0, np.size(zind3)):
-    #     if ~np.isnan(zind3[i]): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
-    # plt.plot(tim3[:-22], inv3[:-22])
-    # plt.ylim([0,3e3])
-    # plt.show()
-    #
+    #### assign height indices to dictionary for later use
+    data1['inversions']['invbase_kIndex'] = zind1
+    data2['inversions']['invbase_kIndex'] = zind2
+    data3['inversions']['invbase_kIndex'] = zind3
+
+    plt.figure()
+    plt.subplot(311)
+    plt.title(label1)
+    for i in range(0, np.size(zind1)):
+        if ~np.isnan(zind1[i]): plt.plot(data1['scaledTime'][i],um_data['height'][i,int(zind1[i])],'o')
+    plt.plot(tim1,inv1)
+    plt.ylim([0,3e3])
+    plt.subplot(312)
+    plt.title(label2)
+    for i in range(0, np.size(zind2)):
+        if ~np.isnan(zind2[i]): plt.plot(data2['scaledTime'][i],misc_data['height'][i,int(zind2[i])],'o')
+    plt.plot(tim2, inv2)
+    plt.ylim([0,3e3])
+    plt.subplot(313)
+    plt.title(label3)
+    for i in range(0, np.size(zind3)):
+        if ~np.isnan(zind3[i]): plt.plot(data3['scaledTime'][i],ifs_data['height'][i,int(zind3[i])],'o')
+    plt.plot(tim3, inv3)
+    plt.ylim([0,3e3])
+    plt.show()
+
     # # print (zind3)
     # #### re-check inversion algorithm success rate to make sure no !0 values got dropped
     # zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
