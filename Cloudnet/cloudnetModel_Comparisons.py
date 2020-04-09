@@ -625,6 +625,10 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
     #### ---------------------------------------------------------------
 
+    ### need to make sure times where we don't have an inversion (invbase == nan) in the IFS doesn't mess up the algorithm
+    ###     set these cases to zero for now
+    data3['inversions']['invbase'][np.isnan(data3['inversions']['invbase'])] = 0.0
+
     ### need to build new arrays manually, isn't allowing indexing + ==nan for some reason...
     ####        time
     tim1 = np.zeros(len(data1['inversions']['time']))
