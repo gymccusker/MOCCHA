@@ -926,8 +926,8 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ### um_ra2m
     plt.subplot(211)
     plt.title(label1)
-    plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
-    plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
+    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data1['inversions']['time'],data1['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
@@ -937,8 +937,8 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ### um_casim-100
     plt.subplot(211)
     plt.title(label2)
-    plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
-    plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
+    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data2['inversions']['time'],data2['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'])); plt.ylim([0,1])
@@ -948,8 +948,8 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     ### ecmwf_ifs
     plt.subplot(211)
     plt.title(label3)
-    plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
-    plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
+    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data3['inversions']['time'],data3['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'])); plt.ylim([0,1])
@@ -958,9 +958,9 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
 
     ### profiles
     plt.plot(np.nanmean(obs['inversions']['scaledCv']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
-    plt.plot(np.nanmean(data1['scaledCv']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data2['scaledCv']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
-    plt.plot(np.nanmean(data3['scaledCv']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
+    plt.plot(np.nanmean(data1['scaledCv']['mean'],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(data2['scaledCv']['mean'],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
+    plt.plot(np.nanmean(data3['scaledCv']['mean'],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
     plt.legend()
     plt.show()
 
