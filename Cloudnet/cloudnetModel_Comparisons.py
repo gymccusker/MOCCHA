@@ -2332,6 +2332,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data3['inversions']['invbase_kIndex'] = zind3
 
     fig = plt.figure(figsize=(9,10))
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.1,
+            hspace = 0.3, wspace = 0.3)
     plt.subplot(311)
     plt.title(label1)
     for i in range(0, np.size(zind1)):
@@ -2441,23 +2443,25 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
 
     ### timeseries
     fig = plt.figure(figsize=(8,12))
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.1,
+            hspace = 0.3, wspace = 0.3)
     plt.subplot(411)
     plt.title('Obs')
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
-    plt.ylabel('Z [m]')
+    plt.ylabel('Z [scaled]')
     plt.subplot(412)
     plt.title(label1)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']), vmin = 0, vmax = 1)
-    plt.ylabel('Z [m]')
+    plt.ylabel('Z [scaled]')
     plt.subplot(413)
     plt.title(label2)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']), vmin = 0, vmax = 1)
-    plt.ylabel('Z [m]')
+    plt.ylabel('Z [scaled]')
     plt.subplot(414)
     plt.title(label3)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
-    plt.ylabel('Z [m]')
-    plt.ylabel('DOY')
+    plt.ylabel('Z [scaled]')
+    plt.xlabel('DOY')
     plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
     plt.show()
 
@@ -2642,18 +2646,23 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
                         mncv = np.nanmean(cv[i,:])
                         # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
-    fig = plt.figure(figsize=(8,6))
+    fig = plt.figure(figsize=(8,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+            hspace = 0.3, wspace = 0.3)
     plt.subplot(211)
     plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
     plt.xlim([226,258])
     plt.ylim([0,3000])
+    plt.ylabel('Z [m]')
     plt.title('original')
     plt.subplot(212)
     plt.pcolor(times,height,np.transpose(cv), vmin = 0, vmax = 1)
     plt.xlim([226,258])
     plt.ylim([0,3000])
+    plt.xlabel('DOY')
+    plt.ylabel('Z [m]')
     plt.title('interpolated')
-    plt.savefig('FIGS/Cv_TS_orig_interpd.svg')
+    plt.savefig('FIGS/Cv_TS_orig_interpd.png')
     plt.show()
 
     ### save back to dictionary after completion of updates
