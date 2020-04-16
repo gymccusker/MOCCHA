@@ -2521,7 +2521,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     ### save relevant fields as tempvars for ease
     cv = obs_data['Cv'].data
-    time = obs_data['time'].data
+    times = obs_data['time'].data
     height = obs_data['height'][0,:]        ### height array constant in time, so just take first column
 
     ### check if the mean of the column is NaN
@@ -2529,10 +2529,13 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     ### need 3 points for interp, so start for loop at i = 1 (remember to finish at i-1!)
     ### check if the column mean == nan but next timestep is non-nan:
-    for i in range(1,len(time)-1):
+    for i in range(1,len(times)-1):
         if np.logical_and(np.isnan(np.nanmean(cv[i,:])) == True, np.isnan(np.nanmean(cv[i+1,:])) == False):
-            print (str(i) + ' = yes')
-            cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
+            if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
+                print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
+            else:
+                print ('need to find last non-nan instance...')
 
     plt.figure()
     plt.subplot(211)
@@ -2541,7 +2544,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     plt.ylim([0,3000])
     plt.title('original')
     plt.subplot(212)
-    plt.pcolor(time,height,np.transpose(cv), vmin = 0, vmax = 1)
+    plt.pcolor(times,height,np.transpose(cv), vmin = 0, vmax = 1)
     plt.xlim([226,258])
     plt.ylim([0,3000])
     plt.title('interpolated')
