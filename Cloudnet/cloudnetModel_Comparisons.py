@@ -2646,7 +2646,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
                         mncv = np.nanmean(cv[i,:])
                         # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
-    fig = plt.figure(figsize=(8,8))
+    fig = plt.figure(figsize=(12,6))
     plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
             hspace = 0.3, wspace = 0.3)
     plt.subplot(211)
