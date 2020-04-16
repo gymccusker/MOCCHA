@@ -2525,9 +2525,9 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
 
     ### save relevant fields as tempvars for ease
-    cv = obs_data['Cv'].data
-    times = obs_data['time'].data
-    height = obs_data['height'][0,:]        ### height array constant in time, so just take first column
+    cv = np.copy(obs_data['Cv'].data)
+    times = np.copy(obs_data['time'].data)
+    height = np.copy(obs_data['height'][0,:])        ### height array constant in time, so just take first column
 
     ### check if the mean of the column is NaN
     # np.isnan(np.nanmean(cv[0,:]))
