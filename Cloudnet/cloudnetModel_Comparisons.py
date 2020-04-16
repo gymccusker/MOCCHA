@@ -2256,33 +2256,33 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data3['scaledTime'] = ifs_data['time'].data[::6]
 
     #### define empty arrays of nans to fill with scaled data
-    data1['scaledCv'] = {}
-    data1['scaledCv']['binned'] = {}
-    data1['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
-    data1['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
-    data1['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
+    data1['scaled' + var] = {}
+    data1['scaled' + var]['binned'] = {}
+    data1['scaled' + var]['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaled' + var]['mean'][:] = np.nan
+    data1['scaled' + var]['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaled' + var]['stdev'][:] = np.nan
+    data1['bl' + var] = np.zeros([np.size(data1['scaledTime']),np.size(um_data['height'],1)]); data1['bl' + var][:] = np.nan
 
-    data2['scaledCv'] = {}
-    data2['scaledCv']['binned'] = {}
-    data2['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
-    data2['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
-    data2['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
+    data2['scaled' + var] = {}
+    data2['scaled' + var]['binned'] = {}
+    data2['scaled' + var]['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaled' + var]['mean'][:] = np.nan
+    data2['scaled' + var]['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaled' + var]['stdev'][:] = np.nan
+    data2['bl' + var] = np.zeros([np.size(data1['scaledTime']),np.size(misc_data['height'],1)]); data2['bl' + var][:] = np.nan
 
-    data3['scaledCv'] = {}
-    data3['scaledCv']['binned'] = {}
-    data3['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
-    data3['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
-    data3['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
+    data3['scaled' + var] = {}
+    data3['scaled' + var]['binned'] = {}
+    data3['scaled' + var]['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaled' + var]['mean'][:] = np.nan
+    data3['scaled' + var]['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaled' + var]['stdev'][:] = np.nan
+    data3['bl' + var] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['bl' + var][:] = np.nan
 
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
     ### ------------------------------------------------------------------------------------------
-    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data1['scaledCv']['inversion_Tindex'][:] = np.nan
-    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
-    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversion_Tindex'][:] = np.nan
-    data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
-    data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversion_Tindex'][:] = np.nan
-    data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data1['scaled' + var]['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data1['scaled' + var]['inversion_Tindex'][:] = np.nan
+    data1['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data1['scaled' + var]['inversionForCloudnet'][:] = np.nan
+    data2['scaled' + var]['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data2['scaled' + var]['inversion_Tindex'][:] = np.nan
+    data2['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data2['scaled' + var]['inversionForCloudnet'][:] = np.nan
+    data3['scaled' + var]['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaled' + var]['inversion_Tindex'][:] = np.nan
+    data3['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaled' + var]['inversionForCloudnet'][:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
@@ -2299,12 +2299,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
         ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
-        if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
-            data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
-        if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
-            data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
-        if data3['scaledCv']['inversion_Tindex'][i] >= 0.0:
-            data3['scaledCv']['inversionForCloudnet'][int(data3['scaledCv']['inversion_Tindex'][i])] = inv3[i]
+        if data1['scaled' + var]['inversion_Tindex'][i] >= 0.0:
+            data1['scaled' + var]['inversionForCloudnet'][int(data1['scaled' + var]['inversion_Tindex'][i])] = inv1[i]
+        if data2['scaled' + var]['inversion_Tindex'][i] >= 0.0:
+            data2['scaled' + var]['inversionForCloudnet'][int(data2['scaled' + var]['inversion_Tindex'][i])] = inv2[i]
+        if data3['scaled' + var]['inversion_Tindex'][i] >= 0.0:
+            data3['scaled' + var]['inversionForCloudnet'][int(data3['scaled' + var]['inversion_Tindex'][i])] = inv3[i]
     #
     # np.save('working_data1', data1)
     # np.save('working_data2', data2)
@@ -2327,12 +2327,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         ###         (1) find where UM height array matches the invbase index for index i
         ###         (2) find where UM height array matches the invbase index for index i
         ###         (3) find where IFS height array is less than or equal to the UM-gridded invbase index for index i
-        if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-            zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-            zind2[i] = np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
-            temp = ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
+        if np.size(np.where(um_data['height'][i,:].data == data1['scaled' + var]['inversionForCloudnet'][i])) > 0.0:
+            zind1[i] = np.where(um_data['height'][i,:].data == data1['scaled' + var]['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(misc_data['height'][i,:].data == data2['scaled' + var]['inversionForCloudnet'][i])) > 0.0:
+            zind2[i] = np.where(misc_data['height'][i,:].data == data2['scaled' + var]['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(ifs_data['height'][i,:].data <= data3['scaled' + var]['inversionForCloudnet'][i])) > 0.0:
+            temp = ifs_data['height'][i,:].data <= data3['scaled' + var]['inversionForCloudnet'][i]
             zind3[i] = np.where(temp == True)[0][-1]
 
     #### assign height indices to dictionary for later use
@@ -2362,9 +2362,10 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.show()
 
     ### set 6 hourly cloudnet Cv arrays as tempvars
-    ra2m_Cv = um_data['model_Cv_filtered'][::6,:]
-    casim_Cv = misc_data['model_Cv_filtered'][::6,:]
-    ifs_Cv = ifs_data['model_snow_Cv_filtered'][::6,:]
+    if var == 'Cv':
+        ra2m_var = um_data['model_Cv_filtered'][::6,:]
+        casim_var = misc_data['model_Cv_filtered'][::6,:]
+        ifs_var = ifs_data['model_snow_Cv_filtered'][::6,:]
 
     ### find all Cv data below identified inversion
     for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
@@ -2372,9 +2373,9 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         print(str(i) + 'th timestep (model data):')
 
         ### create new dictionary entry for i-th timestep
-        data1['scaledCv']['binned']['t' + str(i)] = {}
-        data2['scaledCv']['binned']['t' + str(i)] = {}
-        data3['scaledCv']['binned']['t' + str(i)] = {}
+        data1['scaled' + var]['binned']['t' + str(i)] = {}
+        data2['scaled' + var]['binned']['t' + str(i)] = {}
+        data3['scaled' + var]['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
@@ -2399,9 +2400,9 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
-        data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = ra2m_Cv[i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
-        data2['blCv'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = casim_Cv[i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
-        data3['blCv'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_Cv[i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+        data1['bl' + var][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = ra2m_var[i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        data2['bl' + var][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = casim_var[i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        data3['bl' + var][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_var[i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
@@ -2409,23 +2410,23 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
             tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
 
-            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
-            if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data1['bl' + var][i,tempvar1]
+            if np.size(data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data1['scaled' + var]['mean'][i,k] = np.nanmean(data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
+            data1['scaled' + var]['stdev'][i,k] = np.nanstd(data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
 
-            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data2['blCv'][i,tempvar2]
-            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data2['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data2['bl' + var][i,tempvar2]
+            if np.size(data2['scaled' + var]['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data2['scaled' + var]['mean'][i,k] = np.nanmean(data2['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
+            data2['scaled' + var]['stdev'][i,k] = np.nanstd(data2['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
 
-            data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data3['blCv'][i,tempvar3]
-            if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
-            data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data3['bl' + var][i,tempvar3]
+            if np.size(data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data3['scaled' + var]['mean'][i,k] = np.nanmean(data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
+            data3['scaled' + var]['stdev'][i,k] = np.nanstd(data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
 
     ### save working data for debug
-    np.save('working_data1', data1)
+    # np.save('working_data1', data1)
 
     ##################################################
     ##################################################
@@ -2436,68 +2437,68 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ### timeseries
     plt.subplot(411)
     plt.title('Obs')
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.subplot(412)
     plt.title(label1)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.subplot(413)
     plt.title(label2)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.subplot(414)
     plt.title(label3)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.show()
 
     ### obs
     plt.subplot(211)
     plt.title('Obs - 6hourly because inversions from radiosondes')
-    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['blCv'])); plt.ylim([0,3e3])
+    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['bl' + var])); plt.ylim([0,3e3])
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),np.squeeze(obs['inversions']['thetaE']['invbase']),'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.show()
 
     ### um_ra2m
     plt.subplot(211)
     plt.title(label1)
-    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
+    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['bl' + var])); plt.ylim([0,3e3])
     plt.plot(data1['inversions']['time'],data1['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.show()
 
     ### um_casim-100
     plt.subplot(211)
     plt.title(label2)
-    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
+    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['bl' + var])); plt.ylim([0,3e3])
     plt.plot(data2['inversions']['time'],data2['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.show()
 
     ### ecmwf_ifs
     plt.subplot(211)
     plt.title(label3)
-    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
+    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['bl' + var])); plt.ylim([0,3e3])
     plt.plot(data3['inversions']['time'],data3['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.show()
 
     ### profiles
     ###         loop through and set all zeros to nans
-    obsmean = obs['inversions']['scaledCv']['mean']
-    ra2mmean = data1['scaledCv']['mean']
-    casimmean = data2['scaledCv']['mean']
-    ifsmean = data3['scaledCv']['mean']
+    obsmean = obs['inversions']['scaled' + var]['mean']
+    ra2mmean = data1['scaled' + var]['mean']
+    casimmean = data2['scaled' + var]['mean']
+    ifsmean = data3['scaled' + var]['mean']
     # for i in range(0, len(data1['scaledTime'])):
     #     obsmean[i,obs['inversions']['scaledCv']['mean'][i,:] == 0.0] = np.nan
     #     ra2mmean[i,data1['scaledCv']['mean'][i,:] == 0.0] = np.nan
