@@ -2512,6 +2512,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
+    from scipy.interpolate import interp1d
+
     print ('*******')
     print ('Interpolate obs cloudnet field for continuous array:')
     print ('*******')
@@ -2521,6 +2523,15 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     cv = obs_data['Cv'].data
     time = obs_data['time'].data
     height = obs_data['height'][0,:]        ### height array constant in time, so just take first column
+
+    ### check if the mean of the column is NaN
+    # np.isnan(np.nanmean(cv[0,:]))
+
+    ### need 3 points for interp, so start for loop at i = 1 (remember to finish at i-1!)
+    ### check if the column mean == nan but next timestep is non-nan:
+    for i in range(1,10):
+        if np.logical_and(np.isnan(np.nanmean(cv[i,:])) == True, np.isnan(np.nanmean(cv[i+1,:])) == False):
+            print str(i) + ' = yes'
 
     return obs_data
 
