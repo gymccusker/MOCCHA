@@ -1974,15 +1974,10 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     else:
         ifs_flag = False
 
-    # #################################################################
-    # ## save data into temp variables to allow subsampling
-    # #################################################################
-    # bldepth1 = data1['bl_depth'][data1['hrly_flag']]
-    # bldepth2 = data2['bl_depth'][data2['hrly_flag']]
-    # if ifs_flag == True:
-    #     bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
-    # else:
-    #     bldepth3 = data3['bl_depth'][data3['hrly_flag']]
+    #################################################################
+    ### interpolate obs cloudnet data for continuous array
+    #################################################################
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
 
     #### ---------------------------------------------------------------
     #### prepare cloudnet data
@@ -2515,14 +2510,19 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.legend()
     plt.show()
 
-def interpCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, doy):
+def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     print ('*******')
     print ('Interpolate obs cloudnet field for continuous array:')
     print ('*******')
     print ('')
 
+    ### save relevant fields as tempvars for ease
+    cv = obs_data['Cv'].data
+    time = obs_data['time'].data
+    height = obs_data['height'][0,:]        ### height array constant in time, so just take first column
 
+    return obs_data
 
 def main():
 
