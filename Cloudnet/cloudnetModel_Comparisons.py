@@ -2098,7 +2098,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
     obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
 
-    ### look for altitudes < invbase in obs cloudnet data
+    ### look for altitudes <= invbase in obs cloudnet data
     for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop (from radiosondes)
         #### check if there are any height levels below the inversion
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
@@ -3020,7 +3020,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS)
-    obs_switch = 'IFS'
+    obs_switch = 'UM'
 
     ### only works on laptop for now
 
