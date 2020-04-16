@@ -1967,6 +1967,530 @@ def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data
     plt.legend()
     plt.show()
 
+def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var):
+
+    ###################################
+    ## PLOT TIMESERIES OF BL DEPTH
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Scaling cloudnet data by identified thetaE inversions:')
+    print ('')
+
+    # UM -> IFS comparisons:
+    # 5. bl_depth -> sfc_bl_height
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    # #################################################################
+    # ## save data into temp variables to allow subsampling
+    # #################################################################
+    # bldepth1 = data1['bl_depth'][data1['hrly_flag']]
+    # bldepth2 = data2['bl_depth'][data2['hrly_flag']]
+    # if ifs_flag == True:
+    #     bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
+    # else:
+    #     bldepth3 = data3['bl_depth'][data3['hrly_flag']]
+
+    #### ---------------------------------------------------------------
+    #### prepare cloudnet data
+    #### ---------------------------------------------------------------
+
+    #### set flagged data to nans
+    obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+
+    # #### ---------------------------------------------------------------
+    # #### ONLY LOOK AT SONDES FROM THE DRIFT
+    # #### ---------------------------------------------------------------
+    # drift = np.where(np.logical_and(obs['inversions']['thetaE']['time'] >= 225.9, obs['inversions']['thetaE']['time'] <= 258.0))
+
+    #### ------------------------------------------------------------------------------
+    #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
+    #### ------------------------------------------------------------------------------
+    obsinv = obs['inversions']['thetaE']['invbase']
+    obsmlh = obs['inversions']['thetaE']['sfmlheight']
+
+    #### ------------------------------------------------------------------------------
+    #### need to identify what cloudnet indices correspond to radiosondes
+    #### ------------------------------------------------------------------------------
+    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
+
+    #### remove DOY 230, 253, 257 manually for now
+    nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
+
+    ### need to build new arrays manually, isn't allowing indexing + ==nan for some reason...
+    temp_time = obs['inversions']['thetaE']['time']         #### temporary time array for indexing
+    temp_time2 = np.zeros(len(temp_time))
+    temp_time2[:] = np.nan
+    temp_time2[:nanindices[0]] = temp_time[:nanindices[0]]
+    temp_time2[nanindices[3]+1:nanindices[4]] = temp_time[nanindices[3]+1:nanindices[4]]
+    temp_time2[nanindices[7]+1:nanindices[8]] = temp_time[nanindices[7]+1:nanindices[8]]
+    temp_inv = np.zeros(len(obsinv))
+    temp_inv[:] = np.nan
+    temp_inv[:nanindices[0]] = obsinv[:nanindices[0]]
+    temp_inv[nanindices[3]+1:nanindices[4]] = obsinv[nanindices[3]+1:nanindices[4]]
+    temp_inv[nanindices[7]+1:nanindices[8]] = obsinv[nanindices[7]+1:nanindices[8]]
+    temp_sfml = np.zeros(len(obsmlh))
+    temp_sfml[:] = np.nan
+    temp_sfml[:nanindices[0]] = obsmlh[:nanindices[0]]
+    temp_sfml[nanindices[3]+1:nanindices[4]] = obsmlh[nanindices[3]+1:nanindices[4]]
+    temp_sfml[nanindices[7]+1:nanindices[8]] = obsmlh[nanindices[7]+1:nanindices[8]]
+
+    ### reset time array with new one accounting for missing FILES
+    obs['inversions']['thetaE']['time'] = temp_time2
+    obsinv = temp_inv
+    obsmlh = temp_sfml
+
+    ### save non-nan values to dictionary
+    ###         these arrays will be used for picking out inversions in the cloudnet files
+    ###             (and so miss out dates where we're missing cloudnet data)
+    obs['inversions']['TimesForCloudnet'] = obs['inversions']['thetaE']['time'][~np.isnan(obs['inversions']['thetaE']['time'])]
+    obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
+    obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
+
+    #### ------------------------------------------------------------------------------
+    #### fill obs array with Cloudnet height index of main inversion base / sfml height
+    #### ------------------------------------------------------------------------------
+    ### define scaledZ array to sort data in to
+    ###     will act as mid point of vertical "boxes" of width 0.1
+    binres = 0.1
+    Zpts = np.arange(0.0 + binres/2.0, 1.0 + binres/2.0, binres)
+
+    ### use 6hourly cloudnet data to compare radiosonde inversion heights to
+    obs_data['height_6hrly'] = obs_data['height'][::6,:]
+    obs_data['Cv_6hrly'] = obs_data['Cv'][::6,:]
+    obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
+
+    ### initialise array to hold height indices, set all to nan before filling
+    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
+    obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
+
+    ### look for altitudes < invbase in obs cloudnet data
+    for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop (from radiosondes)
+        #### check if there are any height levels below the inversion
+        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
+            ### if there is, set obsind to the last level before the inversion
+            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][-1]
+        #### check if there are any height levels below the sfmlheight
+        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
+            ### if there is, set obssfml to the last level before the sfmlheight
+            obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
+
+    plt.figure()
+    plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
+    for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
+    plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),obs['inversions']['thetaE']['invbase'])
+    plt.show()
+
+    ### save inversion base index into dictionary
+    obs['inversions']['invbase_kIndex'] = obsind
+    obs['inversions']['sfmlheight_kIndex'] = obssfml
+
+    ### initialise scaled arrays in dictionary
+    obs['inversions']['scaledCv'] = {}
+    obs['inversions']['scaledCv']['binned'] = {}
+    obs['inversions']['scaledCv']['mean'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['mean'][:] = np.nan
+    obs['inversions']['scaledCv']['stdev'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledCv']['stdev'][:] = np.nan
+    obs['inversions']['scaledZ'] = Zpts
+    obs['inversions']['scaledTime'] = obs_data['time_6hrly']
+    obs['inversions']['blCv'] = np.zeros([np.size(obs_data['height_6hrly'],0),np.size(obs_data['height_6hrly'],1)]); obs['inversions']['blCv'][:] = np.nan
+
+    ### fill arrays with cloudnet data below each invbase
+    for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
+        print(str(i) + 'th timestep (radiosonde):')
+
+        ### create new dictionary entry for i-th timestep
+        obs['inversions']['scaledCv']['binned']['t' + str(i)] = {}
+
+        ###-----------------------------------------------------------------------------------------
+        ### for main inversion
+        ###-----------------------------------------------------------------------------------------
+        ### create array of height points under the identified inversion
+        ###         +1 includes invbase in array
+        if obs['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts = obs_data['height_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+        else:
+            continue
+
+        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
+
+        # find Cv values below the BL inversion
+        obs['inversions']['blCv'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)] = obs_data['Cv_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
+
+        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+        for k in range(len(Zpts)):
+            tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
+            obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]] = obs['inversions']['blCv'][i,tempvar]
+            if np.size(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                obs['inversions']['scaledCv']['mean'][i,k] = np.nanmean(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            obs['inversions']['scaledCv']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+    #### ---------------------------------------------------------------
+    #### prepare model inversion data
+    ####        data from thetaE algorithm is on radiosonde (6 hourly) timesteps already
+    #### ---------------------------------------------------------------
+
+    ### need to make sure times where we don't have an inversion (invbase == nan) in the IFS doesn't mess up the algorithm
+    ###     set these cases to zero for now
+    data3['inversions']['invbase'][np.isnan(data3['inversions']['invbase'])] = 0.0
+
+    ### need to build new arrays manually, isn't allowing indexing + ==nan for some reason...
+    ####        time
+    tim1 = np.zeros(len(data1['inversions']['time']))
+    tim1[:] = np.nan
+    tim1[:nanindices[0]] = data1['inversions']['time'][:nanindices[0]]
+    tim1[nanindices[3]+1:nanindices[4]] = data1['inversions']['time'][nanindices[3]+1:nanindices[4]]
+    tim1[nanindices[7]+1:nanindices[8]] = data1['inversions']['time'][nanindices[7]+1:nanindices[8]]
+    tim2 = tim1
+    tim3 = tim1
+    ####        inversions
+    inv1 = np.zeros(len(data1['inversions']['invbase']))
+    inv1[:] = np.nan
+    inv1[:nanindices[0]] = data1['inversions']['invbase'][:nanindices[0]]
+    inv1[nanindices[3]+1:nanindices[4]] = data1['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv1[nanindices[7]+1:nanindices[8]] = data1['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv2 = np.zeros(len(data2['inversions']['invbase']))
+    inv2[:] = np.nan
+    inv2[:nanindices[0]] = data2['inversions']['invbase'][:nanindices[0]]
+    inv2[nanindices[3]+1:nanindices[4]] = data2['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv2[nanindices[7]+1:nanindices[8]] = data2['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv3 = np.zeros(len(data3['inversions']['invbase']))
+    inv3[:] = np.nan
+    inv3[:nanindices[0]] = data3['inversions']['invbase'][:nanindices[0]]
+    inv3[nanindices[3]+1:nanindices[4]] = data3['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv3[nanindices[7]+1:nanindices[8]] = data3['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+
+    ### save non-nan values
+    ###         these arrays will be used for picking out inversions in the cloudnet files
+    ###             (and so miss out dates where we're missing cloudnet data)
+    tim1 = tim1[~np.isnan(tim1)]
+    tim2 = tim2[~np.isnan(tim2)]
+    tim3 = tim3[~np.isnan(tim3)]
+    inv1 = inv1[~np.isnan(inv1)]
+    inv2 = inv2[~np.isnan(inv2)]
+    inv3 = inv3[~np.isnan(inv3)]
+
+    #### calculate inversion algorithm success rate
+    ind1 = np.where(inv1 >= 0.0)  ## non-nan values
+    data1['inversions']['successRate'] = np.size(ind1[0]) / np.float(np.size(inv1)) * 100.0
+    ind2 = np.where(inv2 >= 0.0)  ## non-nan values
+    data2['inversions']['successRate'] = np.size(ind2[0]) / np.float(np.size(inv2)) * 100.0
+    ind3 = np.where(inv3 >= 0.0)  ## non-nan values
+    data3['inversions']['successRate'] = np.size(ind3[0]) / np.float(np.size(inv3)) * 100.0
+
+    print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
+    print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
+    print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
+    print ('****')
+
+    # #### ---------------------------------------------------------------
+    # #### remove flagged IFS heights
+    # #### ---------------------------------------------------------------
+    # data3['height'][data3['height'] == -9999] = 0.0
+    #         #### set all heights to zero if flagged. setting to nan caused problems further on
+    # data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
+
+    # #### ---------------------------------------------------------------
+    # #### Define meteorological periods from Jutta's paper
+    # #### ---------------------------------------------------------------
+    #
+    # ## Meteorological period definitions from Jutta's paper:
+    # ##     "Period 1 covers the time in the MIZ until 4 August 06:00 UTC. Period 2 encompasses
+    # ##     the journey into the ice towards the North Pole until 12 August 00:00 UTC. Since cloud
+    # ##     radar measurements were not possible during heavy ice breaking because of excessive
+    # ##     vibration, cloud characteristics and fog heights are not available during period 2.
+    # ##     Period 3 (12 to 17 August) includes the 'North Pole' station and the beginning of
+    # ##     the ice drift. Period 4 (18 to 27 August) covers the end of the melt and the transition
+    # ##     period into the freeze up. The freeze up is covered by period 5 (28 August to 3 September),
+    # ##     6 (4 to 7 September) and 7 (8 to 12 September 12:00 UTC). Finally, period 8 (12 September
+    # ##     12:00 UTC to 21 September 06:00 UTC) covers the end of the ice drift period and the transit
+    # ##     out to the ice edge. "
+    # #######         from Jutta: so if there is no time stamp mentioned it is eg. P4 18.08 0000UTC - 27.08 23:59 UTC , P5 then is 28.08 00UTC until 03.09 23:59 UTC...
+    #
+    # ### define met periods wrt cloudnet timestamps for ease (all runs should be able to use same indexing)
+    # p3 = np.where(um_data['time'] < 230.0)
+    # p4 = np.where(np.logical_and(um_data['time'] >= 230.0, um_data['time'] < 240.0))
+    # p5 = np.where(np.logical_and(um_data['time'] >= 240.0, um_data['time'] < 247.0))
+    # p6 = np.where(np.logical_and(um_data['time'] >= 247.0, um_data['time'] < 251.0))
+    # p7 = np.where(np.logical_and(um_data['time'] >= 251.0, um_data['time'] < 255.5))
+    # p8 = np.where(um_data['time'] >= 255.5)
+
+    #### ---------------------------------------------------------------
+    #### Use extracted height indices to probe cloudnet data
+    #### ---------------------------------------------------------------
+
+    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
+    data1['scaledZ'] = Zpts
+    data1['scaledTime'] = um_data['time'].data[::6]
+    data2['scaledZ'] = Zpts
+    data2['scaledTime'] = misc_data['time'].data[::6]
+    data3['scaledZ'] = Zpts
+    data3['scaledTime'] = ifs_data['time'].data[::6]
+
+    #### define empty arrays of nans to fill with scaled data
+    data1['scaledCv'] = {}
+    data1['scaledCv']['binned'] = {}
+    data1['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['mean'][:] = np.nan
+    data1['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data1['scaledCv']['stdev'][:] = np.nan
+    data1['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(um_data['height'],1)]); data1['blCv'][:] = np.nan
+
+    data2['scaledCv'] = {}
+    data2['scaledCv']['binned'] = {}
+    data2['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['mean'][:] = np.nan
+    data2['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data2['scaledCv']['stdev'][:] = np.nan
+    data2['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(misc_data['height'],1)]); data2['blCv'][:] = np.nan
+
+    data3['scaledCv'] = {}
+    data3['scaledCv']['binned'] = {}
+    data3['scaledCv']['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['mean'][:] = np.nan
+    data3['scaledCv']['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaledCv']['stdev'][:] = np.nan
+    data3['blCv'] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['blCv'][:] = np.nan
+
+    ### ------------------------------------------------------------------------------------------
+    ### find cloudnet timesteps which match the inversion timesteps
+    ### ------------------------------------------------------------------------------------------
+    data1['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data1['scaledCv']['inversion_Tindex'][:] = np.nan
+    data1['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data1['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversion_Tindex'][:] = np.nan
+    data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversion_Tindex'][:] = np.nan
+    data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
+
+    for i in range(0, len(tim1)):
+        ## find the cloudnet time INDEX which matches the inversion timestep
+        if np.size(np.where(np.round(data1['scaledTime'],3) == np.round(tim1[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data1['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data1['scaledTime'],3) == np.round(tim1[i],3))[0][0]
+        if np.size(np.where(np.round(data2['scaledTime'],3) == np.round(tim2[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data2['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data2['scaledTime'],3) == np.round(tim2[i],3))[0][0]
+        if np.size(np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data3['scaledCv']['inversion_Tindex'][i] = np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))[0][0]
+
+
+        ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
+        ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
+        if data1['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data1['scaledCv']['inversionForCloudnet'][int(data1['scaledCv']['inversion_Tindex'][i])] = inv1[i]
+        if data2['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data2['scaledCv']['inversionForCloudnet'][int(data2['scaledCv']['inversion_Tindex'][i])] = inv2[i]
+        if data3['scaledCv']['inversion_Tindex'][i] >= 0.0:
+            data3['scaledCv']['inversionForCloudnet'][int(data3['scaledCv']['inversion_Tindex'][i])] = inv3[i]
+    #
+    # np.save('working_data1', data1)
+    # np.save('working_data2', data2)
+    # np.save('working_data3', data3)
+    #
+    #### ---------------------------------------------------------------
+    #### Look at data below main inversion base only - model data
+    #### ---------------------------------------------------------------
+    #### create empty arrays to hold height index
+    zind1 = np.zeros(np.size(data1['scaledTime'])); zind1[:] = np.nan
+    zind2 = np.zeros(np.size(data2['scaledTime'])); zind2[:] = np.nan
+    zind3 = np.zeros(np.size(data3['scaledTime'])); zind3[:] = np.nan
+
+    #### ------------------------------------------------------------------------------
+    #### fill model arrays with height index of main inversion base / sfml height
+    #### ------------------------------------------------------------------------------
+    for i in range(0, np.size(data1['scaledTime'])):        ### all can go in this loop, data1['scaledTime'] == 6-hourly data
+
+        ### main inversion base assignments
+        ###         (1) find where UM height array matches the invbase index for index i
+        ###         (2) find where UM height array matches the invbase index for index i
+        ###         (3) find where IFS height array is less than or equal to the UM-gridded invbase index for index i
+        if np.size(np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledCv']['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            zind2[i] = np.where(misc_data['height'][i,:].data == data2['scaledCv']['inversionForCloudnet'][i])[0][0]
+        if np.size(np.where(ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i])) > 0.0:
+            temp = ifs_data['height'][i,:].data <= data3['scaledCv']['inversionForCloudnet'][i]
+            zind3[i] = np.where(temp == True)[0][-1]
+
+    #### assign height indices to dictionary for later use
+    data1['inversions']['invbase_kIndex'] = zind1
+    data2['inversions']['invbase_kIndex'] = zind2
+    data3['inversions']['invbase_kIndex'] = zind3
+
+    plt.figure()
+    plt.subplot(311)
+    plt.title(label1)
+    for i in range(0, np.size(zind1)):
+        if ~np.isnan(zind1[i]): plt.plot(data1['scaledTime'][i],um_data['height'][i,int(zind1[i])],'o')
+    plt.plot(tim1,inv1)
+    plt.ylim([0,3e3])
+    plt.subplot(312)
+    plt.title(label2)
+    for i in range(0, np.size(zind2)):
+        if ~np.isnan(zind2[i]): plt.plot(data2['scaledTime'][i],misc_data['height'][i,int(zind2[i])],'o')
+    plt.plot(tim2, inv2)
+    plt.ylim([0,3e3])
+    plt.subplot(313)
+    plt.title(label3)
+    for i in range(0, np.size(zind3)):
+        if ~np.isnan(zind3[i]): plt.plot(data3['scaledTime'][i],ifs_data['height'][i,int(zind3[i])],'o')
+    plt.plot(tim3, inv3)
+    plt.ylim([0,3e3])
+    plt.show()
+
+    ### set 6 hourly cloudnet Cv arrays as tempvars
+    ra2m_Cv = um_data['model_Cv_filtered'][::6,:]
+    casim_Cv = misc_data['model_Cv_filtered'][::6,:]
+    ifs_Cv = ifs_data['model_snow_Cv_filtered'][::6,:]
+
+    ### find all Cv data below identified inversion
+    for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
+        print ()
+        print(str(i) + 'th timestep (model data):')
+
+        ### create new dictionary entry for i-th timestep
+        data1['scaledCv']['binned']['t' + str(i)] = {}
+        data2['scaledCv']['binned']['t' + str(i)] = {}
+        data3['scaledCv']['binned']['t' + str(i)] = {}
+
+        ###-----------------------------------------------------------------------------------------
+        ### for main inversion
+        ###-----------------------------------------------------------------------------------------
+        ### create array of height points under the identified inversion
+        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+        if data2['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+        if data3['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
+
+        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
+        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
+        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
+        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+
+        # find Cv values below the BL inversion
+        data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = ra2m_Cv[i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
+        data2['blCv'][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = casim_Cv[i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
+        data3['blCv'][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_Cv[i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+
+        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
+        for k in range(len(Zpts)):
+            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
+            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
+            tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
+
+            data1['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data1['blCv'][i,tempvar1]
+            if np.size(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data1['scaledCv']['mean'][i,k] = np.nanmean(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data1['scaledCv']['stdev'][i,k] = np.nanstd(data1['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            data2['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data2['blCv'][i,tempvar2]
+            if np.size(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data2['scaledCv']['mean'][i,k] = np.nanmean(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data2['scaledCv']['stdev'][i,k] = np.nanstd(data2['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+            data3['scaledCv']['binned']['t' + str(i)][Zpts[k]] = data3['blCv'][i,tempvar3]
+            if np.size(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data3['scaledCv']['mean'][i,k] = np.nanmean(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+            data3['scaledCv']['stdev'][i,k] = np.nanstd(data3['scaledCv']['binned']['t' + str(i)][Zpts[k]])
+
+    ### save working data for debug
+    np.save('working_data1', data1)
+
+    ##################################################
+    ##################################################
+    #### figures
+    ##################################################
+    ##################################################
+
+    ### timeseries
+    plt.subplot(411)
+    plt.title('Obs')
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(412)
+    plt.title(label1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(413)
+    plt.title(label2)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.subplot(414)
+    plt.title(label3)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean']), vmin = 0, vmax = 1)
+    plt.show()
+
+    ### obs
+    plt.subplot(211)
+    plt.title('Obs - 6hourly because inversions from radiosondes')
+    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['blCv'])); plt.ylim([0,3e3])
+    plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),np.squeeze(obs['inversions']['thetaE']['invbase']),'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
+
+    ### um_ra2m
+    plt.subplot(211)
+    plt.title(label1)
+    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data1['inversions']['time'],data1['inversions']['invbase'],'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
+
+    ### um_casim-100
+    plt.subplot(211)
+    plt.title(label2)
+    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data2['inversions']['time'],data2['inversions']['invbase'],'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
+
+    ### ecmwf_ifs
+    plt.subplot(211)
+    plt.title(label3)
+    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['blCv'])); plt.ylim([0,3e3])
+    plt.plot(data3['inversions']['time'],data3['inversions']['invbase'],'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledCv']['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.show()
+
+    ### profiles
+    ###         loop through and set all zeros to nans
+    obsmean = obs['inversions']['scaledCv']['mean']
+    ra2mmean = data1['scaledCv']['mean']
+    casimmean = data2['scaledCv']['mean']
+    ifsmean = data3['scaledCv']['mean']
+    # for i in range(0, len(data1['scaledTime'])):
+    #     obsmean[i,obs['inversions']['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     ra2mmean[i,data1['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     casimmean[i,data2['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    #     ifsmean[i,data3['scaledCv']['mean'][i,:] == 0.0] = np.nan
+    plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
+    plt.plot(np.nanmean(ra2mmean,0),data1['scaledZ'], '^-', color = 'steelblue', linewidth = 2, label = label1)
+    plt.plot(np.nanmean(casimmean,0),data2['scaledZ'], 'v-', color = 'forestgreen', linewidth = 2, label = label2)
+    plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-', color = 'darkorange', linewidth = 2, label = label3)
+    plt.legend()
+    plt.show()
+
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     ###################################
@@ -3249,9 +3773,14 @@ def main():
     data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions.npy').item()
     data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions.npy').item()
 
-    figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    if cn_um_out_dir == 'cloud-fraction-metum-grid/2018/': var = 'Cv'
+    if cn_um_out_dir == 'lwc-scaled-metum-grid/2018/': var = 'lwc'
+    if cn_um_out_dir == 'iwc-Z-T-metum-grid/2018/': var = 'iwc'
+
+    # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
