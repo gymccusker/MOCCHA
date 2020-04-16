@@ -2366,6 +2366,14 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         ra2m_var = um_data['model_Cv_filtered'][::6,:]
         casim_var = misc_data['model_Cv_filtered'][::6,:]
         ifs_var = ifs_data['model_snow_Cv_filtered'][::6,:]
+    elif var == 'lwc':
+        ra2m_var = um_data['model_lwc'][::6,:]
+        casim_var = misc_data['model_lwc'][::6,:]
+        ifs_var = ifs_data['model_lwc'][::6,:]
+    elif var == 'iwc':
+        ra2m_var = um_data['model_iwc_filteredwc'][::6,:]
+        casim_var = misc_data['model_iwc_filteredwc'][::6,:]
+        ifs_var = ifs_data['model_snow_iwc_filtered'][::6,:]                
 
     ### find all Cv data below identified inversion
     for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
