@@ -2515,6 +2515,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.legend()
     plt.show()
 
+def interpCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, doy):
+
+    print ('*******')
+    print ('Interpolate obs cloudnet field for continuous array:')
+    print ('*******')
+    print ('')
+
+
+
 def main():
 
     START_TIME = time.time()
