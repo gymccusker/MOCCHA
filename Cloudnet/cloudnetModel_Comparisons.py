@@ -2529,9 +2529,23 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     ### need 3 points for interp, so start for loop at i = 1 (remember to finish at i-1!)
     ### check if the column mean == nan but next timestep is non-nan:
-    for i in range(1,10):
+    for i in range(1,len(time)-1):
         if np.logical_and(np.isnan(np.nanmean(cv[i,:])) == True, np.isnan(np.nanmean(cv[i+1,:])) == False):
             print str(i) + ' = yes'
+            cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
+
+    plt.figure()
+    plt.subplot(211)
+    plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
+    plt.xlim([226,258])
+    plt.ylim([0,3000])
+    plt.title('original')
+    plt.subplot(212)
+    plt.pcolor(time,height,np.transpose(cv), vmin = 0, vmax = 1)
+    plt.xlim([226,258])
+    plt.ylim([0,3000])
+    plt.title('interpolated')
+    plt.show()
 
     return obs_data
 
@@ -3339,10 +3353,12 @@ def main():
     if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+
     # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
+    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
