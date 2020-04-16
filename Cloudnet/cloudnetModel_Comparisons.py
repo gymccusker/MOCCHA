@@ -2513,11 +2513,11 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ra2mmean = data1['scaled' + var]['mean']
     casimmean = data2['scaled' + var]['mean']
     ifsmean = data3['scaled' + var]['mean']
-    for i in range(0, len(data1['scaledTime'])):
-        obsmean[i,obs['inversions']['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    # for i in range(0, len(data1['scaledTime'])):
+    #     obsmean[i,obs['inversions']['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
     plt.plot(np.nanmean(ra2mmean,0),data1['scaledZ'], '^-',
         color = 'steelblue', markeredgecolor = 'midnightblue', linewidth = 2, label = label1)
