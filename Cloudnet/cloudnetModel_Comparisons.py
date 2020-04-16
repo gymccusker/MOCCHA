@@ -2026,6 +2026,11 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
         # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
         misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
+        #### change units to g/cm3
+        obs_data['iwc'] = obs_data['iwc'] * 1e3
+        um_data['model_iwc_filtered'] = um_data['model_iwc_filtered'] * 1e3
+        misc_data['model_iwc_filtered'] = misc_data['model_iwc_filtered'] * 1e3
+        ifs_data['model_snow_iwc_filtered'] = ifs_data['model_snow_iwc_filtered'] * 1e3
 
     # #### ---------------------------------------------------------------
     # #### ONLY LOOK AT SONDES FROM THE DRIFT
@@ -3077,7 +3082,7 @@ def main():
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
         cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
