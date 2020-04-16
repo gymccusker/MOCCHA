@@ -2095,6 +2095,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
     for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),obs['inversions']['thetaE']['invbase'])
+    plt.savefig('FIGS/' + var + '_obs_inversionDetection_timeseries.png')
     plt.show()
 
     ### save inversion base index into dictionary
@@ -2347,6 +2348,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         if ~np.isnan(zind3[i]): plt.plot(data3['scaledTime'][i],ifs_data['height'][i,int(zind3[i])],'o')
     plt.plot(tim3, inv3)
     plt.ylim([0,3e3])
+    plt.savefig('FIGS/' + var + '_model_inversionDetection_timeseries.png')
     plt.show()
 
     ### set 6 hourly cloudnet Cv arrays as tempvars
@@ -2444,6 +2446,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(414)
     plt.title(label3)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
     plt.show()
 
     ### obs
@@ -2455,6 +2458,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
+    plt.savefig('FIGS/' + var + '_obs_scaledZ_timeseries.png')
     plt.show()
 
     ### um_ra2m
@@ -2466,6 +2470,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
+    plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
     plt.show()
 
     ### um_casim-100
@@ -2477,6 +2482,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
+    plt.savefig('FIGS/' + var + '_CASIM-100_scaledZ_timeseries.png')
     plt.show()
 
     ### ecmwf_ifs
@@ -2488,8 +2494,10 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
+    plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
     plt.show()
 
+    ####================================================================
     ### profiles
     ###         loop through and set all zeros to nans
     obsmean = obs['inversions']['scaled' + var]['mean']
@@ -2501,8 +2509,29 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     #     ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     #     casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     #     ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-    plt.figure()
-    ax1 = plt.gca()
+
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (profiles)
+    ### -------------------------------
+    fig = plt.figure(figsize=(5,6))
+    ax1  = fig.add_axes([0.2,0.1,0.7,0.8])   # left, bottom, width, height
     plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
     ax1.fill_betweenx(data1['scaledZ'],np.nanmean(obsmean,0) - np.nanstd(obsmean,0),
         np.nanmean(obsmean,0) + np.nanstd(obsmean,0), color = 'lightgrey', alpha = 0.5)
@@ -2526,7 +2555,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         np.nanmean(casimmean,0) + np.nanstd(casimmean,0), color = 'mediumaquamarine', alpha = 0.15)
     # ax1.fill_betweenx(data2['scaledZ'],np.nanmean(casimmean,0) - np.nanstd(data2['scaled' + var]['stdev'],0),
     #     np.nanmean(casimmean,0) + np.nanstd(data2['scaled' + var]['stdev'],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.xlim([0,1])
+    plt.ylim([0,1])
+    if var == 'Cv': plt.xlabel('Cv')
+    plt.ylabel('scaled Z \n (0 = lowest level; 1 = inversion base height)')
     plt.legend()
+    plt.savefig('FIGS/' + var + '_scaledZ.svg')
     plt.show()
 
 
