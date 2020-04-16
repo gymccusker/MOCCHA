@@ -2091,7 +2091,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             ### if there is, set obssfml to the last level before the sfmlheight
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
 
-    fig = plt.figure(figsize=(8,9))
+    fig = plt.figure(figsize=(8,6))
     plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
     for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),obs['inversions']['thetaE']['invbase'])
@@ -2331,7 +2331,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data2['inversions']['invbase_kIndex'] = zind2
     data3['inversions']['invbase_kIndex'] = zind3
 
-    fig = plt.figure(figsize=(8,10))
+    fig = plt.figure(figsize=(9,10))
     plt.subplot(311)
     plt.title(label1)
     for i in range(0, np.size(zind1)):
@@ -2440,7 +2440,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ##################################################
 
     ### timeseries
-    fig = plt.figure(figsize=(7,10))
+    fig = plt.figure(figsize=(8,12))
     plt.subplot(411)
     plt.title('Obs')
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
@@ -2642,7 +2642,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
                         mncv = np.nanmean(cv[i,:])
                         # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
-    plt.figure()
+    fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
     plt.xlim([226,258])
@@ -2653,6 +2653,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     plt.xlim([226,258])
     plt.ylim([0,3000])
     plt.title('interpolated')
+    plt.savefig('FIGS/Cv_TS_orig_interpd.svg')
     plt.show()
 
     ### save back to dictionary after completion of updates
