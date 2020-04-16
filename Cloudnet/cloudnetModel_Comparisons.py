@@ -2406,6 +2406,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
             tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
 
+            ### find mean and stdev of points within given Zpts range
             data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data1['bl' + var][i,tempvar1]
             if np.size(data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]]) > 0:
                 data1['scaled' + var]['mean'][i,k] = np.nanmean(data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
@@ -2495,11 +2496,11 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ra2mmean = data1['scaled' + var]['mean']
     casimmean = data2['scaled' + var]['mean']
     ifsmean = data3['scaled' + var]['mean']
-    for i in range(0, len(data1['scaledTime'])):
-        obsmean[i,obs['inversions']['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
-        ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    # for i in range(0, len(data1['scaledTime'])):
+    #     obsmean[i,obs['inversions']['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    #     ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     plt.figure()
     ax1 = plt.gca()
     plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
