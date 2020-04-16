@@ -2002,10 +2002,29 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     #### ---------------------------------------------------------------
 
     #### set flagged data to nans
-    obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
-    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+    if var == 'Cv':
+        obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
+        um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+        ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+        misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+    elif var == 'lwc':
+        obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+        obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+        um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+        ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+        ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
+        misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+    elif var == 'iwc':
+        # obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
+        # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] == -999.0] = np.nan
+        # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] == -999.0] = np.nan
+        # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] == -999.0] = np.nan
+        # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] == -999.0] = np.nan
+        obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
+        um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+        ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+        # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+        misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
 
     # #### ---------------------------------------------------------------
     # #### ONLY LOOK AT SONDES FROM THE DRIFT
