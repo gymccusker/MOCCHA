@@ -2536,41 +2536,41 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     ### check if the column mean == nan but next timestep is non-nan:
     for i in range(2,len(times)-1):
         mn = np.nanmean(cv[i,:])
-        print(str(mn))
+        # print(str(mn))
         if np.isnan(np.nanmean(cv[i,:])) == True:
-            print ('column i = ' + str(i) + ' needs to be fixed:')
+            # print ('column i = ' + str(i) + ' needs to be fixed:')
             if np.isnan(np.nanmean(cv[i+1,:])) == False:
                 if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                    print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                    # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
                     cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
                     mncv = np.nanmean(cv[i,:])
-                    print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                    # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
                 else:
-                    print ('need to find last non-nan instance...')
+                    # print ('need to find last non-nan instance...')
                     if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                        print (str(i-2) + ' and ' + str(i+1) + ' = yes')
+                        # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
                         cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
                         mncv = np.nanmean(cv[i,:])
-                        print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                        # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
     for i in range(2,len(times)-1):
         mn = np.nanmean(cv[i,:])
-        print(str(mn))
+        # print(str(mn))
         if np.isnan(np.nanmean(cv[i,:])) == True:
-            print ('column i = ' + str(i) + ' needs to be fixed:')
+            # print ('column i = ' + str(i) + ' needs to be fixed:')
             if np.isnan(np.nanmean(cv[i+1,:])) == False:
                 if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                    print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                    # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
                     cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
                     mncv = np.nanmean(cv[i,:])
-                    print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                    # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
                 else:
-                    print ('need to find last non-nan instance...')
+                    # print ('need to find last non-nan instance...')
                     if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                        print (str(i-2) + ' and ' + str(i+1) + ' = yes')
+                        # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
                         cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
                         mncv = np.nanmean(cv[i,:])
-                        print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                        # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
     plt.figure()
     plt.subplot(211)
@@ -2584,6 +2584,9 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     plt.ylim([0,3000])
     plt.title('interpolated')
     plt.show()
+
+    ### save back to dictionary after completion of updates
+    obs_data['Cv'] = cv
 
     return obs_data
 
