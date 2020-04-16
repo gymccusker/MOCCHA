@@ -2373,7 +2373,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     elif var == 'iwc':
         ra2m_var = um_data['model_iwc_filteredwc'][::6,:]
         casim_var = misc_data['model_iwc_filteredwc'][::6,:]
-        ifs_var = ifs_data['model_snow_iwc_filtered'][::6,:]                
+        ifs_var = ifs_data['model_snow_iwc_filtered'][::6,:]
 
     ### find all Cv data below identified inversion
     for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
@@ -3075,14 +3075,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
+            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
