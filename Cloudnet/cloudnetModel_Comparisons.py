@@ -2091,10 +2091,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             ### if there is, set obssfml to the last level before the sfmlheight
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
 
-    plt.figure()
+    fig = plt.figure(figsize=(8,9))
     plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
     for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),obs['inversions']['thetaE']['invbase'])
+    plt.xlabel('DOY')
+    plt.ylabel('Z [m]')
     plt.savefig('FIGS/' + var + '_obs_inversionDetection_timeseries.png')
     plt.show()
 
@@ -2329,12 +2331,13 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data2['inversions']['invbase_kIndex'] = zind2
     data3['inversions']['invbase_kIndex'] = zind3
 
-    plt.figure()
+    fig = plt.figure(figsize=(8,10))
     plt.subplot(311)
     plt.title(label1)
     for i in range(0, np.size(zind1)):
         if ~np.isnan(zind1[i]): plt.plot(data1['scaledTime'][i],um_data['height'][i,int(zind1[i])],'o')
     plt.plot(tim1,inv1)
+    plt.ylabel('Z [m]')
     plt.ylim([0,3e3])
     plt.subplot(312)
     plt.title(label2)
@@ -2342,12 +2345,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         if ~np.isnan(zind2[i]): plt.plot(data2['scaledTime'][i],misc_data['height'][i,int(zind2[i])],'o')
     plt.plot(tim2, inv2)
     plt.ylim([0,3e3])
+    plt.ylabel('Z [m]')
     plt.subplot(313)
     plt.title(label3)
     for i in range(0, np.size(zind3)):
         if ~np.isnan(zind3[i]): plt.plot(data3['scaledTime'][i],ifs_data['height'][i,int(zind3[i])],'o')
     plt.plot(tim3, inv3)
     plt.ylim([0,3e3])
+    plt.ylabel('Z [m]')
+    plt.xlabel('DOY')
     plt.savefig('FIGS/' + var + '_model_inversionDetection_timeseries.png')
     plt.show()
 
@@ -2434,22 +2440,29 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ##################################################
 
     ### timeseries
+    fig = plt.figure(figsize=(7,10))
     plt.subplot(411)
     plt.title('Obs')
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.ylabel('Z [m]')
     plt.subplot(412)
     plt.title(label1)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.ylabel('Z [m]')
     plt.subplot(413)
     plt.title(label2)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.ylabel('Z [m]')
     plt.subplot(414)
     plt.title(label3)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.ylabel('Z [m]')
+    plt.ylabel('DOY')
     plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
     plt.show()
 
     ### obs
+    fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title('Obs - 6hourly because inversions from radiosondes')
     plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['bl' + var])); plt.ylim([0,3e3])
@@ -2462,6 +2475,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.show()
 
     ### um_ra2m
+    fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label1)
     plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['bl' + var])); plt.ylim([0,3e3])
@@ -2474,6 +2488,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.show()
 
     ### um_casim-100
+    fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label2)
     plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['bl' + var])); plt.ylim([0,3e3])
@@ -2486,6 +2501,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.show()
 
     ### ecmwf_ifs
+    fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label3)
     plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['bl' + var])); plt.ylim([0,3e3])
