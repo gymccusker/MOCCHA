@@ -205,6 +205,489 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # plt.savefig(fileout)
     plt.show()
 
+def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    ###################################
+    ## PLOT TIMESERIES
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWP timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	SET UP FIGURE PROPERTIES
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(8,4.5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+
+    #### set flagged and bad data to nans
+    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
+    # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
+    # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
+    # obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
+    # obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+
+    # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+    plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
+        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
+        'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][::3],misc_data['model_lwp'][::3]*1e3,
+        'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
+    plt.xlabel('Day of Year')
+    plt.ylabel('LWP [g/m2]')
+    # plt.ylim([0,10000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Comparing observed Cv based on grid results interpolated on to:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
+            hspace = 0.22, wspace = 0.1)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
+    plt.xlabel('Cloud Fraction')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    # plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_GridComparison_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting Cv statistics based on melt/freeze up periods:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
+            hspace = 0.22, wspace = 0.1)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
+    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
+    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),
+        np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),
+        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0),
+        np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0), color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),
+        np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),
+        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0),
+        np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.xlabel('Cloud Fraction')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    # plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWC cloudnet statistics based on melt/freeze up periods:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
+            hspace = 0.22, wspace = 0.14)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Liquid water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    plt.xlim([0,0.2])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Liquid water content [g/m3]')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,0.2])
+    # plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+    plt.savefig(fileout, dpi=300)
+    plt.show()
+
+def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting IWC cloudnet statistics based on melt/freeze up periods:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(10,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
+            hspace = 0.22, wspace = 0.14)
+
+    # print um_data.keys()
+
+    #### set flagged um_data to nans
+    obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] == -999.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] == -999.0] = np.nan
+    ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] == -999.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] == -999.0] = np.nan
+
+    obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
+
+    melt = np.where(um_data['time'] < 240.0)
+    freeze = np.where(um_data['time'] >= 240.0)
+
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][melt,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Ice water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.title('Melt')
+    plt.ylim([0,10000])
+    plt.xlim([0,0.05])
+    plt.legend()
+
+    plt.subplot(122)
+    ax2 = plt.gca()
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][freeze,:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Ice water content [g/m3]')
+    plt.title('Freeze up')
+    plt.yticks([])
+    plt.ylim([0,10000])
+    plt.xlim([0,0.05])
+    # plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
+    plt.savefig(fileout, dpi=300)
+    plt.show()
+
 def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -1471,502 +1954,6 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
     plt.legend()
     plt.show()
 
-def plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
-
-    ###################################
-    ## PLOT TIMESERIES OF BL DEPTH
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Plotting BL depth timeseries:')
-    print ('')
-
-    # UM -> IFS comparisons:
-    # 5. bl_depth -> sfc_bl_height
-
-    ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
-        ifs_flag = True
-    else:
-        ifs_flag = False
-
-    #################################################################
-    ## save data into temp variables to allow subsampling
-    #################################################################
-    bldepth1 = data1['bl_depth'][data1['hrly_flag']]
-    bldepth2 = data2['bl_depth'][data2['hrly_flag']]
-    if ifs_flag == True:
-        bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
-    else:
-        bldepth3 = data3['bl_depth'][data3['hrly_flag']]
-
-
-    #### ---------------------------------------------------------------
-    #### prepare cloudnet data
-    #### ---------------------------------------------------------------
-
-    #### set flagged data (and zeros) to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0] = np.nan
-
-    #################################################################
-    ## convert model inversion timesteps
-    #################################################################
-    data1['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data1['inversions']['mday']))
-    data2['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data2['inversions']['mday']))
-    data3['inversions']['doy'] = calcTime_Mat2DOY(np.squeeze(data3['inversions']['mday']))
-
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT SONDES FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['inversions']['doy'] >= 225.9, obs['inversions']['doy'] <= 258.0))
-
-    ### save in dict for ease
-    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
-
-    #### ------------------------------------------------------------------------------
-    #### load inversions data from RADIOSONDES (i.e. 6 hourly data)
-    #### ------------------------------------------------------------------------------
-    obsinv = np.squeeze(obs['inversions']['invbase'][drift])
-    obsmlh = np.squeeze(obs['inversions']['sfmlheight'][drift])
-
-    #### ------------------------------------------------------------------------------
-    #### need to identify what cloudnet indices correspond to radiosondes
-    #### ------------------------------------------------------------------------------
-    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
-
-    #### remove DOY 230, 253, 257 manually for now
-    nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
-    obs['inversions']['doy_drift'][nanindices] = np.nan
-    obsinv[nanindices] = np.nan
-    obsmlh[nanindices] = np.nan
-
-    ### save non-nan values to dictionary
-    obs['inversions']['TimesForCloudnet'] = obs['inversions']['doy_drift'][~np.isnan(obs['inversions']['doy_drift'])]
-    obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
-    obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
-
-    #### ------------------------------------------------------------------------------
-    #### fill obs array with Cloudnet height index of main inversion base / sfml height
-    #### ------------------------------------------------------------------------------
-    ### define scaledZ array to sort data in to
-    ###     will act as mid point of vertical "boxes" of width 0.1
-    binres = 0.1
-    Zpts = np.arange(0.0 + binres/2.0, 1.0 + binres/2.0, binres)
-
-    ### use 6hourly cloudnet data to compare radiosonde inversion heights to
-    obs_data['height_6hrly'] = obs_data['height'][::6,:]
-    obs_data['LWC_6hrly'] = obs_data['lwc'][::6,:]*1e3  ### g/kg
-    obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
-
-    ### initialise array to hold height indices, set all to nan before filling
-    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
-    obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
-
-    ### look for altitudes < invbase in obs cloudnet data
-    for i in range(0, np.size(obs['inversions']['TimesForCloudnet'])):        ### time loop (from radiosondes)
-        #### check if there are any height levels below the inversion
-        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])) > 0.0:
-            ### if there is, set obsind to the last level before the inversion
-            obsind[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['InvBasesForCloudnet'][i])[0][-1]
-        #### check if there are any height levels below the sfmlheight
-        if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
-            ### if there is, set obssfml to the last level before the sfmlheight
-            obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
-
-    plt.figure()
-    plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
-    for i in range(0, np.size(obsind)): plt.plot(obs_data['time_6hrly'][i],obs_data['height_6hrly'][i,int(obsind[i])],'o')
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']))
-    plt.show()
-
-    ### save inversion base index into dictionary
-    obs['inversions']['invbase_kIndex'] = obsind
-    obs['inversions']['sfmlheight_kIndex'] = obssfml
-
-    ### initialise scaled arrays in dictionary
-    obs['inversions']['scaledLWC'] = {}
-    obs['inversions']['scaledLWC']['binned'] = {}
-    obs['inversions']['scaledLWC']['mean'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledLWC']['mean'][:] = np.nan
-    obs['inversions']['scaledLWC']['stdev'] = np.zeros([np.size(obs_data['time_6hrly']),len(Zpts)]); obs['inversions']['scaledLWC']['stdev'][:] = np.nan
-    obs['inversions']['scaledZ'] = Zpts
-    obs['inversions']['scaledTime'] = obs_data['time_6hrly']
-    obs['inversions']['blLWC'] = np.zeros([np.size(obs_data['height_6hrly'],0),np.size(obs_data['height_6hrly'],1)]); obs['inversions']['blLWC'][:] = np.nan
-
-    ###
-    for i in range(0,np.size(obs['inversions']['TimesForCloudnet'])):     ## loop over radiosonde time
-        print(str(i) + 'th timestep (radiosonde):')
-
-        ### create new dictionary entry for i-th timestep
-        obs['inversions']['scaledLWC']['binned']['t' + str(i)] = {}
-
-        ###-----------------------------------------------------------------------------------------
-        ### for main inversion
-        ###-----------------------------------------------------------------------------------------
-        ### create array of height points under the identified inversion
-        if obs['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts = obs_data['height_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i]+1)]
-        else:
-            continue
-
-        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        scaled_hgts = hgts / obs_data['height_6hrly'][i,int(obs['inversions']['invbase_kIndex'][i])]
-
-        # find Cv values below the BL inversion
-        obs['inversions']['blLWC'][i,:int(obs['inversions']['invbase_kIndex'][i])] = obs_data['LWC_6hrly'][i,:int(obs['inversions']['invbase_kIndex'][i])]
-
-        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        for k in range(len(Zpts)):
-            tempvar = np.where(np.logical_and(scaled_hgts >= Zpts[k] - binres/2.0, scaled_hgts < Zpts[k] + binres/2.0))
-            obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]] = obs['inversions']['blLWC'][i,tempvar]
-            if np.size(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                obs['inversions']['scaledLWC']['mean'][i,k] = np.nanmean(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-            obs['inversions']['scaledLWC']['stdev'][i,k] = np.nanstd(obs['inversions']['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-
-    #### ---------------------------------------------------------------
-    #### prepare model inversion data
-    #### ---------------------------------------------------------------
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT DATA FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    driftmod = np.where(np.logical_and(data1['inversions']['doy'] >= 226.0, data1['inversions']['doy'] <= 258.0))
-    data1['inversions']['doy_drift'] = data1['inversions']['doy'][driftmod[0][1:-2]]
-    data1['inversions']['invbase_drift'] = data1['inversions']['invbase'][driftmod[0][1:-2]]
-    data2['inversions']['doy_drift'] = data2['inversions']['doy'][driftmod[0][1:-2]]
-    data2['inversions']['invbase_drift'] = data2['inversions']['invbase'][driftmod[0][1:-2]]
-    data3['inversions']['doy_drift'] = data3['inversions']['doy'][driftmod[0][1:-2]]
-    data3['inversions']['invbase_drift'] = data3['inversions']['invbase'][driftmod[0][1:-2]]
-
-    #### make inversion tempvars to allow for easy subsampling
-    tim1 = np.squeeze(data1['inversions']['doy_drift'][data1['hrly_flag']])
-    tim2 = np.squeeze(data2['inversions']['doy_drift'][data2['hrly_flag']])
-    tim3 = np.squeeze(data3['inversions']['doy_drift'][data3['hrly_flag']])
-    inv1 = np.squeeze(data1['inversions']['invbase_drift'][data1['hrly_flag'],0])
-    inv2 = np.squeeze(data2['inversions']['invbase_drift'][data2['hrly_flag'],0])
-    inv3 = np.squeeze(data3['inversions']['invbase_drift'][data3['hrly_flag'],0])
-
-    #### calculate inversion algorithm success rate
-    ind1 = np.where(inv1 >= 0.0)  ## non-nan values
-    data1['inversions']['successRate'] = np.size(ind1[0]) / np.float(np.size(inv1)) * 100.0
-    ind2 = np.where(inv2 >= 0.0)  ## non-nan values
-    data2['inversions']['successRate'] = np.size(ind2[0]) / np.float(np.size(inv2)) * 100.0
-    ind3 = np.where(inv3 >= 0.0)  ## non-nan values
-    data3['inversions']['successRate'] = np.size(ind3[0]) / np.float(np.size(inv3)) * 100.0
-
-    print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
-    print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
-    print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
-    print ('****')
-
-    #### ---------------------------------------------------------------
-    #### remove flagged IFS heights
-    #### ---------------------------------------------------------------
-    data3['height'][data3['height'] == -9999] = 0.0
-            #### set all heights to zero if flagged. setting to nan caused problems further on
-    data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
-
-    #### ---------------------------------------------------------------
-    #### Define meteorological periods from Jutta's paper
-    #### ---------------------------------------------------------------
-
-    ## Meteorological period definitions from Jutta's paper:
-    ##     "Period 1 covers the time in the MIZ until 4 August 06:00 UTC. Period 2 encompasses
-    ##     the journey into the ice towards the North Pole until 12 August 00:00 UTC. Since cloud
-    ##     radar measurements were not possible during heavy ice breaking because of excessive
-    ##     vibration, cloud characteristics and fog heights are not available during period 2.
-    ##     Period 3 (12 to 17 August) includes the 'North Pole' station and the beginning of
-    ##     the ice drift. Period 4 (18 to 27 August) covers the end of the melt and the transition
-    ##     period into the freeze up. The freeze up is covered by period 5 (28 August to 3 September),
-    ##     6 (4 to 7 September) and 7 (8 to 12 September 12:00 UTC). Finally, period 8 (12 September
-    ##     12:00 UTC to 21 September 06:00 UTC) covers the end of the ice drift period and the transit
-    ##     out to the ice edge. "
-    #######         from Jutta: so if there is no time stamp mentioned it is eg. P4 18.08 0000UTC - 27.08 23:59 UTC , P5 then is 28.08 00UTC until 03.09 23:59 UTC...
-
-    ### define met periods wrt cloudnet timestamps for ease (all runs should be able to use same indexing)
-    p3 = np.where(um_data['time'] < 230.0)
-    p4 = np.where(np.logical_and(um_data['time'] >= 230.0, um_data['time'] < 240.0))
-    p5 = np.where(np.logical_and(um_data['time'] >= 240.0, um_data['time'] < 247.0))
-    p6 = np.where(np.logical_and(um_data['time'] >= 247.0, um_data['time'] < 251.0))
-    p7 = np.where(np.logical_and(um_data['time'] >= 251.0, um_data['time'] < 255.5))
-    p8 = np.where(um_data['time'] >= 255.5)
-
-    #### ---------------------------------------------------------------
-    #### Use extracted height indices to probe cloudnet data
-    #### ---------------------------------------------------------------
-
-    #### define empty arrays of nans to fill with scaled data
-    data1['scaledLWC'] = {}
-    data1['scaledLWC']['binned'] = {}
-    data1['scaledLWC']['mean'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledLWC']['mean'][:] = np.nan
-    data1['scaledLWC']['stdev'] = np.zeros([np.size(um_data['height'],0),len(Zpts)]); data1['scaledLWC']['stdev'][:] = np.nan
-    data1['blLWC'] = np.zeros([np.size(um_data['height'],0),np.size(um_data['height'],1)]); data1['blLWC'][:] = np.nan
-
-    data2['scaledLWC'] = {}
-    data2['scaledLWC']['binned'] = {}
-    data2['scaledLWC']['mean'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledLWC']['mean'][:] = np.nan
-    data2['scaledLWC']['stdev'] = np.zeros([np.size(misc_data['height'],0),len(Zpts)]); data2['scaledLWC']['stdev'][:] = np.nan
-    data2['blLWC'] = np.zeros([np.size(misc_data['height'],0),np.size(misc_data['height'],1)]); data2['blLWC'][:] = np.nan
-
-    data3['scaledLWC'] = {}
-    data3['scaledLWC']['binned'] = {}
-    data3['scaledLWC']['mean'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledLWC']['mean'][:] = np.nan
-    data3['scaledLWC']['stdev'] = np.zeros([np.size(ifs_data['height'],0),len(Zpts)]); data3['scaledLWC']['stdev'][:] = np.nan
-    data3['blLWC'] = np.zeros([np.size(ifs_data['height'],0),np.size(ifs_data['height'],1)]); data3['blLWC'][:] = np.nan
-
-    ### save new height and cloudnet time array into dictionary (latter to account for missing files)
-    data1['scaledZ'] = Zpts
-    data1['scaledTime'] = um_data['time']
-    data2['scaledZ'] = Zpts
-    data2['scaledTime'] = misc_data['time']
-    data3['scaledZ'] = Zpts
-    data3['scaledTime'] = ifs_data['time']
-
-    ### ------------------------------------------------------------------------------------------
-    ### find cloudnet timesteps which match the inversion timesteps
-    ### ------------------------------------------------------------------------------------------
-    data1['scaledLWC']['inversion_Tindex'] = np.zeros(np.size(tim1)); data1['scaledLWC']['inversion_Tindex'][:] = np.nan
-    data1['scaledLWC']['inversionForCloudnet'] = np.zeros(np.size(tim1)); data1['scaledLWC']['inversionForCloudnet'][:] = np.nan
-    data2['scaledLWC']['inversion_Tindex'] = np.zeros(np.size(tim2)); data2['scaledLWC']['inversion_Tindex'][:] = np.nan
-    data2['scaledLWC']['inversionForCloudnet'] = np.zeros(np.size(tim2)); data2['scaledLWC']['inversionForCloudnet'][:] = np.nan
-    data3['scaledLWC']['inversion_Tindex'] = np.zeros(np.size(tim3)); data3['scaledLWC']['inversion_Tindex'][:] = np.nan
-    data3['scaledLWC']['inversionForCloudnet'] = np.zeros(np.size(tim3)); data3['scaledLWC']['inversionForCloudnet'][:] = np.nan
-
-    for i in range(0, len(tim1)):
-        ## find the cloudnet time INDEX which matches the inversion timestep
-        if np.floor(tim1[i]) in missing_files:
-            ### don't assign a cloudnet index for missing files
-            ### instead, set inv1 to nan at these times
-            inv1[i] = np.nan
-            continue
-        elif np.size(np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))) > 0:
-            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-            data1['scaledLWC']['inversion_Tindex'][i] = np.where(np.round(um_data['time'].data,3) == np.round(tim1[i],3))[0][0]
-        if np.floor(tim2[i]) in missing_files:
-            ### don't assign a cloudnet index for missing files
-            ### instead, set inv1 to nan at these times
-            inv2[i] = np.nan
-            continue
-        elif np.size(np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))) > 0:
-            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-            data2['scaledLWC']['inversion_Tindex'][i] = np.where(np.round(misc_data['time'].data,3) == np.round(tim2[i],3))[0][0]
-        if np.floor(tim3[i]) in missing_files:
-            ### don't assign a cloudnet index for missing files
-            ### instead, set inv1 to nan at these times
-            inv3[i] = np.nan
-            continue
-        elif np.size(np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))) > 0:
-            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
-            data3['scaledLWC']['inversion_Tindex'][i] = np.where(np.round(ifs_data['time'].data,3) == np.round(tim3[i],3))[0][0]
-
-
-        ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
-        ###         if inversion_Tindex is not NaN, use to index inv into new array (cninv)
-        if data1['scaledLWC']['inversion_Tindex'][i] >= 0.0:
-            data1['scaledLWC']['inversionForCloudnet'][int(data1['scaledLWC']['inversion_Tindex'][i])] = inv1[i]
-        if data2['scaledLWC']['inversion_Tindex'][i] >= 0.0:
-            data2['scaledLWC']['inversionForCloudnet'][int(data2['scaledLWC']['inversion_Tindex'][i])] = inv2[i]
-        if data3['scaledLWC']['inversion_Tindex'][i] >= 0.0:
-            data3['scaledLWC']['inversionForCloudnet'][int(data3['scaledLWC']['inversion_Tindex'][i])] = inv3[i]
-
-    np.save('working_data1', data1)
-    np.save('working_data2', data2)
-    np.save('working_data3', data3)
-
-    #### ---------------------------------------------------------------
-    #### Look at data below main inversion base only - model data
-    #### ---------------------------------------------------------------
-    #### create empty arrays to hold height index
-    zind1 = np.zeros(np.size(um_data['time'])); zind1[:] = np.nan
-    zind2 = np.zeros(np.size(misc_data['time'])); zind2[:] = np.nan
-    zind3 = np.zeros(np.size(ifs_data['time'])); zind3[:] = np.nan
-
-    #### ------------------------------------------------------------------------------
-    #### fill model arrays with height index of main inversion base / sfml height
-    #### ------------------------------------------------------------------------------
-    for i in range(0, np.size(um_data['time'])):        ### all can go in this loop, um_data['time'] == hourly data
-
-        ### main inversion base assignments
-        if np.size(np.where(um_data['height'][i,:].data == data1['scaledLWC']['inversionForCloudnet'][i])) > 0.0:
-            zind1[i] = np.where(um_data['height'][i,:].data == data1['scaledLWC']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(data2['height'][1:].data == data2['scaledLWC']['inversionForCloudnet'][i])) > 0.0:
-            zind2[i] = np.where(data2['height'][1:].data == data2['scaledLWC']['inversionForCloudnet'][i])[0][0]
-        if np.size(np.where(data3['height_hrly'][i].data <= data3['scaledLWC']['inversionForCloudnet'][i])) > 0.0:
-            temp = data3['height_hrly'][i,:].data <= data3['scaledLWC']['inversionForCloudnet'][i]
-            zind3[i] = np.where(temp == True)[0][-1]
-
-    #### assign height indices to dictionary for later use
-    data1['inversions']['invbase_kIndex'] = zind1
-    data2['inversions']['invbase_kIndex'] = zind2
-    data3['inversions']['invbase_kIndex'] = zind3
-
-    plt.figure()
-    plt.subplot(311)
-    plt.title(label1)
-    for i in range(0, np.size(zind1)):
-        if ~np.isnan(zind1[i]): plt.plot(um_data['time'][i],um_data['height'][i,int(zind1[i])],'o')
-    plt.plot(tim1[:-22],inv1[:-22])
-    plt.ylim([0,3e3])
-    plt.subplot(312)
-    plt.title(label2)
-    for i in range(0, np.size(zind2)):
-        if ~np.isnan(zind2[i]): plt.plot(misc_data['time'][i],misc_data['height'][i,int(zind2[i])],'o')
-    plt.plot(tim2[:-22], inv2[:-22])
-    plt.ylim([0,3e3])
-    plt.subplot(313)
-    plt.title(label3)
-    for i in range(0, np.size(zind3)):
-        if ~np.isnan(zind3[i]): plt.plot(ifs_data['time'][i],ifs_data['height'][i,int(zind3[i])],'o')
-    plt.plot(tim3[:-22], inv3[:-22])
-    plt.ylim([0,3e3])
-    plt.show()
-
-    # print (zind3)
-    #### re-check inversion algorithm success rate to make sure no !0 values got dropped
-    zzind1 = np.where(data1['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind1rate = np.size(zzind1) / np.float(np.size(inv1)) * 100.0
-    zzind2 = np.where(data2['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind2rate = np.size(zzind2) / np.float(np.size(inv2)) * 100.0
-    zzind3 = np.where(data3['inversions']['invbase_kIndex'] >= 0.0)  ## non-nan values
-    zind3rate = np.size(zzind3) / np.float(np.size(inv3)) * 100.0
-
-    ### try i = 0 first to see if it works
-    ### this will go into a loop once tested
-    # i = 110
-    for i in range(0,np.size(um_data['time'])):     ## loop over time
-        print ()
-        print(str(i) + 'th timestep (model data):')
-
-        ### create new dictionary entry for i-th timestep
-        data1['scaledLWC']['binned']['t' + str(i)] = {}
-        data2['scaledLWC']['binned']['t' + str(i)] = {}
-        data3['scaledLWC']['binned']['t' + str(i)] = {}
-
-        ###-----------------------------------------------------------------------------------------
-        ### for main inversion
-        ###-----------------------------------------------------------------------------------------
-        ### create array of height points under the identified inversion
-        if data1['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts1 = um_data['height'][i,:int(data1['inversions']['invbase_kIndex'][i])]
-        else:
-            continue
-        if data2['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts2 = misc_data['height'][i,:int(data2['inversions']['invbase_kIndex'][i])]
-        else:
-            continue
-        if data3['inversions']['invbase_kIndex'][i] >= 0.0:
-            hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i])]
-        else:
-            continue
-
-        ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
-        scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
-        scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
-        scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
-
-        # find Cv values below the BL inversion
-        data1['blLWC'][i,:int(data1['inversions']['invbase_kIndex'][i])] = um_data['model_lwc'][i,:int(data1['inversions']['invbase_kIndex'][i])]*1e3
-        data2['blLWC'][i,:int(data2['inversions']['invbase_kIndex'][i])] = misc_data['model_lwc'][i,:int(data2['inversions']['invbase_kIndex'][i])]*1e3
-        data3['blLWC'][i,:int(data3['inversions']['invbase_kIndex'][i])] = ifs_data['model_lwc'][i,:int(data3['inversions']['invbase_kIndex'][i])]*1e3
-
-        ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
-        for k in range(len(Zpts)):
-            tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
-            tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
-            tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
-
-            data1['scaledLWC']['binned']['t' + str(i)][Zpts[k]] = data1['blLWC'][i,tempvar1]
-            if np.size(data1['scaledLWC']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data1['scaledLWC']['mean'][i,k] = np.nanmean(data1['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-            data1['scaledLWC']['stdev'][i,k] = np.nanstd(data1['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-
-            data2['scaledLWC']['binned']['t' + str(i)][Zpts[k]] = data2['blLWC'][i,tempvar2]
-            if np.size(data2['scaledLWC']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data2['scaledLWC']['mean'][i,k] = np.nanmean(data2['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-            data2['scaledLWC']['stdev'][i,k] = np.nanstd(data2['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-
-            data3['scaledLWC']['binned']['t' + str(i)][Zpts[k]] = data3['blLWC'][i,tempvar3]
-            if np.size(data3['scaledLWC']['binned']['t' + str(i)][Zpts[k]]) > 0:
-                data3['scaledLWC']['mean'][i,k] = np.nanmean(data3['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-            data3['scaledLWC']['stdev'][i,k] = np.nanstd(data3['scaledLWC']['binned']['t' + str(i)][Zpts[k]])
-
-    ##################################################
-    ##################################################
-    #### figures
-    ##################################################
-    ##################################################
-
-    ### timeseries
-    plt.subplot(411)
-    plt.title('Obs')
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledLWC']['mean']), vmin = 0, vmax = 1)
-    plt.subplot(412)
-    plt.title(label1)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledLWC']['mean']), vmin = 0, vmax = 1)
-    plt.subplot(413)
-    plt.title(label2)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledLWC']['mean']), vmin = 0, vmax = 1)
-    plt.subplot(414)
-    plt.title(label3)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledLWC']['mean']), vmin = 0, vmax = 1)
-    plt.show()
-
-    ### obs
-    plt.subplot(211)
-    plt.title('Obs')
-    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['blLWC'])); plt.ylim([0,3e3])
-    plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['invbase'][drift]),'r')
-    plt.xlim([226,258])
-    plt.subplot(212)
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaledLWC']['mean'])); plt.ylim([0,1])
-    plt.xlim([226,258])
-    plt.show()
-
-    ### um_ra2m
-    plt.subplot(211)
-    plt.title(label1)
-    plt.pcolor(um_data['time'].data,um_data['height'][0,:].data,np.transpose(data1['blLWC'])); plt.ylim([0,3e3])
-    plt.plot(data1['inversions']['doy_drift'],np.squeeze(data1['inversions']['invbase_drift']),'r')
-    plt.xlim([226,258])
-    plt.subplot(212)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaledLWC']['mean'])); plt.ylim([0,1])
-    plt.xlim([226,258])
-    plt.show()
-
-    ### um_casim-100
-    plt.subplot(211)
-    plt.title(label2)
-    plt.pcolor(misc_data['time'].data,misc_data['height'][0,:].data,np.transpose(data2['blLWC'])); plt.ylim([0,3e3])
-    plt.plot(data2['inversions']['doy'],np.squeeze(data2['inversions']['invbase']),'r')
-    plt.xlim([226,258])
-    plt.subplot(212)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaledLWC']['mean'])); plt.ylim([0,1])
-    plt.xlim([226,258])
-    plt.show()
-
-    ### ecmwf_ifs
-    plt.subplot(211)
-    plt.title(label3)
-    plt.pcolor(ifs_data['time'].data,ifs_data['height'][0,:].data,np.transpose(data3['blLWC'])); plt.ylim([0,3e3])
-    plt.plot(data3['inversions']['doy'],np.squeeze(data3['inversions']['invbase']),'r')
-    plt.xlim([226,258])
-    plt.subplot(212)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaledLWC']['mean'])); plt.ylim([0,1])
-    plt.xlim([226,258])
-    plt.show()
-
-    ### profiles
-    plt.plot(np.nanmean(obs['inversions']['scaledLWC']['mean'],0),obs['inversions']['scaledZ'], color = 'k', linewidth = 2, label = 'Obs')
-    plt.plot(np.nanmean(data1['scaledLWC']['mean'][::6,:],0),data1['scaledZ'], color = 'steelblue', linewidth = 2, label = label1)
-    plt.plot(np.nanmean(data2['scaledLWC']['mean'][::6,:],0),data2['scaledZ'], color = 'forestgreen', linewidth = 2, label = label2)
-    plt.plot(np.nanmean(data3['scaledLWC']['mean'][::6,:],0),data3['scaledZ'], color = 'darkorange', linewidth = 2, label = label3)
-    plt.legend()
-    plt.show()
-
 def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var):
 
     ###################################
@@ -2526,489 +2513,6 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-',
         color = 'darkorange', markeredgecolor = 'saddlebrown', linewidth = 2, label = label3)
     plt.legend()
-    plt.show()
-
-def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
-
-    ###################################
-    ## PLOT TIMESERIES
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Plotting LWP timeseries for whole drift period:')
-    print ('')
-
-    ##################################################
-    ##################################################
-    #### 	SET UP FIGURE PROPERTIES
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(8,4.5))
-    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
-            hspace = 0.4, wspace = 0.1)
-
-    ### define axis instance
-    ax = plt.gca()
-
-    print (um_data.keys())
-
-    #### set flagged and bad data to nans
-    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
-    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
-    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
-    # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
-    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
-    # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
-    # obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
-    # obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
-
-    # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
-    plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
-    plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
-    plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
-    plt.plot(misc_data['time'][::3],misc_data['model_lwp'][::3]*1e3,
-        'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
-    plt.xlabel('Day of Year')
-    plt.ylabel('LWP [g/m2]')
-    # plt.ylim([0,10000])
-    plt.xlim([doy[0],doy[-1]])
-    plt.legend()
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
-    plt.savefig(fileout)
-    plt.show()
-
-def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-    import matplotlib.cm as mpl_cm
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Comparing observed Cv based on grid results interpolated on to:')
-    print ('')
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=LARGE_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
-            hspace = 0.22, wspace = 0.1)
-
-    # print um_data.keys()
-
-    #### set flagged um_data to nans
-    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
-    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
-
-    melt = np.where(um_data['time'] < 240.0)
-    freeze = np.where(um_data['time'] >= 240.0)
-
-    plt.subplot(121)
-    ax1 = plt.gca()
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
-
-    plt.xlabel('Cloud Fraction')
-    plt.ylabel('Height [m]')
-    plt.title('Melt')
-    plt.ylim([0,10000])
-    plt.xlim([0,1])
-    plt.legend()
-
-    plt.subplot(122)
-    ax2 = plt.gca()
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'Obs_IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
-    plt.xlabel('Cloud Fraction')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,1])
-    # plt.legend()
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = 'FIGS/Obs_GridComparison_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
-    plt.savefig(fileout)
-    plt.show()
-
-def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-    import matplotlib.cm as mpl_cm
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Plotting Cv statistics based on melt/freeze up periods:')
-    print ('')
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=LARGE_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
-            hspace = 0.22, wspace = 0.1)
-
-    # print um_data.keys()
-
-    #### set flagged um_data to nans
-    um_data['Cv'][um_data['Cv'] == -999] = np.nan
-    ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
-    obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
-    # um_data['Cv'][um_data['Cv'] == 0] = np.nan
-    um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
-
-    melt = np.where(um_data['time'] < 240.0)
-    freeze = np.where(um_data['time'] >= 240.0)
-
-    plt.subplot(121)
-    ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0),
-        np.nanmean(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][melt,:]),0), color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0),
-        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0),np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0) - np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0),
-        np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0) + np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][melt,:]),0), color = 'mediumaquamarine', alpha = 0.15)
-
-    plt.xlabel('Cloud Fraction')
-    plt.ylabel('Height [m]')
-    plt.title('Melt')
-    plt.ylim([0,10000])
-    plt.xlim([0,1])
-    plt.legend()
-
-    plt.subplot(122)
-    ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0),
-        np.nanmean(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['model_Cv_filtered'][freeze,:]),0), color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0),
-        np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['model_snow_Cv_filtered'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0) - np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0),
-        np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0) + np.nanstd(np.squeeze(misc_data['model_Cv_filtered'][freeze,:]),0), color = 'mediumaquamarine', alpha = 0.15)
-    plt.xlabel('Cloud Fraction')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,1])
-    # plt.legend()
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
-    plt.savefig(fileout)
-    plt.show()
-
-def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-    import matplotlib.cm as mpl_cm
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Plotting LWC cloudnet statistics based on melt/freeze up periods:')
-    print ('')
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=LARGE_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
-            hspace = 0.22, wspace = 0.14)
-
-    # print um_data.keys()
-
-    #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
-
-    melt = np.where(um_data['time'] < 240.0)
-    freeze = np.where(um_data['time'] >= 240.0)
-
-    plt.subplot(121)
-    ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-
-    plt.xlabel('Liquid water content [g/m3]')
-    plt.ylabel('Height [m]')
-    plt.title('Melt')
-    plt.ylim([0,10000])
-    plt.xlim([0,0.2])
-    plt.legend()
-
-    plt.subplot(122)
-    ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-
-    plt.xlabel('Liquid water content [g/m3]')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,0.2])
-    # plt.legend()
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
-    plt.savefig(fileout, dpi=300)
-    plt.show()
-
-def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-    import matplotlib.cm as mpl_cm
-        # from matplotlib.patches import Polygon
-
-    ###################################
-    ## PLOT MAP
-    ###################################
-
-    print ('******')
-    print ('')
-    print ('Plotting IWC cloudnet statistics based on melt/freeze up periods:')
-    print ('')
-
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=LARGE_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.12,
-            hspace = 0.22, wspace = 0.14)
-
-    # print um_data.keys()
-
-    #### set flagged um_data to nans
-    obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] == -999.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] == -999.0] = np.nan
-    ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] == -999.0] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] == -999.0] = np.nan
-
-    obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
-    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
-
-    melt = np.where(um_data['time'] < 240.0)
-    freeze = np.where(um_data['time'] >= 240.0)
-
-    plt.subplot(121)
-    ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-
-    plt.xlabel('Ice water content [g/m3]')
-    plt.ylabel('Height [m]')
-    plt.title('Melt')
-    plt.ylim([0,10000])
-    plt.xlim([0,0.05])
-    plt.legend()
-
-    plt.subplot(122)
-    ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_snow_iwc_filtered'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][freeze,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_iwc_filtered'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-
-    plt.xlabel('Ice water content [g/m3]')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,0.05])
-    # plt.legend()
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
-    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def main():
