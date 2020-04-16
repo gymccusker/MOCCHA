@@ -2531,7 +2531,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     ### check if the column mean == nan but next timestep is non-nan:
     for i in range(1,len(time)-1):
         if np.logical_and(np.isnan(np.nanmean(cv[i,:])) == True, np.isnan(np.nanmean(cv[i+1,:])) == False):
-            print str(i) + ' = yes'
+            print (str(i) + ' = yes')
             cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
 
     plt.figure()
