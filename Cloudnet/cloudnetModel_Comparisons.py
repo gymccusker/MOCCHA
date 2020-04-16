@@ -3081,14 +3081,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'iwc-Z-T-metum-grid/2018/'
+            cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
