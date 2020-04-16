@@ -2500,15 +2500,26 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     #     ra2mmean[i,data1['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     #     casimmean[i,data2['scaled' + var]['mean'][i,:] == 0.0] = np.nan
     #     ifsmean[i,data3['scaled' + var]['mean'][i,:] == 0.0] = np.nan
+    plt.figure()
+    ax1 = plt.gca()
     plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
+    ax1.fill_betweenx(data1['scaledZ'],np.nanmean(obsmean,0) - np.nanstd(obs['inversions']['scaled' + var]['stdev'],0),
+        np.nanmean(obsmean,0) + np.nanstd(obs['inversions']['scaled' + var]['stdev'],0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(ra2mmean,0),data1['scaledZ'], '^-',
         color = 'steelblue', markeredgecolor = 'midnightblue', linewidth = 2, label = label1)
+    ax1.fill_betweenx(data1['scaledZ'],np.nanmean(ra2mmean,0) - np.nanstd(data1['scaled' + var]['stdev'],0),
+        np.nanmean(ra2mmean,0) + np.nanstd(data1['scaled' + var]['stdev'],0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(casimmean,0),data2['scaledZ'], 'v-',
         color = 'forestgreen', markeredgecolor = 'darkslategrey', linewidth = 2, label = label2)
+    ax1.fill_betweenx(data2['scaledZ'],np.nanmean(casimmean,0) - np.nanstd(data2['scaled' + var]['stdev'],0),
+        np.nanmean(casimmean,0) + np.nanstd(data2['scaled' + var]['stdev'],0), color = 'mediumaquamarine', alpha = 0.35)
     plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-',
         color = 'darkorange', markeredgecolor = 'saddlebrown', linewidth = 2, label = label3)
+    ax1.fill_betweenx(data3['scaledZ'],np.nanmean(ifsmean,0) - np.nanstd(data3['scaled' + var]['stdev'],0),
+        np.nanmean(ifsmean,0) + np.nanstd(data3['scaled' + var]['stdev'],0), color = 'navajowhite', alpha = 0.15)
     plt.legend()
     plt.show()
+
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
