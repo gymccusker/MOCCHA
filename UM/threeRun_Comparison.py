@@ -4320,7 +4320,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
             tmp1[:] = 310
             plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0')
+                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind][0][0]))
             tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
             tmp2[:] = 312
             plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
