@@ -4314,11 +4314,21 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     [260,260,320,320],
         #      color = 'lightblue', alpha = 0.2)
         ### find the correct cloudnet index for this model timestep
+        timeind = 0.0
         timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
-        tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind,:29] > 0)[0]))
-        tmp1[:] = 310
-        plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind,:29] > 0)[0]],
-            '.', markersize = 6, color = 'steelblue')
+        if np.size(timeind) > 0:
+            tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+            tmp1[:] = 310
+            plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0')
+            tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            tmp2[:] = 312
+            plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
+            tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp3[:] = 314
+            plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
 
 
         ########### RADIOSONDES
