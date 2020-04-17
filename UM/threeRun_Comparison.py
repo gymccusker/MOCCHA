@@ -4286,12 +4286,27 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data3['thetaE_decoupID'][i] >= 0.0: data3['thetaE_decoupleZ'][i] = data1['universal_height'][int(data3['thetaE_decoupID'][i])]
 
     #### ---------------------------------------------------------------
+    #### load working cloudnet data to mark cloud depth
+    #### ---------------------------------------------------------------
+    um_data = np.load('../Cloudnet/working_um_data').item()
+    misc_data = np.load('../Cloudnet/working_misc_data').item()
+    ifs_data = np.load('../Cloudnet/working_ifs_data').item()
+
+    um_ra2m_cv = um_data['model_Cv_filtered'][::6].data
+    um_casim_cv = misc_data['model_Cv_filtered'][::6].data
+    ecmwf_ifs_cv = um_data['model_snow_Cv_filtered'][::6].data
+
+    #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         fig = plt.figure(figsize=(9,6))
         ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
+
+        
+
+        ########### RADIOSONDES
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
         # plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
         #     np.squeeze(data1['universal_height'][np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
@@ -4308,6 +4323,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_decoupID'][i])]),
                 'v', markersize = 8, color = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
+        ############# ECMWF_IFS
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
         # plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['thetaE_6hrlyDiff'][i,:]>sthresh)]),
         #     data1['universal_height'][np.where(data3['thetaE_6hrlyDiff'][i,:]>sthresh)],
@@ -4325,6 +4341,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(data1['universal_height'][int(data3['thetaE_decoupID'][i])]),
                 'v', markersize = 8, color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
+        ############## UM_RA2M
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
         # plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['thetaE_6hrlyDiff'][i,:]>sthresh)]),
         #     data1['universal_height'][np.where(data1['thetaE_6hrlyDiff'][i,:]>sthresh)],
@@ -4341,6 +4358,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(data1['universal_height'][int(data1['thetaE_decoupID'][i])]),
                 'v', markersize = 8, color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
+        ############## UM_CASIM-100
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
         # plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['thetaE_6hrlyDiff'][i,:]>sthresh)]),
         #     data1['universal_height'][np.where(data2['thetaE_6hrlyDiff'][i,:]>sthresh)],
@@ -4357,7 +4375,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(data1['universal_height'][int(data2['thetaE_decoupID'][i])]),
                 'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
-        ### plot model diagnosed boundary layer depth as marker
+        ########## plot model diagnosed boundary layer depth as marker
         plt.plot([260,320],[bldepth1[::6][i],bldepth1[::6][i]],
             'x--', markersize = 7, color = 'steelblue', linewidth = 0.5, label = 'um_ra2m bl_depth')
         plt.plot([260,320],[bldepth2[::6][i],bldepth2[::6][i]],
