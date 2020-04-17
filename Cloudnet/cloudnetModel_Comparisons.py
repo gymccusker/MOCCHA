@@ -2664,6 +2664,28 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     # plt.title('interpolated')
     # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
     # plt.show()
+    #
+    #
+    # fig = plt.figure(figsize=(12,6))
+    # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+    #         hspace = 0.3, wspace = 0.3)
+    # plt.subplot(211)
+    # plt.pcolor(obs_data['time'][::6].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'][::6,:].data), vmin = 0, vmax = 1)
+    # plt.xlim([226,258])
+    # plt.ylim([0,3000])
+    # plt.ylabel('Z [m]')
+    # plt.title('original, 6hrly')
+    # plt.subplot(212)
+    # plt.pcolor(times[::6],height,np.transpose(cv[::6,:]), vmin = 0, vmax = 1)
+    # plt.xlim([226,258])
+    # plt.ylim([0,3000])
+    # plt.xlabel('DOY')
+    # plt.ylabel('Z [m]')
+    # plt.title('interpolated, 6hrly')
+    # plt.savefig('FIGS/Cv_TS_6hrly_orig_interpd.png')
+    # plt.show()
+
+
 
     ### save back to dictionary after completion of updates
     obs_data['Cv'] = cv
@@ -3474,12 +3496,12 @@ def main():
     if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
 
     # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
+    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
