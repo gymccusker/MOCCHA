@@ -4302,7 +4302,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
     i = 0
-    for i in range(0, np.size(obs['sondes']['doy_drift'])-1):
+    for i in range(0, np.size(obs['sondes']['doy_drift'])):
         fig = plt.figure(figsize=(11,6))
         ax  = fig.add_axes([0.1,0.1,0.5,0.85])   # left, bottom, width, height
 
