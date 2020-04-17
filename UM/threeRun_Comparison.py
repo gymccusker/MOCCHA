@@ -4293,7 +4293,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     misc_data = np.load('../Cloudnet/working_misc_data.npy').item()
     ifs_data = np.load('../Cloudnet/working_ifs_data.npy').item()
 
-    obs_cv = obs_data['Cv'][::6].data
+    # obs_cv = obs_data['Cv'][::6].data
     um_ra2m_cv = um_data['model_Cv_filtered'][::6].data
     um_casim_cv = misc_data['model_Cv_filtered'][::6].data
     ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6].data
@@ -4306,6 +4306,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         fig = plt.figure(figsize=(9,6))
         ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
 
+        ### cloud base at: np.where(um_ra2m_cv[i,:29] > 0)[0][0]
+        ### cloud top at: np.where(um_ra2m_cv[i,:29] > 0)[0][-1]
+        ########### indicate cloudnet calculated cloud heights
+        ax.fill_betweenx([um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],
+            um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]]],
+            [260,260,320,320],
+             color = 'lightblue', alpha = 0.2)
 
 
         ########### RADIOSONDES
