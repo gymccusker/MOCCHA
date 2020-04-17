@@ -4302,17 +4302,23 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
     i = 0
-    for i in range(0, np.size(obs['sondes']['doy_drift'])):
-        fig = plt.figure(figsize=(9,6))
-        ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
+    for i in range(0, np.size(obs['sondes']['doy_drift'])-1):
+        fig = plt.figure(figsize=(11,6))
+        ax  = fig.add_axes([0.1,0.1,0.5,0.85])   # left, bottom, width, height
 
         ### cloud base at: np.where(um_ra2m_cv[i,:29] > 0)[0][0]
         ### cloud top at: np.where(um_ra2m_cv[i,:29] > 0)[0][-1]
         ########### indicate cloudnet calculated cloud heights
-        ax.fill_betweenx([um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],
-            um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]]],
-            [260,260,320,320],
-             color = 'lightblue', alpha = 0.2)
+        # ax.fill_betweenx([um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],
+        #     um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]]],
+        #     [260,260,320,320],
+        #      color = 'lightblue', alpha = 0.2)
+        ### find the correct cloudnet index for this model timestep
+        timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
+        tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind,:29] > 0)[0]))
+        tmp1[:] = 310
+        plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind,:29] > 0)[0]],
+            '.', markersize = 6, color = 'steelblue')
 
 
         ########### RADIOSONDES
@@ -4398,7 +4404,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.ylim([0,3100])
         plt.xlim([260,320])
         # plt.legend()
-        plt.legend(bbox_to_anchor=(0.5, 0.1, 1., .102), loc=4, ncol=1)
+        plt.legend(bbox_to_anchor=(0.82, 0.1, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
