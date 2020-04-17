@@ -4306,31 +4306,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         fig = plt.figure(figsize=(11,6))
         ax  = fig.add_axes([0.1,0.1,0.5,0.85])   # left, bottom, width, height
 
-        ### cloud base at: np.where(um_ra2m_cv[i,:29] > 0)[0][0]
-        ### cloud top at: np.where(um_ra2m_cv[i,:29] > 0)[0][-1]
-        ########### indicate cloudnet calculated cloud heights
-        # ax.fill_betweenx([um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],
-        #     um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][-1]],um_data['height'][i,np.where(um_ra2m_cv[i,:29] > 0)[0][0]]],
-        #     [260,260,320,320],
-        #      color = 'lightblue', alpha = 0.2)
-        ### find the correct cloudnet index for this model timestep
-        timeind = 0.0
-        timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
-        if np.size(timeind) > 0:
-            tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
-            tmp1[:] = 310
-            plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-            tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
-            tmp2[:] = 312
-            plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
-            tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
-            tmp3[:] = 314
-            plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
-
-
         ########### RADIOSONDES
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
         # plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['thetaE_Diff'][i,:]>sthresh)]),
@@ -4401,18 +4376,37 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         ########## plot model diagnosed boundary layer depth as marker
-        plt.plot([260,320],[bldepth1[::6][i],bldepth1[::6][i]],
-            'x--', markersize = 7, color = 'steelblue', linewidth = 0.5, label = 'um_ra2m bl_depth')
-        plt.plot([260,320],[bldepth2[::6][i],bldepth2[::6][i]],
-            'x--', markersize = 7, color = 'forestgreen', linewidth = 0.5, label = 'um_casim-100 bl_depth')
-        plt.plot([260,320],[bldepth3[::6][i],bldepth3[::6][i]],
-            'x--', markersize = 7, color = 'darkorange', linewidth = 0.5, label = 'ecmwf_ifs sfc_bl_height')
+        plt.plot([298,308],[bldepth1[::6][i],bldepth1[::6][i]],
+            'x--', markersize = 7, color = 'steelblue', linewidth = 1, label = 'um_ra2m bl_depth')
+        plt.plot([298,308],[bldepth2[::6][i],bldepth2[::6][i]],
+            'x--', markersize = 7, color = 'forestgreen', linewidth = 1, label = 'um_casim-100 bl_depth')
+        plt.plot([298,308],[bldepth3[::6][i],bldepth3[::6][i]],
+            'x--', markersize = 7, color = 'darkorange', linewidth = 1, label = 'ecmwf_ifs sfc_bl_height')
+
+        ##### plot cloudnet cloud fraction as markers
+        #####       need to find the correct cloudnet index for this model timestep
+        timeind = 0.0
+        timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
+        if np.size(timeind) > 0:
+            tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+            tmp1[:] = 310
+            plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            tmp2[:] = 312
+            plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
+            tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp3[:] = 314
+            plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
         plt.ylabel('Z [m]')
         plt.ylim([0,3100])
         plt.xlim([260,320])
+        plt.grid(axis = 'y')
         # plt.legend()
         plt.legend(bbox_to_anchor=(0.82, 0.1, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
