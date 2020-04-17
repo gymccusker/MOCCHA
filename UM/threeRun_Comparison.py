@@ -4293,10 +4293,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     misc_data = np.load('../Cloudnet/working_misc_data.npy').item()
     ifs_data = np.load('../Cloudnet/working_ifs_data.npy').item()
 
-    # obs_cv = obs_data['Cv'][::6].data
-    um_ra2m_cv = um_data['model_Cv_filtered'][::6].data
-    um_casim_cv = misc_data['model_Cv_filtered'][::6].data
-    ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6].data
+    obs_cv = obs_data['Cv'][::6,:]
+    um_ra2m_cv = um_data['model_Cv_filtered'][::6,:].data
+    um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
+    ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
