@@ -2583,7 +2583,6 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.savefig('FIGS/' + var + '_scaledZ.svg')
     plt.show()
 
-
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     from scipy.interpolate import interp1d
@@ -2596,7 +2595,6 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     ### remove bad and flagged data
     obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
-
 
     ### save relevant fields as tempvars for ease
     cv = np.copy(obs_data['Cv'].data)
