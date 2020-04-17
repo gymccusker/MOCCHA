@@ -4288,13 +4288,13 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### load working cloudnet data to mark cloud depth
     #### ---------------------------------------------------------------
-    um_data = np.load('../Cloudnet/working_um_data').item()
-    misc_data = np.load('../Cloudnet/working_misc_data').item()
-    ifs_data = np.load('../Cloudnet/working_ifs_data').item()
+    um_data = np.load('../Cloudnet/working_um_data.npy').item()
+    misc_data = np.load('../Cloudnet/working_misc_data.npy').item()
+    ifs_data = np.load('../Cloudnet/working_ifs_data.npy').item()
 
     um_ra2m_cv = um_data['model_Cv_filtered'][::6].data
     um_casim_cv = misc_data['model_Cv_filtered'][::6].data
-    ecmwf_ifs_cv = um_data['model_snow_Cv_filtered'][::6].data
+    ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6].data
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
@@ -4304,7 +4304,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         fig = plt.figure(figsize=(9,6))
         ax  = fig.add_axes([0.1,0.1,0.6,0.85])   # left, bottom, width, height
 
-        
+
 
         ########### RADIOSONDES
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
