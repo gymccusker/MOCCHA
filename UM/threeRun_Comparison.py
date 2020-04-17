@@ -3912,6 +3912,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #     else:
     #         plt.close()
 
+    #################################################################
+    ## save data into temp variables to allow subsampling
+    #################################################################
+    bldepth1 = data1['bl_depth'][data1['hrly_flag']]
+    bldepth2 = data2['bl_depth'][data2['hrly_flag']]
+    if ifs_flag == True:
+        bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
+    else:
+        bldepth3 = data3['bl_depth'][data3['hrly_flag']]
+
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
@@ -4346,6 +4356,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(data2['thetaE_decoupID'][i])]),
                 'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
+
+        ### plot model diagnosed boundary layer depth as marker
+        plt.plot([260,320],[bldepth1[::6][i],bldepth1[::6][i]],
+            'x--', markersize = 7, color = 'steelblue', linewidth = 0.5, label = 'um_ra2m bl_depth')
+        plt.plot([260,320],[bldepth2[::6][i],bldepth2[::6][i]],
+            'x--', markersize = 7, color = 'forestgreen', linewidth = 0.5, label = 'um_casim-100 bl_depth')
+        plt.plot([260,320],[bldepth3[::6][i],bldepth3[::6][i]],
+            'x--', markersize = 7, color = 'darkorange', linewidth = 0.5, label = 'ecmwf_ifs sfc_bl_height')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
