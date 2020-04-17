@@ -4387,7 +4387,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #####       need to find the correct cloudnet index for this model timestep
         timeind = 0.0
         timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
-        if np.size(timeind) > 0:
+        if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
             tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
             tmp1[:] = 310
             plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
@@ -4400,6 +4400,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             tmp3[:] = 314
             plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
                 '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
+            tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp0[:] = 316
+            plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
+                '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
         plt.xlabel('$\Theta_{E}$ [K]')
