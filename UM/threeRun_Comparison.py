@@ -4227,6 +4227,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
     ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
 
+    #### ---------------------------------------------------------------
+    #### Look at drift sondes only from Jutta's inversion code
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['inversions']['doy'] >= 225.9, obs['inversions']['doy'] <= 258.0))
+    ### save in dict for ease
+    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
     ##################################################
     ##################################################
@@ -4323,6 +4329,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
 
         ########## plot model diagnosed boundary layer depth as marker
+        plt.plot([298,308],[np.squeeze(obs['inversions']['invbase'][drift][i]),np.squeeze(obs['inversions']['invbase'][drift][i])],
+            'x--', markersize = 7, color = 'k', linewidth = 1, label = 'radiosondes (Vuellers et al., 2020)')
         plt.plot([298,308],[bldepth1[::6][i],bldepth1[::6][i]],
             'x--', markersize = 7, color = 'steelblue', linewidth = 1, label = 'um_ra2m bl_depth')
         plt.plot([298,308],[bldepth2[::6][i],bldepth2[::6][i]],
@@ -4365,15 +4373,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.show()
         else:
             plt.close()
-
-
-
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT SONDES FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['inversions']['doy'] >= 225.9, obs['inversions']['doy'] <= 258.0))
-    ### save in dict for ease
-    obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
     ### -------------------------------
     ### Build figure (timeseries)
