@@ -4015,6 +4015,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['dThetaE'][i,1:27]) ==
                 np.squeeze(np.nanmax(data3['dThetaE'][i,1:27])))[0][0]
 
+        #### find maximum local gradient <3km
+        obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
+            np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))[0][0]
+        data1['dThetaEdZ_invbaseID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
+                np.nanmax(data1['dThetaEdZ'][i,:]))[0][0]
+        data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
+                np.nanmax(data2['dThetaEdZ'][i,:]))[0][0]
+        if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
+            data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
+                    np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
+
         #### ---------------------------------------------------------------
         #### increment each invbaseID by 1 so that we can reference the height array from 0
         #### ---------------------------------------------------------------
