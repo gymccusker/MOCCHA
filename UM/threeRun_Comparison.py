@@ -3945,10 +3945,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### calculate dThetaE/dZ
     #### ---------------------------------------------------------------
-    obs['sondes']['dThetaEdZ'] = obs['sondes']['dThetaE'][:,:27] / data1['dZ']
-    data1['dThetaEdZ'] = data1['dThetaE'][:,:27] / data1['dZ']
-    data2['dThetaEdZ'] = data2['dThetaE'][:,:27] / data1['dZ']
-    data3['dThetaEdZ'] = data3['dThetaE'][:,:27] / data1['dZ']
+    obs['sondes']['dThetaEdZ'] = obs['sondes']['dThetaE'][:,:26] / data1['dZ']
+    data1['dThetaEdZ'] = data1['dThetaE'][:,:26] / data1['dZ']
+    data2['dThetaEdZ'] = data2['dThetaE'][:,:26] / data1['dZ']
+    data3['dThetaEdZ'] = data3['dThetaE'][:,:26] / data1['dZ']
 
     #### ---------------------------------------------------------------
     #### build bespoke thetaE arrays for casim-100 and ra2m on universal  (for ease)
