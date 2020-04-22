@@ -4003,24 +4003,22 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### find maximum dThetaE
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
 
-        #### --------------------------------------------------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find strongest inversion <3000m
         #### ---------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['dThetaE'][i,1:27]) ==
-                np.squeeze(np.nanmax(obs['sondes']['dThetaE'][i,1:27])))[0][0]
-        data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['dThetaE'][i,1:27]) ==
-                np.squeeze(np.nanmax(data1['dThetaE'][i,1:27])))[0][0]
-        data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['dThetaE'][i,1:27]) ==
-                np.squeeze(np.nanmax(data2['dThetaE'][i,1:27])))[0][0]
-        if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
-            data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['dThetaE'][i,1:27]) ==
-                np.squeeze(np.nanmax(data3['dThetaE'][i,1:27])))[0][0]
+        # obs['sondes']['thetaE_invbaseID'][i] = np.where(np.squeeze(obs['sondes']['dThetaE'][i,1:27]) ==
+        #         np.squeeze(np.nanmax(obs['sondes']['dThetaE'][i,1:27])))[0][0]
+        # data1['thetaE_invbaseID'][i] = np.where(np.squeeze(data1['dThetaE'][i,1:27]) ==
+        #         np.squeeze(np.nanmax(data1['dThetaE'][i,1:27])))[0][0]
+        # data2['thetaE_invbaseID'][i] = np.where(np.squeeze(data2['dThetaE'][i,1:27]) ==
+        #         np.squeeze(np.nanmax(data2['dThetaE'][i,1:27])))[0][0]
+        # if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
+        #     data3['thetaE_invbaseID'][i] = np.where(np.squeeze(data3['dThetaE'][i,1:27]) ==
+        #         np.squeeze(np.nanmax(data3['dThetaE'][i,1:27])))[0][0]
 
+        #### ---------------------------------------------------------------
         #### find maximum local gradient <3km
+        #### ---------------------------------------------------------------
         obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
             np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))[0][0]
         data1['dThetaEdZ_invbaseID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
@@ -4031,19 +4029,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
 
-        #### ---------------------------------------------------------------
-        #### increment each invbaseID by 1 so that we can reference the height array from 0
-        #### ---------------------------------------------------------------
-        obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_invbaseID'][i] + 1
-        data1['thetaE_invbaseID'][i] = data1['thetaE_invbaseID'][i] + 1
-        data2['thetaE_invbaseID'][i] = data2['thetaE_invbaseID'][i] + 1
-        data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
+        # #### ---------------------------------------------------------------
+        # #### increment each invbaseID by 1 so that we can reference the height array from 0
+        # #### ---------------------------------------------------------------
+        # obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_invbaseID'][i] + 1
+        # data1['thetaE_invbaseID'][i] = data1['thetaE_invbaseID'][i] + 1
+        # data2['thetaE_invbaseID'][i] = data2['thetaE_invbaseID'][i] + 1
+        # data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
 
-        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find second largest gradient
         #### ---------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
         obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
             np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][1])[0][0]
         data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
@@ -4054,8 +4050,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                 np.sort(data3['dThetaEdZ'][i,:])[::-1][1])[0][0]
 
+        #### ---------------------------------------------------------------
         ### if second largest dThetaEdZ is at invbaseID - 1, then reassign invbaseID -> 2ndinvID
         ###         in this case, 2ndinvID set to 3rd largest gradient
+        #### ---------------------------------------------------------------
         if obs['sondes']['dThetaEdZ_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_2ndinvID'][i]:
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
                 obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
@@ -4073,14 +4071,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.sort(data3['dThetaEdZ'][i,:])[::-1][2])[0][0]
 
-        #### ---------------------------------------------------------------
-        #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
-        #### ---------------------------------------------------------------
-        for n in range(0,3):
-            obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
-            data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
-            data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
-            data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
+        # #### ---------------------------------------------------------------
+        # #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
+        # #### ---------------------------------------------------------------
+        # for n in range(0,3):
+        #     obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
+        #     data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
+        #     data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
+        #     data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
 
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
