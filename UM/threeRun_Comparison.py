@@ -4071,15 +4071,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.sort(data3['dThetaEdZ'][i,:])[::-1][2])[0][0]
 
-        # #### ---------------------------------------------------------------
-        # #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
-        # #### ---------------------------------------------------------------
-        # for n in range(0,3):
-        #     obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
-        #     data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
-        #     data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
-        #     data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
-
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### if 2nd inv below 1000m, set decoupID to 2ndinvID
@@ -4101,6 +4092,34 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.sort(data2['dThetaEdZ'][i,:])[::-1][3])[0][0]
         if np.logical_and(data3['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data3['dThetaEdZ_2ndinvID'][i] < data3['dThetaEdZ_invbaseID'][i]):
             data3['dThetaEdZ_decoupID'][i] = data3['dThetaEdZ_2ndinvID'][i]
+            data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
+                np.sort(data3['dThetaEdZ'][i,:])[::-1][3])[0][0]
+
+        #### --------------------------------------------------------------------------------------------------------
+        #### ---------------------------------------------------------------
+        #### if 2nd inv above main inv and below 2000m, set decoupID to 2ndinvID
+        #### ---------------------------------------------------------------
+        #### --------------------------------------------------------------------------------------------------------
+        hgt_index = 2000.0
+        hind = np.where(data1['universal_height'] <= hgt_index)
+        if np.logical_and(obs['sondes']['dThetaEdZ_2ndinvID'][i] < hind[0][-1], obs['sondes']['dThetaEdZ_2ndinvID'][i] > obs['sondes']['dThetaEdZ_invbaseID'][i]):
+            obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
+            obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+            obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
+                np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][3])[0][0]
+        if np.logical_and(data1['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data1['dThetaEdZ_2ndinvID'][i] > data1['dThetaEdZ_invbaseID'][i]):
+            data1['dThetaEdZ_decoupID'][i] = data1['dThetaEdZ_invbaseID'][i]
+            data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_2ndinvID'][i]
+            data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
+                np.sort(data1['dThetaEdZ'][i,:])[::-1][3])[0][0]
+        if np.logical_and(data2['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data2['dThetaEdZ_2ndinvID'][i] > data2['dThetaEdZ_invbaseID'][i]):
+            data2['dThetaEdZ_decoupID'][i] = data2['dThetaEdZ_invbaseID'][i]
+            data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
+            data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
+                np.sort(data2['dThetaEdZ'][i,:])[::-1][3])[0][0]
+        if np.logical_and(data3['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data3['dThetaEdZ_2ndinvID'][i] > data3['dThetaEdZ_invbaseID'][i]):
+            data3['dThetaEdZ_decoupID'][i] = data3['dThetaEdZ_invbaseID'][i]
+            data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
             data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                 np.sort(data3['dThetaEdZ'][i,:])[::-1][3])[0][0]
 
