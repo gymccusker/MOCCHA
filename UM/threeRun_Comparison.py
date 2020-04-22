@@ -4040,11 +4040,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
 
         #### --------------------------------------------------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### find second largest gradient
         #### ---------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
             np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][1])[0][0]
@@ -4074,43 +4072,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
                 data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.sort(data3['dThetaEdZ'][i,:])[::-1][2])[0][0]
-
-        ## 1. check for second inversion > sthresh above invbaseID
-        # if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
-        #     if np.size(np.where(obs['sondes']['dThetaE'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27] > sthresh)) > 0:
-        #         temp = np.where(obs['sondes']['dThetaE'][i,int(obs['sondes']['thetaE_invbaseID'][i]):27] > sthresh)
-        #         if np.size(temp) > 1:   ## more than one index
-        #             if temp[0][0] > 0.0:
-        #                 obs['sondes']['dThetaEdZ_2ndinvID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) + temp[0][0]
-        #             elif temp[0][0] == 0.0:
-        #                 obs['sondes']['dThetaEdZ_2ndinvID'][i] = int(obs['sondes']['thetaE_invbaseID'][i]) + temp[0][1]
-        # if int(data1['thetaE_invbaseID'][i]) > 0:
-        #     if np.size(np.where(data1['dThetaE'][i,int(data1['thetaE_invbaseID'][i]):27] > sthresh)) > 0:
-        #         temp = np.where(data1['dThetaE'][i,int(data1['thetaE_invbaseID'][i]):27] > sthresh)
-        #         if np.size(temp) > 1:   ## more than one index
-        #             if temp[0][0] > 0.0:
-        #                 data1['dThetaEdZ_2ndinvID'][i] = int(data1['thetaE_invbaseID'][i]) + temp[0][0]
-        #             elif temp[0][0] == 0.0:
-        #                 data1['dThetaEdZ_2ndinvID'][i] = int(data1['thetaE_invbaseID'][i]) + temp[0][1]
-        # if int(data2['thetaE_invbaseID'][i]) > 0:
-        #     if np.size(np.where(data2['dThetaE'][i,int(data2['thetaE_invbaseID'][i]):27] > sthresh)) > 0:
-        #         temp = np.where(data2['dThetaE'][i,int(data2['thetaE_invbaseID'][i]):27] > sthresh)
-        #         if np.size(temp) > 1:   ## more than one index
-        #             if temp[0][0] > 0.0:
-        #                 data2['dThetaEdZ_2ndinvID'][i] = int(data2['thetaE_invbaseID'][i]) + temp[0][0]
-        #             elif temp[0][0] == 0.0:
-        #                 data2['dThetaEdZ_2ndinvID'][i] = int(data2['thetaE_invbaseID'][i]) + temp[0][1]
-        # if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:
-        #     if int(data3['thetaE_invbaseID'][i]) > 0:
-        #         if np.size(np.where(data3['dThetaE'][i,int(data3['thetaE_invbaseID'][i]):27] > sthresh)) > 0:
-        #             temp = np.where(data3['dThetaE'][i,int(data3['thetaE_invbaseID'][i]):27] > sthresh)
-        #             if np.size(temp) > 1:   ## more than one index
-        #                 if temp[0][0] > 0.0:
-        #                     data3['dThetaEdZ_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][0]
-        #                 elif temp[0][0] == 0.0:
-        #                     data3['dThetaEdZ_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][1]
-
-
 
         #### ---------------------------------------------------------------
         #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
@@ -4145,95 +4106,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                 np.sort(data3['dThetaEdZ'][i,:])[::-1][3])[0][0]
 
-
-        ### 2. if decoupled layer == main inv - 1, set main inv to decoupled layer and decoupled layer to 0
-        ###            change only made if original decoupID also greater than sthresh
-        # if obs['sondes']['thetaE_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_decoupID'][i]:
-        #     if obs['sondes']['dThetaE'][i,int(obs['sondes']['dThetaEdZ_decoupID'][i])] > sthresh:
-        #         obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
-        #     obs['sondes']['dThetaEdZ_decoupID'][i] = 0
-        # if data1['thetaE_invbaseID'][i]-1 == data1['dThetaEdZ_decoupID'][i]:
-        #     if data1['dThetaE'][i,int(data1['dThetaEdZ_decoupID'][i])] > sthresh:
-        #         data1['thetaE_invbaseID'][i] = data1['dThetaEdZ_decoupID'][i]
-        #     data1['dThetaEdZ_decoupID'][i] = 0
-        # if data2['thetaE_invbaseID'][i]-1 == data2['dThetaEdZ_decoupID'][i]:
-        #     if data2['dThetaE'][i,int(data2['dThetaEdZ_decoupID'][i])] > sthresh:
-        #         data2['thetaE_invbaseID'][i] = data2['dThetaEdZ_decoupID'][i]
-        #     data2['dThetaEdZ_decoupID'][i] = 0
-        # if data3['thetaE_invbaseID'][i]-1 == data3['dThetaEdZ_decoupID'][i]:
-        #     if data3['dThetaE'][i,int(data3['dThetaEdZ_decoupID'][i])] > sthresh:
-        #         data3['thetaE_invbaseID'][i] = data3['dThetaEdZ_decoupID'][i]
-        #     data3['dThetaEdZ_decoupID'][i] = 0
-
-        #### --------------------------------------------------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        #### ---------------------------------------------------------------
-        #### reorder inversions if necessary
-        #### ---------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        ### Check if main inv < 700m and 2nd inv >700m
-        ###         if so, main inv -> decoup inv & secondary inv -> main inv
-        # hthresh = 700
-        # if data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])] < hthresh:
-        #     if obs['sondes']['dThetaEdZ_2ndinvID'][i] > 0.0:
-        #         temp1 = obs['sondes']['thetaE_invbaseID'][i]; temp2 = obs['sondes']['dThetaEdZ_2ndinvID'][i]
-        #         obs['sondes']['thetaE_invbaseID'][i] = temp2
-        #         obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.nan
-        #         obs['sondes']['dThetaEdZ_decoupID'][i] = temp1
-        # if data1['universal_height'][int(data1['thetaE_invbaseID'][i])] < hthresh:
-        #     if data1['dThetaEdZ_2ndinvID'][i] > 0.0:
-        #         temp1 = data1['thetaE_invbaseID'][i]; temp2 = data1['dThetaEdZ_2ndinvID'][i]
-        #         data1['thetaE_invbaseID'][i] = temp2
-        #         data1['dThetaEdZ_2ndinvID'][i] = np.nan
-        #         data1['dThetaEdZ_decoupID'][i] = temp1
-        # if data1['universal_height'][int(data2['thetaE_invbaseID'][i])] < hthresh:
-        #     if data2['dThetaEdZ_2ndinvID'][i] > 0.0:
-        #         temp1 = data2['thetaE_invbaseID'][i]; temp2 = data2['dThetaEdZ_2ndinvID'][i]
-        #         data2['thetaE_invbaseID'][i] = temp2
-        #         data2['dThetaEdZ_2ndinvID'][i] = np.nan
-        #         data2['dThetaEdZ_decoupID'][i] = temp1
-        # if np.logical_and(data3['thetaE_invbaseID'][i] >= 0.0, data3['dThetaEdZ_2ndinvID'][i] > 0.0):
-        #     if data1['universal_height'][int(data3['thetaE_invbaseID'][i])] < hthresh:
-        #         if data3['dThetaEdZ_2ndinvID'][i] > 0.0:
-        #             temp1 = data3['thetaE_invbaseID'][i]; temp2 = data3['dThetaEdZ_2ndinvID'][i]
-        #             data3['thetaE_invbaseID'][i] = temp2
-        #             data3['dThetaEdZ_2ndinvID'][i] = np.nan
-        #             data3['dThetaEdZ_decoupID'][i] = temp1
-
-        ### if the decoupled inv is above 1km, then it's not really "decoupled" and likely the primary inversion
-        # if obs['sondes']['dThetaEdZ_decoupID'][i] > 13.0: ### 955m
-        #     obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
-        #     obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
-        # if data1['dThetaEdZ_decoupID'][i] > 13.0: ### 955m
-        #     data1['thetaE_invbaseID'][i] = data1['dThetaEdZ_decoupID'][i]
-        #     data1['dThetaEdZ_decoupID'][i] = 0.0
-        # if data2['dThetaEdZ_decoupID'][i] > 13.0: ### 955m
-        #     data2['thetaE_invbaseID'][i] = data2['dThetaEdZ_decoupID'][i]
-        #     data2['dThetaEdZ_decoupID'][i] = 0.0
-        # if data3['dThetaEdZ_decoupID'][i] > 13.0: ### 955m
-        #     data3['thetaE_invbaseID'][i] = data3['dThetaEdZ_decoupID'][i]
-        #     data3['dThetaEdZ_decoupID'][i] = 0.0
-
-        ### if both the decoupled and main invs below 325m, then it's not really "decoupled" and likely the primary inversion
-        # hind = 6.0
-        # if np.logical_and(obs['sondes']['dThetaEdZ_decoupID'][i] <= hind, obs['sondes']['thetaE_invbaseID'][i] <= hind): ### 325m
-        #     if obs['sondes']['dThetaEdZ_decoupID'][i] > 0.0:
-        #         # obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
-        #         obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
-        # if np.logical_and(data1['dThetaEdZ_decoupID'][i] <= hind, data1['thetaE_invbaseID'][i] <= hind):
-        #     if data1['dThetaEdZ_decoupID'][i] > 0.0:
-        #         # data1['thetaE_invbaseID'][i] = data1['dThetaEdZ_decoupID'][i]
-        #         data1['dThetaEdZ_decoupID'][i] = 0.0
-        # if np.logical_and(data2['dThetaEdZ_decoupID'][i] <= hind, data2['thetaE_invbaseID'][i] <= hind):
-        #     if data2['dThetaEdZ_decoupID'][i] > 0.0:
-        #         # data2['thetaE_invbaseID'][i] = data2['dThetaEdZ_decoupID'][i]
-        #         data2['dThetaEdZ_decoupID'][i] = 0.0
-        # if np.logical_and(data3['dThetaEdZ_decoupID'][i] <= hind, data3['thetaE_invbaseID'][i] <= hind):
-        #     if data1['dThetaEdZ_decoupID'][i] > 0.0:
-        #         # data3['thetaE_invbaseID'][i] = data3['dThetaEdZ_decoupID'][i]
-        #         data3['dThetaEdZ_decoupID'][i] = 0.0
-
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
         #### ---------------------------------------------------------------
@@ -4243,10 +4115,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data3['dThetaEdZ_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['dThetaEdZ_invbaseID'][i])]
                 ##data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
-        # obs['sondes']['thetaE_decoupleZ'][i] = data1['universal_height'][int(obs['sondes']['dThetaEdZ_decoupID'][i])]
-        # data1['thetaE_decoupleZ'][i] = data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]
-        # data2['thetaE_decoupleZ'][i] = data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]
-        # if data3['dThetaEdZ_decoupID'][i] >= 0.0: data3['thetaE_decoupleZ'][i] = data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]
+        obs['sondes']['thetaE_decoupleZ'][i] = data1['universal_height'][int(obs['sondes']['dThetaEdZ_decoupID'][i])]
+        data1['thetaE_decoupleZ'][i] = data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]
+        data2['thetaE_decoupleZ'][i] = data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]
+        if data3['dThetaEdZ_decoupID'][i] >= 0.0: data3['thetaE_decoupleZ'][i] = data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]
 
     #### ---------------------------------------------------------------
     #### load working cloudnet data to mark cloud depth
