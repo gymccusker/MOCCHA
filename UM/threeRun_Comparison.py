@@ -4093,10 +4093,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ### same checks for gradient
         for n in range(0,1):
-            obs['sondes']['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['dThetaEdZ_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
-            data1['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data1['dThetaEdZ_invbaseID'][i],data1['dThetaE'][i],sthresh)
-            data2['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data2['dThetaEdZ_invbaseID'][i],data2['dThetaE'][i],sthresh)
-            data3['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data3['dThetaEdZ_invbaseID'][i],data3['dThetaE'][i],sthresh)
+            obs['sondes']['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['dThetaEdZ_invbaseID'][i],obs['sondes']['dThetaE'][i],dthresh)
+            data1['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data1['dThetaEdZ_invbaseID'][i],data1['dThetaE'][i],dthresh)
+            data2['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data2['dThetaEdZ_invbaseID'][i],data2['dThetaE'][i],dthresh)
+            data3['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data3['dThetaEdZ_invbaseID'][i],data3['dThetaE'][i],dthresh)
 
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
@@ -4227,10 +4227,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
         #### ---------------------------------------------------------------
-        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
-        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
-        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
-        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
+        obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['dThetaEdZ_invbaseID'][i])] ##data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
+        data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['dThetaEdZ_invbaseID'][i])] ## data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
+        data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['dThetaEdZ_invbaseID'][i])] ## data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
+        if data3['thetaE_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['dThetaEdZ_invbaseID'][i])]
+                ##data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
         obs['sondes']['thetaE_decoupleZ'][i] = data1['universal_height'][int(obs['sondes']['thetaE_decoupID'][i])]
         data1['thetaE_decoupleZ'][i] = data1['universal_height'][int(data1['thetaE_decoupID'][i])]
@@ -4429,7 +4430,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.ylabel('Models')
     plt.ylim([0, 3000])
     plt.xlim([0, 3000])
-    plt.savefig('../FIGS/inversionIdent/InvbaseTS.png')
+    plt.savefig('../FIGS/inversionIdent/InvbaseTS_dThetaEdZ.png')
     plt.show()
 
     ###---------------------------------------------------------------------------------------------
