@@ -3936,19 +3936,19 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### calculate dThetaE and dZ
     #### ---------------------------------------------------------------
-    obs['sondes']['dThetaE'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:27] - obs['sondes']['thetaE_driftSondes_UM'][:,0:26]
-    data1['dThetaE'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:27]].data - data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:26]].data
-    data2['dThetaE'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:27]].data - data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:26]].data
-    data3['dThetaE'] = data3['thetaE_6hrly_UM'][:,1:27] - data3['thetaE_6hrly_UM'][:,0:26]
-    data1['dZ'] = data1['universal_height'][1:27].data - data1['universal_height'][0:26].data
+    obs['sondes']['dThetaE'] = obs['sondes']['thetaE_driftSondes_UM'][:,1:] - obs['sondes']['thetaE_driftSondes_UM'][:,0:-1]
+    data1['dThetaE'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
+    data2['dThetaE'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
+    data3['dThetaE'] = data3['thetaE_6hrly_UM'][:,1:] - data3['thetaE_6hrly_UM'][:,0:-1]
+    data1['dZ'] = data1['universal_height'][1:27].data - data1['universal_height'][:26].data
 
     #### ---------------------------------------------------------------
     #### calculate dThetaE/dZ
     #### ---------------------------------------------------------------
-    obs['sondes']['dThetaEdZ'] = obs['sondes']['dThetaE'] / data1['dZ']
-    data1['dThetaEdZ'] = data1['dThetaE'] / data1['dZ']
-    data2['dThetaEdZ'] = data2['dThetaE'] / data1['dZ']
-    data3['dThetaEdZ'] = data3['dThetaE'] / data1['dZ']
+    obs['sondes']['dThetaEdZ'] = obs['sondes']['dThetaE'][:,:27] / data1['dZ']
+    data1['dThetaEdZ'] = data1['dThetaE'][:,:27] / data1['dZ']
+    data2['dThetaEdZ'] = data2['dThetaE'][:,:27] / data1['dZ']
+    data3['dThetaEdZ'] = data3['dThetaE'][:,:27] / data1['dZ']
 
     #### ---------------------------------------------------------------
     #### build bespoke thetaE arrays for casim-100 and ra2m on universal  (for ease)
