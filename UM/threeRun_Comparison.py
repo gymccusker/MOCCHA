@@ -4272,7 +4272,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.xlim([260,320])
         plt.grid(axis = 'y')
         # plt.legend()
-        plt.legend(bbox_to_anchor=(0.8, -0.05, 1., .102), loc=4, ncol=1)
+        plt.legend(bbox_to_anchor=(0.7, 0.0, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
