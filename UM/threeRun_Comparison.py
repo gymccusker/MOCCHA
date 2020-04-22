@@ -4021,15 +4021,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 np.squeeze(np.nanmax(data3['dThetaE'][i,1:27])))[0][0]
 
         #### find maximum local gradient <3km
-        obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
-            np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][1])[0][0]
-        data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
-            np.sort(data1['dThetaEdZ'][i,:])[::-1][1])[0][0]
-        data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
-            np.sort(data2['dThetaEdZ'][i,:])[::-1][1])[0][0]
+        obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
+            np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))[0][0]
+        data1['dThetaEdZ_invbaseID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
+                np.nanmax(data1['dThetaEdZ'][i,:]))[0][0]
+        data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
+                np.nanmax(data2['dThetaEdZ'][i,:]))[0][0]
         if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
-            data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
-                np.sort(data3['dThetaEdZ'][i,:])[::-1][1])[0][0]
+            data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
+                    np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
 
         #### ---------------------------------------------------------------
         #### increment each invbaseID by 1 so that we can reference the height array from 0
@@ -4046,6 +4046,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
+
+        obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
+            np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][1])[0][0]
+        data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
+            np.sort(data1['dThetaEdZ'][i,:])[::-1][1])[0][0]
+        data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
+            np.sort(data2['dThetaEdZ'][i,:])[::-1][1])[0][0]
+        if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
+            data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
+                np.sort(data3['dThetaEdZ'][i,:])[::-1][1])[0][0]
 
         ## 1. check for second inversion > sthresh above invbaseID
         # if int(obs['sondes']['thetaE_invbaseID'][i]) > 0:
@@ -4081,6 +4091,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #                     data3['dThetaEdZ_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][0]
         #                 elif temp[0][0] == 0.0:
         #                     data3['dThetaEdZ_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][1]
+
+
 
         #### ---------------------------------------------------------------
         #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
@@ -4278,8 +4290,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ########### RADIOSONDES
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
-        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,np.where(obs['sondes']['dThetaEdZ'][i,:] == np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))]),
-            np.squeeze(data1['universal_height'][np.where(obs['sondes']['dThetaEdZ'][i,:] == np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))]),
+        plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['dThetaEdZ_invbaseID'][i])),
+            np.squeeze(data1['universal_height'][int(obs['sondes']['dThetaEdZ_invbaseID'][i])]),
             '>', color = 'darkgrey', markeredgecolor = 'k', label = 'sonde-interpd max d$\Theta_{E}$/dZ')
         # plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['thetaE_invbaseID'][i])]),
         #     np.squeeze(data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]),
@@ -4296,8 +4308,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         ############# ECMWF_IFS
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
         if data3['thetaE_invbaseID'][i] > 0.0:     ### ignore nans (missing files)
-            plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,np.where(data3['dThetaEdZ'][i,:] == np.nanmax(data3['dThetaEdZ'][i,:]))]),
-                np.squeeze(data1['universal_height'][np.where(data3['dThetaEdZ'][i,:] == np.nanmax(data3['dThetaEdZ'][i,:]))]),
+            plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_invbaseID'][i])]),
+                np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_invbaseID'][i])]),
                 '>', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ifs-interpd max d$\Theta_{E}$/dZ')
         # if data3['thetaE_invbaseID'][i] > 0.0:     ### ignore nans (missing files)
         #     plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['thetaE_invbaseID'][i])]),
@@ -4314,8 +4326,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ############## UM_RA2M
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
-        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,np.where(data1['dThetaEdZ'][i,:] == np.nanmax(data1['dThetaEdZ'][i,:]))]),
-            np.squeeze(data1['universal_height'][np.where(data1['dThetaEdZ'][i,:] == np.nanmax(data1['dThetaEdZ'][i,:]))]),
+        plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_invbaseID'][i])]),
+            np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_invbaseID'][i])]),
             '>', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m max d$\Theta_{E}$/dZ')
         # plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_invbaseID'][i])]),
         #     np.squeeze(data1['universal_height'][int(data1['thetaE_invbaseID'][i])]),
@@ -4331,8 +4343,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ############## UM_CASIM-100
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
-        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,np.where(data2['dThetaEdZ'][i,:] == np.nanmax(data2['dThetaEdZ'][i,:]))]),
-            np.squeeze(data1['universal_height'][np.where(data2['dThetaEdZ'][i,:] == np.nanmax(data2['dThetaEdZ'][i,:]))]),
+        plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_invbaseID'][i])]),
+            np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_invbaseID'][i])]),
             '>', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 max d$\Theta_{E}$/dZ')
         # plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_invbaseID'][i])]),
         #     np.squeeze(data1['universal_height'][int(data2['thetaE_invbaseID'][i])]),
