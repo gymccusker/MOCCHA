@@ -4194,10 +4194,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_2ndinvID'][i])]),
                 'x', color = 'darkorange', label = 'ifs-interpd 2nd max d$\Theta_{E}$ > ' + str(sthresh))
-        # if data3['dThetaEdZ_decoupID'][i] > 0.0:     ### ignore nans (missing files)
-        #     plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_decoupID'][i])]),
-        #         np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]),
-        #         'v', markersize = 8, color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$ > ' + str(dthresh))
+        if data3['dThetaEdZ_decoupID'][i] > 0.0:     ### ignore nans (missing files)
+            plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_decoupID'][i])]),
+                np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]),
+                'v', color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_RA2M
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
@@ -4211,10 +4211,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_2ndinvID'][i])]),
                 'x', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$ > ' + str(sthresh))
-        # if data1['dThetaEdZ_decoupID'][i] > 0.0:
-        #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_decoupID'][i])]),
-        #         np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]),
-        #         'v', markersize = 8, color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$ > ' + str(dthresh))
+        if data1['dThetaEdZ_decoupID'][i] > 0.0:
+            plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_decoupID'][i])]),
+                np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]),
+                'v', color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_CASIM-100
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
@@ -4228,10 +4228,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_2ndinvID'][i])]),
                 np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_2ndinvID'][i])]),
                 'x', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$ > ' + str(sthresh))
-        # if data2['dThetaEdZ_decoupID'][i] > 0.0:
-        #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_decoupID'][i])]),
-        #         np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]),
-        #         'v', markersize = 8, color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$ > ' + str(dthresh))
+        if data2['dThetaEdZ_decoupID'][i] > 0.0:
+            plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_decoupID'][i])]),
+                np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]),
+                'v', color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
 
         ########## plot model diagnosed boundary layer depth as marker
         plt.plot([298,308],[np.squeeze(obs['inversions']['invbase'][drift][i]),np.squeeze(obs['inversions']['invbase'][drift][i])],
@@ -4272,7 +4272,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.xlim([260,320])
         plt.grid(axis = 'y')
         # plt.legend()
-        plt.legend(bbox_to_anchor=(0.82, 0.0, 1., .102), loc=4, ncol=1)
+        plt.legend(bbox_to_anchor=(0.8, -0.05, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
