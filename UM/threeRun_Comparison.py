@@ -4078,13 +4078,20 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                             data3['thetaE_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][1]
 
         #### ---------------------------------------------------------------
-        #### INVBASE: check if strong gradient starts at lower i-index (repeat 3x for good measure!)
+        #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
         #### ---------------------------------------------------------------
         for n in range(0,3):
             obs['sondes']['thetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['thetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
             data1['thetaE_invbaseID'][i] = checkInvbaseBelow(data1['thetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
             data2['thetaE_invbaseID'][i] = checkInvbaseBelow(data2['thetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
             data3['thetaE_invbaseID'][i] = checkInvbaseBelow(data3['thetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
+
+        ### same checks for gradient
+        for n in range(0,1):
+            obs['sondes']['dThetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['dThetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
+            data1['dThetaE_invbaseID'][i] = checkInvbaseBelow(data1['dThetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
+            data2['dThetaE_invbaseID'][i] = checkInvbaseBelow(data2['dThetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
+            data3['dThetaE_invbaseID'][i] = checkInvbaseBelow(data3['dThetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
 
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
