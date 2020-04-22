@@ -4092,7 +4092,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### if the absolute dThetaE of the 2nd biggest gradient > main invbase, then switch around
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        factor = 0.9
+        factor = 0.75
         if np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])],2) >= np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_invbaseID'][i])],2)*factor:
             if obs['sondes']['dThetaEdZ_2ndinvID'][i] > obs['sondes']['dThetaEdZ_invbaseID'][i]:
                 obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
@@ -4117,12 +4117,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
-        #### if 2ndinv gives largest dThetaE, switch
+        #### search for stable surface layers
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        # if obs['sondes']['dThetaE'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])] == np.nanmax(obs['sondes']['dThetaE'][i,:27]):
-        #     # obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
-        #     obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+        stb_index = 600.0
+        stbind = np.where(data1['universal_height'] <= stb_index)
+        ### if the main inversion is below 600m, check where decoup is
+        ###             if all identified inversions are below 600m, check for largest difference <3km and use as invbase
+        ###                 (criteria suggest stable surface layer)
+        if obs['sondes']['dThetaEdZ_invbaseID'][i] <= stbind[0][-1]:
+            if obs['sondes']['dThetaEdZ_decoupID'][i] <= stbind[0][-1]:
+                obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
 
         #### ---------------------------------------------------------------
         ### if decoupID is at invbaseID - 1, then reassign invbaseID -> decoupID
