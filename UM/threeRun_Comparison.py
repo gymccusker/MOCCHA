@@ -4095,35 +4095,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
                 obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
 
-
-        #### --------------------------------------------------------------------------------------------------------
-        #### ---------------------------------------------------------------
-        #### if the absolute dThetaE of the 2nd biggest gradient > main invbase, then switch around
-        #### ---------------------------------------------------------------
-        #### --------------------------------------------------------------------------------------------------------
-        # factor = 0.75
-        # if np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])],2) >= np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_invbaseID'][i])],2)*factor:
-        #     if obs['sondes']['dThetaEdZ_2ndinvID'][i] > obs['sondes']['dThetaEdZ_invbaseID'][i]:
-                # obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
-                # obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
-                # obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
-                #     np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][3])[0][0]
-        # if np.logical_and(data1['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data1['dThetaEdZ_2ndinvID'][i] > data1['dThetaEdZ_invbaseID'][i]):
-        #     data1['dThetaEdZ_decoupID'][i] = data1['dThetaEdZ_invbaseID'][i]
-        #     data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_2ndinvID'][i]
-        #     data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
-        #         np.sort(data1['dThetaEdZ'][i,:])[::-1][3])[0][0]
-        # if np.logical_and(data2['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data2['dThetaEdZ_2ndinvID'][i] > data2['dThetaEdZ_invbaseID'][i]):
-        #     data2['dThetaEdZ_decoupID'][i] = data2['dThetaEdZ_invbaseID'][i]
-        #     data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
-        #     data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
-        #         np.sort(data2['dThetaEdZ'][i,:])[::-1][3])[0][0]
-        # if np.logical_and(data3['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data3['dThetaEdZ_2ndinvID'][i] > data3['dThetaEdZ_invbaseID'][i]):
-        #     data3['dThetaEdZ_decoupID'][i] = data3['dThetaEdZ_invbaseID'][i]
-        #     data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
-        #     data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
-        #         np.sort(data3['dThetaEdZ'][i,:])[::-1][3])[0][0]
-
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
         #### search for stable surface layers
