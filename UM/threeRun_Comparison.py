@@ -4095,7 +4095,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         factor = 0.75
         if np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])],2) >= np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_invbaseID'][i])],2)*factor:
             if obs['sondes']['dThetaEdZ_2ndinvID'][i] > obs['sondes']['dThetaEdZ_invbaseID'][i]:
-                obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
+                # obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
                 # obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
                 #     np.sort(obs['sondes']['dThetaEdZ'][i,:])[::-1][3])[0][0]
@@ -4120,13 +4120,21 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### search for stable surface layers
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        stb_index = 600.0
+        # stb_index = 500.0
+        # stbind = np.where(data1['universal_height'] <= stb_index)
+        # ### if the main inversion is below 600m, check where decoup is
+        # ###             if all identified inversions are below 600m, check for largest difference <3km and use as invbase
+        # ###                 (criteria suggest stable surface layer)
+        # if obs['sondes']['dThetaEdZ_invbaseID'][i] <= stbind[0][-1]:
+        #     if obs['sondes']['dThetaEdZ_decoupID'][i] <= stbind[0][-1]:
+        #         obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
+
+        ### if the 2 greatest gradients are below 500m, then it's a stable layer (maybe)
+        ###         in this scenario, set invbase to the greatest dTheta (will give preference to higher indices)
+        stb_index = 500.0
         stbind = np.where(data1['universal_height'] <= stb_index)
-        ### if the main inversion is below 600m, check where decoup is
-        ###             if all identified inversions are below 600m, check for largest difference <3km and use as invbase
-        ###                 (criteria suggest stable surface layer)
-        if obs['sondes']['dThetaEdZ_invbaseID'][i] <= stbind[0][-1]:
-            if obs['sondes']['dThetaEdZ_decoupID'][i] <= stbind[0][-1]:
+        if np.sort(obs['sondes']['dThetaEdZ'][i])[::-1][0] <= stbind[0][-1]:
+            if np.sort(obs['sondes']['dThetaEdZ'][i])[::-1][1] <= stbind[0][-1]:
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
 
         #### ---------------------------------------------------------------
