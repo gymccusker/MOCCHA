@@ -4082,16 +4082,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #                 elif temp[0][0] == 0.0:
         #                     data3['dThetaEdZ_2ndinvID'][i] = int(data3['thetaE_invbaseID'][i]) + temp[0][1]
 
-        obs['sondes']['dThetaEdZ_2ndinvID'][i] = np.where(obs['sondes']['dThetaEdZ'][i,:] ==
-            np.nanmax(obs['sondes']['dThetaEdZ'][i,:]))[0][0]
-        data1['dThetaEdZ_2ndinvID'][i] = np.where(data1['dThetaEdZ'][i,:] ==
-                np.nanmax(data1['dThetaEdZ'][i,:]))[0][0]
-        data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
-                np.nanmax(data2['dThetaEdZ'][i,:]))[0][0]
-        if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
-            data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
-                    np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
-
         #### ---------------------------------------------------------------
         #### INVBASE: check if strong difference starts at lower i-index (repeat 3x for good measure!)
         #### ---------------------------------------------------------------
