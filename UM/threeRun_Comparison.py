@@ -4029,14 +4029,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
 
-        # #### ---------------------------------------------------------------
-        # #### increment each invbaseID by 1 so that we can reference the height array from 0
-        # #### ---------------------------------------------------------------
-        # obs['sondes']['thetaE_invbaseID'][i] = obs['sondes']['thetaE_invbaseID'][i] + 1
-        # data1['thetaE_invbaseID'][i] = data1['thetaE_invbaseID'][i] + 1
-        # data2['thetaE_invbaseID'][i] = data2['thetaE_invbaseID'][i] + 1
-        # data3['thetaE_invbaseID'][i] = data3['thetaE_invbaseID'][i] + 1
-
         #### ---------------------------------------------------------------
         #### find second largest gradient
         #### ---------------------------------------------------------------
@@ -4100,7 +4092,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### if the absolute dThetaE of the 2nd biggest gradient > main invbase, then switch around
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        factor = 0.75
+        factor = 0.9
         if np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])],2) >= np.round(obs['sondes']['dThetaEdZ'][i,int(obs['sondes']['dThetaEdZ_invbaseID'][i])],2)*factor:
             if obs['sondes']['dThetaEdZ_2ndinvID'][i] > obs['sondes']['dThetaEdZ_invbaseID'][i]:
                 obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
@@ -4128,8 +4120,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### if 2ndinv gives largest dThetaE, switch
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
-        if obs['sondes']['dThetaE'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])] == np.nanmax(obs['sondes']['dThetaE'][i,:]):
-            obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+        # if obs['sondes']['dThetaE'][i,int(obs['sondes']['dThetaEdZ_2ndinvID'][i])] == np.nanmax(obs['sondes']['dThetaE'][i,:27]):
+        #     # obs['sondes']['dThetaEdZ_decoupID'][i] = obs['sondes']['dThetaEdZ_invbaseID'][i]
+        #     obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+
+        #### ---------------------------------------------------------------
+        ### if decoupID is at invbaseID - 1, then reassign invbaseID -> decoupID
+        ###         in this case, decoupID -> 0.0
+        #### ---------------------------------------------------------------
+        # if obs['sondes']['dThetaEdZ_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_decoupID'][i]:
+        #         obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
+                # obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
