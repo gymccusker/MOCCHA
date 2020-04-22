@@ -4141,25 +4141,6 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             ###         look instead for 2nd largest difference in ThetaE (largest will likely also be invbase=0)
             if np.logical_or(obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0, obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0):
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.sort(obs['sondes']['dThetaE'][i,:21])[::-1][1])[0][0]
-            # if obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0:
-            #     obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.sort(obs['sondes']['dThetaE'][i,:27])[::-1][1])[0][0]
-
-        # stb_index = 500.0
-        # stbind = np.where(data1['universal_height'] <= stb_index)
-        # ### if the main inversion is below 600m, check where decoup is
-        # ###             if all identified inversions are below 600m, check for largest difference <3km and use as invbase
-        # ###                 (criteria suggest stable surface layer)
-        # if obs['sondes']['dThetaEdZ_invbaseID'][i] <= stbind[0][-1]:
-        #     if obs['sondes']['dThetaEdZ_decoupID'][i] <= stbind[0][-1]:
-        #         obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
-
-        ### if the 2 greatest gradients are below 500m, then it's a stable layer (maybe)
-        ###         in this scenario, set invbase to the greatest dTheta (will give preference to higher indices)
-        # stb_index = 500.0
-        # stbind = np.where(data1['universal_height'] <= stb_index)
-        # if np.sort(obs['sondes']['dThetaEdZ'][i])[::-1][0] <= stbind[0][-1]:
-        #     if np.sort(obs['sondes']['dThetaEdZ'][i])[::-1][1] <= stbind[0][-1]:
-        #         obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
