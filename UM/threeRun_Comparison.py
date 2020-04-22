@@ -4153,7 +4153,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.rc('axes',labelsize=MED_SIZE)
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
 
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
@@ -4178,7 +4178,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if obs['sondes']['dThetaEdZ_decoupID'][i] > 0.0:
             plt.plot(np.squeeze(obs['sondes']['thetaE_driftSondes_UM'][i,int(obs['sondes']['dThetaEdZ_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(obs['sondes']['dThetaEdZ_decoupID'][i])]),
-                'v', color = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$/dz')
+                'o', color = 'darkgrey', markeredgecolor = 'k', label = 'sonde-interpd decoup surf d$\Theta_{E}$/dz')
 
         ############# ECMWF_IFS
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
@@ -4197,7 +4197,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data3['dThetaEdZ_decoupID'][i] > 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]),
-                'v', color = 'darkorange', label = 'ifs-interpd decoup surf d$\Theta_{E}$/dz')
+                'o', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ifs-interpd decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_RA2M
         plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
@@ -4214,7 +4214,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data1['dThetaEdZ_decoupID'][i] > 0.0:
             plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]),
-                'v', color = 'steelblue', label = 'um_ra2m decoup surf d$\Theta_{E}$/dz')
+                'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_CASIM-100
         plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
@@ -4231,7 +4231,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if data2['dThetaEdZ_decoupID'][i] > 0.0:
             plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_decoupID'][i])]),
                 np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]),
-                'v', color = 'forestgreen', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
+                'o', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
 
         ########## plot model diagnosed boundary layer depth as marker
         plt.plot([298,308],[np.squeeze(obs['inversions']['invbase'][drift][i]),np.squeeze(obs['inversions']['invbase'][drift][i])],
