@@ -4112,12 +4112,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         ### if invbase = 0, set to 2nd largest gradient instead
         if obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0:
             obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+            obs['sondes']['dThetaEdZ_decoupID'][i] = -1.0
         if data1['dThetaEdZ_invbaseID'][i] == 0.0:
             data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_2ndinvID'][i]
+            data1['dThetaEdZ_decoupID'][i] = -1.0
         if data2['dThetaEdZ_invbaseID'][i] == 0.0:
             data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
+            data2['dThetaEdZ_decoupID'][i] = -1.0
         if data3['dThetaEdZ_invbaseID'][i] == 0.0:
             data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
+            data3['dThetaEdZ_decoupID'][i] = -1.0
 
         ### if invbase = 1 or 2, means previous criteria has shown this is a stable surface layer
         if np.logical_or(obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0, obs['sondes']['dThetaEdZ_invbaseID'][i] == 2.0):
