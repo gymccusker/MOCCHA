@@ -4116,7 +4116,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_2ndinvID'][i]
         if data2['dThetaEdZ_invbaseID'][i] == 0.0:
             data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
-        if data3`['dThetaEdZ_invbaseID'][i] == 0.0:
+        if data3['dThetaEdZ_invbaseID'][i] == 0.0:
             data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
 
         ### if invbase = 1 or 2, means previous criteria has shown this is a stable surface layer
