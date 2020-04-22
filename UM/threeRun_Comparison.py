@@ -4129,8 +4129,17 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #### search for stable surface layers
         #### ---------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
+        ### if invbase = 0, set to 2nd largest gradient instead
         if obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0:
             obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+
+        ### if invbase = 1, means previous criteria has shown this is a stable surface layer
+        if obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0:
+            ###         look first for largest difference, if !=0, then set as invbase
+            obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
+            ###         look instead for 2nd largest difference in ThetaE (largest will likely also be invbase=0)
+            if obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0:
+                obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.sort(obs['sondes']['dThetaE'][i,:27])[::-1][1])[0][0]
 
         # stb_index = 500.0
         # stbind = np.where(data1['universal_height'] <= stb_index)
