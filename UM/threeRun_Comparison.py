@@ -4094,6 +4094,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if obs['sondes']['dThetaEdZ_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_decoupID'][i]:
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
                 obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
+        if data1['dThetaEdZ_invbaseID'][i]-1 == data1['dThetaEdZ_decoupID'][i]:
+                data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_decoupID'][i]
+                data1['dThetaEdZ_decoupID'][i] = 0.0
+        if data2['dThetaEdZ_invbaseID'][i]-1 == data2['dThetaEdZ_decoupID'][i]:
+                data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_decoupID'][i]
+                data2['dThetaEdZ_decoupID'][i] = 0.0
+        if data3['dThetaEdZ_invbaseID'][i]-1 == data3['dThetaEdZ_decoupID'][i]:
+                data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_decoupID'][i]
+                data3['dThetaEdZ_decoupID'][i] = 0.0
 
         #### --------------------------------------------------------------------------------------------------------
         #### ---------------------------------------------------------------
@@ -4103,6 +4112,12 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         ### if invbase = 0, set to 2nd largest gradient instead
         if obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0:
             obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
+        if data1['dThetaEdZ_invbaseID'][i] == 0.0:
+            data1['dThetaEdZ_invbaseID'][i] = data1['dThetaEdZ_2ndinvID'][i]
+        if data2['dThetaEdZ_invbaseID'][i] == 0.0:
+            data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
+        if data3`['dThetaEdZ_invbaseID'][i] == 0.0:
+            data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
 
         ### if invbase = 1 or 2, means previous criteria has shown this is a stable surface layer
         if np.logical_or(obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0, obs['sondes']['dThetaEdZ_invbaseID'][i] == 2.0):
@@ -4112,6 +4127,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             ###         look instead for 2nd largest difference in ThetaE (largest will likely also be invbase=0)
             if np.logical_or(obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0, obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0):
                 obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.sort(obs['sondes']['dThetaE'][i,:21])[::-1][1])[0][0]
+        if np.logical_or(data1['dThetaEdZ_invbaseID'][i] == 1.0, data1['dThetaEdZ_invbaseID'][i] == 2.0):
+            data1['dThetaEdZ_invbaseID'][i] = np.where(data1['dThetaE'][i,:] == np.nanmax(data1['dThetaE'][i,:21]))[0][0]
+            if np.logical_or(data1['dThetaEdZ_invbaseID'][i] == 0.0, data1['dThetaEdZ_invbaseID'][i] == 1.0):
+                data1['dThetaEdZ_invbaseID'][i] = np.where(data1['dThetaE'][i,:] == np.sort(data1['dThetaE'][i,:21])[::-1][1])[0][0]
+        if np.logical_or(data2['dThetaEdZ_invbaseID'][i] == 1.0, data2['dThetaEdZ_invbaseID'][i] == 2.0):
+            data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaE'][i,:] == np.nanmax(data2['dThetaE'][i,:21]))[0][0]
+            if np.logical_or(data2['dThetaEdZ_invbaseID'][i] == 0.0, data2['dThetaEdZ_invbaseID'][i] == 1.0):
+                data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaE'][i,:] == np.sort(data2['dThetaE'][i,:21])[::-1][1])[0][0]
+        if np.logical_or(data3['dThetaEdZ_invbaseID'][i] == 1.0, data3['dThetaEdZ_invbaseID'][i] == 2.0):
+            data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaE'][i,:] == np.nanmax(data3['dThetaE'][i,:21]))[0][0]
+            if np.logical_or(data3['dThetaEdZ_invbaseID'][i] == 0.0, data3['dThetaEdZ_invbaseID'][i] == 1.0):
+                data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaE'][i,:] == np.sort(data3['dThetaE'][i,:21])[::-1][1])[0][0]
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
