@@ -3974,6 +3974,11 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['dThetaE'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
+    obs['sondes']['dThetaE_invbaseID'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
+    data1['dThetaE_invbaseID'] = np.zeros([np.size(data1['dThetaE'],0)])
+    data2['dThetaE_invbaseID'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data3['dThetaE_invbaseID'] = np.zeros([np.size(data3['dThetaE'],0)])
+    data3['dThetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating    
     obs['sondes']['thetaE_invbase'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['thetaE_invbase'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['thetaE_invbase'] = np.zeros([np.size(data2['dThetaE'],0)])
