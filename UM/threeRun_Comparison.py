@@ -4133,9 +4133,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         ### if decoupID is at invbaseID - 1, then reassign invbaseID -> decoupID
         ###         in this case, decoupID -> 0.0
         #### ---------------------------------------------------------------
-        # if obs['sondes']['dThetaEdZ_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_decoupID'][i]:
-        #         obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
-                # obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
+        if obs['sondes']['dThetaEdZ_invbaseID'][i]-1 == obs['sondes']['dThetaEdZ_decoupID'][i]:
+                obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_decoupID'][i]
+                obs['sondes']['dThetaEdZ_decoupID'][i] = 0.0
 
         #### ---------------------------------------------------------------
         #### save timeseries of invbase and decoupleZ heights
