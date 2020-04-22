@@ -4298,6 +4298,24 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
     ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
 
+
+    ##################################################
+    ##################################################
+    #### create figure and axes instances
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    
     #### ---------------------------------------------------------------
     #### save quicklooks for reference
     #### ---------------------------------------------------------------
@@ -4412,29 +4430,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.xlim([260,320])
         plt.grid(axis = 'y')
         # plt.legend()
-        plt.legend(bbox_to_anchor=(0.82, 0.05, 1., .102), loc=4, ncol=1)
+        plt.legend(bbox_to_anchor=(0.82, 0.0, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
         else:
             plt.close()
 
-    ##################################################
-    ##################################################
-    #### create figure and axes instances
-    ##################################################
-    ##################################################
 
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
