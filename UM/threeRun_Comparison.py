@@ -3978,7 +3978,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data1['dThetaEdZ_invbaseID'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['dThetaEdZ_invbaseID'] = np.zeros([np.size(data2['dThetaE'],0)])
     data3['dThetaEdZ_invbaseID'] = np.zeros([np.size(data3['dThetaE'],0)])
-    data3['dThetaEdZ_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating    
+    data3['dThetaEdZ_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['thetaE_invbase'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['thetaE_invbase'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['thetaE_invbase'] = np.zeros([np.size(data2['dThetaE'],0)])
@@ -4093,10 +4093,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ### same checks for gradient
         for n in range(0,1):
-            obs['sondes']['dThetaE_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['dThetaE_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
-            data1['dThetaE_invbaseID'][i] = checkInvbaseBelow(data1['dThetaE_invbaseID'][i],data1['dThetaE'][i],sthresh)
-            data2['dThetaE_invbaseID'][i] = checkInvbaseBelow(data2['dThetaE_invbaseID'][i],data2['dThetaE'][i],sthresh)
-            data3['dThetaE_invbaseID'][i] = checkInvbaseBelow(data3['dThetaE_invbaseID'][i],data3['dThetaE'][i],sthresh)
+            obs['sondes']['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(obs['sondes']['dThetaEdZ_invbaseID'][i],obs['sondes']['dThetaE'][i],sthresh)
+            data1['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data1['dThetaEdZ_invbaseID'][i],data1['dThetaE'][i],sthresh)
+            data2['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data2['dThetaEdZ_invbaseID'][i],data2['dThetaE'][i],sthresh)
+            data3['dThetaEdZ_invbaseID'][i] = checkInvbaseBelow(data3['dThetaEdZ_invbaseID'][i],data3['dThetaE'][i],sthresh)
 
         #### --------------------------------------------------------------------------------------------------------
         #### --------------------------------------------------------------------------------------------------------
