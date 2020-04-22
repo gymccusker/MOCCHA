@@ -4133,8 +4133,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         if obs['sondes']['dThetaEdZ_invbaseID'][i] == 0.0:
             obs['sondes']['dThetaEdZ_invbaseID'][i] = obs['sondes']['dThetaEdZ_2ndinvID'][i]
 
-        ### if invbase = 1, means previous criteria has shown this is a stable surface layer
-        if obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0:
+        ### if invbase = 1 or 2, means previous criteria has shown this is a stable surface layer
+        if np.logical_or(obs['sondes']['dThetaEdZ_invbaseID'][i] == 1.0, obs['sondes']['dThetaEdZ_invbaseID'][i] == 2.0):
             ###         look first for largest difference, if !=0, then set as invbase
             obs['sondes']['dThetaEdZ_invbaseID'][i] = np.where(obs['sondes']['dThetaE'][i,:] == np.nanmax(obs['sondes']['dThetaE'][i,:27]))[0][0]
             ###         look instead for 2nd largest difference in ThetaE (largest will likely also be invbase=0)
