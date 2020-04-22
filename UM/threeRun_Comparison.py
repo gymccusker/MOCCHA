@@ -4182,7 +4182,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ############# ECMWF_IFS
         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['universal_height'], color = 'darkorange')#, label = 'ifs-interpd')
-        if data3['thetaE_invbaseID'][i] > 0.0:     ### ignore nans (missing files)
+        if data3['dThetaEdZ_invbaseID'][i] > 0.0:     ### ignore nans (missing files)
             plt.plot(np.squeeze(data3['thetaE_6hrly_UM'][i,int(data3['dThetaEdZ_invbaseID'][i])]),
                 np.squeeze(data1['universal_height'][int(data3['dThetaEdZ_invbaseID'][i])]),
                 '>', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ifs-interpd max d$\Theta_{E}$/dZ')
