@@ -4201,7 +4201,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     i = 0
     for i in range(0, np.size(obs['sondes']['doy_drift'])):
         fig = plt.figure(figsize=(11,6))
-        ax  = fig.add_axes([0.1,0.1,0.5,0.85])   # left, bottom, width, height
+        ax  = fig.add_axes([0.1,0.1,0.5,0.8])   # left, bottom, width, height
 
         ########### RADIOSONDES
         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['universal_height'], color = 'k',)# label = 'sonde-interpd')
@@ -4285,27 +4285,39 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ##### plot cloudnet cloud fraction as markers
         #####       need to find the correct cloudnet index for this model timestep
-        timeind = 0.0
+        timeind = 0.0       ### initialise
         timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
         if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
-            tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+            # tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+            tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
             tmp1[:] = 310
-            plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-            tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            plt.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Blues, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
             tmp2[:] = 312
-            plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
-            tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+            # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
+            plt.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
+            # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
             tmp3[:] = 314
-            plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
-            tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
+            # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
+            plt.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
+            # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
             tmp0[:] = 316
-            plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
-                '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
+            # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
+            plt.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
 
-        plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+        plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Cloudnet cloud fractions indicated on RHS')
         plt.xlabel('$\Theta_{E}$ [K]')
         plt.ylabel('Z [m]')
         plt.ylim([0,3100])
