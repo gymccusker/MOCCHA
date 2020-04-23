@@ -4,6 +4,11 @@ Inversion identification for:
   -- UM_CASIM-100
   -- ECMWF_IFS
 
+Key points in inversion detection:
+    -- Greatest dThetaE/dZ below 3km identified as main inversion
+    -- Identify second largest gradient; if at main inversion k-1, then main inversion reassigned to this index (i.e. strong gradient started at height index below)
+    -- If the greatest dThetaE/dZ is at k=0, 1, or 2 (iterative), then we have a stable surface layer
+          -- In this case, look for greatest dThetaE below 2km and reassign as main inversion base
 
 Quicklooks:
       v2/:
