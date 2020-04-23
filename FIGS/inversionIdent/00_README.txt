@@ -23,5 +23,6 @@ Quicklooks:
                 -- vertical dots (coloured as UM_RA2M: blue; UM_CASIM-100: green; ECMWF_IFS: orange/red; radiosondes: grey/black)
                     -- cloud fraction by volume ingested into (models) / calculated using (radiosondes) Cloudnet
                           -- all colour maps scale from 0 to 1
-                          -- UM_RA2M, UM_CASIM-100, and radiosonde Cloudnet Cv's on UM grid
+                          -- UM_RA2M, UM_CASIM-100, and radiosonde Cloudnet Cvs on UM grid
                           -- ECMWF_IFS Cv on IFS grid
+                -- NOTE: Cloudnet Cvs are not available for all radiosonde (6 hourly) timesteps
