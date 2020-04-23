@@ -3484,22 +3484,23 @@ def main():
     # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
     print ('Load calculated model inversion heights...')
-    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions.npy').item()
-    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions.npy').item()
-    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions.npy').item()
-    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions.npy').item()
+    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
+    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
+    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
+    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
 
     ### use IFS named directory to allocate variable to plot
     if cn_ifs_out_dir == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
     if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
 
+    figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
     # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
+
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
