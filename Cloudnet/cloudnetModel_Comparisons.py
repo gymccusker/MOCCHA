@@ -262,11 +262,11 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:25, :] = greyclr
+    newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']), 
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
