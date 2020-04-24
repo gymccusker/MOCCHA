@@ -1822,7 +1822,6 @@ def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
     plt.colorbar()
     plt.xlabel('DOY')
 
-
     plt.show()
 
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
