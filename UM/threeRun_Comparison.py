@@ -1799,7 +1799,7 @@ def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
     plt.title('um_casim-100, v [m/s]')
     plt.colorbar()
     plt.subplot(336)
-    plt.pcolor(data2['time'],data3['height'],np.transpose(data2['wwind']))
+    plt.pcolor(data2['time'],data2['height'],np.transpose(data2['wwind']))
     plt.ylim([0,5e3])
     plt.title('um_casim-100, w [m/s]')
     plt.colorbar()
