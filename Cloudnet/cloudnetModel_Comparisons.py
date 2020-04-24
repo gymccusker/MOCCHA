@@ -213,6 +213,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -240,9 +241,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
-            hspace = 0.4, wspace = 0.1)
+    plt.figure(figsize=(14,11))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.05)
 
     ### define axis instance
     ax = plt.gca()
@@ -258,14 +259,45 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
-    plt.subplot(411)
-    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']))
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:25, :] = greyclr
+    newcmp = ListedColormap(newcolors)
 
-    plt.xlabel('DOY')
+    plt.subplot(411)
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+        cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
-    # plt.xlim([0,1])
-    plt.legend()
+    plt.ylim([0,9000])
+    plt.title('Observations')
+    plt.colorbar()
+
+    plt.subplot(412)
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_RA2M')
+    plt.colorbar()
+
+    plt.subplot(413)
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_CASIM-100')
+    plt.colorbar()
+
+    plt.subplot(414)
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.xlabel('DOY')
+    plt.title('ECMWF_IFS')
+    plt.colorbar()
+
 
     print ('******')
     print ('')
@@ -3521,6 +3553,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv timeseries
     # -------------------------------------------------------------
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
