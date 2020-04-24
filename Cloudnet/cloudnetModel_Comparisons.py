@@ -241,7 +241,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(14,11))
+    plt.figure(figsize=(14,12))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
@@ -270,7 +270,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    plt.title('Observations')
+    plt.title('Measured cloud fraction by volume, 1 hour sampling')
     plt.colorbar()
 
     plt.subplot(412)
@@ -278,7 +278,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    plt.title('UM_RA2M')
+    plt.title('UM_RA2M; modelled cloud fraction')
     plt.colorbar()
 
     plt.subplot(413)
@@ -286,7 +286,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    plt.title('UM_CASIM-100')
+    plt.title('UM_CASIM-100; modelled cloud fraction')
     plt.colorbar()
 
     plt.subplot(414)
@@ -295,7 +295,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlabel('DOY')
-    plt.title('ECMWF_IFS')
+    plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
     plt.colorbar()
 
 
