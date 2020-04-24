@@ -1725,6 +1725,43 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     plt.savefig(fileout)
     plt.show()
 
+def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
+
+    ###################################
+    ## PLOT MODEL WIND FIELDS
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting wind timeseries:')
+    print ('')
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ##################################################
+    ##################################################
+    #### 	FIGURE
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(8,4.5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     ###################################
@@ -4836,6 +4873,7 @@ def main():
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Further analysis
