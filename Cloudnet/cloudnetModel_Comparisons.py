@@ -221,7 +221,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     print ('******')
     print ('')
-    print ('Plotting Cv statistics for whole drift period:')
+    print ('Plotting Cv timeseries for whole drift period:')
     print ('')
 
     ##################################################
@@ -259,12 +259,12 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
     plt.subplot(411)
-    plt.pcolor(obs_data['time'], obs_data['height'], obs_data['Cv'])
+    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']))
 
-    plt.xlabel('Cloud Fraction')
+    plt.xlabel('DOY')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    plt.xlim([0,1])
+    # plt.xlim([0,1])
     plt.legend()
 
     print ('******')
@@ -273,7 +273,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.svg'
     # plt.savefig(fileout)
     plt.show()
 
