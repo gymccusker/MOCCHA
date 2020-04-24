@@ -1736,12 +1736,6 @@ def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
     print ('Plotting wind timeseries:')
     print ('')
 
-    ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
-        ifs_flag = True
-    else:
-        ifs_flag = False
-
     ##################################################
     ##################################################
     #### 	FIGURE
@@ -1761,6 +1755,75 @@ def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
     plt.figure(figsize=(8,4.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
+
+    ### remove flagged points
+    data1['uwind'][data1['uwind'] == -9999] = np.nan
+    data1['vwind'][data1['vwind'] == -9999] = np.nan
+    data1['wwind'][data1['wwind'] == -9999] = np.nan
+    data2['uwind'][data2['uwind'] == -9999] = np.nan
+    data2['vwind'][data2['vwind'] == -9999] = np.nan
+    data2['wwind'][data2['wwind'] == -9999] = np.nan
+    data3['uwind'][data3['uwind'] == -9999] = np.nan
+    data3['uwind'][data3['uwind'] < -400] = np.nan
+    data3['vwind'][data3['vwind'] == -9999] = np.nan
+    data3['vwind'][data3['vwind'] < -400] = np.nan
+    data3['wwind'][data3['wwind'] == -9999] = np.nan
+    data3['wwind'][data3['wwind'] < -400] = np.nan
+
+    plt.subplot(331)
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['uwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_ra2m, u [m/s]')
+    plt.ylabel('Z [m]')
+    plt.colorbar()
+    plt.subplot(332)
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['vwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_ra2m, v [m/s]')
+    plt.colorbar()
+    plt.subplot(333)
+    plt.pcolor(data1['time'],data1['height'],np.transpose(data1['wwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_ra2m, w [m/s]')
+    plt.colorbar()
+
+    plt.subplot(334)
+    plt.pcolor(data2['time'],data2['height'],np.transpose(data2['uwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_casim-100, u [m/s]')
+    plt.ylabel('Z [m]')
+    plt.colorbar()
+    plt.subplot(335)
+    plt.pcolor(data2['time'],data2['height'],np.transpose(data2['vwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_casim-100, v [m/s]')
+    plt.colorbar()
+    plt.subplot(336)
+    plt.pcolor(data2['time'],data3['height'],np.transpose(data2['wwind']))
+    plt.ylim([0,5e3])
+    plt.title('um_casim-100, w [m/s]')
+    plt.colorbar()
+
+    plt.subplot(337)
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['uwind']))
+    plt.ylim([0,5e3])
+    plt.title('ecmwf_ifs, u [m/s]')
+    plt.ylabel('Z [m]')
+    plt.colorbar()
+    plt.subplot(338)
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['vwind']))
+    plt.ylim([0,5e3])
+    plt.title('ecmwf_ifs, v [m/s]')
+    plt.colorbar()
+    plt.subplot(339)
+    plt.pcolor(data3['time'],np.nanmean(data3['height'],0),np.transpose(data3['wwind']))
+    plt.ylim([0,5e3])
+    plt.title('ecmwf_ifs, w [m/s]')
+    plt.colorbar()
+    plt.xlabel('DOY')
+
+
+    plt.show()
 
 def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
