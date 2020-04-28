@@ -269,7 +269,7 @@ def plotmap_poster(data):
 
     m = Basemap(width=0.75*dim,height=dim,
                 resolution='l',projection='stere',\
-                lat_ts=86,lat_0=86,lon_0=-10)
+                lat_ts=82,lat_0=82,lon_0=-25)
     m.drawcoastlines()
     # m.bluemarble()
 
@@ -343,7 +343,7 @@ def plotmap_poster(data):
 
     # plt.title('MOCCHA ship track')
 
-    # plt.savefig('FIGS/HighArctic_vPOSTER_v2.svg',dpi=100)
+    plt.savefig('FIGS/HighArctic_vPOSTER_v3.svg',dpi=100)
     plt.show()
 
 def main():
