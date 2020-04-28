@@ -153,7 +153,7 @@ def plotmap(data):
                 resolution='l',projection='stere',\
                 lat_ts=82,lat_0=83,lon_0=0)
     m.drawcoastlines()
-    m.bluemarble()
+    # m.bluemarble()
 
     # define parallels/meridians
     # m.drawparallels(np.arange(50.,91.,2.),color='k')
@@ -167,7 +167,7 @@ def plotmap(data):
 
     m.drawcoastlines(linewidth=1.)
 
-    # m.fillcontinents(color='lightgrey')
+    m.fillcontinents(color='lightgrey')
 
     ### DEFINE DRIFT + IN_ICE PERIODS
     drift_index = iceDrift(data)
@@ -387,7 +387,8 @@ def main():
     # print data.head
     # print ''
 
-    map = plotmap(data)
+    # map = plotmap(data)
+    map = plotmap_poster(data)
 
     # seaice = readSeaice(seaice_file)
 
