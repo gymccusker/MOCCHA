@@ -1142,7 +1142,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_' + label1[3:] + '_' + label3 + '_' + label2[3:] + '.svg'
+    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_' + label1[3:] + '_' + label3 + '_' + label2[3:] + '.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -4541,9 +4541,9 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '12_u-br210_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = '12_u-br210_RA1M_CASIM/OUT_24h/'
+        out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -4558,7 +4558,7 @@ def main():
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
-    ### 12_u-br210_RA1M_CASIM/OUT_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+    ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
 
     print ('******')
