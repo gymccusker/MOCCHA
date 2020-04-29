@@ -780,7 +780,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(211)
-    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -788,7 +788,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.colorbar()
 
     plt.subplot(212)
-    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
