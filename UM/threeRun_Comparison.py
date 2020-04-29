@@ -785,7 +785,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         cmap = mpl_cm.Blues)
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', N_drop [g/kg]')
+    plt.title(label2 + ', N_drop [/kg]')
     plt.colorbar()
 
     plt.subplot(212)
@@ -795,7 +795,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.xlabel('DOY')
-    plt.title(label3 + ', N_drop [g/kg]')
+    plt.title(label3 + ', N_drop [/kg]')
     plt.colorbar()
 
     print ('******')
@@ -951,7 +951,7 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
         cmap = mpl_cm.Blues)
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', N_ice [g/kg]')
+    plt.title(label2 + ', N_ice [/kg]')
     plt.colorbar()
 
     plt.subplot(212)
@@ -961,7 +961,7 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.xlabel('DOY')
-    plt.title(label3 + ', N_ice [g/kg]')
+    plt.title(label3 + ', N_ice [/kg]')
     plt.colorbar()
 
     print ('******')
@@ -5175,8 +5175,8 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Plot paper figures
