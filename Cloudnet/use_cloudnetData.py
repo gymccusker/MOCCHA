@@ -994,13 +994,13 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 - np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3,
         np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 + np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM_AeroProf')
     ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qice'],0) - np.nanstd(misc_data['qice'],0))*1e3,
         (np.nanmean(misc_data['qice'],0) + np.nanstd(misc_data['qice'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
+    plt.ylim([0,10000])
     plt.xlim([0,0.05])
     plt.legend()
 
@@ -1010,7 +1010,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_qice_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-AeroProf_qice_229-257DOY.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -1128,11 +1128,11 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
@@ -1496,8 +1496,8 @@ def main():
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
