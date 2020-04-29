@@ -1239,7 +1239,7 @@ def main():
         misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        misc_out_dir = '13_u-br409_RA1M_CASIM/OUT_R0/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
     print ('Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:')
@@ -1308,8 +1308,8 @@ def main():
 
     moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_',
+            '20180825_oden_','20180826_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
@@ -1319,7 +1319,7 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180824_oden_','20180827_oden_','20180828_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
