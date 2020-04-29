@@ -802,7 +802,7 @@ def plot_CASIM_NdropTimeseries(um_data, ifs_data, misc_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/CASIM-100_CASIM-AeroProf_NdropTimeseries_229-257DOY.svg'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_229-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
