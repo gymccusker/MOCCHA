@@ -718,7 +718,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
         np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(misc_data['qliq'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    plt.plot(np.nanmean(misc_data['qliq'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM_AeroProf')
     ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qliq'],0) - np.nanstd(misc_data['qliq'],0))*1e3,
         (np.nanmean(misc_data['qliq'],0) + np.nanstd(misc_data['qliq'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
