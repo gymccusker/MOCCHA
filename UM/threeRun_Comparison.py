@@ -768,11 +768,11 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ### define axis instance
     ax = plt.gca()
 
-    print (um_data.keys())
-
     #### set flagged um_data to nans
-    data1['']
+    data2['qnliq'][data2['qnliq'] < 0] = np.nan
+    data3['qnliq'][data3['qnliq'] < 0] = np.nan
 
+    #### set up colourmaps to grey out zeros on figures
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
