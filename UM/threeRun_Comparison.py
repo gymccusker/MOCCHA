@@ -808,6 +808,89 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.savefig(fileout)
     plt.show()
 
+def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting Ndrop timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(8,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.15,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    #### set flagged um_data to nans
+    data2['qliq'][data2['qliq'] < 0] = np.nan
+    data3['qliq'][data3['qliq'] < 0] = np.nan
+
+    #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:20, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+
+    plt.subplot(211)
+    plt.pcolor(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
+        vmin = 0, vmax = 0.35,
+        cmap = mpl_cm.Blues)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label2 + ', Q_liq [g/kg]')
+    plt.colorbar()
+
+    plt.subplot(212)
+    plt.pcolor(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
+        vmin = 0, vmax = 0.35,
+        cmap = mpl_cm.Blues)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.xlabel('DOY')
+    plt.title(label3 + ', Q_liq [g/kg]')
+    plt.colorbar()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_QliqTimeseries_229-257DOY.png'
+    plt.savefig(fileout)
+    plt.show()
+
 def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
@@ -864,7 +947,7 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
 
     plt.subplot(211)
     plt.pcolor(data2['time'], data2['height'][:], np.transpose(data2['qnice'])/1e6,
-        vmin = 0, vmax = 2,
+        vmin = 0, vmax = 0.1,
         cmap = mpl_cm.Blues)
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
@@ -873,7 +956,7 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
 
     plt.subplot(212)
     plt.pcolor(data3['time'], data3['height'][:], np.transpose(data3['qnice'])/1e6,
-        vmin = 0, vmax = 2,
+        vmin = 0, vmax = 0.1,
         cmap = mpl_cm.Blues)
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
@@ -890,7 +973,6 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NiceTimeseries_229-257DOY.png'
     plt.savefig(fileout)
     plt.show()
-
 
 def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
@@ -5093,7 +5175,8 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Plot paper figures
