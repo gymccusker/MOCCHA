@@ -724,7 +724,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
+    plt.ylim([0,10000])
     plt.xlim([0,0.2])
     plt.legend()
 
