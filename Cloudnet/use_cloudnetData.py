@@ -1145,7 +1145,7 @@ def plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-    misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+    misc_data['cloud_fraction'][misc_data['cloud_fraction'] < 0.0] = np.nan
 
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
@@ -1170,7 +1170,7 @@ def plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     plt.colorbar()
 
     plt.subplot(413)
-    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
+    plt.contourf(misc_data['time'], misc_data['height'][:], np.transpose(misc_data['cloud_fraction']),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -1193,8 +1193,8 @@ def plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, mont
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_229-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def main():
@@ -1232,14 +1232,14 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
-        misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
     print ('Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:')
@@ -1601,8 +1601,9 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
