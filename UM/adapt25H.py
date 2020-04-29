@@ -126,7 +126,10 @@ def combineNC(nc1, nc2, filename1, filename2):
     #################################################################
     radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
     flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
-                'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum']
+                'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
+                'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
+                'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
+                'surface_upward_water_flux']
 
     #################################################################
     ## CREATE NEW NETCDF
@@ -208,6 +211,8 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:23] = nc1.variables[diag][0:-1]
                 dat[23:25] = nc2.variables[diag][0:2]
+            elif diag in flxlist:
+                continue
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -223,16 +228,17 @@ def combineNC(nc1, nc2, filename1, filename2):
         ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
             if diag in flxlist:
-                dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
-                dat.scale_factor = float(1)
-                dat.add_offset = float(0)
-                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
-                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
-                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
-                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
-                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                dat[0:24,:] = nc1.variables[diag][0:,:]
-                dat[24,:] = nc2.variables[diag][0,:]
+                continue
+                # dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
+                # dat.scale_factor = float(1)
+                # dat.add_offset = float(0)
+                # if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                # if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                # if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                # if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                # if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                # dat[0:24,:] = nc1.variables[diag][0:,:]
+                # dat[24,:] = nc2.variables[diag][0,:]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -325,7 +331,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '13_u-br409_RA1M_CASIM/OUT_24h/'
+    out_dir = '12_u-br210_RA1M_CASIM/OUT_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -398,15 +404,14 @@ def main():
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
     moccha_names = [#'20180813_oden_metum.nc','20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            # '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            # '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc',
-            '20180901_oden_metum.nc',
+            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
             '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc']#,
-            # '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            # '20180914_oden_metum.nc']
+            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+            '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc']
 
@@ -415,8 +420,9 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,258)        ## set DOY for full moccha figures
-    doy = np.arange(243,259)        ## set DOY for subset of moccha figures
+    # doy = np.arange(243,259)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    doy = np.arange(229,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
 
     ## Choose month:
     names = moccha_names
