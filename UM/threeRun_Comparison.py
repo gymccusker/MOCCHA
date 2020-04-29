@@ -4526,6 +4526,21 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ### save in dict for ease
     obs['inversions']['doy_drift'] = obs['inversions']['doy'][drift]
 
+    #### ---------------------------------------------------------------
+    #### include UM BL type information
+    #### ---------------------------------------------------------------
+    #### list of BL types from UM documentation
+    doc = ['(1) Stable BL', '(2) Sc over stable SL', '(3) Well-mixed BL', '(4) Unstable BL, dSc not o/Cu',
+        '(5) dSc o/Cu', '(6) Cu-capped BL', '(7) Shear-dom unstable BL']
+
+    # Type I: Stable boundary layer (with or without cloud)
+    # Type II: Boundary layer with stratocumulus over a stable near-surface layer
+    # Type III: Well mixed boundary layer
+    # Type IV: Unstable boundary layer with a decoupled Sc layer not over cumulus
+    # Type V: Boundary layer with a decoupled Sc layer layer over cumulus
+    # Type VI: Cumulus-capped boundary layer
+    # Type VII: Shear-dominated unstable layer
+
     ##################################################
     ##################################################
     #### create figure and axes instances
@@ -4671,10 +4686,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         plt.ylim([0,3100])
         plt.xlim([260,320])
         plt.grid(axis = 'y')
-        # plt.legend()
-        # legend1 = ax.legend(*scatter.legend_elements(num=3),
-        #             loc="upper left", title="Cloudnet")
-        # ax.add_artist(legend1)
+
+        # plt.annotate('UM Boundary layer classifications: \n' +
+        #     'UM_RA2M: ' + doc[int(data1['bl_type'][i])-1] + '\n' +
+        #     'UM_CASIM-100: ' + doc[int(data2['bl_type'][i])-1],
+        #     xy=(362,2550),xytext=(362,2550),
+        #     fontsize=12)
+
+        ax.text(323, 2550, 'UM Boundary layer classifications: \n' +
+            'UM_RA2M: ' + doc[int(data1['bl_type'][i])-1] + '\n' +
+            'UM_CASIM-100: ' + doc[int(data2['bl_type'][i])-1],
+            fontsize = 12)
+
         legend2 = ax.legend(bbox_to_anchor=(0.7, 0.0, 1., .102), loc=4, ncol=1)
         plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
