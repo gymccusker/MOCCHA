@@ -4664,21 +4664,21 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
             #     '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
             ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Greens, label = 'um_casim-100 Cv > 0')
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
             # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
             tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
             tmp3[:] = 314
             # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
             #     '.', markersize = 6, color = 'darkorange', label = 'ecmwf_ifs Cv > 0')
             ax.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Oranges, label = 'ecmwf_ifs Cv > 0')
+                vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
             # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
             tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
             tmp0[:] = 316
             # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
             #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
             ax.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Greys, label = 'obs Cv > 0')
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Cloudnet cloud fractions indicated on RHS')
         plt.xlabel('$\Theta_{E}$ [K]')
