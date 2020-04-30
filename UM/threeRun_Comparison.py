@@ -4743,6 +4743,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig('../FIGS/inversionIdent/InvbaseTS_dThetaEdZ.png')
     plt.show()
 
+
     ###---------------------------------------------------------------------------------------------
     ###         Save inversions to numpy dictionary
     ###---------------------------------------------------------------------------------------------
@@ -4776,6 +4777,16 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     np.save('ecmwf_ifs_inversions_v3', data_3)
 
     return data1, data2, data3, obs
+
+def RMSE_analysis(data1, data2, data3, obs):
+
+    from sklearn.metrics import mean_squared_error
+    from math import sqrt
+
+    ###---------------------------------------------------------------------------------------------
+    ###         Calculate root mean square error - 
+    ###---------------------------------------------------------------------------------------------
+    ###  rms = sqrt(mean_squared_error(y_actual, y_predicted))
 
 def main():
 
