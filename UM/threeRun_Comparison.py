@@ -4533,6 +4533,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     doc = ['(1) Stable BL', '(2) Sc over stable SL', '(3) Well-mixed BL', '(4) Unstable BL, dSc not o/Cu',
         '(5) dSc o/Cu', '(6) Cu-capped BL', '(7) Shear-dom unstable BL']
 
+    bltype1 = data1['bl_type'][data1['hrly_flag']][::6].data
+    bltype2 = data2['bl_type'][data2['hrly_flag']][::6].data
+
     # Type I: Stable boundary layer (with or without cloud)
     # Type II: Boundary layer with stratocumulus over a stable near-surface layer
     # Type III: Well mixed boundary layer
@@ -4693,9 +4696,10 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #     xy=(362,2550),xytext=(362,2550),
         #     fontsize=12)
 
+        # print(i)
         ax.text(323, 2550, 'UM Boundary layer classifications: \n' +
-            'UM_RA2M: ' + doc[int(data1['bl_type'][i])-1] + '\n' +
-            'UM_CASIM-100: ' + doc[int(data2['bl_type'][i])-1],
+            'UM_RA2M: ' + doc[int(bltype1[i])-1] + '\n' +
+            'UM_CASIM-100: ' + doc[int(bltype2[i])-1],
             fontsize = 12)
 
         legend2 = ax.legend(bbox_to_anchor=(0.7, 0.0, 1., .102), loc=4, ncol=1)
