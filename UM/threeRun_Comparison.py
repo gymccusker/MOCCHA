@@ -3080,7 +3080,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title('Sondes(REGRID),  q [g/kg]')
+    plt.title('Radiosondes,  q [g/kg]')
 
     ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
@@ -3093,7 +3093,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.colorbar()
     # plt.set_cmap('seismic')
     # plt.ylabel('Z [m]')
-    plt.title(label3 + '(REGRID) - Sondes(REGRID),  q [g/kg]')
+    plt.title(label3 + ' - Radiosondes,  q [g/kg]')
 
     ax  = fig.add_axes([0.15,0.3,0.85,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
@@ -3105,7 +3105,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.title(label1 + ' - Sondes(REGRID), q [g/kg]')
+    plt.title(label1 + ' - Radiosondes, q [g/kg]')
 
     ax  = fig.add_axes([0.15,0.06,0.85,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
@@ -3118,14 +3118,14 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.colorbar()
     plt.xlabel('Day of year')
     # plt.ylabel('Z [m]')
-    plt.title(label2 + ' - Sondes(REGRID), q [g/kg]')
+    plt.title(label2 + ' - Radiosondes, q [g/kg]')
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/QProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100.png'
+    fileout = '../FIGS/comparisons/QProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100_vPRES.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
     # plt.close()
