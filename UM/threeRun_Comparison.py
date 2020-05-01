@@ -2701,7 +2701,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.title('Sondes(REGRID), T[degC]')
+    plt.title('Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
     dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -2714,7 +2714,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.colorbar()
     # plt.set_cmap('seismic')
     plt.ylabel('Z [m]')
-    plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
+    plt.title(label3 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.15,0.3,0.85,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -2726,7 +2726,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.xlim([doy[0],doy[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.title(label1 + ' - Sondes(REGRID), T[K]')
+    plt.title(label1 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.15,0.06,0.85,0.17])   # left, bottom, width, height
     dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -2739,14 +2739,14 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.colorbar()
     plt.xlabel('Day of year')
     plt.ylabel('Z [m]')
-    plt.title(label2 + ' - Sondes(REGRID), T[K]')
+    plt.title(label2 + ' - Radiosondes, T[degC]')
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100.png'
+    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_metum_ifs_casim-100_vPRES.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
     # plt.close()
@@ -4784,7 +4784,7 @@ def RMSE_analysis(data1, data2, data3, obs):
     from math import sqrt
 
     ###---------------------------------------------------------------------------------------------
-    ###         Calculate root mean square error - 
+    ###         Calculate root mean square error -
     ###---------------------------------------------------------------------------------------------
     ###  rms = sqrt(mean_squared_error(y_actual, y_predicted))
 
@@ -5224,7 +5224,7 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
@@ -5235,7 +5235,7 @@ def main():
     # -------------------------------------------------------------
     # Further analysis
     # -------------------------------------------------------------
-    data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
