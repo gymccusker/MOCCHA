@@ -4,7 +4,7 @@
 ###
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -24,9 +24,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -49,12 +49,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -76,19 +76,19 @@ def inIce(data):
     # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print ('CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print ('')
+    print ('Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')')
+    print ('Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
+    print ('Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6])))
+    print ('Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7])))
+    print ('')
 
     return inIce_index
 
@@ -102,15 +102,15 @@ def trackShip(data, date):
     # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print ('Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
     # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
     # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    print ('trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print ('')
 
     return trackShip_index
 
@@ -135,9 +135,9 @@ def combineNC(nc1, nc2, filename1, filename2):
     ## CREATE NEW NETCDF
     #################################################################
     nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print nc.file_format
-    print ''
+    print ('')
+    print (nc.file_format)
+    print ('')
 
     ###################################
     ## Data dimensions
@@ -158,7 +158,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     timem.long_name = 'forecast_time'
     timem[0:24] = nc1.variables['forecast_time'][0:]
     timem[24] = 24.0    ### hard code since nc2[0] = 0.0
-    print 'time shape = ' + str(timem.shape)
+    print ('time shape = ' + str(timem.shape))
 
     #### height
     height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
@@ -187,18 +187,18 @@ def combineNC(nc1, nc2, filename1, filename2):
     for diag in nc1.variables:
     # diag = 'sfc_pressure'
     # if diag == 'sfc_pressure':
-        print 'Writing ' + diag
-        print ''
+        print ('Writing ' + diag)
+        print ('')
         ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
             if diag == 'forecast_time':
-                print 'Diagnostic is forecast_time which is already defined... skipping.'
+                print ('Diagnostic is forecast_time which is already defined... skipping.')
                 continue
             if diag == 'height':
-                print 'Diagnostic is height which is already defined... skipping.'
+                print ('Diagnostic is height which is already defined... skipping.')
                 continue
             if diag == 'height2':
-                print 'Diagnostic is height2 which is already defined... skipping.'
+                print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
             if diag in radlist:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
@@ -254,7 +254,7 @@ def combineNC(nc1, nc2, filename1, filename2):
         ### 0Dimensions
         else:
             if diag == 'horizontal_resolution':
-                print 'Diagnostic is horizontal_resolution which needs to be defined separately...'
+                print ('Diagnostic is horizontal_resolution which needs to be defined separately...')
                 dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
                 dat.comment = 'Horizontal grid size of nested region.'
                 dat.units = 'km'
@@ -303,10 +303,10 @@ def makeGlobalStashList():
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -345,36 +345,36 @@ def main():
     ### 12_u-br210_RA1M_CASIM/OUT_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc file: ')
+    print ('')
 
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
-    print 'Loading observations:'
+    print ('Loading observations:')
     filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
     cube_obs = iris.load(filename_obs)#, global_con, callback)
-    print '...'
+    print ('...')
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
@@ -383,10 +383,10 @@ def main():
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Begin cube read in at ' + time.strftime("%c"))
+    print (' ')
 
     ### -------------------------------------------------------------------------
     ### define input filename
@@ -433,22 +433,22 @@ def main():
     for i in range(0,len(moccha_names) - 1):
         filename1 = root_dir + out_dir + names[i]
         filename2 = root_dir + out_dir + names[i+1]
-        print filename1
-        print filename2
-        print ''
+        print (filename1)
+        print (filename2)
+        print ('')
 
         #### -------------------------------------------------------------
         #### LOAD NETCDF FILES
         #### -------------------------------------------------------------
         # cube1 = iris.load(filename1)
         nc1 = Dataset(filename1,'r')
-        print nc1
-        print ''
+        print (nc1)
+        print ('')
 
         # cube2 = iris.load(filename1)
         nc2 = Dataset(filename2,'r')
-        print nc2
-        print ''
+        print (nc2)
+        print ('')
 
         #### -------------------------------------------------------------
         #### COMBINE NETCDF FILES
@@ -466,10 +466,10 @@ def main():
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
