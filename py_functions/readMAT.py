@@ -3,7 +3,7 @@ Steps to read in Matlab struct files (saved as .mat) and associated functions to
 ==============================
 
 """
-
+from __future__ import print_function
 from scipy.io import loadmat
 import numpy as np
 import scipy.io as sio
@@ -30,16 +30,16 @@ def readMatlabStruct(filename):
     #### --------------------------------------------------------------------
     #### LOAD MATLAB FILE USING SCIPY
     #### --------------------------------------------------------------------
-    print 'Reading in .mat file including struct...'
+    print ('Reading in .mat file including struct...')
     dat = loadmat(filename)
-    print ''
+    print ('')
 
     #### --------------------------------------------------------------------
     #### USE STRUCT_NAME TO DEFINE INTERMEDIATE STRUCT ARRAY
     #### --------------------------------------------------------------------
-    print 'Dealing with intermediate data assignments...'
+    print ('Dealing with intermediate data assignments...')
     struct = dat[structname]
-    print ''
+    print ('')
 
     #### --------------------------------------------------------------------
     #### IDENTIFY DATA AS FIRST ENTRY IN INTERMEDIATE STRUCT
@@ -57,8 +57,8 @@ def readMatlabStruct(filename):
     # aa = a.astype(float)
     b = {name:a[name].astype(float) for name in a.dtype.names}
 
-    print 'Finished! :)'
-    print 'Reading out ' + structname + ' struct within .mat file'
-    print ''
+    print ('Finished! :)')
+    print ('Reading out ' + structname + ' struct within .mat file')
+    print ('')
 
     return b     #### returns structured numpy array containing matlab struct
