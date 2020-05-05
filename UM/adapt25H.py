@@ -211,8 +211,8 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:23] = nc1.variables[diag][0:-1]
                 dat[23:25] = nc2.variables[diag][0:2]
-            elif diag in flxlist:
-                continue
+            # elif diag in flxlist:
+            #     continue
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
