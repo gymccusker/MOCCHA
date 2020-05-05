@@ -36,7 +36,7 @@ def calcTime_Date2DOY(date):
         doy = (float(DD) - 14.0) + refDateAug
     elif mm == '09':
         doy = float(DD) + refDateSep
-    else:
+    # else:
         # print '****Date not valid with this function****'
 
     # print '----'
