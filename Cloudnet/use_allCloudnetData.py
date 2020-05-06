@@ -3550,13 +3550,14 @@ def main():
                 else:
                     time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1[0].variables['time'][:])/24.0))
                 print (um_data)
-                for j in range(0,len(um_var_list[0])):
-                    # print 'j = ' + str(j)
-                    if np.ndim(cn_nc1[0].variables[um_var_list[0][j]]) == 1:
-                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:])
-                    else:
-                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:],0)
-            cn_nc1[0].close()
+                for c in range(0,3):
+                    for j in range(0,len(um_var_list[c])):
+                        # print 'j = ' + str(j)
+                        if np.ndim(cn_nc1[c].variables[um_var_list[c][j]]) == 1:
+                            um_data[um_var_list[c][j]] = np.append(um_data[um_var_list[c][j]],cn_nc1[c].variables[um_var_list[c][j]][:])
+                        else:
+                            um_data[um_var_list[c][j]] = np.append(um_data[um_var_list[c][j]],cn_nc1[c].variables[um_var_list[c][j]][:],0)
+            for c in range(0,3): cn_nc1[c].close()
 
             ### --------------------------------------------------------------------
             ### LOAD IN IFS DATA INTO DICTIONARY
