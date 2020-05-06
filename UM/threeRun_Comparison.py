@@ -4786,7 +4786,7 @@ def RMSE_analysis(data1, data2, data3, obs):
     ###---------------------------------------------------------------------------------------------
     ###         Calculate root mean square error -
     ###---------------------------------------------------------------------------------------------
-    ###  rms = sqrt(mean_squared_error(y_actual, y_predicted))
+    rms = sqrt(mean_squared_error(y_actual, y_predicted))
 
 def main():
 
