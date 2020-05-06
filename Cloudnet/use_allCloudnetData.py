@@ -688,9 +688,9 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     data2['qliq'][data2['qliq'] < 0.0] = 0.0
     data2['qice'][data2['qice'] < 0.0] = 0.0
     data2['qtot'] = data2['qliq'] + data2['qice']
-    data3['qliq'][data3['qliq'] < 0.0] = 0.0
-    data3['qice'][data3['qice'] < 0.0] = 0.0
-    data3['qtot'] = data3['qliq'] + data3['qice']
+    data3['ql'][data3['ql'] < 0.0] = 0.0
+    data3['qi'][data3['qi'] < 0.0] = 0.0
+    data3['qtot'] = data3['ql'] + data3['qi']
 
 
     ###----------------------------------------------------------------
@@ -741,22 +741,22 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     ###----------------------------------------------------------------
     ###         New figure - profiles
     ###----------------------------------------------------------------
-    plt.figure(figsize=(10,5))
+    plt.figure(figsize=(10,10))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.98, left = 0.1,
             hspace = 0.45, wspace = 0.25)
     ### define axis instance
     ax = plt.gca()
 
-    plt.subplot(131)
+    plt.subplot(331)
     plt.plot(np.nanmean(um_data['model_lwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
     plt.plot(np.nanmean(data1['qliq']*1e3,0), data1['height'], label = 'Model, g/kg')
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     # plt.legend()
     # plt.xlim([226,257])
-    plt.title('LWC')
+    plt.title('UM_RA2M: LWC')
 
-    plt.subplot(132)
+    plt.subplot(332)
     plt.plot(np.nanmean(um_data['model_iwc_filtered']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, filtered, g/m3')
     plt.plot(np.nanmean(data1['qice']*1e3,0), data1['height'], label = 'Model, g/kg')
     # plt.plot(np.nanmean(um_data['model_iwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, not filtered, g/m3')
@@ -764,16 +764,73 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.ylim([0,9000])
     # plt.legend()
     # plt.xlim([226,257])
-    plt.title('IWC')
+    plt.title('UM_RA2M: IWC')
 
-    plt.subplot(133)
+    plt.subplot(333)
     plt.plot(np.nanmean(um_data['model_twc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
     plt.plot(np.nanmean(data1['qtot']*1e3,0), data1['height'], label = 'Model, g/kg')
     # plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.legend()
     # plt.xlim([226,257])
-    plt.title('TWC')
+    plt.title('UM_RA2M: TWC')
+
+    plt.subplot(334)
+    plt.plot(np.nanmean(misc_data['model_lwc']*1e3,0), np.squeeze(misc_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data2['qliq']*1e3,0), data2['height'], label = 'Model, g/kg')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    # plt.xlim([226,257])
+    plt.title('UM_CASIM-100: LWC')
+
+    plt.subplot(335)
+    plt.plot(np.nanmean(misc_data['model_iwc_filtered']*1e3,0), np.squeeze(misc_data['height'][0,:]), label = 'Cloudnet, filtered, g/m3')
+    plt.plot(np.nanmean(data2['qice']*1e3,0), data2['height'], label = 'Model, g/kg')
+    # plt.plot(np.nanmean(um_data['model_iwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, not filtered, g/m3')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    # plt.xlim([226,257])
+    plt.title('UM_CASIM-100: IWC')
+
+    plt.subplot(336)
+    plt.plot(np.nanmean(misc_data['model_twc']*1e3,0), np.squeeze(misc_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data2['qtot']*1e3,0), data2['height'], label = 'Model, g/kg')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.legend()
+    # plt.xlim([226,257])
+    plt.title('UM_CASIM-100: TWC')
+
+    plt.subplot(337)
+    plt.plot(np.nanmean(ifs_data['model_lwc']*1e3,0), np.squeeze(ifs_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data3['ql']*1e3,0), np.nanmean(data3['height'],0), label = 'Model, g/kg')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    # plt.xlim([226,257])
+    plt.title('ECMWF_IFS: LWC')
+
+    plt.subplot(338)
+    plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered']*1e3,0), np.squeeze(ifs_data['height'][0,:]), label = 'Cloudnet, filtered, g/m3')
+    plt.plot(np.nanmean(data3['qi']*1e3,0), np.nanmean(data3['height'],0), label = 'Model, g/kg')
+    # plt.plot(np.nanmean(um_data['model_iwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, not filtered, g/m3')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    plt.xlim([0.0,0.01])
+    plt.title('ECMWF: IWC')
+
+    plt.subplot(339)
+    plt.plot(np.nanmean(ifs_data['model_twc']*1e3,0), np.squeeze(ifs_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data3['qtot']*1e3,0), np.nanmean(data3['height'],0), label = 'Model, g/kg')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.legend()
+    plt.xlim([0.0,0.12])
+    plt.title('ECMWF_IFS: TWC')
+
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
