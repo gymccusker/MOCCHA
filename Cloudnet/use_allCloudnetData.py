@@ -3281,10 +3281,10 @@ def main():
         cn_filename_um_cv = cn_um_dir + cn_um_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
         cn_filename_um_cv = cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc'
         cn_filename_um_cv = cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-27:-6] + '.nc'
-        cn_filename_ifs_cv = cn_ifs_dir + cn_ifs_out_dir + names[i] + cn_ifs_out_dir[0][:-6] + '.nc'
-        cn_filename_obs_cv = cn_obs_dir + cn_obs_out_dir + names[i] + cn_obs_out_dir[0][:-6] + '.nc'
-        if cn_misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir + names[i] + 'metum.nc'
-        if cn_misc_flag == 0: cn_filename_misc_cv = cn_misc_dir + cn_misc_out_dir + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
+        cn_filename_ifs_cv = cn_ifs_dir + cn_ifs_out_dir[0] + names[i] + cn_ifs_out_dir[0][:-6] + '.nc'
+        cn_filename_obs_cv = cn_obs_dir + cn_obs_out_dir[0] + names[i] + cn_obs_out_dir[0][:-6] + '.nc'
+        if cn_misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir[0] + names[i] + 'metum.nc'
+        if cn_misc_flag == 0: cn_filename_misc_cv = cn_misc_dir + cn_misc_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
         print (cn_filename_um_cv)
         print (cn_filename_ifs_cv)
         if cn_misc_flag != 1: print (cn_filename_misc_cv)
