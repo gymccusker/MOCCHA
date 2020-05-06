@@ -3754,9 +3754,9 @@ def main():
     # -------------------------------------------------------------
     ### use IFS named directory to allocate variable to plot
     # -------------------------------------------------------------
-    if cn_ifs_out_dir == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
-    if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
-    if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
+    if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
+    # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
+    # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
 ###################################################################################################################
 ###################################################################################################################
@@ -3773,7 +3773,7 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
 
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
     figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
