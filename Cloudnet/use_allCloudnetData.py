@@ -3372,11 +3372,11 @@ def main():
             cn_nc2 = {}
             cn_nc3 = {}
             cn_nc0 = {}
-            for i in range(0,3):
-                cn_nc1[i] = Dataset(cn_filename_um[i],'r')
-                cn_nc2[i] = Dataset(cn_filename_ifs[i],'r')
-                if cn_misc_flag != -1: cn_nc3[i] = Dataset(cn_filename_misc[i],'r')
-                cn_nc0[i] = Dataset(cn_filename_obs[i],'r')
+            for c in range(0,3):
+                cn_nc1[c] = Dataset(cn_filename_um[c],'r')
+                cn_nc2[c] = Dataset(cn_filename_ifs[c],'r')
+                if cn_misc_flag != -1: cn_nc3[c] = Dataset(cn_filename_misc[c],'r')
+                cn_nc0[c] = Dataset(cn_filename_obs[c],'r')
 
             # -------------------------------------------------------------
             print ('')
