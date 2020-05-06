@@ -3374,7 +3374,7 @@ def main():
             cn_nc0 = {}
             cn_nc1[0] = Dataset(cn_filename_um[0],'r')
             cn_nc2[0] = Dataset(cn_filename_ifs[0],'r')
-            if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc[0],'r')
+            if cn_misc_flag != -1: cn_nc3[0] = Dataset(cn_filename_misc[0],'r')
             cn_nc0[0] = Dataset(cn_filename_obs[0],'r')
 
             # -------------------------------------------------------------
@@ -3538,7 +3538,7 @@ def main():
                 else:
                     time_um = float(names[i][6:8]) + ((cn_nc1[0].variables['time'][:])/24.0)
                 for j in range(0,len(um_var_list[0])):
-                    if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:  # 1d timeseries only
+                    if np.ndim(cn_nc1[0].variables[um_var_list[0][j]]) == 1:  # 1d timeseries only
                         um_data[um_var_list[0][j]] = cn_nc1[0].variables[um_var_list[0][j]][:]
                     else:                                   # 2d column um_data
                         um_data[um_var_list[0][j]] = cn_nc1[0].variables[um_var_list[0][j]][:]
@@ -3554,7 +3554,7 @@ def main():
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:])
                     else:
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:],0)
-            cn_nc1.close()
+            cn_nc1[0].close()
 
             ### --------------------------------------------------------------------
             ### LOAD IN IFS DATA INTO DICTIONARY
@@ -3572,7 +3572,7 @@ def main():
                 else:
                     time_ifs = float(names[i][6:8]) + ((cn_nc2[0].variables['time'][:])/24.0)
                 for j in range(0,len(ifs_var_list[0])):
-                    if np.ndim(cn_nc2.variables[ifs_var_list[0][j]]) == 1:  # 1d timeseries only
+                    if np.ndim(cn_nc2[0].variables[ifs_var_list[0][j]]) == 1:  # 1d timeseries only
                         ifs_data[ifs_var_list[0][j]] = cn_nc2[0].variables[ifs_var_list[0][j]][:]
                     else:                                   # 2d column um_data
                         ifs_data[ifs_var_list[0][j]] = cn_nc2[0].variables[ifs_var_list[0][j]][:]
@@ -3589,7 +3589,7 @@ def main():
                         ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:])
                     else:
                         ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:],0)
-            cn_nc2.close()
+            cn_nc2[0].close()
 
             ### -------------------------------------------------------------------------
             ###     LOAD IN MISC DATA INTO DICTIONARY IF COMPARING
@@ -3624,9 +3624,9 @@ def main():
                     if cn_misc_flag == 0: time_misc = float(names[i][6:8]) + ((cn_nc3[0].variables['time'][:])/24.0)
                 for j in range(0,len(misc_var_list[0])):
                     if np.ndim(cn_nc3[0].variables[misc_var_list[0][j]]) == 1:  # 1d timeseries only
-                        misc_data[misc_var_list[0][j]] = cn_nc3.variables[misc_var_list[0][j]][:]
+                        misc_data[misc_var_list[0][j]] = cn_nc3[0].variables[misc_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        misc_data[misc_var_list[0][j]] = cn_nc3.variables[misc_var_list[0][j]][:]
+                        misc_data[misc_var_list[0][j]] = cn_nc3[0].variables[misc_var_list[0][j]][:]
             else:
                 if month_flag == -1:
                     if cn_misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((cn_nc3[0].variables['forecast_time'][:])/24.0))
@@ -3643,7 +3643,7 @@ def main():
                     #     continue
                     else:
                         misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3[0].variables[misc_var_list[0][j]][:],0)
-            cn_nc3.close()
+            cn_nc3[0].close()
 
             ### -------------------------------------------------------------------------
             ###     LOAD IN OBS DATA
@@ -3657,29 +3657,29 @@ def main():
                 obs_data = {}
                 # misc_data1d = {}
                 if month_flag == -1:
-                    time_obs = doy[i] + ((cn_nc4.variables['time'][:])/24.0)
+                    time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
                 else:
-                    time_obs = float(names[i][6:8]) + ((cn_nc4.variables['time'][:])/24.0)
+                    time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
                 for j in range(0,len(obs_var_list[0])):
-                    if np.ndim(cn_nc4.variables[obs_var_list[0][j]]) == 1:  # 1d timeseries only
-                        obs_data[obs_var_list[0][j]] = cn_nc4.variables[obs_var_list[0][j]][:]
+                    if np.ndim(cn_nc0[0].variables[obs_var_list[0][j]]) == 1:  # 1d timeseries only
+                        obs_data[obs_var_list[0][j]] = cn_nc0[0].variables[obs_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        obs_data[obs_var_list[0][j]] = cn_nc4.variables[obs_var_list[0][j]][:]
+                        obs_data[obs_var_list[0][j]] = cn_nc0[0].variables[obs_var_list[0][j]][:]
             else:
                 if month_flag == -1:
-                    time_obs = np.append(time_obs, doy[i] + ((cn_nc4.variables['time'][:])/24.0))
+                    time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
                 else:
-                    time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc4.variables['time'][:])/24.0))
+                    time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
                 print (obs_data)
                 for j in range(0,len(obs_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc4.variables[obs_var_list[0][j]]) == 1:
-                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc4.variables[obs_var_list[0][j]][:])
-                    elif np.sum(cn_nc4.variables[obs_var_list[0][j]].shape) == 71:
+                    if np.ndim(cn_nc0[0].variables[obs_var_list[0][j]]) == 1:
+                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc0[0].variables[obs_var_list[0][j]][:])
+                    elif np.sum(cn_nc0[0].variables[obs_var_list[0][j]].shape) == 71:
                         continue
                     else:
-                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc4.variables[obs_var_list[0][j]][:],0)
-            cn_nc4.close()
+                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc0[0].variables[obs_var_list[0][j]][:],0)
+            cn_nc4[0].close()
 
     #################################################################
     ## save time to dictionaries now we're not looping over all diags anymore
