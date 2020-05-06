@@ -3624,14 +3624,14 @@ def main():
                     if cn_misc_flag == 1: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['forecast_time'][:])/24.0))
                     if cn_misc_flag == 0: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['time'][:])/24.0))
                 print (misc_data)
-                for j in range(0,len(cn_var_list)):
+                for j in range(0,len(misc_var_list[0])):
                     # print 'j = ' + str(j)
                     if np.ndim(cn_nc3.variables[cn_var_list[j]]) == 1:
-                        misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]],cn_nc3.variables[cn_var_list[j]][:])
+                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3.variables[misc_var_list[0][j]][:])
                     # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
                     #     continue
                     else:
-                        misc_data[cn_var_list[j]] = np.append(misc_data[cn_var_list[j]],cn_nc3.variables[cn_var_list[j]][:],0)
+                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3.variables[misc_var_list[0][j]][:],0)
             cn_nc3.close()
 
             ### -------------------------------------------------------------------------
