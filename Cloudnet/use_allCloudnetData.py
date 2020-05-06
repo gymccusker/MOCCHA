@@ -305,7 +305,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -533,6 +533,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     import cartopy.crs as ccrs
     import cartopy
     import matplotlib.cm as mpl_cm
+    import matplotlib.colors as colors
     from matplotlib.colors import ListedColormap, LinearSegmentedColormap
         # from matplotlib.patches import Polygon
 
@@ -600,8 +601,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     # newcolors[:20, :] = greyclr
     # newcmp = ListedColormap(newcolors)
 
+    twc0 = np.transpose(obs_data['twc'])*1e3
+
     plt.subplot(411)
-    plt.pcolormesh(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['twc'])*1e3,
+    plt.pcolormesh(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         vmin = 0.0, vmax = 0.5)
         #cmap = newcmp)
     plt.ylabel('Height [m]')
@@ -646,6 +650,123 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_TWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
+    plt.show()
+
+def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
+
+    #### set flagged um_data to nans
+    obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 1.0] = 0.0
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = 0.0
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+
+    ###----------------------------------------------------------------
+    ###         Calculate total water content - Cloudnet
+    ###----------------------------------------------------------------
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+
+    ###----------------------------------------------------------------
+    ###         Calculate total water content - Model
+    ###----------------------------------------------------------------
+    data1['qliq'][data1['qliq'] < 0.0] = 0.0
+    data1['qice'][data1['qice'] < 0.0] = 0.0
+    data1['qtot'] = data1['qliq'] + data1['qice']
+
+
+    ###----------------------------------------------------------------
+    ###         New figure - timeseries
+    ###----------------------------------------------------------------
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.05)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    plt.subplot(211)
+    plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+        # )
+        vmin = 0.0, vmax = 0.5)
+        #cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.xlim([226,257])
+    plt.title('TWC [g/m3]; Cloudnet')
+    plt.colorbar()
+
+    plt.subplot(212)
+    plt.pcolormesh(data1['time'], data1['height'], np.transpose(data1['qtot'])*1e3,
+        # )
+        vmin = 0.0, vmax = 0.5)
+        #cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.xlim([226,257])
+    plt.title('TWC [g/kg]; Model')
+    plt.colorbar()
+
+    plt.show()
+
+    ###----------------------------------------------------------------
+    ###         New figure - profiles
+    ###----------------------------------------------------------------
+    plt.figure(figsize=(10,5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.98, left = 0.1,
+            hspace = 0.45, wspace = 0.25)
+    ### define axis instance
+    ax = plt.gca()
+
+    plt.subplot(131)
+    plt.plot(np.nanmean(um_data['model_lwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data1['qliq']*1e3,0), data1['height'], label = 'Model, g/kg')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    # plt.xlim([226,257])
+    plt.title('LWC')
+
+    plt.subplot(132)
+    plt.plot(np.nanmean(um_data['model_iwc_filtered']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data1['qice']*1e3,0), data1['height'], label = 'Model, g/kg')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    # plt.legend()
+    # plt.xlim([226,257])
+    plt.title('IWC')
+
+    plt.subplot(133)
+    plt.plot(np.nanmean(um_data['model_twc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(data1['qtot']*1e3,0), data1['height'], label = 'Model, g/kg')
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.legend()
+    # plt.xlim([226,257])
+    plt.title('TWC')
+    plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
 
@@ -3464,7 +3585,7 @@ def main():
             for j in range(0,len(var_list3)):
                 print (j)
                 print (var_list3[j])
-                np.save('testing', data3)
+                # np.save('testing', data3)
                 if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc3.variables[var_list3[j]]) == 1:
@@ -3916,10 +4037,11 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
     # Model plots
