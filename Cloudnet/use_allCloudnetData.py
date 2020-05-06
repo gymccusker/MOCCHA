@@ -306,7 +306,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -561,9 +561,9 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
-            hspace = 0.4, wspace = 0.05)
+    plt.figure(figsize=(8,9))
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
     ax = plt.gca()
@@ -644,8 +644,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_TWCTimeseries_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_TWCTimeseries_226-257DOY.png'
+    plt.savefig(fileout)
     plt.show()
 
 
@@ -3916,7 +3916,7 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
