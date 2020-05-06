@@ -236,12 +236,12 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(14,12))
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,8))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
@@ -306,6 +306,109 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
+def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWC timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.05)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 1.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:20, :] = greyclr
+    newcmp = ListedColormap(newcolors)
+
+    plt.subplot(411)
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('Obs')
+    plt.colorbar()
+
+    plt.subplot(412)
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_RA2M')
+    plt.colorbar()
+
+    plt.subplot(413)
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_CASIM-100')
+    plt.colorbar()
+
+    plt.subplot(414)
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.xlabel('DOY')
+    plt.title('ECMWF_IFS')
+    plt.colorbar()
+
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -2867,14 +2970,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-        cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'cloud-fraction-metum-grid/2018/'
+            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -3551,10 +3654,11 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
-    # Cloudnet plot: Plot Cv timeseries
+    # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Model plots
