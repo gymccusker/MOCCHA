@@ -3616,33 +3616,33 @@ def main():
                 # misc_data1d = {}
                 if month_flag == -1:
                     if cn_misc_flag == 1:
-                        time_misc = doy[i] + ((cn_nc3.variables['forecast_time'][:])/24.0)
-                        misc_data['height'] = cn_nc3.variables['height'][:]
-                    if cn_misc_flag == 0: time_misc = doy[i] + ((cn_nc3.variables['time'][:])/24.0)
+                        time_misc = doy[i] + ((cn_nc3[0].variables['forecast_time'][:])/24.0)
+                        misc_data['height'] = cn_nc3[0].variables['height'][:]
+                    if cn_misc_flag == 0: time_misc = doy[i] + ((cn_nc3[0].variables['time'][:])/24.0)
                 else:
-                    if cn_misc_flag == 1: time_misc = float(names[i][6:8]) + ((cn_nc3.variables['forecast_time'][:])/24.0)
-                    if cn_misc_flag == 0: time_misc = float(names[i][6:8]) + ((cn_nc3.variables['time'][:])/24.0)
+                    if cn_misc_flag == 1: time_misc = float(names[i][6:8]) + ((cn_nc3[0].variables['forecast_time'][:])/24.0)
+                    if cn_misc_flag == 0: time_misc = float(names[i][6:8]) + ((cn_nc3[0].variables['time'][:])/24.0)
                 for j in range(0,len(misc_var_list[0])):
-                    if np.ndim(cn_nc3.variables[misc_var_list[0][j]]) == 1:  # 1d timeseries only
+                    if np.ndim(cn_nc3[0].variables[misc_var_list[0][j]]) == 1:  # 1d timeseries only
                         misc_data[misc_var_list[0][j]] = cn_nc3.variables[misc_var_list[0][j]][:]
                     else:                                   # 2d column um_data
                         misc_data[misc_var_list[0][j]] = cn_nc3.variables[misc_var_list[0][j]][:]
             else:
                 if month_flag == -1:
-                    if cn_misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((cn_nc3.variables['forecast_time'][:])/24.0))
-                    if cn_misc_flag == 0: time_misc = np.append(time_misc, doy[i] + ((cn_nc3.variables['time'][:])/24.0))
+                    if cn_misc_flag == 1: time_misc = np.append(time_misc, doy[i] + ((cn_nc3[0].variables['forecast_time'][:])/24.0))
+                    if cn_misc_flag == 0: time_misc = np.append(time_misc, doy[i] + ((cn_nc3[0].variables['time'][:])/24.0))
                 else:
-                    if cn_misc_flag == 1: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['forecast_time'][:])/24.0))
-                    if cn_misc_flag == 0: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3.variables['time'][:])/24.0))
+                    if cn_misc_flag == 1: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3[0].variables['forecast_time'][:])/24.0))
+                    if cn_misc_flag == 0: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3[0].variables['time'][:])/24.0))
                 print (misc_data)
                 for j in range(0,len(misc_var_list[0])):
                     # print 'j = ' + str(j)
                     if np.ndim(cn_nc3.variables[misc_var_list[0][j]]) == 1:
-                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3.variables[misc_var_list[0][j]][:])
+                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3[0].variables[misc_var_list[0][j]][:])
                     # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
                     #     continue
                     else:
-                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3.variables[misc_var_list[0][j]][:],0)
+                        misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3[0].variables[misc_var_list[0][j]][:],0)
             cn_nc3.close()
 
             ### -------------------------------------------------------------------------
