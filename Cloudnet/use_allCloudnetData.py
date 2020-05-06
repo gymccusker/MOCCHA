@@ -3667,26 +3667,28 @@ def main():
                     time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
                 else:
                     time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
-                for j in range(0,len(obs_var_list[0])):
-                    if np.ndim(cn_nc0[0].variables[obs_var_list[0][j]]) == 1:  # 1d timeseries only
-                        obs_data[obs_var_list[0][j]] = cn_nc0[0].variables[obs_var_list[0][j]][:]
-                    else:                                   # 2d column um_data
-                        obs_data[obs_var_list[0][j]] = cn_nc0[0].variables[obs_var_list[0][j]][:]
+                for c in range(0,3):
+                    for j in range(0,len(obs_var_list[c])):
+                        if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:  # 1d timeseries only
+                            obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
+                        else:                                   # 2d column um_data
+                            obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
             else:
                 if month_flag == -1:
                     time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
                 else:
                     time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
                 print (obs_data)
-                for j in range(0,len(obs_var_list[0])):
-                    # print 'j = ' + str(j)
-                    if np.ndim(cn_nc0[0].variables[obs_var_list[0][j]]) == 1:
-                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc0[0].variables[obs_var_list[0][j]][:])
-                    elif np.sum(cn_nc0[0].variables[obs_var_list[0][j]].shape) == 71:
-                        continue
-                    else:
-                        obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc0[0].variables[obs_var_list[0][j]][:],0)
-            cn_nc0[0].close()
+                for c in range(0,3):
+                    for j in range(0,len(obs_var_list[c])):
+                        # print 'j = ' + str(j)
+                        if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
+                        elif np.sum(cn_nc0[c].variables[obs_var_list[c][j]].shape) == 71:
+                            continue
+                        else:
+                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
+            for c in range(0,3): cn_nc0[c].close()
 
     #################################################################
     ## save time to dictionaries now we're not looping over all diags anymore
