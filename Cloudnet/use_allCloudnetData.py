@@ -3649,7 +3649,7 @@ def main():
                     time_obs = doy[i] + ((cn_nc4.variables['time'][:])/24.0)
                 else:
                     time_obs = float(names[i][6:8]) + ((cn_nc4.variables['time'][:])/24.0)
-                for j in range(0,len(cn_var_list)):
+                for j in range(0,len(obs_var_list[0])):
                     if np.ndim(cn_nc4.variables[obs_var_list[0][j]]) == 1:  # 1d timeseries only
                         obs_data[obs_var_list[0][j]] = cn_nc4.variables[obs_var_list[0][j]][:]
                     else:                                   # 2d column um_data
@@ -3774,7 +3774,7 @@ def main():
     # -------------------------------------------------------------
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
@@ -3787,7 +3787,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
