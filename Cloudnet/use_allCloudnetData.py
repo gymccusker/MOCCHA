@@ -819,7 +819,7 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     # plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     # plt.legend()
-    plt.xlim([0.0,0.01])
+    plt.xlim([0.0,0.011])
     plt.title('ECMWF: IWC')
 
     plt.subplot(339)
