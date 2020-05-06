@@ -369,32 +369,32 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
-        cmap = newcmp)
+    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
+        cmap = newcmp, vmin = 0.0, vmax = 0.5)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('Obs')
     plt.colorbar()
 
     plt.subplot(412)
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
-        cmap = newcmp)
+    plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
+        cmap = newcmp, vmin = 0.0, vmax = 0.5)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_RA2M')
     plt.colorbar()
 
     plt.subplot(413)
-    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
-        cmap = newcmp)
+    plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
+        cmap = newcmp, vmin = 0.0, vmax = 0.5)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100')
     plt.colorbar()
 
     plt.subplot(414)
-    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
-        cmap = newcmp)
+    plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
+        cmap = newcmp, vmin = 0.0, vmax = 0.5)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlabel('DOY')
@@ -429,7 +429,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     print ('******')
     print ('')
-    print ('Plotting LWC timeseries for whole drift period:')
+    print ('Plotting IWC timeseries for whole drift period:')
     print ('')
 
     ##################################################
@@ -439,7 +439,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 12
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -564,10 +564,10 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
-    # obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
-    # obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+    obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
+    obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
-    # plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k--', label = 'Obs')
     plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
@@ -588,7 +588,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -3018,7 +3018,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS)
-    obs_switch = 'UM'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
@@ -3079,14 +3079,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'iwc-Z-T-metum-grid/2018/'
+            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -3774,8 +3774,8 @@ def main():
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Model plots
@@ -3786,7 +3786,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
