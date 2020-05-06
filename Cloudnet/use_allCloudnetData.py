@@ -3514,12 +3514,9 @@ def main():
             ###     LOAD UM CLOUDNET DIAGS INTO DICTIONARY
             ### --------------------------------------------------------------------
             #### LOAD IN SPECIFIC DIAGNOSTICS
-            if cn_out_dir == 'cloud-fraction-metum-grid':
-                cn_var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
-            elif cn_out_dir == 'lwc-scaled-metum-grid':
-                cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
-            elif cn_out_dir == 'iwc-Z-T-metum-grid':
-                cn_var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
+            cn_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
+                    ['height','lwc','lwp','model_lwc','model_lwp'],
+                    ['height','iwc','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
             if i == 0:
@@ -3529,11 +3526,11 @@ def main():
                     time_um = doy[i] + ((cn_nc1.variables['time'][:])/24.0)
                 else:
                     time_um = float(names[i][6:8]) + ((cn_nc1.variables['time'][:])/24.0)
-                for j in range(0,len(cn_var_list)):
-                    if np.ndim(cn_nc1.variables[cn_var_list[j]]) == 1:  # 1d timeseries only
-                        um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
+                for j in range(0,len(cn_var_list[0])):
+                    if np.ndim(cn_nc1.variables[cn_var_list[0][j]]) == 1:  # 1d timeseries only
+                        um_data[cn_var_list[0][j]] = cn_nc1.variables[cn_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        um_data[cn_var_list[j]] = cn_nc1.variables[cn_var_list[j]][:]
+                        um_data[cn_var_list[0][j]] = cn_nc1.variables[cn_var_list[0][j]][:]
             else:
                 if month_flag == -1:
                     time_um = np.append(time_um, doy[i] + ((cn_nc1.variables['time'][:])/24.0))
