@@ -3590,7 +3590,7 @@ def main():
                     for j in range(0,len(ifs_var_list[0])):
                         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                         # print 'j = ' + str(j)
-                        if np.ndim(cn_nc2[c]].variables[ifs_var_list[c][j]]) == 1:
+                        if np.ndim(cn_nc2[c].variables[ifs_var_list[c][j]]) == 1:
                             ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc2[c].variables[ifs_var_list[c][j]][:])
                         else:
                             ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc2[c].variables[ifs_var_list[c][j]][:],0)
