@@ -3571,13 +3571,13 @@ def main():
                 else:
                     time_ifs = np.append(time_ifs,float(cn_filename_ifs[-16:-14]) + ((cn_nc2.variables['time'][:])/24.0))
                 print (ifs_data)
-                for j in range(0,len(cn_var_list)):
+                for j in range(0,len(ifs_var_list[0])):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc2.variables[cn_var_list[j]]) == 1:
-                        ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]],cn_nc2.variables[cn_var_list[j]][:])
+                    if np.ndim(cn_nc2.variables[ifs_var_list[0][j]]) == 1:
+                        ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2.variables[ifs_var_list[0][j]][:])
                     else:
-                        ifs_data[cn_var_list[j]] = np.append(ifs_data[cn_var_list[j]],cn_nc2.variables[cn_var_list[j]][:],0)
+                        ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2.variables[ifs_var_list[0][j]][:],0)
             cn_nc2.close()
 
             ### -------------------------------------------------------------------------
