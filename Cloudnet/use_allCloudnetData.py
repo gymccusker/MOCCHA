@@ -657,6 +657,7 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     #### set flagged um_data to nans
     obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+    um_data['model_iwc'][um_data['model_iwc'] < 0.0] = 0.0
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 1.0] = 0.0
@@ -750,8 +751,9 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.title('LWC')
 
     plt.subplot(132)
-    plt.plot(np.nanmean(um_data['model_iwc_filtered']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, g/m3')
+    plt.plot(np.nanmean(um_data['model_iwc_filtered']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, filtered, g/m3')
     plt.plot(np.nanmean(data1['qice']*1e3,0), data1['height'], label = 'Model, g/kg')
+    # plt.plot(np.nanmean(um_data['model_iwc']*1e3,0), np.squeeze(um_data['height'][0,:]), label = 'Cloudnet, not filtered, g/m3')
     # plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     # plt.legend()
