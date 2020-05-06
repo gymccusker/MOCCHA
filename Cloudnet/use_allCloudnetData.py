@@ -3778,7 +3778,7 @@ def main():
             #### LOAD IN SPECIFIC DIAGNOSTICS
             um_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
                     ['height','lwc','lwp','model_lwc','model_lwp'],
-                    ['height','iwc','model_iwc_filtered']]   ### time always read in separately
+                    ['height','iwc','model_iwc','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
             if i == 0:
@@ -3814,7 +3814,7 @@ def main():
             ### --------------------------------------------------------------------
             ifs_var_list = [['height','Cv','model_snow_Cv_filtered','model_temperature'],
                     ['height','lwc','lwp','model_lwc','model_lwp'],
-                    ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']]   ### time always read in separately
+                    ['height','iwc','model_iwc','model_snow_iwc_filtered','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
             if i == 0:
@@ -3859,7 +3859,7 @@ def main():
             elif cn_misc_flag == 0:
                 misc_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
                         ['height','lwc','lwp','model_lwc','model_lwp'],
-                        ['height','iwc','model_iwc_filtered']]   ### time always read in separately
+                        ['height','iwc','model_iwc','model_iwc_filtered']]   ### time always read in separately
 
             print ('')
             print ('misc file variable list is:')
