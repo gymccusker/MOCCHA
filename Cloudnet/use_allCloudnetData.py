@@ -610,7 +610,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(412)
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+    plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         vmin = 0.0, vmax = 0.5)
         #cmap = newcmp)
     plt.ylabel('Height [m]')
@@ -619,7 +619,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(413)
-    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+    plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         vmin = 0.0, vmax = 0.5)
         #cmap = newcmp)
     plt.ylabel('Height [m]')
@@ -628,7 +628,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(414)
-    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
+    plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         vmin = 0.0, vmax = 0.5)
         #cmap = newcmp)
     plt.ylabel('Height [m]')
