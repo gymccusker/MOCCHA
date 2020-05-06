@@ -3626,7 +3626,7 @@ def main():
                 print (misc_data)
                 for j in range(0,len(misc_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc3.variables[cn_var_list[j]]) == 1:
+                    if np.ndim(cn_nc3.variables[misc_var_list[0][j]]) == 1:
                         misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3.variables[misc_var_list[0][j]][:])
                     # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
                     #     continue
