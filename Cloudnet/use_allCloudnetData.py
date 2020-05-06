@@ -3679,7 +3679,7 @@ def main():
                         continue
                     else:
                         obs_data[obs_var_list[0][j]] = np.append(obs_data[obs_var_list[0][j]],cn_nc0[0].variables[obs_var_list[0][j]][:],0)
-            cn_nc4[0].close()
+            cn_nc0[0].close()
 
     #################################################################
     ## save time to dictionaries now we're not looping over all diags anymore
