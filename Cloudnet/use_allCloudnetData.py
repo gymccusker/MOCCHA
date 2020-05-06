@@ -3650,10 +3650,10 @@ def main():
                 else:
                     time_obs = float(names[i][6:8]) + ((cn_nc4.variables['time'][:])/24.0)
                 for j in range(0,len(cn_var_list)):
-                    if np.ndim(cn_nc4.variables[cn_var_list[j]]) == 1:  # 1d timeseries only
-                        obs_data[cn_var_list[j]] = cn_nc4.variables[cn_var_list[j]][:]
+                    if np.ndim(cn_nc4.variables[obs_var_list[0][j]]) == 1:  # 1d timeseries only
+                        obs_data[obs_var_list[0][j]] = cn_nc4.variables[obs_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        obs_data[cn_var_list[j]] = cn_nc4.variables[cn_var_list[j]][:]
+                        obs_data[obs_var_list[0][j]] = cn_nc4.variables[obs_var_list[0][j]][:]
             else:
                 if month_flag == -1:
                     time_obs = np.append(time_obs, doy[i] + ((cn_nc4.variables['time'][:])/24.0))
