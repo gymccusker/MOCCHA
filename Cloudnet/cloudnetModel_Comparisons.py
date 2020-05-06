@@ -521,7 +521,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     # plt.savefig(fileout)
     plt.show()
 
-def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     ###################################
     ## PLOT TIMESERIES
@@ -556,6 +556,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     ax = plt.gca()
 
     print (um_data.keys())
+    print (obs_data.keys())
 
     #### set flagged and bad data to nans
     um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
@@ -567,8 +568,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, 
     obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
     obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
-    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k--', label = 'Obs')
-    plt.plot(obs_data['deck7th']['doy'][:],obs_data['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'm--', label = 'Obs')
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
@@ -3772,9 +3773,9 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
 
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
+    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
@@ -3786,7 +3787,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
