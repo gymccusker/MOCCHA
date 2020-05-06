@@ -3501,7 +3501,7 @@ def main():
             if cn_out_dir == 'cloud-fraction-metum-grid':
                 cn_var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
             elif cn_out_dir == 'lwc-scaled-metum-grid':
-                cn_var_list = ['height','lwc','model_lwc','model_lwp']   ### time always read in separately
+                cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
             elif cn_out_dir == 'iwc-Z-T-metum-grid':
                 cn_var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
@@ -3538,7 +3538,7 @@ def main():
             if cn_ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
                 cn_var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
             elif cn_ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-                cn_var_list = ['height','lwc','model_lwc','model_lwp']   ### time always read in separately
+                cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
             elif cn_ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
                 cn_var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
@@ -3587,7 +3587,7 @@ def main():
                 if cn_out_dir == 'cloud-fraction-metum-grid':
                     cn_var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
                 elif cn_out_dir == 'lwc-scaled-metum-grid':
-                    cn_var_list = ['height','lwc','model_lwc','model_lwp']   ### time always read in separately
+                    cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
                 elif cn_out_dir == 'iwc-Z-T-metum-grid':
                     cn_var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
 
