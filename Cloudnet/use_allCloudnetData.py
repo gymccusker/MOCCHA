@@ -3278,23 +3278,23 @@ def main():
         #     cn_out_dir = 'lwc-scaled-metum-grid'
         # elif cn_um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
         #     cn_out_dir = 'iwc-Z-T-metum-grid'
-        cn_filename_um_cv = cn_um_dir + cn_um_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
-        cn_filename_um_lwc = cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc'
-        cn_filename_um_iwc = cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc'
-        cn_filename_ifs_cv = cn_ifs_dir + cn_ifs_out_dir[0] + names[i] + cn_ifs_out_dir[0][:-6] + '.nc'
-        cn_filename_ifs_lwc = cn_ifs_dir + cn_ifs_out_dir[1] + names[i] + cn_ifs_out_dir[1][:-6] + '.nc'
-        cn_filename_ifs_iwc = cn_ifs_dir + cn_ifs_out_dir[2] + names[i] + cn_ifs_out_dir[2][:-6] + '.nc'
-        cn_filename_obs_cv = cn_obs_dir + cn_obs_out_dir[0] + names[i] + cn_obs_out_dir[0][:-6] + '.nc'
-        cn_filename_obs_lwc = cn_obs_dir + cn_obs_out_dir[1] + names[i] + cn_obs_out_dir[1][:-6] + '.nc'
-        cn_filename_obs_iwc = cn_obs_dir + cn_obs_out_dir[2] + names[i] + cn_obs_out_dir[2][:-6] + '.nc'
+        cn_filename_um = [cn_um_dir + cn_um_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc',
+                        cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc',
+                        cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc']
+        cn_filename_ifs = [cn_ifs_dir + cn_ifs_out_dir[0] + names[i] + cn_ifs_out_dir[0][:-6] + '.nc',
+                        cn_ifs_dir + cn_ifs_out_dir[1] + names[i] + cn_ifs_out_dir[1][:-6] + '.nc',
+                        cn_ifs_dir + cn_ifs_out_dir[2] + names[i] + cn_ifs_out_dir[2][:-6] + '.nc']
+        cn_filename_obs = [cn_obs_dir + cn_obs_out_dir[0] + names[i] + cn_obs_out_dir[0][:-6] + '.nc',
+                        cn_obs_dir + cn_obs_out_dir[1] + names[i] + cn_obs_out_dir[1][:-6] + '.nc',
+                        cn_obs_dir + cn_obs_out_dir[2] + names[i] + cn_obs_out_dir[2][:-6] + '.nc']
         if cn_misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir[0] + names[i] + 'metum.nc'
         if cn_misc_flag == 0:
-            cn_filename_misc_cv = cn_misc_dir + cn_misc_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
-            cn_filename_misc_lwc = cn_misc_dir + cn_misc_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc'
-            cn_filename_misc_iwc = cn_misc_dir + cn_misc_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc'
-        print (cn_filename_um_cv)
-        print (cn_filename_ifs_cv)
-        if cn_misc_flag != 1: print (cn_filename_misc_cv)
+            cn_filename_misc = [cn_misc_dir + cn_misc_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc',
+                            cn_misc_dir + cn_misc_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc',
+                            cn_misc_dir + cn_misc_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc']
+        print (cn_filename_um)
+        print (cn_filename_ifs)
+        if cn_misc_flag != 1: print (cn_filename_misc)
         print ('')
 
         ### --------------------------------------------------------------------
@@ -3368,10 +3368,14 @@ def main():
             ###     READ IN ALL CLOUDNET FILES
             ### --------------------------------------------------------------------
             print ('Loading multiple diagnostics:')
-            cn_nc1 = Dataset(cn_filename_um_cv,'r')
-            cn_nc2 = Dataset(cn_filename_ifs_cv,'r')
-            if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc_cv,'r')
-            cn_nc4 = Dataset(cn_filename_obs_cv,'r')
+            cn_nc1 = {}
+            cn_nc2 = {}
+            cn_nc3 = {}
+            cn_nc0 = {}
+            cn_nc1[0] = Dataset(cn_filename_um[0],'r')
+            cn_nc2[0] = Dataset(cn_filename_ifs[0],'r')
+            if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc[0],'r')
+            cn_nc0[0] = Dataset(cn_filename_obs[0],'r')
 
             # -------------------------------------------------------------
             print ('')
@@ -3530,26 +3534,26 @@ def main():
                 um_data = {}
                 # um_data1d = {}
                 if month_flag == -1:
-                    time_um = doy[i] + ((cn_nc1.variables['time'][:])/24.0)
+                    time_um = doy[i] + ((cn_nc1[0].variables['time'][:])/24.0)
                 else:
-                    time_um = float(names[i][6:8]) + ((cn_nc1.variables['time'][:])/24.0)
+                    time_um = float(names[i][6:8]) + ((cn_nc1[0].variables['time'][:])/24.0)
                 for j in range(0,len(um_var_list[0])):
                     if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:  # 1d timeseries only
-                        um_data[um_var_list[0][j]] = cn_nc1.variables[um_var_list[0][j]][:]
+                        um_data[um_var_list[0][j]] = cn_nc1[0].variables[um_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        um_data[um_var_list[0][j]] = cn_nc1.variables[um_var_list[0][j]][:]
+                        um_data[um_var_list[0][j]] = cn_nc1[0].variables[um_var_list[0][j]][:]
             else:
                 if month_flag == -1:
-                    time_um = np.append(time_um, doy[i] + ((cn_nc1.variables['time'][:])/24.0))
+                    time_um = np.append(time_um, doy[i] + ((cn_nc1[0].variables['time'][:])/24.0))
                 else:
-                    time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1.variables['time'][:])/24.0))
+                    time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1[0].variables['time'][:])/24.0))
                 print (um_data)
                 for j in range(0,len(um_var_list[0])):
                     # print 'j = ' + str(j)
                     if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:
-                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:])
+                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:])
                     else:
-                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:],0)
+                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:],0)
             cn_nc1.close()
 
             ### --------------------------------------------------------------------
