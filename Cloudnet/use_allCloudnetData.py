@@ -3550,7 +3550,7 @@ def main():
                 print (um_data)
                 for j in range(0,len(um_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:
+                    if np.ndim(cn_nc1[0].variables[um_var_list[0][j]]) == 1:
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:])
                     else:
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1[0].variables[um_var_list[0][j]][:],0)
@@ -3585,7 +3585,7 @@ def main():
                 for j in range(0,len(ifs_var_list[0])):
                     ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc2.variables[ifs_var_list[0][j]]) == 1:
+                    if np.ndim(cn_nc2[0].variables[ifs_var_list[0][j]]) == 1:
                         ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:])
                     else:
                         ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:],0)
@@ -3637,7 +3637,7 @@ def main():
                 print (misc_data)
                 for j in range(0,len(misc_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc3.variables[misc_var_list[0][j]]) == 1:
+                    if np.ndim(cn_nc3[0].variables[misc_var_list[0][j]]) == 1:
                         misc_data[misc_var_list[0][j]] = np.append(misc_data[misc_var_list[0][j]],cn_nc3[0].variables[misc_var_list[0][j]][:])
                     # elif var_list[j] == 'height':#np.sum(nc3.variables[var_list[j]].shape) == 71:
                     #     continue
