@@ -2910,10 +2910,10 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy, var):
 
 
     ### remove bad and flagged data
-    obs_data['Cv'][obs_data['Cv'] < 0.0] = np.nan
+    obs_data[var][obs_data[var] < 0.0] = np.nan
 
     ### save relevant fields as tempvars for ease
-    cv = np.copy(obs_data['Cv'].data)
+    cv = np.copy(obs_data[var].data)
     times = np.copy(obs_data['time'].data)
     height = np.copy(obs_data['height'][0,:])        ### height array constant in time, so just take first column
 
@@ -3002,7 +3002,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy, var):
 
 
     ### save back to dictionary after completion of updates
-    obs_data['Cv'] = cv
+    obs_data[var] = cv
 
     return obs_data
 
