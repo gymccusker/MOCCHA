@@ -2900,7 +2900,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.savefig('FIGS/' + var + '_scaledZ.svg')
     plt.show()
 
-def interpCloudnet(obs_data, month_flag, missing_files, doy, var):
+def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     from scipy.interpolate import interp1d
 
@@ -2909,101 +2909,102 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy, var):
     print ('*******')
     print ('')
 
+    varlist = ['Cv', 'lwc', 'iwc']
 
-    ### remove bad and flagged data
-    obs_data[var][obs_data[var] < 0.0] = np.nan
+    for var in varlist:
+        ### remove bad and flagged data
+        obs_data[var][obs_data[var] < 0.0] = np.nan
 
-    ### save relevant fields as tempvars for ease
-    cv = np.copy(obs_data[var].data)
-    times = np.copy(obs_data['time'].data)
-    height = np.copy(obs_data['height'][0,:])        ### height array constant in time, so just take first column
+        ### save relevant fields as tempvars for ease
+        cv = np.copy(obs_data[var].data)
+        times = np.copy(obs_data['time'].data)
+        height = np.copy(obs_data['height'][0,:])        ### height array constant in time, so just take first column
 
-    ### check if the mean of the column is NaN
-    # np.isnan(np.nanmean(cv[0,:]))
+        ### check if the mean of the column is NaN
+        # np.isnan(np.nanmean(cv[0,:]))
 
-    ### need 3 points for interp, so start for loop at i = 2 (remember to finish at i-1!)
-    ### check if the column mean == nan but next timestep is non-nan:
-    for i in range(2,len(times)-1):
-        mn = np.nanmean(cv[i,:])
-        # print(str(mn))
-        if np.isnan(np.nanmean(cv[i,:])) == True:
-            # print ('column i = ' + str(i) + ' needs to be fixed:')
-            if np.isnan(np.nanmean(cv[i+1,:])) == False:
-                if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                    # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
-                    cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
-                    mncv = np.nanmean(cv[i,:])
-                    # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
-                else:
-                    # print ('need to find last non-nan instance...')
-                    if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                        # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
-                        cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
+        ### need 3 points for interp, so start for loop at i = 2 (remember to finish at i-1!)
+        ### check if the column mean == nan but next timestep is non-nan:
+        for i in range(2,len(times)-1):
+            mn = np.nanmean(cv[i,:])
+            # print(str(mn))
+            if np.isnan(np.nanmean(cv[i,:])) == True:
+                # print ('column i = ' + str(i) + ' needs to be fixed:')
+                if np.isnan(np.nanmean(cv[i+1,:])) == False:
+                    if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
+                        # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                        cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
                         mncv = np.nanmean(cv[i,:])
                         # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                    else:
+                        # print ('need to find last non-nan instance...')
+                        if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
+                            # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
+                            cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
+                            mncv = np.nanmean(cv[i,:])
+                            # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
-    for i in range(2,len(times)-1):
-        mn = np.nanmean(cv[i,:])
-        # print(str(mn))
-        if np.isnan(np.nanmean(cv[i,:])) == True:
-            # print ('column i = ' + str(i) + ' needs to be fixed:')
-            if np.isnan(np.nanmean(cv[i+1,:])) == False:
-                if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                    # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
-                    cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
-                    mncv = np.nanmean(cv[i,:])
-                    # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
-                else:
-                    # print ('need to find last non-nan instance...')
-                    if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                        # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
-                        cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
+        for i in range(2,len(times)-1):
+            mn = np.nanmean(cv[i,:])
+            # print(str(mn))
+            if np.isnan(np.nanmean(cv[i,:])) == True:
+                # print ('column i = ' + str(i) + ' needs to be fixed:')
+                if np.isnan(np.nanmean(cv[i+1,:])) == False:
+                    if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
+                        # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                        cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
                         mncv = np.nanmean(cv[i,:])
                         # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                    else:
+                        # print ('need to find last non-nan instance...')
+                        if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
+                            # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
+                            cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
+                            mncv = np.nanmean(cv[i,:])
+                            # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
-    # fig = plt.figure(figsize=(12,6))
-    # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
-    #         hspace = 0.3, wspace = 0.3)
-    # plt.subplot(211)
-    # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
-    # plt.xlim([226,258])
-    # plt.ylim([0,3000])
-    # plt.ylabel('Z [m]')
-    # plt.title('original')
-    # plt.subplot(212)
-    # plt.pcolor(times,height,np.transpose(cv), vmin = 0, vmax = 1)
-    # plt.xlim([226,258])
-    # plt.ylim([0,3000])
-    # plt.xlabel('DOY')
-    # plt.ylabel('Z [m]')
-    # plt.title('interpolated')
-    # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
-    # plt.show()
-    #
-    #
-    # fig = plt.figure(figsize=(12,6))
-    # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
-    #         hspace = 0.3, wspace = 0.3)
-    # plt.subplot(211)
-    # plt.pcolor(obs_data['time'][::6].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'][::6,:].data), vmin = 0, vmax = 1)
-    # plt.xlim([226,258])
-    # plt.ylim([0,3000])
-    # plt.ylabel('Z [m]')
-    # plt.title('original, 6hrly')
-    # plt.subplot(212)
-    # plt.pcolor(times[::6],height,np.transpose(cv[::6,:]), vmin = 0, vmax = 1)
-    # plt.xlim([226,258])
-    # plt.ylim([0,3000])
-    # plt.xlabel('DOY')
-    # plt.ylabel('Z [m]')
-    # plt.title('interpolated, 6hrly')
-    # plt.savefig('FIGS/Cv_TS_6hrly_orig_interpd.png')
-    # plt.show()
+        # fig = plt.figure(figsize=(12,6))
+        # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+        #         hspace = 0.3, wspace = 0.3)
+        # plt.subplot(211)
+        # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.ylabel('Z [m]')
+        # plt.title('original')
+        # plt.subplot(212)
+        # plt.pcolor(times,height,np.transpose(cv), vmin = 0, vmax = 1)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.xlabel('DOY')
+        # plt.ylabel('Z [m]')
+        # plt.title('interpolated')
+        # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
+        # plt.show()
+        #
+        #
+        # fig = plt.figure(figsize=(12,6))
+        # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+        #         hspace = 0.3, wspace = 0.3)
+        # plt.subplot(211)
+        # plt.pcolor(obs_data['time'][::6].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'][::6,:].data), vmin = 0, vmax = 1)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.ylabel('Z [m]')
+        # plt.title('original, 6hrly')
+        # plt.subplot(212)
+        # plt.pcolor(times[::6],height,np.transpose(cv[::6,:]), vmin = 0, vmax = 1)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.xlabel('DOY')
+        # plt.ylabel('Z [m]')
+        # plt.title('interpolated, 6hrly')
+        # plt.savefig('FIGS/Cv_TS_6hrly_orig_interpd.png')
+        # plt.show()
 
 
-
-    ### save back to dictionary after completion of updates
-    obs_data[var] = cv
+        ### save back to dictionary after completion of updates
+        obs_data[var] = cv
 
     return obs_data
 
@@ -3771,13 +3772,6 @@ def main():
     # np.save('working_ifs_data', ifs_data)
     # if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
-    # -------------------------------------------------------------
-    ### use IFS named directory to allocate variable to plot
-    # -------------------------------------------------------------
-    if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
-    # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
-    # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
-
 ###################################################################################################################
 ###################################################################################################################
 ################################################ FIGURES ##########################################################
@@ -3793,7 +3787,7 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
 
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
@@ -3840,6 +3834,13 @@ def main():
     # data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
     # data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
     # data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
+
+    # -------------------------------------------------------------
+    ### use IFS named directory to allocate variable to plot
+    # -------------------------------------------------------------
+    # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
+    # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
+    # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
