@@ -3574,25 +3574,27 @@ def main():
                     time_ifs = doy[i] + ((cn_nc2[0].variables['time'][:])/24.0)
                 else:
                     time_ifs = float(names[i][6:8]) + ((cn_nc2[0].variables['time'][:])/24.0)
-                for j in range(0,len(ifs_var_list[0])):
-                    if np.ndim(cn_nc2[0].variables[ifs_var_list[0][j]]) == 1:  # 1d timeseries only
-                        ifs_data[ifs_var_list[0][j]] = cn_nc2[0].variables[ifs_var_list[0][j]][:]
-                    else:                                   # 2d column um_data
-                        ifs_data[ifs_var_list[0][j]] = cn_nc2[0].variables[ifs_var_list[0][j]][:]
+                for c in range(0,3):
+                    for j in range(0,len(ifs_var_list[c])):
+                        if np.ndim(cn_nc2[c].variables[ifs_var_list[c][j]]) == 1:  # 1d timeseries only
+                            ifs_data[ifs_var_list[c][j]] = cn_nc2[c].variables[ifs_var_list[c][j]][:]
+                        else:                                   # 2d column um_data
+                            ifs_data[ifs_var_list[c][j]] = cn_nc2[c].variables[ifs_var_list[c][j]][:]
             else:
                 if month_flag == -1:
                     time_ifs = np.append(time_ifs, doy[i] + ((cn_nc2[0].variables['time'][:])/24.0))
                 else:
                     time_ifs = np.append(time_ifs,float(cn_filename_ifs[-16:-14]) + ((cn_nc2[0].variables['time'][:])/24.0))
                 print (ifs_data)
-                for j in range(0,len(ifs_var_list[0])):
-                    ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
-                    # print 'j = ' + str(j)
-                    if np.ndim(cn_nc2[0].variables[ifs_var_list[0][j]]) == 1:
-                        ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:])
-                    else:
-                        ifs_data[ifs_var_list[0][j]] = np.append(ifs_data[ifs_var_list[0][j]],cn_nc2[0].variables[ifs_var_list[0][j]][:],0)
-            cn_nc2[0].close()
+                for c in range(0,3):
+                    for j in range(0,len(ifs_var_list[0])):
+                        ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
+                        # print 'j = ' + str(j)
+                        if np.ndim(cn_nc2[c]].variables[ifs_var_list[c][j]]) == 1:
+                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc2[c].variables[ifs_var_list[c][j]][:])
+                        else:
+                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc2[c].variables[ifs_var_list[c][j]][:],0)
+            for c in range(0,3): cn_nc2[c].close()
 
             ### -------------------------------------------------------------------------
             ###     LOAD IN MISC DATA INTO DICTIONARY IF COMPARING
