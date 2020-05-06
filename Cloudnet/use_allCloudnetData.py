@@ -3539,7 +3539,7 @@ def main():
                 print (um_data)
                 for j in range(0,len(um_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc1.variables[cn_var_list[0][j]]) == 1:
+                    if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:])
                     else:
                         um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:],0)
