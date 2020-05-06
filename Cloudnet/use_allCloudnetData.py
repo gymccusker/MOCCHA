@@ -362,15 +362,16 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
 
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:20, :] = greyclr
-    newcmp = ListedColormap(newcolors)
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:20, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
     plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
-        cmap = newcmp, vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = 0.5)
+        # cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('Obs')
@@ -378,7 +379,8 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(412)
     plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
-        cmap = newcmp, vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = 0.5)
+        # cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_RA2M')
@@ -386,7 +388,8 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(413)
     plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
-        cmap = newcmp, vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = 0.5)
+        # cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100')
@@ -394,7 +397,8 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(414)
     plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
-        cmap = newcmp, vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = 0.5)
+        # cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlabel('DOY')
