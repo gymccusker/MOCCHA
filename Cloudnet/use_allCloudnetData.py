@@ -3587,19 +3587,13 @@ def main():
             if cn_misc_flag == -1:
                 continue
             elif cn_misc_flag == 1:
-                if cn_ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-                    cn_var_list = ['cloud_fraction','temperature']   ### time always read in separately
-                elif cn_ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-                    cn_var_list = ['qliq']   ### time always read in separately
-                elif cn_ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-                    cn_var_list = ['qice']   ### time always read in separately
+                misc_var_list = [['cloud_fraction','temperature'],
+                        ['qliq'],
+                        ['qice']]   ### time always read in separately
             elif cn_misc_flag == 0:
-                if cn_out_dir == 'cloud-fraction-metum-grid':
-                    cn_var_list = ['height','Cv','model_Cv_filtered','model_temperature']   ### time always read in separately
-                elif cn_out_dir == 'lwc-scaled-metum-grid':
-                    cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
-                elif cn_out_dir == 'iwc-Z-T-metum-grid':
-                    cn_var_list = ['height','iwc','model_iwc_filtered']   ### time always read in separately
+                misc_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
+                        ['height','lwc','lwp','model_lwc','model_lwp'],
+                        ['height','iwc','model_iwc_filtered']]   ### time always read in separately
 
             print ('')
             print ('misc file variable list is:')
