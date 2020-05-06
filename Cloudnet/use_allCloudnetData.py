@@ -3638,12 +3638,9 @@ def main():
             ###     LOAD IN OBS DATA
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
-            if cn_obs_out_dir[:14] == 'cloud_fraction':
-                cn_var_list = ['height','Cv']   ### time always read in separately
-            elif cn_obs_out_dir[:3] == 'lwc':
-                cn_var_list = ['height','lwc','lwp']   ### time always read in separately
-            elif cn_obs_out_dir[:3] == 'iwc':
-                cn_var_list = ['height','iwc']   ### time always read in separately
+            obs_var_list = [['height','Cv'],
+                        ['height','lwc','lwp'],
+                        ['height','iwc']]
 
             if i == 0:
                 obs_data = {}
