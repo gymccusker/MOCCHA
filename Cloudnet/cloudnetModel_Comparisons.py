@@ -266,7 +266,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']), 
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -3588,16 +3588,16 @@ def main():
     #################################################################
     ## load calculated model inversion heights
     #################################################################
-    # print ('Load calculated model inversion heights...')
+    # print ('Load calculated model inversion heights (JV algorithm)...')
     # data1['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_RA2M_inversion_results.mat')
     # data2['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_CASIM-100_inversion_results.mat')
     # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
-    print ('Load calculated model inversion heights...')
-    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
-    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
-    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
-    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
+    # print ('Load calculated model inversion heights (GY algorithm)...')
+    # obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
+    # data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
+    # data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
+    # data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
 
     ### use IFS named directory to allocate variable to plot
     if cn_ifs_out_dir == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
