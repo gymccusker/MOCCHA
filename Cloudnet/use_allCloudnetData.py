@@ -3537,12 +3537,12 @@ def main():
                 else:
                     time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1.variables['time'][:])/24.0))
                 print (um_data)
-                for j in range(0,len(cn_var_list)):
+                for j in range(0,len(cn_var_list[0])):
                     # print 'j = ' + str(j)
-                    if np.ndim(cn_nc1.variables[cn_var_list[j]]) == 1:
-                        um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]],cn_nc1.variables[cn_var_list[j]][:])
+                    if np.ndim(cn_nc1.variables[cn_var_list[0][j]]) == 1:
+                        um_data[cn_var_list[0][j]] = np.append(um_data[cn_var_list[0][j]],cn_nc1.variables[cn_var_list[0][j]][:])
                     else:
-                        um_data[cn_var_list[j]] = np.append(um_data[cn_var_list[j]],cn_nc1.variables[cn_var_list[j]][:],0)
+                        um_data[cn_var_list[0][j]] = np.append(um_data[cn_var_list[0][j]],cn_nc1.variables[cn_var_list[0][j]][:],0)
             cn_nc1.close()
 
             ### --------------------------------------------------------------------
