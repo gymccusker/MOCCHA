@@ -3514,7 +3514,7 @@ def main():
             ###     LOAD UM CLOUDNET DIAGS INTO DICTIONARY
             ### --------------------------------------------------------------------
             #### LOAD IN SPECIFIC DIAGNOSTICS
-            cn_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
+            um_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
                     ['height','lwc','lwp','model_lwc','model_lwp'],
                     ['height','iwc','model_iwc_filtered']]   ### time always read in separately
 
@@ -3526,34 +3526,31 @@ def main():
                     time_um = doy[i] + ((cn_nc1.variables['time'][:])/24.0)
                 else:
                     time_um = float(names[i][6:8]) + ((cn_nc1.variables['time'][:])/24.0)
-                for j in range(0,len(cn_var_list[0])):
-                    if np.ndim(cn_nc1.variables[cn_var_list[0][j]]) == 1:  # 1d timeseries only
-                        um_data[cn_var_list[0][j]] = cn_nc1.variables[cn_var_list[0][j]][:]
+                for j in range(0,len(um_var_list[0])):
+                    if np.ndim(cn_nc1.variables[um_var_list[0][j]]) == 1:  # 1d timeseries only
+                        um_data[um_var_list[0][j]] = cn_nc1.variables[um_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        um_data[cn_var_list[0][j]] = cn_nc1.variables[cn_var_list[0][j]][:]
+                        um_data[um_var_list[0][j]] = cn_nc1.variables[um_var_list[0][j]][:]
             else:
                 if month_flag == -1:
                     time_um = np.append(time_um, doy[i] + ((cn_nc1.variables['time'][:])/24.0))
                 else:
                     time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1.variables['time'][:])/24.0))
                 print (um_data)
-                for j in range(0,len(cn_var_list[0])):
+                for j in range(0,len(um_var_list[0])):
                     # print 'j = ' + str(j)
                     if np.ndim(cn_nc1.variables[cn_var_list[0][j]]) == 1:
-                        um_data[cn_var_list[0][j]] = np.append(um_data[cn_var_list[0][j]],cn_nc1.variables[cn_var_list[0][j]][:])
+                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:])
                     else:
-                        um_data[cn_var_list[0][j]] = np.append(um_data[cn_var_list[0][j]],cn_nc1.variables[cn_var_list[0][j]][:],0)
+                        um_data[um_var_list[0][j]] = np.append(um_data[um_var_list[0][j]],cn_nc1.variables[um_var_list[0][j]][:],0)
             cn_nc1.close()
 
             ### --------------------------------------------------------------------
             ### LOAD IN IFS DATA INTO DICTIONARY
             ### --------------------------------------------------------------------
-            if cn_ifs_out_dir[:-6] == 'cloud-fraction-ecmwf-grid':
-                cn_var_list = ['height','Cv','model_snow_Cv_filtered','model_temperature']   ### time always read in separately
-            elif cn_ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
-                cn_var_list = ['height','lwc','lwp','model_lwc','model_lwp']   ### time always read in separately
-            elif cn_ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
-                cn_var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
+            ifs_var_list = [['height','Cv','model_snow_Cv_filtered','model_temperature'],
+                    ['height','lwc','lwp','model_lwc','model_lwp'],
+                    ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
             if i == 0:
@@ -3563,11 +3560,11 @@ def main():
                     time_ifs = doy[i] + ((cn_nc2.variables['time'][:])/24.0)
                 else:
                     time_ifs = float(names[i][6:8]) + ((cn_nc2.variables['time'][:])/24.0)
-                for j in range(0,len(cn_var_list)):
-                    if np.ndim(cn_nc2.variables[cn_var_list[j]]) == 1:  # 1d timeseries only
-                        ifs_data[cn_var_list[j]] = cn_nc2.variables[cn_var_list[j]][:]
+                for j in range(0,len(ifs_var_list[0])):
+                    if np.ndim(cn_nc2.variables[ifs_var_list[0][j]]) == 1:  # 1d timeseries only
+                        ifs_data[ifs_var_list[0][j]] = cn_nc2.variables[ifs_var_list[0][j]][:]
                     else:                                   # 2d column um_data
-                        ifs_data[cn_var_list[j]] = cn_nc2.variables[cn_var_list[j]][:]
+                        ifs_data[ifs_var_list[0][j]] = cn_nc2.variables[ifs_var_list[0][j]][:]
             else:
                 if month_flag == -1:
                     time_ifs = np.append(time_ifs, doy[i] + ((cn_nc2.variables['time'][:])/24.0))
