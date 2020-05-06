@@ -3279,8 +3279,8 @@ def main():
         # elif cn_um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
         #     cn_out_dir = 'iwc-Z-T-metum-grid'
         cn_filename_um_cv = cn_um_dir + cn_um_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc'
-        cn_filename_um_cv = cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc'
-        cn_filename_um_cv = cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-27:-6] + '.nc'
+        cn_filename_um_lwc = cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc'
+        cn_filename_um_iwc = cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc'
         cn_filename_ifs_cv = cn_ifs_dir + cn_ifs_out_dir[0] + names[i] + cn_ifs_out_dir[0][:-6] + '.nc'
         cn_filename_obs_cv = cn_obs_dir + cn_obs_out_dir[0] + names[i] + cn_obs_out_dir[0][:-6] + '.nc'
         if cn_misc_flag == 1: cn_filename_misc = cn_misc_dir + cn_misc_out_dir[0] + names[i] + 'metum.nc'
@@ -3361,10 +3361,10 @@ def main():
             ###     READ IN ALL CLOUDNET FILES
             ### --------------------------------------------------------------------
             print ('Loading multiple diagnostics:')
-            cn_nc1 = Dataset(cn_filename_um,'r')
-            cn_nc2 = Dataset(cn_filename_ifs,'r')
-            if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc,'r')
-            cn_nc4 = Dataset(cn_filename_obs,'r')
+            cn_nc1 = Dataset(cn_filename_um_cv,'r')
+            cn_nc2 = Dataset(cn_filename_ifs_cv,'r')
+            if cn_misc_flag != -1: cn_nc3 = Dataset(cn_filename_misc_cv,'r')
+            cn_nc4 = Dataset(cn_filename_obs_cv,'r')
 
             # -------------------------------------------------------------
             print ('')
