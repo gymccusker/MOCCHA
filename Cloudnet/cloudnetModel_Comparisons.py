@@ -2899,7 +2899,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.savefig('FIGS/' + var + '_scaledZ.svg')
     plt.show()
 
-def interpCloudnet(obs_data, month_flag, missing_files, doy):
+def interpCloudnet(obs_data, month_flag, missing_files, doy, var):
 
     from scipy.interpolate import interp1d
 
@@ -3079,14 +3079,14 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
-        cn_ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+        cn_um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
+        cn_ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
         if obs_switch == 'IFS':
             cn_obs_out_dir = cn_ifs_out_dir
         elif obs_switch == 'UM':
-            cn_obs_out_dir = 'lwc-scaled-metum-grid/2018/'
+            cn_obs_out_dir = 'iwc-Z-T-metum-grid/2018/'
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
+            cn_misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
@@ -3750,6 +3750,12 @@ def main():
     # np.save('working_ifs_data', ifs_data)
     # if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
+    # -------------------------------------------------------------
+    ### use IFS named directory to allocate variable to plot
+    # -------------------------------------------------------------
+    if cn_ifs_out_dir == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
+    if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
+    if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
 ###################################################################################################################
 ###################################################################################################################
@@ -3765,7 +3771,8 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy, var)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
@@ -3812,11 +3819,6 @@ def main():
     # data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
     # data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
     # data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
-
-    ### use IFS named directory to allocate variable to plot
-    if cn_ifs_out_dir == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
-    if cn_ifs_out_dir == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
-    if cn_ifs_out_dir == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
