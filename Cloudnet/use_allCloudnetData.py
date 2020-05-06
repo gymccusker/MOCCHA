@@ -685,6 +685,12 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     data1['qliq'][data1['qliq'] < 0.0] = 0.0
     data1['qice'][data1['qice'] < 0.0] = 0.0
     data1['qtot'] = data1['qliq'] + data1['qice']
+    data2['qliq'][data2['qliq'] < 0.0] = 0.0
+    data2['qice'][data2['qice'] < 0.0] = 0.0
+    data2['qtot'] = data2['qliq'] + data2['qice']
+    data3['qliq'][data3['qliq'] < 0.0] = 0.0
+    data3['qice'][data3['qice'] < 0.0] = 0.0
+    data3['qtot'] = data3['qliq'] + data3['qice']
 
 
     ###----------------------------------------------------------------
@@ -3556,7 +3562,7 @@ def main():
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
         var_list2 = var_list1
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height']
+            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi']
         if not ifs_flag: var_list3 = var_list1
 
         if names[i] in moccha_missing_files:        ### NOTE THIS WON'T WORK IF IT'S THE FIRST FILE THAT'S MISSING!!
