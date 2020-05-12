@@ -935,7 +935,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWC-InstRes_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWC-InstRes_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
