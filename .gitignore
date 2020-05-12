@@ -56,3 +56,6 @@ ERA5/*
 # Temporary processing scripts for JASMIN
 diags_CloudNet_JASMIN.py
 pullTrack_CloudNet_JASMIN.py
+
+# sub-directories in Cloudnet dirs
+Cloudnet/OBS_DATA/*
