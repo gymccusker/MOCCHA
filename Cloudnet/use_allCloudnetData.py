@@ -356,11 +356,11 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -412,8 +412,8 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -468,12 +468,11 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] == -999.0] = np.nan
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] == -999.0] = np.nan
 
-    obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
-    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
+    # obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
+    # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+    # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -521,8 +520,8 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWCTimeseries_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWCTimeseries_226-257DOY.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -572,20 +571,20 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print (um_data.keys())
 
     #### set flagged um_data to nans
-    obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
+    obs_data['iwc'][obs_data['iwc'] < 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = np.nan
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 1.0] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = np.nan
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
