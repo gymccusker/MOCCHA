@@ -627,8 +627,12 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0] = np.nan
 
-    plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+    print (np.nanmean(obs_data['lwc'],0).shape)
+    print (obs_data['height'].shape)
+
+    # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,obs_data['height'][:394], 'k--', linewidth = 3, label = 'Obs')
+    ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
         np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
@@ -643,7 +647,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    plt.xlim([0,0.2])
+    plt.xlim([0,1.0])
     plt.legend()
 
     print ('******')
@@ -652,7 +656,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-InstRes_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -1219,8 +1223,8 @@ def main():
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
-        misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
-        # misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
+        # misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
+        misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
         obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -1232,11 +1236,11 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
-    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
-    obs_out_dir = ifs_out_dir
+    um_out_dir = '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/'
+    ifs_out_dir = 'lwc-scaled-ecmwf-grid/2018/'
+    obs_out_dir = 'lwc-scaled-adiabatic/2018/'  # ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
-        misc_out_dir = '5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/'
+        misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
         misc_out_dir = '13_u-br409_RA1M_CASIM/OUT_R0/'
@@ -1250,7 +1254,7 @@ def main():
     ########             -> liquid water content derived using measurements averaged on to model grid
     ### cloud-fraction-metum-grid/2018/ + cloud-fraction-ecmwf-grid/2018/
     ###             -> cloud fraction both from a forecast model and derived from the high-resolution observations on the grid of that model.
-    ### lwc-scaled-metum-grid/2018/ + lwc-scaled-ecmwf-grid/2018/
+    ### lwc-scaled-metum-grid/2018/ + lwc-scaled-ecmwf-grid/2018/ + lwc-scaled-adiabatic/
     ###             -> dataset contains liquid water content derived using radar/lidar cloud boundaries and liquid water path from dual-wavelength
     ###                 microwave radiometers, averaged on to the grid of a forecast model.
     ###                 It also contains the liquid water content and liquid water path from that model, so may be used to calculate statistics
@@ -1321,11 +1325,11 @@ def main():
 
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180824_oden_','20180827_oden_','20180828_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
     # doy = np.arange(226,258)        ## set DOY for subset of moccha figures
     # doy = np.arange(229,255)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
-    doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (14th Aug to 14th Sep)
+    # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (14th Aug to 14th Sep)
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -1514,6 +1518,8 @@ def main():
             var_list = ['height','lwc','lwp']   ### time always read in separately
         elif obs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc']   ### time always read in separately
+        elif obs_out_dir == 'lwc-scaled-adiabatic/2018/':
+            var_list = ['height','lwc','lwp']   ### time always read in separately
 
         if i == 0:
             obs_data = {}
@@ -1582,6 +1588,7 @@ def main():
     np.save('working_um_data', um_data)
     np.save('working_ifs_data', ifs_data)
     if misc_flag != -1: np.save('working_misc_data', misc_data)
+    # np.save('working_obs_data', obs_data)
     #### um_data = np.load('working_um_data.npy').item()
 
     # -------------------------------------------------------------
@@ -1593,17 +1600,17 @@ def main():
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot Cv statistics based on melt/freeze up
