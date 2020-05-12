@@ -1241,7 +1241,7 @@ def main():
     ### CHOSEN RUN
     um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
     ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
-    obs_out_dir = 'iwc-Z-T-method/'  # ifs_out_dir
+    obs_out_dir = 'iwc-Z-T-method/2018/'  # ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
@@ -1262,7 +1262,7 @@ def main():
     ###                 microwave radiometers, averaged on to the grid of a forecast model.
     ###                 It also contains the liquid water content and liquid water path from that model, so may be used to calculate statistics
     ###                 quantifying the model performance.
-    ### iwc-Z-T-metum-grid/2018/ + iwc-Z-T-ecmwf-grid/2018/ + iwc-Z-T-method/
+    ### iwc-Z-T-metum-grid/2018/ + iwc-Z-T-ecmwf-grid/2018/ + iwc-Z-T-method/2018/
     ###             -> dataset contains ice water content derived using radar reflectivity and temperature, averaged on to the grid of a forecast
     ###                 model. It also contains the ice water content from that model, so may be used to calculate statistics quantifying the
     ###                 model performance.
