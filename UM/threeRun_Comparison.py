@@ -879,7 +879,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     plt.subplot(427)
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
+        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
@@ -891,7 +891,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     plt.subplot(428)
     plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
+        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
