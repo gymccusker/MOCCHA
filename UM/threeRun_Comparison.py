@@ -762,7 +762,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(13,7))
+    plt.figure(figsize=(13, 8))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.15)
 
@@ -5074,10 +5074,11 @@ def main():
         #### LOAD IN SPECIFIC DIAGNOSTICS
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind']
+            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+            'cloud_fraction']
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-            'qnliq','qnice']
+            'qnliq','qnice','cloud_fraction']
         if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
         if not ifs_flag: var_list3 = var_list2
