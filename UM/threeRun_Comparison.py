@@ -796,7 +796,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', N_drop [/kg]')
+    plt.title(label2 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
     plt.subplot(212)
@@ -807,8 +807,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.xlabel('DOY')
-    plt.title(label3 + ', N_drop [/kg]')
+    plt.xlabel('Day of Year')
+    plt.title(label3 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
     print ('******')
@@ -818,7 +818,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     if month_flag == -1:
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_226-257DOY.png'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
