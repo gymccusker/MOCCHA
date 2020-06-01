@@ -782,12 +782,12 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     crf3 = sw3 + lw3
     crf2 = sw2 + lw2
 
-    ax  = fig.add_axes([0.2,0.8,0.6,0.15])   # left, bottom, width, height
+    ax  = fig.add_axes([0.2,0.8,0.6,0.16])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'forestgreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
-    plt.legend(bbox_to_anchor=(0.0, 0.71, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=2)
     plt.ylabel('CRF [$W/m^{2}$]')
     plt.xlabel('Day of Year')
 
