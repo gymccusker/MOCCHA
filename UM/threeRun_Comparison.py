@@ -762,7 +762,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(13, 9))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.15)
 
@@ -776,30 +776,29 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
+    newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(321)
-    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
-    #     [0, 10, 50, 100, 150, 200, 250],
-    #     # vmin = 0, vmax = 150,
-    #     cmap = newcmp
-    #     )
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', Cloud fraction')
-    # plt.colorbar()
+    plt.title(label2 + '\n Cloud fraction')
+    plt.colorbar()
 
     plt.subplot(322)
-    # plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
-    #     [0, 10, 50, 100, 150, 200, 250],
-    #     # vmin = 0, vmax = 150,
-    #     cmap = newcmp #mpl_cm.Blues
-    #     )
-    # plt.ylabel('Height [m]')
+    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
     plt.ylim([0,8000])
-    plt.title(label3 + ', Cloud fraction')
-    # plt.colorbar()
+    plt.title(label3 + '\n Cloud fraction')
+    plt.colorbar()
 
     ########            NDROP
     ########
@@ -830,7 +829,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', N_drop [$cm^{-3}$]')
+    plt.title('N_drop [$cm^{-3}$]')
     plt.colorbar()
 
     plt.subplot(324)
@@ -841,7 +840,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     # plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label3 + ', N_drop [$cm^{-3}$]')
+    plt.title('N_drop [$cm^{-3}$]')
     plt.colorbar()
 
     ########            QLIQ
@@ -865,7 +864,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title(label2 + ', Q_liq [$g/kg$]')
+    plt.title('Q_liq [$g/kg$]')
     plt.xlabel('Day of Year')
     plt.colorbar()
 
@@ -878,7 +877,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     # plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.xlabel('Day of Year')
-    plt.title(label3 + ', Q_liq [$g/kg$]')
+    plt.title('Q_liq [$g/kg$]')
     plt.colorbar()
 
 
