@@ -769,6 +769,40 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ### define axis instance
     ax = plt.gca()
 
+    ########            Cloud fraction
+    ########
+
+    #### set up colourmaps to grey out zeros on figures
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:10, :] = greyclr
+    newcmp = ListedColormap(newcolors)
+
+    plt.subplot(321)
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label2 + ', Cloud fraction')
+    # plt.colorbar()
+
+    plt.subplot(322)
+    # plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp #mpl_cm.Blues
+    #     )
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label3 + ', Cloud fraction')
+    # plt.colorbar()
+
+    ########            NDROP
+    ########
     #### calculate air density in kg/m3
     data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
     data3['rho'] = calcAirDensity(data3['temperature'].data, data3['pressure'].data / 1e2)
@@ -788,7 +822,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(221)
+    plt.subplot(323)
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
@@ -799,18 +833,19 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.title(label2 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
-    plt.subplot(223)
+    plt.subplot(324)
     plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
         cmap = newcmp #mpl_cm.Blues
         )
-    plt.ylabel('Height [m]')
+    # plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.xlabel('Day of Year')
     plt.title(label3 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
+    ########            QLIQ
+    ########
     #### set flagged um_data to nans
     data2['qliq'][data2['qliq'] < 0] = 0.0
     data3['qliq'][data3['qliq'] < 0] = 0.0
@@ -822,18 +857,19 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(222)
+    plt.subplot(325)
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
-    # plt.ylabel('Height [m]')
+    plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.title(label2 + ', Q_liq [$g/kg$]')
+    plt.xlabel('Day of Year')
     plt.colorbar()
 
-    plt.subplot(224)
+    plt.subplot(326)
     plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
         # vmin = 0, vmax = 0.35,
@@ -852,8 +888,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropQliqTimeseries_226-257DOY.png'
-    plt.savefig(fileout)
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CvNdropQliq_226-257DOY.png'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
