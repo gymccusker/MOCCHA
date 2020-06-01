@@ -22,9 +22,16 @@ def calcAirDensity(temperature, pressure):
 
     print('Calculating air density profile:')
     print('')
-    rho = np.zeros([np.size(temperature)])
-    for k in range(0,np.size(temperature)):
-        rho[k] = pressure[k] / (R * temperature[k])
+    ### if temperature is 1D
+    if np.ndim(temperature) == 1:
+        rho = np.zeros([np.size(temperature)])
+        for k in range(0,np.size(temperature)):
+            rho[k] = pressure[k] / (R * temperature[k])
+    ### if temperature is 2D
+    elif np.ndim(temperature) == 2:
+        rho = np.zeros([np.size(temperature,0), np.size(temperature,1)])
+        for k in range(0,np.size(temperature, 1)):
+            rho[:,k] = pressure[:,k] / (R * temperature[:,k])
 
     # print rho
 
