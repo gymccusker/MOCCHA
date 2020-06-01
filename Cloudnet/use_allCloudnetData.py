@@ -267,6 +267,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     plt.subplot(411)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+        np.arange(0,1.1,0.1),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -275,6 +276,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     plt.subplot(412)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -283,6 +285,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     plt.subplot(413)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -291,6 +294,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
 
     plt.subplot(414)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+        np.arange(0,1.1,0.1),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
