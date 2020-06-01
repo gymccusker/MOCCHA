@@ -769,29 +769,33 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ax = plt.gca()
 
     #### set flagged um_data to nans
-    data2['qnliq'][data2['qnliq'] < 0] = np.nan
-    data3['qnliq'][data3['qnliq'] < 0] = np.nan
+    data2['qnliq'][data2['qnliq'] < 0] = 0.0
+    data3['qnliq'][data3['qnliq'] < 0] = 0.0
 
     #### set up colourmaps to grey out zeros on figures
-    # viridis = mpl_cm.get_cmap('viridis', 256)
-    # newcolors = viridis(np.linspace(0, 1, 256))
-    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    # newcolors[:20, :] = greyclr
-    # newcmp = ListedColormap(newcolors)
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:10, :] = greyclr
+    newcmp = ListedColormap(newcolors)
 
     plt.subplot(211)
-    plt.pcolor(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
-        vmin = 0, vmax = 150,
-        cmap = mpl_cm.Blues)
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
+        [0, 10, 50, 100, 150, 200, 250],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.title(label2 + ', N_drop [/kg]')
     plt.colorbar()
 
     plt.subplot(212)
-    plt.pcolor(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
-        vmin = 0, vmax = 150,
-        cmap = mpl_cm.Blues)
+    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
+        [0, 10, 50, 100, 150, 200, 250],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp #mpl_cm.Blues
+        )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.xlabel('DOY')
@@ -805,7 +809,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     if month_flag == -1:
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_229-257DOY.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
@@ -4830,7 +4834,7 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = '13_u-br409_RA1M_CASIM/OUT_R0/'
+        out_dir4 = '12_u-br210_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -5212,7 +5216,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
@@ -5229,7 +5233,7 @@ def main():
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
