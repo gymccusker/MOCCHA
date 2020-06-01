@@ -734,6 +734,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     import cartopy
     import matplotlib.cm as mpl_cm
     from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+    from physFuncts import calcAirDensity
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -767,6 +768,14 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     ### define axis instance
     ax = plt.gca()
+
+    #### calculate air density in kg/m3
+    data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
+    data3['rho'] = calcAirDensity(data3['temperature'].data, data3['pressure'].data / 1e2)
+
+    ### convert /kg to /cm3
+    data2['qnliq'] = data2['qnliq'] * data2['rho']
+    data3['qnliq'] = data3['qnliq'] * data3['rho']
 
     #### set flagged um_data to nans
     data2['qnliq'][data2['qnliq'] < 0] = 0.0
@@ -808,7 +817,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_229-257DOY.png'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_226-257DOY.png'
     # plt.savefig(fileout)
     plt.show()
 
