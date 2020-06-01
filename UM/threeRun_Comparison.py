@@ -773,7 +773,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
     data3['rho'] = calcAirDensity(data3['temperature'].data, data3['pressure'].data / 1e2)
 
-    ### convert /kg to /cm3
+    ### convert /kg to /m3
     data2['qnliq'] = data2['qnliq'] * data2['rho']
     data3['qnliq'] = data3['qnliq'] * data3['rho']
 
