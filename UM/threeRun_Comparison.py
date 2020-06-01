@@ -762,9 +762,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(8,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.15,
-            hspace = 0.4, wspace = 0.1)
+    plt.figure(figsize=(13,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.15)
 
     ### define axis instance
     ax = plt.gca()
@@ -788,7 +788,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(211)
+    plt.subplot(221)
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
@@ -799,7 +799,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.title(label2 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
-    plt.subplot(212)
+    plt.subplot(223)
     plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
@@ -811,13 +811,48 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.title(label3 + ', N_drop [$cm^{-3}$]')
     plt.colorbar()
 
+    #### set flagged um_data to nans
+    data2['qliq'][data2['qliq'] < 0] = 0.0
+    data3['qliq'][data3['qliq'] < 0] = 0.0
+
+    #### set up colourmaps to grey out zeros on figures
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:10, :] = greyclr
+    newcmp = ListedColormap(newcolors)
+
+    plt.subplot(222)
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
+        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
+        # vmin = 0, vmax = 0.35,
+        cmap = newcmp
+        )
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label2 + ', Q_liq [$g/kg$]')
+    plt.colorbar()
+
+    plt.subplot(224)
+    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
+        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25],
+        # vmin = 0, vmax = 0.35,
+        cmap = newcmp
+        )
+    # plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.xlabel('Day of Year')
+    plt.title(label3 + ', Q_liq [$g/kg$]')
+    plt.colorbar()
+
+
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropTimeseries_226-257DOY.png'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_NdropQliqTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
