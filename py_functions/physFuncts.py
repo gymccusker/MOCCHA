@@ -17,6 +17,8 @@ def calcAirDensity(temperature, pressure):
 
         #### EXAMPLE OF USE:
         #### data = calcAirDensity(data['temperature'][:], data['pressure'][:])
+        ####        temperature = K
+        ####        pressure = hPa
 
     R = 2.8704  #### hPa kg-1 K-1
 
