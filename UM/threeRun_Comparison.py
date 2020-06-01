@@ -761,22 +761,38 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(12, 9))
+    plt.rc('legend',fontsize=MED_SIZE)
+    fig = plt.figure(figsize=(13, 12))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.13)
 
     ### define axis instance
     ax = plt.gca()
 
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
 
-    plt.subplot(411)
-    # plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    ########            Radiation timeseries
+    ########
 
+    sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
+    lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
+    sw3 = data3['surface_net_SW_radiation'][data3['hrly_flag']]
+    lw3 = data3['surface_net_LW_radiation'][data3['hrly_flag']]
+    crf3 = sw3 + lw3
+    crf2 = sw2 + lw2
+
+    ax  = fig.add_axes([0.2,0.8,0.6,0.15])   # left, bottom, width, height
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'forestgreen', label = label2)
+    plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
+    plt.xlim(doy[0], doy[-1])
+    plt.legend(bbox_to_anchor=(0.0, 0.71, 1., .102), loc=4, ncol=2)
+    plt.ylabel('CRF [$W/m^{2}$]')
+    plt.xlabel('Day of Year')
 
     ########            Cloud fraction
     ########
-
     #### set up colourmaps to grey out zeros on figures
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
