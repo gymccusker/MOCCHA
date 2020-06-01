@@ -834,7 +834,6 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
-
 def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     ###################################
