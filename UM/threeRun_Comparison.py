@@ -907,8 +907,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_Cv_Ndrop_Qliq_RadTS_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-Ts_Cv_Ndrop_Qliq.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
