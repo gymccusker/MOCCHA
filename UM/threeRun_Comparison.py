@@ -772,6 +772,14 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
+    ### convert radiation matlab timesteps to doy
+    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
+    time_radice = calcTime_Mat2DOY(datenums_radice)
+
+    ### calculate net LW and SW from obs
+    netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
+    netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
+
     ########            Radiation timeseries
     ########
 
@@ -786,6 +794,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'forestgreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
+    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.xlim(doy[0], doy[-1])
     plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=2)
     plt.ylabel('CRF [$W/m^{2}$]')
