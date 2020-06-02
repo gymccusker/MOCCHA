@@ -792,11 +792,11 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     ax  = fig.add_axes([0.2,0.8,0.6,0.16])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice, netLW + netSW, color = 'grey', label = 'Ice_station')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'forestgreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
-    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.xlim(doy[0], doy[-1])
-    plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=3)
     plt.ylabel('CRF [$W/m^{2}$]')
     plt.xlabel('Day of Year')
 
@@ -916,7 +916,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-Ts_Cv_Ndrop_Qliq.png'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq.png'
     plt.savefig(fileout)
     plt.show()
 
