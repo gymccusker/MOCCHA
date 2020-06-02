@@ -1313,8 +1313,7 @@ def main():
             '20180905_oden_','20180906_oden_','20180907_oden_','20180908_oden_',
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
-elif um_out_dir[-26:-6] == 'lwc-scaled-adiabatic':
-            out_dir = 'lwc-scaled-adiabatic'
+
     moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_',
@@ -1427,7 +1426,7 @@ elif um_out_dir[-26:-6] == 'lwc-scaled-adiabatic':
         elif ifs_out_dir[:-6] == 'lwc-scaled-ecmwf-grid':
             var_list = ['height','lwc','model_lwc','model_lwp']   ### time always read in separately
         elif out_dir == 'lwc-scaled-adiabatic':
-            var_list = ['height','lwc']   ### time always read in separately   
+            var_list = ['height','lwc']   ### time always read in separately
         elif ifs_out_dir[:-6] == 'iwc-Z-T-ecmwf-grid':
             var_list = ['height','iwc','model_snow_iwc_filtered','model_iwc_filtered']   ### time always read in separately
 
