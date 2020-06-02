@@ -627,6 +627,10 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0] = np.nan
+    um_data['lwc'][um_data['lwc'] <= 0.0] = np.nan
+    ifs_data['lwc'][ifs_data['lwc'] <= 0.0] = np.nan
+    ifs_data['lwc'][ifs_data['lwc'] >= 20.0] = np.nan
+    misc_data['lwc'][misc_data['lwc'] <= 0] = np.nan
 
     print (np.nanmean(obs_data['lwc'],0).shape)
     print (obs_data['height'].shape)
@@ -635,15 +639,25 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,obs_data['height'][:394], 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
         np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
-    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
-        np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
-    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
-        np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
-    ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc']*1e3,0),
-        np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    # ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
+    #     np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.4)
+    # plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    # ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
+    #     np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    # ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc']*1e3,0),
+    #     np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.plot(np.nanmean(um_data['lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['lwc'],0)*1e3 - np.nanstd(um_data['lwc']*1e3,0),
+        np.nanmean(um_data['lwc'],0)*1e3 + np.nanstd(um_data['lwc'],0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['lwc'],0)*1e3 - np.nanstd(ifs_data['lwc'],0)*1e3,
+        np.nanmean(ifs_data['lwc'],0)*1e3 + np.nanstd(ifs_data['lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['lwc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['lwc'],0)*1e3 - np.nanstd(misc_data['lwc']*1e3,0),
+        np.nanmean(misc_data['lwc'],0)*1e3 + np.nanstd(misc_data['lwc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
     plt.xlabel('Liquid water content [g/m3]')
     plt.ylabel('Height [m]')
@@ -658,7 +672,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-InstRes_226-257DOY.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
