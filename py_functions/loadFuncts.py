@@ -35,9 +35,10 @@ def load_radar(proj, day):
             ### load file
             nc = Dataset(filename,'r')
 
-
+            ### make empty data dictionary
+            data = {}
 
     else:
         print('*** invalid project name ***')
 
-    return
+    return data
