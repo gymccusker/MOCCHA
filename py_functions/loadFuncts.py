@@ -45,6 +45,10 @@ def load_radar(proj, day):
             for var in var_list:
                 data[var] = nc.variables[var][:]
 
+                ### transpose 2D data so that time is 0th axis
+                if np.ndim(data[var]) == 2:
+                    data[var] = np.transpose(data[var])
+
             ### find date in DOY format
             date = calcTime_Date2DOY(day)
 
@@ -79,10 +83,10 @@ def load_radar(proj, day):
                     ### populate dictionary
                     for var in var_list:
                         data[var] = nc.variables[var][:]
-                        
+
                         ### transpose 2D data so that time is 0th axis
-                        if np.ndim(temp[var]) == 2:
-                            temp[var] = np.transpose(temp[var])
+                        if np.ndim(data[var]) == 2:
+                            data[var] = np.transpose(data[var])
 
                     ### find date in DOY format
                     date = calcTime_Date2DOY(name[:8])
