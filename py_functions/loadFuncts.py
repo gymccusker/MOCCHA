@@ -38,6 +38,11 @@ def load_radar(proj, day):
             ### make empty data dictionary
             data = {}
 
+            ### populate dictionary
+            data['time'] = nc.variables['time'][:]
+            data['range'] = nc.variables['range'][:]
+            data['Zh'] = nc.variables['Zh'][:]
+
     else:
         print('*** invalid project name ***')
 
