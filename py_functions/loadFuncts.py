@@ -5,7 +5,7 @@ Functions for loading specific datasets
 """
 
 import numpy as np
-# from __future__ import print_function
+from __future__ import print_function
 
 def load_radar(day, proj):
 
@@ -19,5 +19,7 @@ def load_radar(day, proj):
         data_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         file_name = data_dir + 'mmcr/' day + '_Oden_mira.nc'];
 
+    else:
+        print('*** invalid project name ***')
 
     return
