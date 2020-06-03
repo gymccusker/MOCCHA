@@ -27,7 +27,7 @@ def load_radar(proj, day):
 
             ### define filename
             data_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
-            filename = data_dir + 'mmcr/' + day + '_Oden_mira.nc'
+            filename = data_dir + 'mmcr/' + day + '_oden_mira.nc'
 
             ### choose variables to load
             var_list = ['time','range','Zh']
