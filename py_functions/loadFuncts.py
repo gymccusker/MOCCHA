@@ -24,25 +24,26 @@ def load_radar(proj, day):
     from time_functions import calcTime_Date2DOY
 
     if proj == 'moccha':
+
+        ### choose variables to load
+        var_list = ['time','range','Zh']
+
+        ### make empty data dictionary
+        data = {}
+        temp = {}
+
         if day != 'all':
 
             ### define filename
             data_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
             filename = data_dir + 'mmcr/' + day + '_oden_mira.nc'
 
-            ### choose variables to load
-            var_list = ['time','range','Zh']
-
             ### load file
             nc = Dataset(filename,'r')
 
-            ### make empty data dictionary
-            data = {}
-
             ### populate dictionary
-            data['time'] = nc.variables['time'][:]
-            data['range'] = nc.variables['range'][:]
-            data['Zh'] = nc.variables['Zh'][:]
+            for var in var_list:
+                data[var] = nc.variables[var][:]
 
             ### find date in DOY format
             date = calcTime_Date2DOY(day)
@@ -66,12 +67,6 @@ def load_radar(proj, day):
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
-            ### choose variables to load
-            var_list = ['time','range','Zh']
-
-            ### make empty data dictionary
-            data = {}
-
             for name in moccha_names:
 
                 filename = data_dir + 'mmcr/' + name[:8] + '_oden_mira.nc'
@@ -79,16 +74,33 @@ def load_radar(proj, day):
                 ### load file
                 nc = Dataset(filename,'r')
 
-                ### populate dictionary
-                data['time'] = nc.variables['time'][:]
-                data['range'] = nc.variables['range'][:]
-                data['Zh'] = nc.variables['Zh'][:]
+                ### initialise array with first file
+                if name == '20180814_oden_':
+                    ### populate dictionary
+                    for var in var_list:
+                        data[var] = nc.variables[var][:]
 
-                ### find date in DOY format
-                date = calcTime_Date2DOY(name[:8])
+                    ### find date in DOY format
+                    date = calcTime_Date2DOY(name[:8])
 
-                ### update time array to reference base date
-                data['time'] = data['time']/24.0 + date
+                    ### update time array to reference base date
+                    data['time'] = data['time']/24.0 + date
+
+                ### subsequent dates are appended
+                else:
+                    ### populate dictionary
+                    for var in var_list:
+                        temp[var] = nc.variables[var][:]
+
+                    ### find date in DOY format
+                    date = calcTime_Date2DOY(name[:8])
+
+                    ### update time array to reference base date
+                    temp['time'] = temp['time']/24.0 + date
+
+                    ### append loaded data to existing data dictionary
+                    for var in var_list:
+                        data[var] = np.append(data[var], temp[var])
 
                 nc.close()
 
