@@ -18,6 +18,9 @@ def load_radar(proj, day):
             1. date in format YYYYMMDD (string)
             2. all (string), loads all data
 
+    Use example:
+    data = load_radar('moccha', 'all')
+
     """
 
     from netCDF4 import Dataset
