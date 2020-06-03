@@ -5,7 +5,7 @@ Functions for loading specific datasets
 """
 
 import numpy as np
-from __future__ import print_function
+# from __future__ import print_function
 
 def load_radar(proj, day):
 
