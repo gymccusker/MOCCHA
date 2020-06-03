@@ -21,6 +21,7 @@ def load_radar(proj, day):
     """
 
     from netCDF4 import Dataset
+    from time_functions import calcTime_Date2DOY
 
     if proj == 'moccha':
         if day != 'all':
@@ -42,6 +43,10 @@ def load_radar(proj, day):
             data['time'] = nc.variables['time'][:]
             data['range'] = nc.variables['range'][:]
             data['Zh'] = nc.variables['Zh'][:]
+
+            ### find date in DOY format
+            date = calcTime_Date2DOY(day)
+
 
     else:
         print('*** invalid project name ***')
