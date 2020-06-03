@@ -11,7 +11,8 @@ def load_radar(proj, day):
 
     """
     Function to load in radar data
-    Set up to take:
+
+    Takes:
      'proj' argument, options:
         1. moccha
          'day' argument, options:
