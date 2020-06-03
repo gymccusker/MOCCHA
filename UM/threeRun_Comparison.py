@@ -5103,7 +5103,7 @@ def main():
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-            'cloud_fraction']
+            'cloud_fraction','radr_refl']
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
             'qnliq','qnice','cloud_fraction']
