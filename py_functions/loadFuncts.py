@@ -12,12 +12,14 @@ def load_radar(proj, day):
     """
     Function to load in radar data
 
+    Written to allow different load in procedure for different projects
+
     Takes:
      'proj' argument, options:
         1. moccha
          'day' argument, options:
             1. date in format YYYYMMDD (string)
-            2. all (string), loads all data
+            2. all (string), loads all data (20180814 to 20180914)
 
     Use example:
     data = load_radar('moccha', 'all')
