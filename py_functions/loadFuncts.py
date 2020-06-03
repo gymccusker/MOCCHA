@@ -47,6 +47,8 @@ def load_radar(proj, day):
             ### find date in DOY format
             date = calcTime_Date2DOY(day)
 
+            ### update time array to reference base date
+            data['time'] = data['time']/24.0 + date
 
     else:
         print('*** invalid project name ***')
