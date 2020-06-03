@@ -82,7 +82,7 @@ def load_radar(proj, day):
 
             for name in moccha_names:
 
-                filename = data_dir + 'mmcr/' + name[:8] + '_oden_mira.nc'
+                filename = data_dir + 'mmcr/' + name + 'mira.nc'
 
                 ### load file
                 nc = Dataset(filename,'r')
