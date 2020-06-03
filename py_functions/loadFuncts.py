@@ -55,6 +55,9 @@ def load_radar(proj, day):
             ### update time array to reference base date
             data['time'] = data['time']/24.0 + date
 
+            ### remove flagged data points
+            data['Zh'][data['Zh'] == -999.0] = np.nan
+
             nc.close()
 
         else:
@@ -120,6 +123,9 @@ def load_radar(proj, day):
                             data[var] = np.append(data[var], temp[var], 0)
 
                 nc.close()
+
+            ### remove flagged data points
+            data['Zh'][data['Zh'] == -999.0] = np.nan
 
     else:
         print('*** invalid project name ***')
