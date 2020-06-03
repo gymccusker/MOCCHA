@@ -65,7 +65,7 @@ def load_radar(proj, day):
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
             for name in moccha_names:
 
@@ -100,7 +100,12 @@ def load_radar(proj, day):
 
                     ### append loaded data to existing data dictionary
                     for var in var_list:
-                        data[var] = np.append(data[var], temp[var])
+                        if var == 'range':
+                            continue
+                        elif np.ndim(data[var]) == 1:
+                            data[var] = np.append(data[var], temp[var])
+                        elif np.ndim(data[var]) == 2:
+                            data[var] = np.append(data[var], temp[var], 0)
 
                 nc.close()
 
