@@ -7,17 +7,35 @@ Functions for loading specific datasets
 import numpy as np
 from __future__ import print_function
 
-def load_radar(day, proj):
+def load_radar(proj, day):
 
     """
     Function to load in radar data
-    Set up to take 'proj' argument, options:
+    Set up to take:
+     'proj' argument, options:
         1. moccha
+         'day' argument, options:
+            1. date in format YYYYMMDD (string)
+            2. all (string), loads all data
+
     """
 
+    from netCDF4 import Dataset
+
     if proj == 'moccha':
-        data_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
-        file_name = data_dir + 'mmcr/' day + '_Oden_mira.nc'];
+        if day != 'all':
+
+            ### define filename
+            data_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
+            file_name = data_dir + 'mmcr/' day + '_Oden_mira.nc'
+
+            ### choose variables to load
+            var_list = ['time','range','Zh']
+
+            ### load file
+            nc = Dataset(filename,'r')
+
+
 
     else:
         print('*** invalid project name ***')
