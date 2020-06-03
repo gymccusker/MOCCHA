@@ -1775,7 +1775,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.title('$SW_{net,surf}$ [W/m2]')
+    plt.title('$SW_{net,surf}$ [$W/m^{2}$]')
     # plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-3,120])
@@ -1792,7 +1792,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'darkorange')
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
-    plt.title('$LW_{net,surf}$ [W/m2]')
+    plt.title('$LW_{net,surf}$ [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-90,5])
 
@@ -1808,7 +1808,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'darkorange', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
-    plt.title('CRF [W/m2]')
+    plt.title('CRF [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.legend(bbox_to_anchor=(-0.11, 0.67, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
@@ -1850,7 +1850,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     # plt.legend()
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net,surf}$ [W/m2]')
+    plt.xlabel('$SW_{net,surf}$ [$W/m^{2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
@@ -1864,7 +1864,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net,surf}$ [W/m2]')
+    plt.xlabel('$LW_{net,surf}$ [$W/m^{2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
@@ -1879,7 +1879,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(55,0.07), xytext=(55,0.07), fontsize = 14)
-    plt.xlabel('CRF [W/m2]')
+    plt.xlabel('CRF [$W/m^{2}$]')
     plt.xlim([-50,80])
     plt.ylim([0,yDmax])
 
@@ -1893,7 +1893,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net,surf}$ [W/m2]')
+    plt.xlabel('$SW_{net,surf}$ [$W/m^{2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
@@ -1906,7 +1906,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net,surf}$ [W/m2]')
+    plt.xlabel('$LW_{net,surf}$ [$W/m^{2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
@@ -1923,7 +1923,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.annotate('Freeze', xy=(45,0.07), xytext=(45,0.07), fontsize = 14)
     plt.xlim([-50,80])
     plt.ylim([0,yDmax])
-    plt.xlabel('CRF [W/m2]')
+    plt.xlabel('CRF [$W/m^{2}$]')
 
 
     print ('******')
