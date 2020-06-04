@@ -3586,9 +3586,9 @@ def main():
             filename_um3 = ifs_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
         else:
             print ('***IFS NOT being compared***')
+            print (filename_um1)
             filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
             ifs_flag = False
-        print (filename_um1)
         print (filename_um2)
         print (filename_um3)
         print ('')
@@ -3847,8 +3847,8 @@ def main():
             ###     LOAD UM CLOUDNET DIAGS INTO DICTIONARY
             ### --------------------------------------------------------------------
             #### LOAD IN SPECIFIC DIAGNOSTICS
-            um_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
-                    ['height','lwc','lwp','model_lwc','model_lwp'],
+            um_var_list = [['Cv','model_Cv_filtered','model_temperature'],
+                    ['lwc','lwp','model_lwc','model_lwp'],
                     ['height','iwc','model_iwc','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
@@ -3883,8 +3883,8 @@ def main():
             ### --------------------------------------------------------------------
             ### LOAD IN IFS DATA INTO DICTIONARY
             ### --------------------------------------------------------------------
-            ifs_var_list = [['height','Cv','model_snow_Cv_filtered','model_temperature'],
-                    ['height','lwc','lwp','model_lwc','model_lwp'],
+            ifs_var_list = [['Cv','model_snow_Cv_filtered','model_temperature'],
+                    ['lwc','lwp','model_lwc','model_lwp'],
                     ['height','iwc','model_iwc','model_snow_iwc_filtered','model_iwc_filtered']]   ### time always read in separately
 
             ###     LOOP OVER TIME DUMP
@@ -3928,8 +3928,8 @@ def main():
                         ['qliq'],
                         ['qice']]   ### time always read in separately
             elif cn_misc_flag == 0:
-                misc_var_list = [['height','Cv','model_Cv_filtered','model_temperature'],
-                        ['height','lwc','lwp','model_lwc','model_lwp'],
+                misc_var_list = [['Cv','model_Cv_filtered','model_temperature'],
+                        ['lwc','lwp','model_lwc','model_lwp'],
                         ['height','iwc','model_iwc','model_iwc_filtered']]   ### time always read in separately
 
             print ('')
@@ -3977,8 +3977,8 @@ def main():
             ###     LOAD IN OBS DATA
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
-            obs_var_list = [['height','Cv'],
-                        ['height','lwc','lwp'],
+            obs_var_list = [['Cv'],
+                        ['lwc','lwp'],
                         ['height','iwc']]
 
             if obs_switch == 'RADAR':
