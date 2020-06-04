@@ -4007,7 +4007,7 @@ def main():
                             obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                         elif obs_var_list[c][j]] == 'height':
                             continue
-                        else:
+                        elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
                             obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
             for c in range(0,3): cn_nc0[c].close()
 
