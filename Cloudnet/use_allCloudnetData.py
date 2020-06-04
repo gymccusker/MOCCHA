@@ -3337,7 +3337,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'UM'
 
     ### only works on laptop for now
 
@@ -3981,35 +3981,68 @@ def main():
                         ['height','lwc','lwp'],
                         ['height','iwc']]
 
-            if i == 0:
-                obs_data = {}
-                # misc_data1d = {}
-                if month_flag == -1:
-                    time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
+            if obs_switch == 'RADAR':
+                if i == 0:
+                    obs_data = {}
+                    # misc_data1d = {}
+                    if month_flag == -1:
+                        time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
+                    else:
+                        time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
+                    for c in range(0,3):
+                        for j in range(0,len(obs_var_list[c])):
+                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:  # 1d timeseries only
+                                obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
+                            else:                                   # 2d column um_data
+                                obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
                 else:
-                    time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
-                for c in range(0,3):
-                    for j in range(0,len(obs_var_list[c])):
-                        if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:  # 1d timeseries only
-                            obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
-                        else:                                   # 2d column um_data
-                            obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
+                    if month_flag == -1:
+                        time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
+                    else:
+                        time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
+                    print (obs_data)
+                    for c in range(0,3):
+                        for j in range(0,len(obs_var_list[c])):
+                            # print 'j = ' + str(j)
+                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
+                            elif obs_var_list[c][j] == 'height':
+                                continue
+                            elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
+                for c in range(0,3): cn_nc0[c].close()
+
             else:
-                if month_flag == -1:
-                    time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
+                if i == 0:
+                    obs_data = {}
+                    # misc_data1d = {}
+                    if month_flag == -1:
+                        time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
+                    else:
+                        time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
+                    for c in range(0,3):
+                        for j in range(0,len(obs_var_list[c])):
+                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:  # 1d timeseries only
+                                obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
+                            else:                                   # 2d column um_data
+                                obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
                 else:
-                    time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
-                print (obs_data)
-                for c in range(0,3):
-                    for j in range(0,len(obs_var_list[c])):
-                        # print 'j = ' + str(j)
-                        if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
-                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
-                        elif obs_var_list[c][j] == 'height':
-                            continue
-                        elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
-                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
-            for c in range(0,3): cn_nc0[c].close()
+                    if month_flag == -1:
+                        time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
+                    else:
+                        time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
+                    print (obs_data)
+                    for c in range(0,3):
+                        for j in range(0,len(obs_var_list[c])):
+                            # print 'j = ' + str(j)
+                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
+                            elif obs_var_list[c][j] == 'height':
+                                continue
+                            elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
+                for c in range(0,3): cn_nc0[c].close()
+
 
     #################################################################
     ## save time to dictionaries now we're not looping over all diags anymore
@@ -4126,7 +4159,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
