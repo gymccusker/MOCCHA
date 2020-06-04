@@ -3904,7 +3904,7 @@ def main():
                     time_ifs = np.append(time_ifs,float(cn_filename_ifs[-16:-14]) + ((cn_nc2[0].variables['time'][:])/24.0))
                 print (ifs_data)
                 for c in range(0,3):
-                    for j in range(0,len(ifs_var_list[0])):
+                    for j in range(0,len(ifs_var_list[c])):
                         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
                         # print 'j = ' + str(j)
                         if np.ndim(cn_nc2[c].variables[ifs_var_list[c][j]]) == 1:
