@@ -1210,8 +1210,8 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
-    plt.savefig(fileout, dpi=300)
+        fileout = 'FIGS/Obs-RADARgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
