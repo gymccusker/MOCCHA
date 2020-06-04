@@ -838,6 +838,77 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
+def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+
+    ###################################
+    ## PLOT TIMESERIES
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWP timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	SET UP FIGURE PROPERTIES
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(8,4.5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+    print (obs_data.keys())
+
+    #### set flagged and bad data to nans
+    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
+    # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
+    # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
+    obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
+    obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+
+    plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'm--', label = 'Obs')
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
+        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
+    plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
+        'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
+    plt.plot(misc_data['time'][::3],misc_data['model_lwp'][::3]*1e3,
+        'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
+    plt.xlabel('Day of Year')
+    plt.ylabel('LWP [g/m2]')
+    # plt.ylim([0,10000])
+    plt.xlim([doy[0],doy[-1]])
+    plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
@@ -4047,6 +4118,11 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+
+    # -------------------------------------------------------------
+    # plot LWP timeseries with missing files accounted for
+    # -------------------------------------------------------------
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
