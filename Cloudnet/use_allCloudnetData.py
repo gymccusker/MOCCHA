@@ -4004,10 +4004,10 @@ def main():
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
                             # print 'j = ' + str(j)
-                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
-                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
-                            elif obs_var_list[c][j] == 'height':
+                            if obs_var_list[c][j] == 'height':
                                 continue
+                            elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                             elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
                 for c in range(0,3): cn_nc0[c].close()
