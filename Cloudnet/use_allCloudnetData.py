@@ -4036,7 +4036,7 @@ def main():
                         for j in range(0,len(obs_var_list[c])):
                             # print 'j = ' + str(j)
                             if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
-                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
+                                obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                             elif np.sum(cn_nc0[c].variables[obs_var_list[c][j]].shape) == 71:
                                 continue
                             else:
