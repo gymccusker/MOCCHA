@@ -3986,9 +3986,9 @@ def main():
                     obs_data = {}
                     # misc_data1d = {}
                     if month_flag == -1:
-                        time_obs = doy[i] + ((cn_nc0[0].variables['time'][:])/24.0)
+                        time_obs = doy[i] + ((cn_nc0[-1].variables['time'][:])/24.0)
                     else:
-                        time_obs = float(names[i][6:8]) + ((cn_nc0[0].variables['time'][:])/24.0)
+                        time_obs = float(names[i][6:8]) + ((cn_nc0[-1].variables['time'][:])/24.0)
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
                             if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:  # 1d timeseries only
@@ -3997,9 +3997,9 @@ def main():
                                 obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
                 else:
                     if month_flag == -1:
-                        time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
+                        time_obs = np.append(time_obs, doy[i] + ((cn_nc0[-1].variables['time'][:])/24.0))
                     else:
-                        time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
+                        time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[-1].variables['time'][:])/24.0))
                     print (obs_data)
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
