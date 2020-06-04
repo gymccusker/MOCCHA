@@ -3336,8 +3336,8 @@ def main():
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
 
-    ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS)
-    obs_switch = 'IFS'
+    ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
+    obs_switch = 'RADAR'
 
     ### only works on laptop for now
 
@@ -3410,6 +3410,10 @@ def main():
             cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
                         'lwc-scaled-metum-grid/2018/',
                         'iwc-Z-T-metum-grid/2018/']
+        elif obs_switch == 'RADAR':
+            cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
+                        'lwc-scaled-adiabatic/2018/',
+                        'iwc-Z-T-method/2018/']
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
             cn_misc_out_dir = ['5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/',
                             '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/',
