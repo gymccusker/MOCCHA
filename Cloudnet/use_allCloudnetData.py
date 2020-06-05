@@ -1870,7 +1870,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     data2['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversion_Tindex'][:] = np.nan
     data2['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data2['scaledCv']['inversionForCloudnet'][:] = np.nan
     data3['scaledCv']['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversion_Tindex'][:] = np.nan
-    data3['scaledCv']['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
+    data3['scaledCv']['inversionForC however, I am confused about the availability loudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaledCv']['inversionForCloudnet'][:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
@@ -4008,9 +4008,10 @@ def main():
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
                             # print 'j = ' + str(j)
-                            if obs_var_list[c][j] == 'height':
-                                continue
-                            elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                            # if obs_var_list[c][j] == 'height':
+                            #     # continue
+
+                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                             elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
