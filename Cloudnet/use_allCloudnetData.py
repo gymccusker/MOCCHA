@@ -3999,6 +3999,7 @@ def main():
                                 obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
                             else:                                   # 2d column um_data
                                 obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
+
                 else:
                     if month_flag == -1:
                         time_obs = np.append(time_obs, doy[i] + ((cn_nc0[1].variables['time'][:])/24.0))
@@ -4007,11 +4008,10 @@ def main():
                     print (obs_data)
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
-                            # print 'j = ' + str(j)
-                            # if obs_var_list[c][j] == 'height':
-                            #     # continue
-
-                            if np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
+                            print 'j = ' + str(j)
+                            if obs_var_list[c][j] == 'height':
+                                continue
+                            elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                             elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
@@ -4081,6 +4081,11 @@ def main():
     data1['hrly_flag'] = ii
     data2['hrly_flag'] = ii
     data3['hrly_flag'] = ii
+
+    #################################################################
+    ### if RADAR flag used, force 2D height array for function compatibility
+    #################################################################
+    tmp_height[i,:] = cn_nc0[c].variables['height'][:]
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -4175,7 +4180,7 @@ def main():
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
