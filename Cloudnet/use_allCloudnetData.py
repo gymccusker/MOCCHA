@@ -1104,7 +1104,7 @@ def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_fl
     plt.savefig(fileout)
     plt.show()
 
-def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1156,63 +1156,119 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     melt = np.where(um_data['time'] < 240.0)
     freeze = np.where(um_data['time'] >= 240.0)
 
-    ### make bespoke obs indices to account for radar-grid data if needed
+    ### make bespoke obs indices
     meltobs = np.where(obs_data['time'] < 240.0)
     freezeobs = np.where(obs_data['time'] >= 240.0)
 
-    plt.subplot(121)
-    ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    if obs_switch == 'RADAR':
+        plt.subplot(121)
+        ax1 = plt.gca()
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
+            np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][melt,:])*1e3,0),
+            np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+        plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
+            np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+        plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
+            np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
-    plt.xlabel('Liquid water content [g/m3]')
-    plt.ylabel('Height [m]')
-    plt.title('Melt')
-    plt.ylim([0,10000])
-    plt.xlim([0,0.2])
-    plt.legend()
+        plt.xlabel('Liquid water content [g/m3]')
+        plt.ylabel('Height [m]')
+        plt.title('Melt')
+        plt.ylim([0,10000])
+        plt.xlim([0,0.2])
+        plt.legend()
 
-    plt.subplot(122)
-    ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+        plt.subplot(122)
+        ax2 = plt.gca()
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+        plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+        plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
+            np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
-    plt.xlabel('Liquid water content [g/m3]')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,10000])
-    plt.xlim([0,0.2])
-    # plt.legend()
+        plt.xlabel('Liquid water content [g/m3]')
+        plt.title('Freeze up')
+        plt.yticks([])
+        plt.ylim([0,10000])
+        plt.xlim([0,0.2])
+        # plt.legend()
+        
+        print ('******')
+        print ('')
+        print ('Finished plotting! :)')
+        print ('')
 
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
+        if month_flag == -1:
+            fileout = 'FIGS/Obs-RADARgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+        # plt.savefig(fileout, dpi=300)
+        plt.show()
 
-    if month_flag == -1:
-        fileout = 'FIGS/Obs-RADARgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
-    # plt.savefig(fileout, dpi=300)
-    plt.show()
+    else:
+        plt.subplot(121)
+        ax1 = plt.gca()
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
+            np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][melt,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][melt,:])*1e3,0),
+            np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+        plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3,
+            np.nanmean(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][melt,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+        plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][melt,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+        ax1.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][melt,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:])*1e3,0),
+            np.nanmean(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+        plt.xlabel('Liquid water content [g/m3]')
+        plt.ylabel('Height [m]')
+        plt.title('Melt')
+        plt.ylim([0,10000])
+        plt.xlim([0,0.2])
+        plt.legend()
+
+        plt.subplot(122)
+        ax2 = plt.gca()
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
+        plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3,
+            np.nanmean(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][freeze,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+        plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+        ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][freeze,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:])*1e3,0),
+            np.nanmean(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+        plt.xlabel('Liquid water content [g/m3]')
+        plt.title('Freeze up')
+        plt.yticks([])
+        plt.ylim([0,10000])
+        plt.xlim([0,0.2])
+        # plt.legend()
+
+        print ('******')
+        print ('')
+        print ('Finished plotting! :)')
+        print ('')
+
+        if month_flag == -1:
+            fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+        # plt.savefig(fileout, dpi=300)
+        plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
