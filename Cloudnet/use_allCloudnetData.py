@@ -4084,10 +4084,10 @@ def main():
     #################################################################
     ### if RADAR flag used, force 2D height array for function compatibility
     #################################################################
-    if obs_switch == 'RADAR':
-        tmp_height = np.zeros([np.size(obs_data['time']), np.size(obs_data['height'])])
-        for t in range(0,len(obs_data['time'])): tmp_height[t,:] = obs_data['height'][:]
-        obs_data['height'] = tmp_height
+    # if obs_switch == 'RADAR':
+    #     tmp_height = np.zeros([np.size(obs_data['time']), np.size(obs_data['height'])])
+    #     for t in range(0,len(obs_data['time'])): tmp_height[t,:] = obs_data['height'][:]
+    #     obs_data['height'] = tmp_height
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -4182,7 +4182,7 @@ def main():
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
