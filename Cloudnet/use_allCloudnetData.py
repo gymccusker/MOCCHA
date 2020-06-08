@@ -223,8 +223,8 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-JVObsGridded_UM_IFS_CASIM-100_Cv_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
