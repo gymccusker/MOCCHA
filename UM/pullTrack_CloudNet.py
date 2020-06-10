@@ -7595,11 +7595,12 @@ def main():
             ### -------------------------------------------------------------------------
             # -------------------------------------------------------------
             # Define output stream filenames to look at:
-            #           start at 012 if 3h dumps (a, b)
+            #           start at 012 if 3h dumps (a)
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa012','_pb009','_pd011','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            # names = ['_pa012','_pb009','_pd011','_pe011','_pc011']         ### make pa + pb files first, then append to pc
+            names = ['_pb009']         ### make pa + pb files first, then append to pc
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
