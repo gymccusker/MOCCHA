@@ -5634,11 +5634,11 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #################################################################
     ## read in and plot gridded ship track
     #################################################################
-    tim, ilat, ilon = readGriddedTrack(grid_filename)
+    # tim, ilat, ilon = readGriddedTrack(grid_filename)
 
     ### Plot tracks as line plot
-    for i in range(0, len(ilon)-1):
-        iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+    # for i in range(0, len(ilon)-1):
+    #     iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
     ### Plot tracks as line plot
