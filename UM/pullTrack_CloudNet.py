@@ -7637,8 +7637,8 @@ def main():
 
                         # -------------------------------------------------------------
 
-                    # print cube
-                    # print ''
+                    hour = 2
+                    figure = plot_cartmap(ship_data, cube, hour, grid_filename)
 
                     ### -------------------------------------------------------------
                     ### Pull gridded ship track from cube
