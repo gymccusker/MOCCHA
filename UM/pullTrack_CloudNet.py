@@ -5613,8 +5613,8 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## plot ship track
     #################################################################
     ### DEFINE DRIFT + IN_ICE PERIODS
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
+    drift_index = iceDrift(ship_data)
+    inIce_index = inIce(ship_data)
     # trackShip_index = trackShip(ship_data)
     #
     # ### Plot tracks as line plot
