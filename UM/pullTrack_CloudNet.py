@@ -5591,7 +5591,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #     # iplt.pcolormesh(cube[hour,471:495,240:264])
     # elif np.size(cube[diag].data.shape) == 2:
     iplt.pcolormesh(cube[diag][hour,:,:])
-    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    plt.title(cube[diag].standard_name)# + ', ' + str(cube[diag].units))
     plt.colorbar()
 
     #################################################################
