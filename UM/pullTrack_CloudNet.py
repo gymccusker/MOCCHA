@@ -5590,9 +5590,9 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     #     iplt.pcolormesh(cube[diag][hour,:,:])
     #     # iplt.pcolormesh(cube[hour,471:495,240:264])
     # elif np.size(cube[diag].data.shape) == 2:
-    #     iplt.pcolormesh(cube[diag][:,:])
-    # plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
-    # plt.colorbar()
+    iplt.pcolormesh(cube[diag][hour,:,:])
+    plt.title(cube[diag].standard_name + ', ' + str(cube[diag].units))
+    plt.colorbar()
 
     #################################################################
     ## plot UM nest
@@ -5602,7 +5602,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     # qplt.outline(cube[diag][hour,386:479,211:305])          ### redesigned swath (>13th)
     # qplt.outline(cube[hour,471:495,240:264])          ### 12-13th Aug swath
     # qplt.outline(cube[diag][hour,386:495,211:305])          ### misc
-    qplt.outline(cube[diag][0,:,:])          ### 14th/24th swath
+    # qplt.outline(cube[diag][0,:,:])          ### 14th/24th swath
     # qplt.outline(cube[diag][hour,:,:])
 
     # gridship = gridShipTrack(cube[diag], xoffset, yoffset)
