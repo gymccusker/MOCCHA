@@ -7614,7 +7614,7 @@ def main():
                     #### LAM
                     # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     #### GLM
-                    if stream == 'pb009': stream = 'pb012'  ## hard fix for glm, pb stream starts at 012
+                    if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
                     filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
