@@ -7569,8 +7569,8 @@ def main():
 
     for date in date_dir:
         ### just do first date:
-        # if date == date_dir[0]:
-        if date[0:4] == '2018':
+        if date == date_dir[0]:
+        # if date[0:4] == '2018':
         # if date[0:8] == '20180823':
             # # -------------------------------------------------------------
             # # Load cube
@@ -7610,8 +7610,15 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
                 ### -------------------------------------------------------------------------
-                filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                # filename = root_dir + out_dir + date + '/' + date + '_paXXX.nc'
+                if out_dir == '7_u-bn068_RA2T_CON/':    ## choose lam or global for 7_u-bn068
+                    #### LAM
+                    # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    #### GLM
+                    if stream == 'pb009': stream = 'pb012'  ## hard fix for glm, pb stream starts at 012
+                    filename = root_dir + out_dir + date + '/' + date + '_glm_' + stream + '_r0.pp'
+                else:
+                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
                     exist_flag = 1
