@@ -276,6 +276,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
     ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    obs_data['Cv_adv'][obs_data['Cv_adv'] == -999] = np.nan
     # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -288,12 +289,13 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv_adv']),
         np.arange(0,1.1,0.1),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    plt.title('Measured cloud fraction by volume, 1 hour sampling')
+    # plt.title('Measured cloud fraction by volume, 1 hour sampling')
+    plt.title('Measured cloud fraction by volume, 1.5km sampling')
     plt.colorbar()
 
     plt.subplot(412)
@@ -4238,7 +4240,7 @@ def main():
     # -------------------------------------------------------------
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
