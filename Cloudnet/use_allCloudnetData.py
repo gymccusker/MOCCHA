@@ -4063,7 +4063,7 @@ def main():
             ###     LOAD IN OBS DATA
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
-            obs_var_list = [['Cv'],
+            obs_var_list = [['Cv', 'Cv_adv'],
                         ['lwc','lwp'],
                         ['height','iwc']]
 
