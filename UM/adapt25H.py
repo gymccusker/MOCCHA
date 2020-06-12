@@ -256,9 +256,9 @@ def combineNC(nc1, nc2, filename1, filename2):
             if diag == 'horizontal_resolution':
                 print ('Diagnostic is horizontal_resolution which needs to be defined separately...')
                 dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
-                dat.comment = 'Horizontal grid size.'
+                dat.comment = 'Horizontal grid size of nested region.'
                 dat.units = 'km'
-                dat[:] = 9
+                dat[:] = 1.5
                 continue
 
     ###################################
@@ -363,10 +363,10 @@ def main():
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
-    # print ('Loading observations:')
-    # filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
-    # cube_obs = iris.load(filename_obs)#, global_con, callback)
-    # print ('...')
+    print ('Loading observations:')
+    filename_obs = obs_root_dir + out_dir3 + 'MetData_Gillian_wTemp1p5m.nc'
+    cube_obs = iris.load(filename_obs)#, global_con, callback)
+    print ('...')
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
