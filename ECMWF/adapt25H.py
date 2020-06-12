@@ -263,9 +263,9 @@ def combineNC(nc1, nc2, filename1, filename2, date):
             if diag == 'horizontal_resolution':
                 print 'Diagnostic is horizontal_resolution which needs to be defined separately...'
                 dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
-                dat.comment = 'Horizontal grid size of nested region.'
+                dat.comment = 'Horizontal grid size.'
                 dat.units = 'km'
-                dat[:] = 1.5
+                dat[:] = nc1.variables['horizontal_resolution']
                 continue
             elif diag == 'latitude':
                 print 'Diagnostic is latitude which needs to be defined separately...'
