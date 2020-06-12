@@ -3497,7 +3497,7 @@ def main():
                         'lwc-scaled-metum-grid/2018/',
                         'iwc-Z-T-metum-grid/2018/']
         elif obs_switch == 'RADAR':
-            cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
+            cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
                         'lwc-scaled-adiabatic/2018/',
                         'iwc-Z-T-method/2018/']
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
