@@ -178,12 +178,12 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
 
     if obs_switch == 'RADAR':
-        plt.plot(np.nanmean(obs_data['Cv'],0),obs_data['height'], 'k--', linewidth = 3, label = 'Obs-on-model-grid')
-        ax.fill_betweenx(obs_data['height'],np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
-            np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
-        plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), color = 'purple', linewidth = 3, label = 'Obs')
-        plt.plot(np.nanmean(obs['cloudfractions']['cloudfraction_total'],0),np.squeeze(obs['cloudfractions']['height']),
-            'k--', linewidth = 3, label = 'Obs-on-artificial-grid')
+        # plt.plot(np.nanmean(obs_data['Cv'],0),obs_data['height'], 'k--', linewidth = 3, label = 'Obs-on-model-grid')
+        # ax.fill_betweenx(obs_data['height'],np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+        #     np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+        # plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), color = 'purple', linewidth = 3, label = 'Obs')
+        # plt.plot(np.nanmean(obs['cloudfractions']['cloudfraction_total'],0),np.squeeze(obs['cloudfractions']['height']),
+        #     'k--', linewidth = 3, label = 'Obs-on-artificial-grid')
         ax.fill_betweenx(np.squeeze(obs['cloudfractions']['height']),np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) - np.nanstd(obs['cloudfractions']['cloudfraction_total'],0),
             np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) + np.nanstd(obs['cloudfractions']['cloudfraction_total'],0), color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -196,11 +196,12 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
         ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
             np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
     else:
-        plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+        plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs Cv')
         ax.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv_adv'],0) - np.nanstd(obs_data['Cv'],0),
             np.nanmean(obs_data['Cv_adv'],0) + np.nanstd(obs_data['Cv_adv'],0), color = 'lightgrey', alpha = 0.5)
-        # plt.plot(np.nanmean(obs['cloudfractions']['cloudfraction_total'],0),np.squeeze(obs['cloudfractions']['height']),
-        #     '--', color = 'grey', linewidth = 3, label = 'Obs-on-artificial-grid')
+        plt.plot(np.nanmean(obs['cloudfractions']['cloudfraction_total'],0),np.squeeze(obs['cloudfractions']['height']),
+            '--', color = 'grey', linewidth = 3, label = 'Obs-on-artificial-grid')
+        plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), color = 'purple', linewidth = 3, label = 'Obs Cv_adv')
         # ax.fill_betweenx(np.squeeze(obs['cloudfractions']['height']),np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) - np.nanstd(obs['cloudfractions']['cloudfraction_total'],0),
         #     np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) + np.nanstd(obs['cloudfractions']['cloudfraction_total'],0), color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -3423,7 +3424,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
