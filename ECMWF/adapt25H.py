@@ -265,7 +265,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
                 dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
                 dat.comment = 'Horizontal grid size.'
                 dat.units = 'km'
-                dat[:] = nc1.variables['horizontal_resolution']
+                dat[:] = nc1.variables['horizontal_resolution'][:]
                 continue
             elif diag == 'latitude':
                 print 'Diagnostic is latitude which needs to be defined separately...'
