@@ -1020,7 +1020,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
     plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
-    # plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], 'k', label = 'Obs_HATPRO')
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
@@ -1039,7 +1039,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-CN-QF30_ecmwf_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-CN-QF30_ecmwf-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
