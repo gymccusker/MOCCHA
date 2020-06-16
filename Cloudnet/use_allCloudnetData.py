@@ -3531,7 +3531,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'UM'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
