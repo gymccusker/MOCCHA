@@ -3453,7 +3453,7 @@ def main():
         # cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
-        cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
+        cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
