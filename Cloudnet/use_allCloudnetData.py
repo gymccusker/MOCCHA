@@ -1034,7 +1034,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'thistle', alpha = 0.5)
-    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
+    # plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
@@ -1053,7 +1053,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-CN-QF30_metum-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-CN-QF10_ecmwf_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -3545,7 +3545,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'UM'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
