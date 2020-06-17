@@ -1046,7 +1046,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-CN-QF30_ecmwf-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-CN-QF10_ecmwf-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -3538,7 +3538,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
