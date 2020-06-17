@@ -1017,8 +1017,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
     if obs_switch == 'RADAR':
-        obs_data['lwp'][obs_data['lwp'][:,0] < 0] = np.nan     ### index 0 is mean
-        obs_data['lwp'][obs_data['lwp'][:,0] > 0.8] = np.nan    ### >0.8 == >800g/m2
+        obs_data['lwp'][obs_data['lwp'] < 0] = np.nan     ### index 0 is mean
+        obs_data['lwp'][obs_data['lwp'] > 0.8] = np.nan    ### >0.8 == >800g/m2
     else:
         obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
         obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
