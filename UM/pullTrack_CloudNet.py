@@ -5694,7 +5694,8 @@ def excludeZeros(cube):
     print 'Want to exclude zeros in the following fields:'
     ### list of stash items where we want to exclude zeros
     STASH = ['m01s00i012','m01s00i254','m01s00i075','m01s00i076','m01s00i078',
-        'm01s00i079','m01s00i081','m01s00i271','m01s00i273','m01s00i272']
+        'm01s00i079','m01s00i081','m01s00i271','m01s00i273','m01s00i272',
+        'm01s00i083','m01s00i084','m01s00i088']
     print STASH
 
     print 'Diag is:'
