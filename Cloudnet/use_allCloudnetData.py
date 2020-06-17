@@ -1022,6 +1022,10 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     else:
         obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
         obs_data['lwp'][obs_data['lwp'][:,0] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+        obs_data['lwp'][obs_data['lwp'][:,1] < 0, 0] = np.nan     ### index 1 is min
+        obs_data['lwp'][obs_data['lwp'][:,1] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
+        obs_data['lwp'][obs_data['lwp'][:,2] < 0, 0] = np.nan     ### index 2 is max
+        obs_data['lwp'][obs_data['lwp'][:,2] > 0.8, 0] = np.nan    ### >0.8 == >800g/m2
 
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, 'k', label = 'Obs_RADAR')
