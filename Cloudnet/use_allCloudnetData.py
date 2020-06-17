@@ -1027,6 +1027,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, 'k', label = 'Obs_RADAR')
     else:
         plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+        plt.plot(obs_data['time'][:],(obs_data['lwp'][:,0] + obs_data['lwp'][:,3])*1e3, 'k--')
+        plt.plot(obs_data['time'][:],(obs_data['lwp'][:,0] - obs_data['lwp'][:,3])*1e3, 'k--')
     plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
