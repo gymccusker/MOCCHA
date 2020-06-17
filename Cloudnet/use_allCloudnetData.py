@@ -1028,12 +1028,13 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         obs_data['lwp'][obs_data['lwp'][:,2] > 0.8, 2] = np.nan    ### >0.8 == >800g/m2
 
     if obs_switch == 'RADAR':
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, 'k', label = 'Obs_RADAR')
+        plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, 'k', label = 'Obs')
+        plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
-    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO')
+        # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
+        ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'thistle', alpha = 0.5)
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
     plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
@@ -1052,7 +1053,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-CN-QF30_ecmwf-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-CN-QF10_ecmwf-HATPRO_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -3576,7 +3577,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
