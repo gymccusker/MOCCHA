@@ -1043,7 +1043,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
-    # plt.ylim([0,10000])
+    plt.ylim([0,800])
     plt.xlim([doy[0],doy[-1]])
     plt.legend()
 
