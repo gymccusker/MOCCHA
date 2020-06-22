@@ -447,7 +447,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid_gt1e-6kgm3_226-257DOY.png'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid_gt1e-6kgm3_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
