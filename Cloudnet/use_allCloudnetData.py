@@ -1421,7 +1421,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1481,7 +1481,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
 
     plt.subplot(121)
     ax1 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid')
     ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -1503,7 +1503,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
 
     plt.subplot(122)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid')
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(um_data['model_iwc_filtered'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -1529,8 +1529,9 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
-    # plt.savefig(fileout, dpi=300)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+    plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
@@ -4399,8 +4400,8 @@ def main():
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
