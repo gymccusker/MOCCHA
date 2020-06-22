@@ -447,7 +447,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid-QF90_gt1e-6kgm3_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid-QF10_gt1e-6kgm3_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1370,7 +1370,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     else:
         plt.subplot(121)
         ax1 = plt.gca()
-        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid')
         ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][meltobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
             np.nanmean(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][meltobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][melt,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -1392,7 +1392,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
 
         plt.subplot(122)
         ax2 = plt.gca()
-        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0), 'k--', linewidth = 3, label = 'Obs')
+        plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid')
         ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freezeobs,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
             np.nanmean(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freezeobs,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
@@ -1418,8 +1418,8 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
         print ('')
 
         if month_flag == -1:
-            fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
-        # plt.savefig(fileout, dpi=300)
+            fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+        plt.savefig(fileout, dpi=300)
         plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -4367,7 +4367,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -4400,7 +4400,7 @@ def main():
     # plot cloudnet split season figures with missing files accounted for
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
