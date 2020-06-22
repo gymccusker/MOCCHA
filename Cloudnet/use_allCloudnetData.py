@@ -1300,14 +1300,14 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    # obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
+    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    # um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
-    # ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
-    # misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
 
     melt = np.where(um_data['time'] < 240.0)
     freeze = np.where(um_data['time'] >= 240.0)
@@ -1417,7 +1417,7 @@ def plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
         print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_UM_IFS_CASIM-100_LWC_splitSeason_wMissingFiles.svg'
     plt.savefig(fileout, dpi=300)
     plt.show()
 
