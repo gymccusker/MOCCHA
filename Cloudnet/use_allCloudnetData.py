@@ -443,8 +443,8 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-InstRes_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -3545,7 +3545,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
@@ -4363,7 +4363,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -4385,7 +4385,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
