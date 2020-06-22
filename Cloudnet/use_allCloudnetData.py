@@ -3549,7 +3549,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
@@ -3581,7 +3581,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF90_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
