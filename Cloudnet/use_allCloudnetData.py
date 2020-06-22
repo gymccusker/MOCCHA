@@ -389,10 +389,14 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
     obs_data['lwc'][obs_data['lwc'] >= 1e-3] = np.nan       ## exclude >1g/m3
+    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan       ## exclude <0.001g/m3
     um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
     # um_data['lwc'][um_data['lwc'] <= 0.0] = np.nan
     # ifs_data['lwc'][ifs_data['lwc'] <= 0.0] = np.nan
     # ifs_data['lwc'][ifs_data['lwc'] >= 20.0] = np.nan
@@ -443,7 +447,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid_226-257DOY.png'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWC-' + obs_switch + 'grid_gt1e-6kgm3_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
