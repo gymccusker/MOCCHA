@@ -606,7 +606,6 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print (um_data.keys())
 
     #### set flagged um_data to nans
-    #### set flagged um_data to nans
     obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
     obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
@@ -644,8 +643,8 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -3657,7 +3656,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'IFS'
+    obs_switch = 'RADAR'
 
     ### only works on laptop for now
 
