@@ -804,7 +804,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
-    ax = plt.gca()
+    ax1 = plt.gca()
 
     print (um_data.keys())
 
