@@ -819,13 +819,14 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     #### set flagged lwc to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <=0.0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
 
     #### ignore lwc values <1e-6 kg/m3
     obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
+    obs_data['lwc'][obs_data['lwc'] >= 1e-3] = np.nan       ## exclude >1g/m3
     um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
@@ -873,7 +874,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlabel('Total water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    plt.xlim([0,0.2])
+    plt.xlim([0,0.25])
     plt.legend()
 
     print ('******')
@@ -882,7 +883,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_gt1e-6kgm3_UM_IFS_CASIM-100_TWC_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF90_gt1e-6kgm3_UM_IFS_CASIM-100_TWC_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
