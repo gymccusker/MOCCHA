@@ -487,7 +487,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,8))
+    plt.figure(figsize=(10,9))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
@@ -510,39 +510,42 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     # newcolors[:20, :] = greyclr
     # newcmp = ListedColormap(newcolors)
 
+    ### set colour max as var
+    cmax = 0.3
+
     plt.subplot(411)
     plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
-        vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = cmax)
         # cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,5000])
     plt.title('Obs')
     plt.colorbar()
 
     plt.subplot(412)
     plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
-        vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = cmax)
         # cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,5000])
     plt.title('UM_RA2M')
     plt.colorbar()
 
     plt.subplot(413)
     plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
-        vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = cmax)
         # cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,5000])
     plt.title('UM_CASIM-100')
     plt.colorbar()
 
     plt.subplot(414)
     plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
-        vmin = 0.0, vmax = 0.5)
+        vmin = 0.0, vmax = cmax)
         # cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,5000])
     plt.xlabel('DOY')
     plt.title('ECMWF_IFS')
     plt.colorbar()
@@ -554,7 +557,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf90_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3591,7 +3594,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF90_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
