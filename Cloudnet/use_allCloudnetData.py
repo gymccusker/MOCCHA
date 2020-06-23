@@ -1471,15 +1471,15 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
 
     obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
-    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
 
-    # obs_data['iwc'][obs_data['iwc'] < 1e-7] = np.nan
-    # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-7] = np.nan
-    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-7] = np.nan
-    # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-7] = np.nan
+    ### restrict based on iwc
+    # obs_data['iwc'][obs_data['iwc'] < 1e-6] = np.nan
+    # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-6] = np.nan
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-6] = np.nan
+    # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
 
     ### restrict based on lwc
     # obs_data['iwc'][obs_data['lwc'] < 1e-6] = np.nan
@@ -1540,8 +1540,8 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_LWCgt1e-6kgm3_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
-    plt.savefig(fileout, dpi=300)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_UM_IFS_CASIM-100_IWC_splitSeason_wMissingFiles.svg'
+    # plt.savefig(fileout, dpi=300)
     plt.show()
 
 def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
