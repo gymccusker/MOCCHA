@@ -561,7 +561,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.savefig(fileout)
     plt.show()
 
-def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -617,7 +617,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
@@ -626,25 +626,30 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     # newcolors[:20, :] = greyclr
     # newcmp = ListedColormap(newcolors)
 
+    cmax = 0.08
+
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['iwc'])*1e3,
-        )#cmap = newcmp)
+    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['iwc'])*1e3,
+        vmin = 0.0, vmax = cmax)
+        #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('Obs')
     plt.colorbar()
 
     plt.subplot(412)
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_iwc_filtered'])*1e3,
-        )#cmap = newcmp)
+    plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_iwc_filtered'])*1e3,
+        vmin = 0.0, vmax = cmax)
+        #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_RA2M')
     plt.colorbar()
 
     plt.subplot(413)
-    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_iwc_filtered'])*1e3,
-        )#cmap = newcmp)
+    plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_iwc_filtered'])*1e3,
+        vmin = 0.0, vmax = cmax)
+        #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100')
@@ -652,7 +657,8 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(414)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_iwc_filtered'])*1e3,
-        )#cmap = newcmp)
+        vmin = 0.0, vmax = cmax)
+        #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlabel('DOY')
@@ -666,7 +672,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_IWCTimeseries_226-257DOY.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_IWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3594,7 +3600,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF90_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
@@ -4388,8 +4394,8 @@ def main():
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
