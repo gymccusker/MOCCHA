@@ -713,7 +713,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(8,9))
+    plt.figure(figsize=(10,9))
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
