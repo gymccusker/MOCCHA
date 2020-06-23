@@ -230,7 +230,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -451,7 +451,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.savefig(fileout)
     plt.show()
 
-def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -498,11 +498,11 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -554,7 +554,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -4384,10 +4384,10 @@ def main():
     # -------------------------------------------------------------
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -4411,7 +4411,7 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
