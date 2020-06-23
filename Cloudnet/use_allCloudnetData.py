@@ -1480,10 +1480,12 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-7] = np.nan
     # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-7] = np.nan
     # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-7] = np.nan
-    obs_data['iwc'][obs_data['lwc'] < 1e-6] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_lwc'] < 1e-6] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_lwc'] < 1e-6] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_lwc'] < 1e-6] = np.nan    
+
+    ### restrict based on lwc
+    # obs_data['iwc'][obs_data['lwc'] < 1e-6] = np.nan
+    # um_data['model_iwc_filtered'][um_data['model_lwc'] < 1e-6] = np.nan
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_lwc'] < 1e-6] = np.nan
+    # misc_data['model_iwc_filtered'][misc_data['model_lwc'] < 1e-6] = np.nan
 
     melt = np.where(um_data['time'] < 240.0)
     freeze = np.where(um_data['time'] >= 240.0)
