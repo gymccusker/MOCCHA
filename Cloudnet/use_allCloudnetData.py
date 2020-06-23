@@ -830,6 +830,12 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
 
+    #### ignore iwc values <1e-6 kg/m3
+    obs_data['iwc'][obs_data['iwc'] < 1e-6] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-6] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-6] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
+
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
