@@ -790,18 +790,18 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 12
+    MED_SIZE = 14
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,9))
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 1.0, left = 0.1,
-            hspace = 0.4, wspace = 0.2)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,7))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+            hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
     ax1 = plt.gca()
@@ -809,20 +809,20 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print (um_data.keys())
 
     #### set flagged um_data to nans
-    obs_data['iwc'][obs_data['iwc'] < 0] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = np.nan
+    obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
+    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] <=0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
@@ -861,7 +861,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlabel('Total water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    plt.xlim([0,0.05])
+    plt.xlim([0,0.2])
     plt.legend()
 
     print ('******')
@@ -3768,7 +3768,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'RADAR'
+    obs_switch = 'IFS'
 
     ### only works on laptop for now
 
