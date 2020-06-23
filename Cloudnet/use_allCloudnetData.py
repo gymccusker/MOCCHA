@@ -840,6 +840,118 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     twc0 = np.transpose(obs_data['twc'])*1e3
 
+    if obs_switch == 'RADAR':
+        plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,obs_data['height'][:394], 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
+        ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
+            np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+    else:
+        plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
+        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
+            np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(um_data['model_iwc_filtered'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_iwc_filtered'],0)*1e3 - np.nanstd(um_data['model_iwc_filtered']*1e3,0),
+        np.nanmean(um_data['model_iwc_filtered'],0)*1e3 + np.nanstd(um_data['model_iwc_filtered'],0)*1e3, color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 - np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3,
+        np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 + np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(misc_data['model_iwc_filtered'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'CASIM-100')
+    ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_iwc_filtered'],0)*1e3 - np.nanstd(misc_data['model_iwc_filtered']*1e3,0),
+        np.nanmean(misc_data['model_iwc_filtered'],0)*1e3 + np.nanstd(misc_data['model_iwc_filtered'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+
+    plt.xlabel('Ice water content [g/m3]')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([0,0.05])
+    plt.legend()
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_TWC_226-257DOY.svg'
+    plt.savefig(fileout)
+    plt.show()
+
+def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    import matplotlib.colors as colors
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting IWC timeseries for whole drift period:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 12
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,9))
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.2)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    print (um_data.keys())
+
+    #### set flagged um_data to nans
+    obs_data['iwc'][obs_data['iwc'] < 0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = np.nan
+    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = np.nan
+
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
+
+    ###----------------------------------------------------------------
+    ###         Calculate total water content
+    ###----------------------------------------------------------------
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:20, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+
+    twc0 = np.transpose(obs_data['twc'])*1e3
+
     cmax = 0.3
 
     plt.subplot(411)
