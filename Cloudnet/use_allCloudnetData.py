@@ -754,7 +754,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     twc0 = np.transpose(obs_data['twc'])*1e3
 
-    cmax = 0.1
+    cmax = 0.3
 
     plt.subplot(411)
     plt.pcolormesh(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
