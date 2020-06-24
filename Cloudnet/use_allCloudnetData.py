@@ -982,32 +982,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(412)
-    # plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-    #     vmin = 0.0, vmax = cmax,
-    #     cmap = newcmp)
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
-        cmap = newcmp)
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.title('UM_RA2M')
-    plt.colorbar()
-
-    plt.subplot(413)
-    # plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-    #     vmin = 0.0, vmax = cmax,
-    #     cmap = newcmp)
-    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
-        cmap = newcmp)
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.title('UM_CASIM-100')
-    plt.colorbar()
-
-    plt.subplot(414)
     # plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
@@ -1022,14 +996,40 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
 
+    plt.subplot(413)
+    # plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+        np.arange(0,0.31,0.001),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_RA2M')
+    plt.colorbar()
+
+    plt.subplot(414)
+    # plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+        np.arange(0,0.31,0.001),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('UM_CASIM-100')
+    plt.colorbar()
+
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_TWCTimeseries_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
