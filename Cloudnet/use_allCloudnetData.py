@@ -3191,7 +3191,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),obs['inversions']['thetaE']['invbase'])
     plt.xlabel('DOY')
     plt.ylabel('Z [m]')
-    plt.savefig('FIGS/' + var + '_obs_inversionDetection_timeseries.png')
+    # plt.savefig('FIGS/' + var + '_obs_inversionDetection_timeseries.png')
     plt.show()
 
     ### save inversion base index into dictionary
@@ -3450,7 +3450,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.ylim([0,3e3])
     plt.ylabel('Z [m]')
     plt.xlabel('DOY')
-    plt.savefig('FIGS/' + var + '_model_inversionDetection_timeseries.png')
+    # plt.savefig('FIGS/' + var + '_model_inversionDetection_timeseries.png')
     plt.show()
 
     ### set 6 hourly cloudnet Cv arrays as tempvars
@@ -3556,7 +3556,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.ylabel('Z [scaled]')
     plt.xlabel('DOY')
-    plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
+    # plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
     plt.show()
 
     ### obs
@@ -3582,7 +3582,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
-    plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
+    # plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
     plt.show()
 
     ### um_casim-100
@@ -3608,7 +3608,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
-    plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
+    # plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
     plt.show()
 
     ####================================================================
@@ -3674,7 +3674,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     if var == 'Cv': plt.xlabel('Cv')
     plt.ylabel('scaled Z \n (0 = lowest level; 1 = inversion base height)')
     plt.legend()
-    plt.savefig('FIGS/' + var + '_scaledZ.svg')
+    # plt.savefig('FIGS/' + var + '_scaledZ.svg')
     plt.show()
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
@@ -4680,8 +4680,8 @@ def main():
     # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
 
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
     # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
