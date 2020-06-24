@@ -1279,7 +1279,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf90_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3813,7 +3813,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF90_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
