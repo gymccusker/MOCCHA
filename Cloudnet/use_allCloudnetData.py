@@ -3084,12 +3084,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
         misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
     elif var == 'lwc':
-        obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-        obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-        um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-        ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+        obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+        # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+        um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+        ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
         ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
-        misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+        misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
         #### change units to g/cm3
         obs_data['lwc'] = obs_data['lwc'] * 1e3
         um_data['model_lwc'] = um_data['model_lwc'] * 1e3
@@ -4676,9 +4676,10 @@ def main():
     # -------------------------------------------------------------
     ### use IFS named directory to allocate variable to plot
     # -------------------------------------------------------------
-    if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
-    if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
-    if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
+    # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
+    # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
+    # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
+    var = 'lwc'
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
