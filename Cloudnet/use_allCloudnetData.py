@@ -1279,7 +1279,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf90_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3813,7 +3813,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF90_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
@@ -4601,7 +4601,7 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -4623,7 +4623,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
