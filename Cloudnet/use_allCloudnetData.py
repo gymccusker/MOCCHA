@@ -915,7 +915,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 12
+    MED_SIZE = 14
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -925,7 +925,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(10,9))
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 1.0, left = 0.1,
+    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 1.05, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
@@ -977,7 +977,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,10000])
     plt.title('Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
@@ -990,7 +990,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,10000])
     plt.title('ECMWF_IFS')
     plt.colorbar()
 
@@ -1004,7 +1004,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,10000])
     plt.title('UM_RA2M')
     plt.colorbar()
 
@@ -1017,10 +1017,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
+    plt.ylim([0,10000])
     plt.title('UM_CASIM-100')
     plt.colorbar()
-    plt.xlabel('DOY')    
+    plt.xlabel('Day of Year')
 
     print ('******')
     print ('')
@@ -1028,7 +1028,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
