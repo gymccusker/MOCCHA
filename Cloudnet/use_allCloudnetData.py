@@ -934,7 +934,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print (um_data.keys())
 
     #### set flagged um_data to nans
-    obs_data['iwc'][obs_data['iwc'] < 0] = np.nan
+    obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = np.nan
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = np.nan
@@ -942,9 +942,9 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = np.nan
 
     #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+    obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
     # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
@@ -960,7 +960,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:20, :] = greyclr
+    newcolors[0, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
     twc0 = np.transpose(obs_data['twc'])*1e3
@@ -968,7 +968,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.3
 
     plt.subplot(411)
-    plt.pcolormesh(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         vmin = 0.0, vmax = cmax,
         cmap = newcmp)
