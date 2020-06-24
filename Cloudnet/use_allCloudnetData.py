@@ -3090,19 +3090,19 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
         ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
         misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
-        #### change units to g/cm3
+        #### change units to g/m3
         obs_data['lwc'] = obs_data['lwc'] * 1e3
         um_data['model_lwc'] = um_data['model_lwc'] * 1e3
         misc_data['model_lwc'] = misc_data['model_lwc'] * 1e3
         ifs_data['model_lwc'] = ifs_data['model_lwc'] * 1e3
     elif var == 'iwc':
-        obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
-        obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
-        um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
-        ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+        obs_data['iwc'][obs_data['iwc'] == -999] = 0.0
+        # obs_data['iwc'][obs_data['iwc'] == 0] = np.nan
+        um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+        ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
         # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
-        misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
-        #### change units to g/cm3
+        misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+        #### change units to g/m3
         obs_data['iwc'] = obs_data['iwc'] * 1e3
         um_data['model_iwc_filtered'] = um_data['model_iwc_filtered'] * 1e3
         misc_data['model_iwc_filtered'] = misc_data['model_iwc_filtered'] * 1e3
@@ -3669,12 +3669,14 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         np.nanmean(casimmean,0) + np.nanstd(casimmean,0), color = 'mediumaquamarine', alpha = 0.15)
     # ax1.fill_betweenx(data2['scaledZ'],np.nanmean(casimmean,0) - np.nanstd(data2['scaled' + var]['stdev'],0),
     #     np.nanmean(casimmean,0) + np.nanstd(data2['scaled' + var]['stdev'],0), color = 'mediumaquamarine', alpha = 0.15)
-    plt.xlim([0,1])
+    if var == 'Cv': plt.xlim([0,1])
+    if var == 'lwc': plt.xlim([0,0.2])
+    if var == 'iwc': plt.xlim([0,0.02])
     plt.ylim([0,1])
     if var == 'Cv': plt.xlabel('Cv')
     plt.ylabel('scaled Z \n (0 = lowest level; 1 = inversion base height)')
     plt.legend()
-    # plt.savefig('FIGS/' + var + '_scaledZ.svg')
+    plt.savefig('FIGS/' + var + '_Obs-IFSgrid-QF10_scaledZ.svg')
     plt.show()
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
