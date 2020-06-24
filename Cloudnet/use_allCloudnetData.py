@@ -991,7 +991,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    plt.xlabel('DOY')
     plt.title('ECMWF_IFS')
     plt.colorbar()
 
@@ -1021,6 +1020,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100')
     plt.colorbar()
+    plt.xlabel('DOY')    
 
     print ('******')
     print ('')
