@@ -957,11 +957,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
 
-    # viridis = mpl_cm.get_cmap('viridis', 256)
-    # newcolors = viridis(np.linspace(0, 1, 256))
-    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    # newcolors[:20, :] = greyclr
-    # newcmp = ListedColormap(newcolors)
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:20, :] = greyclr
+    newcmp = ListedColormap(newcolors)
 
     twc0 = np.transpose(obs_data['twc'])*1e3
 
@@ -970,8 +970,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.subplot(411)
     plt.pcolormesh(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        vmin = 0.0, vmax = cmax)
-        #cmap = newcmp)
+        vmin = 0.0, vmax = cmax,
+        cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('Obs-' + obs_switch + 'grid')
@@ -979,8 +979,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(412)
     plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax)
-        #cmap = newcmp)
+        vmin = 0.0, vmax = cmax,
+        cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_RA2M')
@@ -988,8 +988,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(413)
     plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax)
-        #cmap = newcmp)
+        vmin = 0.0, vmax = cmax,
+        cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100')
@@ -997,8 +997,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(414)
     plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax)
-        #cmap = newcmp)
+        vmin = 0.0, vmax = cmax,
+        cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlabel('DOY')
@@ -1013,7 +1013,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_TWCTimeseries_226-257DOY.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
