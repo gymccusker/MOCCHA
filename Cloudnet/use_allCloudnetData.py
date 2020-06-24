@@ -935,19 +935,19 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     #### set flagged um_data to nans
     obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
     # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
     # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
@@ -968,9 +968,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.3
 
     plt.subplot(411)
-    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+    # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+    #     # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        vmin = 0.0, vmax = cmax,
+        np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -978,8 +982,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(412)
-    plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax,
+    # plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+        np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -987,8 +995,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(413)
-    plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax,
+    # plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+        np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -996,8 +1008,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.colorbar()
 
     plt.subplot(414)
-    plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
-        vmin = 0.0, vmax = cmax,
+    # plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
+        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
+        np.arange(0,0.31,0.001),
         cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
