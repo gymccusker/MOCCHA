@@ -5470,6 +5470,12 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
+def readGlobal(grid_filename):
+
+    
+
+    return tim, ilat, ilon
+
 def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     import iris.plot as iplt
