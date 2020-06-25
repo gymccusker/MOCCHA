@@ -7675,23 +7675,23 @@ def main():
                     doutfile = nc_outfile[:-3] + '_d.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
 
-                    if stream == '_pa012':
+                    if stream[:3] == '_pa':
                         if not os.path.exists(aoutfile):
                             print aoutfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
-                    elif stream == '_pb009':
+                    elif stream[:3] == '_pb':
                         if not os.path.exists(boutfile):
                             print boutfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
-                    elif stream == '_pd011':
+                    elif stream[:3] == '_pd':
                         if not os.path.exists(doutfile):
                             print doutfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
-                    elif stream == '_pe011':
+                    elif stream[:3] == '_pe':
                         if not os.path.exists(eoutfile):
                             print eoutfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
-                    elif stream == '_pc011':
+                    elif stream[:3] == '_pc':
                         if not os.path.exists(nc_outfile):
                             print nc_outfile + ' does not exist, so pulling ship track...'
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
