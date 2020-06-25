@@ -5535,7 +5535,7 @@ def readGlobal(cube, ship_data):
     ## plot global grid outline
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,-50:,0:100])
+    qplt.outline(cube[0][0,-25:,0:100])
 
 
     #################################################################
@@ -5544,14 +5544,14 @@ def readGlobal(cube, ship_data):
     ### Plot full track as line
     drift_index = iceDrift(ship_data)
     inIce_index = inIce(ship_data)
-    plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-             color = 'yellow', linewidth = 2,
-             transform = ccrs.PlateCarree(), label = 'Whole',
-             )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
+    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
+    #          color = 'yellow', linewidth = 2,
+    #          transform = ccrs.PlateCarree(), label = 'Whole',
+    #          )
+    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'In Ice',
+    #          )
     plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
              'k^', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
