@@ -7647,8 +7647,8 @@ def main():
                     ### Use the following to plot quick maps of loaded cubes
                     ### -------------------------------------------------------------
 
-                    hour = 0
-                    figure = plot_cartmap(ship_data, cube, hour, grid_filename)
+                    # hour = 0
+                    # figure = plot_cartmap(ship_data, cube, hour, grid_filename)
 
                     ########################################################################
                     ### -------------------------------------------------------------
