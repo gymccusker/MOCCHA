@@ -7615,7 +7615,7 @@ def main():
 
             for stream in names:
                 ### -------------------------------------------------------------------------
-                ### define output filenames/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/4_RA2M_CON/20180816T1200Z/20180816T1200Z_HighArctic_1p5km_RA2M_CON_pe011.pp
+                ### define output filename
                 ### -------------------------------------------------------------------------
                 if out_dir == '7_u-bn068_RA2T_CON/':    ## choose lam or global for 7_u-bn068
                     #### LAM
