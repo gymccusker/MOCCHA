@@ -5535,7 +5535,7 @@ def readGlobal(cube, ship_data):
     ## plot global grid outline
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,:,:])
+    qplt.outline(cube[0][0,-50:,0:100])
 
     #################################################################
     ## plot ship track
@@ -5556,6 +5556,7 @@ def readGlobal(cube, ship_data):
              transform = ccrs.PlateCarree(),
              )
 
+    plt.show()
 
     return tim, ilat, ilon
 
