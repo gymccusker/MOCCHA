@@ -7625,7 +7625,7 @@ def main():
                     filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
                     exist_flag = 1
