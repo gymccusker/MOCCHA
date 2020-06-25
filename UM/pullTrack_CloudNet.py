@@ -5535,7 +5535,7 @@ def readGlobal(cube, ship_data):
     ## plot global grid outline
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,-15:,0:200])
+    qplt.outline(cube[0][0,-10:,0:250])
 
 
     #################################################################
@@ -5552,14 +5552,14 @@ def readGlobal(cube, ship_data):
     #          color = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(), label = 'In Ice',
     #          )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
+    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
+    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
              color = 'red', linewidth = 4,
              transform = ccrs.PlateCarree(), label = 'Drift',
