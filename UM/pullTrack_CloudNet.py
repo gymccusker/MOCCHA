@@ -5436,8 +5436,8 @@ def trackShip(data):
     ###################################
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==25,data.values[:,1]==8),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==26,data.values[:,1]==8),data.values[:,3]==1))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==28,data.values[:,1]==8),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==29,data.values[:,1]==8),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print '******'
@@ -5472,21 +5472,11 @@ def readGriddedTrack(grid_filename):
 
 def readGlobal(cube):
 
-    # import pandas as pd
-    #
-    # print '******'
-    # print ''
-    # print 'Reading ' + grid_filename + ' file with pandas'
-    # print ''
-    #
-    # data = pd.read_csv(grid_filename, sep = " ")
-    # values = data.values
-    #
-    # tim = values[:,1]
-    # ilon = values[:,2]
-    # ilat = values[:,3]
-    #
-    # return tim, ilat, ilon
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
 
     print '******'
     print ''
@@ -5507,6 +5497,65 @@ def readGlobal(cube):
     ###---------------------------------------------------------------------------------
     wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY MAP
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=SMALL_SIZE)
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+
+    #################################################################
+    ## create figure and axes instances
+    #################################################################
+    plt.figure(figsize=(6,8))
+    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+
+    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+
+    #################################################################
+    ## add geographic features/guides for reference
+    #################################################################
+    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    ax.gridlines()
+
+    #################################################################
+    ## plot global grid outline
+    #################################################################
+    ### draw outline of grid
+    qplt.outline(cube[diag][0,:,:])
+
+    #################################################################
+    ## plot ship track
+    #################################################################
+    trackShip_index = trackShip(ship_data)
+
+    ### Plot tracks as line plot
+    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+             color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(),
+             )
+
 
     return tim, ilat, ilon
 
