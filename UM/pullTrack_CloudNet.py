@@ -5535,7 +5535,7 @@ def readGlobal(cube, ship_data):
     ## plot global grid outline
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,-10:,:-70])
+    qplt.outline(cube[0][0,-10:,:-70])      ### covers whole drift
 
 
     #################################################################
