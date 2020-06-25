@@ -7641,10 +7641,14 @@ def main():
                         cube = iris.load(filename, global_con, callback)
                         con_flag = 1            # constraint flag
 
-                        # -------------------------------------------------------------
+                    # ------------------------------------------------------------
 
-                    # hour = 0
-                    # figure = plot_cartmap(ship_data, cube, hour, grid_filename)
+                    ### -------------------------------------------------------------
+                    ### Use the following to plot quick maps of loaded cubes
+                    ### -------------------------------------------------------------
+
+                    hour = 0
+                    figure = plot_cartmap(ship_data, cube, hour, grid_filename)
 
                     ### -------------------------------------------------------------
                     ### Pull gridded ship track from cube
