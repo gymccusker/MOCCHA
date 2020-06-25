@@ -5828,7 +5828,7 @@ def fixHeight(data, cube):
 
     return cubedata
 
-def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model):
+def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -5876,7 +5876,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model):
     if model == 'lam':
         tim, ilat, ilon = readGriddedTrack(grid_filename)
     elif model == 'glm':
-        tim, ilat, ilon = readGlobal(cube)
+        tim, ilat, ilon = readGlobal(cube, ship_data)
     else:
         print 'Model option is not valid'
 
@@ -7712,23 +7712,23 @@ def main():
                     if stream[:3] == '_pa':
                         if not os.path.exists(aoutfile):
                             print aoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data)
                     elif stream[:3] == '_pb':
                         if not os.path.exists(boutfile):
                             print boutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data)
                     elif stream[:3] == '_pd':
                         if not os.path.exists(doutfile):
                             print doutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data)
                     elif stream[:3] == '_pe':
                         if not os.path.exists(eoutfile):
                             print eoutfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data)
                     elif stream[:3] == '_pc':
                         if not os.path.exists(nc_outfile):
                             print nc_outfile + ' does not exist, so pulling ship track...'
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model)
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data)
                     else:
                         print 'Valid stream not found.'
 
