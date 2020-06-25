@@ -5535,7 +5535,7 @@ def readGlobal(cube, ship_data):
     ## plot global grid outline
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,-10:,0:250])
+    qplt.outline(cube[0][0,-10:,:])
 
 
     #################################################################
