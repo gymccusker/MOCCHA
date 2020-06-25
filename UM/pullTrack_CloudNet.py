@@ -7572,9 +7572,11 @@ def main():
             ### defines which stash variables to load - should be within a loop
 
     for date in date_dir:
+        ### just do 2018 dates
+        # if date[0:4] == '2018':        
         ### just do first date:
         if date == date_dir[0]:
-        # if date[0:4] == '2018':
+        ### just do specific date
         # if date[0:8] == '20180823':
             # # -------------------------------------------------------------
             # # Load cube
@@ -7617,10 +7619,10 @@ def main():
                 ### -------------------------------------------------------------------------
                 if out_dir == '7_u-bn068_RA2T_CON/':    ## choose lam or global for 7_u-bn068
                     #### LAM
-                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     #### GLM
-                    # if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
-                    # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+                    if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
+                    filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                 # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
