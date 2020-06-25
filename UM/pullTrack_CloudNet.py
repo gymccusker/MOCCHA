@@ -5470,9 +5470,28 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
-def readGlobal(grid_filename):
+def readGlobal(cube):
 
+    # import pandas as pd
+    #
+    # print '******'
+    # print ''
+    # print 'Reading ' + grid_filename + ' file with pandas'
+    # print ''
+    #
+    # data = pd.read_csv(grid_filename, sep = " ")
+    # values = data.values
+    #
+    # tim = values[:,1]
+    # ilon = values[:,2]
+    # ilat = values[:,3]
+    #
+    # return tim, ilat, ilon
 
+    print '******'
+    print ''
+    print 'Defining longitude and latitude boundaries:'
+    print ''
 
     return tim, ilat, ilon
 
@@ -5842,7 +5861,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model):
     if model == 'lam':
         tim, ilat, ilon = readGriddedTrack(grid_filename)
     elif model == 'glm':
-        tim, ilat, ilon = readGlobal(grid_filename)
+        tim, ilat, ilon = readGlobal(cube)
     else:
         print 'Model option is not valid'
 
