@@ -5493,6 +5493,16 @@ def readGlobal(cube):
     print 'Defining longitude and latitude boundaries:'
     print ''
 
+    lats = cube[0].dim_coords[1].points
+    lons = cube[0].dim_coords[2].points
+
+    ###---------------------------------------------------------------------------------
+    ### find northern and southern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+
+
     return tim, ilat, ilon
 
 def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
