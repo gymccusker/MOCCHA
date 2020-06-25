@@ -5502,6 +5502,11 @@ def readGlobal(cube):
     nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
 
+    ###---------------------------------------------------------------------------------
+    ### find western and eastern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
 
     return tim, ilat, ilon
 
