@@ -7573,7 +7573,7 @@ def main():
 
     for date in date_dir:
         ### just do 2018 dates
-        # if date[0:4] == '2018':        
+        # if date[0:4] == '2018':
         ### just do first date:
         if date == date_dir[0]:
         ### just do specific date
@@ -7606,7 +7606,7 @@ def main():
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
             # names = ['_pa012','_pb009','_pd011','_pe011','_pc011']         ### make pa + pb files first, then append to pc
-            names = ['_pb009']         ### make pa + pb files first, then append to pc
+            names = ['_pb009']         ### only do pb files as a test
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
