@@ -5470,7 +5470,7 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
-def readGlobal(cube):
+def readGlobal(cube, ship_data):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
