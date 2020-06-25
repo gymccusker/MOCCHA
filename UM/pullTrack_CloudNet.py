@@ -7650,12 +7650,13 @@ def main():
                     hour = 0
                     figure = plot_cartmap(ship_data, cube, hour, grid_filename)
 
+                    ########################################################################
                     ### -------------------------------------------------------------
                     ### Pull gridded ship track from cube
                     ### -------------------------------------------------------------
-
+                    ########################################################################
                     # -------------------------------------------------------------
-                    ### use the following if only want the exact ship position and no variability
+                    ### 1. use the following if only want the exact ship position and no variability
                     # -------------------------------------------------------------
                     ### LOAD CUBE
                     nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
@@ -7689,7 +7690,7 @@ def main():
                         print 'Valid stream not found.'
 
                     # -------------------------------------------------------------
-                    ### use the following if only want the variability over a certain grid size
+                    ### 2. use the following if only want the variability over a certain grid size
                     # -------------------------------------------------------------
                     ### LOAD CUBE
                     # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum_VAR.nc'
@@ -7717,6 +7718,7 @@ def main():
                     # else:
                     #     print 'Valid stream not found.'
 
+                    ########################################################################
 
                 else:
                     print ''
