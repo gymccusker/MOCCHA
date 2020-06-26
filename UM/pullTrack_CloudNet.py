@@ -7724,7 +7724,7 @@ def main():
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
             # names = ['_pa012','_pb009','_pd011','_pe011','_pc011']         ### make pa + pb files first, then append to pc
-            names = ['_pc011']         ### only do specific files as a test
+            names = ['_pb009']         ### only do specific files as a test
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
