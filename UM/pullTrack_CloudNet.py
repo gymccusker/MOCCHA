@@ -5511,7 +5511,7 @@ def readGlobal(cube, ship_data, date_dir):
     date = date_dir[0:8]
     day_ind = np.array([])
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
-    print 'Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts '
+    print 'Daily ship track: ' + str(len(day_ind[0])) + ' pts '
 
     #####--------------------------------------------------------------------------------------------------
     ##################################################
