@@ -5604,7 +5604,7 @@ def readGlobal(cube, ship_data, date_dir):
     #          color = 'yellow', linewidth = 3,
     #          transform = ccrs.PlateCarree(), label = 'Ship track',
     #          )
-    plt.plot(ship_data.values[data['ship_i'][0],6], ship_data.values[data['ship_j'][0],7],
+    plt.plot(lons[data['ship_i'][0],6], lats[data['ship_j'][0],7],
              color = 'yellow', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
