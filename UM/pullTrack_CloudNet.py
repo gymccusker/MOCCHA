@@ -5536,7 +5536,7 @@ def readGlobal(cube, ship_data):
     #################################################################
     ### draw outline of grid
     # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
-    iplt.pcolormesh(cube[0][0,-7:-2,40:-70])      ### covers 28Aug - 4Sep subset of drift
+    iplt.pcolormesh(cube[0][0,-7:-2,60:-70])      ### covers 28Aug - 4Sep subset of drift
 
 
     #################################################################
