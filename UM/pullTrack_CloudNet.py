@@ -5535,11 +5535,11 @@ def readGlobal(cube, ship_data, date_dir):
         print ''
         print 'hour = ' + str(h)
         for j in range(0,len(sb_lats)):     ### for all latitude points
-            if np.logical_and(ship_lats[0][h] >= sb_lats[j], ship_lats[0][h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
+            if np.logical_and(ship_lats[h] >= sb_lats[j], ship_lats[h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
                 # print 'j=' + str(j)
                 # temp = j
                 # templat = lats[j]
-                if np.logical_and(ship_lons[0][h] >= wb_lons[j], ship_lons[0][h] < eb_lons[j]):     ### find where ship lon sits on glm lon grid
+                if np.logical_and(ship_lons[h] >= wb_lons[j], ship_lons[h] < eb_lons[j]):     ### find where ship lon sits on glm lon grid
                     print 'lats and lons match at j = ' + str(j)
                     jflag[h] = jflag[h] + 1
                     # print jflag[h]
