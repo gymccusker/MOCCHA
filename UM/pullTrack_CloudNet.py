@@ -5594,43 +5594,11 @@ def readGlobal(cube, ship_data, date_dir):
     #################################################################
     ## plot ship track
     #################################################################
-    ### Plot full track as line
-    # drift_index = iceDrift(ship_data)
-    # inIce_index = inIce(ship_data)
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-    #          color = 'yellow', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    # plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'In Ice',
-    #          )
-    # plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-    #          color = 'red', linewidth = 4,
-    #          transform = ccrs.PlateCarree(), label = 'Drift',
-    #          )
-
     ### Plot tracks as line plot
     plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
-    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
-    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
-    # plt.plot(ship_data.values[day_ind[-1],6], ship_data.values[day_ind[-1],7],
-    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(),
-    #          )
 
     plt.show()
 
