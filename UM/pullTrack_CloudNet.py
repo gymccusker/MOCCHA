@@ -5565,64 +5565,64 @@ def readGlobal(cube, ship_data, date_dir):
     print ilon
     print ilat
 
-    #####--------------------------------------------------------------------------------------------------
-    #####--------------------------------------------------------------------------------------------------
-    ##################################################
-    ##################################################
-    #### 	CARTOPY MAP
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=SMALL_SIZE)
-    plt.rc('ytick',labelsize=SMALL_SIZE)
-    plt.rc('legend',fontsize=SMALL_SIZE)
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-
-    #################################################################
-    ## create figure and axes instances
-    #################################################################
-    plt.figure(figsize=(6,8))
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
-
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
-
-    #################################################################
-    ## add geographic features/guides for reference
-    #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    ax.gridlines()
-
-    #################################################################
-    ## plot global grid outline
-    #################################################################
-    ### draw outline of grid
-    # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
-    iplt.pcolormesh(cube[0][0,-7:-2,70:-70])      ### covers 28Aug - 4Sep subset of drift
-
-    #################################################################
-    ## plot ship track
-    #################################################################
-    ### Plot tracks as line plot
-    plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-    plt.plot(data['ship_lons'], data['ship_lats'],
-             'o', color = 'yellow', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'Ship track',
-             )
-
-    plt.show()
-
-    #####--------------------------------------------------------------------------------------------------
+    # #####--------------------------------------------------------------------------------------------------
+    # #####--------------------------------------------------------------------------------------------------
+    # ##################################################
+    # ##################################################
+    # #### 	CARTOPY MAP
+    # ##################################################
+    # ##################################################
+    #
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=SMALL_SIZE)
+    # plt.rc('ytick',labelsize=SMALL_SIZE)
+    # plt.rc('legend',fontsize=SMALL_SIZE)
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    #
+    # #################################################################
+    # ## create figure and axes instances
+    # #################################################################
+    # plt.figure(figsize=(6,8))
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    #
+    # ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+    #
+    # #################################################################
+    # ## add geographic features/guides for reference
+    # #################################################################
+    # ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    # ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    # ax.gridlines()
+    #
+    # #################################################################
+    # ## plot global grid outline
+    # #################################################################
+    # ### draw outline of grid
+    # # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
+    # iplt.pcolormesh(cube[0][0,-7:-2,70:-70])      ### covers 28Aug - 4Sep subset of drift
+    #
+    # #################################################################
+    # ## plot ship track
+    # #################################################################
+    # ### Plot tracks as line plot
+    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    # plt.plot(data['ship_lons'], data['ship_lats'],
+    #          'o', color = 'yellow', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    #
+    # plt.show()
+    #
+    # #####--------------------------------------------------------------------------------------------------
 
     return tim, ilat, ilon
 
