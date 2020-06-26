@@ -7413,7 +7413,11 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'Rose suite ID: ' + out_dir[2:10]
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic.'
-    dataset.comment = revision + micro + wind
+    if model == 'lam':
+        modelnote = 'UM limited area model. '
+    elif model == 'glm':
+        modelnote = 'UM global model. '
+    dataset.comment = revision + modelnote + micro + wind
     dataset.institution = 'University of Leeds.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
 
@@ -7431,7 +7435,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
             res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
             res.comment = 'Horizontal grid size of global model.'
             res.units = 'km'
-            res[:] = 17.0    
+            res[:] = 17.0
 
     ###################################
     ## Open pbXXX netCDF file
