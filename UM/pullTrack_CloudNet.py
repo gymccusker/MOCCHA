@@ -5491,6 +5491,7 @@ def readGlobal(cube, ship_data, date_dir):
     ###---------------------------------------------------------------------------------
     nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    print 'sb_lats.shape = ' + str(sb_lats.shape)
 
     ###---------------------------------------------------------------------------------
     ### find western and eastern boundaries of gridpoints
