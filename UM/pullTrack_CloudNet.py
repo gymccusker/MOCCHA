@@ -5522,13 +5522,13 @@ def readGlobal(cube, ship_data, date_dir):
     #####--------------------------------------------------------------------------------------------------
     ### compare hourly lat-lon with GLM grid
     data = {}
-    data['ship_lons'] = np.zeros(25)
-    data['ship_lats'] = np.zeros(25)
-    data['ship_ind'] = np.zeros(25)
+    data['ship_lons'] = np.zeros(24)
+    data['ship_lats'] = np.zeros(24)
+    data['ship_ind'] = np.zeros(24)
     data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_hour'] = np.zeros(25)
+    data['ship_hour'] = np.zeros(24)
     hours = np.arange(0,24)
-    jflag = np.zeros(25)        ### flag for if grid boundary is crossed
+    jflag = np.zeros(24)        ### flag for if grid boundary is crossed
 
     for h in hours:
         # works for hour = 0
@@ -5552,7 +5552,7 @@ def readGlobal(cube, ship_data, date_dir):
     print 'Ship indices are:'
     print data['ship_ind']
     print 'Final jflag is: '
-    print data['jflag']
+    print jflag
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
