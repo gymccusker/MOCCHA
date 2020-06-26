@@ -5524,8 +5524,8 @@ def readGlobal(cube, ship_data, date_dir):
     data = {}
     data['ship_lons'] = np.zeros(24)
     data['ship_lats'] = np.zeros(24)
-    data['ship_ind'] = np.zeros(24)
-    data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
+    data['ship_i'] = np.zeros(24); data['ship_i'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
+    data['ship_j'] = np.zeros(24); data['ship_j'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
     data['ship_hour'] = np.zeros(24)
     hours = np.arange(0,24)
     jflag = np.zeros(24)        ### flag for if grid boundary is crossed
@@ -5542,7 +5542,8 @@ def readGlobal(cube, ship_data, date_dir):
                         data['ship_lons'][h] = lons[i]
                         data['ship_hour'][h] = hours[h]
                         data['ship_lats'][h] = lats[j]
-                        data['ship_ind'][h] = j         # define grid point indices for use later
+                        data['ship_j'][h] = j         # define grid point indices for use later
+                        data['ship_i'][h] = i         # define grid point indices for use later
 
     print data['ship_lats']
     print data['ship_lons']
@@ -5597,7 +5598,11 @@ def readGlobal(cube, ship_data, date_dir):
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
-    plt.plot(data['ship_lons'], data['ship_lats'],
+    # plt.plot(data['ship_lons'], data['ship_lats'],
+    #          color = 'yellow', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    plt.plot(ship_data.values[data['ship_i'],6], ship_data.values[data['ship_j'][0],7],
              color = 'yellow', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
