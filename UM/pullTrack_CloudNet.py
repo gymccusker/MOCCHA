@@ -5546,7 +5546,9 @@ def readGlobal(cube, ship_data, date_dir):
                         data['ship_i'][h] = i         # define grid point indices for use later
 
     print data['ship_lats']
+    print data['ship_j']
     print data['ship_lons']
+    print data['ship_i']
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
