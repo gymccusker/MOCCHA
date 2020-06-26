@@ -5498,6 +5498,14 @@ def readGlobal(cube, ship_data):
     wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
 
+    ###---------------------------------------------------------------------------------
+    ### Find ship location based on date/time
+    ###---------------------------------------------------------------------------------
+    trackShip_start = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==28,ship_data.values[:,1]==8),ship_data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==5,ship_data.values[:,1]==9),ship_data.values[:,3]==1))
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1]))
+
+    #####--------------------------------------------------------------------------------------------------
     ##################################################
     ##################################################
     #### 	CARTOPY MAP
@@ -5537,7 +5545,6 @@ def readGlobal(cube, ship_data):
     ### draw outline of grid
     # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
     iplt.pcolormesh(cube[0][0,-7:-2,70:-70])      ### covers 28Aug - 4Sep subset of drift
-
 
     #################################################################
     ## plot ship track
@@ -5584,6 +5591,8 @@ def readGlobal(cube, ship_data):
              )
 
     plt.show()
+
+    #####--------------------------------------------------------------------------------------------------
 
     return tim, ilat, ilon
 
