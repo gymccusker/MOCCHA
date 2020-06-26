@@ -5550,19 +5550,20 @@ def readGlobal(cube, ship_data, date_dir):
     print data['ship_lons']
     print data['ship_i']
 
+    np.save('working_glm_grid', data)
+
     ### need to constract an hour, lon index, lat index list like used for the lam
     # for h in hours:
     #     if data['ship_i'][h+1] == data['ship_i'][h]:
-    #
 
-    dat = np.zeros([len(hours), 3])
-    dat[:,0] = hours
-    dat[:,1] = data['ship_i']
-    dat[:,2] = data['ship_j']
+    ### arguments to be passed back to pullTrack_CloudNet
+    tim = hours
+    ilon = data['ship_i']
+    ilat = data['ship_j']
 
-    print dat
-
-    np.save('working_glm_grid', data)
+    print tim
+    print ilon
+    print ilat
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
