@@ -5593,12 +5593,12 @@ def readGlobal(cube, ship_data, date_dir):
     ## plot ship track
     #################################################################
     ### Plot tracks as line plot
-    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    plt.plot(data['ship_lons'], data['ship_lats'],
+    plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
              color = 'darkorange', linewidth = 3,
+             transform = ccrs.PlateCarree(), label = 'Ship track',
+             )
+    plt.plot(data['ship_lons'], data['ship_lats'],
+             color = 'forestgreen', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
 
