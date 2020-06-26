@@ -7701,9 +7701,9 @@ def main():
         ### just do 2018 dates
         # if date[0:4] == '2018':
         ### just do first date:
-        if date == date_dir[0]:
+        # if date == date_dir[0]:
         ### just do specific date
-        # if date[0:8] == '20180823':
+        if date[0:8] == '20180827':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
