@@ -5537,7 +5537,7 @@ def readGlobal(cube, ship_data):
     ### draw outline of grid
     # qplt.outline(cube[0][0,-10:,:-70])      ### covers whole drift
     ### draw outline of grid
-    iplt.pcolormesh(cube[0][0,-10:,:-70])      ### covers whole drift
+    iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
 
 
     #################################################################
