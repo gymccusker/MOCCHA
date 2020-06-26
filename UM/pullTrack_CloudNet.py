@@ -5527,7 +5527,7 @@ def readGlobal(cube, ship_data, date_dir):
     data['ship_ind'] = np.zeros(25)
     data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
     data['ship_hour'] = np.zeros(25)
-    hours = np.arange(0,25)
+    hours = np.arange(0,24)
     jflag = np.zeros(25)        ### flag for if grid boundary is crossed
 
     for h in hours:
