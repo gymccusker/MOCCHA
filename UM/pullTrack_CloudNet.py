@@ -5536,15 +5536,15 @@ def readGlobal(cube, ship_data):
     #################################################################
     ### draw outline of grid
     # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
-    iplt.pcolormesh(cube[0][0,-7:-2,10:-70])      ### covers 28Aug - 4Sep subset of drift
+    iplt.pcolormesh(cube[0][0,-7:-2,40:-70])      ### covers 28Aug - 4Sep subset of drift
 
 
     #################################################################
     ## plot ship track
     #################################################################
     ### Plot full track as line
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
+    # drift_index = iceDrift(ship_data)
+    # inIce_index = inIce(ship_data)
     # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
     #          color = 'yellow', linewidth = 2,
     #          transform = ccrs.PlateCarree(), label = 'Whole',
@@ -5561,25 +5561,25 @@ def readGlobal(cube, ship_data):
     #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
     #          transform = ccrs.PlateCarree(),
     #          )
-    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
-             transform = ccrs.PlateCarree(), label = 'Drift',
-             )
+    # plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
+    #          color = 'red', linewidth = 4,
+    #          transform = ccrs.PlateCarree(), label = 'Drift',
+    #          )
 
     ### Plot day track as line
     trackShip_index = trackShip(ship_data)
 
     ### Plot tracks as line plot
     plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-             color = 'steelblue', linewidth = 3,
+             color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
     plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-             'k^', markerfacecolor = 'steelblue', linewidth = 3,
+             'k^', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
     plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-             'kv', markerfacecolor = 'steelblue', linewidth = 3,
+             'kv', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
 
