@@ -5551,9 +5551,16 @@ def readGlobal(cube, ship_data, date_dir):
     print data['ship_i']
 
     ### need to constract an hour, lon index, lat index list like used for the lam
-    for h in hours:
-        if data['ship_i'][h+1] == data['ship_i'][h]:
+    # for h in hours:
+    #     if data['ship_i'][h+1] == data['ship_i'][h]:
+    #
 
+    dat = np.zeros([len(tim), 3])
+    dat[:,0] = hours
+    dat[:,1] = data['ship_lons']
+    dat[:,2] = data['ship_lats']
+
+    print dat
 
     np.save('working_glm_grid', data)
 
