@@ -5557,8 +5557,8 @@ def readGlobal(cube, ship_data, date_dir):
 
     dat = np.zeros([len(hours), 3])
     dat[:,0] = hours
-    dat[:,1] = data['ship_lons']
-    dat[:,2] = data['ship_lats']
+    dat[:,1] = data['ship_i']
+    dat[:,2] = data['ship_j']
 
     print dat
 
