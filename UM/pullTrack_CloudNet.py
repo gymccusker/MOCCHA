@@ -5512,7 +5512,7 @@ def readGlobal(cube, ship_data, date_dir):
     date = date[:6] + str(int(date[-2:]) + 1)
     day_ind = np.array([])
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
-    print 'Daily ship track: ' + str(len(day_ind[0])) + ' pts '
+    print 'Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts '
 
     #####--------------------------------------------------------------------------------------------------
     ##################################################
@@ -5587,14 +5587,14 @@ def readGlobal(cube, ship_data, date_dir):
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
-    plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[day_ind[-1],6], ship_data.values[day_ind[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
+    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
+    #          'k^', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
+    # plt.plot(ship_data.values[day_ind[-1],6], ship_data.values[day_ind[-1],7],
+    #          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(),
+    #          )
 
     plt.show()
 
