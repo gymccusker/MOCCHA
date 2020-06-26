@@ -5531,7 +5531,6 @@ def readGlobal(cube, ship_data, date_dir):
     jflag = np.zeros(24)        ### flag for if grid boundary is crossed
 
     for h in hours:
-        # works for hour = 0
         print ''
         print 'hour = ' + str(h)
         for j in range(0,len(sb_lats)):     ### for all latitude points
@@ -5547,12 +5546,6 @@ def readGlobal(cube, ship_data, date_dir):
 
     print data['ship_lats']
     print data['ship_lons']
-
-    print ''
-    print 'Ship indices are:'
-    print data['ship_ind']
-    print 'Final jflag is: '
-    print jflag
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
