@@ -7350,7 +7350,7 @@ def writeFile_netCDF4(cube, eoutfile):
 
     return dataset
 
-def appendMetaNetCDF(outfile, date, out_dir):
+def appendMetaNetCDF(outfile, date, out_dir, model):
 
     from netCDF4 import num2date, date2num
     import time
@@ -7422,10 +7422,16 @@ def appendMetaNetCDF(outfile, date, out_dir):
     ###################################
     #### Model resolution
     if not 'horizontal_resolution' in dataset.variables.keys():
-        res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
-        res.comment = 'Horizontal grid size of nested region.'
-        res.units = 'km'
-        res[:] = 1.5
+        if model == 'lam':
+            res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+            res.comment = 'Horizontal grid size of nested region.'
+            res.units = 'km'
+            res[:] = 1.5
+        elif model == 'glm':
+            res = dataset.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+            res.comment = 'Horizontal grid size of global model.'
+            res.units = 'km'
+            res[:] = 17.0    
 
     ###################################
     ## Open pbXXX netCDF file
@@ -7894,7 +7900,7 @@ def main():
                         print 'stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata'
                         print ''
                         # outfile = '20180902_oden_metum.nc'
-                        out = appendMetaNetCDF(nc_outfile, date, out_dir)
+                        out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
                             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                             ### os.rename(nc_outfile, final_outfile)
 
