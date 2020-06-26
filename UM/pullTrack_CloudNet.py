@@ -5516,6 +5516,8 @@ def readGlobal(cube, ship_data, date_dir):
     ship_lats = ship_data.values[day_ind[0],7]
     ship_lons = ship_data.values[day_ind[0],6]
 
+    print 'ship_lats.shape = ' + str(ship_lats.shape)
+
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
     ### compare hourly lat-lon with GLM grid
