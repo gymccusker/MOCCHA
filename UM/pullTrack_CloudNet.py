@@ -5498,6 +5498,8 @@ def readGlobal(cube, ship_data, date_dir):
     wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
 
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
     #################################################################
     ## find date of interest
     #################################################################
@@ -5507,6 +5509,44 @@ def readGlobal(cube, ship_data, date_dir):
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
     print 'Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts '
 
+    #################################################################
+    ## save daily lat/lons as temp vars
+    #################################################################
+    ship_lats = ship_data.values[day_ind[0],7]
+    ship_lons = ship_data.values[day_ind[0],6]
+
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
+    ### compare hourly lat-lon with GLM grid
+    data = {}
+    data['ship_lons'] = np.zeros(25)
+    data['ship_lats'] = np.zeros(25)
+    data['ship_ind'] = np.zeros(25)
+    data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
+    data['ship_hour'] = np.zeros(25)
+    hours = np.arange(0,25)
+    jflag = np.zeros(25)        ### flag for if grid boundary is crossed
+
+    for h in hours:
+        # works for hour = 0
+        print ''
+        print 'hour = ' + str(h)
+        for j in range(0,len(sb_lats)):     ### for all latitude points
+            if np.logical_and(ship_lats[0][h] >= sb_lats[j], ship_lats[0][h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
+                # print 'j=' + str(j)
+                # temp = j
+                # templat = lats[j]
+                if np.logical_and(ship_lons[0][h] >= wb_lons[j], ship_lons[0][h] < eb_lons[j]):     ### find where ship lon sits on glm lon grid
+                    print 'lats and lons match at j = ' + str(j)
+                    jflag[h] = jflag[h] + 1
+                    # print jflag[h]
+                    # templon = lons[j]
+                    data['ship_lons'][h] = lons[j]
+                    data['ship_hour'][h] = hours[h]
+                    data['ship_lats'][h] = lats[j]
+                    data['ship_ind'][h] = j         # define grid point indices for use later
+
+    #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
     ##################################################
     ##################################################
