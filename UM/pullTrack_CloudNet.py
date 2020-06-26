@@ -5483,8 +5483,12 @@ def readGlobal(cube, ship_data, date_dir):
     print 'Defining longitude and latitude boundaries:'
     print ''
 
-    lats = cube[0].dim_coords[1].points
-    lons = cube[0].dim_coords[2].points
+    if np.ndim(cube[0].data) == 3:      ### 2D data + time
+        lats = cube[0].dim_coords[1].points
+        lons = cube[0].dim_coords[2].points
+    if np.ndim(cube[0].data) == 4:      ### 3D data + time
+        lats = cube[0].dim_coords[2].points
+        lons = cube[0].dim_coords[3].points
 
     ###---------------------------------------------------------------------------------
     ### find northern and southern boundaries of gridpoints
