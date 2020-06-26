@@ -5545,12 +5545,12 @@ def readGlobal(cube, ship_data, date_dir):
                         data['ship_j'][h] = j         # define grid point indices for use later
                         data['ship_i'][h] = i         # define grid point indices for use later
 
-    print data['ship_lats']
-    print data['ship_j']
-    print data['ship_lons']
-    print data['ship_i']
+    # print data['ship_lats']
+    # print data['ship_j']
+    # print data['ship_lons']
+    # print data['ship_i']
 
-    np.save('working_glm_grid', data)
+    # np.save('working_glm_grid', data)
 
     ### need to constract an hour, lon index, lat index list like used for the lam
     # for h in hours:
@@ -6065,9 +6065,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data)
             #         ok = False
             else:
                 print cube[k].standard_name
-                if int(xoffset) != 0:
-                    print 'Diagnostic is 1-hourly, pull ship track...'
-                    ok = True
+                # if int(xoffset) != 0:
+                print 'Diagnostic is 1-hourly, pull ship track...'
+                ok = True
 
             if not ok: break
 
