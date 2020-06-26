@@ -5545,7 +5545,14 @@ def readGlobal(cube, ship_data, date_dir):
                         data['ship_lats'][h] = lats[j]
                         data['ship_ind'][h] = j         # define grid point indices for use later
 
-    print data['ship']
+    print data['ship_lats']
+    print data['ship_lons']
+
+    print ''
+    print 'Ship indices are:'
+    print data['ship_ind']
+    print 'Final jflag is: '
+    print data['jflag']
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
@@ -5593,7 +5600,11 @@ def readGlobal(cube, ship_data, date_dir):
     ## plot ship track
     #################################################################
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
+    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
+    #          color = 'darkorange', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    plt.plot(ship_data.values[data['ship_ind'][0],6], ship_data.values[data['ship_ind'][0],7],
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
