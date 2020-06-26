@@ -5470,7 +5470,7 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
-def readGlobal(cube, ship_data):
+def readGlobal(cube, ship_data, date_dir):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -5501,9 +5501,17 @@ def readGlobal(cube, ship_data):
     ###---------------------------------------------------------------------------------
     ### Find ship location based on date/time
     ###---------------------------------------------------------------------------------
-    trackShip_start = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==28,ship_data.values[:,1]==8),ship_data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==5,ship_data.values[:,1]==9),ship_data.values[:,3]==1))
-    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1]))
+    # trackShip_start = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==28,ship_data.values[:,1]==8),ship_data.values[:,3]>=0))
+    # trackShip_end = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==5,ship_data.values[:,1]==9),ship_data.values[:,3]==1))
+    # trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1]))
+
+    #################################################################
+    ## find date of interest
+    #################################################################
+    date = date_dir[0:8]
+    day_ind = np.array([])
+    day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
+    print 'Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts '
 
     #####--------------------------------------------------------------------------------------------------
     ##################################################
@@ -5573,19 +5581,16 @@ def readGlobal(cube, ship_data):
     #          transform = ccrs.PlateCarree(), label = 'Drift',
     #          )
 
-    ### Plot day track as line
-    trackShip_index = trackShip(ship_data)
-
     ### Plot tracks as line plot
-    plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+    plt.plot(ship_data.values[day_ind,6], ship_data.values[day_ind,7],
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
-    plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+    plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
              'k^', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
-    plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+    plt.plot(ship_data.values[day_ind[-1],6], ship_data.values[day_ind[-1],7],
              'kv', markerfacecolor = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(),
              )
@@ -5962,7 +5967,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data)
     if model == 'lam':
         tim, ilat, ilon = readGriddedTrack(grid_filename)
     elif model == 'glm':
-        tim, ilat, ilon = readGlobal(cube, ship_data)
+        tim, ilat, ilon = readGlobal(cube, ship_data, date)
     else:
         print 'Model option is not valid'
 
