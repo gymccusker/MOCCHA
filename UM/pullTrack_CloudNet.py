@@ -6440,7 +6440,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
-    elif stream == '_pb009':
+    elif np.logical_or(stream == '_pb009', stream == '_pb012'):
         print 'fcube = '
         print fcube
         print ''
