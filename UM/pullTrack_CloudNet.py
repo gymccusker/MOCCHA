@@ -5498,13 +5498,6 @@ def readGlobal(cube, ship_data, date_dir):
     wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
 
-    ###---------------------------------------------------------------------------------
-    ### Find ship location based on date/time
-    ###---------------------------------------------------------------------------------
-    # trackShip_start = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==28,ship_data.values[:,1]==8),ship_data.values[:,3]>=0))
-    # trackShip_end = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==5,ship_data.values[:,1]==9),ship_data.values[:,3]==1))
-    # trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1]))
-
     #################################################################
     ## find date of interest
     #################################################################
