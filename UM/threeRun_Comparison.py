@@ -3752,16 +3752,16 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     # plt.ylabel('Z [m]')
     plt.title('Sondes(REGRID), $\Theta$ [degC]')
 
-    ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
-    dat3 = np.transpose(data3['theta_hrly_UM'][::6]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
-    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
-        vmin = -6.0, vmax = 6.0, cmap=mpl_cm.RdBu_r)
-    plt.ylim([0,ymax])
-    plt.xlim([doy[0],doy[-1]])
-    plt.colorbar()
-    # plt.set_cmap('seismic')
-    # plt.ylabel('Z [m]')
-    plt.title(label3 + '(REGRID) - Sondes(REGRID), $\Theta$ [K]')
+    # ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
+    # dat3 = np.transpose(data3['theta_hrly_UM'][::6]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
+    # plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+    #     vmin = -6.0, vmax = 6.0, cmap=mpl_cm.RdBu_r)
+    # plt.ylim([0,ymax])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.colorbar()
+    # # plt.set_cmap('seismic')
+    # # plt.ylabel('Z [m]')
+    # plt.title(label3 + '(REGRID) - Sondes(REGRID), $\Theta$ [K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['theta_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['theta_allSondes_UM'][drift[0],:])
@@ -3885,7 +3885,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
 
     #### INTERPOLATION TESTING:
-    # print (data3['temp_hrly_UM'].shape)
+    # print (data3['temp_hrly_UM'].shape),'radr_refl'
     # print (data3['time_hrly'][::6].shape)
     # print (data1['temp_hrly'][:,iUM[0][3:]].shape)
     # print (data1['time_hrly'][::6].shape)
