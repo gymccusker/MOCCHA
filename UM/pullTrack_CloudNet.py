@@ -5930,7 +5930,11 @@ def fixHeight(data, cube):
 
     # height = cube[1].aux_coords[2].points.data       ### 71 levels
 
-    if np.round(cube.aux_coords[2][0].points) == 5:
+    ### wind fields have Z[0] == 2.5
+    ### all other 4D fields have Z[0] >= 5.0
+
+    if np.round(cube.aux_coords[2][0].points) > 3):
+    # if np.round(cube.aux_coords[2][0].points) == 5:
         ### making 70 levels into 71 for common grid
         cubedata = np.zeros([71,24])
         cubedata[1:,:] = data
