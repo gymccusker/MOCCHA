@@ -1,0 +1,8 @@
+#!/bin/bash
+#BSUB -q short-serial
+#BSUB -J u-bn068_pullTrack
+#BSUB -o %J.out
+#BSUB -e %J.err
+#BSUB -W 23:00
+
+python2.7 pullTrack_CloudNet.py
