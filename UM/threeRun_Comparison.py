@@ -2772,7 +2772,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     print ('')
 
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_10km_sondes_metum_ifs_casim-100.png'
-    plt.savefig(fileout, dpi = 300)
+    # plt.savefig(fileout, dpi = 300)
     plt.show()
     # plt.close()
 
@@ -4940,7 +4940,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R1/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
@@ -4953,7 +4953,7 @@ def main():
     ### 4_u-bg610_RA2M_CON/OUT_R1/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/OUT_R2_lam/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_R1/              # RA2T_CON nest + global 4D stash
     ### 7_u-bn068_RA2T_CON/OUT_R2_glm/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
@@ -5041,14 +5041,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -5056,9 +5057,9 @@ def main():
 
     moccha_missing_files = ['20180813_oden_']
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(229,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
@@ -5107,7 +5108,7 @@ def main():
             'cloud_fraction','radr_refl']
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-            'qnliq','qnice','cloud_fraction']
+            'cloud_fraction','radr_refl']#,'qnliq','qnice']
         if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
         if not ifs_flag: var_list3 = var_list2
@@ -5334,11 +5335,11 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
