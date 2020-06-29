@@ -464,7 +464,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_AP_Cv_229-257DOY.svg'
+        fileout = 'FIGS/Obs_UM-RA2M_IFS_UM-RA2T_Cv_229-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -1254,8 +1254,8 @@ def main():
         # position_filename_um = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    um_out_dir = '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/'
-    ifs_out_dir = 'iwc-Z-T-ecmwf-grid/2018/'
+    um_out_dir = '4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/'
+    ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
     obs_out_dir = ifs_out_dir
     if misc_dir == '/home/gillian/MOCCHA/Cloudnet/UM_DATA/':
         misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
@@ -1634,9 +1634,9 @@ def main():
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
