@@ -731,13 +731,13 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
         np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
         np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
         np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(misc_data['qliq'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100_AP')
+    plt.plot(np.nanmean(misc_data['qliq'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'UM_RA2T')
     ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qliq'],0) - np.nanstd(misc_data['qliq'],0))*1e3,
         (np.nanmean(misc_data['qliq'],0) + np.nanstd(misc_data['qliq'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
@@ -754,7 +754,7 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
 
     if month_flag == -1:
         fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_AP_qliq_229-257DOY.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -1241,8 +1241,8 @@ def main():
     if platform == 'LAPTOP':
         um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
         ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
-        # misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
-        misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
+        misc_dir = '/home/gillian/MOCCHA/UM/DATA/'                ### FOR NON-CLOUDNET UM DATA
+        # misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'        ### FOR CLOUDNET UM DATA
         obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename_um = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
@@ -1261,7 +1261,7 @@ def main():
         misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
-        misc_out_dir = '13_u-br409_RA1M_CASIM/OUT_R0/'
+        misc_out_dir = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
     print ('Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:')
@@ -1328,26 +1328,28 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_',
-            '20180825_oden_','20180826_oden_',
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_',
-            '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180911_oden_','20180912_oden_','20180913_oden_']
+            '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180911_oden_','20180912_oden_','20180913_oden_']
 
     Aug_missing_files = []
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180824_oden_','20180827_oden_','20180828_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180824_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
-    # doy = np.arange(226,258)        ## set DOY for subset of moccha figures
-    # doy = np.arange(229,255)          ## set DOY for CASIM-AeroProf (1st Sep to 11th Sep)
-    # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (14th Aug to 14th Sep)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
+    doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(229,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
+    # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
 
     ## Flag for individual file or monthly:
     combine = 1
@@ -1626,14 +1628,14 @@ def main():
     # Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
 
     # -------------------------------------------------------------
     # Plot statistics from drift period with a 3rd dataset (not run through cloudnet)
     # -------------------------------------------------------------
     # figure = plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
-    # figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
+    figure = plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_TempProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
     # figure = plot_CvTimeseries_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy)
