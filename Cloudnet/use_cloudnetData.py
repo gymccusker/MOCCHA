@@ -464,7 +464,7 @@ def plot_CvProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM-RA2M_IFS_UM-GLM_Cv.png'
+        fileout = 'FIGS/Obs_UM-RA2M_IFS_UM-RA2T-LAM_Cv.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -1261,7 +1261,7 @@ def main():
         misc_out_dir = '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/'
         misc_flag = 0       ## flag to compare cloudnet model data
     elif misc_dir == '/home/gillian/MOCCHA/UM/DATA/':
-        misc_out_dir = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
+        misc_out_dir = '7_u-bn068_RA2T_CON/OUT_R1/'
         misc_flag = 1       ## flag to compare non-cloudnet model data
 
     print ('Misc_flag = ' + str(misc_flag) + '... so third simulation for comparison is:')
