@@ -3930,7 +3930,8 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0] - 0.1, obs['sondes']['doy'] <= doy[-1] + 0.1))
 
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
