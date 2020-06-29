@@ -7748,11 +7748,11 @@ def main():
 
     for date in date_dir:
         ### just do 2018 dates
-        # if date[0:4] == '2018':
+        if date[0:4] == '2018':
         ### just do first date:
         # if date == date_dir[0]:
         ### just do specific date
-        if date[0:8] == '20180827':
+        # if date[0:8] == '20180827':
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
