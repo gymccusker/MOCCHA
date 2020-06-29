@@ -753,8 +753,8 @@ def plot_lwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_LWC_CASIM-100_AP_qliq_229-257DOY.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM-RA2M_IFS_LWC_UM-RA2T_qliq.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -1010,13 +1010,13 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
         np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(um_data['model_iwc_filtered'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM')
+    plt.plot(np.nanmean(um_data['model_iwc_filtered'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_iwc_filtered'],0)*1e3 - np.nanstd(um_data['model_iwc_filtered']*1e3,0),
         np.nanmean(um_data['model_iwc_filtered'],0)*1e3 + np.nanstd(um_data['model_iwc_filtered'],0)*1e3, color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'IFS')
+    plt.plot(np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 - np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3,
         np.nanmean(ifs_data['model_snow_iwc_filtered'],0)*1e3 + np.nanstd(ifs_data['model_snow_iwc_filtered'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'CASIM-100_AP')
+    plt.plot(np.nanmean(misc_data['qice'],0)*1e3,misc_data['height'], color = 'forestgreen', linewidth = 3, label = 'UM_RA2T')
     ax1.fill_betweenx(misc_data['height'],(np.nanmean(misc_data['qice'],0) - np.nanstd(misc_data['qice'],0))*1e3,
         (np.nanmean(misc_data['qice'],0) + np.nanstd(misc_data['qice'],0))*1e3, color = 'mediumaquamarine', alpha = 0.15)
 
@@ -1032,7 +1032,7 @@ def plot_iwcProfiles_3rdNoCloudnet(um_data, ifs_data, misc_data, obs_data, month
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_IWC_CASIM-100_AP_qice_226-257DOY.svg'
+        fileout = 'FIGS/Obs_UM-RA2M_IFS_IWC_UM-RA2T_qice.png'
     plt.savefig(fileout)
     plt.show()
 
