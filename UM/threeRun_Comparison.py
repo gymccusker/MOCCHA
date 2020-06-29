@@ -2731,17 +2731,17 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     # plt.ylabel('Z [m]')
     plt.title('Sondes(REGRID), T[degC]')
 
-    # ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
-    # dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
-    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-    # plt.ylim([0,ymax])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # # plt.set_cmap('seismic')
-    # # plt.ylabel('Z [m]')
-    # plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
+    ax  = fig.add_axes([0.7,0.54,0.3,0.17])   # left, bottom, width, height
+    dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.set_cmap('seismic')
+    # plt.ylabel('Z [m]')
+    plt.title(label3 + '(REGRID) - Sondes(REGRID), T[K]')
 
     ax  = fig.add_axes([0.7,0.3,0.3,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -2815,18 +2815,18 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.ylabel('Z [m]')
     plt.title('Radiosondes, T[degC]')
 
-    # ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
-    # dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # data3['temp_anomalies'] = dat3
-    # plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
-    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-    # plt.ylim([0,ymax])
-    # plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # # plt.set_cmap('seismic')
-    # plt.ylabel('Z [m]')
-    # plt.title(label3 + ' - Radiosondes, T[degC]')
+    ax  = fig.add_axes([0.15,0.54,0.85,0.17])   # left, bottom, width, height
+    dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data3['temp_anomalies'] = dat3
+    plt.pcolor(data3['time_6hrly'], data1['universal_height'], dat3,
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    plt.ylim([0,ymax])
+    plt.xlim([doy[0],doy[-1]])
+    plt.colorbar()
+    # plt.set_cmap('seismic')
+    plt.ylabel('Z [m]')
+    plt.title(label3 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.15,0.3,0.85,0.17])   # left, bottom, width, height
     dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -2896,8 +2896,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
         color = 'steelblue', label = 'UM_RA2M')
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],
         color = 'forestgreen', label = 'UM_CASIM-100')
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
-    #     color = 'darkorange', label = 'ECMWF_IFS')
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
+        color = 'darkorange', label = 'ECMWF_IFS')
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -2912,8 +2912,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
         color = 'steelblue', label = 'UM_RA2M median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1),data1['universal_height'],
         color = 'forestgreen', label = 'UM_CASIM-100 median')
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],
-    #     color = 'darkorange', label = 'ECMWF_IFS median')
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],
+        color = 'darkorange', label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -2926,8 +2926,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
         color = 'steelblue', label = 'UM_RA2M median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1),data1['universal_height'],
         color = 'forestgreen', label = 'UM_CASIM-100 median')
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-    #     color = 'darkorange', label = 'ECMWF_IFS median')
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],
+        color = 'darkorange', label = 'ECMWF_IFS median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -3931,7 +3931,10 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, var):
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
     # drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0] - 0.1, obs['sondes']['doy'] <= doy[-1] + 0.1))
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0] - 0.1, obs['sondes']['doy'] <= doy[-1] + 0.9))
+
+    print (obs['sondes']['doy'][drift[0]])
+    print (obs['sondes']['doy'][drift[-1]])
 
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
