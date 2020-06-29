@@ -5509,7 +5509,10 @@ def readGlobal(cube, ship_data, date_dir):
     ## find date of interest
     #################################################################
     date = date_dir[0:8]
-    date = date[:6] + str(int(date[-2:]) + 1)
+    if date == '20180831':
+        date = '20180901'
+    else:
+        date = date[:6] + str(int(date[-2:]) + 1)
     day_ind = np.array([])
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
     print 'Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts '
