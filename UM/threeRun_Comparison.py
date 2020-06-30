@@ -1317,26 +1317,82 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    fig = plt.figure(figsize=(13, 12))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
-            hspace = 0.4, wspace = 0.13)
+    fig = plt.figure(figsize=(13, 10))
+    # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+    #         hspace = 0.4, wspace = 0.13)
+
+    ########            Cloud fraction
+    ########
+    #### set up colourmaps to grey out zeros on figures
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:20, :] = greyclr
+    newcmp = ListedColormap(newcolors)
 
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    ax1  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
+    ax1  = fig.add_axes([0.08,0.7,0.58,0.22])   # left, bottom, width, height
     ax1 = plt.gca()
+    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label1 + ' Cloud fraction')
+    plt.colorbar()
 
-    ax2  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
+    ax2  = fig.add_axes([0.08,0.4,0.58,0.22])   # left, bottom, width, height
     ax2 = plt.gca()
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label2 + ' Cloud fraction')
+    plt.colorbar()
 
-
-    ax3 = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
+    ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
     ax3 = plt.gca()
+    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label3 + ' Cloud fraction')
+    plt.xlabel('Day of Year')
+    plt.colorbar()
 
+    #### load temp obs Cv data
+    obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
 
-    ax4  = fig.add_axes([0.68,0.2,0.3,0.6])   # left, bottom, width, height
+    ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
+    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+        np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
+    ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
+        np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
+    ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
+        np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
+    plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
+    ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
+        np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.xlabel('Cloud Fraction')
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([0,1])
+    plt.legend()
+
 
     print ('******')
     print ('')
@@ -1344,8 +1400,8 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CvTimeseries_RA2T-GLM_RA2T-LAM_RA2M-LAM.svg'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/CvTimeseries_Obs-all_RA2T-GLM_RA2T-LAM_RA2M-LAM_28Aug-4Sep.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
