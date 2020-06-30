@@ -5186,7 +5186,11 @@ def main():
             'cloud_fraction','radr_refl']#,'qnliq','qnice']
         if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
-        if not ifs_flag: var_list3 = var_list2
+        if not ifs_flag:
+            if out_dir4[-4:-1] == 'glm':
+                var_list3 = ['cloud_fraction','qliq','qice']
+            else:
+                var_list3 = var_list2
 
         if i == 0:
             ## ------------------
