@@ -1321,9 +1321,6 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.13)
 
-    ### define axis instance
-    ax = plt.gca()
-
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
@@ -1334,12 +1331,12 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ax2 = plt.gca()
 
 
-    ax2 = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
-    ax2 = plt.gca()
+    ax3 = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
+    ax3 = plt.gca()
 
 
-    ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
-
+    ax4  = fig.add_axes([0.68,0.2,0.3,0.6])   # left, bottom, width, height
+    ax4 = plt.gca()
 
     print ('******')
     print ('')
