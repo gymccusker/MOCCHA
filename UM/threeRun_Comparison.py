@@ -1344,6 +1344,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.ylim([0,8000])
     plt.title(label1 + ' Cloud fraction')
     plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
 
     ax2  = fig.add_axes([0.08,0.4,0.58,0.22])   # left, bottom, width, height
     ax2 = plt.gca()
@@ -1356,19 +1357,29 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.ylim([0,8000])
     plt.title(label2 + ' Cloud fraction')
     plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
 
     ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
     ax3 = plt.gca()
-    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
+    if out_dir4 == 'OUT_25H/':
+        ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
+        plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data['model_snow_Cv_filtered']),
+            [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+            # vmin = 0, vmax = 150,
+            cmap = newcmp
+            )
+    else:
+        plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+            [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+            # vmin = 0, vmax = 150,
+            cmap = newcmp
+            )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.title(label3 + ' Cloud fraction')
     plt.xlabel('Day of Year')
     plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
 
     #### load temp obs Cv data
     obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
@@ -1384,9 +1395,14 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
     ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
         np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
-    plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
-    ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
-        np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    if out_dir4 == 'OUT_25H/':
+        plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+        ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+            np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
+    else:
+        plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
+        ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
+            np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
@@ -1400,7 +1416,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-GLM_ECMWF-IFS_RA2M-LAM_28Aug-4Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-LAM_ECMWF-IFS_RA2M-LAM_28Aug-4Sep.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5068,7 +5084,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
