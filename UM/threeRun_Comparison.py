@@ -5203,7 +5203,7 @@ def main():
 
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    doy = np.arange(240,249)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(229,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
