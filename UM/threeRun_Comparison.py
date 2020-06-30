@@ -1280,6 +1280,77 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
+def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+    from physFuncts import calcAirDensity
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting Cv for RA2T runs:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    fig = plt.figure(figsize=(13, 12))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+            hspace = 0.4, wspace = 0.13)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    ax1  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
+    ax1 = plt.gca()
+
+    ax2  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
+    ax2 = plt.gca()
+
+
+    ax2 = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
+    ax2 = plt.gca()
+
+
+    ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
+
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = '../FIGS/CvTimeseries_RA2T-GLM_RA2T-LAM_RA2M-LAM.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
 def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -4944,9 +5015,9 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R1/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'OUT_25H/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -5264,7 +5335,7 @@ def main():
     if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
     if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
     if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
-    if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T'
+    if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T_' + out_dir1[-4:-1]
     if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
     if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
     if out_dir1[:9] == '4_u-bg610': label1 = 'UM_RA2M'
@@ -5276,7 +5347,7 @@ def main():
     if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
     if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
     if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
-    if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T'
+    if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T_' + out_dir2[-4:-1]
     if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
     if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
     if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
@@ -5289,7 +5360,7 @@ def main():
     if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
     if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
     if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
-    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
+    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T_' + out_dir4[-4:-1]
     if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
     if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
     if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
@@ -5332,10 +5403,11 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
