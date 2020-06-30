@@ -5234,7 +5234,10 @@ def main():
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
             'cloud_fraction','radr_refl']
-        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+        if out_dir2[-4:-1] == 'glm':
+            var_list2 = ['cloud_fraction','qliq','qice']
+        else:
+            var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
             'cloud_fraction','radr_refl']#,'qnliq','qnice']
         if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
