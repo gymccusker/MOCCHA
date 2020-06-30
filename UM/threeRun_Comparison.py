@@ -1400,7 +1400,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-GLM_RA2T-LAM_RA2M-LAM_28Aug-4Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-GLM_ECMWF-IFS_RA2M-LAM_28Aug-4Sep.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5068,9 +5068,9 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
+        out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
