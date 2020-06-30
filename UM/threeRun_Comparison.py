@@ -5305,18 +5305,6 @@ def main():
     # np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
-    # Plot combined column data (5x2 timeseries)
-    # -------------------------------------------------------------
-    # figure = plot_multicontour_multidate_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                ### doesn't matter which cube, just needed for dim_coords
-
-    # -------------------------------------------------------------
-    # Plot combined CASIM column data (4x3 timeseries)
-    # -------------------------------------------------------------
-    # figure = plot_multicontour_multidate_casim_TS(timem, data, cube, month_flag, missing_files, out_dir)
-                ### doesn't matter which cube, just needed for dim_coords
-
-    # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
     # -------------------------------------------------------------
     # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
