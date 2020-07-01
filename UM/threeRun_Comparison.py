@@ -1416,7 +1416,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-GLM_RA2T_LAM_RA2M-LAM_28Aug-4Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_RA2T-GLM_RA2T_LAM_RA2M-LAM_28Aug-7Sep.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5191,8 +5191,8 @@ def main():
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_']#,'20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
@@ -5203,7 +5203,7 @@ def main():
 
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,249)        ## set DOY for RA2T  (28th Aug to 4th Sep)
+    doy = np.arange(240,252)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(229,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 9th Sep)
