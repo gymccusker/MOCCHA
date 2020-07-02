@@ -5142,6 +5142,23 @@ def main():
         print ('Load ice station flux data from Jutta...')
         obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
+        print ('Load HATPRO data used by Cloudnet...')
+        dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
+        dir = os.listdir(dirname)
+        for file in dir:
+            IWVtemp = readMatlabStruct(file)
+            obs['hatpro'] = {}
+            if file == '20180814_IWV_30s_V1.mat':       ### if it is the first file
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
+            else:
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
@@ -5498,7 +5515,7 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
-    np.save('working_dataObs', obs['sondes'])
+    np.save('working_dataObs', obs['hatpro'])
 
     # -------------------------------------------------------------
     # FIN.
