@@ -5086,7 +5086,7 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'OUT_25H/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
