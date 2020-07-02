@@ -937,7 +937,7 @@ def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, ou
 
     print ('******')
     print ('')
-    print ('Plotting Ndrop timeseries for whole drift period:')
+    print ('Plotting Qliq timeseries for whole drift period:')
     print ('')
 
     ##################################################
