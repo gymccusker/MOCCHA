@@ -1416,7 +1416,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_ECMWF-IFS_RA2T_LAM_RA2M-LAM_28Aug-14Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
     plt.savefig(fileout)
     plt.show()
 
