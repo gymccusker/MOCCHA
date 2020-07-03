@@ -1586,8 +1586,8 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CWCTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
-    # plt.savefig(fileout)
+        fileout = '../Cloudnet/FIGS/' + var + 'Timeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
