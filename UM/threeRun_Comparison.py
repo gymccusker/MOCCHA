@@ -1461,8 +1461,8 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
     #         hspace = 0.4, wspace = 0.13)
 
-    ### choose var to plot
-    var = 'qliq' # qice
+    ### choose var to plot [qliq / qice]
+    var = 'qice'
 
     #### set flagged data to zero
     data1[var][data1[var] < 0] = 0.0
@@ -1480,19 +1480,19 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:2, :] = greyclr
+    newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
     ### define contour levels dependent on chosen var
     ###             define plot labels
     ###             define model parameter names from Cloudnet
     if var == 'qliq':
-        crange = np.arange(0,0.31,0.05)
+        crange = [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
         lab = 'LWMR [g/kg]'
         modname = 'model_lwc'
         obsname = 'lwc'
     elif var == 'qice':
-        crange = np.arange(0,0.06,0.01)
+        crange = [0, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05]
         lab = 'IWMR [g/kg]'
         modname = 'model_iwc_filtered'
         if out_dir4 == 'OUT_25H/':
@@ -1577,6 +1577,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     if var == 'qliq': plt.xlim([0,0.15])
+    if var == 'qice': plt.xlim([0,0.05])
     plt.legend()
 
 
