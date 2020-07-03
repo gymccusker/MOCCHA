@@ -1490,6 +1490,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         crange = np.arange(0,0.31,0.05)
         lab = 'LWMR [g/kg]'
         modname = 'model_lwc'
+        obsname = 'lwc'
     elif var == 'qice':
         crange = np.arange(0,0.06,0.01)
         lab = 'IWMR [g/kg]'
@@ -1550,33 +1551,33 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
 
-    # #### load temp obs Cv data
-    # obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
-    #
-    # ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
-    # ax4 = plt.gca()
-    # plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    # ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
-    #     np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
-    # plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
-    # ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
-    #     np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
-    # plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
-    # ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
-    #     np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
-    # if out_dir4 == 'OUT_25H/':
-    #     plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    #     ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
-    #         np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
-    # else:
-    #     plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
-    #     ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
-    #         np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
-    # plt.xlabel(lab)
-    # plt.ylabel('Height [m]')
-    # plt.ylim([0,10000])
-    # if var == 'qliq': plt.xlim([0,0.2])
-    # plt.legend()
+    #### load temp obs Cv data
+    obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
+
+    ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
+    ax4 = plt.gca()
+    plt.plot(np.nanmean(obs_data[obsname],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs [g/m3]')
+    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname,0) - np.nanstd(obs_data[obsname],0),
+        np.nanmean(obs_data[obsname],0) + np.nanstd(obs_data[obsname],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(data1[var],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
+    ax4.fill_betweenx(data1['height'],np.nanmean(data1[var],0) - np.nanstd(data1[var],0),
+        np.nanmean(data1[var],0) + np.nanstd(data1[var],0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(data2[var],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
+    ax4.fill_betweenx(data2['height'],np.nanmean(data2[var],0) - np.nanstd(data2[var],0),
+        np.nanmean(data2[var],0) + np.nanstd(data2[var],0), color = 'thistle', alpha = 0.35)
+    if out_dir4 == 'OUT_25H/':
+        plt.plot(np.nanmean(ifs_data[modname3],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS [g/m3]')
+        ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data[modname3],0) - np.nanstd(ifs_data[modname3],0),
+            np.nanmean(ifs_data[modname3],0) + np.nanstd(ifs_data[modname3],0), color = 'navajowhite', alpha = 0.15)
+    else:
+        plt.plot(np.nanmean(data3[var],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
+        ax4.fill_betweenx(data3['height'],np.nanmean(data3[var],0) - np.nanstd(data3[var],0),
+            np.nanmean(data3[var],0) + np.nanstd(data3[var],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.xlabel(lab)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    if var == 'qliq': plt.xlim([0,0.2])
+    plt.legend()
 
 
     print ('******')
