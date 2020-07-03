@@ -1420,6 +1420,170 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.savefig(fileout)
     plt.show()
 
+def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+    from physFuncts import calcAirDensity
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting cloud water contents for RA2T runs:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    fig = plt.figure(figsize=(13, 10))
+    # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+    #         hspace = 0.4, wspace = 0.13)
+
+    ### choose var to plot
+    var = 'qliq' # qice
+
+    #### set flagged data to nans
+    data1[var][data1[var] < 0] = np.nan
+    data2[var][data2[var] < 0] = np.nan
+    data3[var][data3[var] < 0] = np.nan
+
+    ########
+    ######## set up colourmaps to grey out small values on figures
+    ########
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:2, :] = greyclr
+    newcmp = ListedColormap(newcolors)
+
+    ### define contour levels dependent on chosen var
+    ###             define plot labels
+    ###             define model parameter names from Cloudnet
+    if var == 'qliq':
+        crange = np.arange(0,0.36,0.05)
+        lab = 'LWMR [g/kg]'
+        modname = 'model_lwc'
+    elif var == 'qice':
+        crange = np.arange(0,0.06,0.01)
+        lab = 'IWMR [g/kg]'
+        modname = 'model_iwc_filtered'
+        if out_dir4 == 'OUT_25H/':
+            modname3 = 'model_snow_iwc_filtered'
+        else:
+            modname3 = modname
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    ax1  = fig.add_axes([0.08,0.7,0.58,0.22])   # left, bottom, width, height
+    ax1 = plt.gca()
+    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1[var]),
+        crange,
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label1 + ' ' + lab)
+    plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
+
+    ax2  = fig.add_axes([0.08,0.4,0.58,0.22])   # left, bottom, width, height
+    ax2 = plt.gca()
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2[var]),
+        crange,
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label2 + ' ' + lab)
+    plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
+
+    ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
+    ax3 = plt.gca()
+    if out_dir4 == 'OUT_25H/':
+        ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
+        plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data[modname3]),
+            crange,
+            # vmin = 0, vmax = 150,
+            cmap = newcmp
+            )
+    else:
+        plt.contourf(data3['time'], data3['height'][:], np.transpose(data3[var]),
+            crange,
+            # vmin = 0, vmax = 150,
+            cmap = newcmp
+            )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,8000])
+    plt.title(label3 + ' ' + lab)
+    plt.xlabel('Day of Year')
+    plt.colorbar()
+    plt.xlim([doy[0], doy[-1]])
+
+    # #### load temp obs Cv data
+    # obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
+    #
+    # ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
+    # ax4 = plt.gca()
+    # plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    # ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+    #     np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    # plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
+    # ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
+    #     np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
+    # plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
+    # ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
+    #     np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
+    # if out_dir4 == 'OUT_25H/':
+    #     plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    #     ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+    #         np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
+    # else:
+    #     plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
+    #     ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
+    #         np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    # plt.xlabel(lab)
+    # plt.ylabel('Height [m]')
+    # plt.ylim([0,10000])
+    # if var == 'qliq': plt.xlim([0,0.2])
+    # plt.legend()
+
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = '../Cloudnet/FIGS/CWCTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
+    # plt.savefig(fileout)
+    plt.show()
+
 def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
@@ -5487,7 +5651,7 @@ def main():
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Plot paper figures
@@ -5503,6 +5667,7 @@ def main():
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
