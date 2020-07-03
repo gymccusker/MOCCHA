@@ -1576,7 +1576,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.xlabel(lab)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    if var == 'qliq': plt.xlim([0,0.2])
+    if var == 'qliq': plt.xlim([0,0.15])
     plt.legend()
 
 
