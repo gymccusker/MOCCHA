@@ -1462,7 +1462,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     #         hspace = 0.4, wspace = 0.13)
 
     ### choose var to plot [qliq / qice]
-    var = 'qice'
+    var = 'qliq'
 
     #### set flagged data to zero
     data1[var][data1[var] < 0] = 0.0
@@ -1492,7 +1492,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         modname = 'model_lwc'
         obsname = 'lwc'
     elif var == 'qice':
-        crange = [0, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05]
+        crange = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15]
         lab = 'IWMR [g/kg]'
         modname = 'model_iwc_filtered'
         if out_dir4 == 'OUT_25H/':
@@ -1557,9 +1557,9 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
-    plt.plot(np.nanmean(obs_data[obsname],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs [g/m3]')
-    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname],0) - np.nanstd(obs_data[obsname],0),
-        np.nanmean(obs_data[obsname],0) + np.nanstd(obs_data[obsname],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(obs_data[obsname]*1e3,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs [g/m3]')
+    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname]*1e3,0) - np.nanstd(obs_data[obsname]*1e3,0),
+        np.nanmean(obs_data[obsname]*1e3,0) + np.nanstd(obs_data[obsname]*1e3,0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(data1[var]*1e3,0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1[var]*1e3,0) - np.nanstd(data1[var]*1e3,0),
         np.nanmean(data1[var]*1e3,0) + np.nanstd(data1[var]*1e3,0), color = 'lightblue', alpha = 0.4)
@@ -1578,7 +1578,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     if var == 'qliq': plt.xlim([0,0.15])
-    if var == 'qice': plt.xlim([0,0.05])
+    if var == 'qice': plt.xlim([0,0.02])
     plt.legend()
 
 
