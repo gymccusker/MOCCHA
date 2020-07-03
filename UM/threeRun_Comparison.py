@@ -1462,7 +1462,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     #         hspace = 0.4, wspace = 0.13)
 
     ### choose var to plot [qliq / qice]
-    var = 'qliq'
+    var = 'qice'
 
     #### set flagged data to zero
     data1[var][data1[var] < 0] = 0.0
@@ -5256,7 +5256,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
