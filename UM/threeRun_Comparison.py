@@ -1464,10 +1464,15 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### choose var to plot
     var = 'qliq' # qice
 
-    #### set flagged data to nans
-    data1[var][data1[var] < 0] = np.nan
-    data2[var][data2[var] < 0] = np.nan
-    data3[var][data3[var] < 0] = np.nan
+    #### set flagged data to zero
+    data1[var][data1[var] < 0] = 0.0
+    data2[var][data2[var] < 0] = 0.0
+    data3[var][data3[var] < 0] = 0.0
+
+    #### set nans to zero
+    data1[var][np.isnan(data1[var])] = 0.0
+    data2[var][np.isnan(data2[var])] = 0.0
+    data3[var][np.isnan(data3[var])] = 0.0
 
     ########
     ######## set up colourmaps to grey out small values on figures
@@ -1482,7 +1487,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ###             define plot labels
     ###             define model parameter names from Cloudnet
     if var == 'qliq':
-        crange = np.arange(0,0.36,0.05)
+        crange = np.arange(0,0.31,0.05)
         lab = 'LWMR [g/kg]'
         modname = 'model_lwc'
     elif var == 'qice':
@@ -1499,7 +1504,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ### -------------------------------
     ax1  = fig.add_axes([0.08,0.7,0.58,0.22])   # left, bottom, width, height
     ax1 = plt.gca()
-    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1[var]),
+    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1[var])*1e3,
         crange,
         # vmin = 0, vmax = 150,
         cmap = newcmp
@@ -1512,7 +1517,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     ax2  = fig.add_axes([0.08,0.4,0.58,0.22])   # left, bottom, width, height
     ax2 = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2[var]),
+    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2[var])*1e3,
         crange,
         # vmin = 0, vmax = 150,
         cmap = newcmp
@@ -1533,7 +1538,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
             cmap = newcmp
             )
     else:
-        plt.contourf(data3['time'], data3['height'][:], np.transpose(data3[var]),
+        plt.contourf(data3['time'], data3['height'][:], np.transpose(data3[var])*1e3,
             crange,
             # vmin = 0, vmax = 150,
             cmap = newcmp
