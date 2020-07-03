@@ -1557,7 +1557,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
     plt.plot(np.nanmean(obs_data[obsname],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs [g/m3]')
-    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname,0) - np.nanstd(obs_data[obsname],0),
+    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname],0) - np.nanstd(obs_data[obsname],0),
         np.nanmean(obs_data[obsname],0) + np.nanstd(obs_data[obsname],0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(data1[var],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1[var],0) - np.nanstd(data1[var],0),
