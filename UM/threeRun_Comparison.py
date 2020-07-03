@@ -1499,6 +1499,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
             modname3 = 'model_snow_iwc_filtered'
         else:
             modname3 = modname
+        obsname = 'iwc'
 
     ### -------------------------------
     ### Build figure (timeseries)
