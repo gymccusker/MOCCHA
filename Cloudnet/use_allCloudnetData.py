@@ -266,7 +266,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,8))
+    plt.figure(figsize=(10,9))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
@@ -302,6 +302,15 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.colorbar()
 
     plt.subplot(412)
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
+    plt.colorbar()
+
+    plt.subplot(413)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp)
@@ -310,7 +319,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.title('UM_RA2M; modelled cloud fraction')
     plt.colorbar()
 
-    plt.subplot(413)
+    plt.subplot(414)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp)
@@ -318,17 +327,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100; modelled cloud fraction')
     plt.colorbar()
-
-    plt.subplot(414)
-    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
-        np.arange(0,1.1,0.1),
-        cmap = newcmp)
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
     plt.xlabel('DOY')
-    plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
-    plt.colorbar()
-
 
     print ('******')
     print ('')
