@@ -2284,7 +2284,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(8,4.5))
+    plt.figure(figsize=(12,4.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -2306,8 +2306,6 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
 
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
-
-
 
     ### set diagnostic naming flags for if IFS being used
     if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
@@ -2368,22 +2366,31 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     ### -------------------------------
     # fig = plt.figure(figsize=(10,5))
 
+    res = 3         ### hourly resolution to plot
+
     # ax  = fig.add_axes([0.1,0.12,0.8,0.75])   # left, bottom, width, height
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], 'k', label = 'Obs_PWS')
-    plt.plot(data1['time_hrly'][::3], precip1[::3],
+    plt.plot(data1['time_hrly'][::res], precip1[::res],
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
-    plt.plot(data2['time_hrly'][::3], precip2[::3],
+    plt.plot(data2['time_hrly'][::res], precip2[::res],
         'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
     if ifs_flag == True:
-        plt.plot(data3['time_hrly'][::3], precip3[::3],
+        plt.plot(data3['time_hrly'][::res], precip3[::res],
             'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = label3)
     plt.ylabel('Precipitation flux [mm/hr]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([0,2])
     plt.xlabel('Day of year')
-    plt.legend()
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.legend(bbox_to_anchor=(0.28, 0.7, 1., .102), loc=3, ncol=2)
 
 
     # ax  = fig.add_axes([0.75,0.15,0.2,0.7])   # left, bottom, width, height
@@ -2394,7 +2401,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100.svg'
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_hatchedMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5389,7 +5396,8 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_']
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
+    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -5402,7 +5410,7 @@ def main():
 
     ## Choose month:
     names = moccha_names
-    missing_files = moccha_missing_files
+    # missing_files = moccha_missing_files
     month_flag = -1
 
     for i in range(0,len(names)):
@@ -5664,8 +5672,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
