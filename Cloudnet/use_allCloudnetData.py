@@ -1304,6 +1304,8 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         obs_data['lwp'][obs_data['lwp'][:,2] < 0, 2] = np.nan     ### index 2 is max
         obs_data['lwp'][obs_data['lwp'][:,2] > 0.8, 2] = np.nan    ### >0.8 == >800g/m2
 
+    res = 3 ### hourly resolution to plot
+
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
@@ -1312,11 +1314,11 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'thistle', alpha = 0.5)
     plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
-    plt.plot(um_data['time'][::6],um_data['model_lwp'][::6]*1e3,
+    plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
-    plt.plot(ifs_data['time'][::6],ifs_data['model_lwp'][::6]*1e3,
+    plt.plot(ifs_data['time'][::res],ifs_data['model_lwp'][::res]*1e3,
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
-    plt.plot(misc_data['time'][::6],misc_data['model_lwp'][::6]*1e3,
+    plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
         'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
