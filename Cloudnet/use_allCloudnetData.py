@@ -1339,7 +1339,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_LWP_226-257DOY_hatchedMissingFiles.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_LWP_226-257DOY_hatchedMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
