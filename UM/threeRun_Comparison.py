@@ -2401,7 +2401,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_hatchedMissingFiles.svg'
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_hatchedMissingFiles.png'
     plt.savefig(fileout)
     plt.show()
 
