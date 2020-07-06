@@ -371,8 +371,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_lwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
