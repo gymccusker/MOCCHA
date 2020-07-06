@@ -1276,7 +1276,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(8,4.5))
+    plt.figure(figsize=(12,4.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -1312,17 +1312,24 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'thistle', alpha = 0.5)
     plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
-    plt.plot(um_data['time'][::3],um_data['model_lwp'][::3]*1e3,
+    plt.plot(um_data['time'][::6],um_data['model_lwp'][::6]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
-    plt.plot(ifs_data['time'][::3],ifs_data['model_lwp'][::3]*1e3,
+    plt.plot(ifs_data['time'][::6],ifs_data['model_lwp'][::6]*1e3,
         'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
-    plt.plot(misc_data['time'][::3],misc_data['model_lwp'][::3]*1e3,
+    plt.plot(misc_data['time'][::6],misc_data['model_lwp'][::6]*1e3,
         'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
     plt.ylim([0,800])
     plt.xlim([doy[0],doy[-1]])
-    plt.legend()
+    plt.legend(bbox_to_anchor=(0.28, 0.62, 1., .102), loc=3, ncol=2)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
 
     print ('******')
     print ('')
@@ -1330,7 +1337,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_UM_IFS_CASIM-100_LWP_226-257DOY_wMissingFiles.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_LWP_226-257DOY_hatchedMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -4662,7 +4669,7 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -4677,7 +4684,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
