@@ -266,8 +266,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,9))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
+    plt.figure(figsize=(11,9))
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.05, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
     ### define axis instance
@@ -292,42 +292,74 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(411)
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv_adv']),
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
         np.arange(0,1.1,0.1),
-        cmap = newcmp)
+        cmap = newcmp,
+        zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
-    # plt.title('Measured cloud fraction by volume, 1 hour sampling')
-    plt.title('Measured cloud fraction by volume, 1.5km sampling')
+    plt.title('Measured cloud fraction by volume, 1 hour sampling')
+    # plt.title('Measured cloud fraction by volume, 1.5km sampling')
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.colorbar()
 
     plt.subplot(412)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
         np.arange(0,1.1,0.1),
-        cmap = newcmp)
+        cmap = newcmp,
+        zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.colorbar()
 
     plt.subplot(413)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
-        cmap = newcmp)
+        cmap = newcmp,
+        zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_RA2M; modelled cloud fraction')
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.colorbar()
 
     plt.subplot(414)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
-        cmap = newcmp)
+        cmap = newcmp,
+        zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('UM_CASIM-100; modelled cloud fraction')
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)    
     plt.colorbar()
-    plt.xlabel('DOY')
+    plt.xlabel('Day of Year')
 
     print ('******')
     print ('')
@@ -4227,44 +4259,44 @@ def main():
                         data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
                 nc3.close()
             else:
-                # if doy[i] in missing_files:
-                #     print (str(doy[i]))
-                #     nanarray = np.zeros(24)
-                #     nanarray[:] = np.nan
-                #     time_um1 = np.append(time_um1, nanarray)
-                #     time_um2 = np.append(time_um2, nanarray)
-                #     if ifs_flag: time_um3 = np.append(time_um3, nanarray)
-                #     if not ifs_flag: time_um3 = np.append(time_um3, nanarray)
-                #     for j in range(0,len(var_list1)):
-                #         if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
-                #             continue
-                #         elif np.ndim(nc1.variables[var_list1[j]]) == 1:
-                #             nanarray = np.zeros(24)
-                #             nanarray[:] = np.nan
-                #             data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray)
-                #             data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
-                #         elif np.ndim(nc1.variables[var_list1[j]]) == 2:
-                #             nanarray = np.zeros([24,71])
-                #             nanarray[:] = np.nan
-                #             data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
-                #             data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
-                #     for j in range(0,len(var_list3)):
-                #         print (j)
-                #         print (var_list3[j])
-                #         np.save('testing', data3)
-                #         if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
-                #             continue
-                #         elif np.ndim(nc3.variables[var_list3[j]]) == 1:
-                #             nanarray = np.zeros(24)
-                #             nanarray[:] = np.nan
-                #             data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray)
-                #         elif np.ndim(nc3.variables[var_list3[j]]) == 2:
-                #             if var_list3[j][:3] == 'flx':
-                #                 nanarray = np.zeros([24,138])
-                #             else:
-                #                 nanarray = np.zeros([24,137])
-                #             nanarray[:] = np.nan
-                #             data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
+                if doy[i] in missing_files:
+                    print (str(doy[i]))
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    time_um1 = np.append(time_um1, nanarray)
+                    time_um2 = np.append(time_um2, nanarray)
+                    if ifs_flag: time_um3 = np.append(time_um3, nanarray)
+                    if not ifs_flag: time_um3 = np.append(time_um3, nanarray)
+                    for j in range(0,len(var_list1)):
+                        if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                            continue
+                        elif np.ndim(nc1.variables[var_list1[j]]) == 1:
+                            nanarray = np.zeros(24)
+                            nanarray[:] = np.nan
+                            data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray)
+                            data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
+                        elif np.ndim(nc1.variables[var_list1[j]]) == 2:
+                            nanarray = np.zeros([24,71])
+                            nanarray[:] = np.nan
+                            data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
+                            data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
+                    for j in range(0,len(var_list3)):
+                        print (j)
+                        print (var_list3[j])
+                        np.save('testing', data3)
+                        if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                            continue
+                        elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                            nanarray = np.zeros(24)
+                            nanarray[:] = np.nan
+                            data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray)
+                        elif np.ndim(nc3.variables[var_list3[j]]) == 2:
+                            if var_list3[j][:3] == 'flx':
+                                nanarray = np.zeros([24,138])
+                            else:
+                                nanarray = np.zeros([24,137])
+                            nanarray[:] = np.nan
+                            data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
 
 
                 time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
