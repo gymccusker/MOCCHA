@@ -298,6 +298,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('Measured cloud fraction by volume, 1 hour sampling')
     # plt.title('Measured cloud fraction by volume, 1.5km sampling')
     ax = plt.gca()
@@ -316,6 +317,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -333,6 +335,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M; modelled cloud fraction')
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -350,6 +353,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         zorder = 1)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100; modelled cloud fraction')
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -357,7 +361,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'lightpink',
             hatch = 'x',
-            zorder = 3)    
+            zorder = 3)
     plt.colorbar()
     plt.xlabel('Day of Year')
 
