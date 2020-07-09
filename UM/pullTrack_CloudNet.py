@@ -7419,6 +7419,9 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     elif out_dir[2:9] == 'u-bu687':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). Updated RHcrit profile for vn11.4. '
         revision = 'Revision no. 0. '
+    elif out_dir[2:9] == 'u-bv926':
+        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. l_subgrid_qcl_mp to .false. to not allow for turbulent production of mixed-phase cloud. '
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
