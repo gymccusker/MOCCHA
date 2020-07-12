@@ -7850,12 +7850,12 @@ def main():
                     ### 1. use the following if only want the exact ship position and no variability
                     # -------------------------------------------------------------
                     ### LOAD CUBE
-                    nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-                    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
-                    aoutfile = nc_outfile[:-3] + '_a.nc'
-                    boutfile = nc_outfile[:-3] + '_b.nc'
-                    doutfile = nc_outfile[:-3] + '_d.nc'
-                    eoutfile = nc_outfile[:-3] + '_e.nc'
+                    nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
+                    aoutfile = dirout + nc_outfile[:-3] + '_a.nc'
+                    boutfile = dirout + nc_outfile[:-3] + '_b.nc'
+                    doutfile = dirout + nc_outfile[:-3] + '_d.nc'
+                    eoutfile = dirout + nc_outfile[:-3] + '_e.nc'
 
                     if stream[:3] == '_pa':
                         if not os.path.exists(aoutfile):
