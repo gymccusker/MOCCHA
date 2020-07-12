@@ -7695,7 +7695,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/'
+    out_dir = '15_u-bu687_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -7816,7 +7816,7 @@ def main():
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
-                    if out_dir[0] == 1:
+                    if out_dir[0] == '1':
                         dirout = out_dir[3:10] + '/'
                     else:
                         dirout = out_dir[2:9] + '/'
