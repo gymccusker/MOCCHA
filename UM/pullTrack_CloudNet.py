@@ -7817,9 +7817,9 @@ def main():
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
                     if out_dir[0] == 1:
-                        dirout = out_dir[3:10]
+                        dirout = out_dir[3:10] + '/'
                     else:
-                        dirout = out_dir[2:9]
+                        dirout = out_dir[2:9] + '/'
 
                 print 'Checking: ' + filename
                 if os.path.exists(filename):
@@ -7856,10 +7856,10 @@ def main():
                     ### LOAD CUBE
                     nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
                     if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
-                    aoutfile = dirout + nc_outfile[:-3] + '_a.nc'
-                    boutfile = dirout + nc_outfile[:-3] + '_b.nc'
-                    doutfile = dirout + nc_outfile[:-3] + '_d.nc'
-                    eoutfile = dirout + nc_outfile[:-3] + '_e.nc'
+                    aoutfile = nc_outfile[:-3] + '_a.nc'
+                    boutfile = nc_outfile[:-3] + '_b.nc'
+                    doutfile = nc_outfile[:-3] + '_d.nc'
+                    eoutfile = nc_outfile[:-3] + '_e.nc'
 
                     if stream[:3] == '_pa':
                         if not os.path.exists(aoutfile):
