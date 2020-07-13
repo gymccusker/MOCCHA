@@ -1011,8 +1011,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         np.arange(0,0.31,0.001),
         cmap = newcmp)
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
@@ -1033,6 +1039,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS')
     plt.colorbar()
 
@@ -1054,6 +1061,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M')
     plt.colorbar()
 
@@ -1074,6 +1082,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100')
     plt.colorbar()
     plt.xlabel('Day of Year')
