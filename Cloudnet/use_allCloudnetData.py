@@ -1024,6 +1024,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         np.arange(0,0.31,0.001),
         cmap = newcmp)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.title('ECMWF_IFS')
@@ -1038,6 +1045,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         np.arange(0,0.31,0.001),
         cmap = newcmp)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.title('UM_RA2M')
@@ -1051,6 +1065,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         np.arange(0,0.31,0.001),
         cmap = newcmp)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.title('UM_CASIM-100')
@@ -1063,7 +1084,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -4674,7 +4695,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -4686,7 +4707,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
