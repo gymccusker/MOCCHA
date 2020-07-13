@@ -3212,11 +3212,11 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(131)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],
-        color = 'steelblue', label = 'UM_RA2M')
+        color = 'steelblue', label = label1)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],
-        color = 'forestgreen', label = 'UM_CASIM-100')
+        color = 'forestgreen', label = label2)
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
-        color = 'darkorange', label = 'ECMWF_IFS')
+        color = 'darkorange', label = label3)
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -3228,11 +3228,11 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(132)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'steelblue', label = 'UM_RA2M median')
+        color = 'steelblue', label = label1 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'forestgreen', label = 'UM_CASIM-100 median')
+        color = 'forestgreen', label = label2 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'darkorange', label = 'ECMWF_IFS median')
+        color = 'darkorange', label = label3 + ' median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -3242,11 +3242,11 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(133)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'steelblue', label = 'UM_RA2M median')
+        color = 'steelblue', label = label1 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'forestgreen', label = 'UM_CASIM-100 median')
+        color = 'forestgreen', label = label2 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'darkorange', label = 'ECMWF_IFS median')
+        color = 'darkorange', label = label3 + ' median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
