@@ -4169,7 +4169,10 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     iTim = 0        ### initialised
     iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
     iUM = np.where(data1['height'] <= 11000)
-    iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    if ifs_flag == True:
+        iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    else:
+        iIFS = np.where(data3['height'] <= 11000)
 
     #### ---------------------------------------------------------------
     #### remove flagged IFS heights
