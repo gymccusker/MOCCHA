@@ -962,7 +962,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     plt.figure(figsize=(10,9))
-    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 1.05, left = 0.1,
+    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
@@ -1025,7 +1025,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.xlim([doy[0], doy[-1]])
-    plt.title('Obs-' + obs_switch + 'grid')
+    plt.title('TWC [$g/m^{3}$]' + '\n Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
     plt.subplot(412)
