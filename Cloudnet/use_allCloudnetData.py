@@ -940,7 +940,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     print ('******')
     print ('')
-    print ('Plotting IWC timeseries for whole drift period:')
+    print ('Plotting TWC timeseries for whole drift period:')
     print ('')
 
     ##################################################
