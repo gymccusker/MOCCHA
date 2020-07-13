@@ -1012,7 +1012,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
-    nans = ax.get_ylim()        
+    nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'lightpink',
@@ -1095,7 +1095,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles.png'
     plt.savefig(fileout)
     plt.show()
 
