@@ -2923,7 +2923,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     print ('...')
     print ('Re-gridding sonde and ifs data...')
     print ('')
-    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'temp')
+    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, 'temp')
     print ('')
     print ('Done!')
 
@@ -4112,7 +4112,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     plt.savefig(fileout)
     plt.show()
 
-def reGrid_Sondes(data1, data2, data3, obs, doy, var):
+def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
 
     from scipy.interpolate import interp1d
 
