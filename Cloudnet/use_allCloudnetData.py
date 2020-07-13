@@ -1012,7 +1012,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # np.arange(0,0.31,0.01),
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
     ax = plt.gca()
@@ -1034,7 +1034,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     cmap = newcmp)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
@@ -1057,7 +1057,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     cmap = newcmp)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
@@ -1079,7 +1079,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     cmap = newcmp)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
@@ -1102,8 +1102,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
