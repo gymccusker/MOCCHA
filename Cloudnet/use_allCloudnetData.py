@@ -922,7 +922,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.savefig(fileout)
     plt.show()
 
-def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
+def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1015,6 +1015,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1037,6 +1038,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1060,6 +1062,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1082,6 +1085,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -4713,7 +4717,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
