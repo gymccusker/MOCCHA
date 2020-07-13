@@ -230,7 +230,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
+def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -296,6 +296,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -315,6 +316,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -333,6 +335,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -351,6 +354,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -371,7 +375,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1107,7 +1111,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -4714,10 +4718,10 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
