@@ -331,7 +331,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '12_u-br210_RA1M_CASIM/OUT_24h/'
+    out_dir = '14_u-bu570_RA1M_CASIM/OUT_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -344,6 +344,8 @@ def main():
     ### 11_u-bq798_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
+    ### 14_u-bu570_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
+    ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
 
     print ('******')
     print ('')
@@ -419,10 +421,10 @@ def main():
 
     moccha_missing_files = []
 
-    # doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(243,259)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
-    doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
+    # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
 
     ## Choose month:
     names = moccha_names
