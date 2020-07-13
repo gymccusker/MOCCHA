@@ -681,7 +681,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.xlabel('Ice water content [g/m3]')
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
-    plt.xlim([0,0.05])
+    plt.xlim([0,0.08])
     plt.legend()
 
     print ('******')
@@ -690,7 +690,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-gt1e-6kgm3_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-gt1e-6kgm3_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
