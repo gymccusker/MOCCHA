@@ -932,6 +932,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     import matplotlib.cm as mpl_cm
     import matplotlib.colors as colors
     from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+    from matplotlib import ticker, cm
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -1003,14 +1004,15 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.3
 
     plt.subplot(411)
-    # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
-    #     # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-    #     vmin = 0.0, vmax = cmax,
+    # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.log10(twc0),
+    #     # norm=colors.LogNorm(vmin=0.0, vmax=0.3))
+    #     # vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
+        # np.arange(0,0.31,0.01),
+        locator=ticker.LogLocator(base = 10.0),
         cmap = newcmp)
+        # )
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1029,8 +1031,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
+        locator=ticker.LogLocator(base = 10.0),
+        # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -1051,8 +1053,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
+        locator=ticker.LogLocator(base = 10.0),
+        # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -1072,8 +1074,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-        # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
-        np.arange(0,0.31,0.001),
+        locator=ticker.LogLocator(base = 10.0),
+        # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -1096,7 +1098,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
