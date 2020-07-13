@@ -230,7 +230,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs): #, lon, lat):
+def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -266,7 +266,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(11,9))
+    plt.figure(figsize=(12,11))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.05, left = 0.1,
             hspace = 0.4, wspace = 0.05)
 
@@ -291,12 +291,17 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
+    bldepth1 = data1['bl_depth'][data1['hrly_flag']]
+    bldepth2 = data2['bl_depth'][data2['hrly_flag']]
+    bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
+
     plt.subplot(411)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), '--', color = 'grey', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -316,7 +321,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -335,7 +341,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -354,7 +361,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([doy[0], doy[-1]])
@@ -375,7 +383,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase.png'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -4718,7 +4726,7 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs)
