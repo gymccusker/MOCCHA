@@ -931,6 +931,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     import cartopy
     import matplotlib.cm as mpl_cm
     import matplotlib.colors as colors
+    from matplotlib.colors import LogNorm
     from matplotlib.colors import ListedColormap, LinearSegmentedColormap
     from matplotlib import ticker, cm
         # from matplotlib.patches import Polygon
@@ -1010,7 +1011,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     cmap = newcmp)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # np.arange(0,0.31,0.01),
-        locator=ticker.LogLocator(base = 10.0),
+        # locator=ticker.LogLocator(base = 10.0),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
     ax = plt.gca()
@@ -1031,7 +1033,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
-        locator=ticker.LogLocator(base = 10.0),
+        # locator=ticker.LogLocator(base = 10.0),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
@@ -1053,7 +1056,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
-        locator=ticker.LogLocator(base = 10.0),
+        # locator=ticker.LogLocator(base = 10.0),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
@@ -1074,7 +1078,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
-        locator=ticker.LogLocator(base = 10.0),
+        # locator=ticker.LogLocator(base = 10.0),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     ax = plt.gca()
