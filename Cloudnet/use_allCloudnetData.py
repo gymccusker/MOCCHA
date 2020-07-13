@@ -266,9 +266,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(12,11))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.05, left = 0.1,
-            hspace = 0.4, wspace = 0.05)
+    plt.figure(figsize=(10,9))
+    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
+            hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
     ax = plt.gca()
@@ -383,7 +383,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.svg'
+        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.png'
     plt.savefig(fileout)
     plt.show()
 
