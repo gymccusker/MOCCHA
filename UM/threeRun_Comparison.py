@@ -4177,34 +4177,43 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     #### ---------------------------------------------------------------
     #### remove flagged IFS heights
     #### ---------------------------------------------------------------
-    data3['height'][data3['height'] == -9999] = 0.0
+    if ifs_flag == True:
+        data3['height'][data3['height'] == -9999] = 0.0
             #### set all heights to zero if flagged. setting to nan caused problems
             ####        further on
-    data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
+        data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
     #### ---------------------------------------------------------------
-    print ('')
-    print ('Defining IFS temperature profile as a function:')
-    print ('using ifs.height[i,:] to define temperature profiles...')
-    data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
-    for iTim in range(0,np.size(data3['time_hrly'],0)):
-        # print (iTim)
-        iIFSind = np.where(data3['height_hrly'][iTim,:] <= 11000)
-        if np.all(data3['height_hrly'][iTim,:] == 0.0):
-            data3[var + '_hrly_UM'][iTim,:] = np.nan
-        else:
-            fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
-            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
-    print ('...')
-    print ('IFS(UM Grid) function worked!')
-    print (var + ' IFS data now on UM vertical grid')
-    print ('*****')
-    ### assign for easier indexing later
-    data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
-    data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
-    data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
+    if ifs_flag == True:
+        print ('')
+        print ('Defining IFS temperature profile as a function:')
+        print ('using ifs.height[i,:] to define temperature profiles...')
+        data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+        for iTim in range(0,np.size(data3['time_hrly'],0)):
+            # print (iTim)
+            iIFSind = np.where(data3['height_hrly'][iTim,:] <= 11000)
+            if np.all(data3['height_hrly'][iTim,:] == 0.0):
+                data3[var + '_hrly_UM'][iTim,:] = np.nan
+            else:
+                fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
+                data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+        print ('...')
+        print ('IFS(UM Grid) function worked!')
+        print (var + ' IFS data now on UM vertical grid')
+        print ('*****')
+        ### assign for easier indexing later
+        data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
+        data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
+        data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
+    else:
+        data3['universal_height'] = data3['height'][iUM[0][3:]]
+        data3['universal_height_UMindex'] = iUM[0][3:]
+        data3['height_6hrly'] = np.zeros([np.size(data3['time_6hrly']), np.size(data3['universal_height_UMindex'])])
+        for i in range(0, len(data3['time_6hrly'])): data3['height_6hrly'][i,:] = data3['universal_height'][:]
+        data3[var + '_6hrly_UM'] = data3[var + '_hrly'][::6]
+
 
     #### INTERPOLATION TESTING:
     # print (data3['temp_hrly_UM'].shape),'radr_refl'
@@ -5265,10 +5274,10 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
