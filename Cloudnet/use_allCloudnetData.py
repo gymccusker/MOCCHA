@@ -1011,6 +1011,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         # norm=colors.LogNorm(vmin=0.0, vmax=0.5))
         np.arange(0,0.31,0.001),
         cmap = newcmp)
+    ax = plt.gca()
+    nans = ax.get_ylim()        
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'lightpink',
