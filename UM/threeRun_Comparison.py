@@ -5602,21 +5602,33 @@ def main():
     data3['time'] = time_um3
 
     ### stop double counting of 0000 and 2400 from model data
-    temp = np.zeros([len(data1['time'])])
-    for i in range(0, len(temp)-1):
+    temp1 = np.zeros([len(data1['time'])])
+    for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
         else:
-            temp[i] = data1['time'][i]
-    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+            temp1[i] = data1['time'][i]
+    for i in range(0, len(temp2)-1):
+        if data2['time'][i] == data2['time'][i+1]:
+            continue
+        else:
+            temp2[i] = data2['time'][i]
+    for i in range(0, len(temp3)-1):
+        if data3['time'][i] == data3['time'][i+1]:
+            continue
+        else:
+            temp3[i] = data3['time'][i]
+    ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
+    ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
+    ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
 
     ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_hrly'] = temp[ii]
-    data2['time_hrly'] = temp[ii]
-    data3['time_hrly'] = temp[ii]
-    data1['hrly_flag'] = ii
-    data2['hrly_flag'] = ii
-    data3['hrly_flag'] = ii
+    data1['time_hrly'] = temp1[ii]
+    data2['time_hrly'] = temp2[ii]
+    data3['time_hrly'] = temp3[ii]
+    data1['hrly_flag'] = ii1
+    data2['hrly_flag'] = ii2
+    data3['hrly_flag'] = ii3
 
     #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
