@@ -1363,11 +1363,19 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ax3 = plt.gca()
     if out_dir4 == 'OUT_25H/':
         ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
+        ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
         plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data['model_snow_Cv_filtered']),
             [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
             # vmin = 0, vmax = 150,
             cmap = newcmp
             )
+        ax = plt.gca()
+        nans = ax.get_ylim()
+        for file in missing_files:
+            ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+                facecolor = 'lightpink',
+                hatch = 'x',
+                zorder = 3)
     else:
         plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
             [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -1417,7 +1425,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.svg'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5278,7 +5286,7 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
+        out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
