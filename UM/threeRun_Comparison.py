@@ -1382,7 +1382,8 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.xlim([doy[0], doy[-1]])
 
     #### load temp obs Cv data
-    obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
+    obs_data = np.load('../Cloudnet/obs_Cv_ifs-qf10.npy').item()
+    obs_data['Cv'][obs_data['Cv'] < 0.0] = 0.0
 
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
@@ -1416,7 +1417,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.svg'
     plt.savefig(fileout)
     plt.show()
 
