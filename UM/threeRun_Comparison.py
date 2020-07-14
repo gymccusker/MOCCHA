@@ -1425,7 +1425,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1562,7 +1562,8 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.xlim([doy[0], doy[-1]])
 
     #### load temp obs Cv data
-    obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
+    obs_data = np.load('../Cloudnet/obs_Cv_ifs-qf10.npy').item()
+    obs_data[obsname][obs_data[obsname] < 0.0] = 0.0
 
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
@@ -1597,7 +1598,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/' + var + 'Timeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_28Aug-14Sep.png'
+        fileout = '../Cloudnet/FIGS/' + var + 'Timeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5284,9 +5285,9 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'OUT_25H/'
+        out_dir4 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -5711,8 +5712,8 @@ def main():
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    figure = plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
