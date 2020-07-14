@@ -5619,6 +5619,7 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
     if out_dir1[:10] == '14_u-bu570': label1 = 'UM_CASIM-100_newRHcrit'
     if out_dir1[:10] == '13_u-br409': label1 = 'UM_CASIM-100_AP'
     if out_dir1[:10] == '12_u-br210': label1 = 'UM_CASIM-AeroProf'
@@ -5632,6 +5633,7 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
     if out_dir2[:10] == '14_u-bu570': label2 = 'UM_CASIM-100_newRHcrit'
     if out_dir2[:10] == '13_u-br409': label2 = 'UM_CASIM-100_AP'
     if out_dir2[:10] == '12_u-br210': label2 = 'UM_CASIM-AeroProf'
@@ -5646,6 +5648,7 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir4[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
     if out_dir4[:10] == '14_u-bu570': label3 = 'UM_CASIM-100_newRHcrit'
     if out_dir4[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
     if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
