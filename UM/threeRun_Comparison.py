@@ -5274,8 +5274,8 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '15_u-bu687_RA2M_CON/OUT_R0_24h/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
@@ -5288,7 +5288,7 @@ def main():
     ### 4_u-bg610_RA2M_CON/OUT_R1/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/OUT_R2_lam/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_R2_lam_24h/              # RA2T_CON nest + global 4D stash
     ### 7_u-bn068_RA2T_CON/OUT_R2_glm/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
@@ -5296,7 +5296,7 @@ def main():
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
     ### 14_u-bu570_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
-    ### 15_u-bu687_RA2M_CON/OUT_R0/           # Wilson and Ballard 1999 uphys; new RHcrit
+    ### 15_u-bu687_RA2M_CON/OUT_R0_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
     ### 16_u-bv926_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash + no subgrid mp production
 
     print ('******')
