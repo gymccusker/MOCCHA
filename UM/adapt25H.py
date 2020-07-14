@@ -331,14 +331,14 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/OUT_24h/'
+    out_dir = '7_u-bn068_RA2T_CON/OUT_R2_lam_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
     ### 4_u-bg610_RA2M_CON/OUT_R1/papbpc_combined/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0_24H/       # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/OUT/       # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/OUT_24h/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_R2_lam_24h/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
