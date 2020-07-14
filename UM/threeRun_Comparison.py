@@ -4151,21 +4151,21 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     elif var == 'q':
         varlist = ['mr','q','q','q']
 
-    ### stop double counting of 0000 and 2400 from model data
-    temp = np.zeros([len(data1['time'])])
-    for i in range(0, len(temp)-1):
-        if data1['time'][i] == data1['time'][i+1]:
-            continue
-        else:
-            temp[i] = data1['time'][i]
-    ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+    # ### stop double counting of 0000 and 2400 from model data
+    # temp = np.zeros([len(data1['time'])])
+    # for i in range(0, len(temp)-1):
+    #     if data1['time'][i] == data1['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp[i] = data1['time'][i]
+    # ii = np.where(temp != 0.0)      ### picks out where data are non-zero
 
     #### ---------------------------------------------------------------
     #### save hourly temperature model profiles (using the ii index defined by the time indices)
     #### ---------------------------------------------------------------
-    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][ii,:])
-    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][ii,:])
-    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][ii,:])
+    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][data1['hrly_flag'],:])
+    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][data2['hrly_flag'],:])
+    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][data3['hrly_flag'],:])
 
     #### ---------------------------------------------------------------
     #### explicitly save 6-hourly temperature model profiles and time binning for ease
