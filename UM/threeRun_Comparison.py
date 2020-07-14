@@ -5603,6 +5603,8 @@ def main():
 
     ### stop double counting of 0000 and 2400 from model data
     temp1 = np.zeros([len(data1['time'])])
+    temp2 = np.zeros([len(data2['time'])])
+    temp3 = np.zeros([len(data3['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
