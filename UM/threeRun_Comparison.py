@@ -4196,7 +4196,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
         data3['height'][data3['height'] == -9999] = 0.0
             #### set all heights to zero if flagged. setting to nan caused problems
             ####        further on
-        data3['height_hrly'] = np.squeeze(data3['height'][ii,:])  ### need to explicitly save since height coord changes at each timedump
+        data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
@@ -5289,7 +5289,7 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
