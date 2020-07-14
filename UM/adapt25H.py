@@ -331,7 +331,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/OUT_R2_lam_24h/'
+    out_dir = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
