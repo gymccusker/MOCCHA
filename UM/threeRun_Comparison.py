@@ -1562,8 +1562,13 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.xlim([doy[0], doy[-1]])
 
     #### load temp obs Cv data
-    obs_data = np.load('../Cloudnet/obs_Cv_ifs-qf10.npy').item()
-    obs_data[obsname][obs_data[obsname] < 0.0] = 0.0
+    obs_data = np.load('../Cloudnet/working_obs_data.npy').item()
+
+    #### only include vals >1e-6kg/m3
+    obs_data[obsname][obs_data[obsname] < 1e-6] = np.nan
+    data1[var][data1[var] < 1e-6] = np.nan
+    data2[var][data2[var] < 1e-6] = np.nan
+    data3[var][data3[var] < 1e-6] = np.nan
 
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
@@ -1588,7 +1593,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     if var == 'qliq': plt.xlim([0,0.15])
-    if var == 'qice': plt.xlim([0,0.02])
+    if var == 'qice': plt.xlim([0,0.04])
     plt.legend()
 
 
@@ -1598,7 +1603,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/' + var + 'Timeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.svg'
+        fileout = '../Cloudnet/FIGS/' + var + 'Timeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_14Aug-14Sep.png'
     plt.savefig(fileout)
     plt.show()
 
