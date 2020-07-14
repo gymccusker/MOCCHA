@@ -5625,9 +5625,9 @@ def main():
     ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
 
     ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_hrly'] = temp1[ii]
-    data2['time_hrly'] = temp2[ii]
-    data3['time_hrly'] = temp3[ii]
+    data1['time_hrly'] = temp1[ii1]
+    data2['time_hrly'] = temp2[ii2]
+    data3['time_hrly'] = temp3[ii3]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
