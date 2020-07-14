@@ -6395,7 +6395,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
     # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
     ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
-    if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
     # print 'Outfile = ', pp_outfile
 
     ### save cube to netcdf file
