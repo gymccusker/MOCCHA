@@ -1141,6 +1141,15 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     mask2 = np.zeros([np.size(misc_data['model_twc'],0), np.size(misc_data['model_twc'],1)])
     mask3 = np.zeros([np.size(ifs_data['model_twc'],0), np.size(ifs_data['model_twc'],1)])
 
+    ind0 = np.where(twc0 >= 1e-6)
+    mask0[ind0] = 1.0
+    ind1 = np.where(um_data['model_twc'] >= 1e-6)
+    mask1[ind1] = 1.0
+    ind2 = np.where(misc_data['model_twc'] >= 1e-6)
+    mask2[ind2] = 1.0
+    ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
+    mask3[ind3] = 1.0
+
     ##################################################
     ##################################################
     #### 	CARTOPY
@@ -1166,7 +1175,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(411)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), mask0,
-        np.arange(0,1.01,0.01),
+        np.arange(0,1.01,0.1),
         cmap = newcmp)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1184,7 +1193,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(412)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(mask3),
-        np.arange(0,1.01,0.01),
+        np.arange(0,1.01,0.1),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
@@ -1203,7 +1212,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(413)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
-        np.arange(0,1.01,0.01),
+        np.arange(0,1.01,0.1),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
@@ -1222,7 +1231,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     plt.subplot(414)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(mask2),
-        np.arange(0,1.01,0.01),
+        np.arange(0,1.01,0.1),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
