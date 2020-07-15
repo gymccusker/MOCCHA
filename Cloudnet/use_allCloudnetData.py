@@ -1179,7 +1179,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.ylabel('Height [m]')
     plt.ylim([0,10000])
     plt.xlim([doy[0], doy[-1]])
-    plt.title('TWC [$g/m^{3}$]' + '\n Obs-' + obs_switch + 'grid')
+    plt.title('Cloud mask' + '\n Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
     plt.subplot(412)
