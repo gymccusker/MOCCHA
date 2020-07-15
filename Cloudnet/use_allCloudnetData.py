@@ -1194,7 +1194,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         np.arange(0,1.01,0.01),
         cmap = newcmp)
-        cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
