@@ -1020,7 +1020,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     ### define axis instance
     ax = plt.gca()
-    
+
     plt.subplot(411)
     # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.log10(twc0),
     #     # norm=colors.LogNorm(vmin=0.0, vmax=0.3))
@@ -1129,6 +1129,117 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths.svg'
     plt.savefig(fileout)
     plt.show()
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,9))
+    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
+            hspace = 0.4, wspace = 0.2)
+
+    ### define axis instance
+    ax = plt.gca()
+
+    plt.subplot(411)
+    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+        np.arange(0,1.01,0.01),
+        cmap = newcmp)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('TWC [$g/m^{3}$]' + '\n Obs-' + obs_switch + 'grid')
+    plt.colorbar()
+
+    plt.subplot(412)
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
+        np.arange(0,1.01,0.01),
+        cmap = newcmp)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('ECMWF_IFS')
+    plt.colorbar()
+
+    plt.subplot(413)
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
+        np.arange(0,1.01,0.01),
+        cmap = newcmp)
+        cmap = newcmp)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2M')
+    plt.colorbar()
+
+    plt.subplot(414)
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+        np.arange(0,1.01,0.01),
+        cmap = newcmp)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,10000])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_CASIM-100')
+    plt.colorbar()
+    plt.xlabel('Day of Year')
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.svg'
+    plt.savefig(fileout)
+    plt.show()
+
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
 
