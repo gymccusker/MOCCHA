@@ -5290,7 +5290,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir2 = '15_u-bu687_RA2M_CON/OUT_24h/'
         # out_dir3 = 'MET_DATA/'
         out_dir4 = 'OUT_25H/'
     elif platform == 'JASMIN':
