@@ -169,7 +169,7 @@ def combineNC(nc1, nc2, filename1, filename2):
     height.long_name = 'height'
     height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
-    #### height2
+    # #### height2
     height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
     height2.scale_factor = float(1)
     height2.add_offset = float(0)
@@ -423,7 +423,8 @@ def main():
 
     doy = np.arange(225,258)        ## set DOY for full moccha figures
     # doy = np.arange(243,259)        ## set DOY for subset of moccha figures
-    # doy = np.arange(240,251)        ## set DOY for subset of moccha figures
+    # doy = np.arange(240,248)        ## set DOY for subset of moccha figures
+    # doy = np.arange(248,258)        ## set DOY for subset of moccha figures
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
 
     ## Choose month:
