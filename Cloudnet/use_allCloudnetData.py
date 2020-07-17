@@ -560,7 +560,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ### set colour max as var
     cmax = 0.3
 
-    # plt.subplot(411)
+    plt.subplot(411)
     if obs_switch == 'RADAR':
         plt.pcolor(obs_data['time'][::6], obs_data['height'][:394], np.transpose(obs_data['lwc'][::6,:394])*1e3,
             vmin = 0.0, vmax = cmax)
