@@ -561,9 +561,14 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.3
 
     plt.subplot(411)
-    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
-        vmin = 0.0, vmax = cmax)
-        # cmap = newcmp)
+        if obs_switch == 'RADAR':
+            plt.pcolor(obs_data['time'], obs_data['height'], np.transpose(obs_data['lwc'])*1e3,
+                vmin = 0.0, vmax = cmax)
+                #cmap = newcmp)
+        else:
+            plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
+                vmin = 0.0, vmax = cmax)
+                #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,5000])
     plt.title('Obs')
@@ -604,7 +609,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf90_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -762,9 +767,14 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.08
 
     plt.subplot(411)
-    plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['iwc'])*1e3,
-        vmin = 0.0, vmax = cmax)
-        #cmap = newcmp)
+    if obs_switch == 'RADAR':
+        plt.pcolor(obs_data['time'], obs_data['height'], np.transpose(obs_data['iwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
+    else:
+        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['iwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.title('Obs')
@@ -806,7 +816,7 @@ def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_IWCTimeseries_226-257DOY.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -1330,7 +1340,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf05_IFS_RA2M_CASIM-100_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.png'
     # plt.savefig(fileout)
     plt.show()
 
@@ -1382,8 +1392,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.png'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF-5_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.png'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -4162,7 +4172,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'IFS'
+    obs_switch = 'RADAR'
 
     ### only works on laptop for now
 
@@ -4992,11 +5002,11 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
 
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
-    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
