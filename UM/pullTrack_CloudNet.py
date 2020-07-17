@@ -7695,7 +7695,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '14_u-bu570_RA1M_CASIM/'
+    out_dir = '7_u-bn068_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -7806,14 +7806,14 @@ def main():
                 ### -------------------------------------------------------------------------
                 if out_dir == '7_u-bn068_RA2T_CON/':    ## choose lam or global for 7_u-bn068
                     #### LAM
-                    # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    # model = 'lam'
-                    # dirout = 'u-bn068_v2_lam/'
+                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    model = 'lam'
+                    dirout = 'u-bn068_v2_lam/'
                     #### GLM
-                    if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
-                    filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-                    model = 'glm'
-                    dirout = 'u-bn068_v2_glm/'
+                    # if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
+                    # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+                    # model = 'glm'
+                    # dirout = 'u-bn068_v2_glm/'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
