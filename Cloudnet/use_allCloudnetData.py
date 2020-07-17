@@ -4373,11 +4373,11 @@ def main():
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
-            '20180914_oden_']
+            '20180829_oden_','20180830_oden_','20180831_oden_']#,'20180901_oden_',
+            # '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
+            # '20180914_oden_']
 
     Aug_missing_files = []
 
@@ -4386,7 +4386,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,244)        ## set DOY for Aug dates
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
