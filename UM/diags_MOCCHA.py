@@ -80,7 +80,8 @@ Stash_list = { # paXXX
               'm01s00i083': 'number_concentration_of_activated_soluble_aerosol_in_liquid',
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'number_concentration_of_activated_soluble_aerosol_in_rain',
-              'm01s00i088': 'number_concentration_of_activated_soluble_aerosol'
+              'm01s00i088': 'number_concentration_of_activated_soluble_aerosol',
+              'm01s00i271': 'mass_fraction_of_cloud_ice_crystals_in_air'
 
 
               # 'm01s03i476': 'atmosphere_boundary_layer_type',
