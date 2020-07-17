@@ -561,14 +561,14 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     cmax = 0.3
 
     plt.subplot(411)
-        if obs_switch == 'RADAR':
-            plt.pcolor(obs_data['time'], obs_data['height'], np.transpose(obs_data['lwc'])*1e3,
-                vmin = 0.0, vmax = cmax)
-                #cmap = newcmp)
-        else:
-            plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
-                vmin = 0.0, vmax = cmax)
-                #cmap = newcmp)
+    if obs_switch == 'RADAR':
+        plt.pcolor(obs_data['time'], obs_data['height'], np.transpose(obs_data['lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
+    else:
+        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
     plt.ylabel('Height [m]')
     plt.ylim([0,5000])
     plt.title('Obs')
