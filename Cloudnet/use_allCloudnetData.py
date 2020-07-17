@@ -611,7 +611,8 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
     plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
 def plot_iwcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
