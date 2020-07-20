@@ -81,7 +81,7 @@ Var_list = { # paXXX
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'qnsolaerorain',
               'm01s00i088': 'qnsolaero',
-              'm01s00i271': 'qice2'
+              'm01s00i271': 'qicecrystals'
               }
 
 
