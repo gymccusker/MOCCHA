@@ -48,7 +48,7 @@ Var_list = { # paXXX
               'm01s00i266': 'cloud_fraction',                                   # large_scale_cloud_area_fraction
               'm01s00i408': 'pressure',                                         # air_pressure
               'm01s16i004': 'temperature',                                      # air_temperature
-              'm01s00i012': 'qsnow',                                             # mass_fraction_of_cloud_ice_in_air
+              'm01s00i012': 'qice',                                             # mass_fraction_of_cloud_ice_in_air
               'm01s00i254': 'qliq',                                             # mass_fraction_of_cloud_liquid_water_in_air
               'm01s00i010': 'q',                                                # specific_humidity
               'm01s00i150': 'wwind',                                            # upward_air_velocity
@@ -81,7 +81,7 @@ Var_list = { # paXXX
               # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'qnsolaerorain',
               'm01s00i088': 'qnsolaero',
-              'm01s00i271': 'qice'
+              'm01s00i271': 'qice2'
               }
 
 
