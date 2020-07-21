@@ -3291,7 +3291,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
     plt.ylabel('Z [m]')
-    plt.xlabel('median T bias [K]')
+    plt.xlabel('Temperature bias [K]')
     plt.grid('on')
     plt.title('Total drift')
 
@@ -3340,7 +3340,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
-    plt.xlabel('median T bias [K]')
+    plt.xlabel('Temperature bias [K]')
     plt.title('Melt')
 
     plt.subplot(133)
@@ -3389,7 +3389,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
-    plt.xlabel('median T bias [K]')
+    plt.xlabel('Temperature bias [K]')
     plt.title('Freeze')
 
     fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_ra2t.svg'
