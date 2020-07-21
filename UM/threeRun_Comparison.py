@@ -2910,7 +2910,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
+def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2947,6 +2947,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     data1['temperature'][data1['temperature'] == -9999] = np.nan
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data4['temperature'][data4['temperature'] == -9999] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -2955,7 +2956,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     print ('...')
     print ('Re-gridding sonde and ifs data...')
     print ('')
-    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, 'temp')
+    data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, 'temp')
     print ('')
     print ('Done!')
 
@@ -3204,6 +3205,9 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.ylabel('Z [m]')
     plt.title(label2 + ' - Radiosondes, T[degC]')
 
+    dat4 = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = dat4
+
     print ('******')
     print ('')
     print ('Finished plotting! :)')
@@ -3244,11 +3248,13 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(131)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],
-        color = 'steelblue', label = label1)
+        '.-' ,color = 'steelblue', label = label1)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],
-        color = 'forestgreen', label = label2)
+        '.-' ,color = 'forestgreen', label = label2)
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
-        color = 'darkorange', label = label3)
+        '.-' ,color = 'darkorange', label = label3)
+    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],
+        '.-', color = 'firebrick', label = label4[:-4])
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -3260,11 +3266,13 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(132)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'steelblue', label = label1 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'forestgreen', label = label2 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        color = 'darkorange', label = label3 + ' median')
+        '.-', color = 'darkorange', label = label3 + ' median')
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1),data1['universal_height'],
+        '.-', color = 'firebrick', label = label4[:-4] + ' median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -3274,11 +3282,13 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     plt.subplot(133)
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'steelblue', label = label1 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'forestgreen', label = label2 + ' median')
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        color = 'darkorange', label = label3 + ' median')
+        '.-', color = 'darkorange', label = label3 + ' median')
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1),data1['universal_height'],
+        '.-', color = 'firebrick', label = label4[:-4] + ' median')
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-1.6,1.0])
@@ -4144,7 +4154,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     plt.savefig(fileout)
     plt.show()
 
-def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
+def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
 
     from scipy.interpolate import interp1d
 
@@ -4158,15 +4168,15 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
     #### ---------------------------------------------------------------
     if var == 'temp':
-        varlist = ['temperature','temperature','temperature','temperature']
+        varlist = ['temperature','temperature','temperature','temperature', 'temperature']
     elif var == 'thetaE':
         # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
-        varlist = ['thetaE','thetaE','thetaE','thetaE']         # use sonde calculated thetaE
+        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE']         # use sonde calculated thetaE
     elif var == 'theta':
         # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
-        varlist = ['theta','theta','theta','theta']         # use sonde calculated theta
+        varlist = ['theta','theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
-        varlist = ['mr','q','q','q']
+        varlist = ['mr','q','q','q','q']
 
     # ### stop double counting of 0000 and 2400 from model data
     # temp = np.zeros([len(data1['time'])])
@@ -4183,6 +4193,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][data1['hrly_flag'],:])
     data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][data2['hrly_flag'],:])
     data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][data3['hrly_flag'],:])
+    data4[var + '_hrly'] = np.squeeze(data4[varlist[4]][data4['hrly_flag'],:])
 
     #### ---------------------------------------------------------------
     #### explicitly save 6-hourly temperature model profiles and time binning for ease
@@ -4191,9 +4202,11 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     data1['time_6hrly'] = data1['time_hrly'][::6]
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data3['time_6hrly'] = data3['time_hrly'][::6]
+    data4['time_6hrly'] = data4['time_hrly'][::6]
     data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
     data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
     data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
+    data4[var + '_6hrly'] = data4[var + '_hrly'][::6]
 
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
@@ -4372,7 +4385,7 @@ def reGrid_Sondes(data1, data2, data3, obs, doy, ifs_flag, var):
     np.save('working_dataObs',obs['sondes'])
     # outfiles = write_reGrid(data1, data2, data3, obs, var)
 
-    return data1, data2, data3, obs, drift
+    return data1, data2, data3, data4, obs, drift
 
 def write_reGrid(data1, data2, data3, obs, var):
 
@@ -5802,10 +5815,10 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
