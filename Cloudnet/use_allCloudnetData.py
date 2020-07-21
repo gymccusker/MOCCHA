@@ -2156,7 +2156,7 @@ def plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_f
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2227,7 +2227,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # time_obs['deck7th'] = calcTime_Mat2DOY(datenums_obs['deck7th'])
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/',out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2302,7 +2302,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # data1['surface_net_SW_radiation'].data[data1['surface_net_SW_radiation'].data == 0] = np.nan
     # data2['surface_net_SW_radiation'].data[data2['surface_net_SW_radiation'].data == 0] = np.nan
-    # if out_dir4 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir3 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -2404,7 +2404,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -2419,7 +2419,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2928,7 +2928,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     plt.legend()
     plt.show()
 
-def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -2943,7 +2943,7 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3422,7 +3422,7 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
     plt.legend()
     plt.show()
 
-def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var):
+def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -3437,7 +3437,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4220,11 +4220,11 @@ def main():
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
-        out_dir4 = 'OUT_25H/'
+        out_dir3 = 'OUT_25H/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
-        out_dir4 = 'ECMWF_IFS/'
+        out_dir3 = 'ECMWF_IFS/'
 
     ### IFS: OUT_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
@@ -4429,14 +4429,14 @@ def main():
         print ('Load raw model data first: ')
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'):
+        if np.logical_or(out_dir3 == 'OUT_25H/',out_dir3 == 'ECMWF_IFS/'):
             print( '***IFS being compared***')
             ifs_flag = True
-            filename_um3 = ifs_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
+            filename_um3 = ifs_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
         else:
             print ('***IFS NOT being compared***')
             print (filename_um1)
-            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum.nc'
             ifs_flag = False
         print (filename_um2)
         print (filename_um3)
@@ -4960,16 +4960,16 @@ def main():
     if out_dir2[:9] == '4_u-bg610': label2 = 'UM_RA2M'
 
     label3 = 'undefined_label'
-    if np.logical_or(out_dir4 == 'OUT_25H/',out_dir4 == 'ECMWF_IFS/'): label3 = 'ECMWF_IFS'
-    if out_dir4[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
-    if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
-    if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
-    if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
-    if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
-    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T'
-    if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
-    if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
-    if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
+    if np.logical_or(out_dir3 == 'OUT_25H/',out_dir3 == 'ECMWF_IFS/'): label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
+    if out_dir3[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
+    if out_dir3[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
+    if out_dir3[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
+    if out_dir3[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
+    if out_dir3[:9] == '7_u-bn068': label3 = 'UM_RA2T'
+    if out_dir3[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
+    if out_dir3[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
+    if out_dir3[:9] == '4_u-bg610': label3 = 'UM_RA2M'
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
@@ -5013,8 +5013,8 @@ def main():
     # -------------------------------------------------------------
     # Model plots
     # -------------------------------------------------------------
-    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
@@ -5062,10 +5062,10 @@ def main():
     var = 'lwc'
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3, var)
-    # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var)
+    # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
 
     # -------------------------------------------------------------
