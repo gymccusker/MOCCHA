@@ -2104,7 +2104,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'firebrick', label = label4)
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
     plt.title('$SW_{net,surf}$ [$W/m^{2}$]')
-    # plt.legend()
+    plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-3,120])
 
@@ -2140,7 +2140,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.title('CRF [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
-    plt.legend(bbox_to_anchor=(-0.11, 0.67, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
     plt.xlabel('Day of year')
 
@@ -2214,7 +2213,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(crf4, hist=False, color="firebrick", kde_kws={"shade": True})
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
-    plt.annotate('Melt', xy=(55,0.07), xytext=(55,0.07), fontsize = 14)
+    plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
     plt.xlabel('CRF [$W/m^{2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
@@ -2260,7 +2259,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(crf4, hist=False, color="firebrick", kde_kws={"shade": True})
     sns.distplot(netLW[obsfreeze] + netSW[obsfreeze], hist=False, color="black")
     # plt.title('Freeze')
-    plt.annotate('Freeze', xy=(45,0.07), xytext=(45,0.07), fontsize = 14)
+    plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     plt.xlabel('CRF [$W/m^{2}$]')
@@ -2271,8 +2270,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_splitSeason.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -2422,7 +2421,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             facecolor = 'lightpink',
             hatch = 'x',
             zorder = 3)
-    plt.legend(bbox_to_anchor=(0.28, 0.7, 1., .102), loc=3, ncol=2)
+    plt.legend(bbox_to_anchor=(0.26, 0.63, 1., .102), loc=3, ncol=2)
 
 
     # ax  = fig.add_axes([0.75,0.15,0.2,0.7])   # left, bottom, width, height
@@ -2433,8 +2432,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_hatchedMissingFiles.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_ra2t_hatchedMissingFiles.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
@@ -3224,7 +3223,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     ##################################################
     ##################################################
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 16
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -3392,8 +3391,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     plt.xlabel('Temperature bias [K]')
     plt.title('Freeze')
 
-    fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_ra2t.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_ra2t.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
@@ -5911,11 +5910,11 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
