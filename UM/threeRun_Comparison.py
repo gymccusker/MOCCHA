@@ -117,7 +117,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -188,7 +188,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # time_obs['deck7th'] = calcTime_Mat2DOY(datenums_obs['deck7th'])
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -263,7 +263,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # data1['surface_net_SW_radiation'].data[data1['surface_net_SW_radiation'].data == 0] = np.nan
     # data2['surface_net_SW_radiation'].data[data2['surface_net_SW_radiation'].data == 0] = np.nan
-    # if out_dir4 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir3 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -365,7 +365,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -378,7 +378,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         # from matplotlib.patches import Polygon
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -531,7 +531,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     plt.savefig(fileout)#, dpi=400)
     plt.show()
 
-def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -596,7 +596,7 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -725,7 +725,7 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -920,7 +920,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.savefig(fileout)
     plt.show()
 
-def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1003,7 +1003,7 @@ def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, ou
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1086,7 +1086,7 @@ def plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, ou
     plt.savefig(fileout)
     plt.show()
 
-def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1151,7 +1151,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1280,7 +1280,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1361,7 +1361,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
 
     ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
     ax3 = plt.gca()
-    if out_dir4 == 'OUT_25H/':
+    if out_dir3 == 'OUT_25H/':
         ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
         ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
         plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data['model_snow_Cv_filtered']),
@@ -1404,7 +1404,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
     ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
         np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
-    if out_dir4 == 'OUT_25H/':
+    if out_dir3 == 'OUT_25H/':
         plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
         ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
             np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
@@ -1429,7 +1429,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.savefig(fileout)
     plt.show()
 
-def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1504,7 +1504,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
         crange = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15]
         lab = 'IWMR [g/kg]'
         modname = 'model_iwc_filtered'
-        if out_dir4 == 'OUT_25H/':
+        if out_dir3 == 'OUT_25H/':
             modname3 = 'model_snow_iwc_filtered'
         else:
             modname3 = modname
@@ -1541,7 +1541,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
     ax3 = plt.gca()
-    if out_dir4 == 'OUT_25H/':
+    if out_dir3 == 'OUT_25H/':
         ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
         plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data[modname3]),
             crange,
@@ -1581,7 +1581,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.plot(np.nanmean(data2[var]*1e3,0),data2['height'], color = 'purple', linewidth = 3, label = label2)
     ax4.fill_betweenx(data2['height'],np.nanmean(data2[var]*1e3,0) - np.nanstd(data2[var]*1e3,0),
         np.nanmean(data2[var]*1e3,0) + np.nanstd(data2[var]*1e3,0), color = 'thistle', alpha = 0.35)
-    if out_dir4 == 'OUT_25H/':
+    if out_dir3 == 'OUT_25H/':
         plt.plot(np.nanmean(ifs_data[modname3],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS [g/m3]')
         ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data[modname3],0) - np.nanstd(ifs_data[modname3],0),
             np.nanmean(ifs_data[modname3],0) + np.nanstd(ifs_data[modname3],0), color = 'navajowhite', alpha = 0.15)
@@ -1607,7 +1607,7 @@ def plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.savefig(fileout)
     plt.show()
 
-def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1669,7 +1669,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1834,7 +1834,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     plt.savefig(fileout)
     plt.show()
 
-def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1873,7 +1873,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### set diagnostic naming flags for if IFS being used
     ### -------------------------------
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1999,7 +1999,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.savefig(fileout)
     plt.show()
 
-def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2061,7 +2061,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2262,7 +2262,7 @@ def plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1
     plt.savefig(fileout)
     plt.show()
 
-def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2323,7 +2323,7 @@ def plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1,
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2519,7 +2519,7 @@ def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
 
     plt.show()
 
-def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -2534,7 +2534,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2724,7 +2724,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.savefig(fileout)
     plt.show()
 
-def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     ###################################
     ## Plot occurrences of BL type from UM
@@ -2760,7 +2760,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2893,7 +2893,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2918,7 +2918,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3272,7 +3272,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, 
     # plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -3297,7 +3297,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3651,7 +3651,7 @@ def plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -3676,7 +3676,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3889,7 +3889,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     plt.savefig(fileout)
     plt.show()
 
-def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -3914,7 +3914,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4657,7 +4657,7 @@ def checkInvbaseBelow(invbaseID, thetaEDiff, dthresh):
 
     return invbaseID
 
-def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3):
+def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     print ('******')
     print ('')
@@ -4668,7 +4668,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5290,14 +5290,15 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'OUT_25H/'
+        out_dir3 = 'OUT_25H/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
         # out_dir3 = 'MET_DATA/'
-        out_dir4 = 'ECMWF_IFS/'
+        out_dir3 = 'ECMWF_IFS/'
 
     ### IFS: OUT_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1/
@@ -5447,20 +5448,22 @@ def main():
     for i in range(0,len(names)):
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if np.logical_or(out_dir4 == 'OUT_25H/', out_dir4 == 'ECMWF_IFS/'):
+        if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
             print( '***IFS being compared***')
             ifs_flag = True
-            filename_um3 = misc_root_dir + out_dir4 + names[i] + 'ecmwf.nc'
+            filename_um3 = misc_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
         else:
             print ('***IFS NOT being compared***')
-            filename_um3 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum.nc'
             ifs_flag = False
+        filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
         print (filename_um1)
         print (filename_um2)
         print (filename_um3)
+        print (filename_um4)
         print ('')
 
-        #### LOAD CUBE
+        #### LOAD DATA
         print( 'Loading first run diagnostics:')
         nc1 = Dataset(filename_um1,'r')
         print ('...')
@@ -5469,6 +5472,9 @@ def main():
         print ('...')
         print ('Loading third run diagnostics:')
         nc3 = Dataset(filename_um3,'r')
+        print ('...')
+        print ('Loading fourth run diagnostics:')
+        nc4 = Dataset(filename_um4,'r')
         print ('...')
         # -------------------------------------------------------------
         # print 'i = ' + str(i)
@@ -5488,10 +5494,11 @@ def main():
         if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
         if not ifs_flag:
-            if out_dir4[-4:-1] == 'glm':
+            if out_dir3[-4:-1] == 'glm':
                 var_list3 = ['cloud_fraction','qliq','qice']
             else:
                 var_list3 = var_list2
+        var_list4 = var_list1
 
         if i == 0:
             ## ------------------
@@ -5500,23 +5507,27 @@ def main():
             data1 = {}
             data2 = {}
             data3 = {}
+            data4 = {}
             if month_flag == -1:
                 time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
                 time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
                 if ifs_flag: time_um3 = doy[i] + (nc3.variables['time'][:]/24.0)
                 if not ifs_flag: time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
+                time_um4 = doy[i] + (nc4.variables['forecast_time'][:]/24.0)
             else:
                 time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
                 time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
                 if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
                 if not ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['forecast_time'][:]/24.0)
+                time_um4 = float(filename_um4[-16:-14]) + (nc4.variables['forecast_time'][:]/24.0)
 
             ### define height arrays explicitly
             data1['height'] = nc1.variables['height'][:]
             data2['height'] = nc2.variables['height'][:]
             if not ifs_flag: data3['height'] = nc3.variables['height'][:]
+            data4['height'] = nc4.variables['height'][:]
 
-            print ('Starting on t=0 UM data:')
+            print ('Starting on t=0 RA2M data:')
             for j in range(0,len(var_list1)):
                 if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
                     continue
@@ -5544,6 +5555,16 @@ def main():
                     # data1[cube_um1[j].var_name] = cube_um1[j].data
                     data3[var_list3[j]] = nc3.variables[var_list3[j]][:]
             nc3.close()
+            ## ------------------
+            #### um4
+            ## ------------------
+            print ('Starting on t=0 RA2T data:')
+            for j in range(0,len(var_list4)):
+                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc4.variables[var_list4[j]]) >= 1:
+                    data4[var_list4[j]] = nc4.variables[var_list4[j]][:]
+            nc4.close()
             print ('')
         else:
             if month_flag == -1:
@@ -5551,6 +5572,7 @@ def main():
                 time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
                 if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
                 if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
+                time_um4 = np.append(time_um4, doy[i] + (nc4.variables['forecast_time'][:]/24.0))
             ## ------------------
             #### UM
             ## ------------------
@@ -5592,6 +5614,21 @@ def main():
                 elif np.ndim(nc3.variables[var_list3[j]]) == 2:
                     data3[var_list3[j]] = np.append(data3[var_list3[j]],nc3.variables[var_list3[j]][:],0)
             nc3.close()
+            ## ------------------
+            #### um4 (ra2t)
+            ## ------------------
+            print ('Appending UM data:')
+            for j in range(0,len(var_list4)):
+                # print (var_list1[j])
+                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc4.variables[var_list4[j]]) == 1:
+                    # data1[cube_um1[j].var_name] = cube_um1[j].data
+                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:])
+                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:],0)
+            # np.save('working_data1',data1)
+            nc4.close()
             print ('')
 
     #################################################################
@@ -5600,11 +5637,13 @@ def main():
     data1['time'] = time_um1
     data2['time'] = time_um2
     data3['time'] = time_um3
+    data4['time'] = time_um4
 
     ### stop double counting of 0000 and 2400 from model data
     temp1 = np.zeros([len(data1['time'])])
     temp2 = np.zeros([len(data2['time'])])
     temp3 = np.zeros([len(data3['time'])])
+    temp4 = np.zeros([len(data4['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
@@ -5620,17 +5659,25 @@ def main():
             continue
         else:
             temp3[i] = data3['time'][i]
+    for i in range(0, len(temp4)-1):
+        if data4['time'][i] == data4['time'][i+1]:
+            continue
+        else:
+            temp4[i] = data4['time'][i]
     ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
     ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
+    ii4 = np.where(temp4 != 0.0)      ### picks out where data are non-zero
 
     ### can use temp for all model data since they are on the same (hourly) time binning
     data1['time_hrly'] = temp1[ii1]
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
+    data4['time_hrly'] = temp4[ii3]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
+    data4['hrly_flag'] = ii4
 
     #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
@@ -5677,19 +5724,33 @@ def main():
     if out_dir2 == 'UM_CASIM-100/': label2 = 'UM_CASIM-100'
 
     label3 = 'undefined_label'
-    if out_dir4 == 'OUT_25H/': label3 = 'ECMWF_IFS'
-    if out_dir4[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
-    if out_dir4[:10] == '14_u-bu570': label3 = 'UM_CASIM-100_newRHcrit'
-    if out_dir4[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
-    if out_dir4[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
-    if out_dir4[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
-    if out_dir4[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
-    if out_dir4[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
-    if out_dir4[:9] == '7_u-bn068': label3 = 'UM_RA2T_' + out_dir4[-4:-1]
-    if out_dir4[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
-    if out_dir4[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
-    if out_dir4[:9] == '4_u-bg610': label3 = 'UM_RA2M'
-    if out_dir4 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
+    if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
+    if out_dir3[:10] == '14_u-bu570': label3 = 'UM_CASIM-100_newRHcrit'
+    if out_dir3[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
+    if out_dir3[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
+    if out_dir3[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
+    if out_dir3[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
+    if out_dir3[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
+    if out_dir3[:9] == '7_u-bn068': label3 = 'UM_RA2T_' + out_dir3[-4:-1]
+    if out_dir3[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
+    if out_dir3[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
+    if out_dir3[:9] == '4_u-bg610': label3 = 'UM_RA2M'
+    if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
+
+    label4 = 'undefined_label'
+    if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
+    if out_dir4[:10] == '14_u-bu570': label4 = 'UM_CASIM-100_newRHcrit'
+    if out_dir4[:10] == '13_u-br409': label4 = 'UM_CASIM-100_AP'
+    if out_dir4[:10] == '12_u-br210': label4 = 'UM_CASIM-AeroProf'
+    if out_dir4[:10] == '11_u-bq798': label4 = 'UM_CASIM-100_Meyers'
+    if out_dir4[:10] == '10_u-bq791': label4 = 'UM_CASIM-100_Fletcher'
+    if out_dir4[:9] == '8_u-bp738': label4 = 'UM_ERAI-GLM'
+    if out_dir4[:9] == '7_u-bn068': label4 = 'UM_RA2T_' + out_dir4[-4:-1]
+    if out_dir4[:9] == '6_u-bm410': label4 = 'UM_CASIM-200'
+    if out_dir4[:9] == '5_u-bl661': label4 = 'UM_CASIM-100'
+    if out_dir4[:9] == '4_u-bg610': label4 = 'UM_RA2M'
+    if out_dir4 == 'UM_RA2M/': label4 = 'UM_RA2M'
 
 
     # -------------------------------------------------------------
@@ -5703,44 +5764,44 @@ def main():
     # -------------------------------------------------------------
     # Plot combined timeseries as lineplot
     # -------------------------------------------------------------
-    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
     # figure = plot_line_BLDepth(time_um1, time_um2, data1, data2, cube_um1, cube_um2, month_flag,
     #             missing_files, out_dir1, obs, doy)
 
     # figure = plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3,
-    #     month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    #     month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # CASIM plots
     # -------------------------------------------------------------
-    # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
-    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_paperRadiation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_Precipitation(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesQ(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_CWC_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # Further analysis
     # -------------------------------------------------------------
-    # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir4, obs, doy, label1, label2, label3)
+    # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
