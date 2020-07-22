@@ -1415,14 +1415,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ### define axis instance
     ax1 = plt.gca()
 
-    plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
-    ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
-        np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(mask0,0) - np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
-        '--', color = 'k', linewidth = 0.5)
-    plt.plot(np.nanmean(mask0,0) + np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
-        '--', color = 'k', linewidth = 0.5)
-
     plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(mask1,0) - np.nanstd(mask1,0),
         np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'lightblue', alpha = 0.4)
@@ -1454,6 +1446,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         '--', color = 'firebrick', linewidth = 0.5)
     plt.plot(np.nanmean(mask4,0) + np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
         '--', color = 'firebrick', linewidth = 0.5)
+        
+    plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
+    ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
+        np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(mask0,0) - np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
+    plt.plot(np.nanmean(mask0,0) + np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
 
     plt.xlabel('TWC Cloud mask')
     plt.ylabel('Height [m]')
