@@ -1046,7 +1046,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing
     plt.savefig(fileout)
     plt.show()
 
-def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3):
+def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1078,6 +1078,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0.0] = 0.0
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
@@ -1086,6 +1087,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
@@ -1094,6 +1096,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
@@ -1104,11 +1107,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     bldepth1 = data1['bl_depth'][data1['hrly_flag']]
     bldepth2 = data2['bl_depth'][data2['hrly_flag']]
     bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
+    bldepth4 = data4['bl_depth'][data4['hrly_flag']]
 
     twc0 = np.transpose(obs_data['twc'])*1e3
 
     cmax = 0.3
-
 
     ##################################################
     ##################################################
@@ -1117,7 +1120,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 15
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1126,14 +1129,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,9))
+    plt.figure(figsize=(10,13))
     plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
     ax = plt.gca()
 
-    plt.subplot(411)
+    plt.subplot(511)
     # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.log10(twc0),
     #     # norm=colors.LogNorm(vmin=0.0, vmax=0.3))
     #     # vmin = 0.0, vmax = cmax,
@@ -1153,12 +1156,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('TWC [$g/m^{3}$]' + '\n Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
-    plt.subplot(412)
+    plt.subplot(512)
     # plt.pcolormesh(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
@@ -1177,13 +1181,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS')
     plt.colorbar()
 
 
-    plt.subplot(413)
+    plt.subplot(513)
     # plt.pcolormesh(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
@@ -1202,12 +1207,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M')
     plt.colorbar()
 
-    plt.subplot(414)
+    plt.subplot(514)
     # plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
     #     vmin = 0.0, vmax = cmax,
     #     cmap = newcmp)
@@ -1226,9 +1232,35 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100')
+    plt.colorbar()
+
+    plt.subplot(515)
+    # plt.pcolormesh(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
+    #     vmin = 0.0, vmax = cmax,
+    #     cmap = newcmp)
+    plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
+        # locator=ticker.LogLocator(base = 10.0),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        # np.arange(0,0.31,0.001),
+        cmap = newcmp)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2T')
     plt.colorbar()
     plt.xlabel('Day of Year')
 
@@ -1238,8 +1270,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths.png'
+    plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -1252,6 +1284,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     mask1 = np.zeros([np.size(um_data['model_twc'],0), np.size(um_data['model_twc'],1)])
     mask2 = np.zeros([np.size(misc_data['model_twc'],0), np.size(misc_data['model_twc'],1)])
     mask3 = np.zeros([np.size(ifs_data['model_twc'],0), np.size(ifs_data['model_twc'],1)])
+    mask4 = np.zeros([np.size(ra2t_data['model_twc'],0), np.size(ra2t_data['model_twc'],1)])
 
     print ('mask0 size = ' + str(mask0.shape))
 
@@ -1263,6 +1296,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     mask2[ind2] = 1.0
     ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
     mask3[ind3] = 1.0
+    ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
+    mask4[ind4] = 1.0
 
     ##################################################
     ##################################################
@@ -1271,7 +1306,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 15
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1280,14 +1315,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,9))
+    plt.figure(figsize=(10,13))
     plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
     ax = plt.gca()
 
-    plt.subplot(411)
+    plt.subplot(511)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
         np.arange(0,1.01,0.1),
         cmap = newcmp)
@@ -1300,12 +1335,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('Cloud mask' + '\n Obs-' + obs_switch + 'grid')
     plt.colorbar()
 
-    plt.subplot(412)
+    plt.subplot(512)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(mask3),
         np.arange(0,1.01,0.1),
         cmap = newcmp)
@@ -1319,12 +1355,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS')
     plt.colorbar()
 
-    plt.subplot(413)
+    plt.subplot(513)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
         np.arange(0,1.01,0.1),
         cmap = newcmp)
@@ -1338,12 +1375,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M')
     plt.colorbar()
 
-    plt.subplot(414)
+    plt.subplot(514)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(mask2),
         np.arange(0,1.01,0.1),
         cmap = newcmp)
@@ -1357,9 +1395,30 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             hatch = 'x',
             zorder = 3)
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100')
+    plt.colorbar()
+
+    plt.subplot(515)
+    plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(mask4),
+        np.arange(0,1.01,0.1),
+        cmap = newcmp)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2T')
     plt.colorbar()
     plt.xlabel('Day of Year')
 
@@ -1369,8 +1428,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf05_IFS_RA2M_CASIM-100_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.svg'
+    plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -1399,19 +1458,46 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
     ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
         np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(mask0,0) - np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
+    plt.plot(np.nanmean(mask0,0) + np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
+
     plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(mask1,0) - np.nanstd(mask1,0),
         np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'lightblue', alpha = 0.4)
+    plt.plot(np.nanmean(mask1,0) - np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmean(mask1,0) + np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
+
     plt.plot(np.nanmean(mask3,0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(mask3,0) - np.nanstd(mask3,0),
         np.nanmean(mask3,0) + np.nanstd(mask3,0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(mask3,0) - np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmean(mask3,0) + np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
+        '--', color = 'darkorange', linewidth = 0.5)
+
     plt.plot(np.nanmean(mask2,0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
     ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(mask2,0) - np.nanstd(mask2,0),
         np.nanmean(mask2,0) + np.nanstd(mask2,0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(mask2,0) - np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
+        '--', color = 'forestgreen', linewidth = 0.5)
+    plt.plot(np.nanmean(mask2,0) + np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
+        '--', color = 'forestgreen', linewidth = 0.5)
+
+    plt.plot(np.nanmean(mask4,0),np.nanmean(ra2t_data['height'],0), color = 'firebrick', linewidth = 3, label = 'UM_RA2T')
+    ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(mask4,0) - np.nanstd(mask4,0),
+        np.nanmean(mask4,0) + np.nanstd(mask4,0), color = 'salmon', alpha = 0.15)
+    plt.plot(np.nanmean(mask4,0) - np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
+        '--', color = 'firebrick', linewidth = 0.5)
+    plt.plot(np.nanmean(mask4,0) + np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
+        '--', color = 'firebrick', linewidth = 0.5)
 
     plt.xlabel('TWC Cloud mask')
     plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
     plt.xlim([0,1.0])
     plt.legend()
 
@@ -1421,8 +1507,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF-5_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -4233,7 +4319,7 @@ def main():
         if obs_switch == 'UM':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF05_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
     if platform == 'MONSOON':
@@ -5132,10 +5218,10 @@ def main():
     # -------------------------------------------------------------
 
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
