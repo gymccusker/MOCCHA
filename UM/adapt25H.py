@@ -239,6 +239,30 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:24,:] = nc1.variables[diag][0:,:]
                 dat[24,:] = nc2.variables[diag][0,:]
+            elif diag == 'qice':
+                ### make total ice variable (qice)
+                dat = nc.createVariable('qice', np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                dat.comment = 'Total cloud ice mass (crystals + aggregates)'
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_total_cloud_ice_in_air'
+                qice1 = nc1.variables['qice'][:] + nc1.variables['qicecrystals'][:]
+                qice2 = nc2.variables['qice'][:] + nc2.variables['qicecrystals'][:]
+                dat[0:24,:] = qice1[0:,:]
+                dat[24,:] = qice2[0,:]
+                ### make ice aggregates variable (qsnow)
+                dat = nc.createVariable('qsnow', np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                dat[24,:] = nc2.variables[diag][0,:]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
