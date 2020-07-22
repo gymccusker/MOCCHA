@@ -4612,7 +4612,7 @@ def main():
                             cn_misc_dir + cn_misc_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc',
                             cn_misc_dir + cn_misc_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc']
         cn_filename_ra2t = [cn_um_dir + cn_ra2t_out_dir[0] + names[i] + cn_ra2t_out_dir[0][-31:-6] + '.nc',
-                        cn_um_dir + cn_um_out_dir[1] + names[i] + cn_ra2t_out_dir[1][-27:-6] + '.nc',
+                        cn_um_dir + cn_ra2t_out_dir[1] + names[i] + cn_ra2t_out_dir[1][-27:-6] + '.nc',
                         cn_um_dir + cn_ra2t_out_dir[2] + names[i] + cn_ra2t_out_dir[2][-24:-6] + '.nc']
         print (cn_filename_um)
         print (cn_filename_ifs)
