@@ -302,6 +302,190 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
 
     nc.close()
 
+def copyNC(nc1, filename1, out_dir):
+
+    '''
+    Load in one netCDF file and copy
+    CASIM runs: creates total ice variable from qicecrystals and qsnow
+    '''
+
+    #################################################################
+    ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
+    #################################################################
+    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+    flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
+                'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
+                'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
+                'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
+                'surface_upward_water_flux']
+
+    #################################################################
+    ## CREATE NEW NETCDF
+    #################################################################
+    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
+    print ('')
+    print (nc.file_format)
+    print ('')
+
+    ###################################
+    ## Data dimensions
+    ###################################
+    forecast_time = nc.createDimension('forecast_time', 24)
+    height = nc.createDimension('height', np.size(nc1.variables['height']))
+    height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
+
+    ###################################
+    ## Dimensions variables
+    ###################################
+    #### forecast_period
+    timem = nc.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
+    timem.scale_factor = float(1)
+    timem.add_offset = float(0)
+    timem.comment = 'Hours since 0000 UTC.'
+    timem.units = 'hours'
+    timem.long_name = 'forecast_time'
+    timem[0:24] = nc1.variables['forecast_time'][0:]
+    print ('time shape = ' + str(timem.shape))
+
+    #### height
+    height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    height.scale_factor = float(1)
+    height.add_offset = float(0)
+    height.comment = ''
+    height.units = 'm'
+    height.long_name = 'height'
+    height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
+
+    # #### height2
+    height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+    height2.scale_factor = float(1)
+    height2.add_offset = float(0)
+    height2.comment = ''
+    height2.units = 'm'
+    height2.long_name = 'height2'
+    height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
+
+    ###################################
+    ## Create DIAGNOSTICS
+    ###################################
+    ###################################
+    ## Write pbXXX stream diagnostics
+    ###################################
+    for diag in nc1.variables:
+    # diag = 'sfc_pressure'
+    # if diag == 'sfc_pressure':
+        print ('Writing ' + diag)
+        print ('')
+        ### 1Dimension
+        if np.size(np.shape(nc1.variables[diag])) == 1:
+            if diag == 'forecast_time':
+                print ('Diagnostic is forecast_time which is already defined... skipping.')
+                continue
+            if diag == 'height':
+                print ('Diagnostic is height which is already defined... skipping.')
+                continue
+            if diag == 'height2':
+                print ('Diagnostic is height2 which is already defined... skipping.')
+                continue
+            if diag in radlist:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:23] = nc1.variables[diag][0:-1]
+            elif diag in flxlist:
+                continue
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[:] = nc1.variables[diag][:]
+
+        ### 2Dimensions
+        elif np.size(np.shape(nc1.variables[diag])) == 2:
+            if diag in flxlist:
+                # continue
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[:,:] = nc1.variables[diag][:,:]
+
+            elif np.logical_and(diag == 'qice', out_dir[16:21] == 'CASIM'):         ### if it's a casim run, create new total ice var
+                ### make total ice variable (qice)
+                dat = nc.createVariable('qice', np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                dat.comment = 'Total cloud ice mass (crystals + aggregates)'
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = 'mass_fraction_of_total_cloud_ice_in_air'
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_total_cloud_ice_in_air'
+                qice1 = nc1.variables['qice'][:] + nc1.variables['qicecrystals'][:]
+                dat[:,:] = qice1[:,:]
+
+                ### make ice aggregates variable (qsnow)
+                dat = nc.createVariable('qsnow', np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
+                dat[:,:] = nc1.variables[diag][:,:]
+
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[:,:] = nc1.variables[diag][:,:]
+
+        ### 0Dimensions
+        else:
+            if diag == 'horizontal_resolution':
+                print ('Diagnostic is horizontal_resolution which needs to be defined separately...')
+                dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
+                dat.comment = 'Horizontal grid size of nested region.'
+                dat.units = 'km'
+                dat[:] = 1.5
+                continue
+
+    ###################################
+    ## Add Global Attributes
+    ###################################
+    nc.conventions = nc1.Conventions
+    nc.title = nc1.title
+    nc.description = nc1.description
+    nc.history = nc1.history
+    nc.source = nc1.source
+    nc.references = nc1.references
+    nc.project = nc1.project
+    nc.comment = nc1.comment
+    nc.institution = nc1.institution
+    nc.initialization_time = nc1.initialization_time
+    nc.um_version = nc1.um_version
+
+    nc.close()
+
+
 def callback(cube, field, filename):
     '''
     rename cube diagnostics per list of wanted stash diags
@@ -460,7 +644,27 @@ def main():
     for i in range(0,len(moccha_names)):
         if i == len(moccha_names)-1:
             print ('Not combining for ' + names[i] + ' since last date in range')
-            print ('Copying ' + names[i])
+            filename1 = root_dir + out_dir + names[i]
+            print ('Copying ' + filename1)
+            print ('')
+
+            #### -------------------------------------------------------------
+            #### LOAD NETCDF FILES
+            #### -------------------------------------------------------------
+            # cube1 = iris.load(filename1)
+            nc1 = Dataset(filename1,'r')
+            print (nc1)
+            print ('')
+
+            #### -------------------------------------------------------------
+            #### COMBINE NETCDF FILES
+            #### -------------------------------------------------------------
+            out = copyNC(nc1, filename1, out_dir)
+
+            #### -------------------------------------------------------------
+            #### CLOSE ORIGINAL NETCDF FILE
+            #### -------------------------------------------------------------
+            nc1.close()
 
         else:
             filename1 = root_dir + out_dir + names[i]
