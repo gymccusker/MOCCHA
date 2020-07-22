@@ -542,7 +542,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, np.nanmean(misc_data['height'],0),
         '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3,np.nanmean(ra2t_data['height'],0), '--', color = 'firebrick', linewidth = 3, label = 'UM_RA2T')
+    plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3,np.nanmean(ra2t_data['height'],0), color = 'firebrick', linewidth = 3, label = 'UM_RA2T')
     ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc']*1e3,0),
         np.nanmean(ra2t_data['model_lwc'],0)*1e3 + np.nanstd(ra2t_data['model_lwc'],0)*1e3, color = 'salmon', alpha = 0.15)
     plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
