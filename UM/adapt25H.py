@@ -114,7 +114,7 @@ def trackShip(data, date):
 
     return trackShip_index
 
-def combineNC(nc1, nc2, filename1, filename2):
+def combineNC(nc1, nc2, filename1, filename2, out_dir):
 
     '''
     Load in two netCDF files at a time, then join to make nc1 25h long
@@ -239,7 +239,7 @@ def combineNC(nc1, nc2, filename1, filename2):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:24,:] = nc1.variables[diag][0:,:]
                 dat[24,:] = nc2.variables[diag][0,:]
-            elif diag == 'qice':
+            elif np.logical_and(diag == 'qice', out_dir[16:21] == 'CASIM'):         ### if it's a casim run, create new total ice var
                 ### make total ice variable (qice)
                 dat = nc.createVariable('qice', np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -445,7 +445,7 @@ def main():
 
     moccha_missing_files = []
 
-    doy = np.arange(225,258)        ## set DOY for full moccha figures
+    doy = np.arange(225,259)        ## set DOY for full moccha figures
     # doy = np.arange(243,259)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,248)        ## set DOY for subset of moccha figures
     # doy = np.arange(248,258)        ## set DOY for subset of moccha figures
@@ -457,36 +457,42 @@ def main():
     month_flag = -1
 
     # i = 0
-    for i in range(0,len(moccha_names) - 1):
-        filename1 = root_dir + out_dir + names[i]
-        filename2 = root_dir + out_dir + names[i+1]
-        print (filename1)
-        print (filename2)
-        print ('')
+    for i in range(0,len(moccha_names)):
+        if i == len(moccha_names)-1:
+            print ('Not combining for ' + names[i] + ' since last date in range')
+            print ('Copying ' + names[i])
 
-        #### -------------------------------------------------------------
-        #### LOAD NETCDF FILES
-        #### -------------------------------------------------------------
-        # cube1 = iris.load(filename1)
-        nc1 = Dataset(filename1,'r')
-        print (nc1)
-        print ('')
+        else:
+            filename1 = root_dir + out_dir + names[i]
+            filename2 = root_dir + out_dir + names[i+1]
+            print (filename1)
+            print (filename2)
+            print ('')
 
-        # cube2 = iris.load(filename1)
-        nc2 = Dataset(filename2,'r')
-        print (nc2)
-        print ('')
+            #### -------------------------------------------------------------
+            #### LOAD NETCDF FILES
+            #### -------------------------------------------------------------
+            # cube1 = iris.load(filename1)
+            nc1 = Dataset(filename1,'r')
+            print (nc1)
+            print ('')
 
-        #### -------------------------------------------------------------
-        #### COMBINE NETCDF FILES
-        #### -------------------------------------------------------------
-        out = combineNC(nc1, nc2, filename1, filename2)
+            # cube2 = iris.load(filename1)
+            nc2 = Dataset(filename2,'r')
+            print (nc2)
+            print ('')
 
-        #### -------------------------------------------------------------
-        #### CLOSE ORIGINAL NETCDF FILES
-        #### -------------------------------------------------------------
-        nc1.close()
-        nc2.close()
+            #### -------------------------------------------------------------
+            #### COMBINE NETCDF FILES
+            #### -------------------------------------------------------------
+            out = combineNC(nc1, nc2, filename1, filename2, out_dir)
+
+            #### -------------------------------------------------------------
+            #### CLOSE ORIGINAL NETCDF FILES
+            #### -------------------------------------------------------------
+            nc1.close()
+            nc2.close()
+
 
 
     # -------------------------------------------------------------
