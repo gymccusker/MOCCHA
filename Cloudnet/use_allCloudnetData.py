@@ -148,6 +148,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     ##################################################
     ##################################################
 
+
     SMALL_SIZE = 12
     MED_SIZE = 14
     LARGE_SIZE = 16
@@ -158,7 +159,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,8))
+    plt.figure(figsize=(6,7))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
             hspace = 0.4, wspace = 0.1)
 
@@ -196,6 +197,11 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
         #     '--', color = 'grey', linewidth = 3, label = 'Obs-on-artificial-grid')
         # ax.fill_betweenx(np.squeeze(obs['cloudfractions']['height']),np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) - np.nanstd(obs['cloudfractions']['cloudfraction_total'],0),
         #     np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) + np.nanstd(obs['cloudfractions']['cloudfraction_total'],0), color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0), np.nanmean(obs_data['height'],0),
+            '--', color = 'k', linewidth = 0.5)
+        plt.plot(np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), np.nanmean(obs_data['height'],0),
+            '--', color = 'k', linewidth = 0.5)
+
     plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
     ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
         np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
