@@ -5525,10 +5525,10 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
