@@ -3880,7 +3880,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     plt.title('Freeze')
 
     fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100_ra2t.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
@@ -5528,7 +5528,7 @@ def main():
         out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
