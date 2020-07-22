@@ -230,7 +230,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, obs_data, month_flag, missing_
     # plt.savefig(fileout)
     plt.show()
 
-def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3):
+def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -257,7 +257,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 14
+    MED_SIZE = 15
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -266,7 +266,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,9))
+    plt.figure(figsize=(10,13))
     plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
@@ -284,6 +284,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
+    ra2t_data['model_Cv_filtered'][ra2t_data['model_Cv_filtered'] < 0.0] = np.nan
 
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
@@ -294,8 +295,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     bldepth1 = data1['bl_depth'][data1['hrly_flag']]
     bldepth2 = data2['bl_depth'][data2['hrly_flag']]
     bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
+    bldepth4 = data4['bl_depth'][data2['hrly_flag']]
 
-    plt.subplot(411)
+    plt.subplot(511)
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
@@ -304,6 +306,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), '--', color = 'grey', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('Measured cloud fraction by volume, 1 hour sampling')
     # plt.title('Measured cloud fraction by volume, 1.5km sampling')
@@ -316,7 +319,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
             zorder = 3)
     plt.colorbar()
 
-    plt.subplot(412)
+    plt.subplot(512)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
@@ -325,6 +328,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
     ax = plt.gca()
@@ -336,7 +340,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
             zorder = 3)
     plt.colorbar()
 
-    plt.subplot(413)
+    plt.subplot(513)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
@@ -345,6 +349,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M; modelled cloud fraction')
     ax = plt.gca()
@@ -356,7 +361,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
             zorder = 3)
     plt.colorbar()
 
-    plt.subplot(414)
+    plt.subplot(514)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
@@ -365,6 +370,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100; modelled cloud fraction')
     ax = plt.gca()
@@ -375,7 +381,29 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
             hatch = 'x',
             zorder = 3)
     plt.colorbar()
+
+    plt.subplot(515)
+    plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2T; modelled cloud fraction')
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'lightpink',
+            hatch = 'x',
+            zorder = 3)
+    plt.colorbar()
     plt.xlabel('Day of Year')
+
 
     print ('******')
     print ('')
@@ -383,7 +411,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missin
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_UM_IFS_CASIM-100_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.png'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5103,8 +5131,8 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
 
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3)
