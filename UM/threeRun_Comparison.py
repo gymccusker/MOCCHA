@@ -5932,7 +5932,7 @@ def main():
     #################################################################
     label1 = 'undefined_label'
     if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
-    if out_dir1[:10] == '14_u-bu570': label1 = 'UM_CASIM-100_newRHcrit'
+    if out_dir1[:10] == '14_u-bu570': label1 = 'UM_CASIM-100'
     if out_dir1[:10] == '13_u-br409': label1 = 'UM_CASIM-100_AP'
     if out_dir1[:10] == '12_u-br210': label1 = 'UM_CASIM-AeroProf'
     if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
@@ -5946,7 +5946,7 @@ def main():
 
     label2 = 'undefined_label'
     if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
-    if out_dir2[:10] == '14_u-bu570': label2 = 'UM_CASIM-100_newRHcrit'
+    if out_dir2[:10] == '14_u-bu570': label2 = 'UM_CASIM-100'
     if out_dir2[:10] == '13_u-br409': label2 = 'UM_CASIM-100_AP'
     if out_dir2[:10] == '12_u-br210': label2 = 'UM_CASIM-AeroProf'
     if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
@@ -5961,7 +5961,7 @@ def main():
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
     if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
-    if out_dir3[:10] == '14_u-bu570': label3 = 'UM_CASIM-100_newRHcrit'
+    if out_dir3[:10] == '14_u-bu570': label3 = 'UM_CASIM-100'
     if out_dir3[:10] == '13_u-br409': label3 = 'UM_CASIM-100_AP'
     if out_dir3[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
     if out_dir3[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
@@ -5975,7 +5975,7 @@ def main():
 
     label4 = 'undefined_label'
     if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
-    if out_dir4[:10] == '14_u-bu570': label4 = 'UM_CASIM-100_newRHcrit'
+    if out_dir4[:10] == '14_u-bu570': label4 = 'UM_CASIM-100'
     if out_dir4[:10] == '13_u-br409': label4 = 'UM_CASIM-100_AP'
     if out_dir4[:10] == '12_u-br210': label4 = 'UM_CASIM-AeroProf'
     if out_dir4[:10] == '11_u-bq798': label4 = 'UM_CASIM-100_Meyers'
