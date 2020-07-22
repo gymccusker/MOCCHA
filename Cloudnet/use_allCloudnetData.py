@@ -4578,7 +4578,8 @@ def main():
         ### --------------------------------------------------------------------
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
-        var_list2 = var_list1
+        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux',
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi']
         if not ifs_flag: var_list3 = var_list1
@@ -4604,13 +4605,31 @@ def main():
                     nanarray = np.zeros(24)
                     nanarray[:] = np.nan
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray)
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
-                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray)
                 elif np.ndim(nc1.variables[var_list1[j]]) == 2:
                     nanarray = np.zeros([24,71])
                     nanarray[:] = np.nan
                     data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
+            for j in range(0,len(var_list2)):
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
+                elif np.ndim(nc2.variables[var_list2[j]]) == 2:
+                    nanarray = np.zeros([24,71])
+                    nanarray[:] = np.nan
                     data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
+            for j in range(0,len(var_list4)):
+                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc4.variables[var_list4[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray)
+                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                    nanarray = np.zeros([24,71])
+                    nanarray[:] = np.nan
                     data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray,0)
             for j in range(0,len(var_list3)):
                 print (j)
