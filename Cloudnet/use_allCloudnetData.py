@@ -2680,8 +2680,8 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMgrid_UM_IFS_CASIM-100_Cv-LWC-IWC_splitSeason_226-257DOY_wMissingFiles.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_splitSeason_226-257DOY_wMissingFiles.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
