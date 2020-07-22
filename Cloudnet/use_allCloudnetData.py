@@ -303,7 +303,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         cmap = newcmp,
         zorder = 1)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), '--', color = 'grey', linewidth = 1.0)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), '--', color = 'grey', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -411,7 +411,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.png'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_wInversionBase+BLDepth.svg'
     plt.savefig(fileout)
     plt.show()
 
