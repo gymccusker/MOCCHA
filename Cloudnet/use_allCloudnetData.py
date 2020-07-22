@@ -1720,7 +1720,7 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
-def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
+def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
     ###################################
     ## PLOT TIMESERIES
@@ -1780,17 +1780,19 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
+        plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid', zorder = 2)
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'thistle', alpha = 0.5)
-    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO')
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO', zorder = 3)
     plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
         '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.plot(ifs_data['time'][::res],ifs_data['model_lwp'][::res]*1e3,
-        'd', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
+        'v', color = 'darkorange', markeredgecolor = 'saddlebrown', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
-        'v', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
+        '<', color = 'forestgreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
+    plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
+        '>', color = 'firebrick', markeredgecolor = 'maroon', label = 'UM_RA2T')
     plt.xlabel('Day of Year')
     plt.ylabel('LWP [g/m2]')
     plt.ylim([0,800])
@@ -1810,7 +1812,7 @@ def plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_fi
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_UM_IFS_CASIM-100_LWP_226-257DOY_hatchedMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5255,8 +5257,8 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
@@ -5279,7 +5281,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
