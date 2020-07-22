@@ -1002,82 +1002,9 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY.png'
     plt.savefig(fileout)
     plt.show()
-
-
-    # #### ---------------------------------------------------------------------------------------------------
-    # #### ---------------------------------------------------------------------------------------------------
-    # ####            CREATE TWC MASK (>1e-6 kg/m3)
-    # #### ---------------------------------------------------------------------------------------------------
-    # #### ---------------------------------------------------------------------------------------------------
-    #
-    # mask0 = np.zeros([np.size(obs_data['twc'],0), np.size(obs_data['twc'],1)])
-    # mask1 = np.zeros([np.size(um_data['model_twc'],0), np.size(um_data['model_twc'],1)])
-    # mask2 = np.zeros([np.size(misc_data['model_twc'],0), np.size(misc_data['model_twc'],1)])
-    # mask3 = np.zeros([np.size(ifs_data['model_twc'],0), np.size(ifs_data['model_twc'],1)])
-    #
-    # ind0 = np.where(obs_data['twc'] >= 1e-6)
-    # mask0[ind0] = 1.0
-    # ind1 = np.where(um_data['model_twc'] >= 1e-6)
-    # mask1[ind1] = 1.0
-    # ind2 = np.where(misc_data['model_twc'] >= 1e-6)
-    # mask2[ind2] = 1.0
-    # ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
-    # mask3[ind3] = 1.0
-    #
-    # ##################################################
-    # ##################################################
-    # #### 	CARTOPY
-    # ##################################################
-    # ##################################################
-    #
-    # SMALL_SIZE = 12
-    # MED_SIZE = 14
-    # LARGE_SIZE = 16
-    #
-    # plt.rc('font',size=MED_SIZE)
-    # plt.rc('axes',titlesize=LARGE_SIZE)
-    # plt.rc('axes',labelsize=LARGE_SIZE)
-    # plt.rc('xtick',labelsize=LARGE_SIZE)
-    # plt.rc('ytick',labelsize=LARGE_SIZE)
-    # plt.rc('legend',fontsize=LARGE_SIZE)
-    # plt.figure(figsize=(6,7))
-    # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
-    #         hspace = 0.4, wspace = 0.1)
-    #
-    # ### define axis instance
-    # ax1 = plt.gca()
-    #
-    # plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid')
-    # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
-    #     np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
-    # plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
-    # ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(mask1,0) - np.nanstd(mask1,0),
-    #     np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'lightblue', alpha = 0.4)
-    # plt.plot(np.nanmean(mask3,0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
-    # ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(mask3,0) - np.nanstd(mask3,0),
-    #     np.nanmean(mask3,0) + np.nanstd(mask3,0), color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmean(mask2,0),np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
-    # ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(mask2,0) - np.nanstd(mask2,0),
-    #     np.nanmean(mask2,0) + np.nanstd(mask2,0), color = 'mediumaquamarine', alpha = 0.15)
-    #
-    # plt.xlabel('TWC Cloud mask')
-    # plt.ylabel('Height [m]')
-    # plt.ylim([0,10000])
-    # plt.xlim([0,0.8])
-    # plt.legend()
-    #
-    # print ('******')
-    # print ('')
-    # print ('Finished plotting! :)')
-    # print ('')
-    #
-    # if month_flag == -1:
-    #     fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.svg'
-    # plt.savefig(fileout)
-    # plt.show()
 
 def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
 
