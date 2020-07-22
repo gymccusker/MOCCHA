@@ -3232,8 +3232,8 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.svg'
-    plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -3732,8 +3732,8 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/QProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.svg'
-    plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/QProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
