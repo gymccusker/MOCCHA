@@ -4313,7 +4313,7 @@ def main():
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
@@ -4354,9 +4354,9 @@ def main():
                         'lwc-adiabatic-method/2018/',
                         'iwc-Z-T-method/2018/']
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = ['5_u-bl661_RA1M_CASIM/cloud-fraction-metum-grid/2018/',
-                            '5_u-bl661_RA1M_CASIM/lwc-scaled-metum-grid/2018/',
-                            '5_u-bl661_RA1M_CASIM/iwc-Z-T-metum-grid/2018/']
+            cn_misc_out_dir = ['14_u-bu570_RA1M_CASIM/cloud-fraction-metum-grid/2018/',
+                            '14_u-bu570_RA1M_CASIM/lwc-scaled-metum-grid/2018/',
+                            '14_u-bu570_RA1M_CASIM/iwc-Z-T-metum-grid/2018/']
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
         cn_ra2t_out_dir = ['7_u-bn068_RA2T_CON/cloud-fraction-metum-grid/2018/',
