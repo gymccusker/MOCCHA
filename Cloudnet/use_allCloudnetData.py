@@ -4776,6 +4776,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.ylim([0,9000])
     plt.xlim([0,1.0])
     plt.legend()
+    plt.grid('on')
 
     #----------------------
     plt.subplot(232)
@@ -4822,8 +4823,9 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.xlabel('Liquid water content [g/m3]')
     # plt.title('Melt')
     plt.ylim([0,9000])
-    plt.yticks([])
+    ax2.axes.yaxis.set_ticklabels([])
     plt.xlim([0,0.2])
+    plt.grid('on')
 
     #-------------------------
     plt.subplot(233)
@@ -4871,9 +4873,10 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.xlabel('Ice water content [g/m3]')
     # plt.title('Melt')
     plt.ylim([0,9000])
-    plt.yticks([])
+    ax2.axes.yaxis.set_ticklabels([])
     plt.xlim([0,0.06])
     # plt.legend()
+    plt.grid('on')
 
     #-------------------------
     plt.subplot(234)
@@ -4923,6 +4926,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.xlim([0,1.0])
+    plt.grid('on')
 
     #--------------
     plt.subplot(235)
@@ -4969,9 +4973,10 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.xlabel('Liquid water content [g/m3]')
     # plt.title('Freeze up')
-    plt.yticks([])
+    ax2.axes.yaxis.set_ticklabels([])
     plt.ylim([0,9000])
     plt.xlim([0,0.2])
+    plt.grid('on')
 
     #---------------------------
     plt.subplot(236)
@@ -5018,9 +5023,10 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.xlabel('Ice water content [g/m3]')
     # plt.title('Freeze up')
-    plt.yticks([])
+    ax2.axes.yaxis.set_ticklabels([])
     plt.ylim([0,9000])
     plt.xlim([0,0.06])
+    plt.grid('on')
 
     print ('******')
     print ('')
