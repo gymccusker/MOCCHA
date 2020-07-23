@@ -4712,9 +4712,6 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanmask[i+1,:] = 1.0
             nanindex[i] = 1
         if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
-            wcmask[i,:] = 1.0
-            wcmask[i-1,:] = 1.0
-            wcmask[i+1,:] = 1.0
             wcindex[i] = 1
     nanmask[nanmask == 0.0] = np.nan
     nanind = np.where(nanindex == 1)
