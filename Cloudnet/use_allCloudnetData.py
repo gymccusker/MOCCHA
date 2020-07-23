@@ -4689,6 +4689,28 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     return obs_data
 
+def buildNaNMask(obs_data, month_flag, missing_files, doy):
+
+    print ('*******')
+    print ('Only include model data where we have observations:')
+    print ('*******')
+    print ('')
+
+    ### build nanmask
+    nanmask = np.zeros([np.size(obs_data['time']), np.size(obs_data['Cv'],1)])
+    nanindex = np.zeros([np.size(obs_data['time'])])
+    print(nanindex.shape)
+    for i in range(len(obs_data['time'])):
+        if np.isnan(np.nanmean(obs_data['Cv'][i,:], 0)):       ## if there are only nans in the time profile
+            nanmask[i,:] = 1.0
+            nanmask[i-1,:] = 1.0
+            nanmask[i+1,:] = 1.0
+            nanindex[i] = 1
+    nanmask[nanmask == 0.0] = np.nan
+    nanind = np.where(nanindex == 1)
+
+    return nanind, nanmask
+
 def main():
 
     START_TIME = time.time()
@@ -5632,6 +5654,21 @@ def main():
     # np.save('working_ifs_data', ifs_data)
     # if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
+    # -------------------------------------------------------------
+    # maximise obs data available and build mask for available data
+    # -------------------------------------------------------------
+    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    nanind, nanmask = buildNaNMask(obs_data, month_flag, missing_files, doy)
+
+    varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered']
+    varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered']
+
+    for c in range(0, 3):
+        um_data[varlist_um[c]][nanind, :] = np.nan
+        ifs_data[varlist_ifs[c]][nanind, :] = np.nan
+        misc_data[varlist_um[c]][nanind, :] = np.nan
+        ra2t_data[varlist_um[c]][nanind, :] = np.nan
+
 ###################################################################################################################
 ###################################################################################################################
 ################################################ FIGURES ##########################################################
@@ -5649,8 +5686,6 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -5679,7 +5714,7 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
@@ -5707,7 +5742,7 @@ def main():
     # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
     # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
-    var = 'lwc'
+    # var = 'lwc'
 
     # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var)
