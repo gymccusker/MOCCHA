@@ -1078,7 +1078,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.savefig(fileout)
     plt.show()
 
-def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind):
+def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1142,7 +1142,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:40, :] = greyclr
+    newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
     ##################################################
@@ -1167,11 +1167,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(511)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # np.arange(0,0.31,0.01),
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1190,10 +1190,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(512)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1214,10 +1214,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(513)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1237,10 +1237,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(514)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1260,10 +1260,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(515)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('gainsboro')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1288,7 +1288,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs_LogScale_BLDepths.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1322,6 +1322,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     mask2[nanind] = np.nan
     mask3[nanind] = np.nan
     mask4[nanind] = np.nan
+
+    mask0[wcind] = np.nan
+    mask1[wcind] = np.nan
+    mask2[wcind] = np.nan
+    mask3[wcind] = np.nan
+    mask4[wcind] = np.nan
 
     ##################################################
     ##################################################
@@ -5693,9 +5699,9 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
@@ -5704,7 +5710,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -5729,7 +5735,7 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
