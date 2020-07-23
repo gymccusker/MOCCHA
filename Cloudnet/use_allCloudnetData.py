@@ -246,7 +246,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_blueNaNs.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -566,7 +566,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY_blueNaNs.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -796,7 +796,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-gt1e-6kgm3_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-gt1e-6kgm3_226-257DOY_blueNaNs.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -1130,12 +1130,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[0, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
     bldepth1 = data1['bl_depth'][data1['hrly_flag']]
     bldepth2 = data2['bl_depth'][data2['hrly_flag']]
     bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
@@ -1144,6 +1138,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     twc0 = np.transpose(obs_data['twc'])*1e3
 
     cmax = 0.3
+
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:40, :] = greyclr
+    newcmp = ListedColormap(newcolors)
 
     ##################################################
     ##################################################
@@ -1171,7 +1171,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # np.arange(0,0.31,0.01),
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1193,7 +1193,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1217,7 +1217,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1240,7 +1240,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1263,7 +1263,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        levels=[1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -2684,7 +2684,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_splitSeason_226-257DOY_wMissingFiles.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_splitSeason_226-257DOY_blueNaNs_wMissingFiles.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -5682,9 +5682,9 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
@@ -5693,7 +5693,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -5718,7 +5718,7 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
