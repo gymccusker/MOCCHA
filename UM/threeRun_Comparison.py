@@ -1479,7 +1479,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
 
     if month_flag == -1:
         fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_1Sep-5Sep.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4): #, lon, lat):
