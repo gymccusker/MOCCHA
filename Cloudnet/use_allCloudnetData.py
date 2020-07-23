@@ -1337,13 +1337,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
             hspace = 0.4, wspace = 0.2)
 
-    ### define axis instance
-    ax = plt.gca()
-
     plt.subplot(511)
+    ax = plt.gca()
+    ax.set_facecolor('aliceblue')
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
         np.arange(0,1.01,0.1),
-        cmap = newcmp)
+        cmap = mpl_cm.Oranges)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -1360,9 +1359,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.colorbar()
 
     plt.subplot(512)
+    ax = plt.gca()
+    ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(mask3),
         np.arange(0,1.01,0.1),
-        cmap = newcmp)
+        cmap = mpl_cm.Oranges)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1380,9 +1381,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.colorbar()
 
     plt.subplot(513)
+    ax = plt.gca()
+    ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
         np.arange(0,1.01,0.1),
-        cmap = newcmp)
+        cmap = mpl_cm.Oranges)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1400,9 +1403,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.colorbar()
 
     plt.subplot(514)
+    ax = plt.gca()
+    ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(mask2),
         np.arange(0,1.01,0.1),
-        cmap = newcmp)
+        cmap = mpl_cm.Oranges)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1420,9 +1425,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.colorbar()
 
     plt.subplot(515)
+    ax = plt.gca()
+    ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(mask4),
         np.arange(0,1.01,0.1),
-        cmap = newcmp)
+        cmap = mpl_cm.Oranges)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1446,7 +1453,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_BLDepths.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs_BLDepths.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1525,7 +1532,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_226-257DOY.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY.svg'
     plt.savefig(fileout)
     plt.show()
 
