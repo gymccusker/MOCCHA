@@ -4711,7 +4711,7 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanmask[i-1,:] = 1.0
             nanmask[i+1,:] = 1.0
             nanindex[i] = 1
-        if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
+        if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
             wcmask[i,:] = 1.0
             wcmask[i-1,:] = 1.0
             wcmask[i+1,:] = 1.0
@@ -5679,7 +5679,7 @@ def main():
         um_data[varlist_um[c]][nanind, :] = np.nan
         ifs_data[varlist_ifs[c]][nanind, :] = np.nan
         misc_data[varlist_um[c]][nanind, :] = np.nan
-        ra2t_data[varlist_um[c]][nanind, :] = np.
+        ra2t_data[varlist_um[c]][nanind, :] = np.nan
     ### remove missing water content obs timestep (only remove from water contents)
     for c in range(1, 3):
         um_data[varlist_um[c]][wcind, :] = np.nan
