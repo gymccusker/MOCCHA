@@ -4703,6 +4703,7 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
     ### build nanmask
     nanmask = np.zeros([np.size(obs_data['time']), np.size(obs_data['Cv'],1)])
     nanindex = np.zeros([np.size(obs_data['time'])])
+    wcindex = np.zeros([np.size(obs_data['time'])])
     print(nanindex.shape)
     for i in range(len(obs_data['time'])):
         if np.isnan(np.nanmean(obs_data['Cv'][i,:], 0)):       ## if there are only nans in the time profile
@@ -4710,10 +4711,16 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanmask[i-1,:] = 1.0
             nanmask[i+1,:] = 1.0
             nanindex[i] = 1
+        if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
+            wcmask[i,:] = 1.0
+            wcmask[i-1,:] = 1.0
+            wcmask[i+1,:] = 1.0
+            wcindex[i] = 1
     nanmask[nanmask == 0.0] = np.nan
     nanind = np.where(nanindex == 1)
+    wcind = np.where(wcindex == 1)
 
-    return nanind, nanmask
+    return nanind, nanmask, wcind
 
 def main():
 
@@ -5662,16 +5669,23 @@ def main():
     # maximise obs data available and build mask for available data
     # -------------------------------------------------------------
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    nanind, nanmask = buildNaNMask(obs_data, month_flag, missing_files, doy)
+    nanind, nanmask, wcind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered']
 
+    ### remove missing Cv obs timesteps (remove from all)
     for c in range(0, 3):
         um_data[varlist_um[c]][nanind, :] = np.nan
         ifs_data[varlist_ifs[c]][nanind, :] = np.nan
         misc_data[varlist_um[c]][nanind, :] = np.nan
-        ra2t_data[varlist_um[c]][nanind, :] = np.nan
+        ra2t_data[varlist_um[c]][nanind, :] = np.
+    ### remove missing water content obs timestep (only remove from water contents)
+    for c in range(1, 3):
+        um_data[varlist_um[c]][wcind, :] = np.nan
+        ifs_data[varlist_ifs[c]][wcind, :] = np.nan
+        misc_data[varlist_um[c]][wcind, :] = np.nan
+        ra2t_data[varlist_um[c]][wcind, :] = np.nan
 
 ###################################################################################################################
 ###################################################################################################################
