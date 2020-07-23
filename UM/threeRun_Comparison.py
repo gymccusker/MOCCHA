@@ -1330,37 +1330,93 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
+    #### load temp obs Cv data
+    obs_data = np.load('../Cloudnet/obs_Cv_ifs-qf10.npy').item()
+    obs_data['Cv'][obs_data['Cv'] < 0.0] = 0.0
+
+    period = np.where(np.logical_and(obs_data['time'] >= doy[0], obs_data['time'] < doy[-1]))
+
+    ### build nanmask
+    nanmask = np.zeros([np.size(np.squeeze(obs_data['time'][period])), np.size(obs_data['Cv'],1)])
+    nanindex = np.zeros([np.size(np.squeeze(obs_data['time'][period]))])
+    print(nanindex.shape)
+    for i in range(len(np.squeeze(obs_data['time'][period]))):
+        if np.isnan(np.nanmean(obs_data['Cv'][period[0][i],:])):       ## if there are only nans in the time profile
+            nanmask[i,:] = 1.0
+            nanmask[i-1,:] = 1.0
+            nanmask[i+1,:] = 1.0
+            nanindex[i] = 1
+    nanmask[nanmask == 0.0] = np.nan
+    nanind = np.where(nanindex == 1)
+
+    obs_data['Cv'][nanind, :] = np.nan
+    data1['cloud_fraction'][nanind, :] = np.nan
+    data2['cloud_fraction'][nanind, :] = np.nan
+    data3['cloud_fraction'][nanind, :] = np.nan
+
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    ax1  = fig.add_axes([0.08,0.7,0.58,0.22])   # left, bottom, width, height
+    ax0  = fig.add_axes([0.08,0.78, 0.58,0.15])   # left, bottom, width, height
+    ax0 = plt.gca()
+    ax0.set_facecolor('aliceblue')
+    plt.contourf(obs_data['time'], np.nanmean(obs_data['height'],0), np.transpose(obs_data['Cv']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    plt.colorbar()
+    # plt.contourf(obs_data['time'], np.nanmean(obs_data['height'],0), np.transpose(nanmask),
+    #     [0, 1],
+    #     cmap = mpl_cm.Greys,
+    #     hatch = 'x',
+    #     zorder = 3
+    #     )
+    plt.ylabel('Height [m]')
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.title('Obs Cloud fraction')
+    plt.xlim([doy[0], doy[-1]])
+    # nans = ax0.get_ylim()
+    # for i in range(len(obs_data['time']) - 1):
+    #     ax0.fill_between(np.arange(obs_data['time'][int(nanindex[i])], obs_data['time'][int(nanindex[i+1])], 1/24.0), nans[0], nans[-1], # obs_data['time'][nanmask == 1.0], nans[0], nans[-1],
+    #         facecolor = 'lightgrey',
+    #         hatch = '/',
+    #         zorder = 3)
+
+    ax1  = fig.add_axes([0.08,0.56,0.58,0.15])   # left, bottom, width, height
     ax1 = plt.gca()
+    ax1.set_facecolor('aliceblue')
     plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
     plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.title(label1 + ' Cloud fraction')
     plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
 
-    ax2  = fig.add_axes([0.08,0.4,0.58,0.22])   # left, bottom, width, height
+    ax2  = fig.add_axes([0.08,0.34,0.58,0.15])   # left, bottom, width, height
     ax2 = plt.gca()
+    ax2.set_facecolor('aliceblue')
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
     plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.title(label2 + ' Cloud fraction')
     plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
 
-    ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
+    ax3 = fig.add_axes([0.08,0.1,0.58,0.15])   # left, bottom, width, height
     ax3 = plt.gca()
+    ax3.set_facecolor('aliceblue')
     if out_dir3 == 'OUT_25H/':
         ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
         ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -1383,21 +1439,18 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
             cmap = newcmp
             )
     plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
+    plt.ylim([0,9000])
+    plt.yticks([0, 3e3, 6e3, 9e3])
     plt.title(label3 + ' Cloud fraction')
     plt.xlabel('Day of Year')
     plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
 
-    #### load temp obs Cv data
-    obs_data = np.load('../Cloudnet/obs_Cv_ifs-qf10.npy').item()
-    obs_data['Cv'][obs_data['Cv'] < 0.0] = 0.0
-
     ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
-    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
-    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
-        np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0),
+        np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
         np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
@@ -5558,8 +5611,8 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_24h/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam_24h/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = '16_u-bv926_RA2T_CON/OUT_R0/'
         out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
