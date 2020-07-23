@@ -1029,7 +1029,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         plt.plot(np.nanmean(obs_data['twc'],0)*1e3 + np.nanstd(obs_data['twc'],0)*1e3, np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(ifs_data['model_twc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS')
+    plt.plot(np.nanmean(ifs_data['model_twc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS', zorder = 2)
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_twc'],0)*1e3 - np.nanstd(ifs_data['model_twc'],0)*1e3,
         np.nanmean(ifs_data['model_twc'],0)*1e3 + np.nanstd(ifs_data['model_twc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(ifs_data['model_twc'],0)*1e3 - np.nanstd(ifs_data['model_twc'],0)*1e3, np.nanmean(ifs_data['height'],0),
@@ -1037,7 +1037,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(ifs_data['model_twc'],0)*1e3 + np.nanstd(ifs_data['model_twc'],0)*1e3, np.nanmean(ifs_data['height'],0),
         '--', color = 'darkorange', linewidth = 0.5)
 
-    plt.plot(np.nanmean(um_data['model_twc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M')
+    plt.plot(np.nanmean(um_data['model_twc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_twc'],0)*1e3 - np.nanstd(um_data['model_twc'],0)*1e3,
         np.nanmean(um_data['model_twc'],0)*1e3 + np.nanstd(um_data['model_twc'],0)*1e3, color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(um_data['model_twc'],0)*1e3 - np.nanstd(um_data['model_twc'],0)*1e3, np.nanmean(um_data['height'],0),
@@ -1045,7 +1045,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(um_data['model_twc'],0)*1e3 + np.nanstd(um_data['model_twc'],0)*1e3, np.nanmean(um_data['height'],0),
         '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(misc_data['model_twc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100')
+    plt.plot(np.nanmean(misc_data['model_twc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'forestgreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 1)
     ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_twc'],0)*1e3 - np.nanstd(misc_data['model_twc'],0)*1e3,
         np.nanmean(misc_data['model_twc'],0)*1e3 + np.nanstd(misc_data['model_twc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
     plt.plot(np.nanmean(misc_data['model_twc'],0)*1e3 - np.nanstd(misc_data['model_twc'],0)*1e3, np.nanmean(misc_data['height'],0),
@@ -1053,7 +1053,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(misc_data['model_twc'],0)*1e3 + np.nanstd(misc_data['model_twc'],0)*1e3, np.nanmean(misc_data['height'],0),
         '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(ra2t_data['model_twc'],0)*1e3,np.nanmean(ra2t_data['height'],0), color = 'firebrick', linewidth = 3, label = 'UM_RA2T')
+    plt.plot(np.nanmean(ra2t_data['model_twc'],0)*1e3,np.nanmean(ra2t_data['height'],0), color = 'firebrick', linewidth = 3, label = 'UM_RA2T', zorder = 1)
     ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(ra2t_data['model_twc'],0)*1e3 - np.nanstd(ra2t_data['model_twc'],0)*1e3,
         np.nanmean(ra2t_data['model_twc'],0)*1e3 + np.nanstd(ra2t_data['model_twc'],0)*1e3, color = 'salmon', alpha = 0.15)
     plt.plot(np.nanmean(ra2t_data['model_twc'],0)*1e3 - np.nanstd(ra2t_data['model_twc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
