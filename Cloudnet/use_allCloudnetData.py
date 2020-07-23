@@ -1078,7 +1078,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.savefig(fileout)
     plt.show()
 
-def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
+def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1317,6 +1317,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
     mask4[ind4] = 1.0
 
+    mask0[nanind] = np.nan
+    mask1[nanind] = np.nan
+    mask2[nanind] = np.nan
+    mask3[nanind] = np.nan
+    mask4[nanind] = np.nan
+
     ##################################################
     ##################################################
     #### 	CARTOPY
@@ -1342,7 +1348,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
         np.arange(0,1.01,0.1),
-        cmap = mpl_cm.Oranges)
+        cmap = mpl_cm.viridis)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -1363,7 +1369,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(mask3),
         np.arange(0,1.01,0.1),
-        cmap = mpl_cm.Oranges)
+        cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1385,7 +1391,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
         np.arange(0,1.01,0.1),
-        cmap = mpl_cm.Oranges)
+        cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1407,7 +1413,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(mask2),
         np.arange(0,1.01,0.1),
-        cmap = mpl_cm.Oranges)
+        cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -1429,7 +1435,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(mask4),
         np.arange(0,1.01,0.1),
-        cmap = mpl_cm.Oranges)
+        cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
@@ -5687,7 +5693,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
