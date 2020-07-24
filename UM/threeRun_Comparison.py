@@ -4454,7 +4454,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
 
     ### all model data share a timestamp
     p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
     #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
     #   p7: np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
 
@@ -4573,7 +4573,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
     ax3.axes.yaxis.set_ticklabels([])
-    plt.xlim([-0.2,0.8])
+    plt.xlim([-0.3,0.7])
 
     plt.subplot(223)
     ax3 = plt.gca()
@@ -4669,9 +4669,9 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
     ax3.axes.yaxis.set_ticklabels([])
-    plt.xlim([-0.2,0.8])
+    plt.xlim([-0.3,0.7])
 
-    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p5.svg'
+    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p6.svg'
     plt.savefig(fileout)
     plt.show()
 

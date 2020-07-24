@@ -4670,8 +4670,9 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     p3 = np.where(np.logical_and(obs_data >= doy[0], obs_data['time'] < 230.0))
-    p7 = np.where(np.logical_and(um_data['time'] >= 240.0, um_data['time'] < 247.0))
-    #   np.where(np.logical_and(um_data['time'] >= 230.0, um_data['time'] < 240.0))
+    p7 = np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
+    #   np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
+    #   np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
     #   np.where(np.logical_and(obs_data['time'] >= 251.0, obs_data['time'] < 255.5))
 
     #### ---------------------------------------------------------------------------------------------------
@@ -4733,7 +4734,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.subplot(231)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(mask0[p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4741,7 +4742,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
     #     '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask3[p3,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0),np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
@@ -4749,7 +4750,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
     #     '--', color = 'darkorange', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask1[p3,:]),0),np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p3,:]),0),np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
@@ -4757,7 +4758,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
     #     '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask2[p3,:]),0),np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p3,:]),0),np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p3,:])*1e3,0),
     #     np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
@@ -4765,14 +4766,14 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
     #     '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask4[p3,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0),np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:])*1e3,0),
     #     np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, color = 'salmon', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
-    plt.xlabel('TWC Cloud Mask')
+    plt.xlabel('Cloud Fraction')
     plt.ylabel('Height [m]')
     # plt.title('Melt')
     plt.ylim([0,9000])
@@ -4883,7 +4884,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #-------------------------
     plt.subplot(234)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(mask0[p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p7,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4891,7 +4892,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
     #     '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask3[p7,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0),np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
@@ -4899,7 +4900,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
     #     '--', color = 'darkorange', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask1[p7,:]),0),np.nanmean(np.squeeze(um_data['height'][p7,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(um_data['height'][p7,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p7,:]),0),np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, np.nanmean(um_data['height'],0),
@@ -4907,7 +4908,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, np.nanmean(um_data['height'],0),
     #     '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask2[p7,:]),0),np.nanmean(np.squeeze(misc_data['height'][p7,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(misc_data['height'][p7,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p7,:]),0),np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p7,:])*1e3,0),
     #     np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, np.nanmean(misc_data['height'],0),
@@ -4915,7 +4916,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, np.nanmean(misc_data['height'],0),
     #     '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(mask4[p7,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0),np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:])*1e3,0),
     #     np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, color = 'salmon', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
@@ -4923,7 +4924,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
 
-    plt.xlabel('TWC Cloud Mask')
+    plt.xlabel('Cloud Fraction')
     # plt.title('Freeze up')
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -5036,7 +5037,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_p3-p5_226-257DOY_blueNaNs_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p6_226-257DOY_blueNaNs_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
