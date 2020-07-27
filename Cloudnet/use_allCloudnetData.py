@@ -4984,7 +4984,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #---------------------------
     plt.subplot(236)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p7,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
