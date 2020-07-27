@@ -2394,7 +2394,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
 
     plt.subplot(231)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['twc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['twc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['twc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][melt,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][melt,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -2442,7 +2442,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     #----------------------
     plt.subplot(232)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][melt,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -2490,7 +2490,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     #-------------------------
     plt.subplot(233)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][melt,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -2540,7 +2540,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     #-------------------------
     plt.subplot(234)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][freeze,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -2589,7 +2589,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     #--------------
     plt.subplot(235)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][freeze,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -2638,7 +2638,7 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     #---------------------------
     plt.subplot(236)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][freeze,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4734,7 +4734,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.subplot(231)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4784,7 +4784,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #----------------------
     plt.subplot(232)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4833,7 +4833,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #-------------------------
     plt.subplot(233)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4884,7 +4884,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #-------------------------
     plt.subplot(234)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p7,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4934,7 +4934,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #--------------
     plt.subplot(235)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p7,:]),0),np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -6185,12 +6185,12 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
