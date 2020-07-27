@@ -777,8 +777,17 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     time_radice = calcTime_Mat2DOY(datenums_radice)
 
     ### calculate net LW and SW from obs
-    netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
-    netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
+    time_radice = time_radice_all[:-1:2]
+    lwd = obs['obs_temp'].variables['LWdice'][:]
+    lwu = obs['obs_temp'].variables['LWuice'][:]
+    lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
+    lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
+    swd = obs['obs_temp'].variables['SWdice'][:]
+    swu = obs['obs_temp'].variables['SWuice'][:]
+    swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
+    swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+    netLW = lwdmean - lwumean
+    netSW = swdmean - swumean
 
     ########            Radiation timeseries
     ########
