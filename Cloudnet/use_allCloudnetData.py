@@ -966,6 +966,36 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     print (um_data.keys())
 
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] < 0] = 0.0
+    um_data['model_lwc'][um_data['model_lwc'] < 0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0] = 0.0
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0] = 0.0
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0] = 0.0
+
+    obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0] = 0.0
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0] = 0.0
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0] = 0.0
+    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0] = 0.0
+
+    # ###----------------------------------------------------------------
+    # ###         Calculate total water content
+    # ###----------------------------------------------------------------
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+
+    #### set flagged um_data to nans
+    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
+    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
+    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
+    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
+
     #### set flagged iwc to nans
     obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
@@ -999,14 +1029,14 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
     ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 1e-6] = np.nan
 
-    ###----------------------------------------------------------------
-    ###         Calculate total water content
-    ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+    # ###----------------------------------------------------------------
+    # ###         Calculate total water content
+    # ###----------------------------------------------------------------
+    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -1074,7 +1104,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCzeroFirst.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -2353,6 +2383,15 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     #### set flagged um_data to nans
+    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
+    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
+    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
+    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
+
+
+    #### set flagged um_data to nans
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
     um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
     ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
@@ -2366,14 +2405,6 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
     misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
     ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
-
-    #### set flagged um_data to nans
-    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
-    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
-    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
-    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
 
     #### set flagged um_data to nans
     # obs_data['iwc'][obs_data['iwc'] == -999] = np.nan
@@ -4679,24 +4710,21 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ra2t_data['model_Cv_filtered'][ra2t_data['model_Cv_filtered'] < 0.0] = np.nan
 
     #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
-    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
+    obs_data['lwc'][obs_data['lwc'] < 0] = 0.0
+    um_data['model_lwc'][um_data['model_lwc'] < 0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0] = 0.0
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0] = 0.0
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0] = 0.0
 
-    #### set flagged um_data to nans
-    obs_data['iwc'][obs_data['iwc'] < 1e-6] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-6] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-6] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
-    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 1e-6] = np.nan
+    obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0] = 0.0
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0] = 0.0
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0] = 0.0
+    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0] = 0.0
 
-    ###----------------------------------------------------------------
-    ###         Calculate total water content
-    ###----------------------------------------------------------------
+    # ###----------------------------------------------------------------
+    # ###         Calculate total water content
+    # ###----------------------------------------------------------------
     obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
@@ -4746,6 +4774,30 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     mask3[wcind] = np.nan
     mask4[wcind] = np.nan
 
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
+    um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
+
+    #### set flagged um_data to nans
+    obs_data['iwc'][obs_data['iwc'] < 1e-6] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-6] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-6] = np.nan
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 20.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
+    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 1e-6] = np.nan
+
+    #### set flagged um_data to nans
+    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
+    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
+    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
+    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
+    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
+
     ##################################################
     ##################################################
     #### 	CARTOPY
@@ -4768,7 +4820,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.subplot(231)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(mask0[p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4776,7 +4828,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p3,:]),0)*1e3, np.nanmean(obs_data['height'],0),
     #     '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(mask3[p3,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0),np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
@@ -4784,7 +4836,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
     #     '--', color = 'darkorange', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask1[p3,:]),0),np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p3,:]),0),np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3,
     #     np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
@@ -4792,7 +4844,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
     #     '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask2[p3,:]),0),np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p3,:]),0),np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p3,:])*1e3,0),
     #     np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
@@ -4800,14 +4852,14 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
     #     '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_Cv_filtered'][p3,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask4[p3,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0),np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:])*1e3,0),
     #     np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, color = 'salmon', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
-    plt.xlabel('Cloud Fraction')
+    plt.xlabel('TWC Cloud Mask')
     plt.ylabel('Height [m]')
     # plt.title('Melt')
     plt.ylim([0,9000])
@@ -4918,7 +4970,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #-------------------------
     plt.subplot(234)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(mask0[p7,:]),0),np.nanmean(np.squeeze(obs_data['height'][p7,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p7,:]),0),np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
@@ -4926,7 +4978,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(obs_data['twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['twc'][p7,:]),0)*1e3, np.nanmean(obs_data['height'],0),
     #     '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_snow_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(mask3[p7,:]),0),np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0), color = 'darkorange', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p7,:]),0),np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
@@ -4934,7 +4986,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ifs_data['height'],0),
     #     '--', color = 'darkorange', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(um_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(um_data['height'][p7,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask1[p7,:]),0),np.nanmean(np.squeeze(um_data['height'][p7,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2M', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p7,:]),0),np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3,
     #     np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, color = 'lightblue', alpha = 0.4)
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, np.nanmean(um_data['height'],0),
@@ -4942,7 +4994,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_twc'][p7,:]),0)*1e3, np.nanmean(um_data['height'],0),
     #     '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(misc_data['height'][p7,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask2[p7,:]),0),np.nanmean(np.squeeze(misc_data['height'][p7,:]),0), color = 'forestgreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p7,:]),0),np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p7,:])*1e3,0),
     #     np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, np.nanmean(misc_data['height'],0),
@@ -4950,7 +5002,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_twc'][p7,:]),0)*1e3, np.nanmean(misc_data['height'],0),
     #     '--', color = 'forestgreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_Cv_filtered'][p7,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(mask4[p7,:]),0),np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0), color = 'firebrick', linewidth = 2, label = 'UM_RA2T', zorder = 1)
     # ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p7,:]),0),np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:])*1e3,0),
     #     np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, color = 'salmon', alpha = 0.15)
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
@@ -4958,7 +5010,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.plot(np.nanmean(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_twc'][p7,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
     #     '--', color = 'firebrick', linewidth = 0.5)
 
-    plt.xlabel('Cloud Fraction')
+    plt.xlabel('TWC Cloud Mask')
     # plt.title('Freeze up')
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
@@ -5071,7 +5123,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p6_226-257DOY_blueNaNs_wMissingFiles.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p3-p6_226-257DOY_blueNaNs_wMissingFiles.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6219,12 +6271,12 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
