@@ -3307,7 +3307,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     print ('')
 
     fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -3486,7 +3486,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     plt.title('Freeze')
 
     fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_ra2t.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -3807,7 +3807,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     print ('')
 
     fileout = '../FIGS/comparisons/QProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -4694,7 +4694,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-0.3,0.7])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p7.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
