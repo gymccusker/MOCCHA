@@ -4731,11 +4731,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
-    p3 = np.where(np.logical_and(obs_data >= doy[0], obs_data['time'] < 230.0))
-    p7 = np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
-    #   np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
-    #   np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
-    #   np.where(np.logical_and(obs_data['time'] >= 251.0, obs_data['time'] < 255.5))
+    p3 = np.where(np.logical_and(um_data['time'] >= 240.0, um_data['time'] < 247.0))
+    p7 = np.where(np.logical_and(um_data['time'] >= 251.0, um_data['time'] < 255.5))
+    #   p3: np.where(np.logical_and(obs_data >= doy[0], obs_data['time'] < 230.0))
+    #   p6: np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
+
 
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
@@ -5123,7 +5123,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p3-p6_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p5-p7_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
     plt.savefig(fileout)
     plt.show()
 
