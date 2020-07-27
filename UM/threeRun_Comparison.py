@@ -2340,7 +2340,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason.png'
+    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason.svg'
     plt.savefig(fileout)
     plt.show()
 
