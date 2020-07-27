@@ -190,7 +190,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
             np.nanmean(obs['cloudfractions']['cloudfraction_total'],0) + np.nanstd(obs['cloudfractions']['cloudfraction_total'],0), color = 'lightgrey', alpha = 0.5)
     else:
         # plt.plot(np.nanmean(obs_data['Cv_adv'],0),np.nanmean(obs_data['height'],0), color = 'purple', linewidth = 3, label = 'Obs Cv_adv')
-        plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
+        plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
         ax.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
             np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
         # plt.plot(np.nanmean(obs['cloudfractions']['cloudfraction_total'],0),np.squeeze(obs['cloudfractions']['height']),
@@ -514,7 +514,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
             np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.xlim([0,1.0])
     else:
-        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
         ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
             np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.xlim([0,0.2])
@@ -744,7 +744,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
             np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
     else:
-        plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
+        plt.plot(np.nanmean(obs_data['iwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
         ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
             np.nanmean(obs_data['iwc'],0)*1e3 + np.nanstd(obs_data['iwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(obs_data['iwc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3, np.nanmean(obs_data['height'],0),
@@ -1021,7 +1021,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['twc'],0)*1e3 - np.nanstd(obs_data['twc'],0)*1e3,
             np.nanmean(obs_data['twc'],0)*1e3 + np.nanstd(obs_data['twc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
     else:
-        plt.plot(np.nanmean(obs_data['twc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
+        plt.plot(np.nanmean(obs_data['twc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
         ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['twc'],0)*1e3 - np.nanstd(obs_data['iwc'],0)*1e3,
             np.nanmean(obs_data['twc'],0)*1e3 + np.nanstd(obs_data['twc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.plot(np.nanmean(obs_data['twc'],0)*1e3 - np.nanstd(obs_data['twc'],0)*1e3, np.nanmean(obs_data['height'],0),
@@ -6149,7 +6149,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -6185,7 +6185,7 @@ def main():
     # figure = plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
     # figure = plot_lwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # look closer at specific periods
