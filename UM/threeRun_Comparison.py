@@ -2113,7 +2113,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # 8: SWuice / (1)                        (time3: 1293)
 
     datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
-    time_radice = calcTime_Mat2DOY(datenums_radice)
+    time_radice_all = calcTime_Mat2DOY(datenums_radice)
 
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
@@ -2135,6 +2135,19 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # 8. surface_net_LW_radiation -> sfc_net_lw
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
+    time_radice = time_radice_all[:-1:2]
+    lwd = obs['obs_temp'].variables['LWdice'][:]
+    lwu = obs['obs_temp'].variables['LWuice'][:]
+    lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
+    lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
+    swd = obs['obs_temp'].variables['SWdice'][:]
+    swu = obs['obs_temp'].variables['SWuice'][:]
+    swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
+    swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+    netLW = lwdmean - lwumean
+    netSW = swdmean - swumean
+
+
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
@@ -2147,8 +2160,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     fig = plt.figure(figsize=(18,12))
 
     ax  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
-    netLW = obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]
-    netSW = obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]
+
     ax = plt.gca()
     yB = [-10, 120]
     plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='grey')
@@ -2160,7 +2172,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'darkorange', label = label3)
     plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'firebrick', label = label4[:-4])
-    plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
+    plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
     plt.title('$SW_{net,surf}$ [$W/m^{2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
@@ -2178,7 +2190,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'darkorange')
     plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'firebrick')
-    plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
+    plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
     plt.title('$LW_{net,surf}$ [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-90,5])
@@ -6341,13 +6353,13 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
