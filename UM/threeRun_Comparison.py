@@ -3987,7 +3987,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     plt.xlim([-0.05,0.45])
     plt.title('Freeze')
 
-    fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100_ra2t.png'
+    fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100_ra2t.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -4475,9 +4475,11 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
 
     ### all model data share a timestamp
     p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
     #   p3: np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    #   p5: np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    #   p6: np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
     #   p7: np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
 
     ##################################################
@@ -4505,43 +4507,43 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'steelblue', label = label1 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
-    #     color = 'lightblue', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
+        color = 'lightblue', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'forestgreen', label = label2 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
-    #     color = 'mediumaquamarine', alpha = 0.2)
-    # plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
+        color = 'mediumaquamarine', alpha = 0.2)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'darkorange', label = label3 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1),
-    #     color = 'navajowhite', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1),
+        color = 'navajowhite', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'firebrick', label = label4[:-4] + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
-    #     color = 'salmon', alpha = 0.1)
-    # plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
+        color = 'salmon', alpha = 0.1)
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
 
     plt.grid('on')
     plt.ylim([0,9000])
@@ -4554,43 +4556,43 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'steelblue', label = label1 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
-    #     color = 'lightblue', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
+        color = 'lightblue', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'forestgreen', label = label2 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
-    #     color = 'mediumaquamarine', alpha = 0.2)
-    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
+        color = 'mediumaquamarine', alpha = 0.2)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'darkorange', label = label3 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1),
-    #     color = 'navajowhite', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1),
+        color = 'navajowhite', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'firebrick', label = label4[:-4] + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
-    #     np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
-    #     color = 'salmon', alpha = 0.1)
-    # plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
+        np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
+        color = 'salmon', alpha = 0.1)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
@@ -4602,43 +4604,43 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'steelblue', label = label1 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
-    #     color = 'lightblue', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
+        color = 'lightblue', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'forestgreen', label = label2 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
-    #     color = 'mediumaquamarine', alpha = 0.2)
-    # plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
+        color = 'mediumaquamarine', alpha = 0.2)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'darkorange', label = label3 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1),
-    #     color = 'navajowhite', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1),
+        color = 'navajowhite', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'firebrick', label = label4[:-4] + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
-    #     color = 'salmon', alpha = 0.1)
-    # plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
+        color = 'salmon', alpha = 0.1)
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
     plt.grid('on')
     plt.ylim([0,9000])
     plt.xlim([-5.0,2.5])
@@ -4650,51 +4652,51 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'steelblue', label = label1 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
-    #     color = 'lightblue', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
+        color = 'lightblue', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'forestgreen', label = label2 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
-    #     color = 'mediumaquamarine', alpha = 0.2)
-    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'forestgreen', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
+        color = 'mediumaquamarine', alpha = 0.2)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'forestgreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'darkorange', label = label3 + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1),
-    #     color = 'navajowhite', alpha = 0.3)
-    # plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'darkorange', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1),
+        color = 'navajowhite', alpha = 0.3)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'darkorange', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'firebrick', label = label4[:-4] + ' median')
-    # ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
-    #     np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
-    #     color = 'salmon', alpha = 0.1)
-    # plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
-    # plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
-    #     '--', color = 'firebrick', linewidth = 0.5)
+    ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
+        np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
+        color = 'salmon', alpha = 0.1)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
+        '--', color = 'firebrick', linewidth = 0.5)
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
     ax3.axes.yaxis.set_ticklabels([])
     plt.xlim([-0.3,0.7])
 
-    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p7.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
