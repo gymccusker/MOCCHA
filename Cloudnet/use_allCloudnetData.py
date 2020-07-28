@@ -4820,9 +4820,21 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
             hspace = 0.22, wspace = 0.17)
 
+    fraction0p3 = np.nanmean(np.squeeze(mask0[p3,:]),0)
+    fraction1p3 = np.nanmean(np.squeeze(mask1[p3,:]),0)
+    fraction2p3 = np.nanmean(np.squeeze(mask2[p3,:]),0)
+    fraction3p3 = np.nanmean(np.squeeze(mask3[p3,:]),0)
+    fraction4p3 = np.nanmean(np.squeeze(mask4[p3,:]),0)
+
+    fraction0p7 = np.nanmean(np.squeeze(mask0[p3,:]),0)
+    fraction1p7 = np.nanmean(np.squeeze(mask1[p3,:]),0)
+    fraction2p7 = np.nanmean(np.squeeze(mask2[p3,:]),0)
+    fraction3p7 = np.nanmean(np.squeeze(mask3[p3,:]),0)
+    fraction4p7 = np.nanmean(np.squeeze(mask4[p3,:]),0)
+
     plt.subplot(231)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(mask0[p3,:]),0),np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    plt.plot(fraction0p3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(mask0[p3,:]),0) - np.nanstd(np.squeeze(mask0[p3,:]),0),
         np.nanmean(np.squeeze(mask0[p3,:]),0) + np.nanstd(np.squeeze(mask0[p3,:]),0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(np.squeeze(mask0[p3,:]),0) - np.nanstd(np.squeeze(mask0[p3,:]),0), np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),
@@ -5125,7 +5137,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p5-p6_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
     plt.savefig(fileout)
     plt.show()
 
