@@ -6081,7 +6081,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print 'Diagnostic is 1-hourly, pull ship track...'
                 ok = True
 
-            if not ok: break
+            if not ok: continue
 
             #################################################################
             ## make hourly time array
