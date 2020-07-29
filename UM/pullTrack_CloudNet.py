@@ -6015,6 +6015,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         print ''
         print 'More than one variable constraint. Proceeding...'
         print ''
+        print (np.size(cube))
 
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
