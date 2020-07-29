@@ -7836,6 +7836,7 @@ def main():
                         # cube = iris.load_cubes(filename1, global_con)
                         cube = iris.load(filename, global_con, callback)
                         con_flag = 1            # constraint flag
+                        print (cube)
 
                     # ------------------------------------------------------------
 
