@@ -312,7 +312,9 @@ def copyNC(nc1, filename1, out_dir):
     #################################################################
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
-    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP']
+    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP','surface_downwelling_LW_radiation',
+                'surface_downwelling_SW_radiation','toa_incoming_shortwave_flux','toa_outgoing_longwave_flux',
+                'toa_outgoing_shortwave_flux']
     flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
                 'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
@@ -539,7 +541,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '14_u-bu570_RA1M_CASIM/OUT_24h/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1_24hRad/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
