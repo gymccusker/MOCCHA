@@ -6211,7 +6211,7 @@ def main():
         if out_dir1[-6:-1] == 'RadPA':
             var_list1 = ['surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']
-            var_list3 = ['sfc_net_sw','sfc_net_lw']
+            var_list3 = ['sfc_net_sw','sfc_net_lw', 'sfc_down_lw', 'sfc_down_sw']
             var_list2 = var_list1
             var_list4 = var_list1
         else:
