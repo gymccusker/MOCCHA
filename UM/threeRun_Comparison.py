@@ -2353,6 +2353,141 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.savefig(fileout)
     plt.show()
 
+def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('calculating radiation terms for chosen period selection:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    # plt.figure(figsize=(9,10))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
+    #         hspace = 0.4, wspace = 0.13)
+
+    #################################################################
+    ## sort out obs['obs_temp']ervations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
+    time_radice_all = calcTime_Mat2DOY(datenums_radice)
+
+    datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    # UM -> um2 comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    time_radice = time_radice_all[:-1:2]
+    lwd = obs['obs_temp'].variables['LWdice'][:]
+    lwu = obs['obs_temp'].variables['LWuice'][:]
+    lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
+    lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
+    swd = obs['obs_temp'].variables['SWdice'][:]
+    swu = obs['obs_temp'].variables['SWuice'][:]
+    swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
+    swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+    netLW = lwdmean - lwumean
+    netSW = swdmean - swumean
+
+    p3mod = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    p4mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    p5mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    p6mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+
+    p3obs = np.where(np.logical_and(time_radice >= doy[0], time_radice < 230.0))
+    p4obs = np.where(np.logical_and(time_radice >= 230.0, time_radice < 240.0))
+    p5obs = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
+    p6obs = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
+
+    #####-------------------------------
+    #####   net LW
+    #####-------------------------------
+    print ()
+    print ('net LW (p3):')
+    print ('Obs = ' + str(np.nanmean(np.squeeze(netLW[p3obs]))))
+    print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_net_LW_radiation'][p3mod]))))
+    print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_net_LW_radiation'][p3mod]))))
+    print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_lw'][p3mod]))))
+    print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_net_LW_radiation'][p3mod]))))
+
+    print ()
+    print ('net SW (p3):')
+    print ('Obs = ' + str(np.nanmean(np.squeeze(netSW[p3obs]))))
+    print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_net_SW_radiation'][p3mod]))))
+    print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_net_SW_radiation'][p3mod]))))
+    print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_sw'][p3mod]))))
+    print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_net_SW_radiation'][p3mod]))))
+
+    print ()
+    print ('Downwelling LW (p3):')
+    print ('Obs = ' + str(np.nanmean(np.squeeze(lwdmean[p3obs]))))
+    print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p3mod]))))
+    print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_downwelling_LW_radiation'][p3mod]))))
+    # print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_lw'][p3mod]))))
+    print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p3mod]))))
+
+    print ()
+    print ('Downwelling SW (p3):')
+    print ('Obs = ' + str(np.nanmean(np.squeeze(swdmean[p3obs]))))
+    print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_downwelling_SW_radiation'][p3mod]))))
+    print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_downwelling_SW_radiation'][p3mod]))))
+    # print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_sw'][p3mod]))))
+    print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_downwelling_SW_radiation'][p3mod]))))
+
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
@@ -5864,11 +5999,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -6023,17 +6158,30 @@ def main():
     month_flag = -1
 
     for i in range(0,len(names)):
-        filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
-        filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
-            print( '***IFS being compared***')
-            ifs_flag = True
-            filename_um3 = misc_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
+        if out_dir1[-6:-1] == 'RadPA':
+            filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum_a.nc'
+            filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum_a.nc'
+            if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+                print( '***IFS being compared***')
+                ifs_flag = True
+                filename_um3 = misc_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
+            else:
+                print ('***IFS NOT being compared***')
+                filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum_a.nc'
+                ifs_flag = False
+            filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum_a.nc'
         else:
-            print ('***IFS NOT being compared***')
-            filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum.nc'
-            ifs_flag = False
-        filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
+            filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
+            if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+                print( '***IFS being compared***')
+                ifs_flag = True
+                filename_um3 = misc_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
+            else:
+                print ('***IFS NOT being compared***')
+                filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum.nc'
+                ifs_flag = False
+            filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
         print (filename_um1)
         print (filename_um2)
         print (filename_um3)
@@ -6369,9 +6517,9 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -6384,6 +6532,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
