@@ -6132,7 +6132,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
 
     Aug_missing_files = []
 
@@ -6142,6 +6142,7 @@ def main():
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -6207,23 +6208,30 @@ def main():
 
         #### LOAD IN SPECIFIC DIAGNOSTICS
         # if out_dir == '4_u-bg610_RA2M_CON/OUT_R1/':
-        var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-            'cloud_fraction','radr_refl']
-        if out_dir2[-4:-1] == 'glm':
-            var_list2 = ['cloud_fraction','qliq','qice']
+        if out_dir1[-6:-1] == 'RadPA':
+            var_list1 = ['surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']
+            var_list3 = ['sfc_net_sw','sfc_net_lw']
+            var_list2 = var_list1
+            var_list4 = var_list1
         else:
-            var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-            'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
-        if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
-        if not ifs_flag:
-            if out_dir3[-4:-1] == 'glm':
-                var_list3 = ['cloud_fraction','qliq','qice']
+            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+                'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']
+            if out_dir2[-4:-1] == 'glm':
+                var_list2 = ['cloud_fraction','qliq','qice']
             else:
-                var_list3 = var_list2
-        var_list4 = var_list1
+                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+                'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
+            if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
+                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
+            if not ifs_flag:
+                if out_dir3[-4:-1] == 'glm':
+                    var_list3 = ['cloud_fraction','qliq','qice']
+                else:
+                    var_list3 = var_list2
+            var_list4 = var_list1
 
         if i == 0:
             ## ------------------
@@ -6247,10 +6255,11 @@ def main():
                 time_um4 = float(filename_um4[-16:-14]) + (nc4.variables['forecast_time'][:]/24.0)
 
             ### define height arrays explicitly
-            data1['height'] = nc1.variables['height'][:]
-            data2['height'] = nc2.variables['height'][:]
-            if not ifs_flag: data3['height'] = nc3.variables['height'][:]
-            data4['height'] = nc4.variables['height'][:]
+            if out_dir1[-6:-1] != 'RadPA':
+                data1['height'] = nc1.variables['height'][:]
+                data2['height'] = nc2.variables['height'][:]
+                if not ifs_flag: data3['height'] = nc3.variables['height'][:]
+                data4['height'] = nc4.variables['height'][:]
 
             print ('Starting on t=0 RA2M data:')
             for j in range(0,len(var_list1)):
@@ -6398,7 +6407,7 @@ def main():
     data1['time_hrly'] = temp1[ii1]
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
-    data4['time_hrly'] = temp4[ii3]
+    data4['time_hrly'] = temp4[ii4]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
