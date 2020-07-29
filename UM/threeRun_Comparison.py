@@ -2477,7 +2477,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('Obs = ' + str(np.nanmean(np.squeeze(lwdmean[p3obs]))))
     print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p3mod]))))
     print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_downwelling_LW_radiation'][p3mod]))))
-    # print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_lw'][p3mod]))))
+    print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_down_lw'][p3mod]))))
     print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p3mod]))))
 
     print ()
@@ -2485,7 +2485,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('Obs = ' + str(np.nanmean(np.squeeze(swdmean[p3obs]))))
     print ('UM_RA2M = ' + str(np.nanmean(np.squeeze(data1['surface_downwelling_SW_radiation'][p3mod]))))
     print ('UM_CASIM-100 = ' + str(np.nanmean(np.squeeze(data2['surface_downwelling_SW_radiation'][p3mod]))))
-    # print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_net_sw'][p3mod]))))
+    print ('ECMWF_IFS = ' + str(np.nanmean(np.squeeze(data3['sfc_down_sw'][p3mod]))))
     print ('UM_RA2T = ' + str(np.nanmean(np.squeeze(data4['surface_downwelling_SW_radiation'][p3mod]))))
 
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
