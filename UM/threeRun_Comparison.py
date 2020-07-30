@@ -4724,13 +4724,12 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     '''
 
     ### all model data share a timestamp
-    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
     #   p3: np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
     #   p5: np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
     #   p6: np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
-    #   p7: np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
 
     ##################################################
     ##################################################
@@ -4946,8 +4945,12 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-0.3,0.7])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
+
+    print (np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1))
+    print (np.nanmin(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1)))
+    print (data1['universal_height'])
 
 def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
 
@@ -6114,11 +6117,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -6247,7 +6250,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -6257,7 +6260,7 @@ def main():
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -6641,9 +6644,9 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -6656,7 +6659,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes

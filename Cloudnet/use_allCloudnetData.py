@@ -2377,19 +2377,19 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     # ###----------------------------------------------------------------
     # ###         Calculate total water content
     # ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
-    #### set flagged um_data to nans
-    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
-    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
-    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
-    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
+    # #### set flagged um_data to nans
+    # obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
+    # um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
+    # ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
+    # ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
+    # misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
+    # ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
 
 
     #### set flagged um_data to nans
@@ -2425,11 +2425,11 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
-    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     melt = np.where(um_data['time'] < 240.0)
     freeze = np.where(um_data['time'] >= 240.0)
@@ -2752,13 +2752,13 @@ def plot_profiles_SplitSeason(um_data, ifs_data, misc_data, ra2t_data, obs_data,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_splitSeason_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWC-LWC-IWC_splitSeason_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_LWC-IWCthreshFirst.svg'
     plt.savefig(fileout)
     plt.show()
 
-    print (np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3)
-    print (np.nanmean(np.squeeze(um_data['height'][melt,:]),0))
-    print (np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3)
+    # print (np.nanmean(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3)
+    # print (np.nanmean(np.squeeze(um_data['height'][melt,:]),0))
+    # print (np.nanstd(np.squeeze(um_data['model_iwc_filtered'][melt,:]),0)*1e3)
 
 def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
@@ -4732,8 +4732,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
-    p3 = np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
-    p7 = np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
+    p3 = np.where(np.logical_and(obs_data['time'] >= doy[0], obs_data['time'] < 230.0))
+    p7 = np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
     #   p3: np.where(np.logical_and(obs_data['time'] >= doy[0], obs_data['time'] < 230.0))
     #   p4: np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
     #   p5: np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
@@ -5139,8 +5139,12 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_226-257DOY_blueNaNs_wMissingFiles_wSTDEV.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
+
+    print (np.nanmean(np.squeeze(ifs_data['model_lwc'][p7,:]),0)*1e3)
+    print (np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3)
+    print (np.nanmean(np.squeeze(obs_data['height'][p7,:]),0))
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
@@ -6253,7 +6257,7 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -6291,7 +6295,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
