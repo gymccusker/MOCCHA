@@ -978,23 +978,23 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0] = 0.0
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0] = 0.0
     ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0] = 0.0
+    #
+    # # ###----------------------------------------------------------------
+    # # ###         Calculate total water content
+    # # ###----------------------------------------------------------------
+    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
-    # ###----------------------------------------------------------------
-    # ###         Calculate total water content
-    # ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
-
-    #### set flagged um_data to nans
-    obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
-    um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
-    ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
-    misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
-    ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
+    # #### set flagged um_data to nans
+    # obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
+    # um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
+    # ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
+    # ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
+    # misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
+    # ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
 
     #### set flagged iwc to nans
     obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
@@ -1029,14 +1029,15 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
     ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 1e-6] = np.nan
 
+
     # ###----------------------------------------------------------------
     # ###         Calculate total water content
     # ###----------------------------------------------------------------
-    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -1104,7 +1105,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCzeroFirst.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCthreshFirst.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6252,7 +6253,7 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -6272,7 +6273,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
