@@ -324,8 +324,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'grey', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'grey', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -348,7 +348,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
+    # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -370,7 +370,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -392,7 +392,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -414,7 +414,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -436,7 +436,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs_wInversionBase+BLDepth.svg'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6262,7 +6262,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
