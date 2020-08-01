@@ -5368,7 +5368,7 @@ def main():
                     'iwc-Z-T-ecmwf-grid/2018/']
         if obs_switch == 'IFS':
             cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
-                        'lwc-scaled-ecmwf-grid/2018/',
+                        'lwc-adiabatic-ecmwf-grid/2018/', #'lwc-scaled-ecmwf-grid/2018/',
                         'iwc-Z-T-ecmwf-grid/2018/']
         elif obs_switch == 'UM':
             cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
@@ -6262,7 +6262,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
