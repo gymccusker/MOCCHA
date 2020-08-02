@@ -1346,22 +1346,22 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     period = np.where(np.logical_and(obs_data['time'] >= doy[0], obs_data['time'] < doy[-1]))
 
     ### build nanmask
-    nanmask = np.zeros([np.size(np.squeeze(obs_data['time'][period])), np.size(obs_data['Cv'],1)])
-    nanindex = np.zeros([np.size(np.squeeze(obs_data['time'][period]))])
-    print(nanindex.shape)
-    for i in range(len(np.squeeze(obs_data['time'][period]))):
-        if np.isnan(np.nanmean(obs_data['Cv'][period[0][i],:])):       ## if there are only nans in the time profile
-            nanmask[i,:] = 1.0
-            nanmask[i-1,:] = 1.0
-            nanmask[i+1,:] = 1.0
-            nanindex[i] = 1
-    nanmask[nanmask == 0.0] = np.nan
-    nanind = np.where(nanindex == 1)
-
-    obs_data['Cv'][nanind, :] = np.nan
-    data1['cloud_fraction'][nanind, :] = np.nan
-    data2['cloud_fraction'][nanind, :] = np.nan
-    data3['cloud_fraction'][nanind, :] = np.nan
+    # nanmask = np.zeros([np.size(np.squeeze(obs_data['time'][period])), np.size(obs_data['Cv'],1)])
+    # nanindex = np.zeros([np.size(np.squeeze(obs_data['time'][period]))])
+    # print(nanindex.shape)
+    # for i in range(len(np.squeeze(obs_data['time'][period]))):
+    #     if np.isnan(np.nanmean(obs_data['Cv'][period[0][i],:])):       ## if there are only nans in the time profile
+    #         nanmask[i,:] = 1.0
+    #         nanmask[i-1,:] = 1.0
+    #         nanmask[i+1,:] = 1.0
+    #         nanindex[i] = 1
+    # nanmask[nanmask == 0.0] = np.nan
+    # nanind = np.where(nanindex == 1)
+    #
+    # obs_data['Cv'][nanind, :] = np.nan
+    # data1['cloud_fraction'][nanind, :] = np.nan
+    # data2['cloud_fraction'][nanind, :] = np.nan
+    # data3['cloud_fraction'][nanind, :] = np.nan
 
     ### -------------------------------
     ### Build figure (timeseries)
@@ -1419,7 +1419,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.ylabel('Height [m]')
     plt.ylim([0,9000])
     plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.title(label2 + ' Cloud fraction')
+    plt.title(label2[:-4] + ' Cloud fraction')
     plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
 
@@ -1463,7 +1463,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
         np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2)
+    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2[:-4])
     ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
         np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
     if out_dir3 == 'OUT_25H/':
@@ -3632,7 +3632,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
         '--', color = 'firebrick', linewidth = 0.5)
     plt.legend()
     plt.ylim([0,1e4])
-    plt.xlim([-1.6,1.0])
+    plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
     plt.ylabel('Z [m]')
     plt.xlabel('Temperature bias [K]')
     plt.grid('on')
@@ -3682,7 +3682,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
         '--', color = 'firebrick', linewidth = 0.5)
     plt.grid('on')
     plt.ylim([0,1e4])
-    plt.xlim([-1.6,1.0])
+    plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
     plt.xlabel('Temperature bias [K]')
     plt.title('Melt')
 
@@ -3731,12 +3731,12 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
 
     plt.grid('on')
     plt.ylim([0,1e4])
-    plt.xlim([-1.6,1.0])
+    plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
     plt.xlabel('Temperature bias [K]')
     plt.title('Freeze')
 
-    fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_ra2t.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_erai-glm.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -4136,7 +4136,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     plt.xlabel('Q bias [g/kg]')
     plt.ylabel('Z [m]')
     plt.ylim([0,1e4])
-    plt.xlim([-0.05,0.45])
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.grid('on')
     plt.title('Total drift')
 
@@ -4185,7 +4185,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,1e4])
-    plt.xlim([-0.05,0.45])
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.title('Melt')
 
     plt.subplot(133)
@@ -4234,11 +4234,11 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,1e4])
-    plt.xlim([-0.05,0.45])
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.title('Freeze')
 
-    fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100_ra2t.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/QMedianProfiles_metum_ifs_casim-100_erai-glm.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
@@ -5104,8 +5104,8 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
-    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0] - 0.1, obs['sondes']['doy'] <= doy[-1] + 0.9))
+    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
 
     print (obs['sondes']['doy'][drift[0]])
     print (obs['sondes']['doy'][drift[-1]])
@@ -6118,9 +6118,9 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir3 = 'OUT_25H/'
+        out_dir3 = '16_u-bv926_RA2T_CON/OUT_R0/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -6243,14 +6243,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_',
+            '20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -6259,14 +6260,14 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
-    # doy = np.arange(244,249)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
+    doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
     # doy = np.arange(237,259)        ## set DOY for RA2M_newRHcrit (25th Aug to 14th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -6341,7 +6342,7 @@ def main():
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
+                'cloud_fraction','radr_refl']#,'qnliq','qnice'] # , 'latent_heat_flux']
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind']
             if not ifs_flag:
@@ -6640,7 +6641,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -6650,7 +6651,7 @@ def main():
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
