@@ -23,7 +23,7 @@ import seaborn as sns
 #### import python functions
 import sys
 sys.path.insert(1, '../py_functions/')
-from time_functions import calcTime_Mat2DOY
+from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY
 from readMAT import readMatlabStruct
 from physFuncts import calcThetaE, calcThetaVL
 
@@ -6080,6 +6080,21 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     P7: 20180905   05-15 UTC
     '''
 
+    ### dates as strings
+    d2 = '20180911'
+    d3 = '20180913'
+    d4 = '20180831'
+    d5 = '20180823'
+    d6 = '20180903'
+    d7 = '20180905'
+
+    ### calculate DOYs
+    doy2 = calcTime_Date2DOY(d2)
+    doy3 = calcTime_Date2DOY(d3)
+    doy4 = calcTime_Date2DOY(d4)
+    doy5 = calcTime_Date2DOY(d5)
+    doy6 = calcTime_Date2DOY(d6)
+    doy7 = calcTime_Date2DOY(d7)
 
     ### all model data share a timestamp
     p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
