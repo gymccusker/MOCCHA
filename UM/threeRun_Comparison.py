@@ -2601,8 +2601,6 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6obs])),2)) + ')')
     print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6obs])),2)) + ')')
 
-
-
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
@@ -6068,6 +6066,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
     return data1, data2, data3, obs
 
+def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
+
 def RMSE_analysis(data1, data2, data3, obs):
 
     from sklearn.metrics import mean_squared_error
@@ -6651,7 +6651,7 @@ def main():
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
@@ -6661,6 +6661,7 @@ def main():
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
