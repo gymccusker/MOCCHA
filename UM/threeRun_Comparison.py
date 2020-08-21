@@ -6068,6 +6068,24 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
 def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
 
+    '''
+    Plots model radar reflectivity timeseries for selected MOCCHA time periods
+
+    P1: 20180917   12-24 UTC​
+    P2: 20180911   00-14 UTC​
+    P3: 20180913   00-14 UTC​
+    P4: 20180831   00-04 UTC​
+    P5: 20180823   12-24 UTC​
+    P6: 20180903   19-22 UTC​
+    P7: 20180905   05-15 UTC
+    '''
+
+
+    ### all model data share a timestamp
+    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+
+
 def RMSE_analysis(data1, data2, data3, obs):
 
     from sklearn.metrics import mean_squared_error
