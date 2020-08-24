@@ -6104,9 +6104,31 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     p6 = doy6 + h6/24.0
     p7 = doy7 + h7/24.0
 
-    ### all model data share a timestamp
-    # p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
-    # p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    ### find model data for each period
+    i2 = np.where(np.logical_and(data1['time_hrly'] >= p2[0], data1['time_hrly'] <= p2[-1]))
+
+    print( i2)
+
+    #######     FIGURE
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.figure(figsize=(8,12))
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.02,
+            hspace = 0.22, wspace = 0.15)
+
+    plt.subplot(421)
+    plt.pcolormesh(data1['time_hrly'][i2], data1['height'], np.squeeze(data2['radr_refl'][i2,:]))
+    plt.xlim([p2[0], p2[-1]])
+
+    plt.show()
 
 
 def RMSE_analysis(data1, data2, data3, obs):
@@ -6161,7 +6183,7 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         # out_dir3 = 'MET_DATA/'
-        out_dir3 = '16_u-bv926_RA2T_CON/OUT_R0/'
+        out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -6284,15 +6306,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_','20180831_oden_',
-            '20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_',
+            '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -6301,14 +6322,14 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
-    doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
+    # doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
     # doy = np.arange(237,259)        ## set DOY for RA2M_newRHcrit (25th Aug to 14th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
