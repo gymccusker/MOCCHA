@@ -6127,23 +6127,24 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.figure(figsize=(12,12))
+    plt.figure(figsize=(14,10))
     plt.rc('legend',fontsize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
-            hspace = 0.22, wspace = 0.15)
+            hspace = 0.3, wspace = 0.2)
 
     ## color limits
     cmax = 10.0
     cmin = -35.0
+    h = 5e3
 
     plt.subplot(3, 2, 1)
     plt.pcolormesh(data1['time_hrly'][i2], data1['height'], np.transpose(data1['radr_refl'][i2[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p2[0], p2[-1]])
+    # plt.xlim([p2[0], p2[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P2) ' + d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
     ax = plt.gca()
     ax.set_xticks(p2)
     ax.set_xticklabels(h2)
@@ -6152,11 +6153,11 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ax = plt.gca()
     plt.pcolormesh(data1['time_hrly'][i3], data1['height'], np.transpose(data1['radr_refl'][i3[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p3[0], p3[-1]])
+    # plt.xlim([p3[0], p3[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d3 + ': ' + str(h3[0]) + ' - ' + str(h3[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P3) ' + d3 + ': ' + str(h3[0]) + ' - ' + str(h3[-1]) + 'h')
     ax.set_xticks(p3)
     ax.set_xticklabels(h3)
 
@@ -6164,11 +6165,11 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ax = plt.gca()
     plt.pcolormesh(data1['time_hrly'][i4], data1['height'], np.transpose(data1['radr_refl'][i4[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p4[0], p4[-1]])
+    # plt.xlim([p4[0], p4[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d4 + ': ' + str(h4[0]) + ' - ' + str(h4[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P4) ' + d4 + ': ' + str(h4[0]) + ' - ' + str(h4[-1]) + 'h')
     ax.set_xticks(p4)
     ax.set_xticklabels(h4)
 
@@ -6176,11 +6177,11 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ax = plt.gca()
     plt.pcolormesh(data1['time_hrly'][i5], data1['height'], np.transpose(data1['radr_refl'][i5[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p5[0], p5[-1]])
+    # plt.xlim([p5[0], p5[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d5 + ': ' + str(h5[0]) + ' - ' + str(h5[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P5) ' + d5 + ': ' + str(h5[0]) + ' - ' + str(h5[-1]) + 'h')
     ax.set_xticks(p5)
     ax.set_xticklabels(h5)
 
@@ -6188,11 +6189,11 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ax = plt.gca()
     plt.pcolormesh(data1['time_hrly'][i6], data1['height'], np.transpose(data1['radr_refl'][i6[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p6[0], p6[-1]])
+    # plt.xlim([p6[0], p6[-1]])
     plt.colorbar()
     plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d6 + ': ' + str(h6[0]) + ' - ' + str(h6[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P6) ' + d6 + ': ' + str(h6[0]) + ' - ' + str(h6[-1]) + 'h')
     ax.set_xticks(p6)
     ax.set_xticklabels(h6)
 
@@ -6200,14 +6201,15 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ax = plt.gca()
     plt.pcolormesh(data1['time_hrly'][i7], data1['height'], np.transpose(data1['radr_refl'][i7[0],:]),
         vmin = cmin, vmax = cmax)
-    plt.xlim([p7[0], p7[-1]])
+    # plt.xlim([p7[0], p7[-1]])
     plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,1.5e3])
-    plt.title(d7 + ': ' + str(h7[0]) + ' - ' + str(h7[-1]) + 'h')
+    plt.ylim([0,h])
+    plt.title('(P7) ' + d7 + ': ' + str(h7[0]) + ' - ' + str(h7[-1]) + 'h')
     ax.set_xticks(p7)
     ax.set_xticklabels(h7)
 
+    plt.savefig('../FIGS/comparisons/PeriodComparison_UM-RA2M_RadrRefl.png', dpi = 600)
     plt.show()
 
 
