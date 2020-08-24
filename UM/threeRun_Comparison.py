@@ -6070,14 +6070,6 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
 
     '''
     Plots model radar reflectivity timeseries for selected MOCCHA time periods
-
-    P1: 20180917   12-24 UTC​
-    P2: 20180911   00-14 UTC​
-    P3: 20180913   00-14 UTC​
-    P4: 20180831   00-04 UTC​
-    P5: 20180823   12-24 UTC​
-    P6: 20180903   19-22 UTC​
-    P7: 20180905   05-15 UTC
     '''
 
     ### dates as strings
@@ -6096,9 +6088,25 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     doy6 = calcTime_Date2DOY(d6)
     doy7 = calcTime_Date2DOY(d7)
 
+    ### hour intervals for each period
+    h2 = np.arange(0,15)
+    h3 = np.arange(0,15)
+    h4 = np.arange(0,5)
+    h5 = np.arange(12,25)
+    h6 = np.arange(19,23)
+    h7 = np.arange(5,16)
+
+    ### define periods as time of day (doy)
+    p2 = doy2 + h2/24.0
+    p3 = doy3 + h3/24.0
+    p4 = doy4 + h4/24.0
+    p5 = doy5 + h5/24.0
+    p6 = doy6 + h6/24.0
+    p7 = doy7 + h7/24.0
+
     ### all model data share a timestamp
-    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    # p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    # p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
 
 
 def RMSE_analysis(data1, data2, data3, obs):
