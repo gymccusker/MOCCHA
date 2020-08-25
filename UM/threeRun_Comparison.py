@@ -214,8 +214,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     #################################################################
     plt.subplot(3,2,1)
     # ax = plt.gca()
-    # plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'forestgreen', label = label2)
+    # plt.plot(data1['time'], data1['sfc_pressure'].data/1e2, color = 'darkblue', label = label1)
+    # plt.plot(data2['time'], data2['sfc_pressure'].data/1e2, color = 'mediumseagreen', label = label2)
     # if ifs_flag == True:
     #     plt.plot(data3['time'], data3['sfc_pressure'].data/1e2, color = 'gold', label = label3)
     # else:
@@ -234,8 +234,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -249,8 +249,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
-    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'forestgreen')#, label = '2m')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'darkblue', label = '1.5m')
+    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'mediumseagreen')#, label = '2m')
     if ifs_flag == True:
         ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'gold', label = '2m')
     else:
@@ -269,8 +269,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -285,8 +285,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'forestgreen')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'mediumseagreen')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
     else:
@@ -318,8 +318,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'mediumseagreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'gold')
     else:
@@ -335,8 +335,8 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'mediumseagreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
     else:
@@ -442,8 +442,8 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
 
     plt.subplot(211)
     ax = plt.gca()
-    plt.plot(data1['time'][:], data1['temp_1.5m'].data - 273.15, color = 'steelblue', label = label1)
-    plt.plot(data2['time'][:], data2['temp_1.5m'].data - 273.15, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'][:], data1['temp_1.5m'].data - 273.15, color = 'darkblue', label = label1)
+    plt.plot(data2['time'][:], data2['temp_1.5m'].data - 273.15, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'][:], data3['sfc_temp_2m'].data - 273.15, color = 'gold', label =  label3)
     else:
@@ -465,8 +465,8 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
 
     plt.subplot(2,1,2)
     ax = plt.gca()
-    plt.plot(data1['time'][:], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'][:], data2['surface_net_SW_radiation'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'][:], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'][:], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'][:], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -488,8 +488,8 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
     # plt.subplot(3,1,3)
     # ax = plt.gca()
     # # data['surface_net_LW_radiation'].data[data['surface_net_LW_radiation'].data == 0] = np.nan
-    # plt.plot(data1['time'][:], data1['surface_net_LW_radiation'].data, color = 'steelblue', label = label1)
-    # plt.plot(data2['time'][:], data2['surface_net_LW_radiation'].data, color = 'forestgreen', label = label2)
+    # plt.plot(data1['time'][:], data1['surface_net_LW_radiation'].data, color = 'darkblue', label = label1)
+    # plt.plot(data2['time'][:], data2['surface_net_LW_radiation'].data, color = 'mediumseagreen', label = label2)
     # if ifs_flag == True:
     #     plt.plot(data3['time'][:], data3['sfc_net_lw'].data, color = 'gold')
     # else:
@@ -617,8 +617,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'firebrick', label = label2)
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'steelblue', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -632,8 +632,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
-    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'firebrick')#, label = '2m')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'darkblue', label = '1.5m')
+    ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'steelblue')#, label = '2m')
     if ifs_flag == True:
         ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'gold', label = '2m')
     else:
@@ -648,8 +648,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'firebrick', label = label2)
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'steelblue', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -664,8 +664,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'firebrick')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'steelblue')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
     else:
@@ -678,8 +678,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'firebrick')# * -1.0)
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'steelblue')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'gold')
     else:
@@ -695,8 +695,8 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'firebrick')# * -1.0)
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'steelblue')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
     else:
@@ -802,7 +802,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ax  = fig.add_axes([0.2,0.8,0.6,0.16])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'grey', label = 'Ice_station')
-    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'forestgreen', label = label2)
+    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
     plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=3)
@@ -1181,7 +1181,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
@@ -1196,7 +1196,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.subplot(3,2,2)
     ax1 = plt.gca()
     ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
-    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'steelblue', label = '1.5m')
+    ax1.plot(data1['time'], data1['temp_1.5m'].data, color = 'darkblue', label = '1.5m')
     ax1.plot(data2['time'], data2['temp_1.5m'].data, color = 'purple')#, label = '2m')
     if ifs_flag == True:
         ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'gold', label = '2m')
@@ -1212,7 +1212,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Observations')
-    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
@@ -1228,7 +1228,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'darkblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'purple')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
@@ -1242,7 +1242,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.subplot(3,2,5)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue')
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue')
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'purple')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'gold')
@@ -1259,7 +1259,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.subplot(3,2,6)
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'purple')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
@@ -1460,7 +1460,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
     ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0),
         np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
+    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'darkblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
         np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2[:-4])
@@ -1471,7 +1471,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
         ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
             np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
     else:
-        plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'forestgreen', linewidth = 3, label = label3)
+        plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'mediumseagreen', linewidth = 3, label = label3)
         ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
             np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
     plt.xlabel('Cloud Fraction')
@@ -1641,7 +1641,7 @@ def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir
     plt.plot(np.nanmean(obs_data[obsname]*1e3,0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs [g/m3]')
     ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data[obsname]*1e3,0) - np.nanstd(obs_data[obsname]*1e3,0),
         np.nanmean(obs_data[obsname]*1e3,0) + np.nanstd(obs_data[obsname]*1e3,0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(data1[var]*1e3,0),data1['height'], color = 'steelblue', linewidth = 3, label = label1)
+    plt.plot(np.nanmean(data1[var]*1e3,0),data1['height'], color = 'darkblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1[var]*1e3,0) - np.nanstd(data1[var]*1e3,0),
         np.nanmean(data1[var]*1e3,0) + np.nanstd(data1[var]*1e3,0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(data2[var]*1e3,0),data2['height'], color = 'purple', linewidth = 3, label = label2)
@@ -1653,7 +1653,7 @@ def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir
     #     # ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data[modname3],0) - np.nanstd(ifs_data[modname3],0),
     #     #     np.nanmean(ifs_data[modname3],0) + np.nanstd(ifs_data[modname3],0), color = 'navajowhite', alpha = 0.15)
     # else:
-    plt.plot(np.nanmean(data4[var]*1e3,0),data4['height'], color = 'forestgreen', linewidth = 3, label = label4)
+    plt.plot(np.nanmean(data4[var]*1e3,0),data4['height'], color = 'mediumseagreen', linewidth = 3, label = label4)
     ax4.fill_betweenx(data4['height'],np.nanmean(data4[var]*1e3,0) - np.nanstd(data4[var]*1e3,0),
         np.nanmean(data4[var]*1e3,0) + np.nanstd(data4[var]*1e3,0), color = 'mediumaquamarine', alpha = 0.15)
     plt.xlabel(lab)
@@ -1776,7 +1776,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
@@ -1793,7 +1793,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'steelblue', label = label1)
+    plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
@@ -1810,7 +1810,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice,(obs['obs_temp'].variables['LWdice'][:] - obs['obs_temp'].variables['LWuice'][:]), color = 'black', label = 'obs: ice')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'darkblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'purple')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
@@ -1850,7 +1850,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     yDmax = 0.1
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1 + lw1
-    sns.distplot(crf1, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
     crf3 = sw3 + lw3
     sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     crf2 = sw2 + lw2
@@ -1866,7 +1866,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ax  = fig.add_axes([0.7,0.4,0.25,0.22])   # left, bottom, width, height
     yEmax = 0.14
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(sw1, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(sw3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(sw2, hist=False, color="purple", kde_kws={"shade": True})
     sns.distplot(netSW[subSect], hist=False, color="black")
@@ -1881,7 +1881,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     ax  = fig.add_axes([0.7,0.1,0.25,0.22])   # left, bottom, width, height
     yFmax = 0.11
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(lw1, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(lw3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(lw2, hist=False, color="purple", kde_kws={"shade": True})
     sns.distplot(netLW[subSect], hist=False, color="black")
@@ -1968,8 +1968,8 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['taflag'][:]==1)],
         np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
-    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'steelblue', label = label1)
-    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'forestgreen', label = label2)
+    plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'gold', label = label3)
     else:
@@ -1987,8 +1987,8 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['lrflag'][:]==1)],
         np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
-    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'steelblue')
-    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'forestgreen')# * -1.0)
+    plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
+    plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'mediumseagreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
     else:
@@ -2013,7 +2013,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##---
     shf1 = data1['sensible_heat_flux'][data1['hrly_flag']].data
     indextaum = np.logical_and(shf1 >= -50, shf1 <= 50)
-    sns.distplot(shf1[indextaum], hist=False, color="steelblue", kde_kws={"shade": True}, label = label1)
+    sns.distplot(shf1[indextaum], hist=False, color="darkblue", kde_kws={"shade": True}, label = label1)
     ##---
     shf3 = data3['sfc_down_sens_heat_flx'][data3['hrly_flag']].data * -1.0
     indextaifs = np.logical_and(shf3 >= -50, shf3 <= 50)
@@ -2021,7 +2021,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##---
     shf2 = data2['sensible_heat_flux'][data2['hrly_flag']].data
     indextacasim = np.logical_and(shf2 >= -50, shf2 <= 50)
-    sns.distplot(shf2[indextacasim], hist=False, color="forestgreen", kde_kws={"shade": True}, label = label2)
+    sns.distplot(shf2[indextacasim], hist=False, color="mediumseagreen", kde_kws={"shade": True}, label = label2)
     ##---
     fmst_taflux = obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1]
     indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
@@ -2041,7 +2041,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##---
     lhf1 = data1['latent_heat_flux'][data1['hrly_flag']].data
     indexlrum = np.logical_and(lhf1 >= -50, lhf1 <= 50)
-    sns.distplot(lhf1[indexlrum], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lhf1[indexlrum], hist=False, color="darkblue", kde_kws={"shade": True})
     ##---
     lhf3 = data3['sfc_down_lat_heat_flx'][data3['hrly_flag']].data * -1.0
     indexlrifs = np.logical_and(lhf3 >= -50, lhf3 <= 50)
@@ -2049,7 +2049,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##---
     lhf2 = data2['latent_heat_flux'][data2['hrly_flag']].data
     indexlrcasim = np.logical_and(lhf2 >= -50, lhf2 <= 50)
-    sns.distplot(lhf2[indexlrcasim], hist=False, color="forestgreen", kde_kws={"shade": True})
+    sns.distplot(lhf2[indexlrcasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     ##---
     fmst_lrflux = obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1]
     indexlrfmst = np.logical_and(fmst_lrflux>=-50, fmst_lrflux<=50)
@@ -2180,7 +2180,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
+    plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'darkblue', label = label4[:-4])
     plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
     plt.title('$SW_{net}$ [$W/m^{2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
@@ -2198,7 +2198,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'gold')
-    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'steelblue')
+    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'darkblue')
     plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
     plt.title('$LW_{net}$ [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -2215,7 +2215,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
+    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'darkblue', label = label4[:-4])
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.title('Net Radiation [$W/m^{2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -2254,7 +2254,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(sw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw4[melt], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(87,0.07), xytext=(87,0.07), fontsize = 14)
@@ -2267,10 +2267,10 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
     yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(lw1[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(lw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw4[melt], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(netLW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
@@ -2289,7 +2289,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     crf2 = sw2[melt] + lw2[melt]
     sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf4 = sw4[melt] + lw4[melt]
-    sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(crf4, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
@@ -2303,7 +2303,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(sw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw4[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(netSW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
@@ -2317,7 +2317,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(lw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw4[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(netLW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
@@ -2728,14 +2728,14 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     ax = plt.gca()
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time_hrly'][::res], precip1[::res],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(data2['time_hrly'][::res], precip2[::res],
-        '<', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        '<', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time_hrly'][::res], precip3[::res],
             'v', color = 'gold', markeredgecolor = 'saddlebrown', label = label3)
     plt.plot(data4['time_hrly'][::res], precip4[::res],
-        '>', color = 'firebrick', markeredgecolor = 'maroon', label = label4)
+        '>', color = 'steelblue', markeredgecolor = 'maroon', label = label4)
     plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], 'k', label = 'Obs_PWS')
     plt.ylabel('Precipitation flux [mm/hr]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -2951,9 +2951,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.squeeze(obs['inversions']['doy_drift']),np.squeeze(obs['inversions']['sfmlheight'][drift]),
         color = 'k', label = 'Obs_Radiosondes')
     plt.plot(data1['time_hrly'][::6], bldepth1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(data2['time_hrly'][::6], bldepth2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(data3['time_hrly'][::6], bldepth3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     plt.legend(bbox_to_anchor=(0.0, 0.67, 1., .102), loc=4, ncol=2)
@@ -2966,9 +2966,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     plt.plot(np.squeeze(obs['inversions']['doy_drift']), np.squeeze(obs['inversions']['invbase'][drift]),
         color = 'k', label = 'Obs: main inversion')
     plt.plot(data1['time_hrly'][::6], inv1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(data2['time_hrly'][::6], inv2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(data1['time_hrly'][::6], inv3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     # plt.legend()
@@ -2988,9 +2988,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     blmelt3 = bldepth3[melt]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsmelt]), blmelt3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
@@ -3007,9 +3007,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     blfreeze3 = bldepth3[freeze]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(np.squeeze(obs['inversions']['sfmlheight'][obsfreeze]), blfreeze3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
@@ -3026,9 +3026,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     invmelt3 = inv3[melt]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsmelt]), invmelt3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
@@ -3045,9 +3045,9 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     invfreeze3 = inv3[freeze]
     plt.plot([0,xmax1],[0, ymax1], '--', color = 'lightgrey')
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze1[::6],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = label1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1)
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze2[::6],
-        'v', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = label2)
+        'v', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = label2)
     plt.plot(np.squeeze(obs['inversions']['invbase'][obsfreeze]), invfreeze3[::6],
         'd', color = 'gold', markeredgecolor = 'saddlebrown',  label = label3)
     plt.xlim([0,xmax1])
@@ -3590,24 +3590,24 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     ax1 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'steelblue', label = label1)
+        '.-' ,color = 'darkblue', label = label1)
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
         np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'forestgreen', label = label2)
+        '.-' ,color = 'mediumseagreen', label = label2)
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
         np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
         '.-' ,color = 'gold', label = label3)
@@ -3620,14 +3620,14 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4])
+        '.-', color = 'steelblue', label = label4[:-4])
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
         np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
@@ -3640,24 +3640,24 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     ax2 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,melt]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,melt]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,melt]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -3670,14 +3670,14 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,melt]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
     plt.ylim([0,1e4])
     plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
@@ -3688,24 +3688,24 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,freeze]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,freeze]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,freeze]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -3718,14 +3718,14 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,freeze]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.grid('on')
     plt.ylim([0,1e4])
@@ -4091,24 +4091,24 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     ax1 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'steelblue', label = label1)
+        '.-' ,color = 'darkblue', label = label1)
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
         np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'forestgreen', label = label2)
+        '.-' ,color = 'mediumseagreen', label = label2)
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
         np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],
         '.-' ,color = 'gold', label = label3)
@@ -4121,14 +4121,14 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4])
+        '.-', color = 'steelblue', label = label4[:-4])
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
         np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlabel('Q bias [g/kg]')
@@ -4142,24 +4142,24 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     ax2 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,melt]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data2['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,melt]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,melt]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4172,14 +4172,14 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,melt]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax2.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,melt]),1),
         np.nanmedian(np.squeeze(data4['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,melt]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,melt]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,melt]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,melt]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,1e4])
@@ -4190,24 +4190,24 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,freeze]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data2['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,freeze]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,freeze]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4220,14 +4220,14 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,freeze]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,freeze]),1),
         np.nanmedian(np.squeeze(data4['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,freeze]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,freeze]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,freeze]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,freeze]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
@@ -4753,24 +4753,24 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4783,14 +4783,14 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
 
     plt.grid('on')
     plt.ylim([0,9000])
@@ -4802,24 +4802,24 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4832,14 +4832,14 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p3]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
@@ -4850,24 +4850,24 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4880,14 +4880,14 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['temp_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
     plt.ylim([0,9000])
     plt.xlim([-5.0,2.5])
@@ -4898,24 +4898,24 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label1 + ' median')
+        '.-', color = 'darkblue', label = label1 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1),
         color = 'lightblue', alpha = 0.3)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+        '--', color = 'darkblue', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'forestgreen', label = label2 + ' median')
+        '.-', color = 'mediumseagreen', label = label2 + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1),
         color = 'mediumaquamarine', alpha = 0.2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'forestgreen', linewidth = 0.5)
+        '--', color = 'mediumseagreen', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p7]),1),data1['universal_height'],
         '.-', color = 'gold', label = label3 + ' median')
@@ -4928,14 +4928,14 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1),data1['universal_height'],
-        '.-', color = 'firebrick', label = label4[:-4] + ' median')
+        '.-', color = 'steelblue', label = label4[:-4] + ' median')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
         np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1),
         color = 'salmon', alpha = 0.1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) - np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p7]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p7]),1), data1['universal_height'],
-        '--', color = 'firebrick', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
     plt.xlabel('Q bias [g/kg]')
     plt.ylim([0,9000])
@@ -5122,8 +5122,8 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     #         plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
     #         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
     #         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
-    #         plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
     #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
     #         plt.legend()
     #         plt.savefig('../FIGS/regrid/REGRID_Ttest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
@@ -5137,8 +5137,8 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     #         plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
     #         plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS])*1e3,np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
     #         plt.plot(data3[var + '_6hrly_UM'][i,:]*1e3,data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
-    #         plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
     #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
     #         plt.legend()
     #         plt.savefig('../FIGS/regrid/REGRID_Qtest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
@@ -5152,8 +5152,8 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     #         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
     #         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
     #         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2m')
-    #         plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'forestgreen', label = 'um_casim-100')
+    #         plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
     #         plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
     #         plt.xlabel('$\Theta_{E}$ [K]')
     #         plt.ylabel('Z [m]')
@@ -5894,46 +5894,46 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
         #         'o', color = 'gold', markeredgecolor = 'saddlebrown', label = 'ifs-interpd decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_RA2M
-        plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_ra2m')
+        plt.plot(data1['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'darkblue')#, label = 'um_ra2m')
         plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_invbaseID'][i])]),
-            's', markersize = 8, color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m max d$\Theta_{E}$/dZ')
+            's', markersize = 8, color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m max d$\Theta_{E}$/dZ')
         # plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['thetaE_invbaseID'][i])]),
         #     np.squeeze(data1['universal_height'][int(data1['thetaE_invbaseID'][i])]),
-        #     's', markersize = 8, color = 'steelblue', label = 'um_ra2m max d$\Theta_{E}$')
+        #     's', markersize = 8, color = 'darkblue', label = 'um_ra2m max d$\Theta_{E}$')
         # if data1['dThetaEdZ_2ndinvID'][i] > 0.0:
         #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_2ndinvID'][i])]),
         #         np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_2ndinvID'][i])]),
-        #         '+', color = 'steelblue', label = 'um_ra2m 2nd max d$\Theta_{E}$')
+        #         '+', color = 'darkblue', label = 'um_ra2m 2nd max d$\Theta_{E}$')
         # if data1['dThetaEdZ_decoupID'][i] > 0.0:
         #     plt.plot(np.squeeze(data1['thetaE_6hrly_UM'][i,int(data1['dThetaEdZ_decoupID'][i])]),
         #         np.squeeze(data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]),
-        #         'o', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m decoup surf d$\Theta_{E}$/dz')
+        #         'o', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m decoup surf d$\Theta_{E}$/dz')
 
         ############## UM_CASIM-100
-        plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'forestgreen')#, label = 'um_casim-100')
+        plt.plot(data2['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'mediumseagreen')#, label = 'um_casim-100')
         plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_invbaseID'][i])]),
             np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_invbaseID'][i])]),
-            's', markersize = 8, color = 'forestgreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 max d$\Theta_{E}$/dZ')
+            's', markersize = 8, color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 max d$\Theta_{E}$/dZ')
         # plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['thetaE_invbaseID'][i])]),
         #     np.squeeze(data1['universal_height'][int(data2['thetaE_invbaseID'][i])]),
-        #     's', markersize = 8, color = 'forestgreen', label = 'um_casim-100 max d$\Theta_{E}$')
+        #     's', markersize = 8, color = 'mediumseagreen', label = 'um_casim-100 max d$\Theta_{E}$')
         # if data2['dThetaEdZ_2ndinvID'][i] > 0.0:
         #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_2ndinvID'][i])]),
         #         np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_2ndinvID'][i])]),
-        #         '+', color = 'forestgreen', label = 'um_casim-100 2nd max d$\Theta_{E}$')
+        #         '+', color = 'mediumseagreen', label = 'um_casim-100 2nd max d$\Theta_{E}$')
         # if data2['dThetaEdZ_decoupID'][i] > 0.0:
         #     plt.plot(np.squeeze(data2['thetaE_6hrly_UM'][i,int(data2['dThetaEdZ_decoupID'][i])]),
         #         np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]),
-        #         'o', color = 'forestgreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
+        #         'o', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
 
         ########## plot model diagnosed boundary layer depth as marker
         plt.plot([298,308],[np.squeeze(obs['inversions']['invbase'][drift][i]),np.squeeze(obs['inversions']['invbase'][drift][i])],
             'x--', markersize = 7, color = 'k', linewidth = 1, label = 'radiosondes (Vuellers et al., 2020)')
         plt.plot([298,308],[bldepth1[::6][i],bldepth1[::6][i]],
-            'x--', markersize = 7, color = 'steelblue', linewidth = 1, label = 'um_ra2m bl_depth')
+            'x--', markersize = 7, color = 'darkblue', linewidth = 1, label = 'um_ra2m bl_depth')
         plt.plot([298,308],[bldepth2[::6][i],bldepth2[::6][i]],
-            'x--', markersize = 7, color = 'forestgreen', linewidth = 1, label = 'um_casim-100 bl_depth')
+            'x--', markersize = 7, color = 'mediumseagreen', linewidth = 1, label = 'um_casim-100 bl_depth')
         plt.plot([298,308],[bldepth3[::6][i],bldepth3[::6][i]],
             'x--', markersize = 7, color = 'gold', linewidth = 1, label = 'ecmwf_ifs sfc_bl_height')
 
@@ -5946,14 +5946,14 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
             tmp1[:] = 310
             # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'steelblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            #     '.', markersize = 6, color = 'darkblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
             ax.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
                 vmin = 0, vmax = 1, cmap = mpl_cm.Blues, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
             # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
             tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
             tmp2[:] = 312
             # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'forestgreen', label = 'um_casim-100 Cv > 0')
+            #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
             ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
                 vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
             # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
@@ -6007,9 +6007,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.plot(obs['sondes']['doy_drift'], obs['sondes']['thetaE_invbase'],
         'ks', label = 'radiosondes')
     plt.plot(data1['time_6hrly'], data1['thetaE_invbase'],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
     plt.plot(data2['time_6hrly'], data2['thetaE_invbase'],
-        'v', color = 'forestgreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+        'v', color = 'mediumseagreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
     plt.plot(data3['time_6hrly'], data3['thetaE_invbase'],
         'd', color = 'gold',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
     plt.xlabel('DOY')
@@ -6019,9 +6019,9 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     ax  = fig.add_axes([0.74,0.3,0.22,0.38])   # left, bottom, width, height
     plt.plot([0, 3000],[0, 3000], '--', color = 'lightgrey')
     plt.plot(obs['sondes']['thetaE_invbase'],data1['thetaE_invbase'],
-        '^', color = 'steelblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
     plt.plot(obs['sondes']['thetaE_invbase'], data2['thetaE_invbase'],
-        'v', color = 'forestgreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+        'v', color = 'mediumseagreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
     plt.plot(obs['sondes']['thetaE_invbase'], data3['thetaE_invbase'],
         'd', color = 'gold',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
     plt.xlabel('Obs')
