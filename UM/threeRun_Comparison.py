@@ -2182,7 +2182,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
-    plt.title('$SW_{net}$ [$W/m^{2}$]')
+    plt.ylabel('$SW_{net}$ [$W m^{-2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-3,120])
@@ -2200,7 +2200,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'gold')
     plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
-    plt.title('$LW_{net}$ [$W/m^{2}$]')
+    plt.ylabel('$LW_{net}$ [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-90,5])
 
@@ -2217,7 +2217,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.title('Net Radiation [$W/m^{2}$]')
+    plt.ylabel('Net Radiation [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-60,80])
     plt.xlabel('Day of year')
@@ -2261,7 +2261,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.legend()
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net}$ [$W/m^{2}$]')
+    plt.xlabel('$SW_{net}$ [$W m^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
@@ -2276,7 +2276,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net}$ [$W/m^{2}$]')
+    plt.xlabel('$LW_{net}$ [$W m^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
@@ -2293,7 +2293,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
-    plt.xlabel('Net Radiation [$W/m^{2}$]')
+    plt.xlabel('Net Radiation [$W m^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
 
@@ -2308,7 +2308,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net}$ [$W/m^{2}$]')
+    plt.xlabel('$SW_{net}$ [$W m^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
@@ -2322,7 +2322,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net}$ [$W/m^{2}$]')
+    plt.xlabel('$LW_{net}$ [$W m^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
@@ -2341,7 +2341,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
-    plt.xlabel('Net Radiation [$W/m^{2}$]')
+    plt.xlabel('Net Radiation [$W m^{-2}$]')
 
 
     print ('******')
@@ -2349,7 +2349,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours.png'
     plt.savefig(fileout)
     plt.show()
 
