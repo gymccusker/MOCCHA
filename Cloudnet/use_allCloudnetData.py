@@ -286,8 +286,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,13))
-    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
+    fig = plt.figure(figsize=(9.5,13))
+    plt.subplots_adjust(top = 0.9, bottom = 0.06, right = 0.98, left = 0.08,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
@@ -319,114 +319,121 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
 
     plt.subplot(511)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
-        np.arange(0,1.1,0.1),
-        cmap = newcmp,
-        zorder = 1)
+    # ax.set_facecolor('aliceblue')
+    img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+            np.arange(0,1.1,0.1),
+            cmap = newcmp,
+            zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'grey', linewidth = 1.0)
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('Measured cloud fraction by volume, 1 hour sampling')
     # plt.title('Measured cloud fraction by volume, 1.5km sampling')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.colorbar()
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    cbaxes = fig.add_axes([0.225, 0.96, 0.6, 0.015])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
+    # plt.colorbar()
 
     plt.subplot(512)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS; modelled cloud fraction (including snow)')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.colorbar()
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    # plt.colorbar()
 
     plt.subplot(513)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2M; modelled cloud fraction')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.colorbar()
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    # plt.colorbar()
 
     plt.subplot(514)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100; modelled cloud fraction')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.colorbar()
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    # plt.colorbar()
 
     plt.subplot(515)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
         zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2T; modelled cloud fraction')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.colorbar()
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    # plt.colorbar()
     plt.xlabel('Day of Year')
 
 
@@ -436,7 +443,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs.svg'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_blueNaNs.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -6262,7 +6269,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
@@ -6295,7 +6302,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
