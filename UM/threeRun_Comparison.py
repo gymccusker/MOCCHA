@@ -2175,12 +2175,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='grey')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
     plt.ylabel('$SW_{net}$ [$W m^{-2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
@@ -2193,12 +2193,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([240.0,240.0],[yC[0],yC[-1]],'--', color='grey')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data, color = 'darkblue')
+    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data, color = 'mediumseagreen')
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'gold')
-    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data, color = 'steelblue')
     plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
     plt.ylabel('$LW_{net}$ [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -2210,12 +2210,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='grey')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.ylabel('Net Radiation [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -2252,9 +2252,9 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(sw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(87,0.07), xytext=(87,0.07), fontsize = 14)
@@ -2268,9 +2268,9 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(lw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(lw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netLW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
@@ -2284,12 +2284,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[melt] + lw1[melt]
     sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
-    crf3 = sw3[melt] + lw3[melt]
-    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    crf2 = sw2[melt] + lw2[melt]
-    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf4 = sw4[melt] + lw4[melt]
     sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    crf2 = sw2[melt] + lw2[melt]
+    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    crf3 = sw3[melt] + lw3[melt]
+    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
@@ -2301,9 +2301,9 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(sw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netSW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
@@ -2315,9 +2315,9 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(lw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netLW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
@@ -2330,12 +2330,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[freeze] + lw1[freeze]
     sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
-    crf3 = sw3[freeze] + lw3[freeze]
-    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    crf2 = sw2[freeze] + lw2[freeze]
-    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf4 = sw4[freeze] + lw4[freeze]
     sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    crf2 = sw2[freeze] + lw2[freeze]
+    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    crf3 = sw3[freeze] + lw3[freeze]
+    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(netLW[obsfreeze] + netSW[obsfreeze], hist=False, color="black")
     # plt.title('Freeze')
     plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
