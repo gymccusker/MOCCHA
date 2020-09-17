@@ -1543,14 +1543,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.2,
+    plt.figure(figsize=(4.5,6))
+    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
             hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
     ax1 = plt.gca()
 
-    plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 3)
+    plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs-' + obs_switch + 'grid', zorder = 5)
     ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
         np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(mask0,0) - np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
@@ -1558,7 +1558,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.plot(np.nanmean(mask0,0) + np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
         '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(mask3,0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS')
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(mask3,0) - np.nanstd(mask3,0),
         np.nanmean(mask3,0) + np.nanstd(mask3,0), color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(mask3,0) - np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
@@ -1566,15 +1565,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.plot(np.nanmean(mask3,0) + np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M')
     ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(mask1,0) - np.nanstd(mask1,0),
-        np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'lightblue', alpha = 0.4)
+        np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'blue', alpha = 0.05)
     plt.plot(np.nanmean(mask1,0) - np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
         '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmean(mask1,0) + np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
         '--', color = 'darkblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(mask2,0),np.nanmean(misc_data['height'],0), color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100')
     ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(mask2,0) - np.nanstd(mask2,0),
         np.nanmean(mask2,0) + np.nanstd(mask2,0), color = 'mediumaquamarine', alpha = 0.15)
     plt.plot(np.nanmean(mask2,0) - np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
@@ -1582,18 +1579,26 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.plot(np.nanmean(mask2,0) + np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(mask4,0),np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T')
     ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(mask4,0) - np.nanstd(mask4,0),
-        np.nanmean(mask4,0) + np.nanstd(mask4,0), color = 'salmon', alpha = 0.15)
+        np.nanmean(mask4,0) + np.nanstd(mask4,0), color = 'lightblue', alpha = 0.15)
     plt.plot(np.nanmean(mask4,0) - np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
         '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmean(mask4,0) + np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
         '--', color = 'steelblue', linewidth = 0.5)
 
+    plt.plot(np.nanmean(mask3,0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    plt.plot(np.nanmean(mask2,0),np.nanmean(misc_data['height'],0), color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
+    plt.plot(np.nanmean(mask4,0),np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
+    plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
+
     plt.xlabel('TWC Cloud mask')
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.xlim([0,1.0])
+    plt.yticks(np.arange(0,9.01e3,0.5e3))
+    ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+    plt.xlim([0,1])
+    plt.xticks(np.arange(0,1.01,0.1))
+    ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
     plt.legend()
 
     print ('******')
