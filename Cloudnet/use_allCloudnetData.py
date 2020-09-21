@@ -1820,12 +1820,12 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(12,4.5))
+    fig = plt.figure(figsize=(12,4.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
-    ax = plt.gca()
+    # ax = plt.gca()
 
     print (um_data.keys())
     print (obs_data.keys())
@@ -1834,6 +1834,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
     misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
+    ra2t_data['model_lwp'][ra2t_data['model_lwp'] < 0] = np.nan
     # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
@@ -1850,24 +1851,25 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     res = 3 ### hourly resolution to plot
 
+    ax  = fig.add_axes([0.09,0.15,0.6,0.8])   # left, bottom, width, height
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 1)
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
         plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'black', label = 'Obs_' + obs_switch + 'grid', zorder = 1)
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
-        ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.5)
-    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'purple', label = 'Obs_HATPRO', zorder = 1)
+        # ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.2)
     plt.plot(ifs_data['time'][::res],ifs_data['model_lwp'][::res]*1e3,
         'v', color = 'gold', markeredgecolor = 'orange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
         '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
-    plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
+    plt.plot(ra2t_data['time'][::res],ra2t_data['model_lwp'][::res]*1e3,
         '>', color = 'steelblue', markeredgecolor = 'darkslategrey', label = 'UM_RA2T')
     plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.xlabel('Day of Year')
-    plt.ylabel('LWP [g/m2]')
+    plt.ylabel('LWP [g m$^{2}$]')
     plt.ylim([0,800])
     plt.xlim([doy[0],doy[-1]])
     plt.legend(bbox_to_anchor=(0.28, 0.62, 1., .102), loc=3, ncol=2)
@@ -1878,6 +1880,21 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
+
+
+    ax  = fig.add_axes([0.77,0.25,0.22,0.6])   # left, bottom, width, height
+    yEmax = 0.03
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    sns.distplot(um_data['model_lwp']*1e3, hist=False, color="darkblue", kde_kws={"shade": True})
+    sns.distplot(ra2t_data['model_lwp']*1e3, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(misc_data['model_lwp']*1e3, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(ifs_data['model_lwp']*1e3, hist=False, color="gold", kde_kws={"shade": True})
+    sns.distplot(obs_data['lwp'][:,0]*1e3, hist=False, color="black")
+    sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="grey")
+    plt.xlim([0,500])
+    plt.ylim([0,yEmax])
+    plt.xlabel('LWP [g m$^{-2}$]')
+
 
     print ('******')
     print ('')
@@ -5297,7 +5314,8 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
     nanmask = np.zeros([np.size(obs_data['time']), np.size(obs_data['Cv'],1)])
     nanindex = np.zeros([np.size(obs_data['time'])])
     wcindex = np.zeros([np.size(obs_data['time'])])
-    print(nanindex.shape)
+    lwpindex = np.zeros([np.size(obs_data['time'])])
+    # print(nanindex.shape)
     for i in range(len(obs_data['time'])):
         if np.isnan(np.nanmean(obs_data['Cv'][i,:], 0)):       ## if there are only nans in the time profile
             nanmask[i,:] = 1.0
@@ -5306,11 +5324,14 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanindex[i] = 1
         if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
             wcindex[i] = 1
+        elif np.isnan(obs_data['lwp'][i,0]):       ## if there are only nans in the lwp timeseries
+            lwpindex[i] = 1
     nanmask[nanmask == 0.0] = np.nan
     nanind = np.where(nanindex == 1)
     wcind = np.where(wcindex == 1)
+    lwpind = np.where(lwpindex == 1)
 
-    return nanind, nanmask, wcind
+    return nanind, nanmask, wcind, lwpind
 
 def main():
 
@@ -6259,13 +6280,16 @@ def main():
     # maximise obs data available and build mask for available data
     # -------------------------------------------------------------
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    nanind, nanmask, wcind = buildNaNMask(obs_data, month_flag, missing_files, doy)
+    nanind, nanmask, wcind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
+    print(um_data.keys())
+
     ### remove missing Cv obs timesteps (remove from all)
     for c in range(0, 3):
+        # print(c)
         um_data[varlist_um[c]][nanind, :] = np.nan
         ifs_data[varlist_ifs[c]][nanind, :] = np.nan
         misc_data[varlist_um[c]][nanind, :] = np.nan
@@ -6276,6 +6300,12 @@ def main():
         ifs_data[varlist_ifs[c]][wcind, :] = np.nan
         misc_data[varlist_um[c]][wcind, :] = np.nan
         ra2t_data[varlist_um[c]][wcind, :] = np.nan
+
+    ### lwp only 1d
+    um_data['model_lwp'][lwpind] = np.nan
+    ifs_data['model_lwp'][lwpind] = np.nan
+    misc_data['model_lwp'][lwpind] = np.nan
+    ra2t_data['model_lwp'][lwpind] = np.nan
 
 ###################################################################################################################
 ###################################################################################################################
