@@ -1891,7 +1891,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     sns.distplot(ifs_data['model_lwp']*1e3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(obs_data['lwp'][:,0]*1e3, hist=False, color="black")
     sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="grey")
-    plt.xlim([0,500])
+    plt.xlim([-50,500])
     plt.ylim([0,yEmax])
     plt.xlabel('LWP [g m$^{-2}$]')
 
