@@ -2718,7 +2718,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     if ifs_flag: precip3 = flx_ls_rain[data3['hrly_flag']]*3600 + flx_ls_snow[data3['hrly_flag']]*3600
     precip4 = data4['rainfall_flux'][data4['hrly_flag']].data*3600 + data4['snowfall_flux'][data4['hrly_flag']].data*3600
 
-    res = 1         ### hourly resolution to plot
+    res = 3         ### hourly resolution to plot
 
     #################################################################
     ## create figure and axes instances
@@ -2756,15 +2756,15 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    # plt.legend(bbox_to_anchor=(0.26, 0.63, 1., .102), loc=3, ncol=2)
+    plt.legend(bbox_to_anchor=(0.26, 0.63, 1., .102), loc=3, ncol=2)
 
-    ax  = fig.add_axes([0.75,0.25,0.22,0.6])   # left, bottom, width, height
+    ax  = fig.add_axes([0.76,0.25,0.22,0.6])   # left, bottom, width, height
     sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(obs['pws']['prec_int'][drift[0]], hist=False, color="black")
-    plt.xlim([0,0.5])
+    plt.xlim([0,0.4])
     # plt.ylim([0,yEmax])
     plt.xlabel('Precipitation flux [mm hr$^{-1}$]')
 

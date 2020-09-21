@@ -1882,7 +1882,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
             zorder = 2)
 
 
-    ax  = fig.add_axes([0.77,0.25,0.22,0.6])   # left, bottom, width, height
+    ax  = fig.add_axes([0.76,0.25,0.22,0.6])   # left, bottom, width, height
     yEmax = 0.03
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(um_data['model_lwp']*1e3, hist=False, color="darkblue", kde_kws={"shade": True})
