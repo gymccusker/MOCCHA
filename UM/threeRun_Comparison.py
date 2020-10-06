@@ -3386,7 +3386,10 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1)
 
     plt.legend()
-    plt.ylim([0,1e4])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(np.arange(0,9.01e3,0.5e3))
+    ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
     plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
     plt.ylabel('Z [m]')
     plt.xlabel('Temperature bias [K]')
