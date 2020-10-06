@@ -3348,28 +3348,6 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.subplot(121)
     ax1 = plt.gca()
     plt.plot([0,0], [0,1e4], '--', color='grey')
-    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'darkblue', label = label1)
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
-        np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
-        color = 'blue', alpha = 0.05)
-    plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'darkblue', linewidth = 0.5)
-    plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'darkblue', linewidth = 0.5)
-
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'mediumseagreen', label = label2)
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
-        np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
-        color = 'mediumaquamarine', alpha = 0.15)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
-
-    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],
-        '.-' ,color = 'gold', label = label3)
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
         np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
         color = 'navajowhite', alpha = 0.35)
@@ -3378,8 +3356,14 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],
-        '.-', color = 'steelblue', label = label4[:-4])
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
+        np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
+        color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
         np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
          color = 'lightblue', alpha = 0.15)
@@ -3387,6 +3371,20 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
         '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
         '--', color = 'steelblue', linewidth = 0.5)
+
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
+        np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
+        color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2)
+    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4])
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1)
+
     plt.legend()
     plt.ylim([0,1e4])
     plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
@@ -3398,7 +3396,7 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.subplot(122)
 
 
-    fileout = '../FIGS/comparisons/TemperatureMedianProfiles_metum_ifs_casim-100_erai-glm.svg'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m.svg'
     # plt.savefig(fileout)
     plt.show()
 
