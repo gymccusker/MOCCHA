@@ -7146,7 +7146,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
