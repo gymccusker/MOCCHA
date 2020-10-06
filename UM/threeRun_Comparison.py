@@ -3361,6 +3361,8 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     melt = np.where(data1['time_hrly'][::6] < 240.0)
     freeze = np.where(data1['time_hrly'][::6] >= 240.0)
 
+
+    ###-------------------------
     plt.subplot(121)
     ax1 = plt.gca()
     # plt.plot([0,0], [0,1e4], '--', color='grey')
@@ -3413,10 +3415,10 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-2.0,1.0])
     plt.xlabel('T bias [K]')
 
+    ###-------------------------
     plt.subplot(122)
     ax1 = plt.gca()
     # plt.plot([0,0], [0,1e4], '--', color='grey')
-
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
         np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
         color = 'navajowhite', alpha = 0.35)
@@ -3464,6 +3466,7 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
+    ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m.svg'
     # plt.savefig(fileout)
     plt.show()
