@@ -3394,11 +3394,9 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    # plt.yticks(np.arange(0,9.01e3,0.5e3))
-    # ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
+    plt.xlim([-2.0,1.0])
     plt.xlabel('T bias [K]')
-    # plt.title('Total drift')
+
 
     plt.subplot(122)
 
