@@ -3347,7 +3347,7 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
 
     plt.subplot(121)
     ax1 = plt.gca()
-    plt.plot([0,0], [0,1e4], '--', color='grey')
+    # plt.plot([0,0], [0,1e4], '--', color='grey')
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
         np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
         color = 'navajowhite', alpha = 0.35)
@@ -3388,12 +3388,17 @@ def plot_Radiosondes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.legend()
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks(np.arange(0,9.01e3,0.5e3))
-    ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    # plt.yticks(np.arange(0,9.01e3,0.5e3))
+    # ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
     plt.xlim([-2.0,1.0])#plt.xlim([-1.6,1.0])
     plt.ylabel('Z [m]')
     plt.xlabel('Temperature bias [K]')
-    plt.grid('on')
     plt.title('Total drift')
 
     plt.subplot(122)
