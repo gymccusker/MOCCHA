@@ -6553,7 +6553,6 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     plt.savefig('../FIGS/comparisons/PeriodComparison_UM-RA2M_RadrRefl.png', dpi = 600)
     plt.show()
 
-
 def RMSE_analysis(data1, data2, data3, obs):
 
     from sklearn.metrics import mean_squared_error
@@ -7152,10 +7151,10 @@ def main():
     # -------------------------------------------------------------
     # save out working data for debugging purposes
     # -------------------------------------------------------------
-    np.save('working_data1', data1)
-    np.save('working_data2', data2)
-    np.save('working_data3', data3)
-    np.save('working_dataObs', obs['hatpro'])
+    # np.save('working_data1', data1)
+    # np.save('working_data2', data2)
+    # np.save('working_data3', data3)
+    # np.save('working_dataObs', obs['hatpro'])
 
     # -------------------------------------------------------------
     # FIN.
