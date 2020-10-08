@@ -3682,8 +3682,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TemperatureProfiles_REGRID_anomOnly_sondes_ifs_ra2m_casim-100_ra2t.png'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandQ_ifs_casim-100_ra2t_ra2m.svg'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
