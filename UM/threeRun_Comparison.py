@@ -3597,8 +3597,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ### model q anomalies wrt radiosondes
     ### ------------------------------
     ax  = fig.add_axes([0.55,0.81,0.4,0.12])   # left, bottom, width, height
-    sfig3 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
-        vmin = Tmin, vmax = Tmax)
+    sfig3 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_driftSondes_UM']),
+        vmin = 0, vmax = qmax)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3607,7 +3607,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.colorbar()
     plt.ylabel('Z [km]')
     plt.xlabel('Day of year')
-    plt.title('T [$^{\circ}$C]')
+    plt.title('q [g kg$^{-1}$]')
     ax2 = ax.twinx()
     ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
     ax2.set_yticks([])
@@ -3615,8 +3615,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     cb3 = plt.colorbar(sfig3, cax = cbaxes3, orientation = 'horizontal')
 
     ax  = fig.add_axes([0.55,0.56,0.4,0.12])   # left, bottom, width, height
-    sfig4 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['temp_anomalies'],
-        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    sfig4 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['q_anomalies'],
+        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3634,8 +3634,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     cb4 = plt.colorbar(sfig4, cax = cbaxes4, orientation = 'horizontal')
 
     ax  = fig.add_axes([0.55,0.39,0.4,0.12])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'],data1['universal_height'], data1['temp_anomalies'],
-        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
+        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3649,8 +3649,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.title(label1 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
-    plt.pcolor(data2['time_6hrly'],data1['universal_height'], data2['temp_anomalies'],
-        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.pcolor(data2['time_6hrly'], data1['universal_height'], data2['q_anomalies'],
+        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3664,8 +3664,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.title(label2 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.55,0.05,0.4,0.12])   # left, bottom, width, height
-    plt.pcolor(data4['time_6hrly'],data1['universal_height'], data4['temp_anomalies'],
-        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.pcolor(data4['time_6hrly'], data1['universal_height'], data4['q_anomalies'],
+        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
