@@ -3512,7 +3512,10 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.colorbar()
     plt.ylabel('Z [km]')
     plt.xlabel('Day of year')
-    plt.title('Radiosondes, T[degC]')
+    plt.title('T [$^{\circ}$C]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
     cbaxes1 = fig.add_axes([0.23, 0.98, 0.6, 0.015])
     cb1 = plt.colorbar(sfig1, cax = cbaxes1, orientation = 'horizontal')
 
@@ -3529,7 +3532,11 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.colorbar()
     # plt.set_cmap('seismic')
     plt.ylabel('Z [km]')
-    plt.title(label3 + ' - Radiosondes, T[degC]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label3, rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    plt.title('T [K]')
+    # plt.title(label3 + ' - Radiosondes, T[degC]')
     cbaxes2 = fig.add_axes([0.23, 0.73, 0.6, 0.015])
     cb2 = plt.colorbar(sfig2, cax = cbaxes2, orientation = 'horizontal')
 
@@ -3545,7 +3552,10 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
     plt.ylabel('Z [km]')
-    plt.title(label1 + ' - Radiosondes, T[degC]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    # plt.title(label1 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.13,0.22,0.8,0.12])   # left, bottom, width, height
     # dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -3559,7 +3569,10 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
     plt.ylabel('Z [km]')
-    plt.title(label2 + ' - Radiosondes, T[degC]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label2, rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    # plt.title(label2 + ' - Radiosondes, T[degC]')
 
     ax  = fig.add_axes([0.13,0.05,0.8,0.12])   # left, bottom, width, height
     # dat4 = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -3574,7 +3587,10 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     # plt.colorbar()
     plt.xlabel('Day of year')
     plt.ylabel('Z [km]')
-    plt.title(label4[:-4] + ' - Radiosondes, T[degC]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label4[:-4], rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    # plt.title(label4[:-4] + ' - Radiosondes, T[degC]')
 
     print ('******')
     print ('')
