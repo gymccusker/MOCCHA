@@ -3628,7 +3628,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ax2 = ax.twinx()
     ax2.set_ylabel(label3, rotation = 270, labelpad = 15)
     ax2.set_yticks([])
-    plt.title('T [K]')
+    plt.title('q [g kg$^{-1}$]')
     # plt.title(label3 + ' - Radiosondes, T[degC]')
     cbaxes4 = fig.add_axes([0.6, 0.73, 0.3, 0.015])
     cb4 = plt.colorbar(sfig4, cax = cbaxes4, orientation = 'horizontal')
@@ -3686,7 +3686,6 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
-
 
 def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
