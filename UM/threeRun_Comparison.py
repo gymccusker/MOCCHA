@@ -3472,6 +3472,22 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.show()
 
 
+    ##########-------------------------------------------------------------------------------------------
+    #####       DEFINE PERIODS
+    ### all model data share a timestamp
+    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
+    p8 = np.where(data1['time_hrly'][::6] >= 255.5)
+    #   p3: np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    #   p5: np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    #   p6: np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+
+    ##########-------------------------------------------------------------------------------------------
+
     ##################################################
     ##################################################
     #### PCOLOR TIMESERIES
@@ -3505,6 +3521,44 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     sfig1 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
         vmin = Tmin, vmax = Tmax)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
+    plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
+    plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
+    plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
+    plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
+    plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
+    plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3525,6 +3579,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     sfig2 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3546,6 +3614,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data1['time_6hrly'],data1['universal_height'], data1['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3563,6 +3645,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], data2['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3580,6 +3676,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data4['time_6hrly'],data1['universal_height'], data4['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3600,6 +3710,44 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     sfig3 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_driftSondes_UM']),
         vmin = 0, vmax = qmax)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
+    plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
+    plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
+    plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
+    plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
+    plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
+    plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3618,6 +3766,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     sfig4 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3637,6 +3799,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3652,6 +3828,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data2['time_6hrly'], data1['universal_height'], data2['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
@@ -3667,6 +3857,20 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.pcolor(data4['time_6hrly'], data1['universal_height'], data4['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
