@@ -3400,7 +3400,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'grey', label = label5, zorder = 3)
 
-    plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=3)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -3409,7 +3409,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    # plt.xlim([-2.0,1.0])
+    plt.xlim([-2.0,1.0])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -3461,7 +3461,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    # plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
     ###-------------------------
