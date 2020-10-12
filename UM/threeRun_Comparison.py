@@ -5600,9 +5600,9 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     # plt.savefig(fileout)
     plt.show()
 
-    print (np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1))
-    print (np.nanmin(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1)))
-    print (data1['universal_height'])
+    # print (np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1))
+    # print (np.nanmin(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1)))
+    # print (data1['universal_height'])
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
 
