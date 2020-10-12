@@ -7159,7 +7159,7 @@ def main():
                 else:
                     var_list3 = var_list2
             var_list4 = var_list1
-            var_list5 = 'cloud_fraction','qliq','qice','temperature','q']
+            var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
 
         if i == 0:
             ## ------------------
@@ -7239,7 +7239,7 @@ def main():
                     continue
                 elif np.ndim(nc5.variables[var_list5[j]]) >= 1:
                     data5[var_list5[j]] = nc5.variables[var_list5[j]][:]
-            nc5.close()            
+            nc5.close()
             print ('')
         else:
             if month_flag == -1:
