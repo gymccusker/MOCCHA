@@ -5398,7 +5398,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.figure(figsize=(6,10))
+    plt.figure(figsize=(6.6,10))
     plt.rc('legend',fontsize=LARGE_SIZE)
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
             hspace = 0.22, wspace = 0.19)
@@ -5499,7 +5499,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.3,0.7])
+    plt.xlim([-0.5,1.0])
 
     plt.subplot(223)
     ax3 = plt.gca()
@@ -5597,7 +5597,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.3,0.7])
+    plt.xlim([-0.5,1.0])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p4_wSTDEV_newColours.svg'
     plt.savefig(fileout)
@@ -5618,10 +5618,10 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.figure(figsize=(8,12))
+    plt.figure(figsize=(6.6,10))
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.02,
-            hspace = 0.22, wspace = 0.15)
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
+            hspace = 0.22, wspace = 0.19)
 
     plt.subplot(221)
     ax3 = plt.gca()
@@ -5719,7 +5719,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.3,0.7])
+    plt.xlim([-0.5,1.0])
 
     plt.subplot(223)
     ax3 = plt.gca()
@@ -5817,7 +5817,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.3,0.7])
+    plt.xlim([-0.5,1.0])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV_newColours.svg'
     plt.savefig(fileout)
