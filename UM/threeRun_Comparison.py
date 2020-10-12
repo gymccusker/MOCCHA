@@ -7315,14 +7315,14 @@ def main():
             ## ------------------
             #### um5 (global)
             ## ------------------
-            print ('Appending UM data:')
+            print ('Appending UM_GLM data:')
             for j in range(0,len(var_list5)):
-                # print (var_list1[j])
+                # print (var_list5[j])
                 if np.ndim(nc5.variables[var_list5[j]]) == 0:     # ignore horizontal_resolution
                     continue
                 elif np.ndim(nc5.variables[var_list5[j]]) == 1:
                     data5[var_list5[j]] = np.append(data5[var_list5[j]],nc5.variables[var_list5[j]][:])
-                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                elif np.ndim(nc5.variables[var_list5[j]]) == 2:
                     data5[var_list5[j]] = np.append(data5[var_list5[j]],nc5.variables[var_list5[j]][:],0)
             # np.save('working_data1',data1)
             nc5.close()
