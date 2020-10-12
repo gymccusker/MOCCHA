@@ -3456,6 +3456,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
 
+    plt.plot(np.nanmedian(data1['q_anomalies'],1)*2.0,data1['universal_height'],'.-' ,color = 'grey', label = label1, zorder = 3)
+
     # plt.legend()
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9000])
@@ -3467,7 +3469,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.grid('on')
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m.svg'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m_wUMGlobal.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3887,7 +3889,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     print ('')
 
     fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandQ_ifs_casim-100_ra2t_ra2m.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
