@@ -5200,8 +5200,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
-    # plt.savefig(fileout)
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p4_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
+    plt.savefig(fileout)
     plt.show()
     #
     # print (np.nanmean(np.squeeze(ifs_data['model_lwc'][p7,:]),0)*1e3)
