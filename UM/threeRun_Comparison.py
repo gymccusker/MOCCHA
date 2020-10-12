@@ -3250,7 +3250,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.savefig(fileout)
     plt.show()
 
-def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -7249,6 +7249,7 @@ def main():
                 if ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['time'][:]/24.0))
                 if not ifs_flag: time_um3 = np.append(time_um3, doy[i] + (nc3.variables['forecast_time'][:]/24.0))
                 time_um4 = np.append(time_um4, doy[i] + (nc4.variables['forecast_time'][:]/24.0))
+                time_um5 = np.append(time_um5, doy[i] + (nc5.variables['forecast_time'][:]/24.0))
             ## ------------------
             #### UM
             ## ------------------
@@ -7306,6 +7307,21 @@ def main():
             # np.save('working_data1',data1)
             nc4.close()
             print ('')
+            ## ------------------
+            #### um5 (global)
+            ## ------------------
+            print ('Appending UM data:')
+            for j in range(0,len(var_list5)):
+                # print (var_list1[j])
+                if np.ndim(nc5.variables[var_list5[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc5.variables[var_list5[j]]) == 1:
+                    data5[var_list5[j]] = np.append(data5[var_list5[j]],nc5.variables[var_list5[j]][:])
+                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                    data5[var_list5[j]] = np.append(data5[var_list5[j]],nc5.variables[var_list5[j]][:],0)
+            # np.save('working_data1',data1)
+            nc5.close()
+            print ('')
 
     #################################################################
     ## save time to dictionary now we're not looping over all diags anymore
@@ -7314,12 +7330,14 @@ def main():
     data2['time'] = time_um2
     data3['time'] = time_um3
     data4['time'] = time_um4
+    data5['time'] = time_um5
 
     ### stop double counting of 0000 and 2400 from model data
     temp1 = np.zeros([len(data1['time'])])
     temp2 = np.zeros([len(data2['time'])])
     temp3 = np.zeros([len(data3['time'])])
     temp4 = np.zeros([len(data4['time'])])
+    temp5 = np.zeros([len(data5['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
@@ -7340,20 +7358,28 @@ def main():
             continue
         else:
             temp4[i] = data4['time'][i]
+    for i in range(0, len(temp5)-1):
+        if data5['time'][i] == data5['time'][i+1]:
+            continue
+        else:
+            temp5[i] = data5['time'][i]
     ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
     ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
     ii4 = np.where(temp4 != 0.0)      ### picks out where data are non-zero
+    ii5 = np.where(temp5 != 0.0)      ### picks out where data are non-zero (shouldn't be any - not cloudnet-ed)
 
     ### can use temp for all model data since they are on the same (hourly) time binning
     data1['time_hrly'] = temp1[ii1]
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
     data4['time_hrly'] = temp4[ii4]
+    data5['time_hrly'] = temp5[ii5]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
     data4['hrly_flag'] = ii4
+    data5['hrly_flag'] = ii5
 
     #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
@@ -7432,6 +7458,8 @@ def main():
     if out_dir4[:9] == '4_u-bg610': label4 = 'UM_RA2M'
     if out_dir4 == 'UM_RA2M/': label4 = 'UM_RA2M'
 
+    label5 = 'undefined_label'
+    if out_dir5[-4:] == 'glm': label5 = label4 = 'UM_GLM'
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
@@ -7439,6 +7467,8 @@ def main():
     np.save('working_data1', data1)
     np.save('working_data2', data2)
     np.save('working_data3', data3)
+    np.save('working_data4', data4)
+    np.save('working_data5', data5)
     np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
@@ -7468,7 +7498,7 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
