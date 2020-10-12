@@ -7342,7 +7342,7 @@ def main():
     temp2 = np.zeros([len(data2['time'])])
     temp3 = np.zeros([len(data3['time'])])
     temp4 = np.zeros([len(data4['time'])])
-    temp5 = np.zeros([len(data5['time'])])
+    # temp5 = np.zeros([len(data5['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
@@ -7363,28 +7363,32 @@ def main():
             continue
         else:
             temp4[i] = data4['time'][i]
-    for i in range(0, len(temp5)-1):
-        if data5['time'][i] == data5['time'][i+1]:
-            continue
-        else:
-            temp5[i] = data5['time'][i]
+    # for i in range(0, len(temp5)-1):
+    #     if data5['time'][i] == data5['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp5[i] = data5['time'][i]
     ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
     ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
     ii4 = np.where(temp4 != 0.0)      ### picks out where data are non-zero
-    ii5 = np.where(temp5 != 0.0)      ### picks out where data are non-zero (shouldn't be any - not cloudnet-ed)
+    # ii5 = np.where(temp5 != 0.0)      ### picks out where data are non-zero (shouldn't be any - not cloudnet-ed)
 
     ### can use temp for all model data since they are on the same (hourly) time binning
     data1['time_hrly'] = temp1[ii1]
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
     data4['time_hrly'] = temp4[ii4]
-    data5['time_hrly'] = temp5[ii5]
+    # data5['time_hrly'] = temp5[ii5]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
     data4['hrly_flag'] = ii4
-    data5['hrly_flag'] = ii5
+    # data5['hrly_flag'] = ii5
+
+    ### hard code glm time since not cloudnet-ed
+    data5['time_hrly'] = data5['time']
+    data5['hrly_flag'] = np.arange(len(data5['time_hrly']))
 
     #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
