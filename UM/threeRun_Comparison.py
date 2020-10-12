@@ -6925,6 +6925,7 @@ def main():
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -7104,10 +7105,12 @@ def main():
                 filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum.nc'
                 ifs_flag = False
             filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum.nc'
+            filename_um5 = um_root_dir + out_dir5 + names[i] + 'metum.nc'
         print (filename_um1)
         print (filename_um2)
         print (filename_um3)
         print (filename_um4)
+        print (filename_um5)
         print ('')
 
         #### LOAD DATA
@@ -7122,6 +7125,9 @@ def main():
         print ('...')
         print ('Loading fourth run diagnostics:')
         nc4 = Dataset(filename_um4,'r')
+        print ('...')
+        print ('Loading fifth run diagnostics:')
+        nc5 = Dataset(filename_um5,'r')
         print ('...')
         # -------------------------------------------------------------
         # print 'i = ' + str(i)
@@ -7153,6 +7159,7 @@ def main():
                 else:
                     var_list3 = var_list2
             var_list4 = var_list1
+            var_list5 = 'cloud_fraction','qliq','qice','temperature','q']
 
         if i == 0:
             ## ------------------
@@ -7162,18 +7169,21 @@ def main():
             data2 = {}
             data3 = {}
             data4 = {}
+            data5 = {}
             if month_flag == -1:
                 time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
                 time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
                 if ifs_flag: time_um3 = doy[i] + (nc3.variables['time'][:]/24.0)
                 if not ifs_flag: time_um3 = doy[i] + (nc3.variables['forecast_time'][:]/24.0)
                 time_um4 = doy[i] + (nc4.variables['forecast_time'][:]/24.0)
+                time_um5 = doy[i] + (nc5.variables['forecast_time'][:]/24.0)
             else:
                 time_um1 = float(filename_um1[-16:-14]) + (nc1.variables['forecast_time'][:]/24.0)
                 time_um2 = float(filename_um2[-16:-14]) + (nc2.variables['forecast_time'][:]/24.0)
                 if ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['time'][:]/24.0)
                 if not ifs_flag: time_um3 = float(filename_um3[-16:-14]) + (nc3.variables['forecast_time'][:]/24.0)
                 time_um4 = float(filename_um4[-16:-14]) + (nc4.variables['forecast_time'][:]/24.0)
+                time_um5 = float(filename_um5[-16:-14]) + (nc5.variables['forecast_time'][:]/24.0)
 
             ### define height arrays explicitly
             if out_dir1[-6:-1] != 'RadPA':
@@ -7220,6 +7230,16 @@ def main():
                 elif np.ndim(nc4.variables[var_list4[j]]) >= 1:
                     data4[var_list4[j]] = nc4.variables[var_list4[j]][:]
             nc4.close()
+            ## ------------------
+            #### um5
+            ## ------------------
+            print ('Starting on t=0 Global data:')
+            for j in range(0,len(var_list5)):
+                if np.ndim(nc5.variables[var_list5[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc5.variables[var_list5[j]]) >= 1:
+                    data5[var_list5[j]] = nc5.variables[var_list5[j]][:]
+            nc5.close()            
             print ('')
         else:
             if month_flag == -1:
