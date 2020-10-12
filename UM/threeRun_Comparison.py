@@ -5441,7 +5441,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -5491,7 +5491,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
@@ -5539,7 +5539,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.grid('on')
     plt.xlim([-5.0,2.5])
@@ -5588,7 +5588,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     # plt.grid('on')
     plt.xlabel('q bias [g kg$^{-1}$}]')
@@ -5600,7 +5600,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-0.3,0.7])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p4_wSTDEV_newColours.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -5661,7 +5661,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -5711,7 +5711,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
@@ -5759,7 +5759,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     plt.grid('on')
     plt.xlim([-5.0,2.5])
@@ -5808,7 +5808,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'goldenrod', label = label3 + ' median', zorder = 4)
 
     # plt.grid('on')
     plt.xlabel('q bias [g kg$^{-1}$}]')
@@ -5820,7 +5820,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.xlim([-0.3,0.7])
 
     fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV_newColours.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
