@@ -3288,14 +3288,14 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
     data4['temperature'][data4['temperature'] == -9999] = np.nan
-    data5['temperature'][data5['temperature'] == -9999] = np.nan
+    data5['temperature'][data5['temperature'] <= 0] = np.nan
 
     #### set flagged values to nans
     data1['q'][data1['q'] == -9999] = np.nan
     data2['q'][data2['q'] == -9999] = np.nan
     data3['q'][data3['q'] <= 0] = np.nan
     data4['q'][data4['q'] == -9999] = np.nan
-    data5['q'][data5['q'] == -9999] = np.nan
+    data5['q'][data5['q'] <= 0] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -3328,7 +3328,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data5['q_anomalies'] = np.transpose(data5['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])    
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
 
     ##################################################
     ##################################################
@@ -3398,6 +3398,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'grey', label = label5, zorder = 3)
 
     plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
     plt.ylabel('Z [km]')
@@ -3408,7 +3409,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-2.0,1.0])
+    # plt.xlim([-2.0,1.0])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -3451,8 +3452,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
     plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-
-    plt.plot(np.nanmedian(data1['q_anomalies'],1)*2.0,data1['universal_height'],'.-' ,color = 'grey', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'grey', label = label5, zorder = 3)
 
     # plt.legend()
     plt.xlabel('q bias [g kg$^{-1}$]')
@@ -3461,7 +3461,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    # plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
     ###-------------------------
@@ -7462,7 +7462,7 @@ def main():
     if out_dir4 == 'UM_RA2M/': label4 = 'UM_RA2M'
 
     label5 = 'undefined_label'
-    if out_dir5[-4:] == 'glm': label5 = label4 = 'UM_GLM'
+    if out_dir5[-4:-1] == 'glm': label5 = 'UM_GLM'
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
