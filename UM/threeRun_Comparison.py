@@ -3557,7 +3557,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
     plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
     plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3591,7 +3591,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3626,7 +3626,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3657,7 +3657,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3688,7 +3688,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3746,7 +3746,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
     plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
     plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3778,7 +3778,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3811,7 +3811,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3840,7 +3840,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
@@ -3869,7 +3869,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, month_flag, missing_files,
     ## p7
     plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
     ##
     plt.ylim([0,ymax])
     plt.yticks(yticklist)
