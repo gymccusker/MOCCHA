@@ -3322,13 +3322,13 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
 
     data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data5['q_anomalies'] = np.transpose(data5['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
 
     ##################################################
     ##################################################
