@@ -5448,7 +5448,14 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
 
     plt.grid('on')
     plt.ylim([0,9000])
-    ax3.axes.yaxis.set_ticklabels([])
+
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([])
+    # ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
     plt.xlim([-5.0,2.5])
     plt.xlabel('Temperature bias [K]')
 
