@@ -5666,6 +5666,7 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     iTim = 0        ### initialised
     iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
     iUM = np.where(data1['height'] <= 11000)
+    iGLM = np.where(data5['height'] <= 11000)
     if ifs_flag == True:
         iIFS = np.where(data3['height'][iTim,:] <= 11000)
     else:
@@ -5755,6 +5756,21 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     # print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
     # print ('*****')
 
+    print ('')
+    print ('Defining GLM profile as a function:')
+    data5[var + '_hrly_UM'] = np.zeros([np.size(data5['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(data5['time_hrly'],0)):
+        # print (iTim)
+        fnct_GLM = interp1d(np.squeeze(data5['height'][iGLM]), np.squeeze(data5[var + '_hrly'][iTim,iGLM]))
+        data5[var + '_hrly_UM'][iTim,:] = fnct_GLM(data1['height'][iUM[0][3:]].data)
+    print ('...')
+    print ('GLM(UM Grid) function worked!')
+    print (var + ' GLM data now on UM(lam) vertical grid')
+    print ('*****')
+    ### assign for easier indexing later
+    data5[var + '_6hrly_UM'] = data5[var + '_hrly_UM'][::6,:]
+    # print (np.size(data5[var + '_6hrly_UM'],0))
+
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
     #### ---------------------------------------------------------------
@@ -5770,59 +5786,63 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
 
     #### INTERPOLATION TESTING - IFS + SONDE + UM_RA2M:
-    # print (obs['sondes']['doy_drift'].shape)
-    # print (obs['sondes']['temp_allSondes_UM'][drift[0],:].shape)
-    # if var == 'temp':
-    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-    #         plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
-    #         plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
-    #         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
-    #         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
-    #         plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
-    #         plt.plot(data4['temp_6hrly'][i,iUM[0][3:]], data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
-    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
-    #         plt.legend()
-    #         plt.savefig('../FIGS/regrid_v2/REGRID_Ttest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
-    #         if i == 0:
-    #             plt.show()
-    #         else:
-    #             plt.close()
-    # elif var == 'q':
-    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-    #         plt.plot(np.squeeze(obs['sondes']['mr'][iObs,drift[0][i]]), np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
-    #         plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
-    #         plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS])*1e3,np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
-    #         plt.plot(data3[var + '_6hrly_UM'][i,:]*1e3,data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
-    #         plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
-    #         plt.plot(data4[var + '_6hrly'][i,iUM[0][3:]]*1e3, data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
-    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
-    #         plt.legend()
-    #         plt.savefig('../FIGS/regrid_v2/REGRID_Qtest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
-    #         if i == 0:
-    #             plt.show()
-    #         else:
-    #             plt.close()
-    # elif var == 'thetaE':
-    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
-    #         plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
-    #         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
-    #         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
-    #         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
-    #         plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
-    #         plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
-    #         plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
-    #         plt.xlabel('$\Theta_{E}$ [K]')
-    #         plt.ylabel('Z [m]')
-    #         plt.ylim([0,3000])
-    #         plt.xlim([260,320])
-    #         plt.legend()
-    #         plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
-    #         if i == 0:
-    #             plt.show()
-    #         else:
-    #             plt.close()
+    print (obs['sondes']['doy_drift'].shape)
+    print (obs['sondes']['temp_allSondes_UM'][drift[0],:].shape)
+    if var == 'temp':
+        for i in range(0, np.size(obs['sondes']['doy_drift'])):
+            plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+            plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+            plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+            plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+            plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+            plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+            plt.plot(data4['temp_6hrly'][i,iUM[0][3:]], data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
+            plt.plot(np.squeeze(data5['temp_6hrly'][i,iGLM]), data5['height'][iGLM], '--', color = 'grey', label = 'um_glm')
+            plt.plot(data5['temp_6hrly_UM'][i,:], data1['height'][iUM[0][3:]], color = 'grey', label = 'um_glm-interpd')
+            plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
+            plt.legend()
+            plt.savefig('../FIGS/regrid_v3/REGRID_Ttest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+            if i == 0:
+                plt.show()
+            else:
+                plt.close()
+    elif var == 'q':
+        for i in range(0, np.size(obs['sondes']['doy_drift'])):
+            plt.plot(np.squeeze(obs['sondes']['mr'][iObs,drift[0][i]]), np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+            plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+            plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS])*1e3,np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+            plt.plot(data3[var + '_6hrly_UM'][i,:]*1e3,data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+            plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+            plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+            plt.plot(data4[var + '_6hrly'][i,iUM[0][3:]]*1e3, data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
+            plt.plot(np.squeeze(data5['q_6hrly'][i,iGLM])*1e3, data5['height'][iGLM], '--', color = 'grey', label = 'um_glm')
+            plt.plot(data5['q_6hrly_UM'][i,:]*1e3, data1['height'][iUM[0][3:]], color = 'grey', label = 'um_glm-interpd')            
+            plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
+            plt.legend()
+            plt.savefig('../FIGS/regrid_v3/REGRID_Qtest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+            if i == 0:
+                plt.show()
+            else:
+                plt.close()
+    elif var == 'thetaE':
+        for i in range(0, np.size(obs['sondes']['doy_drift'])):
+            plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+            plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+            plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+            plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+            plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+            plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+            plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+            plt.xlabel('$\Theta_{E}$ [K]')
+            plt.ylabel('Z [m]')
+            plt.ylim([0,3000])
+            plt.xlim([260,320])
+            plt.legend()
+            plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+            if i == 0:
+                plt.show()
+            else:
+                plt.close()
 
     #### ---------------------------------------------------------------
     #### make some dictionary assignments for use later
