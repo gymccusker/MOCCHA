@@ -5609,7 +5609,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     print (np.nanmin(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1)))
     print (data1['universal_height'])
 
-def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
+def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
 
     from scipy.interpolate import interp1d
 
@@ -5623,15 +5623,15 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
     #### ---------------------------------------------------------------
     if var == 'temp':
-        varlist = ['temperature','temperature','temperature','temperature', 'temperature']
+        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature']
     elif var == 'thetaE':
         # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
-        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE']         # use sonde calculated thetaE
+        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE', 'thetaE']         # use sonde calculated thetaE
     elif var == 'theta':
         # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
-        varlist = ['theta','theta','theta','theta','theta']         # use sonde calculated theta
+        varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
-        varlist = ['mr','q','q','q','q']
+        varlist = ['mr','q','q','q','q','q']
 
     # ### stop double counting of 0000 and 2400 from model data
     # temp = np.zeros([len(data1['time'])])
@@ -5649,6 +5649,7 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][data2['hrly_flag'],:])
     data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][data3['hrly_flag'],:])
     data4[var + '_hrly'] = np.squeeze(data4[varlist[4]][data4['hrly_flag'],:])
+    data5[var + '_hrly'] = np.squeeze(data5[varlist[5]][data5['hrly_flag'],:])
 
     #### ---------------------------------------------------------------
     #### explicitly save 6-hourly temperature model profiles and time binning for ease
@@ -5658,10 +5659,12 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data3['time_6hrly'] = data3['time_hrly'][::6]
     data4['time_6hrly'] = data4['time_hrly'][::6]
+    data5['time_6hrly'] = data5['time_hrly'][::6]
     data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
     data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
     data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
     data4[var + '_6hrly'] = data4[var + '_hrly'][::6]
+    data5[var + '_6hrly'] = data5[var + '_hrly'][::6]
 
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
@@ -5842,7 +5845,7 @@ def reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, var):
     np.save('working_dataObs',obs['sondes'])
     # outfiles = write_reGrid(data1, data2, data3, obs, var)
 
-    return data1, data2, data3, data4, obs, drift
+    return data1, data2, data3, data4, data5, obs, drift
 
 def write_reGrid(data1, data2, data3, obs, var):
 
