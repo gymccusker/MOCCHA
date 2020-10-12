@@ -5598,7 +5598,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p4]),1) + np.nanstd(np.squeeze(data4['q_anomalies'][:,p4]),1), data1['universal_height'],
         '--', color = 'steelblue', linewidth = 0.5)
     plt.grid('on')
-    plt.xlabel('q bias [g kg$^{-1]$}]')
+    plt.xlabel('q bias [g kg$^{-1}$}]')
     plt.ylim([0,9000])
     ax3.axes.yaxis.set_ticklabels([])
     plt.xlim([-0.3,0.7])
