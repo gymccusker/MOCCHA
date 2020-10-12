@@ -5398,10 +5398,10 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.figure(figsize=(8,12))
+    plt.figure(figsize=(6,10))
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.02,
-            hspace = 0.22, wspace = 0.15)
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
+            hspace = 0.22, wspace = 0.19)
 
     plt.subplot(221)
     ax3 = plt.gca()
@@ -5591,7 +5591,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p4]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
 
     # plt.grid('on')
-    plt.xlabel('q bias [g kg$^{-1}$}]')
+    plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
     plt.yticks(axmajor)
     ax3.set_yticklabels([])
