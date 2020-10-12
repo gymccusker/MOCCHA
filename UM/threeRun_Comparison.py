@@ -3304,8 +3304,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('...')
     print ('Re-gridding sonde and ifs data...')
     print ('')
-    data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, 'temp')
-    data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, ifs_flag, 'q')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'temp')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'q')
     print ('')
     print ('Done!')
 
