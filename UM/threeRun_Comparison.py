@@ -7191,6 +7191,7 @@ def main():
                 data2['height'] = nc2.variables['height'][:]
                 if not ifs_flag: data3['height'] = nc3.variables['height'][:]
                 data4['height'] = nc4.variables['height'][:]
+                data5['height'] = nc5.variables['height'][:]
 
             print ('Starting on t=0 RA2M data:')
             for j in range(0,len(var_list1)):
