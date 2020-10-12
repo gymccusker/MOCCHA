@@ -3288,12 +3288,14 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
     data4['temperature'][data4['temperature'] == -9999] = np.nan
+    data5['temperature'][data5['temperature'] == -9999] = np.nan
 
     #### set flagged values to nans
     data1['q'][data1['q'] == -9999] = np.nan
     data2['q'][data2['q'] == -9999] = np.nan
     data3['q'][data3['q'] <= 0] = np.nan
     data4['q'][data4['q'] == -9999] = np.nan
+    data5['q'][data5['q'] == -9999] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
