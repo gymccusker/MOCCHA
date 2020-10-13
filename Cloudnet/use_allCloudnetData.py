@@ -1942,13 +1942,14 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
     plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.15,
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.1,
             hspace = 0.22, wspace = 0.1)
 
     # print um_data.keys()
 
     #### set flagged um_data to nans
     ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
+    um_data['Cv'][um_data['Cv'] == -999] = np.nan
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
 
     melt = np.where(um_data['time'] < 240.0)
@@ -1964,9 +1965,9 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
 
     plt.xlabel('Cloud Fraction')
-    plt.ylabel('Height [m]')
+    plt.ylabel('Z [km]')
     plt.title('Melt')
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
     plt.xlim([0,1])
     plt.legend()
 
@@ -1974,14 +1975,17 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     ax2 = plt.gca()
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
         np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k', linewidth = 3, label = 'Obs', zorder = 3)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0),
+        np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0), color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'darkblue', linewidth = 3, label = 'Obs_UM')
     ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0),
         np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
+    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
     plt.xlabel('Cloud Fraction')
     plt.title('Freeze up')
     plt.yticks([])
-    plt.ylim([0,10000])
+    plt.ylim([0,9000])
     plt.xlim([0,1])
     # plt.legend()
 
@@ -6713,7 +6717,7 @@ def main():
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
     # -------------------------------------------------------------
-    # figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # plot cloudnet split season figures with missing files accounted for
@@ -6726,7 +6730,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
