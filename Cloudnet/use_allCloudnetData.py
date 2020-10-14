@@ -416,7 +416,6 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     # plt.colorbar()
-    plt.xlabel('Day of Year')
 
     plt.subplot(515)
     ax = plt.gca()
@@ -440,6 +439,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     # plt.colorbar()
+    plt.xlabel('Day of Year')
 
     print ('******')
     print ('')
@@ -447,7 +447,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs.png'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs.svg'
     plt.savefig(fileout)
     plt.show()
 
