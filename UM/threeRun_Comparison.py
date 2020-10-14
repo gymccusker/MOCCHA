@@ -5488,10 +5488,10 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p3]),1), data1['universal_height'],
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
-    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
 
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
@@ -5708,10 +5708,10 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p5]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,p5]),1), data1['universal_height'],
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
-    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
+    plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p5]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
 
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
