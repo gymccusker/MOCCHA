@@ -1952,42 +1952,26 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
 
-    melt = np.where(um_data['time'] < 240.0)
-    freeze = np.where(um_data['time'] >= 240.0)
-
-    plt.subplot(121)
-    ax1 = plt.gca()
-    ax1.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][melt,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][melt,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
-    ax1.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][melt,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0),
-        np.nanmean(np.squeeze(ifs_data['Cv'][melt,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][melt,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][melt,:]),0),np.nanmean(np.squeeze(obs_data['height'][melt,:]),0), 'k--', linewidth = 3, label = 'Obs_UM')
-
+    ax2 = plt.gca()
+    ax2.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
+        np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs', zorder = 3)
+    ax2.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
+        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'Obs_UM')
+    ax2.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0),
+        np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
     plt.xlabel('Cloud Fraction')
-    plt.ylabel('Z [km]')
-    plt.title('Melt')
     plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax2.set_yticklabels([])
+    ax2.set_yticks(axminor, minor = True)
+    ax2.grid(which = 'major', alpha = 0.5)
     plt.xlim([0,1])
     plt.legend()
-
-    plt.subplot(122)
-    ax2 = plt.gca()
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][freeze,:]),0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(obs_data['height'][freeze,:]),0), 'k', linewidth = 3, label = 'Obs', zorder = 3)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][freeze,:]),0),np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(um_data['Cv'][freeze,:]),0), color = 'blue', alpha = 0.05)
-    plt.plot(np.nanmean(np.squeeze(um_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(um_data['height'][freeze,:]),0), color = 'darkblue', linewidth = 3, label = 'Obs_UM')
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) - np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0),
-        np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0) + np.nanstd(np.squeeze(ifs_data['Cv'][freeze,:]),0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['Cv'][freeze,:]),0),np.nanmean(np.squeeze(ifs_data['height'][freeze,:]),0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
-    plt.xlabel('Cloud Fraction')
-    plt.title('Freeze up')
-    plt.yticks([])
-    plt.ylim([0,9000])
-    plt.xlim([0,1])
-    # plt.legend()
 
     print ('******')
     print ('')
@@ -1995,7 +1979,7 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_GridComparison_Cv_splitSeason_226-257DOY_wMissingFiles.svg'
+        fileout = 'FIGS/Obs_GridComparison_Cv_226-257DOY_wMissingFiles.svg'
     # plt.savefig(fileout)
     plt.show()
 
