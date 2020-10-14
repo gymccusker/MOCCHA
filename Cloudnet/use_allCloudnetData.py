@@ -1995,8 +1995,8 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, mo
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_GridComparison_Cv_226-257DOY_wMissingFiles.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs_GridComparison_Cv_226-257DOY_wMissingFiles_newColours.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_CvProfiles_SplitSeason(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
