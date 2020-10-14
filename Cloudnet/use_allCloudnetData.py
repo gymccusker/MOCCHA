@@ -374,29 +374,6 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.subplot(513)
     ax = plt.gca()
     # ax.set_facecolor('aliceblue')
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
-        np.arange(0,1.1,0.1),
-        cmap = newcmp,
-        zorder = 1)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
-    plt.xlim([doy[0], doy[-1]])
-    plt.title('UM_RA2M; modelled cloud fraction')
-    nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'white',
-            # hatch = 'x',
-            zorder = 2)
-    # plt.colorbar()
-
-    plt.subplot(514)
-    ax = plt.gca()
-    # ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
         np.arange(0,1.1,0.1),
         cmap = newcmp,
@@ -417,7 +394,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             zorder = 2)
     # plt.colorbar()
 
-    plt.subplot(515)
+    plt.subplot(514)
     ax = plt.gca()
     # ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
@@ -441,6 +418,28 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.colorbar()
     plt.xlabel('Day of Year')
 
+    plt.subplot(515)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2M; modelled cloud fraction')
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    # plt.colorbar()
 
     print ('******')
     print ('')
@@ -448,7 +447,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_blueNaNs.png'
+        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -6712,10 +6711,10 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
