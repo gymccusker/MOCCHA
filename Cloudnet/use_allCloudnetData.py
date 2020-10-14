@@ -1906,7 +1906,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     plt.savefig(fileout)
     plt.show()
 
-def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
+def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1941,9 +1941,9 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,7))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.1,
-            hspace = 0.22, wspace = 0.1)
+    plt.figure(figsize=(4,5))
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.94, left = 0.15,
+            hspace = 0.22, wspace = 0.15)
 
     # print um_data.keys()
 
@@ -1951,23 +1951,39 @@ def plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, m
     ifs_data['Cv'][ifs_data['Cv'] == -999] = np.nan
     um_data['Cv'][um_data['Cv'] == -999] = np.nan
     obs_data['Cv'][obs_data['Cv'] == -999] = np.nan
+    ra2t_data['Cv'][ra2t_data['Cv'] == -999] = np.nan
 
     ax2 = plt.gca()
     ax2.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0),
         np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs', zorder = 3)
-    ax2.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['Cv'],0) - np.nanstd(um_data['Cv'],0),
-        np.nanmean(um_data['Cv'],0) + np.nanstd(um_data['Cv'],0), color = 'blue', alpha = 0.05)
-    plt.plot(np.nanmean(um_data['Cv'],0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'Obs_UM')
+    plt.plot(np.nanmean(obs_data['Cv'],0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs', zorder = 3)
+    plt.plot(np.nanmean(obs_data['Cv'],0) - np.nanstd(obs_data['Cv'],0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
+    plt.plot(np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), np.nanmean(obs_data['height'],0),
+        '--', color = 'k', linewidth = 0.5)
+
     ax2.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0),
         np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), color = 'navajowhite', alpha = 0.35)
     plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'Obs_IFS')
+    plt.plot(np.nanmean(ifs_data['Cv'],0) - np.nanstd(ifs_data['Cv'],0), np.nanmean(ifs_data['height'],0),
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmean(ifs_data['Cv'],0) + np.nanstd(ifs_data['Cv'],0), np.nanmean(ifs_data['height'],0),
+        '--', color = 'gold', linewidth = 0.5)
+
+    ax2.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(ra2t_data['Cv'],0) - np.nanstd(ra2t_data['Cv'],0),
+        np.nanmean(ra2t_data['Cv'],0) + np.nanstd(ra2t_data['Cv'],0), color = 'lightblue', alpha = 0.15)
+    plt.plot(np.nanmean(ra2t_data['Cv'],0),np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'Obs_UM')
+    plt.plot(np.nanmean(ra2t_data['Cv'],0) - np.nanstd(ra2t_data['Cv'],0), np.nanmean(ra2t_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmean(ra2t_data['Cv'],0) + np.nanstd(ra2t_data['Cv'],0), np.nanmean(ra2t_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.xlabel('Cloud Fraction')
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
     axminor = np.arange(0,9.01e3,0.5e3)
     plt.yticks(axmajor)
-    ax2.set_yticklabels([])
+    ax2.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax2.set_yticks(axminor, minor = True)
     ax2.grid(which = 'major', alpha = 0.5)
     plt.xlim([0,1])
@@ -6701,7 +6717,7 @@ def main():
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
     # -------------------------------------------------------------
-    figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
+    figure = plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy)
 
     # -------------------------------------------------------------
     # plot cloudnet split season figures with missing files accounted for
