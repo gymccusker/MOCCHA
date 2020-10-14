@@ -1219,14 +1219,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,13))
-    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
+    fig = plt.figure(figsize=(9.5,13))
+    plt.subplots_adjust(top = 0.9, bottom = 0.06, right = 0.98, left = 0.08,
             hspace = 0.4, wspace = 0.2)
 
     plt.subplot(511)
     ax = plt.gca()
     # ax.set_facecolor('aliceblue')
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
+    img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # np.arange(0,0.31,0.01),
         # locator=ticker.LogLocator(base = 10.0),
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
@@ -1236,15 +1236,17 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.title('TWC [$g/m^{3}$]' + '\n Obs-' + obs_switch + 'grid')
-    plt.colorbar()
+    plt.title('TWC [g m$^{-3}$]' + '\n Obs-' + obs_switch + 'grid')
+    cbaxes = fig.add_axes([0.225, 0.96, 0.6, 0.015])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
 
     plt.subplot(512)
     ax = plt.gca()
