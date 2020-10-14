@@ -1411,14 +1411,14 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(10,13))
-    plt.subplots_adjust(top = 0.93, bottom = 0.08, right = 1.08, left = 0.1,
+    fig = plt.figure(figsize=(9.5,13))
+    plt.subplots_adjust(top = 0.9, bottom = 0.06, right = 0.98, left = 0.08,
             hspace = 0.4, wspace = 0.2)
 
     plt.subplot(511)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
-    plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
+    # ax.set_facecolor('aliceblue')
+    img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1426,19 +1426,22 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.title('Cloud mask' + '\n Obs-' + obs_switch + 'grid')
-    plt.colorbar()
+    plt.title('Obs-' + obs_switch + 'grid')
+    cbaxes = fig.add_axes([0.225, 0.95, 0.6, 0.015])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
+    plt.title('Cloud mask')
 
     plt.subplot(512)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(mask3),
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
@@ -1448,41 +1451,20 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('ECMWF_IFS')
-    plt.colorbar()
+    # plt.colorbar()
 
     plt.subplot(513)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
-    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
-        np.arange(0,1.01,0.1),
-        cmap = mpl_cm.viridis)
-    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
-    ax = plt.gca()
-    nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.xlim([doy[0], doy[-1]])
-    plt.title('UM_RA2M')
-    plt.colorbar()
-
-    plt.subplot(514)
-    ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(mask2),
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
@@ -1492,19 +1474,20 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_CASIM-100')
-    plt.colorbar()
+    # plt.colorbar()
 
-    plt.subplot(515)
+    plt.subplot(514)
     ax = plt.gca()
-    ax.set_facecolor('aliceblue')
+    # ax.set_facecolor('aliceblue')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(mask4),
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
@@ -1514,15 +1497,39 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'lightpink',
-            hatch = 'x',
-            zorder = 3)
-    plt.ylabel('Height [m]')
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
     plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.title('UM_RA2T')
-    plt.colorbar()
+    # plt.colorbar()
+
+    plt.subplot(515)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(mask1),
+        np.arange(0,1.01,0.1),
+        cmap = mpl_cm.viridis)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    ax = plt.gca()
+    nans = ax.get_ylim()
+    for file in missing_files:
+        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+            facecolor = 'white',
+            # hatch = 'x',
+            zorder = 2)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.title('UM_RA2M')
+    # plt.colorbar()
     plt.xlabel('Day of Year')
 
     print ('******')
@@ -1531,7 +1538,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_hatchedMissingFiles_blueNaNs_BLDepths.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_whiteMissingFiles_BLDepths.svg'
     plt.savefig(fileout)
     plt.show()
 
