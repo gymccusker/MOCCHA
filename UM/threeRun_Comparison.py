@@ -763,8 +763,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     fig = plt.figure(figsize=(13, 12))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
-            hspace = 0.4, wspace = 0.13)
+    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.88, left = 0.06,
+            hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
     ax = plt.gca()
@@ -801,12 +801,12 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     ax  = fig.add_axes([0.2,0.8,0.6,0.16])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'grey', label = 'Ice_station')
+    plt.plot(time_radice, netLW + netSW, color = 'k', label = 'Ice_station')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
     plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=3)
-    plt.ylabel('Net radiation [W m$^{-2}$]')
+    plt.ylabel('Net radiation \n [W m$^{-2}$]')
     plt.xlabel('Day of Year')
 
     ########            Cloud fraction
@@ -819,25 +819,35 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(423)
+    ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
-    plt.title(label2 + '\n Cloud fraction')
-    plt.colorbar()
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,3.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.title(label2)# + '\n Cloud fraction')
+    # plt.colorbar()
 
     plt.subplot(424)
-    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+    ax = plt.gca()
+    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
-    plt.ylim([0,8000])
-    plt.title(label3 + '\n Cloud fraction')
-    plt.colorbar()
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.title(label3)# + '\n Cloud fraction')
+    cbaxes = fig.add_axes([0.9, 0.55, 0.015, 0.12])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('Cloud fraction', rotation = 270, labelpad = 25)
 
     ########            NDROP
     ########
