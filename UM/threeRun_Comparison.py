@@ -763,8 +763,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     fig = plt.figure(figsize=(13, 12))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.88, left = 0.06,
-            hspace = 0.4, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.88, left = 0.06,
+            hspace = 0.3, wspace = 0.1)
 
     ### define axis instance
     ax = plt.gca()
@@ -799,13 +799,13 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     crf3 = sw3 + lw3
     crf2 = sw2 + lw2
 
-    ax  = fig.add_axes([0.2,0.8,0.6,0.16])   # left, bottom, width, height
+    ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(time_radice, netLW + netSW, color = 'k', label = 'Ice_station')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
-    plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=3)
+    plt.legend(bbox_to_anchor=(0.36, 0.7, 1., .102), loc=1, ncol=1)
     plt.ylabel('Net radiation \n [W m$^{-2}$]')
     plt.xlabel('Day of Year')
 
@@ -845,7 +845,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
     plt.title(label3)# + '\n Cloud fraction')
-    cbaxes = fig.add_axes([0.9, 0.55, 0.015, 0.12])
+    cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     plt.ylabel('Cloud fraction', rotation = 270, labelpad = 25)
 
@@ -871,26 +871,30 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(425)
+    ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
-    plt.title('N$_{d}$ [cm$^{-3}$]')
-    plt.colorbar()
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
 
     plt.subplot(426)
-    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
+    ax = plt.gca()
+    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
         cmap = newcmp #mpl_cm.Blues
         )
-    # plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
-    plt.title('N$_{d}$ [cm$^{-3}$]')
-    plt.colorbar()
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    cbaxes = fig.add_axes([0.9, 0.33, 0.015, 0.15])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('N$_{d}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
 
     ########            QLIQ
     ########
@@ -906,28 +910,32 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     newcmp = ListedColormap(newcolors)
 
     plt.subplot(427)
+    ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
-    plt.title('q$_{liq}$ [g kg$^{-1}$]')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
     plt.xlabel('Day of Year')
-    plt.colorbar()
 
     plt.subplot(428)
-    plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
+    ax = plt.gca()
+    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
-    # plt.ylabel('Height [m]')
-    plt.ylim([0,8000])
     plt.xlabel('Day of Year')
-    plt.title('q$_{liq}$ [g kg$^{-1}$]')
-    plt.colorbar()
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    cbaxes = fig.add_axes([0.9, 0.095, 0.015, 0.15])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('q$_{liq}$ [g kg$^{-1}$]', rotation = 270, labelpad = 25)
 
     print ('******')
     print ('')
@@ -935,7 +943,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours.png'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
