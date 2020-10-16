@@ -7386,6 +7386,10 @@ def main():
                 'cloud_fraction','radr_refl']
             if out_dir2[-4:-1] == 'glm':
                 var_list2 = ['cloud_fraction','qliq','qice']
+            if out_dir3 == '12_u-br210_RA1M_CASIM/OUT_R0/':
+                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+                'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
