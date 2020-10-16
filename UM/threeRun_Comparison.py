@@ -806,7 +806,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
     plt.legend(bbox_to_anchor=(0.0, 0.73, 1., .102), loc=4, ncol=3)
-    plt.ylabel('CRF [$W/m^{2}$]')
+    plt.ylabel('Net radiation [W m$^{-2}$]')
     plt.xlabel('Day of Year')
 
     ########            Cloud fraction
@@ -868,7 +868,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title('N_drop [$cm^{-3}$]')
+    plt.title('N$_{d}$ [cm$^{-3}$]')
     plt.colorbar()
 
     plt.subplot(426)
@@ -879,7 +879,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     # plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title('N_drop [$cm^{-3}$]')
+    plt.title('N$_{d}$ [cm$^{-3}$]')
     plt.colorbar()
 
     ########            QLIQ
@@ -903,7 +903,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         )
     plt.ylabel('Height [m]')
     plt.ylim([0,8000])
-    plt.title('Q_liq [$g/kg$]')
+    plt.title('q$_{liq}$ [g kg$^{-1}$]')
     plt.xlabel('Day of Year')
     plt.colorbar()
 
@@ -916,7 +916,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     # plt.ylabel('Height [m]')
     plt.ylim([0,8000])
     plt.xlabel('Day of Year')
-    plt.title('Q_liq [$g/kg$]')
+    plt.title('q$_{liq}$ [g kg$^{-1}$]')
     plt.colorbar()
 
     print ('******')
