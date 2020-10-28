@@ -2769,17 +2769,19 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], color = 'black', label = 'Obs_PWS', zorder = 1)
     if ifs_flag == True:
         plt.plot(data3['time_hrly'][::res], precip3[::res],
-            'v', color = 'gold', markeredgecolor = 'orange', label = label3, zorder = 1)
+            'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
     plt.plot(data2['time_hrly'][::res], precip2[::res],
-        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', label = label2, zorder = 1)
+        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', zorder = 1)
     plt.plot(data4['time_hrly'][::res], precip4[::res],
-        '>', color = 'steelblue', markeredgecolor = 'darkslategrey', label = label4, zorder = 1)
+        '>', color = 'steelblue', markeredgecolor = 'darkslategrey', zorder = 1)
     plt.plot(data1['time_hrly'][::res], precip1[::res],
-        '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = label1, zorder = 1)
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', zorder = 1)
     plt.ylabel('Precipitation flux [mm hr$^{-1}$]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.ylim([0,2])
-    plt.xlabel('Day of year')
+    plt.xlabel('Date')
     plt.yscale('log')
     plt.ylim([3e-2,2e0])
     ax = plt.gca()
@@ -2806,7 +2808,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_ra2t_hatchedMissingFiles_newColours.svg'
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_ra2t_hatchedMissingFiles_newColours_Date.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -7780,10 +7782,10 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
