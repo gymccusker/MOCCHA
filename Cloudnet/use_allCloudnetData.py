@@ -1917,7 +1917,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles_newColours_Date.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles_newColours_Date.svg'
     plt.savefig(fileout)
     plt.show()
 
