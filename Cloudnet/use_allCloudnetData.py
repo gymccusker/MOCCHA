@@ -1882,7 +1882,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         '>', color = 'steelblue', markeredgecolor = 'darkslategrey', label = 'UM_RA2T')
     plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
     plt.ylabel('LWP [g m$^{2}$]')
     plt.ylim([0,800])
     plt.xlim([doy[0],doy[-1]])
