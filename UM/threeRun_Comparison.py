@@ -3500,7 +3500,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m_wUMGlobal.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 
@@ -3597,7 +3597,9 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.xlim([doy[0],doy[-1]])
     # plt.colorbar()
     plt.ylabel('Z [km]')
-    plt.xlabel('Day of year')
+    plt.xlabel('Date')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.title('T [$^{\circ}$C]')
     ax2 = ax.twinx()
     ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
@@ -3629,6 +3631,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.colorbar()
     # plt.set_cmap('seismic')
     plt.ylabel('Z [km]')
@@ -3641,39 +3645,6 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     cb2 = plt.colorbar(sfig2, cax = cbaxes2, orientation = 'horizontal')
 
     ax  = fig.add_axes([0.05,0.39,0.4,0.12])   # left, bottom, width, height
-    # dat1 = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # data1['temp_anomalies'] = dat1
-    plt.pcolor(data1['time_6hrly'],data1['universal_height'], data1['temp_anomalies'],
-        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-    #### plot periods
-    ## p3
-    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p4
-    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p5
-    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p6
-    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p7
-    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p8
-    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ##
-    plt.ylim([0,ymax])
-    plt.yticks(yticklist)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    plt.ylabel('Z [km]')
-    ax2 = ax.twinx()
-    ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
-    ax2.set_yticks([])
-    # plt.title(label1 + ' - Radiosondes, T[degC]')
-
-    ax  = fig.add_axes([0.05,0.22,0.4,0.12])   # left, bottom, width, height
-    # dat2 = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # data2['temp_anomalies'] = dat2
     plt.pcolor(data2['time_6hrly'],data1['universal_height'], data2['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -3695,16 +3666,15 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.colorbar()
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
     ax2.set_ylabel(label2, rotation = 270, labelpad = 15)
     ax2.set_yticks([])
-    # plt.title(label2 + ' - Radiosondes, T[degC]')
 
-    ax  = fig.add_axes([0.05,0.05,0.4,0.12])   # left, bottom, width, height
-    # dat4 = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # data4['temp_anomalies'] = dat4
+    ax  = fig.add_axes([0.05,0.22,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data4['time_6hrly'],data1['universal_height'], data4['temp_anomalies'],
         vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -3726,13 +3696,43 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.colorbar()
-    plt.xlabel('Day of year')
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
     ax2.set_ylabel(label4[:-4], rotation = 270, labelpad = 15)
     ax2.set_yticks([])
-    # plt.title(label4[:-4] + ' - Radiosondes, T[degC]')
+
+    ax  = fig.add_axes([0.05,0.05,0.4,0.12])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'],data1['universal_height'], data1['temp_anomalies'],
+        vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
+    plt.ylim([0,ymax])
+    plt.yticks(yticklist)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    plt.xlabel('Date')
+    plt.ylabel('Z [km]')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
 
     ###-------------------------------------
     ### -------------------------------
@@ -3784,9 +3784,11 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.colorbar()
     plt.ylabel('Z [km]')
-    plt.xlabel('Day of year')
+    plt.xlabel('Date')
     plt.title('q [g kg$^{-1}$]')
     ax2 = ax.twinx()
     ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
@@ -3816,47 +3818,17 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    # plt.set_cmap('seismic')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
     ax2.set_ylabel(label3, rotation = 270, labelpad = 15)
     ax2.set_yticks([])
     plt.title('q [g kg$^{-1}$]')
-    # plt.title(label3 + ' - Radiosondes, T[degC]')
     cbaxes4 = fig.add_axes([0.6, 0.73, 0.3, 0.015])
     cb4 = plt.colorbar(sfig4, cax = cbaxes4, orientation = 'horizontal')
 
     ax  = fig.add_axes([0.55,0.39,0.4,0.12])   # left, bottom, width, height
-    plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
-        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
-    #### plot periods
-    ## p3
-    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p4
-    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p5
-    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p6
-    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p7
-    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ## p8
-    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
-    ##
-    plt.ylim([0,ymax])
-    plt.yticks(yticklist)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
-    plt.ylabel('Z [km]')
-    ax2 = ax.twinx()
-    ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
-    ax2.set_yticks([])
-    # plt.title(label1 + ' - Radiosondes, T[degC]')
-
-    ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'], data1['universal_height'], data2['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -3878,14 +3850,14 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
-    # plt.colorbar()
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
     ax2.set_ylabel(label2, rotation = 270, labelpad = 15)
     ax2.set_yticks([])
-    # plt.title(label2 + ' - Radiosondes, T[degC]')
 
-    ax  = fig.add_axes([0.55,0.05,0.4,0.12])   # left, bottom, width, height
+    ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data4['time_6hrly'], data1['universal_height'], data4['q_anomalies'],
         vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
@@ -3907,18 +3879,51 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.yticks(yticklist)
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([doy[0],doy[-1]])
-    plt.xlabel('Day of year')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
     ax2.set_ylabel(label4[:-4], rotation = 270, labelpad = 15)
     ax2.set_yticks([])
+
+    ax  = fig.add_axes([0.55,0.05,0.4,0.12])   # left, bottom, width, height
+    plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
+        vmin = -1.5, vmax = 1.5, cmap=mpl_cm.RdBu_r)
+    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ## p8
+    # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    ##
+    plt.ylim([0,ymax])
+    plt.yticks(yticklist)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.colorbar()
+    plt.ylabel('Z [km]')
+    plt.xlabel('Date')
+    ax2 = ax.twinx()
+    ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    # plt.title(label1 + ' - Radiosondes, T[degC]')
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandQ_ifs_casim-100_ra2t_ra2m.png'
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandQ_ifs_casim-100_ra2t_ra2m_Dates.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
@@ -7195,7 +7200,7 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir3 = '12_u-br210_RA1M_CASIM/OUT_R0/'
+        out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
@@ -7766,7 +7771,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -7778,7 +7783,7 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
