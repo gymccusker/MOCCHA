@@ -2218,6 +2218,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.ylabel('$SW_{net}$ [$W m^{-2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylim([-3,120])
 
     ax  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
@@ -2235,6 +2237,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
     plt.ylabel('$LW_{net}$ [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylim([-90,5])
 
     ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
@@ -2252,6 +2256,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
     plt.ylabel('Net Radiation [$W m^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])    
     plt.ylim([-60,80])
     plt.xlabel('Day of year')
 
