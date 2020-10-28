@@ -807,7 +807,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.xlim(doy[0], doy[-1])
     plt.legend(bbox_to_anchor=(0.36, 0.7, 1., .102), loc=1, ncol=1)
     plt.ylabel('Net radiation \n [W m$^{-2}$]')
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
 
     ########            Cloud fraction
     ########
@@ -832,7 +834,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
     plt.title(label2)# + '\n Cloud fraction')
-    # plt.colorbar()
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
     plt.subplot(424)
     ax = plt.gca()
@@ -845,9 +848,12 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
     plt.title(label3)# + '\n Cloud fraction')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     plt.ylabel('Cloud fraction', rotation = 270, labelpad = 25)
+
 
     ########            NDROP
     ########
@@ -881,6 +887,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
     plt.subplot(426)
     ax = plt.gca()
@@ -892,6 +900,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     cbaxes = fig.add_axes([0.9, 0.33, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     plt.ylabel('N$_{d}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
@@ -920,7 +930,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
     plt.subplot(428)
     ax = plt.gca()
@@ -929,13 +941,16 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
         )
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     cbaxes = fig.add_axes([0.9, 0.095, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     plt.ylabel('q$_{liq}$ [g kg$^{-1}$]', rotation = 270, labelpad = 25)
+
 
     print ('******')
     print ('')
@@ -943,7 +958,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours.svg'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates.png'
     plt.savefig(fileout)
     plt.show()
 
