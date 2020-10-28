@@ -2670,7 +2670,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
     # plt.figure(figsize=(12,4.5))
     # plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
     #         hspace = 0.4, wspace = 0.1)
@@ -2791,7 +2791,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    plt.legend(bbox_to_anchor=(0.26, 0.8, 1., .102), loc=3, ncol=2)
+    plt.legend(bbox_to_anchor=(0.0, 0.81, 1., .102), loc=3, ncol=2)
 
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
     sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
