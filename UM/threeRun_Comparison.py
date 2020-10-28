@@ -2760,7 +2760,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     ### Build figure (timeseries)
     ### -------------------------------
     # ax  = fig.add_axes([0.75,0.15,0.2,0.7])   # left, bottom, width, height
-    fig = plt.figure(figsize=(12,4.5))
+    fig = plt.figure(figsize=(12,3.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -2791,7 +2791,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    plt.legend(bbox_to_anchor=(0.26, 0.63, 1., .102), loc=3, ncol=2)
+    plt.legend(bbox_to_anchor=(0.26, 0.8, 1., .102), loc=3, ncol=2)
 
     ax  = fig.add_axes([0.76,0.25,0.22,0.6])   # left, bottom, width, height
     sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -2800,7 +2800,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(obs['pws']['prec_int'][drift[0]], hist=False, color="black")
     plt.xlim([0,0.4])
-    # plt.ylim([0,yEmax])
+    plt.yscale('log')
+    plt.ylim([1e-1,3e1])
     plt.xlabel('Precipitation flux [mm hr$^{-1}$]')
 
     print ('******')
