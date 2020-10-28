@@ -1833,8 +1833,8 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    fig = plt.figure(figsize=(12,4.5))
+    plt.rc('legend',fontsize=MED_SIZE)
+    fig = plt.figure(figsize=(12,3.5))
     plt.subplots_adjust(top = 0.9, bottom = 0.14, right = 0.96, left = 0.1,
             hspace = 0.4, wspace = 0.1)
 
@@ -1865,7 +1865,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     res = 3 ### hourly resolution to plot
 
-    ax  = fig.add_axes([0.09,0.15,0.6,0.8])   # left, bottom, width, height
+    ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 1)
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
@@ -1886,7 +1886,9 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     plt.ylabel('LWP [g m$^{2}$]')
     plt.ylim([0,800])
     plt.xlim([doy[0],doy[-1]])
-    plt.legend(bbox_to_anchor=(0.28, 0.62, 1., .102), loc=3, ncol=2)
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    plt.legend(bbox_to_anchor=(0.0, 0.7, 1., .102), loc=3, ncol=3)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1895,8 +1897,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
             # hatch = 'x',
             zorder = 2)
 
-
-    ax  = fig.add_axes([0.76,0.25,0.22,0.6])   # left, bottom, width, height
+    ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
     yEmax = 0.03
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(um_data['model_lwp']*1e3, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -1916,7 +1917,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles_newColours_Date.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -6728,7 +6729,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
@@ -6746,7 +6747,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
