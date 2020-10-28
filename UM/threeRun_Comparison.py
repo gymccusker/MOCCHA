@@ -2215,11 +2215,11 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
-    plt.ylabel('$SW_{net}$ [$W m^{-2}$]')
+    plt.ylabel('SW$_{net}$ [W m$^{-2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.ylim([-3,120])
 
     ax  = fig.add_axes([0.07,0.4,0.53,0.22])   # left, bottom, width, height
@@ -2235,10 +2235,10 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'gold')
     plt.plot(time_radice, netLW, color = 'black', label = 'obs: ice')
-    plt.ylabel('$LW_{net}$ [$W m^{-2}$]')
+    plt.ylabel('LW$_{net}$ [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.ylim([-90,5])
 
     ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
@@ -2254,12 +2254,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.ylabel('Net Radiation [$W m^{-2}$]')
+    plt.ylabel('Net Radiation [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])    
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.ylim([-60,80])
-    plt.xlabel('Day of year')
+    plt.xlabel('Date')
 
     ### -------------------------------
     ### Build figure (PDFs)
@@ -2300,7 +2300,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.legend()
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net}$ [$W m^{-2}$]')
+    plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
@@ -2315,7 +2315,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net}$ [$W m^{-2}$]')
+    plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
@@ -2332,7 +2332,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     # plt.title('Melt')
     plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
-    plt.xlabel('Net Radiation [$W m^{-2}$]')
+    plt.xlabel('Net Radiation [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
 
@@ -2347,7 +2347,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
-    plt.xlabel('$SW_{net}$ [$W m^{-2}$]')
+    plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
@@ -2361,7 +2361,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
-    plt.xlabel('$LW_{net}$ [$W m^{-2}$]')
+    plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
@@ -2380,7 +2380,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
-    plt.xlabel('Net Radiation [$W m^{-2}$]')
+    plt.xlabel('Net Radiation [W m$^{-2}$]')
 
 
     print ('******')
@@ -2388,7 +2388,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Date.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -7788,8 +7788,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
