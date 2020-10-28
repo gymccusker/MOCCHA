@@ -2766,7 +2766,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], color = 'black', label = 'Obs_PWS', zorder = 1)
+    plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], color = 'grey', label = 'Obs_PWS', zorder = 1)
     if ifs_flag == True:
         plt.plot(data3['time_hrly'][::res], precip3[::res],
             'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
@@ -2798,7 +2798,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(obs['pws']['prec_int'][drift[0]], hist=False, color="black")
+    sns.distplot(obs['pws']['prec_int'][drift[0]], hist=False, color="grey")
     plt.xlim([0,0.4])
     plt.yscale('log')
     plt.ylim([1e-1,3e1])
