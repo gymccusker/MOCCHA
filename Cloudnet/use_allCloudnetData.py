@@ -449,7 +449,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     # plt.colorbar()
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
 
     print ('******')
     print ('')
