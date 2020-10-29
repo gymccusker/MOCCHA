@@ -271,33 +271,50 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(10,8))
-    plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
-            hspace = 0.4, wspace = 0.1)
+    fig = plt.figure(figsize=(8,6))
+    plt.subplots_adjust(top = 0.93, bottom = 0.1, right = 0.82, left = 0.08,
+            hspace = 0.3, wspace = 0.1)
 
     plt.subplot(211)
-    plt.pcolormesh(nc3.variables['day_of_year'][:],nc3.variables['level_height'][:],
+    ax = plt.gca()
+    img = plt.pcolormesh(nc3.variables['day_of_year'][:],nc3.variables['level_height'][:],
         np.transpose(np.nanmean(np.nanmean(nc3.variables['number_concentration_of_soluble_coarse_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 0.3)
     plt.ylim([0, 1e4])
-    plt.xlim([doy[0], doy[-1]])
-    plt.colorbar()
-    # plt.xlabel('Day of year')
-    plt.ylabel('Height [m]')
-    plt.title('N$_{aer, sol, coarse}$ [cm$^{-3}$]')
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,3.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    ax.set_yticks(axminor, minor = True)
+    cbaxes = fig.add_axes([0.85, 0.6, 0.015, 0.3])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('N$_{aer, sol, coarse}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
 
     plt.subplot(212)
-    plt.pcolormesh(nc2.variables['day_of_year'][:],nc2.variables['level_height'][:],
+    ax = plt.gca()
+    img = plt.pcolormesh(nc2.variables['day_of_year'][:],nc2.variables['level_height'][:],
         np.transpose(np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)),
         vmin = 0, vmax = 200)
     plt.ylim([0, 1e4])
-    plt.xlim([doy[0], doy[-1]])
-    plt.colorbar()
-    plt.xlabel('Day of year')
-    plt.ylabel('Height [m]')
-    plt.title('N$_{aer, sol, accum}$ [cm$^{-3}$]')
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    plt.xlabel('Date')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    ax.set_yticks(axminor, minor = True)
+    cbaxes = fig.add_axes([0.85, 0.12, 0.015, 0.3])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('N$_{aer, sol, accum}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
 
-    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY.svg'
+    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY_Dates.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -728,12 +745,12 @@ def main():
     #### -------------------------------------------------------------
     #### PLOT AEROSOL PROFILES
     #### -------------------------------------------------------------
-    # figure = plot_aeroProfiles(nc2, nc3, doy)
+    figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
     #### CREATE N_AER PROFILES (IN /M)
     #### -------------------------------------------------------------
-    numAccum, numCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
+    # numAccum, numCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS
@@ -745,7 +762,7 @@ def main():
     #### CALCULATE DAY MEAN AIR DENSITY
     ####        for use in mass conversion calculation
     #### -------------------------------------------------------------
-    rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:],0))
+    # rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:],0))
     # plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
 
     #### -------------------------------------------------------------
@@ -753,24 +770,19 @@ def main():
     ####        assume spherical particles
     #### -------------------------------------------------------------
 
-    # #### TESTING
-    # num = np.zeros([70])
-    # num[:] = 1.0e8
-    # massAccum = estimateMass(num, rho_air)
-
-    print('****')
-    print('Estimate accumulation mode mass:')
-    print('')
-    modeFlag = 1
-    massAccum = estimateMass(numAccum, rho_air, modeFlag)
-    plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
-
-    print('****')
-    print('Estimate coarse mode mass:')
-    print('')
-    modeFlag = 2
-    massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
-    plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
+    # print('****')
+    # print('Estimate accumulation mode mass:')
+    # print('')
+    # modeFlag = 1
+    # massAccum = estimateMass(numAccum, rho_air, modeFlag)
+    # plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
+    #
+    # print('****')
+    # print('Estimate coarse mode mass:')
+    # print('')
+    # modeFlag = 2
+    # massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
+    # plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
 
     #### -------------------------------------------------------------
     #### FORMAT OUTPUT FOR UM/ROSE-APP.CONF
