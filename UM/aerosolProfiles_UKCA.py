@@ -314,8 +314,8 @@ def plot_aeroProfiles(nc2, nc3, doy):
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     plt.ylabel('N$_{aer, sol, accum}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
 
-    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY_Dates.svg'
-    plt.savefig(fileout)
+    fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY_Dates.png'
+    plt.savefig(fileout, dpi = 300)
     plt.show()
 
 def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
