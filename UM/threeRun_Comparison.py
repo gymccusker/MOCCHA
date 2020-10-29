@@ -1515,7 +1515,7 @@ def plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1
     plt.plot(np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0), data1['height'],
         '--', color = 'darkblue', linewidth = 0.5)
     plt.plot(np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), data1['height'],
-        '--', color = 'darkblue', linewidth = 0.5)                
+        '--', color = 'darkblue', linewidth = 0.5)
     plt.xlabel('Cloud Fraction')
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1534,7 +1534,7 @@ def plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label4 + '_' + label2 + '_' + label1 + '_1Sep-5Sep_Dates.png'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label4 + '_' + label2 + '_' + label1 + '_1Sep-5Sep_Dates.svg'
     plt.savefig(fileout)
     plt.show()
 
