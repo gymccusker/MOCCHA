@@ -4004,17 +4004,17 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ymax = 9000
     qmax = 4.0
 
-    data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
+    data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
 
-    data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+    data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+    data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+    data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
 
     ##################################################
     ##################################################
@@ -4056,21 +4056,21 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
         '--', color = 'darkblue', linewidth = 0.5)
 
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
-        np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
-         color = 'lightblue', alpha = 0.15)
-    plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
-    plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
+    #     np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
+    #      color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
         np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
-        color = 'mediumaquamarine', alpha = 0.15)
+        color = 'salmon', alpha = 0.15)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+        '--', color = 'firebrick', linewidth = 0.5)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+        '--', color = 'firebrick', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
         np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
@@ -4081,13 +4081,13 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
-    plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)
+    plt.legend(bbox_to_anchor=(1.0, 1.03, 1., .102), loc=4, ncol=2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -4096,7 +4096,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-2.0,1.0])
+    plt.xlim([-2.0,1.5])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -4111,21 +4111,21 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
         '--', color = 'darkblue', linewidth = 0.5)
 
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
-        np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
-        color = 'lightblue', alpha = 0.15)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'steelblue', linewidth = 0.5)
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
+    #     np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
+    #     color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
         np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
-        color = 'mediumaquamarine', alpha = 0.15)
+        color = 'salmon', alpha = 0.15)
     plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+        '--', color = 'firebrick', linewidth = 0.5)
     plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+        '--', color = 'firebrick', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
         np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
@@ -4136,8 +4136,8 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
@@ -4148,12 +4148,12 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    plt.xlim([-0.35,0.45])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_casim-100_ra2t_ra2m_wUMGlobal.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_ra2m_ra2m-erai_wUMGlobal.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -7433,7 +7433,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
@@ -7926,7 +7926,7 @@ def main():
     if out_dir1[:10] == '12_u-br210': label1 = 'UM_CASIM-AeroProf'
     if out_dir1[:10] == '11_u-bq798': label1 = 'UM_CASIM-100_Meyers'
     if out_dir1[:10] == '10_u-bq791': label1 = 'UM_CASIM-100_Fletcher'
-    if out_dir1[:9] == '8_u-bp738': label1 = 'UM_ERAI-GLM'
+    if out_dir1[:9] == '8_u-bp738': label1 = 'UM_RA2M-ERAI-GLM'
     if out_dir1[:9] == '7_u-bn068': label1 = 'UM_RA2T_' + out_dir1[-4:-1]
     if out_dir1[:9] == '6_u-bm410': label1 = 'UM_CASIM-200'
     if out_dir1[:9] == '5_u-bl661': label1 = 'UM_CASIM-100'
@@ -7941,7 +7941,7 @@ def main():
     if out_dir2[:10] == '12_u-br210': label2 = 'UM_CASIM-AeroProf'
     if out_dir2[:10] == '11_u-bq798': label2 = 'UM_CASIM-100_Meyers'
     if out_dir2[:10] == '10_u-bq791': label2 = 'UM_CASIM-100_Fletcher'
-    if out_dir2[:9] == '8_u-bp738': label2 = 'UM_ERAI-GLM'
+    if out_dir2[:9] == '8_u-bp738': label2 = 'UM_RA2M-ERAI-GLM'
     if out_dir2[:9] == '7_u-bn068': label2 = 'UM_RA2T_' + out_dir2[-4:-1]
     if out_dir2[:9] == '6_u-bm410': label2 = 'UM_CASIM-200'
     if out_dir2[:9] == '5_u-bl661': label2 = 'UM_CASIM-100'
@@ -7957,7 +7957,7 @@ def main():
     if out_dir3[:10] == '12_u-br210': label3 = 'UM_CASIM-AeroProf'
     if out_dir3[:10] == '11_u-bq798': label3 = 'UM_CASIM-100_Meyers'
     if out_dir3[:10] == '10_u-bq791': label3 = 'UM_CASIM-100_Fletcher'
-    if out_dir3[:9] == '8_u-bp738': label3 = 'UM_ERAI-GLM'
+    if out_dir3[:9] == '8_u-bp738': label3 = 'UM_RA2M-ERAI-GLM'
     if out_dir3[:9] == '7_u-bn068': label3 = 'UM_RA2T_' + out_dir3[-4:-1]
     if out_dir3[:9] == '6_u-bm410': label3 = 'UM_CASIM-200'
     if out_dir3[:9] == '5_u-bl661': label3 = 'UM_CASIM-100'
