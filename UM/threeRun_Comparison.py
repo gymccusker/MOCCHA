@@ -1322,7 +1322,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -1354,12 +1354,12 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    fig = plt.figure(figsize=(13, 10))
+    fig = plt.figure(figsize=(11.5, 9))
     # plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 1.0, left = 0.1,
     #         hspace = 0.4, wspace = 0.13)
 
@@ -1399,120 +1399,134 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    ax0  = fig.add_axes([0.08,0.78, 0.58,0.15])   # left, bottom, width, height
+    ax0  = fig.add_axes([0.06,0.8, 0.48,0.17])   # left, bottom, width, height
     ax0 = plt.gca()
-    ax0.set_facecolor('aliceblue')
-    plt.contourf(obs_data['time'], np.nanmean(obs_data['height'],0), np.transpose(obs_data['Cv']),
+    # ax0.set_facecolor('aliceblue')
+    img = plt.contourf(obs_data['time'], np.nanmean(obs_data['height'],0), np.transpose(obs_data['Cv']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
-    plt.colorbar()
-    # plt.contourf(obs_data['time'], np.nanmean(obs_data['height'],0), np.transpose(nanmask),
-    #     [0, 1],
-    #     cmap = mpl_cm.Greys,
-    #     hatch = 'x',
-    #     zorder = 3
-    #     )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.title('Obs Cloud fraction')
+    # plt.title('Obs-IFSgrid')# Cloud fraction')
     plt.xlim([doy[0], doy[-1]])
-    # nans = ax0.get_ylim()
-    # for i in range(len(obs_data['time']) - 1):
-    #     ax0.fill_between(np.arange(obs_data['time'][int(nanindex[i])], obs_data['time'][int(nanindex[i+1])], 1/24.0), nans[0], nans[-1], # obs_data['time'][nanmask == 1.0], nans[0], nans[-1],
-    #         facecolor = 'lightgrey',
-    #         hatch = '/',
-    #         zorder = 3)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,3.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax0.set_yticklabels([0,3,6,9])
+    plt.xticks([244,245,246,247,248,249])
+    ax0.set_xticklabels(['1 Sep','2 Sep','3 Sep','4 Sep','5 Sep','6 Sep'])
+    axx = ax0.twinx()
+    axx.set_ylabel('Obs-IFSgrid', fontsize = 12, rotation = 270, labelpad = 13)
+    axx.set_yticks([])
+    cbaxes = fig.add_axes([0.59, 0.31, 0.015, 0.42])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    plt.ylabel('Cloud Fraction', rotation = 270, labelpad = 13)
 
-    ax1  = fig.add_axes([0.08,0.56,0.58,0.15])   # left, bottom, width, height
+    ax1  = fig.add_axes([0.06,0.56,0.48,0.17])   # left, bottom, width, height
     ax1 = plt.gca()
-    ax1.set_facecolor('aliceblue')
-    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.title(label1 + ' Cloud fraction')
-    plt.colorbar()
-    plt.xlim([doy[0], doy[-1]])
-
-    ax2  = fig.add_axes([0.08,0.34,0.58,0.15])   # left, bottom, width, height
-    ax2 = plt.gca()
-    ax2.set_facecolor('aliceblue')
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
         )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.title(label2[:-4] + ' Cloud fraction')
-    plt.colorbar()
+    # plt.title(label2)# + ' Cloud fraction')
     plt.xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,3,6,9])
+    plt.xticks([244,245,246,247,248,249])
+    ax1.set_xticklabels(['1 Sep','2 Sep','3 Sep','4 Sep','5 Sep','6 Sep'])
+    axx = ax1.twinx()
+    axx.set_ylabel('UM_RA2T \n noTurbMP',fontsize = 12,  rotation = 270, labelpad = 28)
+    axx.set_yticks([])
 
-    ax3 = fig.add_axes([0.08,0.1,0.58,0.15])   # left, bottom, width, height
+    ax2  = fig.add_axes([0.06,0.32,0.48,0.17])   # left, bottom, width, height
+    ax2 = plt.gca()
+    plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    # plt.title(label4[:-4])# + ' Cloud fraction')
+    plt.xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax2.set_yticklabels([0,3,6,9])
+    plt.xticks([244,245,246,247,248,249])
+    ax2.set_xticklabels(['1 Sep','2 Sep','3 Sep','4 Sep','5 Sep','6 Sep'])
+    axx = ax2.twinx()
+    axx.set_ylabel(label4[:-4], fontsize = 12, rotation = 270, labelpad = 13)
+    axx.set_yticks([])
+
+    ax3 = fig.add_axes([0.06,0.08,0.48,0.17])   # left, bottom, width, height
     ax3 = plt.gca()
-    ax3.set_facecolor('aliceblue')
-    if out_dir3 == 'OUT_25H/':
-        ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
-        ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
-        plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data['model_snow_Cv_filtered']),
-            [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-            # vmin = 0, vmax = 150,
-            cmap = newcmp
-            )
-        ax = plt.gca()
-        nans = ax.get_ylim()
-        for file in missing_files:
-            ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-                facecolor = 'lightpink',
-                hatch = 'x',
-                zorder = 3)
-    else:
-        plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
-            [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-            # vmin = 0, vmax = 150,
-            cmap = newcmp
-            )
-    plt.ylabel('Height [m]')
-    plt.ylim([0,9000])
-    plt.yticks([0, 3e3, 6e3, 9e3])
-    plt.title(label3 + ' Cloud fraction')
-    plt.xlabel('Day of Year')
-    plt.colorbar()
+    plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
+        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        # vmin = 0, vmax = 150,
+        cmap = newcmp
+        )
+    # plt.title(label1)# + ' Cloud fraction')
+    plt.xlabel('Date')
+    # plt.colorbar()
     plt.xlim([doy[0], doy[-1]])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax3.set_yticklabels([0,3,6,9])
+    plt.xticks([244,245,246,247,248,249])
+    ax3.set_xticklabels(['1 Sep','2 Sep','3 Sep','4 Sep','5 Sep','6 Sep'])
+    axx = ax3.twinx()
+    axx.set_ylabel(label1, fontsize = 12, rotation = 270, labelpad = 13)
+    axx.set_yticks([])
 
-    ax4  = fig.add_axes([0.72,0.25,0.25,0.5])   # left, bottom, width, height
+    ax4  = fig.add_axes([0.72,0.22,0.25,0.5])   # left, bottom, width, height
     ax4 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0),np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs')
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs')
     ax4.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0),
         np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0), color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) - np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0), np.nanmean(obs_data['height'],0),
+        'k--', linewidth = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['Cv'][period,:]),0) + np.nanstd(np.squeeze(obs_data['Cv'][period,:]),0), np.nanmean(obs_data['height'],0),
+        'k--', linewidth = 0.5)
+
+    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'darkorange', linewidth = 3, label = label2)
+    ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
+        np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0), data2['height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+    plt.plot(np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), data2['height'],
+        '--', color = 'darkorange', linewidth = 0.5)
+
+    plt.plot(np.nanmean(data4['cloud_fraction'],0),data4['height'], color = 'steelblue', linewidth = 3, label = label4[:-4])
+    ax4.fill_betweenx(data4['height'],np.nanmean(data4['cloud_fraction'],0) - np.nanstd(data4['cloud_fraction'],0),
+        np.nanmean(data4['cloud_fraction'],0) + np.nanstd(data4['cloud_fraction'],0), color = 'lightblue', alpha = 0.15)
+    plt.plot(np.nanmean(data4['cloud_fraction'],0) - np.nanstd(data4['cloud_fraction'],0), data4['height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmean(data4['cloud_fraction'],0) + np.nanstd(data4['cloud_fraction'],0), data4['height'],
+        '--', color = 'steelblue', linewidth = 0.5)
+
     plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'darkblue', linewidth = 3, label = label1)
     ax4.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
         np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'purple', linewidth = 3, label = label2[:-4])
-    ax4.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
-        np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'thistle', alpha = 0.35)
-    if out_dir3 == 'OUT_25H/':
-        plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS')
-        ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
-            np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.15)
-    else:
-        plt.plot(np.nanmean(data3['cloud_fraction'],0),data3['height'], color = 'mediumseagreen', linewidth = 3, label = label3)
-        ax4.fill_betweenx(data3['height'],np.nanmean(data3['cloud_fraction'],0) - np.nanstd(data3['cloud_fraction'],0),
-            np.nanmean(data3['cloud_fraction'],0) + np.nanstd(data3['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0), data1['height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+    plt.plot(np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), data1['height'],
+        '--', color = 'darkblue', linewidth = 0.5)                
     plt.xlabel('Cloud Fraction')
-    plt.ylabel('Height [m]')
-    plt.ylim([0,10000])
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax4.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax4.set_yticks(axminor, minor = True)
+    ax4.grid(which = 'major', alpha = 0.5)
     plt.xlim([0,1])
-    plt.legend()
-
+    plt.legend(bbox_to_anchor=(0.0, 1.02, 1., .102), loc=3, ncol=1)
 
     print ('******')
     print ('')
@@ -1520,7 +1534,7 @@ def plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     print ('')
 
     if month_flag == -1:
-        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label3 + '_' + label2 + '_' + label1 + '_1Sep-5Sep.svg'
+        fileout = '../Cloudnet/FIGS/CvTimeseries_Obs-all_' + label4 + '_' + label2 + '_' + label1 + '_1Sep-5Sep_Dates.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -7433,7 +7447,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/'
+        out_dir2 = '16_u-bv926_RA2T_CON/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
@@ -7564,7 +7578,7 @@ def main():
             # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
             # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             # '20180829_oden_','20180830_oden_',
-            '20180831_oden_',
+            # '20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
             # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
@@ -7580,10 +7594,10 @@ def main():
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
-    doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
-    # doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
+    doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
     # doy = np.arange(237,259)        ## set DOY for RA2M_newRHcrit (25th Aug to 14th Sep)
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
@@ -8020,14 +8034,14 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_Cv_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
