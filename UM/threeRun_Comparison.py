@@ -4386,7 +4386,7 @@ def plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, m
     plt.grid('on')
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_casim-cooper_meyers_fletcher.png'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_casim-cooper_meyers_fletcher.svg'
     plt.savefig(fileout)
     plt.show()
 
