@@ -4390,6 +4390,23 @@ def plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, m
     # plt.savefig(fileout)
     plt.show()
 
+    ###------------------------
+    ###     Analysis for paper
+    ###------------------------
+
+    print ('Cooper = ')
+    print (np.nanmedian(data2['q_anomalies'],1))
+    print ('Cooper[16] = ')
+    print (np.nanmedian(data2['q_anomalies'],1)[16])
+    print ('Meyers = ')
+    print (np.nanmedian(data4['q_anomalies'],1))
+    print ('Meyers[16] = ')
+    print (np.nanmedian(data4['q_anomalies'],1)[16])
+    print ('Cooper[16] - Meyers[16] = ')
+    print (np.nanmedian(data2['q_anomalies'],1)[16] - np.nanmedian(data4['q_anomalies'],1)[16])
+    print ('Cooper[16] - Meyers[16]) at Z = ')
+    print (data1['universal_height'][16])
+
 def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
