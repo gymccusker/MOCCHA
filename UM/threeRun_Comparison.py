@@ -3306,6 +3306,227 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     plt.savefig(fileout)
     plt.show()
 
+def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    # from scipy.interpolate import interp1d
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model temperature profiles:')
+    print ('')
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    #### set flagged values to nans
+    data1['temperature'][data1['temperature'] == -9999] = np.nan
+    data2['temperature'][data2['temperature'] == -9999] = np.nan
+    data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data4['temperature'][data4['temperature'] == -9999] = np.nan
+    data5['temperature'][data5['temperature'] <= 0] = np.nan
+
+    #### set flagged values to nans
+    data1['q'][data1['q'] == -9999] = np.nan
+    data2['q'][data2['q'] == -9999] = np.nan
+    data3['q'][data3['q'] <= 0] = np.nan
+    data4['q'][data4['q'] == -9999] = np.nan
+    data5['q'][data5['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'temp')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'q')
+    print ('')
+    print ('Done!')
+
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
+
+    Tmin = -45
+    Tmax = 5
+    ymax = 9000
+    qmax = 4.0
+
+    data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+
+    data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+
+    ##################################################
+    ##################################################
+    #### MEDIAN PROFILES
+    ##################################################
+    ##################################################
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(7.5,9))
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.97, left = 0.1,
+            hspace = 0.3, wspace = 0.2)
+
+    ####        all model data share a timestamp
+    melt = np.where(data1['time_hrly'][::6] < 240.0)
+    freeze = np.where(data1['time_hrly'][::6] >= 240.0)
+
+
+    ###-------------------------
+    plt.subplot(221)
+    ax1 = plt.gca()
+    # plt.plot([0,0], [0,1e4], '--', color='grey')
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
+    #     np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
+    #     np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
+    #      color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
+    #     np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    #
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
+        np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
+        color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(0.8, 1.03, 1., .102), loc=4, ncol=3)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-2.0,1.0])
+    plt.xlabel('T bias [K]')
+
+    ###-------------------------
+    plt.subplot(222)
+    ax1 = plt.gca()
+    # plt.plot([0,0], [0,1e4], '--', color='grey')
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
+    #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
+    #     np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
+    #     color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
+    #     np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
+        np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
+        color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    # plt.legend()
+    plt.xlabel('q bias [g kg$^{-1}$]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    plt.grid('on')
+
+    ###-------------------------
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_wUMGlobal.svg'
+    # plt.savefig(fileout)
+    plt.show()
+
+
 def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
 
     import iris.plot as iplt
@@ -8270,8 +8491,9 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
