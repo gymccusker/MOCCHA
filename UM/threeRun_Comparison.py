@@ -4387,7 +4387,7 @@ def plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, m
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandQ_casim-cooper_meyers_fletcher.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -8278,10 +8278,12 @@ def main():
     # -------------------------------------------------------------
     # save out working data for debugging purposes
     # -------------------------------------------------------------
-    # np.save('working_data1', data1)
-    # np.save('working_data2', data2)
-    # np.save('working_data3', data3)
-    # np.save('working_dataObs', obs['hatpro'])
+    np.save('working_data1', data1)
+    np.save('working_data2', data2)
+    np.save('working_data3', data3)
+    np.save('working_data4', data4)
+    np.save('working_data5', data5)
+    np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
     # FIN.
