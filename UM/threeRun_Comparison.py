@@ -3538,13 +3538,13 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,f_um]),1) + np.nanstd(np.squeeze(data5['q_anomalies'][:,f_um]),1), data1['universal_height'],
         '--', color = 'grey', linewidth = 0.5)
 
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),
-        np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),
-        color = 'mediumaquamarine', alpha = 0.15)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),
+    #     np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) - np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1) + np.nanstd(np.squeeze(data2['q_anomalies'][:,f_ifs]),1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data3['q_anomalies'][:,f_ifs]),1) - np.nanstd(np.squeeze(data3['q_anomalies'][:,f_ifs]),1),
         np.nanmedian(np.squeeze(data3['q_anomalies'][:,f_ifs]),1) + np.nanstd(np.squeeze(data3['q_anomalies'][:,f_ifs]),1),
@@ -3574,8 +3574,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal.svg'
-    # plt.savefig(fileout, dpi = 300)
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.svg'
+    plt.savefig(fileout, dpi = 300)
     plt.show()
 
 
