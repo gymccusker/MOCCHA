@@ -3436,12 +3436,12 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4, zorder = 2)
+    plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,m_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
-    # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
-    plt.legend(bbox_to_anchor=(0.8, 1.03, 1., .102), loc=4, ncol=3)
+    # plt.legend(bbox_to_anchor=(0.8, 1.03, 1., .102), loc=4, ncol=3)
+    plt.legend(bbox_to_anchor=(1.3, 1.01, 1., .102), loc=4, ncol=3)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -3474,7 +3474,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4, zorder = 2)
+    plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,m_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
@@ -3574,7 +3574,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.svg'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
