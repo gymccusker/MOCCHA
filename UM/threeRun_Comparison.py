@@ -3474,7 +3474,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-3.0,2.0])
+    plt.xlim([-2.0,1.0])
     # plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -3533,7 +3533,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.35,0.55])
+    plt.xlim([-0.25,0.45])
     plt.grid('on')
     ax2 = ax1.twinx()
     ax2.set_ylabel('Melt', rotation = 270, labelpad = 15)
@@ -3596,7 +3596,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-3.0,2.0])
+    plt.xlim([-2.0,1.0])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -3655,7 +3655,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.35,0.55])
+    plt.xlim([-0.25,0.45])
     plt.grid('on')
     ax2 = ax1.twinx()
     ax2.set_ylabel('Freeze', rotation = 270, labelpad = 15)
