@@ -3662,7 +3662,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.png'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.svg'
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
