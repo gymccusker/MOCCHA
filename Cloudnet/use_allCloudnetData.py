@@ -457,7 +457,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs_Dates.svg'
+        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs_Dates.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5745,7 +5745,7 @@ def main():
     platform = 'LAPTOP'
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
-    obs_switch = 'IFS'
+    obs_switch = 'UM'
 
     ### only works on laptop for now
 
