@@ -251,7 +251,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_blueNaNs_newColours.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_blueNaNs_newColours.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -1141,8 +1141,8 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCthreshFirst_newColours.svg'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCthreshFirst_newColours.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind):
@@ -1363,7 +1363,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths_v2.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths_v2.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1547,7 +1547,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_whiteMissingFiles_BLDepths.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_whiteMissingFiles_BLDepths.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1631,7 +1631,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf10_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6716,7 +6716,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -6739,7 +6739,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
