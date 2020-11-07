@@ -505,7 +505,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     print (um_data.keys())
 
-    #### set flagged um_data to nans
+    ###----------------------------------------------------------------
+    ###         1) LWC Method
+    ###----------------------------------------------------------------
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
@@ -520,15 +522,50 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
     ra2t_data['model_lwc'][ra2t_data['model_lwc'] <= 0] = np.nan
     ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
-    # um_data['lwc'][um_data['lwc'] <= 0.0] = np.nan
-    # ifs_data['lwc'][ifs_data['lwc'] <= 0.0] = np.nan
-    # ifs_data['lwc'][ifs_data['lwc'] >= 20.0] = np.nan
-    # misc_data['lwc'][misc_data['lwc'] <= 0] = np.nan
 
-    print (np.nanmean(obs_data['lwc'],0).shape)
-    print (obs_data['height'].shape)
+    ###----------------------------------------------------------------
+    ###         2) TWC Method
+    ###----------------------------------------------------------------
+    # #### set flagged um_data to nans
+    # obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
+    # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
+    # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+    # ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0.0] = 0.0
+    #
+    # #### set flagged um_data to nans
+    # obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    # um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
+    # misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+    # ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
+    #
+    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+    #
+    # ### find twc points <1e-6 to nan out of LWC arrays
+    # ind0 = np.where(obs_data['twc'] < 1e-6)
+    # ind1 = np.where(um_data['model_twc'] < 1e-6)
+    # ind2 = np.where(misc_data['model_twc'] < 1e-6)
+    # ind3 = np.where(ifs_data['model_twc'] < 1e-6)
+    # ind4 = np.where(ra2t_data['model_twc'] < 1e-6)
+    #
+    # #### set flagged um_data to nans
+    # obs_data['lwc'][ind0] = np.nan
+    # um_data['model_lwc'][ind1] = np.nan
+    # ifs_data['model_lwc'][ind3] = np.nan
+    # misc_data['model_lwc'][ind2] = np.nan
+    # ra2t_data['model_lwc'][ind4] = np.nan
 
 
+    ###----------------------------------------------------------------
+    ###         Plot figure
+    ###----------------------------------------------------------------
     if obs_switch == 'RADAR':
         plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,obs_data['height'][:394], 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid')
         ax1.fill_betweenx(obs_data['height'][:394],np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
@@ -593,8 +630,8 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY_blueNaNs_newColours.png'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY_blueNaNs_newColours.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -6716,8 +6753,8 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
