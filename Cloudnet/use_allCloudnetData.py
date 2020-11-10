@@ -572,14 +572,38 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
             np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.xlim([0,1.0])
     else:
-        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 5)
-        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
-            np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        # #### SCALED LWC
+        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 5)
+        # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+        #     np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        # plt.xlim([0,0.2])
+        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
+        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
+        # #### ADIABATIC LWC (where there are HATPRO LWP data available)
+        # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = np.nan
+        # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] < 1e-6] = np.nan       ## exclude <0.001g/m3
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
+        # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+        #     np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        # plt.xlim([0,0.2])
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
+        #### ADIABATIC LWC (all times)
+        obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = np.nan
+        obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] < 1e-6] = np.nan       ## exclude <0.001g/m3
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic-incNoLWP', zorder = 5)
+        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+            np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.xlim([0,0.2])
-        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3, np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
-        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3, np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
+
 
     ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
         np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
@@ -630,7 +654,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF10_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY_blueNaNs_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30-adiabatic-incNoLWP_IFS_RA2M_CASIM-100_RA2T_LWC_gt1e-6kgm3_226-257DOY_blueNaNs_newColours.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -1261,6 +1285,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
+    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
     # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
@@ -1271,7 +1297,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -1333,6 +1359,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('Obs-' + obs_switch + 'grid')
     cbaxes = fig.add_axes([0.225, 0.95, 0.6, 0.015])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
@@ -1359,6 +1387,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('ECMWF_IFS')
     # plt.colorbar()
 
@@ -1384,6 +1414,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_CASIM-100')
     # plt.colorbar()
 
@@ -1408,6 +1440,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_RA2T')
     # plt.colorbar()
 
@@ -1432,10 +1466,12 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_RA2M')
     # plt.colorbar()
 
-    plt.xlabel('Day of Year')
+    plt.xlabel('Date')
 
     print ('******')
     print ('')
@@ -1444,7 +1480,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths_v2.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -1523,6 +1559,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('Obs-' + obs_switch + 'grid')
     cbaxes = fig.add_axes([0.225, 0.95, 0.6, 0.015])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
@@ -1548,6 +1586,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('ECMWF_IFS')
     # plt.colorbar()
 
@@ -1571,6 +1611,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_CASIM-100')
     # plt.colorbar()
 
@@ -1594,6 +1636,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_RA2T')
     # plt.colorbar()
 
@@ -1617,6 +1661,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.yticks([0,3e3,6e3,9e3])
     ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     plt.title('UM_RA2M')
     # plt.colorbar()
     plt.xlabel('Day of Year')
@@ -1628,7 +1674,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_whiteMissingFiles_BLDepths.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -1712,7 +1758,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY_newColours.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -2008,7 +2054,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_hatchedMissingFiles_newColours_Date.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -5855,7 +5901,7 @@ def main():
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         if obs_switch == 'UM':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF30_metum/14_CASIM-100_QF30/'
         elif obs_switch == 'IFS':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
@@ -5901,11 +5947,11 @@ def main():
                     'iwc-Z-T-ecmwf-grid/2018/']
         if obs_switch == 'IFS':
             cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
-                        'lwc-adiabatic-ecmwf-grid/2018/', #'lwc-scaled-ecmwf-grid/2018/',
+                        'lwc-scaled-ecmwf-grid/2018/', #'lwc-adiabatic-ecmwf-grid/2018/',
                         'iwc-Z-T-ecmwf-grid/2018/']
         elif obs_switch == 'UM':
             cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
-                        'lwc-scaled-metum-grid/2018/',
+                        'lwc-adiabatic-metum-grid/2018/',#'lwc-scaled-metum-grid/2018/',
                         'iwc-Z-T-metum-grid/2018/']
         elif obs_switch == 'RADAR':
             cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
@@ -5990,8 +6036,8 @@ def main():
         print ('Load ice station flux data from Jutta...')
         obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
-        print ('Load cloud fraction data from Jutta/Peggy...')
-        obs['cloudfractions'] = readMatlabStruct(cn_obs_dir + '../Gillian_cloudfraction.mat')
+        # print ('Load cloud fraction data from Jutta/Peggy...')
+        # obs['cloudfractions'] = readMatlabStruct(cn_obs_dir + '../Gillian_cloudfraction.mat')
 
     # print ('Load ice station radiation data from Jutta...')
     # obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
@@ -6583,7 +6629,7 @@ def main():
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
             obs_var_list = [['Cv', 'Cv_adv'],
-                        ['lwc','lwp'],
+                        ['lwc','lwc_adiabatic','lwc_adiabatic_inc_nolwp','lwp'],
                         ['height','iwc']]
 
             if obs_switch == 'RADAR':
@@ -6807,7 +6853,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -6837,7 +6883,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
