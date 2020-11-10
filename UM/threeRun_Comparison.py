@@ -6723,7 +6723,7 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
         # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
         varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
-        varlist = ['mr','q','q','q','q','q']
+        varlist = ['sphum','q','q','q','q','q']
 
     # ### stop double counting of 0000 and 2400 from model data
     # temp = np.zeros([len(data1['time'])])
