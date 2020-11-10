@@ -3662,7 +3662,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandQ_ifs_UMGlobal_ra2m_ra2t_casim-100.svg'
+    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-100.svg'
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
@@ -6377,7 +6377,8 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.5,1.0])
+    plt.xlim([-0.6,0.6])
+    plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
     plt.subplot(223)
     ax3 = plt.gca()
@@ -6475,9 +6476,10 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.5,1.0])
+    plt.xlim([-0.6,0.6])
+    plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p4_wSTDEV_newColours.svg'
+    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p3-p4_wSTDEV_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6597,7 +6599,8 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.5,1.0])
+    plt.xlim([-0.6,0.6])
+    plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
     plt.subplot(223)
     ax3 = plt.gca()
@@ -6689,15 +6692,16 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
 
     # plt.grid('on')
-    plt.xlabel('q bias [g kg$^{-1}$}]')
+    plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
     plt.yticks(axmajor)
     ax3.set_yticklabels([])
     ax3.set_yticks(axminor, minor = True)
     ax3.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.5,1.0])
+    plt.xlim([-0.6,0.6])
+    plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-QMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV_newColours.svg'
+    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -8637,7 +8641,7 @@ def main():
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
