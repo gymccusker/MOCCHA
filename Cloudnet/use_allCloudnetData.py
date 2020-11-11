@@ -1550,7 +1550,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             if obs_switch == 'UM':
                 if obs_data['twc'][t,k] < twc_thresh_um[k]:
                     obs_data['twc'][t,k] = np.nan
-                else:
+                elif obs_data['twc'][t,k] >= twc_thresh_um[k]:
                     mask0[t,k] = 1.0
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
