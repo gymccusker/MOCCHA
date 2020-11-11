@@ -1497,6 +1497,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     print ('mask0 size = ' + str(mask0.shape))
 
+    ### from Michael's paper:
+    ####    "we consider a grid point cloudy when cloud water exceeded
+    ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
+    ####    interpolation in between."
+
     ind0 = np.where(obs_data['twc'] >= 1e-6)
     mask0[ind0] = 1.0
     ind1 = np.where(um_data['model_twc'] >= 1e-6)
