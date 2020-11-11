@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 import seaborn as sns
+from scipy.interpolate import interp1d
 
 #### import python functions
 import sys
@@ -511,8 +512,8 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
     obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    obs_data['lwc'][obs_data['lwc'] >= 1e-3] = np.nan       ## exclude >1g/m3
-    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan       ## exclude <0.001g/m3
+    # obs_data['lwc'][obs_data['lwc'] >= 1e-3] = np.nan       ## exclude >1g/m3
+    # obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan       ## exclude <0.001g/m3
     um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
     ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
@@ -522,6 +523,8 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
     ra2t_data['model_lwc'][ra2t_data['model_lwc'] <= 0] = np.nan
     ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
+
+    obs_data = nanThreshold(obs_data, 'lwc', 0)
 
     ###----------------------------------------------------------------
     ###         2) TWC Method
@@ -573,25 +576,25 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         plt.xlim([0,1.0])
     else:
         # #### SCALED LWC
-        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 5)
-        # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
-        #     np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
-        # plt.xlim([0,0.2])
-        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
-        #     '--', color = 'k', linewidth = 0.5)
-        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
-        #     '--', color = 'k', linewidth = 0.5)
-        #### ADIABATIC LWC (where there are HATPRO LWP data available)
-        obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = np.nan
-        obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] < 1e-6] = np.nan       ## exclude <0.001g/m3
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
-        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
-            np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 5)
+        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+            np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
         plt.xlim([0,0.2])
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
+        #### ADIABATIC LWC (where there are HATPRO LWP data available)
+        # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = np.nan
+        # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] < 1e-6] = np.nan       ## exclude <0.001g/m3
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3,np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
+        # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
+        #     np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        # plt.xlim([0,0.2])
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
+        # plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        #     '--', color = 'k', linewidth = 0.5)
         # #### ADIABATIC LWC (all times)
         # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = np.nan
         # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] < 1e-6] = np.nan       ## exclude <0.001g/m3
@@ -1506,7 +1509,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ####-------------------------------------------------------------------------
     twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
     twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
-    ind0 = np.zeros([np.size(um_data['model_twc'],1)])
 
     ####-------------------------------------------------------------------------
     ### first look at values below 1 km
@@ -1746,7 +1748,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_226-257DOY_whiteMissingFiles_BLDepths.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding_226-257DOY_whiteMissingFiles_BLDepths.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -1830,7 +1832,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_gt1e-6kgm3_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_MTThresholding_UM_IFS_CASIM-100_TWC-MASK_blueNaNs_226-257DOY_newColours.svg'
     # plt.savefig(fileout)
     plt.show()
 
