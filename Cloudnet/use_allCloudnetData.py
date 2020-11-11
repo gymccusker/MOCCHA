@@ -1261,6 +1261,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     from matplotlib.colors import LogNorm
     from matplotlib.colors import ListedColormap, LinearSegmentedColormap
     from matplotlib import ticker, cm
+    from scipy.interpolate import interp1d
         # from matplotlib.patches import Polygon
 
     ###################################
@@ -1497,10 +1498,74 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     print ('mask0 size = ' + str(mask0.shape))
 
+    ####-------------------------------------------------------------------------
     ### from Michael's paper:
     ####    "we consider a grid point cloudy when cloud water exceeded
     ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
     ####    interpolation in between."
+    ####-------------------------------------------------------------------------
+
+    twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
+    twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
+    ind0 = np.zeros([np.size(um_data['model_twc'],1)])
+
+    ####-------------------------------------------------------------------------
+    ### first look at values below 1 km
+    ###     find Z indices <= 1km, then set twc_thresh values to 1e-6
+    um_lt1km = np.where(um_data['height'][0,:]<=1e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]<=1e3)
+    twc_thresh_um[um_lt1km] = 1e-6
+    twc_thresh_ifs[ifs_lt1km] = 1e-6
+
+    ####-------------------------------------------------------------------------
+    ### next look at values above 4 km
+    ###     find Z indices >= 4km, then set twc_thresh values to 1e-7
+    um_lt1km = np.where(um_data['height'][0,:]>=4e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]>=4e3)
+    twc_thresh_um[um_lt1km] = 1e-7
+    twc_thresh_ifs[ifs_lt1km] = 1e-7
+
+    # print ('twc_thresh_um size = ' + str(twc_thresh_um.shape))
+    # print ('twc_thresh_ifs size = ' + str(twc_thresh_ifs.shape))
+    # print ('twc_thresh_um = ')
+    # print (twc_thresh_um)
+    # plt.plot(twc_thresh_um, um_data['height'][0,:])#; plt.show()
+
+    um_intZs = np.where(twc_thresh_um == 0.0)
+    ifs_intZs = np.where(twc_thresh_ifs == 0.0)
+
+    ### interpolate for twc_thresh_um
+    x = [1e-6, 1e-7]
+    y = [1e3, 4e3]
+    f = interp1d(y, x)
+    twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
+
+    ### interpolate for twc_thresh_ifs
+    x = [1e-6, 1e-7]
+    y = [1e3, 4e3]
+    f = interp1d(y, x)
+    twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
+
+    # plt.plot(twc_thresh_um, um_data['height'][0,:])
+    # plt.plot(twc_thresh_ifs, ifs_data['height'][0,:]); plt.show()
+    # print (twc_thresh_um)
+
+    # for t in range(0,np.size(um_data['model_twc'],0)):
+    for k in range(0,np.size(um_data['model_twc'],1)):
+        print (twc_thresh_um[k])
+        test = obs_data['twc'][0,k]
+        print (test)
+        test[test <= twc_thresh_um[k]]
+        print (test)
+        # mask0[ind0] = 1.0
+        # ind1 = np.where(um_data['model_twc'] >= 1e-6)
+        # mask1[ind1] = 1.0
+        # ind2 = np.where(misc_data['model_twc'] >= 1e-6)
+        # mask2[ind2] = 1.0
+        # ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
+        # mask3[ind3] = 1.0
+        # ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
+        # mask4[ind4] = 1.0
 
     ind0 = np.where(obs_data['twc'] >= 1e-6)
     mask0[ind0] = 1.0
