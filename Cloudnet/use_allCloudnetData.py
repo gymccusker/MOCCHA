@@ -1298,7 +1298,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -1496,7 +1496,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     mask3 = np.zeros([np.size(ifs_data['model_twc'],0), np.size(ifs_data['model_twc'],1)])
     mask4 = np.zeros([np.size(ra2t_data['model_twc'],0), np.size(ra2t_data['model_twc'],1)])
 
-    print ('mask0 size = ' + str(mask0.shape))
+    # print ('mask0 size = ' + str(mask0.shape))
 
     ####-------------------------------------------------------------------------
     ### from Michael's paper:
@@ -1504,7 +1504,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
     ####    interpolation in between."
     ####-------------------------------------------------------------------------
-
     twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
     twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
     ind0 = np.zeros([np.size(um_data['model_twc'],1)])
@@ -1525,12 +1524,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     twc_thresh_um[um_lt1km] = 1e-7
     twc_thresh_ifs[ifs_lt1km] = 1e-7
 
-    # print ('twc_thresh_um size = ' + str(twc_thresh_um.shape))
-    # print ('twc_thresh_ifs size = ' + str(twc_thresh_ifs.shape))
-    # print ('twc_thresh_um = ')
-    # print (twc_thresh_um)
-    # plt.plot(twc_thresh_um, um_data['height'][0,:])#; plt.show()
-
+    ### find heights not yet assigned
     um_intZs = np.where(twc_thresh_um == 0.0)
     ifs_intZs = np.where(twc_thresh_ifs == 0.0)
 
@@ -1546,37 +1540,46 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     f = interp1d(y, x)
     twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
 
+    ### plot profile of threshold as sanity check
     # plt.plot(twc_thresh_um, um_data['height'][0,:])
     # plt.plot(twc_thresh_ifs, ifs_data['height'][0,:]); plt.show()
     # print (twc_thresh_um)
 
-    # for t in range(0,np.size(um_data['model_twc'],0)):
-    for k in range(0,np.size(um_data['model_twc'],1)):
-        print (twc_thresh_um[k])
-        test = obs_data['twc'][0,k]
-        print (test)
-        test[test <= twc_thresh_um[k]]
-        print (test)
-        # mask0[ind0] = 1.0
-        # ind1 = np.where(um_data['model_twc'] >= 1e-6)
-        # mask1[ind1] = 1.0
-        # ind2 = np.where(misc_data['model_twc'] >= 1e-6)
-        # mask2[ind2] = 1.0
-        # ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
-        # mask3[ind3] = 1.0
-        # ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
-        # mask4[ind4] = 1.0
+    for t in range(0,np.size(um_data['model_twc'],0)):
+        for k in range(0,np.size(um_data['model_twc'],1)):
+            if obs_switch == 'UM':
+                if obs_data['twc'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc'][t,k] = np.nan
+                else:
+                    mask0[t,k] = 1.0
+            if um_data['model_twc'][t,k] < twc_thresh_um[k]:
+                um_data['model_twc'][t,k] = np.nan
+            else:
+                mask1[t,k] = 1.0
+            if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
+                misc_data['model_twc'][t,k] = np.nan
+            else:
+                mask2[t,k] = 1.0
+            if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
+                ra2t_data['model_twc'][t,k] = np.nan
+            else:
+                mask4[t,k] = 1.0
+        for k in range(0,np.size(ifs_data['model_twc'],1)):
+            if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
+                ifs_data['model_twc'][t,k] = np.nan
+            else:
+                mask3[t,k] = 1.0
 
-    ind0 = np.where(obs_data['twc'] >= 1e-6)
-    mask0[ind0] = 1.0
-    ind1 = np.where(um_data['model_twc'] >= 1e-6)
-    mask1[ind1] = 1.0
-    ind2 = np.where(misc_data['model_twc'] >= 1e-6)
-    mask2[ind2] = 1.0
-    ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
-    mask3[ind3] = 1.0
-    ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
-    mask4[ind4] = 1.0
+    # ind0 = np.where(obs_data['twc'] >= 1e-6)
+    # mask0[ind0] = 1.0
+    # ind1 = np.where(um_data['model_twc'] >= 1e-6)
+    # mask1[ind1] = 1.0
+    # ind2 = np.where(misc_data['model_twc'] >= 1e-6)
+    # mask2[ind2] = 1.0
+    # ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
+    # mask3[ind3] = 1.0
+    # ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
+    # mask4[ind4] = 1.0
 
     mask0[nanind] = np.nan
     mask1[nanind] = np.nan
