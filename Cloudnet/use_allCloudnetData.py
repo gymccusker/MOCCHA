@@ -888,9 +888,6 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ###----------------------------------------------------------------
     ###         2) TWC Method
     ###----------------------------------------------------------------
-    ###----------------------------------------------------------------
-    ###         2) TWC Method
-    ###----------------------------------------------------------------
     #### set flagged um_data to nans
     obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
     um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
