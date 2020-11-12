@@ -590,9 +590,6 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
 
     ### interpolate for twc_thresh_ifs
-    x = [1e-6, 1e-7]
-    y = [1e3, 4e3]
-    f = interp1d(y, x)
     twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
 
     ### plot profile of threshold as sanity check
@@ -1592,9 +1589,6 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
 
     ### interpolate for twc_thresh_ifs
-    x = [1e-6, 1e-7]
-    y = [1e3, 4e3]
-    f = interp1d(y, x)
     twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
 
     ### plot profile of threshold as sanity check
