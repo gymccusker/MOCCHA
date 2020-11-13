@@ -2362,7 +2362,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
-
     ### Obs peak SWnet = 13.94
     ### UM_RA2M peak SWnet = 39.99
     ### UM_RA2T peak SWnet = 41.25
@@ -2386,7 +2385,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-
     ### Obs peak LWnet = -3.72
     ### UM_RA2M peak LWnet = -3.43
     ### UM_RA2T peak LWnet = -4.00
@@ -2414,7 +2412,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlabel('Net Radiation [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
-
     ### Obs peak netRad = 7.65
     ### UM_RA2M peak netRad = 34.09
     ### UM_RA2T peak netRad = 36.41
@@ -2438,7 +2435,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
-
     ### Obs peak SWnet = 7.97
     ### UM_RA2M peak SWnet = 13.53
     ### UM_RA2T peak SWnet = 28.49
@@ -2462,7 +2458,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-
     ### Obs peak LWnet = -7.57
     ### UM_RA2M peak LWnet = -9.32
     ### UM_RA2T peak LWnet = -11.21
@@ -2491,7 +2486,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     plt.xlabel('Net Radiation [W m$^{-2}$]')
-
     ### Obs peak netRad = -0.15
     ### UM_RA2M peak netRad = 15.32
     ### UM_RA2T peak netRad = 16.59
