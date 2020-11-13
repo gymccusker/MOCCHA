@@ -2270,42 +2270,43 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     ax = plt.gca()
     yA = [-65, 85]
     #### plot periods
-    ## p3
-    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
-    plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
-    ## p4
-    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
-    plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
-    ## p5
-    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
-    plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
-    ## p6
-    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
-    plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
-    ## p7
-    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
-    plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
-    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
-    ## p8
-    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
-    plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
-    plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
-    plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
+    ##  melt/freeze threshold
     plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='grey')
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [-50, -50], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p3[0][0]], -50, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p3[0][-1]], -50, '.', color = 'r')
+    plt.annotate('P3', xy=(227.5,-45), xytext=(227.5,-45), fontsize = 12, color = 'r')
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [-50, -50], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p4[0][0]], -50, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p4[0][-1]], -50, '.', color = 'r')
+    plt.annotate('P4', xy=(234.5,-45), xytext=(234.5,-45), fontsize = 12, color = 'r')
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [yA[0],yA[-1]], '--', color = 'r', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p5[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p5[0][-1]], 70, '.', color = 'r')
+    plt.annotate('P5', xy=(243,59), xytext=(243,59), fontsize = 12, color = 'r')
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p6[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p6[0][-1]], 70, '.', color = 'r')
+    plt.annotate('P6', xy=(248.75,59), xytext=(248.75,59), fontsize = 12, color = 'r')
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p7[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p7[0][-1]], 70, '.', color = 'r')
+    plt.annotate('P7', xy=(253,59), xytext=(253,59), fontsize = 12, color = 'r')
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_6hrly'][p8[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_6hrly'][p8[0][-1]], 70, '.', color = 'r')
+    plt.annotate('P8', xy=(256.5,59), xytext=(256.5,59), fontsize = 12, color = 'r')
     ##
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
@@ -2450,7 +2451,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods.png'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods.svg'
     plt.savefig(fileout)
     plt.show()
 
