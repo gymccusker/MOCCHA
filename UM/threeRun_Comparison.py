@@ -2353,98 +2353,155 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
     yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(sw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netSW[obsmelt], hist=False, color="black")
-    # plt.title('Melt')
+    f1 = sns.distplot(sw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
+    f4 = sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    f2 = sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f3 = sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
+    f0 = sns.distplot(netSW[obsmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(87,0.07), xytext=(87,0.07), fontsize = 14)
-    # plt.legend()
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
 
-    # plt.subplot(212)
+    ### Obs peak SWnet = 13.94
+    ### UM_RA2M peak SWnet = 39.99
+    ### UM_RA2T peak SWnet = 41.25
+    ### UM_CASIM-100 peak SWnet = 26.36
+    ### ECMWF_IFS peak SWnet = 21.48
+    # y = f3.lines[0].get_ydata()
+    # x = f3.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('ECMWF_IFS peak SWnet = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
+
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
     yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(lw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(lw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netLW[obsmelt], hist=False, color="black")
-    # plt.title('Melt')
+    f1 = sns.distplot(lw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
+    f4 = sns.distplot(lw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
+    f2 = sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f3 = sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
+    f0 = sns.distplot(netLW[obsmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
 
-    # plt.subplot(212)
+    ### Obs peak LWnet = -3.72
+    ### UM_RA2M peak LWnet = -3.43
+    ### UM_RA2T peak LWnet = -4.00
+    ### UM_CASIM-100 peak LWnet = -2.06
+    ### ECMWF_IFS peak LWnet = -3.71
+    # y = f1.lines[0].get_ydata()
+    # x = f1.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('UM_RA2M peak LWnet = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
+
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
     yDmax = 0.08
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[melt] + lw1[melt]
-    sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
+    f1 = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
     crf4 = sw4[melt] + lw4[melt]
-    sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    f4 = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
     crf2 = sw2[melt] + lw2[melt]
-    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f2 = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf3 = sw3[melt] + lw3[melt]
-    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
-    # plt.title('Melt')
+    f3 = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
+    f0 = sns.distplot(netLW[obsmelt] + netSW[obsmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
     plt.xlabel('Net Radiation [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
 
+    ### Obs peak netRad = 7.65
+    ### UM_RA2M peak netRad = 34.09
+    ### UM_RA2T peak netRad = 36.41
+    ### UM_CASIM-100 peak netRad = 21.96
+    ### ECMWF_IFS peak netRad = 15.52
+    # y = f1.lines[0].get_ydata()
+    # x = f1.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('UM_RA2M peak netRad = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
+
     ax  = fig.add_axes([0.83,0.7,0.15,0.22])   # left, bottom, width, height
     yEmax = 0.08
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    sns.distplot(sw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netSW[obsfreeze], hist=False, color="black")
+    f1 = sns.distplot(sw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
+    f4 = sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    f2 = sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f3 = sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
+    f0 = sns.distplot(netSW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(77,0.07), xytext=(77,0.07), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
 
-    # plt.subplot(212)
+    ### Obs peak SWnet = 7.97
+    ### UM_RA2M peak SWnet = 13.53
+    ### UM_RA2T peak SWnet = 28.49
+    ### UM_CASIM-100 peak SWnet = 11.27
+    ### ECMWF_IFS peak SWnet = 11.33
+    # y = f3.lines[0].get_ydata()
+    # x = f3.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('ECMWF_IFS peak SWnet = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
+
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
     yFmax = 0.16
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    sns.distplot(lw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netLW[obsfreeze], hist=False, color="black")
+    f = sns.distplot(lw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
+    f = sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f = sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
+    f = sns.distplot(netLW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
+
+    ### Obs peak LWnet = -7.57
+    ### UM_RA2M peak LWnet = -9.32
+    ### UM_RA2T peak LWnet = -11.21
+    ### UM_CASIM-100 peak LWnet = -5.70
+    ### ECMWF_IFS peak LWnet = -6.87
+    # y = f.lines[0].get_ydata()
+    # x = f.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('Obs peak LWnet = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
     yDmax = 0.08
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[freeze] + lw1[freeze]
-    sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
+    f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
     crf4 = sw4[freeze] + lw4[freeze]
-    sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
     crf2 = sw2[freeze] + lw2[freeze]
-    sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    f = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf3 = sw3[freeze] + lw3[freeze]
-    sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(netLW[obsfreeze] + netSW[obsfreeze], hist=False, color="black")
-    # plt.title('Freeze')
+    f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
+    f = sns.distplot(netLW[obsfreeze] + netSW[obsfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     plt.xlabel('Net Radiation [W m$^{-2}$]')
 
+    ### Obs peak netRad = -0.15
+    ### UM_RA2M peak netRad = 15.32
+    ### UM_RA2T peak netRad = 16.59
+    ### UM_CASIM-100 peak netRad = 5.37
+    ### ECMWF_IFS peak netRad = 5.92
+    # y = f.lines[0].get_ydata()
+    # x = f.lines[0].get_xdata()
+    # maxid = np.argmax(y)
+    # print ('ECMWF_IFS peak netRad = ' + ('%.2f' % x[maxid]))
+    # plt.plot(x[maxid],y[maxid],'o')
 
     print ('******')
     print ('')
@@ -2452,7 +2509,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('')
 
     fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
