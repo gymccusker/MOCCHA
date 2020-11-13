@@ -2204,6 +2204,17 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     netSW = swdmean - swumean
 
 
+
+    #########-------------------------------------------------------------------------------------------
+    ####       DEFINE PERIODS
+    ####               all model data share a timestamp
+    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] <= 230.0))
+    p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] <= 240.0))
+    p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] <= 247.0))
+    p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] <= 251.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] <= 255.5))
+    p8 = np.where(data1['time_hrly'][::6] >= 255.5)
+
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
@@ -2258,7 +2269,44 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     ax  = fig.add_axes([0.07,0.1,0.53,0.22])   # left, bottom, width, height
     ax = plt.gca()
     yA = [-65, 85]
+    #### plot periods
+    ## p3
+    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
+    plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
+    ## p4
+    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
+    plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
+    ## p5
+    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
+    plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
+    ## p6
+    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
+    plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
+    ## p7
+    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
+    plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
+    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [yA[0],yA[-1]], '--', color = 'lightgrey', linewidth = 1)
+    ## p8
+    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
+    plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
+    plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
+    plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
     plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='grey')
+    ##
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data4['time'], data4['surface_net_LW_radiation'].data + data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
@@ -2402,7 +2450,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_CRF_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Date.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -3916,11 +3964,11 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     #########-------------------------------------------------------------------------------------------
     ####       DEFINE PERIODS
     ####               all model data share a timestamp
-    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
-    p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
-    p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
-    p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] < 255.5))
+    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] <= 230.0))
+    p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] <= 240.0))
+    p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] <= 247.0))
+    p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] <= 251.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] <= 255.5))
     p8 = np.where(data1['time_hrly'][::6] >= 255.5)
     #   p3: np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
@@ -8507,7 +8555,10 @@ def main():
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
     data4['time_hrly'] = temp4[ii4]
-    # data5['time_hrly'] = temp5[ii5]
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data4['time_6hrly'] = data4['time_hrly'][::6]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
@@ -8631,11 +8682,11 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
