@@ -7426,6 +7426,9 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     elif out_dir[2:9] == 'u-bv926':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. l_subgrid_qcl_mp to .false. to not allow for turbulent production of mixed-phase cloud. '
         revision = 'Revision no. 0. '
+    elif out_dir[3:10] == 'u-bz429':
+        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. 15 min temporal resolution of key 3D diagnostics. '
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
@@ -7699,7 +7702,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '7_u-bn068_RA2T_CON/'
+    out_dir = '17_u-bz429_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -7714,6 +7717,7 @@ def main():
     ## 14_u-bu570_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
     ## 15_u-bu687_RA2M_CON/           # Wilson and Ballard 1999 uphys; new RHcrit
     ## 16_u-bv926_RA2T_CON/              # RA2T_CON nest + global 4D stash + no subgrid mp production
+    ## 17_u-bz429_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics
 
     #### run with nohup:
     ####    nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
