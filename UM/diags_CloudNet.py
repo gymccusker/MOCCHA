@@ -840,7 +840,7 @@ def main():
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['_pa012','_pb009','_pc011','_pd011','_pe011']
+    names = ['_pa012','_pb009','_pc011','_pd011','_pe011','_pc012']
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
