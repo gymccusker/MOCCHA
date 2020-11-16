@@ -4,7 +4,7 @@
 ###         PULL SHIP TRACK, AND OUTPUT AS NETCDF FOR CLOUDNET
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -27,9 +27,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -66,13 +66,13 @@ def unrotateGrid(cube):
     lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, pole_lon, pole_lat)
 
     # Print to check conversion
-    print '******'
-    print 'Test of unrotated coordinate grid: '
-    print 'Rotated lon coord = ', rot_lon[250]
-    print 'Rotated lat coord = ', rot_lat[250]
-    print 'Lon = ', lon[250]
-    print 'Lat = ', lat[250]
-    print ' '
+    print ('******')
+    print ('Test of unrotated coordinate grid: ')
+    print ('Rotated lon coord = ', rot_lon[250])
+    print ('Rotated lat coord = ', rot_lat[250])
+    print ('Lon = ', lon[250])
+    print ('Lat = ', lat[250])
+    print (' ')
 
     # ******
     # write to csv file
@@ -102,12 +102,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -129,19 +129,19 @@ def inIce(data):
     Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print ('CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print ('')
+    print ('Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')')
+    print ('Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
+    print ('Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6])))
+    print ('Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7])))
+    print ('')
 
     return inIce_index
 
@@ -153,9 +153,9 @@ def writeoutGrid(tim, lat, lon, date):
     # write to csv file
     # ******
 
-    print '******'
-    print 'Writing ' + date + ' grid to file:'
-    print ''
+    print ('******')
+    print ('Writing ' + date + ' grid to file:')
+    print ('')
     dat = np.zeros([len(tim), 3])
     dat[:,0] = tim
     dat[:,1] = lon
@@ -163,9 +163,9 @@ def writeoutGrid(tim, lat, lon, date):
     df = pd.DataFrame(dat)
     filename = 'AUX_DATA/' + date + '_ShipTrack_GRIDDED.csv'
     df.to_csv(filename,  sep = " ")
-    print '... finished!'
-    print ''
-    print '******'
+    print ('... finished!')
+    print ('')
+    print ('******')
 
 def gridShipTrack(cube, xoffset, yoffset):
 
@@ -5440,15 +5440,15 @@ def trackShip(data):
     trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==5,data.values[:,1]==9),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print ('Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
     # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
     # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    print ('trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print ('')
 
     return trackShip_index
 
@@ -5456,10 +5456,10 @@ def readGriddedTrack(grid_filename):
 
     import pandas as pd
 
-    print '******'
-    print ''
-    print 'Reading ' + grid_filename + ' file with pandas'
-    print ''
+    print ('******')
+    print ('')
+    print ('Reading ' + grid_filename + ' file with pandas')
+    print ('')
 
     data = pd.read_csv(grid_filename, sep = " ")
     values = data.values
@@ -5478,10 +5478,10 @@ def readGlobal(cube, ship_data, date_dir):
     import cartopy.crs as ccrs
     import cartopy
 
-    print '******'
-    print ''
-    print 'Defining longitude and latitude boundaries:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Defining longitude and latitude boundaries:')
+    print ('')
 
     if np.ndim(cube[0].data) == 3:      ### 2D data + time
         lats = cube[0].dim_coords[1].points
@@ -5495,7 +5495,7 @@ def readGlobal(cube, ship_data, date_dir):
     ###---------------------------------------------------------------------------------
     nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
     sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
-    print 'sb_lats.shape = ' + str(sb_lats.shape)
+    print ('sb_lats.shape = ' + str(sb_lats.shape))
 
     ###---------------------------------------------------------------------------------
     ### find western and eastern boundaries of gridpoints
@@ -5515,7 +5515,7 @@ def readGlobal(cube, ship_data, date_dir):
         date = date[:6] + str(int(date[-2:]) + 1).zfill(2)
     day_ind = np.array([])
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
-    print 'Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts '
+    print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
 
     #################################################################
     ## save daily lat/lons as temp vars
@@ -5523,7 +5523,7 @@ def readGlobal(cube, ship_data, date_dir):
     ship_lats = ship_data.values[day_ind[0],7]
     ship_lons = ship_data.values[day_ind[0],6]
 
-    print 'ship_lats.shape = ' + str(ship_lats.shape)
+    print ('ship_lats.shape = ' + str(ship_lats.shape))
 
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
@@ -5538,13 +5538,13 @@ def readGlobal(cube, ship_data, date_dir):
     jflag = np.zeros(24)        ### flag for if grid boundary is crossed
 
     for h in hours:
-        print ''
-        print 'hour = ' + str(h)
+        print ('')
+        print ('hour = ' + str(h))
         for j in range(0,len(sb_lats)):     ### for all latitude points
             if np.logical_and(ship_lats[h] >= sb_lats[j], ship_lats[h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
                 for i in range(0,len(wb_lons)):     ### for all longitude points
                     if np.logical_and(ship_lons[h] >= wb_lons[i], ship_lons[h] < eb_lons[i]):     ### find where ship lon sits on glm lon grid
-                        print 'lats and lons match at i = ' + str(i) + ', j = ' + str(j)
+                        print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
                         jflag[h] = jflag[h] + 1
                         data['ship_lons'][h] = lons[i]
                         data['ship_hour'][h] = hours[h]
@@ -5568,9 +5568,9 @@ def readGlobal(cube, ship_data, date_dir):
     ilon = data['ship_i']
     ilat = data['ship_j']
 
-    print tim
-    print ilon
-    print ilat
+    print (tim)
+    print (ilon)
+    print (ilat)
 
     # #####--------------------------------------------------------------------------------------------------
     # #####--------------------------------------------------------------------------------------------------
@@ -5646,13 +5646,13 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## CHOOSE DIAGNOSTIC
     ###################################
     diag = 0
-    print ''
-    print 'Diag is: ', cube[diag].long_name
-    print ''
+    print ('')
+    print ('Diag is: ', cube[diag].long_name)
+    print ('')
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    print 'What grid are we looking at?'
+    print ('What grid are we looking at?')
     if len(cube[diag].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
@@ -5678,9 +5678,9 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[diag].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    print ('Because cube shape = ', str(len(cube[diag].dim_coords[-1].points)))
+    print ('xoffset = ', xoffset)
+    print ('yoffset = ', yoffset)
 
     ### pcXXX
     # 0: total_radar_reflectivity / (unknown) (model_level_number: 70; grid_latitude: 25; grid_longitude: 25)
@@ -5698,10 +5698,10 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting cartopy map:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -5841,42 +5841,42 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting cartopy map! :)')
+    print ('')
 
     # plt.savefig('FIGS/12-13Aug_Outline_wShipTrackMAPPED.svg')
     plt.show()
 
 def excludeZeros(cube):
 
-    print ''
-    print 'Checking stash list:'
+    print ('')
+    print ('Checking stash list:')
 
-    print 'Want to exclude zeros in the following fields:'
+    print ('Want to exclude zeros in the following fields:')
     ### list of stash items where we want to exclude zeros
     STASH = ['m01s00i012','m01s00i254','m01s00i075','m01s00i076','m01s00i078',
         'm01s00i079','m01s00i081','m01s00i271','m01s00i273','m01s00i272',
         'm01s00i083','m01s00i084','m01s00i088']
-    print STASH
+    print (STASH)
 
-    print 'Diag is:'
+    print ('Diag is:')
     str_m = "%02d" % cube.attributes['STASH'][0]
     str_s = "%02d" % cube.attributes['STASH'][1]
     str_i = "%03d" % cube.attributes['STASH'][2]
     stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
-    print stash
+    print (stash)
 
     for i in range(0, len(STASH)):
         if STASH[i] == stash:
             # data[data==0] = np.nan              # set zeros to nans
             flag = 1                           # flagging if in list
-            print 'In list, so excluding zeros'
+            print ('In list, so excluding zeros')
             break
         else:
             flag = 0                           # flagging if not in list
-            print 'Not in list, so not excluding zeros'
+            print ('Not in list, so not excluding zeros')
 
     # if flag == 1:
     # if flag == 0:
@@ -5888,20 +5888,20 @@ def checkWind(cube):
 
     # 0.5*(tempvar1[0:len(tempvar1)-2,:,:]+tempvar1[1:len(tempvar1)-1,:,:]),0)
 
-    print ''
-    print 'Checking stash list:'
+    print ('')
+    print ('Checking stash list:')
 
-    print 'Want to change gridding of the following fields:'
+    print ('Want to change gridding of the following fields:')
     ### list of stash items where we want to change gridding (u/v wind)
     STASH = ['m01s00i002','m01s00i003']
-    print STASH
+    print (STASH)
 
-    print 'Diag is:'
+    print ('Diag is:')
     str_m = "%02d" % cube.attributes['STASH'][0]
     str_s = "%02d" % cube.attributes['STASH'][1]
     str_i = "%03d" % cube.attributes['STASH'][2]
     stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
-    print stash
+    print (stash)
 
     for i in range(0, len(STASH)):
         if stash == STASH[i]:
@@ -5911,12 +5911,12 @@ def checkWind(cube):
 
     tempvar = np.zeros(cube.shape)
     if flag == 1:
-        print 'In list, so changing vertical grid'
+        print ('In list, so changing vertical grid')
         tempvar[:,:-1,:,:] = 0.5*(cube.data[:,:-1,:,:] + cube.data[:,1:,:,:])
-        print 'Cube = ' + str(cube.data[0,0:9,10,10])
-        print 'Tempvar = ' + str(tempvar[0,0:9,10,10])
+        print ('Cube = ' + str(cube.data[0,0:9,10,10]))
+        print ('Tempvar = ' + str(tempvar[0,0:9,10,10]))
     if flag == 0:
-        print 'Not in list, so not changing vertical grid'
+        print ('Not in list, so not changing vertical grid')
 
     tempvar[:,-1,:,:] = np.nan
 
@@ -5926,10 +5926,10 @@ def checkWind(cube):
 
 def fixHeight(data, cube):
 
-    print '******'
-    print ''
-    print 'Adjusting height to common vertical grid...'
-    print ''
+    print ('******')
+    print ('')
+    print ('Adjusting height to common vertical grid...')
+    print ('')
 
     # height = cube[1].aux_coords[2].points.data       ### 71 levels
 
@@ -5962,12 +5962,12 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     import iris.plot as iplt
     import pandas as pd
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    print 'What grid are we looking at?'
+    print ('What grid are we looking at?')
     if len(cube[0].dim_coords[-1].points) == 25:
         xoffset = -239
         yoffset = -470
@@ -5988,33 +5988,33 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    print ('Because cube shape = ', str(len(cube[0].dim_coords[-1].points)))
+    print ('xoffset = ', xoffset)
+    print ('yoffset = ', yoffset)
 
     #################################################################
     ## load gridded ship track
     #################################################################
     # print '******'
-    print ''
-    print 'Pulling gridded track from cube:'
-    print ''
+    print ('')
+    print ('Pulling gridded track from cube:')
+    print ('')
 
     if model == 'lam':
         tim, ilat, ilon = readGriddedTrack(grid_filename)
     elif model == 'glm':
         tim, ilat, ilon = readGlobal(cube, ship_data, date)
     else:
-        print 'Model option is not valid'
+        print ('Model option is not valid')
 
     #################################################################
     ## fix time index
     #################################################################
 
     if np.size(cube)>1:
-        print ''
-        print 'More than one variable constraint. Proceeding...'
-        print ''
+        print ('')
+        print ('More than one variable constraint. Proceeding...')
+        print ('')
         print (np.size(cube))
 
         #################################################################
@@ -6049,9 +6049,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         # if not ok: continue
 
         for k in range(0,np.size(cube)):            ### loop over number of variables
-            print ''
-            print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
-            print ''
+            print ('')
+            print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
+            print ('')
             #################################################################
             ## only consider hourly diagnostics
             #################################################################
@@ -6059,7 +6059,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 ###---------------------------------
                 ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
                 ###---------------------------------
-                print 'Double-checking grid:'
+                print ('Double-checking grid:')
                 if len(cube[k].dim_coords[-1].points) == 25:
                 # if cube[0,0].shape >= 25-1:    # ll = 240, 471
                     xoffset = -239
@@ -6084,7 +6084,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 # elif cube[0,0].shape >= 500-1:
                     xoffset = 0
                     yoffset = 0
-                print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
+                print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
 
                 #################################################################
                 ## make hourly time array
@@ -6112,17 +6112,17 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 ## CHECK DIMENSIONS
                 #################################################################
                 if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
-                    print 'Variable is 4D:'
-                    print ''
+                    print ('Variable is 4D:')
+                    print ('')
                     #### create empty arrays to be filled
                     data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                     ### make dimension flag
                     dim_flag = 1        ### for next loops
-                    print 'data.shape = ', str(data.shape)
-                    print ''
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
                 else:
-                    print 'Variable is 3D:'
-                    print ''
+                    print ('Variable is 3D:')
+                    print ('')
                     #### create empty arrays to be filled
                     if np.logical_or(stream == '_pb009', stream == '_pb012'):
                         if cube[k].long_name == 'large_scale_ice_water_path':
@@ -6134,8 +6134,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     elif stream == '_pa012': data = np.zeros([len(cubetime)])
                     elif stream == '_pd011': data = np.zeros([len(cubetime)-1])
                     dim_flag = 0       ### for next loops
-                    print 'data.shape = ', str(data.shape)
-                    print ''
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
 
                 #################################################################
                 ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
@@ -6147,7 +6147,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         ### end point (23h)
                         itime = np.where(tim >= cubetime[-1])
                     # print ''
-                    print 'For ', str(j), 'h, itime = ', itime
+                    print ('For ', str(j), 'h, itime = ', itime)
                     if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                     if dim_flag == 0: dat = np.zeros([len(itime[0])])
                     for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
@@ -6204,10 +6204,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
             #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
                 varname = varnames.findfieldName(stash)
-                print 'standard_name = ', cube[k].standard_name
-                print 'long name = ', cube[k].long_name
-                print 'varname = ', varname
-                print ''
+                print ('standard_name = ', cube[k].standard_name)
+                print ('long name = ', cube[k].long_name)
+                print ('varname = ', varname)
+                print ('')
 
                 if stream == '_pa012':
                     ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
@@ -6247,25 +6247,25 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 # ncube.attributes = cube[k].attributes
                 # iris.save(ncube, pp_outfile, append=True)
                 if k == 0:
-                    print 'Assigning fcube'
-                    print ''
+                    print ('Initialising fcube')
+                    print ('')
                     fcube = [ncube]
                 else:
-                    print 'Appending variable to fcube'
-                    print ''
+                    print ('Appending variable to fcube')
+                    print ('')
                     fcube.append(ncube)
 
         # print fcube
 
     else:
-        print ''
-        print 'Only one variable constraint. Proceeding...'
-        print ''
+        print ('')
+        print ('Only one variable constraint. Proceeding...')
+        print ('')
 
         cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
-        print ''
-        print 'Cube times relative to forecast start (excluding first 12H):', cubetime[:-1]
-        print ''
+        print ('')
+        print ('Cube times relative to forecast start (excluding first 12H):', cubetime[:-1])
+        print ('')
 
         #################################################################
         ## CREATE EMPTY CUBE
@@ -6282,21 +6282,21 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
         #################################################################
         if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
-            print 'Variable is 4D:'
-            print ''
+            print ('Variable is 4D:')
+            print ('')
             #### create empty arrays to be filled
             data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
             dim_flag = 1        ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
+            print ('data.shape = ', str(data.shape))
+            print ('')
         else:
-            print 'Variable is 3D:'
-            print ''
+            print ('Variable is 3D:')
+            print ('')
             #### create empty arrays to be filled
             data = np.zeros([len(cubetime)-1])
             dim_flag = 0       ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
+            print ('data.shape = ', str(data.shape))
+            print ('')
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -6310,7 +6310,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             else:
                 ### end point (23h)
                 itime = np.where(tim >= cubetime[-1])
-            print 'For ', str(j), 'h, itime = ', itime
+            print ('For ', str(j), 'h, itime = ', itime)
             if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
             if dim_flag == 0: dat = np.zeros([len(itime[0])])
             for i in range(0, len(itime[0])):
@@ -6364,10 +6364,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
 
         varname = varnames.findfieldName(stash)
-        print 'standard_name = ', cube.standard_name
-        print 'long name = ', cube.long_name
-        print 'varname = ', varname
-        print ''
+        print ('standard_name = ', cube.standard_name)
+        print ('long name = ', cube.long_name)
+        print ('varname = ', varname)
+        print ('')
 
         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
         if dim_flag == 1:             ### 4D VARIABLE
@@ -6403,18 +6403,18 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     # print 'Outfile = ', pp_outfile
 
     ### save cube to netcdf file
-    print ''
-    print 'Writing fcube to file:'
-    print ''
+    print ('')
+    print ('Writing fcube to file:')
+    print ('')
     if stream == '_pc011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('')
         if not os.path.exists(nc_outfile):
             if 'fcube' in locals():
                 out = writeNetCDF(date, fcube, nc_outfile)
@@ -6424,13 +6424,13 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     if stream == '_pd011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pd stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
         doutfile = nc_outfile[:-3] + '_d.nc'
         if not os.path.exists(doutfile):
             if 'fcube' in locals():
@@ -6441,13 +6441,13 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     if stream == '_pe011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pd stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
@@ -6456,13 +6456,13 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             # if PC outfile doesn't exist, write new
 
     elif np.logical_or(stream == '_pb009', stream == '_pb012'):
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -6472,9 +6472,9 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream == '_pa012':
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -6492,14 +6492,14 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
     import iris.plot as iplt
     import pandas as pd
 
-    print '******'
-    print ''
-    print 'Looking at region around ship track and storing variability as STDEV'
-    print ''
+    print ('******')
+    print ('')
+    print ('Looking at region around ship track and storing variability as STDEV')
+    print ('')
     ###---------------------------------
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
-    print 'What grid are we looking at?'
+    print ('What grid are we looking at?')
     if len(cube[0].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
@@ -6525,17 +6525,17 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         xoffset = 0
         yoffset = 0
 
-    print 'Because cube shape = ', str(len(cube[0].dim_coords[-1].points))
-    print 'xoffset = ', xoffset
-    print 'yoffset = ', yoffset
+    print ('Because cube shape = ', str(len(cube[0].dim_coords[-1].points)))
+    print ('xoffset = ', xoffset)
+    print ('yoffset = ', yoffset)
 
     #################################################################
     ## load gridded ship track
     #################################################################
     # print '******'
-    print ''
-    print 'Pulling gridded track from cube:'
-    print ''
+    print ('')
+    print ('Pulling gridded track from cube:')
+    print ('')
 
     tim, ilat, ilon = readGriddedTrack(grid_filename)
 
@@ -6544,9 +6544,9 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
     #################################################################
 
     if np.size(cube)>1:
-        print ''
-        print 'More than one variable constraint. Proceeding...'
-        print ''
+        print ('')
+        print ('More than one variable constraint. Proceeding...')
+        print ('')
 
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
@@ -6560,9 +6560,9 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         # data[:,0] = cubetime[:,:-1]
 
         for k in range(0,np.size(cube)):            ### loop over number of variables
-            print ''
-            print 'k = ', k, ###', so processing', con[k]   # doesn't work with global_con
-            print ''
+            print ('')
+            print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
+            print ('')
 
             ###---------------------------------
             ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
@@ -6587,11 +6587,11 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 xoffset = 0
                 yoffset = 0
 
-            print 'Offsets are: ' + str(xoffset) + ', ' + str(yoffset)
-            print ''
+            print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
+            print ('')
 
             gridsize_required = 9.0       ### add which grid size we want to average over
-            print 'Averaging up to a grid size of ' + str(gridsize_required) + ' km.'
+            print ('Averaging up to a grid size of ' + str(gridsize_required) + ' km.')
 
             grid = gridsize_required / float(1.5)       ### HARD CODE: nest model resolution
             x1 = xoffset - (grid / float(2))
@@ -6603,13 +6603,13 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             ## if our diagnostics are 3-hourly, ignore
             #################################################################
             if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
-                print cube[k].standard_name
-                print 'Diagnostic is 3-hourly, break from loop'
+                print (cube[k].standard_name)
+                print ('Diagnostic is 3-hourly, break from loop')
                 break
             else:
-                print cube[k].standard_name
+                print (cube[k].standard_name)
                 if int(xoffset) != 0:
-                    print 'Diagnostic is 1-hourly, pull ship track...'
+                    print ('Diagnostic is 1-hourly, pull ship track...')
                     ok = True
 
             if not ok: break
@@ -6640,19 +6640,19 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             ## CHECK DIMENSIONS
             #################################################################
             if np.logical_and(np.size(cube[k].data,1) > 69, np.size(cube[k].data,1) < 72):
-                print 'Variable is 4D:'
-                print ''
+                print ('Variable is 4D:')
+                print ('')
                 #### create empty arrays to be filled
                 data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                 data_std = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                 data_med = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
                 ### make dimension flag
                 dim_flag = 1        ### for next loops
-                print 'data.shape = ', str(data.shape)
-                print ''
+                print ('data.shape = ', str(data.shape))
+                print ('')
             else:
-                print 'Variable is 3D (single layer diagnostic):'
-                print ''
+                print ('Variable is 3D (single layer diagnostic):')
+                print ('')
                 #### create empty arrays to be filled
                 if stream == '_pb009':
                     if cube[k].long_name == 'large_scale_ice_water_path':
@@ -6672,8 +6672,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                     data_std = np.zeros([len(cubetime)])                        ### only needs to be one number per timestep
                     data_med = np.zeros([len(cubetime)])                        ### only needs to be one number per timestep
                 dim_flag = 0       ### for next loops
-                print 'data.shape = ', str(data.shape)
-                print ''
+                print ('data.shape = ', str(data.shape))
+                print ('')
 
             #################################################################
             ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
@@ -6686,7 +6686,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                     itime = np.where(tim >= cubetime[-1])
 
                 ### define data array depending on diagnostic shape
-                print 'For ', str(j), 'h, itime = ', itime
+                print ('For ', str(j), 'h, itime = ', itime)
                 if dim_flag == 1:
                     dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
                 if dim_flag == 0:
@@ -6714,7 +6714,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
 
                     if stash_flag == 1: dat[dat==0] = np.nan                # set zeros to nans
 
-                    print 'dat.shape = ' + str(dat.shape)     # 6x6 array
+                    print ('dat.shape = ' + str(dat.shape))     # 6x6 array
 
                     # if the ship covers more than one grid box over an hour...
                     if np.size(itime) > 1:
@@ -6735,7 +6735,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                             data[j] = np.nanmean(np.nanmean(dat,1),1)           # if only one index per hour
                             data_std[j] = np.nanstd(np.nanstd(dat,1),1)
                             data_med[j] = np.nanmedian(np.nanmedian(dat,1),1)
-                        print ''
+                        print ('')
 
                     # # if the ship covers more than one grid box over an hour...
                     # if np.size(itime) > 1:
@@ -6751,11 +6751,11 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         ## CREATE CUBE
         #################################################################
             varname = varnames.findfieldName(stash)
-            print 'standard_name = ', cube[k].standard_name
-            print 'long name = ', cube[k].long_name
-            print 'varname = ', varname
-            print 'data.shape = ' + str(data.shape)
-            print ''
+            print ('standard_name = ', cube[k].standard_name)
+            print ('long name = ', cube[k].long_name)
+            print ('varname = ', varname)
+            print ('data.shape = ' + str(data.shape))
+            print ('')
 
             if stream == '_pa012':
                 ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
@@ -6791,25 +6791,25 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             # ncube.attributes = cube[k].attributes
             # iris.save(ncube, pp_outfile, append=True)
             if k == 0:
-                print 'Assigning fcube'
-                print ''
+                print ('Assigning fcube')
+                print ('')
                 fcube = [ncube]
             else:
-                print 'Appending variable to fcube'
-                print ''
+                print ('Appending variable to fcube')
+                print ('')
                 fcube.append(ncube)
 
         # print fcube
 
     else:
-        print ''
-        print 'Only one variable constraint. Proceeding...'
-        print ''
+        print ('')
+        print ('Only one variable constraint. Proceeding...')
+        print ('')
 
         cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
-        print ''
-        print 'Cube times relative to forecast start (excluding first 12H):', cubetime[:-1]
-        print ''
+        print ('')
+        print ('Cube times relative to forecast start (excluding first 12H):', cubetime[:-1])
+        print ('')
 
         #################################################################
         ## CREATE EMPTY CUBE
@@ -6826,21 +6826,21 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
         #################################################################
         if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
-            print 'Variable is 4D:'
-            print ''
+            print ('Variable is 4D:')
+            print ('')
             #### create empty arrays to be filled
             data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
             dim_flag = 1        ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
+            print ('data.shape = ', str(data.shape))
+            print ('')
         else:
-            print 'Variable is 3D:'
-            print ''
+            print ('Variable is 3D:')
+            print ('')
             #### create empty arrays to be filled
             data = np.zeros([len(cubetime)-1])
             dim_flag = 0       ### for next loops
-            print 'data.shape = ', str(data.shape)
-            print ''
+            print ('data.shape = ', str(data.shape))
+            print ('')
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -6854,7 +6854,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             else:
                 ### end point (23h)
                 itime = np.where(tim >= cubetime[-1])
-            print 'For ', str(j), 'h, itime = ', itime
+            print ('For ', str(j), 'h, itime = ', itime)
             if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
             if dim_flag == 0: dat = np.zeros([len(itime[0])])
             for i in range(0, len(itime[0])):
@@ -6886,10 +6886,10 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
         #################################################################
 
         varname = varnames.findfieldName(stash)
-        print 'standard_name = ', cube.standard_name
-        print 'long name = ', cube.long_name
-        print 'varname = ', varname
-        print ''
+        print ('standard_name = ', cube.standard_name)
+        print ('long name = ', cube.long_name)
+        print ('varname = ', varname)
+        print ('')
 
         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
         if dim_flag == 1:             ### 4D VARIABLE
@@ -6925,18 +6925,18 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
     # print 'Outfile = ', pp_outfile
 
     ### save cube to netcdf file
-    print ''
-    print 'Writing fcube to file:'
-    print ''
+    print ('')
+    print ('Writing fcube to file:')
+    print ('')
     if stream == '_pc011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('')
         if not os.path.exists(nc_outfile):
             if 'fcube' in locals():
                 # out = writeNetCDF(date, fcube, nc_outfile)
@@ -6947,13 +6947,13 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
     if stream == '_pe011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
@@ -6964,13 +6964,13 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
     if stream == '_pd011':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so making netCDF file with iris'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
         doutfile = nc_outfile[:-3] + '_d.nc'
         if not os.path.exists(doutfile):
             if 'fcube' in locals():
@@ -6979,13 +6979,13 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             # if PD outfile doesn't exist, write new
 
     elif stream == '_pb009':
-        print 'fcube = '
-        print fcube
-        print ''
-        print '******'
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -6995,9 +6995,9 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream == '_pa012':
-        print 'Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset'
-        print '***file is merged to outfile later***'
-        print ''
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
         ## Next, append 1D timeseries (surface) data (pb stream)
         ## Can't use Iris for this as cubes can't be 1D
         ##              -> uses standard netCDF appending function
@@ -7016,10 +7016,10 @@ def writeNetCDF(date, cube, nc_outfile):
     #################################################################
     ## define output filename
     #################################################################
-    print '******'
-    print 'Define .nc stream outfile:'
+    print ('******')
+    print ('Define .nc stream outfile:')
     # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-    print 'Outfile will be = ', nc_outfile
+    print ('Outfile will be = ', nc_outfile)
 
     #################################################################
     ## load in each stream
@@ -7028,10 +7028,10 @@ def writeNetCDF(date, cube, nc_outfile):
     # -------------------------------------------------------------
     # Convert .pp to .nc
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Converting to netCDF:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Converting to netCDF:')
+    print ('')
     # cube = iris.load(outfile[0], global_con, callback)
     iris.save(cube, nc_outfile)
 
@@ -7046,21 +7046,21 @@ def writePB_Cloudnet(cube, boutfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Appending 1D data to ' + outfile
-    print 'Writing 1D data to ' + boutfile
-    print ''
+    print ('Writing 1D data to ' + boutfile)
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset = Dataset(boutfile, 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
-    print cube
+    print (cube)
 
     ###################################
     ## Switch off automatic filling
@@ -7092,8 +7092,8 @@ def writePB_Cloudnet(cube, boutfile):
     ## Write pbXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        print 'Writing ' + cube[d].var_name
-        print ''
+        print ('Writing ' + cube[d].var_name)
+        print ('')
         dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
@@ -7119,19 +7119,19 @@ def writePA_Analysis(cube, aoutfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Appending 1D data to ' + outfile
-    print 'Writing 1D data to ' + aoutfile
-    print ''
+    print ('Writing 1D data to ' + aoutfile)
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset = Dataset(aoutfile, 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     # print cube
     # print cube[0].dim_coords
@@ -7166,8 +7166,8 @@ def writePA_Analysis(cube, aoutfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        print 'Writing ' + cube[d].var_name
-        print ''
+        print ('Writing ' + cube[d].var_name)
+        print ('')
         if not cube[d].var_name in dataset.variables.keys():
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -7194,18 +7194,18 @@ def writePD_BL(cube, doutfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Writing 3D data to ' + doutfile
-    print ''
+    print ('******')
+    print ('')
+    print ('Writing 3D data to ' + doutfile)
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset = Dataset(doutfile, 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     ###################################
     ## Switch off automatic filling
@@ -7252,8 +7252,8 @@ def writePD_BL(cube, doutfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        print 'Writing ' + cube[d].var_name
-        print ''
+        print ('Writing ' + cube[d].var_name)
+        print ('')
         if np.ndim(cube[d]) == 2:
             if cube[d].var_name == 'air_pressure': continue
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
@@ -7290,19 +7290,19 @@ def writeFile_netCDF4(cube, eoutfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Appending 1D data to ' + outfile
-    print 'Writing 3D data to ' + eoutfile
-    print ''
+    print ('Writing 3D data to ' + eoutfile)
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset = Dataset(eoutfile, 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     # print cube
     # print cube[0].dim_coords
@@ -7347,8 +7347,8 @@ def writeFile_netCDF4(cube, eoutfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        print 'Writing ' + cube[d].var_name
-        print ''
+        print ('Writing ' + cube[d].var_name)
+        print ('')
         dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
@@ -7371,10 +7371,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Appending metadata to ' + outfile
-    print ''
+    print ('******')
+    print ('')
+    print ('Appending metadata to ' + outfile)
+    print ('')
 
     ###################################
     ## Open File
@@ -7474,13 +7474,13 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ## Append pbXXX stream diagnostics
         ###################################
 
-        print 'Appending pbXXX diagnostics:'
-        print '---'
+        print ('Appending pbXXX diagnostics:')
+        print ('---')
         for d in range(0,len(ncB.variables)):
             if ncB.variables.keys()[d] == 'forecast_time': continue
             if not ncB.variables.keys()[d] in dataset.variables.keys():
-                print 'Writing ' + ncB.variables.keys()[d]
-                print ''
+                print ('Writing ' + ncB.variables.keys()[d])
+                print ('')
                 dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
@@ -7512,13 +7512,13 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         ## Append paXXX stream diagnostics
         ###################################
-        print 'Appending paXXX diagnostics:'
-        print '---'
+        print ('Appending paXXX diagnostics:')
+        print ('---')
         for d in range(0,len(ncA.variables)):
             if ncA.variables.keys()[d] == 'forecast_time': continue
             if not ncA.variables.keys()[d] in dataset.variables.keys():
-                print 'Writing ' + ncA.variables.keys()[d]
-                print ''
+                print ('Writing ' + ncA.variables.keys()[d])
+                print ('')
                 dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
@@ -7550,13 +7550,13 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         ## Append paXXX stream diagnostics
         ###################################
-        print 'Appending peXXX diagnostics:'
-        print '---'
+        print ('Appending peXXX diagnostics:')
+        print ('---')
         for d in range(0,len(ncE.variables)):
             if ncE.variables.keys()[d] == 'forecast_time': continue
             if not ncE.variables.keys()[d] in dataset.variables.keys():
-                print 'Writing ' + ncE.variables.keys()[d]
-                print ''
+                print ('Writing ' + ncE.variables.keys()[d])
+                print ('')
                 daat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
                 daat.scale_factor = float(1)
                 daat.add_offset = float(0)
@@ -7598,15 +7598,15 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         ## Append pdXXX stream diagnostics
         ###################################
-        print 'Appending pdXXX diagnostics:'
-        print '---'
+        print ('Appending pdXXX diagnostics:')
+        print ('---')
         for d in range(0,len(ncD.variables)):
             if ncD.variables.keys()[d] == 'forecast_time': continue
             if not ncD.variables.keys()[d] in dataset.variables.keys():
-                print 'Writing ' + ncD.variables.keys()[d]
-                print ''
+                print ('Writing ' + ncD.variables.keys()[d])
+                print ('')
                 if np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 2:
-                    print 'Variable is 2D:'
+                    print ('Variable is 2D:')
                     daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height2',), fill_value='-9999')
                     daat.scale_factor = float(1)
                     daat.add_offset = float(0)
@@ -7622,7 +7622,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
                         daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
                     daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
                 elif np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 1:
-                    print 'Variable is 1D:'
+                    print ('Variable is 1D:')
                     dat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', ), fill_value='-9999')
                     dat.scale_factor = float(1)
                     dat.add_offset = float(0)
@@ -7675,10 +7675,10 @@ def makeGlobalStashList():
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'JASMIN'
@@ -7742,25 +7742,25 @@ def main():
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc file: ')
+    print ('')
 
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
@@ -7776,10 +7776,10 @@ def main():
             # # -------------------------------------------------------------
             # # Load cube
             # # -------------------------------------------------------------
-            print '******'
-            print ''
-            print 'Begin cube read in at ' + time.strftime("%c")
-            print ' '
+            print ('******')
+            print ('')
+            print ('Begin cube read in at ' + time.strftime("%c"))
+            print (' ')
             # var_con = 'specific_humidity'
             # cube = iris.load_cube(filename1, var_con)
             # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
@@ -7830,17 +7830,17 @@ def main():
                     else:
                         dirout = out_dir[2:9] + '/'
 
-                print 'Checking: ' + filename
+                print ('Checking: ' + filename)
                 if os.path.exists(filename):
                     exist_flag = 1
                     #### LOAD CUBE
                     if 'var_con' in locals():
-                        print 'Loading single diagnostic:'
-                        print var_con
+                        print ('Loading single diagnostic:')
+                        print (var_con)
                         cube1 = iris.load_cube(filename, var_con, callback)
                         con_flag = 0            # constraint flag
                     elif 'global_con' in locals():
-                        print 'Loading multiple diagnostics:'
+                        print ('Loading multiple diagnostics:')
                         # cube = iris.load_cubes(filename1, global_con)
                         cube = iris.load(filename, global_con, callback)
                         con_flag = 1            # constraint flag
@@ -7873,26 +7873,26 @@ def main():
 
                     if stream[:3] == '_pa':
                         if not os.path.exists(aoutfile):
-                            print aoutfile + ' does not exist, so pulling ship track...'
+                            print (aoutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                     elif stream[:3] == '_pb':
                         if not os.path.exists(boutfile):
-                            print boutfile + ' does not exist, so pulling ship track...'
+                            print (boutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                     elif stream[:3] == '_pd':
                         if not os.path.exists(doutfile):
-                            print doutfile + ' does not exist, so pulling ship track...'
+                            print (doutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                     elif stream[:3] == '_pe':
                         if not os.path.exists(eoutfile):
-                            print eoutfile + ' does not exist, so pulling ship track...'
+                            print (eoutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                     elif stream[:3] == '_pc':
                         if not os.path.exists(nc_outfile):
-                            print nc_outfile + ' does not exist, so pulling ship track...'
+                            print (nc_outfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                     else:
-                        print 'Valid stream not found.'
+                        print ('Valid stream not found.')
 
                     # -------------------------------------------------------------
                     ### 2. use the following if only want the variability over a certain grid size
@@ -7926,29 +7926,29 @@ def main():
                     ########################################################################
 
                 else:
-                    print ''
-                    print '****File does not exist****'
-                    print ''
+                    print ('')
+                    print ('****File does not exist****')
+                    print ('')
 
                 if stream == '_pc011':
                     if exist_flag == 1:
                         ##-------------------------------------------------------------
                         ## For each date, append metadata to netCDF
                         ## -------------------------------------------------------------
-                        print '******'
-                        print ''
-                        print 'stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata'
-                        print ''
+                        print ('******')
+                        print ('')
+                        print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
+                        print ('')
                         # outfile = '20180902_oden_metum.nc'
                         out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
                             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                             ### os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
