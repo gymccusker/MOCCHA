@@ -4,7 +4,7 @@
 ###
 ###
 
-# from __future__ import print_function
+from __future__ import print_function
 import time
 import datetime
 import numpy as np
@@ -29,9 +29,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -54,12 +54,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -80,19 +80,16 @@ def inIce(data):
     Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
-    # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print ('******')
+    print ('')
+    print ('CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print ('')
+    print ('Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')')
+    print ('Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
+    print ('Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6])))
+    print ('Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7])))
+    print ('')
 
     return inIce_index
 
@@ -109,10 +106,10 @@ def plot_cartmap(ship_data, cube):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting cartopy map:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -200,10 +197,10 @@ def plot_cartmap(ship_data, cube):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting cartopy map! :)')
+    print ('')
 
     # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
     plt.show()
@@ -217,10 +214,10 @@ def plot_basemap(ship_data, cube):
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plot basemap:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plot basemap:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -291,10 +288,10 @@ def plot_basemap(ship_data, cube):
     ### SWATH
     lats = np.arange(80.9998,89.9998,0.09)
     lons = np.arange(3.0,76.0,0.73)
-    print '******'
-    print ''
-    print 'lat/lon vertices of proposed swath: ', lats[0], lats[-1], lons[0], lons[-1]
-    print ''
+    print ('******')
+    print ('')
+    print ('lat/lon vertices of proposed swath: ', lats[0], lats[-1], lons[0], lons[-1])
+    print ('')
     x1s, x2s, x3s, x4s, y1s, y2s, y3s, y4s = gridSetup(lons, lats, m)
 
     ### NEST (input)
@@ -304,18 +301,18 @@ def plot_basemap(ship_data, cube):
     centlat = float(86.625)
     latn = np.arange((centlat-(gry*float(0.5)*0.0135)),(centlat+(gry*float(0.5)*0.0135)),0.0135)
     lonn = np.arange((centlon-(grx*float(0.5)*0.0135)),(centlon+(grx*float(0.5)*0.0135)),0.0135)
-    print '******'
-    print ''
-    print 'lat/lon vertices of nest (input): ', latn[0], latn[-1], lonn[0], lonn[-1]
-    print ''
+    print ('******')
+    print ('')
+    print ('lat/lon vertices of nest (input): ', latn[0], latn[-1], lonn[0], lonn[-1])
+    print ('')
     x1n, x2n, x3n, x4n, y1n, y2n, y3n, y4n = gridSetup(lonn, latn, m)
 
     ### NEST (output)
     lono, lato = unrotateGrid(cube)
-    print '******'
-    print ''
-    print 'lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1]
-    print ''
+    print ('******')
+    print ('')
+    print ('lat/lon vertices of nest (output): ', lato[0], lato[-1], lono[0], lono[-1])
+    print ('')
     x1o, x2o, x3o, x4o, y1o, y2o, y3o, y4o = gridSetup(lono, lato, m)
 
     ### NEST (required input to cover swath)
@@ -392,13 +389,13 @@ def unrotateGrid(data):
     lon, lat = ircrt.unrotate_pole(rot_lon, rot_lat, frst_lon, frst_lat)
 
     # Print to check conversion
-    print '******'
-    print 'Test of unrotated coordinate grid: '
-    print 'Rotated lon coord = ', rot_lon[0]
-    print 'Rotated lat coord = ', rot_lat[0]
-    print 'Lon = ', lon[0]
-    print 'Lat = ', lat[0]
-    print ' '
+    print ('******')
+    print ('Test of unrotated coordinate grid: ')
+    print ('Rotated lon coord = ', rot_lon[0])
+    print ('Rotated lat coord = ', rot_lat[0])
+    print ('Lon = ', lon[0])
+    print ('Lat = ', lat[0])
+    print (' ')
 
     # ******
     # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
@@ -427,13 +424,13 @@ def rotateGrid(data):
     rot_lon, rot_lat = ircrt.rotate_pole(lon, lat, frst_lon, frst_lat)
 
     # Print to check conversion
-    print '******'
-    print 'Test of rotated coordinate grid: '
-    print 'Lon = ', lon[0]
-    print 'Lat = ', lat[0]
-    print 'Rotated lon coord = ', rot_lon[0]
-    print 'Rotated lat coord = ', rot_lat[0]
-    print ' '
+    print ('******')
+    print ('Test of rotated coordinate grid: ')
+    print ('Lon = ', lon[0])
+    print ('Lat = ', lat[0])
+    print ('Rotated lon coord = ', rot_lon[0])
+    print ('Rotated lat coord = ', rot_lat[0])
+    print (' ')
 
     # ******
     # lat/lon vertices of nest (output):  85.960219407715 80.41973098346767 49.567255645848604 -27.55740381723681
@@ -447,9 +444,6 @@ def makeGlobalStashList():
     '''
 
     GlobalStashList = diags.returnWantedStash()
-
-    # print GlobalStashList
-    # print GlobalStashList[0]
 
     return GlobalStashList
 
@@ -563,21 +557,21 @@ def testInput(cube):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Investigating input file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Investigating input file:')
+    print ('')
 
-    print 'Cube attributes:'
-    print cube.attributes
-    print ''
-    print 'Cube aux coords:'
-    print cube.aux_coords
-    print ''
-    print 'Cube dim coords:'
-    print cube.dim_coords
-    print ''
-    print np.size(cube.shape)
+    print ('Cube attributes:')
+    print (cube.attributes)
+    print ('')
+    print ('Cube aux coords:')
+    print (cube.aux_coords)
+    print ('')
+    print ('Cube dim coords:')
+    print (cube.dim_coords)
+    print ('')
+    print (np.size(cube.shape))
 
 def write3DNetCDF(cube, outfile):
 
@@ -585,19 +579,19 @@ def write3DNetCDF(cube, outfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Writing NetCDF file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Writing NetCDF file:')
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
 
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     ###################################
     ## Global Attributes
@@ -670,19 +664,19 @@ def write4DNetCDF(cube, outfile):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Writing NetCDF file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Writing NetCDF file:')
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC')
 
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     ###################################
     ## Global Attributes
@@ -763,10 +757,10 @@ def write4DNetCDF(cube, outfile):
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'JASMIN'
@@ -834,10 +828,10 @@ def main():
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
@@ -860,10 +854,10 @@ def main():
     # -------------------------------------------------------------------------
     # make global stash list and constraint
     # -------------------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Make stash list for cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
     GlobalStashList = makeGlobalStashList()
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
@@ -885,18 +879,18 @@ def main():
             ## -------------------------------------------------------------------------
             # time_con = iris.Constraint(forecast_period=lambda xcell: any(np.isclose(xcell.point % 1, [0, 1./60.])))
 
-            print '******'
-            print ''
-            print 'Naming output files: '
-            print ''
+            print ('******')
+            print ('')
+            print ('Naming output files: ')
+            print ('')
             pp2_filename = str(int(date[:-6])+1) + '_oden_metum.pp'
             nc_filename = str(int(date[:-6])+1) + '_oden_metum.nc'
-            print 'Output will be: ' + nc_filename
+            print ('Output will be: ' + nc_filename)
 
             # print '******'
-            print ''
-            print 'Identifying .pp files to read in: '
-            print ''
+            print ('')
+            print ('Identifying .pp files to read in: ')
+            print ('')
             for stream in names:
                 ### -------------------------------------------------------------------------
                 ### define output filenames
@@ -909,7 +903,7 @@ def main():
                     filename2 = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
                 filenames = [filename1, filename2]
                 for filename in filenames:
-                    print 'Checking: ' + filename
+                    print ('Checking: ' + filename)
                     if os.path.exists(filename):
                         # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
                         # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
@@ -917,9 +911,9 @@ def main():
                         # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
                         pp_filename = filename[:-3] + '_r0.pp'
 
-                        print '---'
-                        print 'Start files exist, continuing:'
-                        print ''
+                        print ('---')
+                        print ('Start files exist, continuing:')
+                        print ('')
 
                         ### define range to loop over
                         if stream[-2:] == '12':
@@ -945,14 +939,14 @@ def main():
                             # fileout = root_dir + out_dir + date + '/umnsaa_pb' + str_i
                             # fileout = root_dir + out_dir + date + '/umnsaa_pc' + str_i
                             # fileout = root_dir + out_dir + date + '/umnsaa_pd' + str_i
-                            print fileout
+                            print (fileout)
                             # # -------------------------------------------------------------
                             # # Load cubes
                             # # -------------------------------------------------------------
-                            print '******'
-                            print ''
-                            print 'Begin ' + str_i + ' cube read in at ' + time.strftime("%c")
-                            print ' '
+                            print ('******')
+                            print ('')
+                            print ('Begin ' + str_i + ' cube read in at ' + time.strftime("%c"))
+                            print (' ')
 
                             #### LOAD CUBE
                             if 'var_con' in locals():
@@ -961,10 +955,10 @@ def main():
                                 # -------------------------------------------------------------
                                 # Write out data
                                 # -------------------------------------------------------------
-                                print '******'
-                                print ''
-                                print 'Outputting fixed constraint ' + str_i + ' data:'
-                                print ''
+                                print ('******')
+                                print ('')
+                                print ('Outputting fixed constraint ' + str_i + ' data:')
+                                print ('')
                                 iris.save(cube, pp_filename, append=True)
 
                             elif 'global_con' in locals():
@@ -973,19 +967,19 @@ def main():
                                 # -------------------------------------------------------------
                                 # Write out data
                                 # -------------------------------------------------------------
-                                print '******'
-                                print ''
-                                print 'Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c")
-                                print cube
-                                print ''
+                                print ('******')
+                                print ('')
+                                print ('Outputting global constraint ' + str_i + ' data at ' + time.strftime("%c"))
+                                print (cube)
+                                print ('')
                                 iris.save(cube, pp_filename, append=True)
                                 #### remove file to keep directory tidy
-                                print 'Directory clean up: removing ' + fileout
-                                print ''
+                                print ('Directory clean up: removing ' + fileout)
+                                print ('')
                                 os.remove(fileout)
                     else:
-                        print 'Combined output files already exist, or the directory does not exist'
-                        print ''
+                        print ('Combined output files already exist, or the directory does not exist')
+                        print ('')
 
             # for stream in names:
             #     # -------------------------------------------------------------
@@ -1019,10 +1013,10 @@ def main():
     # map = plot_cartmap(ship_data, cube)
 
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
 
 if __name__ == '__main__':
