@@ -2606,6 +2606,9 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     p5obs = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
     p6obs = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
 
+    print (p4obs[0].shape)
+    print (p5obs[0].shape)
+
     #####-------------------------------
     #####   net LW
     #####-------------------------------
@@ -8148,11 +8151,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -8282,7 +8285,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
 
     Aug_missing_files = []
 
@@ -8291,8 +8294,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -8322,6 +8325,7 @@ def main():
                 filename_um3 = um_root_dir + out_dir3 + names[i] + 'metum_a.nc'
                 ifs_flag = False
             filename_um4 = um_root_dir + out_dir4 + names[i] + 'metum_a.nc'
+            filename_um5 = um_root_dir + out_dir5 + names[i] + 'metum.nc'
         else:
             filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
             filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
@@ -8370,6 +8374,7 @@ def main():
             var_list3 = ['sfc_net_sw','sfc_net_lw', 'sfc_down_lw', 'sfc_down_sw']
             var_list2 = var_list1
             var_list4 = var_list1
+            var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
         else:
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
@@ -8734,7 +8739,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -8757,7 +8762,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
