@@ -2561,8 +2561,11 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
+    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation (ice station) on different timestep
     time_radice_all = calcTime_Mat2DOY(datenums_radice)
+
+    datenums_radship = obs['obs_temp'].variables['time2'][:] ### radiation (ship) on different timestep
+    time_radship_all = calcTime_Mat2DOY(datenums_radship)
 
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
@@ -2585,14 +2588,21 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
     time_radice = time_radice_all[:-1:2]
-    lwd = obs['obs_temp'].variables['LWdice'][:]
-    lwu = obs['obs_temp'].variables['LWuice'][:]
+    time_radship = time_radship_all[:-1:2]
+    lwdice = obs['obs_temp'].variables['LWdice'][:]
+    lwuice = obs['obs_temp'].variables['LWuice'][:]
+    lwd = obs['obs_temp'].variables['LWdship'][:]
+    lwu = obs['obs_temp'].variables['LWuship'][:]
     lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
     lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
-    swd = obs['obs_temp'].variables['SWdice'][:]
-    swu = obs['obs_temp'].variables['SWuice'][:]
+
+    swdice = obs['obs_temp'].variables['SWdice'][:]
+    swuice = obs['obs_temp'].variables['SWuice'][:]
+    swd = obs['obs_temp'].variables['SWdship'][:]
+    swu = obs['obs_temp'].variables['SWuship'][:]
     swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
     swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+
     netLW = lwdmean - lwumean
     netSW = swdmean - swumean
 
@@ -2601,10 +2611,10 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     p5mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
     p6mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
 
-    p3obs = np.where(np.logical_and(time_radice >= doy[0], time_radice < 230.0))
-    p4obs = np.where(np.logical_and(time_radice >= 230.0, time_radice < 240.0))
-    p5obs = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
-    p6obs = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
+    p3obs = np.where(np.logical_and(time_radship >= doy[0], time_radship < 230.0))
+    p4obs = np.where(np.logical_and(time_radship >= 230.0, time_radship < 240.0))
+    p5obs = np.where(np.logical_and(time_radship >= 240.0, time_radship < 247.0))
+    p6obs = np.where(np.logical_and(time_radship >= 247.0, time_radship < 251.0))
 
     print (p4obs[0].shape)
     print (p5obs[0].shape)
