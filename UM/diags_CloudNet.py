@@ -919,6 +919,8 @@ def main():
                         if stream[-2:] == '12':
                             if filename[-12:-3] == 'glm_pa012':
                                 looping = range(2,6)
+                            elif stream == '_pc012':
+                                looping = range(12,36)
                             else:
                                 looping = range(4,12)
                         if stream[-2:] == '11': looping = range(11,36)
