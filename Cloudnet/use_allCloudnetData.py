@@ -6649,7 +6649,7 @@ def main():
                             data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
                             data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray,0)
                     for j in range(0,len(var_list3)):
-                        print (j)
+                        # print (j)
                         print (var_list3[j])
                         np.save('testing', data3)
                         if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
@@ -6754,7 +6754,7 @@ def main():
                     time_um = np.append(time_um, doy[i] + ((cn_nc1[0].variables['time'][:])/24.0))
                 else:
                     time_um = np.append(time_um,float(cn_filename_um[-16:-14]) + ((cn_nc1[0].variables['time'][:])/24.0))
-                print (um_data)
+                # print (um_data)
                 for c in range(0,3):
                     for j in range(0,len(um_var_list[c])):
                         # print 'j = ' + str(j)
@@ -6790,7 +6790,7 @@ def main():
                     time_ifs = np.append(time_ifs, doy[i] + ((cn_nc2[0].variables['time'][:])/24.0))
                 else:
                     time_ifs = np.append(time_ifs,float(cn_filename_ifs[-16:-14]) + ((cn_nc2[0].variables['time'][:])/24.0))
-                print (ifs_data)
+                # print (ifs_data)
                 for c in range(0,3):
                     for j in range(0,len(ifs_var_list[c])):
                         ## ONLY WANT COLUMN VARIABLES - IGNORE TIMESERIES FOR NOW
@@ -6845,7 +6845,7 @@ def main():
                 else:
                     if cn_misc_flag == 1: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3[0].variables['forecast_time'][:])/24.0))
                     if cn_misc_flag == 0: time_misc = np.append(time_misc,float(cn_filename_misc[-16:-14]) + ((cn_nc3[0].variables['time'][:])/24.0))
-                print (misc_data)
+                # print (misc_data)
                 for c in range(0,3):
                     for j in range(0,len(misc_var_list[c])):
                         # print 'j = ' + str(j)
@@ -6884,7 +6884,7 @@ def main():
                     time_ra2t = np.append(time_ra2t, doy[i] + ((cn_nc4[0].variables['time'][:])/24.0))
                 else:
                     time_ra2t = np.append(time_ra2t, float(cn_filename_ra2t[-16:-14]) + ((cn_nc4[0].variables['time'][:])/24.0))
-                print (ra2t_data)
+                # print (ra2t_data)
                 for c in range(0,3):
                     for j in range(0,len(ra2t_var_list[c])):
                         # print 'j = ' + str(j)
@@ -6921,7 +6921,7 @@ def main():
                         time_obs = np.append(time_obs, doy[i] + ((cn_nc0[1].variables['time'][:])/24.0))
                     else:
                         time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[1].variables['time'][:])/24.0))
-                    print (obs_data)
+                    # print (obs_data)
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
                             # print 'j = ' + str(j)
@@ -6952,7 +6952,7 @@ def main():
                         time_obs = np.append(time_obs, doy[i] + ((cn_nc0[0].variables['time'][:])/24.0))
                     else:
                         time_obs = np.append(time_obs,float(cn_filename_obs[-16:-14]) + ((cn_nc0[0].variables['time'][:])/24.0))
-                    print (obs_data)
+                    # print (obs_data)
                     for c in range(0,3):
                         for j in range(0,len(obs_var_list[c])):
                             # print 'j = ' + str(j)
@@ -7081,7 +7081,7 @@ def main():
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
-    print(um_data.keys())
+    # print(um_data.keys())
 
     ### remove missing Cv obs timesteps (remove from all)
     for c in range(0, 3):
