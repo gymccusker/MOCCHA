@@ -8150,7 +8150,7 @@ def RMSE_analysis(data1, data2, data3, obs):
     ###---------------------------------------------------------------------------------------------
     rms = sqrt(mean_squared_error(y_actual, y_predicted))
 
-def check_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+def check_Radiation(data1, data2, data3, data4, obs, doy):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -8193,22 +8193,13 @@ def check_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
-    ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
-        ifs_flag = True
-    else:
-        ifs_flag = False
-
-    # UM -> um2 comparisons:
-    # 1. snowfall_flux -> sfc_ls_snow
-    # 2. rainfall_flux -> sfc_ls_rain
-    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
-    # 4. latent_heat_flux -> flx_turb_moist
-    # 5. bl_depth -> sfc_bl_height
-    # 6. sfc_pressure -> sfc_pressure
-    # 7. temp_1.5m -> sfc_temp_2m
+    # UM -> IFS comparisons:
     # 8. surface_net_LW_radiation -> sfc_net_lw
     # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    ##############################################################################
+    #####   first, need to transfer to hourly data for like-for-like comparison
+    ##############################################################################
 
     time_radice = time_radice_all[:-1:2]
     time_radship = time_radship_all[:-1:2]
@@ -8228,11 +8219,31 @@ def check_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     swdmeanice = np.nanmean(swdice[:-1].reshape(-1, 2), axis=1)
     swumeanice = np.nanmean(swuice[:-1].reshape(-1, 2), axis=1)
 
-    netLW = obs['obs_temp'].variables['LWnetship'][:]# lwdmean - lwumean
-    netSW = obs['obs_temp'].variables['SWnetship'][:]# swdmean - swumean
+    plt.plot(time_radice, swdmeanice)
+    plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    plt.show()
 
-    netLWice = lwdmeanice - lwumeanice
-    netSWice = swdmeanice - swumeanice
+    print (swdmeanice.shape)
+    print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
+
+    print (time_radice)
+    print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+
+    plt.plot(time_radice[:-1], time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    plt.show()
+
+    plt.plot(time_radice[:-1] / time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    plt.show()
+
+    time_radship_icetimes = time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])]
+
+    print (time_radice[50:70])
+    print (time_radship_icetimes[50:70])
+
+    ### 233.13541666666666, is missing from time_radship_icetimes
+
+
+    return data1, data2, data3, data4, obs
 
 def main():
 
@@ -8764,7 +8775,7 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    data1, data2, data3, data4 = check_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -8889,7 +8900,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
