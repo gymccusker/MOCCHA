@@ -2181,14 +2181,14 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     res = 3 ### hourly resolution to plot
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
-    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 2)
-    if obs_switch == 'RADAR':
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
-    else:
-        plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'black', label = 'Obs_' + obs_switch + 'grid', zorder = 3)
-        # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
-        # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
-        # ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.2)
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'k', label = 'Obs_HATPRO', zorder = 3)
+    # if obs_switch == 'RADAR':
+    #     plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
+    # else:
+    #     plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'black', label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    #     # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
+    #     # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
+    #     # ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.2)
     plt.plot(ifs_data['time'][::res],ifs_data['model_lwp'][::res]*1e3,
         'v', color = 'gold', markeredgecolor = 'orange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
@@ -2197,12 +2197,14 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         '>', color = 'steelblue', markeredgecolor = 'darkslategrey', label = 'UM_RA2T')
     plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
-    plt.xlabel('Date')
     plt.ylabel('LWP [g m$^{2}$]')
     plt.ylim([0,800])
+    # plt.xlim([233,235])
+    # plt.xlabel('DOY')
     plt.xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    plt.xlabel('Date')
     plt.legend(bbox_to_anchor=(0.0, 0.7, 1., .102), loc=3, ncol=3)
     ax = plt.gca()
     nans = ax.get_ylim()
@@ -2213,14 +2215,14 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
             zorder = 2)
 
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
-    yEmax = 0.03
+    yEmax = 0.012
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(um_data['model_lwp']*1e3, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(ra2t_data['model_lwp']*1e3, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(misc_data['model_lwp']*1e3, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(ifs_data['model_lwp']*1e3, hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(obs_data['lwp'][:,0]*1e3, hist=False, color="black")
-    sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="grey")
+    # sns.distplot(obs_data['lwp'][:,0]*1e3, hist=False, color="black")
+    sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="black")
     plt.xlim([-50,500])
     plt.ylim([0,yEmax])
     plt.xlabel('LWP [g m$^{-2}$]')
@@ -7133,7 +7135,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
@@ -7151,7 +7153,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
@@ -7168,10 +7170,10 @@ def main():
     # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
     # print ('Load calculated model inversion heights (GY algorithm)...')
-    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
-    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
-    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
-    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
+    # obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
+    # data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
+    # data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
+    # data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
 
     # -------------------------------------------------------------
     ### use IFS named directory to allocate variable to plot
