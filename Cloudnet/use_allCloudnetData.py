@@ -6964,6 +6964,10 @@ def main():
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
                 for c in range(0,3): cn_nc0[c].close()
 
+            print ('Loaded! :D')
+            print ('')
+            print ('*************** NEXT:')
+            print ('')
 
     #################################################################
     ## save time to dictionaries now we're not looping over all diags anymore
