@@ -840,7 +840,7 @@ def main():
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['_pa012','_pb009','_pc011','_pd011','_pe011','_pc012']
+    names = ['_pa012','_pb009','_pc011','_pd011','_pe011','_pc012','_pe012']
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
@@ -919,7 +919,7 @@ def main():
                         if stream[-2:] == '12':
                             if filename[-12:-3] == 'glm_pa012':
                                 looping = range(2,6)
-                            elif stream == '_pc012':
+                            elif np.logical_or(stream == '_pc012',stream == '_pe012'):
                                 looping = range(12,36)
                             else:
                                 looping = range(4,12)
