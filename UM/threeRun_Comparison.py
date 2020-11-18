@@ -2561,11 +2561,11 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     # 7: SWdice / (1)                        (time3: 1293)
     # 8: SWuice / (1)                        (time3: 1293)
 
-    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation (ice station) on different timestep
-    time_radice_all = calcTime_Mat2DOY(datenums_radice)
-
-    datenums_radship = obs['obs_temp'].variables['time2'][:] ### radiation (ship) on different timestep
-    time_radship_all = calcTime_Mat2DOY(datenums_radship)
+    # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation (ice station) on different timestep
+    # time_radice_all = calcTime_Mat2DOY(datenums_radice)
+    #
+    # datenums_radship = obs['obs_temp'].variables['time2'][:] ### radiation (ship) on different timestep
+    # time_radship_all = calcTime_Mat2DOY(datenums_radship)
 
     datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
     time_tice = calcTime_Mat2DOY(datenums_tice)
@@ -2587,31 +2587,22 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     # 8. surface_net_LW_radiation -> sfc_net_lw
     # 9. surface_net_SW_radiation -> sfc_net_sw
 
-    time_radice = time_radice_all[:-1:2]
-    time_radship = time_radship_all[:-1:2]
-    lwdice = obs['obs_temp'].variables['LWdice'][:]
-    lwuice = obs['obs_temp'].variables['LWuice'][:]
-    lwd = obs['obs_temp'].variables['LWdship'][:]
-    # lwu = obs['obs_temp'].variables['LWuship'][:]
-    lwdmean = np.nanmean(lwd[:].reshape(-1, 2), axis=1)
-    # lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
-    lwdmeanice = np.nanmean(lwdice[:-1].reshape(-1, 2), axis=1)
-    lwumeanice = np.nanmean(lwuice[:-1].reshape(-1, 2), axis=1)
+    time_radice = obs['fixed_radiation']['time_ice'][:]
+    time_radship = obs['fixed_radiation']['time_ship'][:]
+    lwdice = obs['fixed_radiation']['LWd_ice'][:]
+    lwuice = obs['fixed_radiation']['LWu_ice'][:]
 
-    swdice = obs['obs_temp'].variables['SWdice'][:]
-    swuice = obs['obs_temp'].variables['SWuice'][:]
-    swd = obs['obs_temp'].variables['SWdship'][:]
-    # swu = obs['obs_temp'].variables['SWuship'][:]
-    swdmean = np.nanmean(swd[:].reshape(-1, 2), axis=1)
-    # swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
-    swdmeanice = np.nanmean(swdice[:-1].reshape(-1, 2), axis=1)
-    swumeanice = np.nanmean(swuice[:-1].reshape(-1, 2), axis=1)
+    netSW = obs['fixed_radiation']['SWnet_ship'][:]
+    netLW = obs['fixed_radiation']['LWnet_ship'][:]
 
-    netLW = obs['obs_temp'].variables['LWnetship'][:]# lwdmean - lwumean
-    netSW = obs['obs_temp'].variables['SWnetship'][:]# swdmean - swumean
+    lwdmean = obs['fixed_radiation']['LWd_ship'][:]
+    swdmean = obs['fixed_radiation']['SWd_ship'][:]
 
-    netLWice = lwdmeanice - lwumeanice
-    netSWice = swdmeanice - swumeanice
+    netSWice = obs['fixed_radiation']['SWnet_ice'][:]
+    netLWice = obs['fixed_radiation']['LWnet_ice'][:]
+
+    lwdmeanice = obs['fixed_radiation']['LWd_ice'][:]
+    swdmeanice = obs['fixed_radiation']['SWd_ice'][:]
 
     p3mod = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     p4mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
@@ -2628,8 +2619,8 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     p5ice = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
     p6ice = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
 
-    print (p4ship[0].shape)
-    print (p5ship[0].shape)
+    # print (p4ship[0].shape)
+    # print (p5ship[0].shape)
 
     #####-------------------------------
     #####   net LW
@@ -8168,7 +8159,7 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
 
     print ('******')
     print ('')
-    print ('filtering bad/missing data points from ship dataset from all data:')
+    print ('filtering bad/missing radiation data points in ship dataset from all data:')
     print ('')
 
     #################################################################
@@ -8216,32 +8207,115 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     swd = obs['obs_temp'].variables['SWdship'][:]
     swdmean = np.nanmean(swd[:].reshape(-1, 2), axis=1)
 
+    netlw = obs['obs_temp'].variables['LWnetship'][:]
+    netsw = obs['obs_temp'].variables['SWnetship'][:]
+
+    netswmean = np.nanmean(netsw[:].reshape(-1, 2), axis=1)
+    netlwmean = np.nanmean(netlw[:].reshape(-1, 2), axis=1)
+
     swdmeanice = np.nanmean(swdice[:-1].reshape(-1, 2), axis=1)
     swumeanice = np.nanmean(swuice[:-1].reshape(-1, 2), axis=1)
+
+    lwnetmeanice = lwdmeanice - lwumeanice
+    swnetmeanice = swdmeanice - swumeanice
 
     plt.plot(time_radice, swdmeanice)
     plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
     plt.show()
 
-    print (swdmeanice.shape)
-    print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
+    # print (swdmeanice.shape)
+    # print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
 
-    print (time_radice)
-    print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # print (time_radice)
+    # print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
 
-    plt.plot(time_radice[:-1], time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
-    plt.show()
+    # plt.plot(time_radice[:-1], time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # plt.show()
 
-    plt.plot(time_radice[:-1] / time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
-    plt.show()
+    # plt.plot(time_radice[:-1] / time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # plt.show()
 
+    ### only look at timesteps where we have both ice and ship data
     time_radship_icetimes = time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])]
 
-    print (time_radice[50:70])
-    print (time_radship_icetimes[50:70])
-
+    # print (time_radice[59])
+    # print (time_radship_icetimes[59])
     ### 233.13541666666666, is missing from time_radship_icetimes
 
+    ##############################################################################
+    ### build new times array for ship times and ship data including the missing timestamp
+    ##############################################################################
+    times_ship = np.zeros([np.size(time_radship) + 1])
+    swd_ship = np.zeros([np.size(time_radship) + 1])
+    swnet_ship = np.zeros([np.size(time_radship) + 1])
+    lwd_ship = np.zeros([np.size(time_radship) + 1])
+    lwnet_ship = np.zeros([np.size(time_radship) + 1])
+
+    ### find the missing index
+    badindex = np.where(time_radship == 233.09375)
+
+    ### fill new arrays with original data, with nans in missing data index
+    times_ship[:int(badindex[0] + 1)] = time_radship[:int(badindex[0] + 1)]
+    times_ship[int(badindex[0]) + 1 ] = 233.13541666666666
+    times_ship[int(badindex[0] + 2):] = time_radship[int(badindex[0] + 1):]
+
+    swd_ship[:int(badindex[0] + 1)] = swdmean[:int(badindex[0] + 1)]
+    swd_ship[int(badindex[0]) + 1 ] = np.nan
+    swd_ship[int(badindex[0] + 2):] = swdmean[int(badindex[0] + 1):]
+
+    lwd_ship[:int(badindex[0] + 1)] = lwdmean[:int(badindex[0] + 1)]
+    lwd_ship[int(badindex[0]) + 1 ] = np.nan
+    lwd_ship[int(badindex[0] + 2):] = lwdmean[int(badindex[0] + 1):]
+
+    lwnet_ship[:int(badindex[0] + 1)] = netlwmean[:int(badindex[0] + 1)]
+    lwnet_ship[int(badindex[0]) + 1 ] = np.nan
+    lwnet_ship[int(badindex[0] + 2):] = netlwmean[int(badindex[0] + 1):]
+
+    swnet_ship[:int(badindex[0] + 1)] = netswmean[:int(badindex[0] + 1)]
+    swnet_ship[int(badindex[0]) + 1 ] = np.nan
+    swnet_ship[int(badindex[0] + 2):] = netswmean[int(badindex[0] + 1):]
+
+    # plt.plot(time_radice[:] / times_ship[np.logical_and(times_ship >= time_radice[0], times_ship <= time_radice[-1])])
+    # plt.show()
+    # print (times_ship)
+    # print (np.nanmax(times_ship))
+
+    ###------------------------------------------------------------------------------------------------
+
+    ##############################################################################
+    ### pick out period where we have sea ice radiation measurements and set missing ship points to nans in ice array
+    ##############################################################################
+    iceindex = np.where(np.logical_and(times_ship >= time_radice[0], times_ship <= time_radice[-1]))
+
+    swd_badpoints = np.isnan(swd_ship[iceindex[0]])
+    swdmeanice[swd_badpoints] = np.nan
+
+    swnet_badpoints = np.isnan(swnet_ship[iceindex[0]])
+    swnetmeanice[swnet_badpoints] = np.nan
+
+    lwd_badpoints = np.isnan(lwd_ship[iceindex[0]])
+    lwdmeanice[lwd_badpoints] = np.nan
+
+    lwnet_badpoints = np.isnan(lwnet_ship[iceindex[0]])
+    lwnetmeanice[lwnet_badpoints] = np.nan
+
+    obs['fixed_radiation'] = {}
+
+    ### reassign sea ice observations (Fixed)
+    obs['fixed_radiation']['time_ice'] = time_radice
+    obs['fixed_radiation']['LWnet_ice'] = lwnetmeanice
+    obs['fixed_radiation']['SWnet_ice'] = swnetmeanice
+    obs['fixed_radiation']['LWd_ice'] = lwdmeanice
+    obs['fixed_radiation']['SWd_ice'] = swdmeanice
+    obs['fixed_radiation']['LWu_ice'] = lwumeanice
+    obs['fixed_radiation']['SWu_ice'] = swumeanice
+
+    ### reassign ship observations (fixed)
+    obs['fixed_radiation']['time_ship'] = times_ship
+    obs['fixed_radiation']['LWnet_ship'] = lwnet_ship
+    obs['fixed_radiation']['SWnet_ship'] = swnet_ship
+    obs['fixed_radiation']['LWd_ship'] = lwd_ship
+    obs['fixed_radiation']['SWd_ship'] = swd_ship
 
     return data1, data2, data3, data4, obs
 
@@ -8900,7 +8974,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
