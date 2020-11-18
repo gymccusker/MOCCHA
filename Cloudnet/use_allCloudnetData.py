@@ -7218,8 +7218,8 @@ def main():
     np.save('working_ra2t_data', ra2t_data)
     np.save('working_obs_data', obs_data)
 
-    print (data1['height'][:])
-    print (data1['height'][data1['height'] <= 1e3])
+    # print (data1['height'][:])
+    # print (data1['height'][data1['height'] <= 1e3])
 
     # -------------------------------------------------------------
     # FIN.
