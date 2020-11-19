@@ -2807,6 +2807,24 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
     print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
 
+    data1['surface_upwelling_SW_radiation'] = data1['surface_downwelling_SW_radiation'] - data1['surface_net_SW_radiation']
+    data1['surface_albedo'] = data1['surface_upwelling_SW_radiation'] / data1['surface_downwelling_SW_radiation']
+    data2['surface_upwelling_SW_radiation'] = data2['surface_downwelling_SW_radiation'] - data2['surface_net_SW_radiation']
+    data2['surface_albedo'] = data2['surface_upwelling_SW_radiation'] / data2['surface_downwelling_SW_radiation']
+    data4['surface_upwelling_SW_radiation'] = data4['surface_downwelling_SW_radiation'] - data4['surface_net_SW_radiation']
+    data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
+
+    plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
+    plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
+    plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
+    plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
+    plt.ylim([0,1])
+    plt.show()
+
+    print (data1['surface_downwelling_SW_radiation'])
+    print (data1['surface_upwelling_SW_radiation'])
+    print (data1['surface_albedo'])
+
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
@@ -8402,11 +8420,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -8544,7 +8562,7 @@ def main():
 
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
-
+#
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -8622,7 +8640,7 @@ def main():
         if out_dir1[-6:-1] == 'RadPA':
             var_list1 = ['surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']
-            var_list3 = ['sfc_net_sw','sfc_net_lw', 'sfc_down_lw', 'sfc_down_sw']
+            var_list3 = ['sfc_net_sw','sfc_net_lw', 'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
             var_list2 = var_list1
             var_list4 = var_list1
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
@@ -8995,7 +9013,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -9018,7 +9036,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
