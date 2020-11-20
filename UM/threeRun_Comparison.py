@@ -2817,7 +2817,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     data2['surface_albedo'] = data2['surface_upwelling_SW_radiation'] / data2['surface_downwelling_SW_radiation']
     data4['surface_upwelling_SW_radiation'] = data4['surface_downwelling_SW_radiation'] - data4['surface_net_SW_radiation']
     data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
-    # 
+    #
     # plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
     # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
@@ -8369,19 +8369,19 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     obs['fixed_radiation']['LWd_ship'] = lwd_ship
     obs['fixed_radiation']['SWd_ship'] = swd_ship
 
-    plt.plot(time_radice, swdmeanice)
-    plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
-    plt.plot(obs['fixed_radiation']['time_ice'],obs['fixed_radiation']['SWd_ice'])
-    plt.plot(obs['fixed_radiation']['time_ship'],obs['fixed_radiation']['SWd_ship'])
-    plt.show()
-
-    plt.plot(time_radice_all, swnetice)
-    plt.plot(time_radship_all, netsw)
-    plt.plot(time_radice, swnetmeanice)
-    plt.plot(time_radship, netswmean)
-    # plt.plot(obs['fixed_radiation']['time_ice'],obs['fixed_radiation']['SWnet_ice'])
-    # plt.plot(obs['fixed_radiation']['time_ship'],obs['fixed_radiation']['SWnet_ship'])
-    plt.show()
+    # plt.plot(time_radice, swdmeanice)
+    # plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # plt.plot(obs['fixed_radiation']['time_ice'],obs['fixed_radiation']['SWd_ice'])
+    # plt.plot(obs['fixed_radiation']['time_ship'],obs['fixed_radiation']['SWd_ship'])
+    # plt.show()
+    #
+    # plt.plot(time_radice_all, swnetice)
+    # plt.plot(time_radship_all, netsw)
+    # plt.plot(time_radice, swnetmeanice)
+    # plt.plot(time_radship, netswmean)
+    # # plt.plot(obs['fixed_radiation']['time_ice'],obs['fixed_radiation']['SWnet_ice'])
+    # # plt.plot(obs['fixed_radiation']['time_ship'],obs['fixed_radiation']['SWnet_ship'])
+    # plt.show()
 
     return data1, data2, data3, data4, obs
 
