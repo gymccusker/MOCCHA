@@ -725,7 +725,7 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
+def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -794,9 +794,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
     lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
-    sw3 = data3['surface_net_SW_radiation'][data3['hrly_flag']]
-    lw3 = data3['surface_net_LW_radiation'][data3['hrly_flag']]
-    crf3 = sw3 + lw3
+    sw4 = data4['surface_net_SW_radiation'][data4['hrly_flag']]
+    lw4 = data4['surface_net_LW_radiation'][data4['hrly_flag']]
+    crf4 = sw4 + lw4
     crf2 = sw2 + lw2
 
     ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
@@ -804,7 +804,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
-    plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
+    plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
     plt.ylim([-60, 70])
     plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
@@ -841,7 +841,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     plt.subplot(424)
     ax = plt.gca()
-    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['cloud_fraction']),
+    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
         # vmin = 0, vmax = 150,
         cmap = newcmp
@@ -861,15 +861,15 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ########
     #### calculate air density in kg/m3
     data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
-    data3['rho'] = calcAirDensity(data3['temperature'].data, data3['pressure'].data / 1e2)
+    data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
 
     ### convert /kg to /m3
     data2['qnliq'] = data2['qnliq'] * data2['rho']
-    data3['qnliq'] = data3['qnliq'] * data3['rho']
+    data4['qnliq'] = data4['qnliq'] * data4['rho']
 
     #### set flagged um_data to nans
     data2['qnliq'][data2['qnliq'] < 0] = 0.0
-    data3['qnliq'][data3['qnliq'] < 0] = 0.0
+    data4['qnliq'][data4['qnliq'] < 0] = 0.0
 
     #### set up colourmaps to grey out zeros on figures
     viridis = mpl_cm.get_cmap('viridis', 256)
@@ -894,7 +894,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     plt.subplot(426)
     ax = plt.gca()
-    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qnliq'])/1e6,
+    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
         # vmin = 0, vmax = 150,
         cmap = newcmp #mpl_cm.Blues
@@ -912,7 +912,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ########
     #### set flagged um_data to nans
     data2['qliq'][data2['qliq'] < 0] = 0.0
-    data3['qliq'][data3['qliq'] < 0] = 0.0
+    data4['qliq'][data4['qliq'] < 0] = 0.0
 
     #### set up colourmaps to grey out zeros on figures
     viridis = mpl_cm.get_cmap('viridis', 256)
@@ -938,7 +938,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     plt.subplot(428)
     ax = plt.gca()
-    img = plt.contourf(data3['time'], data3['height'][:], np.transpose(data3['qliq'])*1e3,
+    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
         # vmin = 0, vmax = 0.35,
         cmap = newcmp
@@ -961,7 +961,178 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     if month_flag == -1:
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
+    plt.show()
+
+
+    ###################################
+    ## PLOT RADIOSONDE BIASES
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model temperature profiles:')
+    print ('')
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    #### set flagged values to nans
+    data1['temperature'][data1['temperature'] == -9999] = np.nan
+    data2['temperature'][data2['temperature'] == -9999] = np.nan
+    # data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data4['temperature'][data4['temperature'] == -9999] = np.nan
+    # data5['temperature'][data5['temperature'] <= 0] = np.nan
+
+    #### set flagged values to nans
+    data1['q'][data1['q'] == -9999] = np.nan
+    data2['q'][data2['q'] == -9999] = np.nan
+    # data3['q'][data3['q'] <= 0] = np.nan
+    data4['q'][data4['q'] == -9999] = np.nan
+    # data5['q'][data5['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'temp')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'q')
+    print ('')
+    print ('Done!')
+
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
+
+    Tmin = -45
+    Tmax = 5
+    ymax = 9000
+    qmax = 4.0
+
+    # data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    # data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    # data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+
+    # data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    # data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    # data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+
+    ##################################################
+    ##################################################
+    #### MEDIAN PROFILES
+    ##################################################
+    ##################################################
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(7.5,5.5))
+    plt.subplots_adjust(top = 0.8, bottom = 0.15, right = 0.97, left = 0.1,
+            hspace = 0.3, wspace = 0.2)
+
+    ####        all model data share a timestamp
+    melt = np.where(data1['time_hrly'][::6] < 240.0)
+    freeze = np.where(data1['time_hrly'][::6] >= 240.0)
+
+
+    ###-------------------------
+    plt.subplot(121)
+    ax1 = plt.gca()
+    # plt.plot([0,0], [0,1e4], '--', color='grey')
+
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
+        np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
+        color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
+    #     np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'purple', label = label4, zorder = 4)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+
+    # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-2.0,1.0])
+    plt.xlabel('T bias [K]')
+
+    ###-------------------------
+    plt.subplot(122)
+    ax1 = plt.gca()
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
+        np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
+        color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
+    #     np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'purple', label = label4, zorder = 4)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+
+    # plt.legend()
+    plt.xlabel('q bias [g kg$^{-1}$]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    plt.grid('on')
+
+    ###-------------------------
+    fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100_casim-aeroprof.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3): #, lon, lat):
@@ -4925,7 +5096,7 @@ def plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, m
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_casim-cooper_meyers_fletcher.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ###------------------------
@@ -6924,6 +7095,8 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     data4[var + '_hrly'] = np.squeeze(data4[varlist[4]][data4['hrly_flag'],:])
     data5[var + '_hrly'] = np.squeeze(data5[varlist[5]][data5['hrly_flag'],:])
 
+    # print(data2[var + '_hrly'].shape)
+
     #### ---------------------------------------------------------------
     #### explicitly save 6-hourly temperature model profiles and time binning for ease
     #### ---------------------------------------------------------------
@@ -6938,6 +7111,8 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
     data4[var + '_6hrly'] = data4[var + '_hrly'][::6]
     data5[var + '_6hrly'] = data5[var + '_hrly'][::6]
+
+    print(data2[var + '_6hrly'].shape)
 
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
@@ -7057,14 +7232,17 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     subset = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
     # drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
 
-    print (obs['sondes']['doy'][drift[0]])
-    print (obs['sondes']['doy'][drift[-1]])
+    # print (obs['sondes']['doy'][drift[0]])
+    # print (obs['sondes']['doy'][drift[-1]])
 
     ### save in dict for ease
     obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
     obs['sondes']['drift'] = drift
     obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
 
+    # print (obs['sondes'][var + '_driftSondes_UM'].shape)
+    # print (data2[var + '_6hrly'].shape)
+    # print (data4[var + '_6hrly'].shape)
 
     ### save subset of drift in dict for ease
     obs['sondes']['doy_subset'] = obs['sondes']['doy'][subset]
@@ -7135,6 +7313,9 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     #### ---------------------------------------------------------------
     data1['universal_height'] = data1['height'][iUM[0][3:]]
     data1['universal_height_UMindex'] = iUM[0][3:]
+
+    # print (data2[var + '_6hrly'][:,data1['universal_height_UMindex']].shape)
+    # print (data4[var + '_6hrly'][:,data1['universal_height_UMindex']].shape)
 
     #### ---------------------------------------------------------------
     #### save out working data for debugging
@@ -8429,8 +8610,8 @@ def main():
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir3 = '12_u-br210_RA1M_CASIM/OUT_R0/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir3 = 'OUT_25H/'
+        out_dir4 = '12_u-br210_RA1M_CASIM/OUT_R0/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -8560,7 +8741,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -8569,8 +8750,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 #
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -8654,12 +8835,14 @@ def main():
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl']
+            var_list4 = var_list1
             if out_dir2[-4:-1] == 'glm':
                 var_list2 = ['cloud_fraction','qliq','qice']
-            if out_dir3 == '12_u-br210_RA1M_CASIM/OUT_R0/':
+            if out_dir4 == '12_u-br210_RA1M_CASIM/OUT_R0/':
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
+                var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
@@ -8671,7 +8854,6 @@ def main():
                     var_list3 = ['cloud_fraction','qliq','qice']
                 else:
                     var_list3 = var_list2
-            var_list4 = var_list1
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
 
         if i == 0:
@@ -8906,6 +9088,12 @@ def main():
         data2['time_hrly'] = data2['time']
         data2['hrly_flag'] = np.arange(len(data2['time_hrly']))
 
+    #### add override for data2 to allow 24h data to be used for testing purposes
+    # if out_dir4[:-2] == '12_u-br210_RA1M_CASIM/OUT_R':
+    #     data4['time_hrly'] = data4['time']
+    #     data4['hrly_flag'] = np.arange(len(data4['time_hrly']))
+
+
     #################################################################
     ## load calculated model inversion heights
     #################################################################
@@ -9011,7 +9199,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
