@@ -772,22 +772,22 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
-    ### convert radiation matlab timesteps to doy
-    datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
-    time_radice_all = calcTime_Mat2DOY(datenums_radice)
-
-    ### calculate net LW and SW from obs
-    time_radice = time_radice_all[:-1:2]
-    lwd = obs['obs_temp'].variables['LWdice'][:]
-    lwu = obs['obs_temp'].variables['LWuice'][:]
-    lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
-    lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
-    swd = obs['obs_temp'].variables['SWdice'][:]
-    swu = obs['obs_temp'].variables['SWuice'][:]
-    swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
-    swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
-    netLW = lwdmean - lwumean
-    netSW = swdmean - swumean
+    # ### convert radiation matlab timesteps to doy
+    # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
+    # time_radice_all = calcTime_Mat2DOY(datenums_radice)
+    #
+    # ### calculate net LW and SW from obs
+    # time_radice = time_radice_all[:-1:2]
+    # lwd = obs['obs_temp'].variables['LWdice'][:]
+    # lwu = obs['obs_temp'].variables['LWuice'][:]
+    # lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
+    # lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
+    # swd = obs['obs_temp'].variables['SWdice'][:]
+    # swu = obs['obs_temp'].variables['SWuice'][:]
+    # swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
+    # swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+    # netLW = lwdmean - lwumean
+    # netSW = swdmean - swumean
 
     ########            Radiation timeseries
     ########
@@ -801,11 +801,13 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
 
     ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'k', label = 'Ice_station')
+    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
+    plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data3['time'][data2['hrly_flag']], crf3, color = 'purple', label = label3)
     plt.xlim(doy[0], doy[-1])
-    plt.legend(bbox_to_anchor=(0.36, 0.7, 1., .102), loc=1, ncol=1)
+    plt.ylim([-60, 70])
+    plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
     plt.ylabel('Net radiation \n [W m$^{-2}$]')
     plt.xlabel('Date')
     plt.xticks([230,235,240,245,250,255])
@@ -852,7 +854,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('Cloud fraction', rotation = 270, labelpad = 25)
+    plt.ylabel('C$_{V}$', rotation = 270, labelpad = 25)
 
 
     ########            NDROP
@@ -958,7 +960,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, o
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates.svg'
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -8424,11 +8426,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
-        out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
+        out_dir3 = '12_u-br210_RA1M_CASIM/OUT_R0/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -8437,17 +8439,17 @@ def main():
         out_dir3 = 'ECMWF_IFS/'
 
     ### IFS: OUT_25H/
-    ### 4_u-bg610_RA2M_CON/OUT_R1/
+    ### 4_u-bg610_RA2M_CON/OUT_R1(_RadPA)/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/OUT_R2_lam/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_R2_lam(_RadPA)/              # RA2T_CON nest + global 4D stash
     ### 7_u-bn068_RA2T_CON/OUT_R2_glm/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
-    ### 14_u-bu570_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
+    ### 14_u-bu570_RA1M_CASIM/OUT_R0(_RadPA)/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
     ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
     ### 16_u-bv926_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash + no subgrid mp production
 
@@ -9009,7 +9011,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -9040,7 +9042,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
