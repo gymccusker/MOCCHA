@@ -2807,23 +2807,27 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
     print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['surface_downwelling_LW_radiation'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
 
+    ######################################################
+    #### SIMPLE CALCULATION OF ALBEDO
+    ####            may not account for necessary model assumptions, needs checking
+    ######################################################
     data1['surface_upwelling_SW_radiation'] = data1['surface_downwelling_SW_radiation'] - data1['surface_net_SW_radiation']
     data1['surface_albedo'] = data1['surface_upwelling_SW_radiation'] / data1['surface_downwelling_SW_radiation']
     data2['surface_upwelling_SW_radiation'] = data2['surface_downwelling_SW_radiation'] - data2['surface_net_SW_radiation']
     data2['surface_albedo'] = data2['surface_upwelling_SW_radiation'] / data2['surface_downwelling_SW_radiation']
     data4['surface_upwelling_SW_radiation'] = data4['surface_downwelling_SW_radiation'] - data4['surface_net_SW_radiation']
     data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
-
-    plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
-    plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
-    plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
-    plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    plt.ylim([0,1])
-    plt.show()
-
-    print (data1['surface_downwelling_SW_radiation'])
-    print (data1['surface_upwelling_SW_radiation'])
-    print (data1['surface_albedo'])
+    # 
+    # plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
+    # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
+    # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
+    # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
+    # plt.ylim([0,1])
+    # plt.show()
+    #
+    # print (data1['surface_downwelling_SW_radiation'])
+    # print (data1['surface_upwelling_SW_radiation'])
+    # print (data1['surface_albedo'])
 
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
