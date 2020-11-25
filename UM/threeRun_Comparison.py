@@ -3109,6 +3109,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     lwdmeanice = obs['fixed_radiation']['LWd_ice'][:]
     swdmeanice = obs['fixed_radiation']['SWd_ice'][:]
 
+    ### update these to probe data['fixed_radiation']['time'] arrays instead
     p3mod = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     p4mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
     p5mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
