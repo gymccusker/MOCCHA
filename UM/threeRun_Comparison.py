@@ -8884,6 +8884,11 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         # plt.plot(data1['time_hrly'][:-3])
         # plt.plot(data3['time_hrly'][:-4]);plt.show()
 
+        data1['fixed_radiation']['time'] = data1['time_hrly'][:-3]
+        data2['fixed_radiation']['time'] = data2['time_hrly'][:-3]
+        data3['fixed_radiation']['time'] = data3['time_hrly'][:-4]
+        data4['fixed_radiation']['time'] = data4['time_hrly'][:-3]
+
         model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
         data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-3]
         data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
@@ -8927,6 +8932,14 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
     else:
         modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
                 obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
+
+        data1['fixed_radiation']['time'] = data1['time_hrly'][:-3]
+        data2['fixed_radiation']['time'] = data2['time_hrly'][:-3]
+        data3['fixed_radiation']['time'] = data3['time_hrly'][:-3]
+        data4['fixed_radiation']['time'] = data4['time_hrly'][:-3]
+
+        print(data1['fixed_radiation']['time'].shape)
+        print(data3['fixed_radiation']['time'].shape)
 
         model_swnet_badpoints = np.isnan(swnet_ship[modelindex[0]])
         data1['fixed_radiation']['SWnet'] = data1['surface_net_SW_radiation'][data1['hrly_flag']][:-3]
