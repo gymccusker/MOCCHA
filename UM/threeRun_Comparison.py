@@ -2717,6 +2717,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     yB = [-10, 120]
     plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='grey')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(data1['time_hrly'][:-3], data1['fixed_radiation']['SWnet'].data, color = 'darkblue', label = label1)
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
@@ -3007,7 +3008,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('')
 
     fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
