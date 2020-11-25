@@ -8726,16 +8726,16 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     time_radice = time_radice_all[:-1:2]
     lwdice = obs['obs_temp'].variables['LWdice'][:]
     lwuice = obs['obs_temp'].variables['LWuice'][:]
-    lwdmeanice = np.mean(lwdice[:-1].reshape(-1, 2), axis=1)
-    lwumeanice = np.mean(lwuice[:-1].reshape(-1, 2), axis=1)
+    lwdmeanice = np.mean(lwdice[:].reshape(-1, 2), axis=1)
+    lwumeanice = np.mean(lwuice[:].reshape(-1, 2), axis=1)
     swdice = obs['obs_temp'].variables['SWdice'][:]
     swuice = obs['obs_temp'].variables['SWuice'][:]
-    swdmeanice = np.mean(swdice[:-1].reshape(-1, 2), axis=1)
-    swumeanice = np.mean(swuice[:-1].reshape(-1, 2), axis=1)
+    swdmeanice = np.mean(swdice[:].reshape(-1, 2), axis=1)
+    swumeanice = np.mean(swuice[:].reshape(-1, 2), axis=1)
     lwnetice = lwdice - lwuice
-    lwnetmeanice = np.mean(lwnetice[:-1].reshape(-1, 2), axis=1) # lwdmeanice - lwumeanice
+    lwnetmeanice = np.mean(lwnetice[:].reshape(-1, 2), axis=1) # lwdmeanice - lwumeanice
     swnetice = swdice - swuice
-    swnetmeanice = np.mean(swnetice[:-1].reshape(-1, 2), axis=1) # swdmeanice - swumeanice
+    swnetmeanice = np.mean(swnetice[:].reshape(-1, 2), axis=1) # swdmeanice - swumeanice
     #### CODE USED ORIGINIALLY IN plot_paperRadiation
     # time_radice = time_radice_all[:-1:2]
     # lwd = obs['obs_temp'].variables['LWdice'][:]
