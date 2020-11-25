@@ -8680,7 +8680,7 @@ def RMSE_analysis(data1, data2, data3, obs):
     ###---------------------------------------------------------------------------------------------
     rms = sqrt(mean_squared_error(y_actual, y_predicted))
 
-def check_Radiation(data1, data2, data3, data4, obs, doy):
+def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -8867,60 +8867,86 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     ##############################################################################
     ### now do the same for the model data
     ##############################################################################
-    modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
-            obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
-
-    # print (obs['fixed_radiation']['time_ship'][modelindex[0]].shape)
-    # print (data1['time_hrly'][:-3].shape)
-    #
-    # plt.plot(obs['fixed_radiation']['time_ship'][modelindex[0]])
-    # plt.plot(data1['time_hrly'][:-3]);plt.show()
-
     ### assign fixed_radiation dictionaries
     data1['fixed_radiation'] = {}
     data2['fixed_radiation'] = {}
     data3['fixed_radiation'] = {}
     data4['fixed_radiation'] = {}
 
-    # model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
-    # data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-3]
-    # data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
-    # data2['fixed_radiation']['SWd'] = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']][:-3]
-    # data2['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
-    # data3['fixed_radiation']['SWd'] = data3['sfc_down_sw'][data3['hrly_flag']][:-3]
-    # data3['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
-    # data4['fixed_radiation']['SWd'] = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']][:-3]
-    # data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+    if out_dir1[-6:-1] == 'RadPA':
+        modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
+                obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
 
-    model_swnet_badpoints = np.isnan(swnet_ship[modelindex[0]])
-    data1['fixed_radiation']['SWnet'] = data1['surface_net_SW_radiation'][data1['hrly_flag']][:-3]
-    data1['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
-    data2['fixed_radiation']['SWnet'] = data2['surface_net_SW_radiation'][data2['hrly_flag']][:-3]
-    data2['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
-    data3['fixed_radiation']['SWnet'] = data3['sfc_net_sw'][data3['hrly_flag']][:-3]
-    data3['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
-    data4['fixed_radiation']['SWnet'] = data4['surface_net_SW_radiation'][data4['hrly_flag']][:-3]
-    data4['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
-    #
-    # model_lwd_badpoints = np.isnan(lwd_ship[modelindex[0]])
-    # data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-3]
-    # data1['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
-    # data2['fixed_radiation']['LWd'] = data2['surface_downwelling_LW_radiation'][data2['hrly_flag']][:-3]
-    # data2['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
-    # data3['fixed_radiation']['LWd'] = data3['sfc_down_lw'][data3['hrly_flag']][:-3]
-    # data3['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
-    # data4['fixed_radiation']['LWd'] = data4['surface_downwelling_LW_radiation'][data4['hrly_flag']][:-3]
-    # data4['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        print (obs['fixed_radiation']['time_ship'][modelindex[0]].shape)
+        print (data1['time_hrly'][:-3].shape)
 
-    model_lwnet_badpoints = np.isnan(lwnet_ship[modelindex[0]])
-    data1['fixed_radiation']['LWnet'] = data1['surface_net_LW_radiation'][data1['hrly_flag']][:-3]
-    data1['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
-    data2['fixed_radiation']['LWnet'] = data2['surface_net_LW_radiation'][data2['hrly_flag']][:-3]
-    data2['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
-    data3['fixed_radiation']['LWnet'] = data3['sfc_net_lw'][data3['hrly_flag']][:-3]
-    data3['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
-    data4['fixed_radiation']['LWnet'] = data4['surface_net_LW_radiation'][data4['hrly_flag']][:-3]
-    data4['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        plt.plot(obs['fixed_radiation']['time_ship'][modelindex[0]])
+        plt.plot(data1['time_hrly'][:-3])
+        plt.plot(data3['time_hrly'][:-4]);plt.show()
+
+        model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
+        data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data2['fixed_radiation']['SWd'] = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data3['fixed_radiation']['SWd'] = data3['sfc_down_sw'][data3['hrly_flag']][:-4]
+        data3['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data4['fixed_radiation']['SWd'] = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+
+        model_swnet_badpoints = np.isnan(swnet_ship[modelindex[0]])
+        data1['fixed_radiation']['SWnet'] = data1['surface_net_SW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data2['fixed_radiation']['SWnet'] = data2['surface_net_SW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data3['fixed_radiation']['SWnet'] = data3['sfc_net_sw'][data3['hrly_flag']][:-4]
+        data3['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data4['fixed_radiation']['SWnet'] = data4['surface_net_SW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+
+        model_lwd_badpoints = np.isnan(lwd_ship[modelindex[0]])
+        data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data2['fixed_radiation']['LWd'] = data2['surface_downwelling_LW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data3['fixed_radiation']['LWd'] = data3['sfc_down_lw'][data3['hrly_flag']][:-4]
+        data3['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data4['fixed_radiation']['LWd'] = data4['surface_downwelling_LW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+
+        model_lwnet_badpoints = np.isnan(lwnet_ship[modelindex[0]])
+        data1['fixed_radiation']['LWnet'] = data1['surface_net_LW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data2['fixed_radiation']['LWnet'] = data2['surface_net_LW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data3['fixed_radiation']['LWnet'] = data3['sfc_net_lw'][data3['hrly_flag']][:-4]
+        data3['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data4['fixed_radiation']['LWnet'] = data4['surface_net_LW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+
+    else:
+        modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
+                obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
+
+        model_swnet_badpoints = np.isnan(swnet_ship[modelindex[0]])
+        data1['fixed_radiation']['SWnet'] = data1['surface_net_SW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data2['fixed_radiation']['SWnet'] = data2['surface_net_SW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data3['fixed_radiation']['SWnet'] = data3['sfc_net_sw'][data3['hrly_flag']][:-3]
+        data3['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+        data4['fixed_radiation']['SWnet'] = data4['surface_net_SW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
+
+        model_lwnet_badpoints = np.isnan(lwnet_ship[modelindex[0]])
+        data1['fixed_radiation']['LWnet'] = data1['surface_net_LW_radiation'][data1['hrly_flag']][:-3]
+        data1['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data2['fixed_radiation']['LWnet'] = data2['surface_net_LW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data3['fixed_radiation']['LWnet'] = data3['sfc_net_lw'][data3['hrly_flag']][:-3]
+        data3['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+        data4['fixed_radiation']['LWnet'] = data4['surface_net_LW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
 
     # plt.plot(time_radice, swdmeanice)
     # plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
@@ -8977,11 +9003,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9111,7 +9137,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9120,8 +9146,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
     missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
 #
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -9476,7 +9502,7 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy)
+    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -9578,7 +9604,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -9601,7 +9627,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
