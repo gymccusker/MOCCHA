@@ -8760,16 +8760,15 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     netsw = obs['obs_temp'].variables['SWnetship'][:]
     netswmean = np.mean(netsw[:].reshape(-1, 2), axis=1)
 
+    plt.plot(time_radice, swdmeanice)
+    plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    plt.show()
 
-    # plt.plot(time_radice, swdmeanice)
-    # plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
-    # plt.show()
+    print (swdmeanice.shape)
+    print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
 
-    # print (swdmeanice.shape)
-    # print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
-
-    # print (time_radice)
-    # print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    print (time_radice)
+    print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
 
     # plt.plot(time_radice[:-1], time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
     # plt.show()
