@@ -3303,13 +3303,13 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
 
     #
-    plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
-    plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
-    plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
-    plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    plt.ylim([0.4,0.9])
-    plt.grid('on')
-    plt.show()
+    # plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
+    # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
+    # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
+    # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
+    # plt.ylim([0.4,0.9])
+    # plt.grid('on')
+    # plt.show()
     #
     # print (data1['surface_downwelling_SW_radiation'])
     # print (data1['surface_upwelling_SW_radiation'])
@@ -8877,12 +8877,12 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
                 obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
 
-        print (obs['fixed_radiation']['time_ship'][modelindex[0]].shape)
-        print (data1['time_hrly'][:-3].shape)
-
-        plt.plot(obs['fixed_radiation']['time_ship'][modelindex[0]])
-        plt.plot(data1['time_hrly'][:-3])
-        plt.plot(data3['time_hrly'][:-4]);plt.show()
+        # print (obs['fixed_radiation']['time_ship'][modelindex[0]].shape)
+        # print (data1['time_hrly'][:-3].shape)
+        #
+        # plt.plot(obs['fixed_radiation']['time_ship'][modelindex[0]])
+        # plt.plot(data1['time_hrly'][:-3])
+        # plt.plot(data3['time_hrly'][:-4]);plt.show()
 
         model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
         data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-3]
