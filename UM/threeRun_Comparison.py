@@ -8726,16 +8726,16 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     time_radice = time_radice_all[:-1:2]
     lwdice = obs['obs_temp'].variables['LWdice'][:]
     lwuice = obs['obs_temp'].variables['LWuice'][:]
-    lwdmeanice = np.mean(lwdice[:].reshape(-1, 2), axis=1)
-    lwumeanice = np.mean(lwuice[:].reshape(-1, 2), axis=1)
+    lwdmeanice = np.mean(lwdice[:-1].reshape(-1, 2), axis=1)
+    lwumeanice = np.mean(lwuice[:-1].reshape(-1, 2), axis=1)
     swdice = obs['obs_temp'].variables['SWdice'][:]
     swuice = obs['obs_temp'].variables['SWuice'][:]
-    swdmeanice = np.mean(swdice[:].reshape(-1, 2), axis=1)
-    swumeanice = np.mean(swuice[:].reshape(-1, 2), axis=1)
+    swdmeanice = np.mean(swdice[:-1].reshape(-1, 2), axis=1)
+    swumeanice = np.mean(swuice[:-1].reshape(-1, 2), axis=1)
     lwnetice = lwdice - lwuice
-    lwnetmeanice = np.mean(lwnetice[:].reshape(-1, 2), axis=1) # lwdmeanice - lwumeanice
+    lwnetmeanice = np.mean(lwnetice[:-1].reshape(-1, 2), axis=1) # lwdmeanice - lwumeanice
     swnetice = swdice - swuice
-    swnetmeanice = np.mean(swnetice[:].reshape(-1, 2), axis=1) # swdmeanice - swumeanice
+    swnetmeanice = np.mean(swnetice[:-1].reshape(-1, 2), axis=1) # swdmeanice - swumeanice
     #### CODE USED ORIGINIALLY IN plot_paperRadiation
     # time_radice = time_radice_all[:-1:2]
     # lwd = obs['obs_temp'].variables['LWdice'][:]
@@ -8760,19 +8760,19 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     netsw = obs['obs_temp'].variables['SWnetship'][:]
     netswmean = np.mean(netsw[:].reshape(-1, 2), axis=1)
 
-    plt.plot(time_radice, swdmeanice)
-    plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
-    plt.show()
+    # plt.plot(time_radice, swdmeanice)
+    # plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # plt.show()
 
-    print (swdmeanice.shape)
-    print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
+    # print (swdmeanice.shape)
+    # print (swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])].shape)
 
-    print (time_radice)
-    print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
+    # print (time_radice)
+    # print (time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
 
     # plt.plot(time_radice[:-1], time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
     # plt.show()
-
+    #
     # plt.plot(time_radice[:-1] / time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
     # plt.show()
 
@@ -8835,19 +8835,19 @@ def check_Radiation(data1, data2, data3, data4, obs, doy):
     ##############################################################################
     ### pick out period where we have sea ice radiation measurements and set missing ship points to nans in ice array
     ##############################################################################
-    # iceindex = np.where(np.logical_and(times_ship >= time_radice[0], times_ship <= time_radice[-1]))
-    #
-    # swd_badpoints = np.isnan(swd_ship[iceindex[0]])
-    # obs['fixed_radiation']['SWd_ice'][swd_badpoints] = np.nan
-    #
-    # swnet_badpoints = np.isnan(swnet_ship[iceindex[0]])
-    # obs['fixed_radiation']['SWnet_ice'][swnet_badpoints] = np.nan
-    #
-    # lwd_badpoints = np.isnan(lwd_ship[iceindex[0]])
-    # obs['fixed_radiation']['LWd_ice'][lwd_badpoints] = np.nan
-    #
-    # lwnet_badpoints = np.isnan(lwnet_ship[iceindex[0]])
-    # obs['fixed_radiation']['LWnet_ice'][lwnet_badpoints] = np.nan
+    iceindex = np.where(np.logical_and(times_ship >= time_radice[0], times_ship <= time_radice[-1]))
+
+    swd_badpoints = np.isnan(swd_ship[iceindex[0]])
+    obs['fixed_radiation']['SWd_ice'][swd_badpoints] = np.nan
+
+    swnet_badpoints = np.isnan(swnet_ship[iceindex[0]])
+    obs['fixed_radiation']['SWnet_ice'][swnet_badpoints] = np.nan
+
+    lwd_badpoints = np.isnan(lwd_ship[iceindex[0]])
+    obs['fixed_radiation']['LWd_ice'][lwd_badpoints] = np.nan
+
+    lwnet_badpoints = np.isnan(lwnet_ship[iceindex[0]])
+    obs['fixed_radiation']['LWnet_ice'][lwnet_badpoints] = np.nan
 
     ### reassign ship observations (fixed)
     obs['fixed_radiation']['time_ship'] = times_ship
