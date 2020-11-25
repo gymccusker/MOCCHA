@@ -486,17 +486,18 @@ def copyNC(nc1, filename1, out_dir):
     ###################################
     ## Add Global Attributes
     ###################################
-    nc.conventions = nc1.Conventions
-    nc.title = nc1.title
-    nc.description = nc1.description
-    nc.history = nc1.history
-    nc.source = nc1.source
-    nc.references = nc1.references
-    nc.project = nc1.project
-    nc.comment = nc1.comment
-    nc.institution = nc1.institution
-    nc.initialization_time = nc1.initialization_time
-    nc.um_version = nc1.um_version
+    if out_dir[-6:-1] != 'RadPA':
+        nc.conventions = nc1.Conventions
+        nc.title = nc1.title
+        nc.description = nc1.description
+        nc.history = nc1.history
+        nc.source = nc1.source
+        nc.references = nc1.references
+        nc.project = nc1.project
+        nc.comment = nc1.comment
+        nc.institution = nc1.institution
+        nc.initialization_time = nc1.initialization_time
+        nc.um_version = nc1.um_version
 
     nc.close()
 
