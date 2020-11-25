@@ -332,7 +332,10 @@ def copyNC(nc1, filename1, out_dir):
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
+    if out_dir[-6:-1] == 'RadPA':
+        nc = Dataset(filename1[-24:], 'w', format ='NETCDF4_CLASSIC')
+    else:
+        nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
     print ('')
     print (nc.file_format)
     print ('')
@@ -341,8 +344,9 @@ def copyNC(nc1, filename1, out_dir):
     ## Data dimensions
     ###################################
     forecast_time = nc.createDimension('forecast_time', 24)
-    height = nc.createDimension('height', np.size(nc1.variables['height']))
-    height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
+    if out_dir[-6:-1] != 'RadPA':
+        height = nc.createDimension('height', np.size(nc1.variables['height']))
+        height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
 
     ###################################
     ## Dimensions variables
@@ -357,23 +361,24 @@ def copyNC(nc1, filename1, out_dir):
     timem[0:24] = nc1.variables['forecast_time'][0:]
     print ('time shape = ' + str(timem.shape))
 
-    #### height
-    height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    height.scale_factor = float(1)
-    height.add_offset = float(0)
-    height.comment = ''
-    height.units = 'm'
-    height.long_name = 'height'
-    height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
+    if out_dir[-6:-1] != 'RadPA':
+        #### height
+        height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+        height.scale_factor = float(1)
+        height.add_offset = float(0)
+        height.comment = ''
+        height.units = 'm'
+        height.long_name = 'height'
+        height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
-    # #### height2
-    height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
-    height2.scale_factor = float(1)
-    height2.add_offset = float(0)
-    height2.comment = ''
-    height2.units = 'm'
-    height2.long_name = 'height2'
-    height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
+        # #### height2
+        height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+        height2.scale_factor = float(1)
+        height2.add_offset = float(0)
+        height2.comment = ''
+        height2.units = 'm'
+        height2.long_name = 'height2'
+        height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -549,7 +554,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
+    out_dir = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
