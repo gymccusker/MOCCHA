@@ -136,7 +136,10 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     #################################################################
     ## CREATE NEW NETCDF
     #################################################################
-    nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
+    if out_dir[-6:-1] == 'RadPA':
+        nc = Dataset(filename1[-24:], 'w', format ='NETCDF4_CLASSIC')
+    else:
+        nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
     print ('')
     print (nc.file_format)
     print ('')
@@ -145,8 +148,9 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     ## Data dimensions
     ###################################
     forecast_time = nc.createDimension('forecast_time', 25)
-    height = nc.createDimension('height', np.size(nc1.variables['height']))
-    height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
+    if out_dir[-6:-1] != 'RadPA':
+        height = nc.createDimension('height', np.size(nc1.variables['height']))
+        height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
 
     ###################################
     ## Dimensions variables
@@ -162,23 +166,24 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     timem[24] = 24.0    ### hard code since nc2[0] = 0.0
     print ('time shape = ' + str(timem.shape))
 
-    #### height
-    height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
-    height.scale_factor = float(1)
-    height.add_offset = float(0)
-    height.comment = ''
-    height.units = 'm'
-    height.long_name = 'height'
-    height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
+    if out_dir[-6:-1] != 'RadPA':
+        #### height
+        height = nc.createVariable('height', np.float64, ('height',), fill_value='-9999')
+        height.scale_factor = float(1)
+        height.add_offset = float(0)
+        height.comment = ''
+        height.units = 'm'
+        height.long_name = 'height'
+        height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
-    # #### height2
-    height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
-    height2.scale_factor = float(1)
-    height2.add_offset = float(0)
-    height2.comment = ''
-    height2.units = 'm'
-    height2.long_name = 'height2'
-    height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
+        # #### height2
+        height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+        height2.scale_factor = float(1)
+        height2.add_offset = float(0)
+        height2.comment = ''
+        height2.units = 'm'
+        height2.long_name = 'height2'
+        height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
@@ -290,17 +295,18 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     ###################################
     ## Add Global Attributes
     ###################################
-    nc.conventions = nc1.Conventions
-    nc.title = nc1.title
-    nc.description = nc1.description
-    nc.history = nc1.history
-    nc.source = nc1.source
-    nc.references = nc1.references
-    nc.project = nc1.project
-    nc.comment = nc1.comment
-    nc.institution = nc1.institution
-    nc.initialization_time = nc1.initialization_time
-    nc.um_version = nc1.um_version
+    if out_dir[-6:-1] != 'RadPA':
+        nc.conventions = nc1.Conventions
+        nc.title = nc1.title
+        nc.description = nc1.description
+        nc.history = nc1.history
+        nc.source = nc1.source
+        nc.references = nc1.references
+        nc.project = nc1.project
+        nc.comment = nc1.comment
+        nc.institution = nc1.institution
+        nc.initialization_time = nc1.initialization_time
+        nc.um_version = nc1.um_version
 
     nc.close()
 
@@ -543,7 +549,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '4_u-bg610_RA2M_CON/OUT_R1_24hRad/'
+    out_dir = '4_u-bg610_RA2M_CON/OUT_R1_RadPA/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -617,15 +623,26 @@ def main():
             '20180909_oden_metum.nc','20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
             '20180913_oden_metum.nc','20180914_oden_metum.nc']
 
-    moccha_names = ['20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
-            '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
-            '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
-            '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
-            '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-            '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
-            '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
-            '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
-            '20180914_oden_metum.nc']
+    if out_dir[-6:-1] == 'RadPA':
+        moccha_names = ['20180814_oden_metum_a.nc','20180815_oden_metum_a.nc','20180816_oden_metum_a.nc',
+                '20180817_oden_metum_a.nc','20180818_oden_metum_a.nc','20180819_oden_metum_a.nc','20180820_oden_metum_a.nc',
+                '20180821_oden_metum_a.nc','20180822_oden_metum_a.nc','20180823_oden_metum_a.nc','20180824_oden_metum_a.nc',
+                '20180825_oden_metum_a.nc','20180826_oden_metum_a.nc','20180827_oden_metum_a.nc','20180828_oden_metum_a.nc',
+                '20180829_oden_metum_a.nc','20180830_oden_metum_a.nc','20180831_oden_metum_a.nc','20180901_oden_metum_a.nc',
+                '20180902_oden_metum_a.nc','20180903_oden_metum_a.nc','20180904_oden_metum_a.nc','20180905_oden_metum_a.nc',
+                '20180906_oden_metum_a.nc','20180907_oden_metum_a.nc','20180908_oden_metum_a.nc','20180909_oden_metum_a.nc',
+                '20180910_oden_metum_a.nc','20180911_oden_metum_a.nc','20180912_oden_metum_a.nc','20180913_oden_metum_a.nc',
+                '20180914_oden_metum_a.nc']
+    else:
+        moccha_names = ['20180814_oden_metum.nc','20180815_oden_metum.nc','20180816_oden_metum.nc',
+                '20180817_oden_metum.nc','20180818_oden_metum.nc','20180819_oden_metum.nc','20180820_oden_metum.nc',
+                '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
+                '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
+                '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
+                '20180902_oden_metum.nc','20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+                '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
+                '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc','20180913_oden_metum.nc',
+                '20180914_oden_metum.nc']
 
     Aug_missing_files = ['20180812_oden_metum.nc','20180813_oden_metum.nc']
 
