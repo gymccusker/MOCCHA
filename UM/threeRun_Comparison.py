@@ -3006,8 +3006,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
