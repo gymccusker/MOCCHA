@@ -6188,7 +6188,7 @@ def main():
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         if obs_switch == 'UM':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V5/' # QF30_metum/JV_LWPTesting/' # 14_CASIM-100_QF30/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V5/' #QF30_metum/14_CASIM-100_QF30/' # QF30_metum/JV_LWPTesting/' #
         elif obs_switch == 'IFS':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
@@ -6916,7 +6916,7 @@ def main():
             ###             Only load in what variables are needed based on IFS file chosen
             ### -------------------------------------------------------------------------
             obs_var_list = [['Cv', 'Cv_adv'],
-                        ['lwc','lwc_adiabatic','lwc_adiabatic_inc_nolwp','lwp'],
+                        ['lwc','lwp','lwc_adiabatic'],#,'lwc_adiabatic_inc_nolwp'],
                         ['height','iwc']]
 
             if obs_switch == 'RADAR':
@@ -6947,6 +6947,9 @@ def main():
                             elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 1:
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:])
                             elif np.ndim(cn_nc0[c].variables[obs_var_list[c][j]]) == 2:
+                                print (obs_var_list[c][j])
+                                print (obs_data[obs_var_list[c][j]].shape)
+                                print (cn_nc0[c].variables[obs_var_list[c][j]][:].shape)
                                 obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],cn_nc0[c].variables[obs_var_list[c][j]][:],0)
                 for c in range(0,3): cn_nc0[c].close()
 
@@ -7001,6 +7004,12 @@ def main():
     if cn_misc_flag != -1: misc_data['time'] = time_misc
     ra2t_data['time'] = time_ra2t
     obs_data['time'] = time_obs
+
+    print (ifs_data['time'].shape)
+    print (obs_data['time'].shape)
+
+    # plt.plot(obs_data['time'],ifs_data['time']);plt.show()
+
 
     #################################################################
     ### stop double counting of 0000 and 2400 from model data
@@ -7093,9 +7102,9 @@ def main():
     # np.save('working_ifs_data', ifs_data)
     # if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
 
-    # -------------------------------------------------------------
-    # maximise obs data available and build mask for available data
-    # -------------------------------------------------------------
+    ## -------------------------------------------------------------
+    ## maximise obs data available and build mask for available data
+    ## -------------------------------------------------------------
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     nanind, nanmask, wcind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
@@ -7134,7 +7143,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
@@ -7156,7 +7165,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
