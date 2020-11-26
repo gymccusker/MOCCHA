@@ -823,7 +823,8 @@ def main():
     #### 9204, 9205, 16004, 30461
 
     ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
-    #### nohup python2.7 diags_CloudNet.py > nohup_u-bn068_diags_CloudNet.out &
+    #### module load jaspy
+    #### nohup python diags_CloudNet.py > nohup_u-bz429_diags_CloudNet.out &
 
     # -------------------------------------------------------------
     # Load ship track
