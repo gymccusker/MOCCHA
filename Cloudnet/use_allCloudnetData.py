@@ -635,14 +635,13 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         plt.xlim([0,1.0])
     else:
         # #### SCALED LWC
-        plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), 'k--', linewidth = 3, label = 'Obs_' + obs_switch + 'grid_newLWP', zorder = 5)
+        # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3,np.nanmean(obs_data['height'],0), color = 'grey', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-obsLWP', zorder = 5)
         # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
-        #     np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.5)
-        # plt.xlim([0,0.2])
+        #     np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, color = 'lightgrey', alpha = 0.3)
         # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
-        #     '--', color = 'k', linewidth = 0.5)
+        #     '--', color = 'grey', linewidth = 0.5)
         # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
-        #     '--', color = 'k', linewidth = 0.5)
+        #     '--', color = 'grey', linewidth = 0.5)
         #### ADIABATIC LWC (where there are HATPRO LWP data available)
         # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = np.nan
         # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] < 1e-6] = np.nan       ## exclude <0.001g/m3
@@ -702,6 +701,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.xlabel('Liquid water content [g m$^{-3}$]')
     plt.ylabel('Z [km]')
+    # plt.ylim([0,5e3])
+    # plt.yticks(np.arange(0,5.01e3,0.5e3))
+    # ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5])
     plt.ylim([0,9000])
     plt.yticks(np.arange(0,9.01e3,0.5e3))
     ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
@@ -716,7 +718,8 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_RA2M_CASIM-100_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_RA2M_CASIM-100_RA2T_LWC_MTThresholding-wLWCadiabatic_226-257DOY_blueNaNs_newColours.svg'
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -2176,19 +2179,19 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
     if obs_switch == 'RADAR':
         obs_data['lwp'][obs_data['lwp'] < 0] = np.nan     ### index 0 is mean
-        obs_data['lwp'][obs_data['lwp'] > 1.2] = np.nan    ### >1.2 == >1200g/m2
+        # obs_data['lwp'][obs_data['lwp'] > 1.2] = np.nan    ### >1.2 == >1200g/m2
     else:
-        obs_data['lwp'][obs_data['lwp'][:,0] < 0, 0] = np.nan     ### index 0 is mean
-        obs_data['lwp'][obs_data['lwp'][:,0] > 1.2, 0] = np.nan    ### >1.2 == >1200g/m2
-        obs_data['lwp'][obs_data['lwp'][:,1] < 0, 1] = np.nan     ### index 1 is min
-        obs_data['lwp'][obs_data['lwp'][:,1] > 1.2, 1] = np.nan    ###>1.2 == >1200g/m2
-        obs_data['lwp'][obs_data['lwp'][:,2] < 0, 2] = np.nan     ### index 2 is max
-        obs_data['lwp'][obs_data['lwp'][:,2] > 1.2, 2] = np.nan    ### >1.2 == >1200g/m2
+        obs_data['lwp'][obs_data['lwp'][:,0] == -999.0, 0] = np.nan     ### index 0 is mean
+        # obs_data['lwp'][obs_data['lwp'][:,0] > 1.2, 0] = np.nan    ### >1.2 == >1200g/m2
+        # obs_data['lwp'][obs_data['lwp'][:,1] < 0, 1] = np.nan     ### index 1 is min
+        # obs_data['lwp'][obs_data['lwp'][:,1] > 1.2, 1] = np.nan    ###>1.2 == >1200g/m2
+        # obs_data['lwp'][obs_data['lwp'][:,2] < 0, 2] = np.nan     ### index 2 is max
+        # obs_data['lwp'][obs_data['lwp'][:,2] > 1.2, 2] = np.nan    ### >1.2 == >1200g/m2
 
     res = 3 ### hourly resolution to plot
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
-    # plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 2)
+    plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 2)
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
@@ -2206,7 +2209,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'UM_RA2M')
     plt.ylabel('LWP [g m$^{2}$]')
     plt.ylim([0,800])
-    # plt.xlim([233,235])
+    # plt.xlim([245,250])
     # plt.xlabel('DOY')
     plt.xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
@@ -2229,11 +2232,18 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     sns.distplot(misc_data['model_lwp']*1e3, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     sns.distplot(ifs_data['model_lwp']*1e3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(obs_data['lwp'][:,0]*1e3, hist=False, color="black")
-    # sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="black")
+    sns.distplot(obs['deck7th']['lwp'][:], hist=False, color="grey")
     plt.xlim([-50,500])
     plt.ylim([0,yEmax])
     plt.xlabel('LWP [g m$^{-2}$]')
 
+    # print (obs['deck7th']['doy'][1500:2000])
+    # print (obs_data['time'])
+    # print (ifs_data['time'])
+
+    # print (obs['deck7th']['doy'][np.where(np.logical_and(obs['deck7th']['doy'] >= 250.0, obs['deck7th']['doy'] <= 257.0))])
+    # print (obs_data['time'][np.where(np.logical_and(obs_data['time'] >= 234, obs_data['time'] <= 236))])
+    # print (obs_data['lwp'][np.where(np.logical_and(obs_data['time'] >= 234, obs_data['time'] <= 236)),0]*1e3)
 
     print ('******')
     print ('')
@@ -2241,8 +2251,8 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP.png'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -5633,7 +5643,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p4_MTThresholding-wLWCadiabatic_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p4_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5989,7 +5999,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_MTThresholding-wLWCadiabatic_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -6376,8 +6386,8 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_','20180914_oden_']   ### cloud radar not working
-    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
+    moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
+    missing_files = [225, 253]    # manually set missing files doy for now ## 230, , 257
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,244)        ## set DOY for Aug dates
@@ -7124,7 +7134,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
@@ -7146,7 +7156,7 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
