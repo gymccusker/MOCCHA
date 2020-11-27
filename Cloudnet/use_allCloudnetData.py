@@ -2254,7 +2254,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -6388,8 +6388,8 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
-    missing_files = [225,230, 253]    # manually set missing files doy for now ## 230, , 257
+    moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
+    missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,244)        ## set DOY for Aug dates
