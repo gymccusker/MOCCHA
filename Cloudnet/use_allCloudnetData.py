@@ -252,8 +252,8 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_blueNaNs_newColours.svg'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_blueNaNs_newColours_noOffsetLWP.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
@@ -922,7 +922,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
     obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
-    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
     um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
@@ -987,7 +987,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
                 if obs_data['twc'][t,k] < twc_thresh_um[k]:
                     obs_data['twc'][t,k] = np.nan
                     obs_data['iwc'][t,k] = np.nan
-                    # obs_data['lwc_adiabatic'][t,k] = np.nan
+                    obs_data['lwc_adiabatic'][t,k] = np.nan
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
                 um_data['model_iwc_filtered'][t,k] = np.nan
@@ -1054,9 +1054,9 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.ylim([0,9000])
     plt.yticks(np.arange(0,9.01e3,0.5e3))
     ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    plt.xlim([0,0.08])
-    plt.xticks(np.arange(0,0.081,0.01))
-    ax1.set_xticklabels([0,' ',0.02,' ',0.04,' ',0.06,' ',0.08])
+    plt.xlim([0,0.06])
+    plt.xticks(np.arange(0,0.061,0.0075))
+    ax1.set_xticklabels([0,' ',0.015,' ',0.03,' ',0.045,' ',0.06])
     plt.legend()
 
     print ('******')
@@ -1065,7 +1065,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-MTThresholding-wLWCadiabatic_226-257DOY_blueNaNs_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_blueNaNs_newColours.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -7214,13 +7214,13 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
