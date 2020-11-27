@@ -2132,7 +2132,7 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
-def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch,lwp): #, lon, lat):
+def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch):#,lwp): #, lon, lat):
 
     ###################################
     ## PLOT TIMESERIES
@@ -2182,7 +2182,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         # obs_data['lwp'][obs_data['lwp'] > 1.2] = np.nan    ### >1.2 == >1200g/m2
     else:
         obs_data['lwp'][obs_data['lwp'][:,0] == -999.0, 0] = np.nan     ### index 0 is mean
-        lwp[lwp[:,0] == -999.0, 0] = np.nan
+        # lwp[lwp[:,0] == -999.0, 0] = np.nan
         # obs_data['lwp'][obs_data['lwp'][:,0] > 1.2, 0] = np.nan    ### >1.2 == >1200g/m2
         # obs_data['lwp'][obs_data['lwp'][:,1] < 0, 1] = np.nan     ### index 1 is min
         # obs_data['lwp'][obs_data['lwp'][:,1] > 1.2, 1] = np.nan    ###>1.2 == >1200g/m2
@@ -2197,7 +2197,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
         plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'black', label = 'Obs_' + obs_switch + 'grid', zorder = 3)
-        plt.plot(obs_data['time'][:],lwp[:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid2', zorder = 3)
+        # plt.plot(obs_data['time'][:],lwp[:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid2', zorder = 3)
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         # ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.2)
@@ -6194,7 +6194,7 @@ def main():
         elif obs_switch == 'IFS':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V5/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -6243,7 +6243,7 @@ def main():
                         'lwc-adiabatic-metum-grid/2018/',#'lwc-scaled-metum-grid/2018/',
                         'iwc-Z-T-metum-grid/2018/']
         elif obs_switch == 'RADAR':
-            cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
+            cn_obs_out_dir = ['cloud-fraction-metum-grid/2018/',
                         'lwc-adiabatic-method/2018/',
                         'iwc-Z-T-method/2018/']
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
@@ -6388,10 +6388,10 @@ def main():
 
     Sep_missing_files = []
 
-    moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
-    missing_files = [225, 253]    # manually set missing files doy for now ## 230, , 257
+    moccha_missing_files = ['20180813_oden_','20180818_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
+    missing_files = [225,230, 253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,258)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,244)        ## set DOY for Aug dates
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for RA2T  (28th Aug to 4th Sep)
@@ -6751,6 +6751,11 @@ def main():
                             nanarray = np.zeros([24,4])
                             nanarray[:] = np.nan
                             obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],nanarray,0)
+                            # lwp = np.append(lwp,nanarray,0)
+                        elif obs_switch == 'RADAR':
+                            nanarray = np.zeros([24,np.size(obs_data[obs_var_list[c][j]],1)])
+                            nanarray[:] = np.nan
+                            obs_data[obs_var_list[c][j]] = np.append(obs_data[obs_var_list[c][j]],nanarray,0)
                         else:
                             nanarray = np.zeros([24,70])
                             nanarray[:] = np.nan
@@ -6913,9 +6918,8 @@ def main():
                                 obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
                             else:                                   # 2d column um_data
                                 obs_data[obs_var_list[c][j]] = cn_nc0[c].variables[obs_var_list[c][j]][:]
-                        # print (obs_data.keys())
-                        lwp = []
-                        lwp = cn_nc0[1].variables['lwp'][:]
+                        # lwp = []
+                        # lwp = cn_nc0[1].variables['lwp'][:]
                     ### --------------------------------------------------------------------
                     ### load in initial UM_RA2M data
                     ### --------------------------------------------------------------------
@@ -7019,7 +7023,7 @@ def main():
                             ra2t_data[ra2t_var_list[c][j]] = np.append(ra2t_data[ra2t_var_list[c][j]],cn_nc4[c].variables[ra2t_var_list[c][j]][:])
                         else:
                             ra2t_data[ra2t_var_list[c][j]] = np.append(ra2t_data[ra2t_var_list[c][j]],cn_nc4[c].variables[ra2t_var_list[c][j]][:],0)
-            lwp = np.append(lwp, cn_nc0[1].variables['lwp'][:],0)
+                # lwp = np.append(lwp, cn_nc0[1].variables['lwp'][:],0)
 
             ### --------------------------------------------------------------------
             ### Close cloudnet netCDF files
@@ -7030,10 +7034,10 @@ def main():
             for c in range(0,3): cn_nc3[c].close()
             for c in range(0,3): cn_nc4[c].close()
 
-        print (lwp.shape)
-        print (time_obs.shape)
-        print (time_ifs.shape)
-        print (obs_data['lwp'].shape)
+        # print (lwp.shape)
+        # print (time_obs.shape)
+        # print (time_ifs.shape)
+        # print (obs_data['lwp'].shape)
         # print (time_obs)
         # print ((len(doy)*24.0))
         # print (len(moccha_names))
@@ -7218,15 +7222,17 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, lwp) #, lon, lat):
+    # if obs_switch == 'RADAR': lwp = []
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
-    lwp1 = obs_data['lwp'][:,0]
-    lwp1[lwp1 == -999.0] = np.nan
-    print (lwp1.shape)
-    lwp2 = lwp[:,0]
-    lwp2[lwp2 == -999.0] = np.nan
-    print (lwp2.shape)
-    plt.plot(lwp1, lwp2);plt.show()
+    # lwp1 = obs_data['lwp'][:,0]
+    # lwp1[lwp1 == -999.0] = np.nan
+    # print (lwp1.shape)
+    # lwp2 = lwp[:,0]
+    # lwp2[lwp2 == -999.0] = np.nan
+    # print (lwp2.shape)
+    # plt.plot(lwp1, lwp2);plt.show()
+
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
     # -------------------------------------------------------------
