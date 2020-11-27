@@ -293,7 +293,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     fig = plt.figure(figsize=(9.5,13))
-    plt.subplots_adjust(top = 0.9, bottom = 0.06, right = 0.98, left = 0.08,
+    plt.subplots_adjust(top = 0.92, bottom = 0.06, right = 0.92, left = 0.08,
             hspace = 0.4, wspace = 0.2)
 
     ### define axis instance
@@ -339,7 +339,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('Measured C$_{V}$, 1 hour sampling')
+    # plt.title('Measured C$_{V}$, 1 hour sampling')
     # plt.title('Measured cloud fraction by volume, 1.5km sampling')
     nans = ax.get_ylim()
     for file in missing_files:
@@ -347,8 +347,12 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('Measurements \n (1 hour sampling)', rotation = 270, labelpad = 35)
+    ax2.set_yticks([])
     cbaxes = fig.add_axes([0.225, 0.96, 0.6, 0.015])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
+    plt.title('C$_{V}$')
     # plt.colorbar()
 
     plt.subplot(512)
@@ -367,14 +371,16 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('ECMWF_IFS; C$_{V}$ (including snow)')
+    # plt.title('ECMWF_IFS; C$_{V}$ (including snow)')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    # plt.colorbar()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('ECMWF_IFS \n (C$_{V}$ including snow)', rotation = 270, labelpad = 36)
+    ax2.set_yticks([])
 
     plt.subplot(513)
     ax = plt.gca()
@@ -392,14 +398,16 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_CASIM-100; C$_{V}$')
+    # plt.title('UM_CASIM-100; C$_{V}$')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    # plt.colorbar()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 17)
+    ax2.set_yticks([])
 
     plt.subplot(514)
     ax = plt.gca()
@@ -417,14 +425,17 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_RA2T; C$_{V}$')
+    # plt.title('UM_RA2T; C$_{V}$')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    # plt.colorbar()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 17)
+    ax2.set_yticks([])
+
 
     plt.subplot(515)
     ax = plt.gca()
@@ -442,14 +453,16 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_RA2M; C$_{V}$')
+    # plt.title('UM_RA2M; C$_{V}$')
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
-    # plt.colorbar()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 17)
+    ax2.set_yticks([])
     plt.xlabel('Date')
 
     print ('******')
@@ -458,8 +471,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs_Dates.svg'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-100_RA2T_CvTimeseries_226-257DOY_noHatchedMissingFiles_whiteNaNs_Dates_noOffsetLWP.png'
+    # plt.savefig(fileout)
     plt.show()
 #
 def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -7207,7 +7220,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
@@ -7223,7 +7236,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
     # lwp1 = obs_data['lwp'][:,0]
     # lwp1[lwp1 == -999.0] = np.nan
