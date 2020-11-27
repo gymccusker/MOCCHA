@@ -6697,12 +6697,6 @@ def main():
     for i in range(0,len(names)):
 
         print ('Now load cloudnet data:')
-        # if cn_um_out_dir[-31:-6] == 'cloud-fraction-metum-grid':
-        #     cn_out_dir = 'cloud-fraction-metum-grid'
-        # elif cn_um_out_dir[-27:-6] == 'lwc-scaled-metum-grid':
-        #     cn_out_dir = 'lwc-scaled-metum-grid'
-        # elif cn_um_out_dir[-24:-6] == 'iwc-Z-T-metum-grid':
-        #     cn_out_dir = 'iwc-Z-T-metum-grid'
         cn_filename_um = [cn_um_dir + cn_um_out_dir[0] + names[i] + cn_um_out_dir[0][-31:-6] + '.nc',
                         cn_um_dir + cn_um_out_dir[1] + names[i] + cn_um_out_dir[1][-27:-6] + '.nc',
                         cn_um_dir + cn_um_out_dir[2] + names[i] + cn_um_out_dir[2][-24:-6] + '.nc']
@@ -6738,6 +6732,58 @@ def main():
             time_ifs = np.append(time_ifs, doy[i] + timarray)
             time_ra2t = np.append(time_ra2t, doy[i] + timarray)
             time_obs = np.append(time_obs, doy[i] + timarray)
+
+            ########## NEED TO RE-DO THIS FOR THE CLOUDNET DATA
+            for j in range(0,len(var_list1)):
+                if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc1.variables[var_list1[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray)
+                elif np.ndim(nc1.variables[var_list1[j]]) == 2:
+                    nanarray = np.zeros([24,71])
+                    nanarray[:] = np.nan
+                    data1[var_list1[j]] = np.append(data1[var_list1[j]],nanarray,0)
+            for j in range(0,len(var_list2)):
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray)
+                elif np.ndim(nc2.variables[var_list2[j]]) == 2:
+                    nanarray = np.zeros([24,71])
+                    nanarray[:] = np.nan
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nanarray,0)
+            for j in range(0,len(var_list4)):
+                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc4.variables[var_list4[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray)
+                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                    nanarray = np.zeros([24,71])
+                    nanarray[:] = np.nan
+                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nanarray,0)
+            for j in range(0,len(var_list3)):
+                print (j)
+                print (var_list3[j])
+                # np.save('testing', data3)
+                if np.ndim(nc3.variables[var_list3[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc3.variables[var_list3[j]]) == 1:
+                    nanarray = np.zeros(24)
+                    nanarray[:] = np.nan
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray)
+                elif np.ndim(nc3.variables[var_list3[j]]) == 2:
+                    if var_list3[j][:3] == 'flx':
+                        nanarray = np.zeros([24,138])
+                    else:
+                        nanarray = np.zeros([24,137])
+                    nanarray[:] = np.nan
+                    data3[var_list3[j]] = np.append(data3[var_list3[j]],nanarray,0)
 
         ### --------------------------------------------------------------------
         ###     READ IN ALL CLOUDNET FILES: reinitialise diagnostic dictionaries
