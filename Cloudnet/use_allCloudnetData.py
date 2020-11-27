@@ -551,7 +551,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
     obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
-    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
     um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
@@ -563,7 +563,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ###----------------------------------------------------------------
     obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
     obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
-    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    # obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -621,9 +621,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
                 if obs_data['twc_ad'][t,k] < twc_thresh_um[k]:
                     obs_data['twc_ad'][t,k] = np.nan
                     obs_data['lwc_adiabatic'][t,k] = np.nan
-                if obs_data['twc_ad_nolwp'][t,k] < twc_thresh_um[k]:
-                    obs_data['twc_ad_nolwp'][t,k] = np.nan
-                    obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
+                # if obs_data['twc_ad_nolwp'][t,k] < twc_thresh_um[k]:
+                #     obs_data['twc_ad_nolwp'][t,k] = np.nan
+                    # obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
                 um_data['model_lwc'][t,k] = np.nan
@@ -731,7 +731,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_RA2M_CASIM-100_RA2T_LWC_MTThresholding-wLWCadiabatic_226-257DOY_blueNaNs_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_RA2M_CASIM-100_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_newColours.svg'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
     plt.savefig(fileout)
     plt.show()
@@ -1066,7 +1066,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_blueNaNs_newColours.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -1420,7 +1420,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     #### set flagged um_data to nans
     obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
     obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
-    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
     # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
     um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
@@ -1481,7 +1481,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
@@ -1509,7 +1509,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
+    # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
@@ -1536,7 +1536,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
@@ -1562,7 +1562,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    # plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
@@ -1588,7 +1588,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         # np.arange(0,0.31,0.001),
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
@@ -1613,13 +1613,13 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries_226-257DOY_hatchedMissingFiles_LogScale_BLDepths_v2.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_BLDepths_v2.png'
+    plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
-    ####            CREATE TWC MASK (>1e-6 kg/m3)
+    ####            CREATE TWC MASK
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
 
@@ -1748,7 +1748,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(mask0),
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
-    plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1775,7 +1775,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
+    # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1800,7 +1800,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1825,7 +1825,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    # plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1850,7 +1850,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
         np.arange(0,1.01,0.1),
         cmap = mpl_cm.viridis)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
-    plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -1875,8 +1875,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding_226-257DOY_whiteMissingFiles_BLDepths.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_BLDepths.png'
+    plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -1959,8 +1959,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic_226-257DOY_newColours.svg'
-    plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_newColours.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -7214,7 +7214,7 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
@@ -7223,7 +7223,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
