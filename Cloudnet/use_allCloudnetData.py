@@ -2132,7 +2132,7 @@ def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3,
     plt.savefig('../FIGS/comparisons/CN-ModelComparison_LWC-IWC-TWC_profiles.png')
     plt.show()
 
-def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
+def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, um_out_dir, doy, obs_switch,lwp): #, lon, lat):
 
     ###################################
     ## PLOT TIMESERIES
@@ -2182,6 +2182,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         # obs_data['lwp'][obs_data['lwp'] > 1.2] = np.nan    ### >1.2 == >1200g/m2
     else:
         obs_data['lwp'][obs_data['lwp'][:,0] == -999.0, 0] = np.nan     ### index 0 is mean
+        lwp[lwp[:,0] == -999.0, 0] = np.nan
         # obs_data['lwp'][obs_data['lwp'][:,0] > 1.2, 0] = np.nan    ### >1.2 == >1200g/m2
         # obs_data['lwp'][obs_data['lwp'][:,1] < 0, 1] = np.nan     ### index 1 is min
         # obs_data['lwp'][obs_data['lwp'][:,1] > 1.2, 1] = np.nan    ###>1.2 == >1200g/m2
@@ -2196,6 +2197,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
     else:
         plt.plot(obs_data['time'][:],obs_data['lwp'][:,0]*1e3, color = 'black', label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+        plt.plot(obs_data['time'][:],lwp[:,0]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid2', zorder = 3)
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,1]*1e3, 'k--')
         # plt.plot(obs_data['time'][:],obs_data['lwp'][:,2]*1e3, 'k--')
         # ax.fill_between(obs_data['time'][:], obs_data['lwp'][:,1]*1e3, obs_data['lwp'][:,2]*1e3, color = 'grey', alpha = 0.2)
@@ -7060,9 +7062,7 @@ def main():
 
     # print (ifs_data['time'].shape)
     # print (obs_data['time'].shape)
-
     # plt.plot(obs_data['time'],ifs_data['time']);plt.show()
-
 
     #################################################################
     ### stop double counting of 0000 and 2400 from model data
@@ -7218,8 +7218,15 @@ def main():
     # -------------------------------------------------------------
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, lwp) #, lon, lat):
 
+    lwp1 = obs_data['lwp'][:,0]
+    lwp1[lwp1 == -999.0] = np.nan
+    print (lwp1.shape)
+    lwp2 = lwp[:,0]
+    lwp2[lwp2 == -999.0] = np.nan
+    print (lwp2.shape)
+    plt.plot(lwp1, lwp2);plt.show()
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
     # -------------------------------------------------------------
