@@ -6131,8 +6131,8 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                             data = np.zeros([len(cubetime)])
                         else:
                             data = np.zeros([len(cubetime)-1])
-                    elif stream == '_pa012': data = np.zeros([len(cubetime)])
-                    elif stream == '_pd011': data = np.zeros([len(cubetime)-1])
+                    elif stream[1:3] == 'pa': data = np.zeros([len(cubetime)])
+                    elif stream[1:3] == 'pd': data = np.zeros([len(cubetime)-1])
                     dim_flag = 0       ### for next loops
                     print ('data.shape = ', str(data.shape))
                     print ('')
@@ -6209,7 +6209,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print ('varname = ', varname)
                 print ('')
 
-                if stream == '_pa012':
+                if stream[1:3] == 'pa':
                     ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 else:
                     if cube[k].long_name == 'large_scale_ice_water_path':
@@ -6219,7 +6219,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     else:
                         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 if dim_flag == 1:         ### 4D VARIABLE
-                    if stream == '_pd011':
+                    if stream[1:3] == 'pd':
                         model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                         comdata = data                    #### leave BL diagnostics on RHO levels
                     else:
@@ -6406,7 +6406,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     print ('')
     print ('Writing fcube to file:')
     print ('')
-    if stream == '_pc011':
+    if stream[1:3] == 'pc':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pc stream (using Iris cubes)
         print ('fcube = ')
@@ -6421,7 +6421,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
-    if stream == '_pd011':
+    if stream[1:3] == 'pd':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pd stream (using Iris cubes)
         print ('fcube = ')
@@ -6438,7 +6438,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             # if PD outfile already exists, combine other stream data
             # if PD outfile doesn't exist, write new
 
-    if stream == '_pe011':
+    if stream[1:3] == 'pe':
         ## Combine track-pulled pp output files to one netCDF
         ## First, make netCDF with pd stream (using Iris cubes)
         print ('fcube = ')
@@ -6455,7 +6455,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
-    elif np.logical_or(stream == '_pb009', stream == '_pb012'):
+    elif stream[1:3] == 'pb':
         print ('fcube = ')
         print (fcube)
         print ('')
@@ -6471,7 +6471,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             if 'fcube' in locals():
                 out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
-    elif stream == '_pa012':
+    elif stream[1:3] == 'pa':
         print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
         print ('***file is merged to outfile later***')
         print ('')
