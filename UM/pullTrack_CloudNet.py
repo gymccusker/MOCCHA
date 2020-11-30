@@ -6606,6 +6606,12 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
                 print (cube[k].standard_name)
                 print ('Diagnostic is 3-hourly, break from loop')
                 break
+            elif len(np.round(cube[k].coord('forecast_period').points)) > 36:
+                print (cube[k].standard_name)
+                if int(xoffset) != 0:
+                    print ('Diagnostic is <1-hourly, pull ship track...')
+                    ok = True
+                    min15 = True
             else:
                 print (cube[k].standard_name)
                 if int(xoffset) != 0:
@@ -6617,7 +6623,8 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             #################################################################
             ## make hourly time array
             #################################################################
-            cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+            if not min15: cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+            if min15: cubetime = np.round(cube[k].coord('forecast_period').points - 60.0)      ### forecast period (ignore first 12h @ 15min resolution)
 
                     #### will need to add code for dealing with forecast_period
                     ####    i.e. 1.00016 hrs past 0000 UTC
