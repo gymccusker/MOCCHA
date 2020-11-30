@@ -5645,7 +5645,7 @@ def plot_cartmap(ship_data, cube, hour, grid_filename): #, lon, lat):
     ###################################
     ## CHOOSE DIAGNOSTIC
     ###################################
-    diag = 0
+    diag = 9
     print ('')
     print ('Diag is: ', cube[diag].long_name)
     print ('')
