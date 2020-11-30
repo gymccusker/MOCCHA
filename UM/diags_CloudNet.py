@@ -841,7 +841,7 @@ def main():
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['_pa012','_pb009','_pc011','_pd011','_pe011','_pc012','_pe012']
+    names = ['_pa009','_pb009','_pc011','_pd011','_pe011','_pa012','_pc012','_pe012']
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
@@ -865,7 +865,8 @@ def main():
             ### defines which stash variables to load - should be within a loop
 
     for date in date_dir:
-        if date[0:4] == '2018':
+        # if date[0:4] == '2018':
+        if date[0:8] == '20180822':
             ## -------------------------------------------------------------------------
             ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
             ## -------------------------------------------------------------------------
@@ -920,7 +921,7 @@ def main():
                         if stream[-2:] == '12':
                             if filename[-12:-3] == 'glm_pa012':
                                 looping = range(2,6)
-                            elif np.logical_or(stream == '_pc012',stream == '_pe012'):
+                            elif np.logical_or(stream == '_pc012', stream == '_pe012'):
                                 looping = range(12,36)
                             else:
                                 looping = range(4,12)
