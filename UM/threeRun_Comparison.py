@@ -8570,6 +8570,152 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     ### define periods as time of day (doy)
     p2 = doy2 + h2/24.0
     p3 = doy3 + h3/24.0
+    p4 = doy4 + h4/24.0
+    p5 = doy5 + h5/24.0
+    p6 = doy6 + h6/24.0
+    p7 = doy7 + h7/24.0
+
+    ### find model data for each period
+    i2 = np.where(np.logical_and(data1['time_hrly'] >= p2[0], data1['time_hrly'] <= p2[-1]))
+    i3 = np.where(np.logical_and(data1['time_hrly'] >= p3[0], data1['time_hrly'] <= p3[-1]))
+    i4 = np.where(np.logical_and(data1['time_hrly'] >= p4[0], data1['time_hrly'] <= p4[-1]))
+    i5 = np.where(np.logical_and(data1['time_hrly'] >= p5[0], data1['time_hrly'] <= p5[-1]))
+    i6 = np.where(np.logical_and(data1['time_hrly'] >= p6[0], data1['time_hrly'] <= p6[-1]))
+    i7 = np.where(np.logical_and(data1['time_hrly'] >= p7[0], data1['time_hrly'] <= p7[-1]))
+
+    #### remove flagged data
+    data1['radr_refl'][data1['radr_refl'] == -9999.0] = np.nan
+
+    ####### ----------------------------------------------------------------
+    #######     FIGURE
+    ####### ----------------------------------------------------------------
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.figure(figsize=(14,10))
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
+            hspace = 0.3, wspace = 0.2)
+
+    ## color limits
+    cmax = 10.0
+    cmin = -35.0
+    h = 5e3
+
+    plt.subplot(3, 2, 1)
+    plt.pcolormesh(data2['time_hrly'][i2], data2['height'], np.transpose(data2['radr_refl'][i2[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p2[0], p2[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P2) ' + d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
+    ax = plt.gca()
+    ax.set_xticks(p2)
+    ax.set_xticklabels(h2)
+
+    plt.subplot(3, 2, 2)
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i3], data2['height'], np.transpose(data2['radr_refl'][i3[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p3[0], p3[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P3) ' + d3 + ': ' + str(h3[0]) + ' - ' + str(h3[-1]) + 'h')
+    ax.set_xticks(p3)
+    ax.set_xticklabels(h3)
+
+    plt.subplot(3, 2, 3)
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i4], data2['height'], np.transpose(data2['radr_refl'][i4[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p4[0], p4[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P4) ' + d4 + ': ' + str(h4[0]) + ' - ' + str(h4[-1]) + 'h')
+    ax.set_xticks(p4)
+    ax.set_xticklabels(h4)
+
+    plt.subplot(3, 2, 4)
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i5], data2['height'], np.transpose(data2['radr_refl'][i5[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p5[0], p5[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P5) ' + d5 + ': ' + str(h5[0]) + ' - ' + str(h5[-1]) + 'h')
+    ax.set_xticks(p5)
+    ax.set_xticklabels(h5)
+
+    plt.subplot(3, 2, 5)
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i6], data2['height'], np.transpose(data2['radr_refl'][i6[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p6[0], p6[-1]])
+    plt.colorbar()
+    plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P6) ' + d6 + ': ' + str(h6[0]) + ' - ' + str(h6[-1]) + 'h')
+    ax.set_xticks(p6)
+    ax.set_xticklabels(h6)
+
+    plt.subplot(3, 2, 6)
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i7], data2['height'], np.transpose(data2['radr_refl'][i7[0],:]),
+        vmin = cmin, vmax = cmax)
+    # plt.xlim([p7[0], p7[-1]])
+    plt.colorbar()
+    # plt.ylabel('Z [m]')
+    plt.ylim([0,h])
+    plt.title('(P7) ' + d7 + ': ' + str(h7[0]) + ' - ' + str(h7[-1]) + 'h')
+    ax.set_xticks(p7)
+    ax.set_xticklabels(h7)
+
+    plt.savefig('../FIGS/TKE/PeriodComparison_UM_CASIM-100_RadrRefl.png', dpi = 600)
+    plt.show()
+
+def TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
+
+    '''
+    Plots model radar reflectivity timeseries for selected MOCCHA time periods
+    '''
+
+    ### dates as strings
+    d2 = '20180911'
+    d3 = '20180913'
+    d4 = '20180831'
+    d5 = '20180823'
+    d6 = '20180903'
+    d7 = '20180905'
+
+    ### calculate DOYs
+    doy2 = calcTime_Date2DOY(d2)
+    doy3 = calcTime_Date2DOY(d3)
+    doy4 = calcTime_Date2DOY(d4)
+    doy5 = calcTime_Date2DOY(d5)
+    doy6 = calcTime_Date2DOY(d6)
+    doy7 = calcTime_Date2DOY(d7)
+
+    ### hour intervals for each period
+    h2 = np.arange(0,15)
+    h3 = np.arange(0,15)
+    h4 = np.arange(0,5)
+    h5 = np.arange(12,25)
+    h6 = np.arange(19,23)
+    h7 = np.arange(5,16)
+
+    ### define periods as time of day (doy)
+    p2 = doy2 + h2/24.0
+    p3 = doy3 + h3/24.0
     p6 = doy4 + h4/24.0
     p5 = doy5 + h5/24.0
     p6 = doy6 + h6/24.0
@@ -9651,7 +9797,7 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
@@ -9670,7 +9816,14 @@ def main():
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+
+    # -------------------------------------------------------------
+    # -------------------------------------------------------------
+    # -------------------------------------------------------------
+    # Sandeep - MOCCHA TKE dissipation rates
+    # -------------------------------------------------------------
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
+    out = TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
