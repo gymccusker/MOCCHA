@@ -6124,7 +6124,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     print ('Variable is 3D:')
                     print ('')
                     #### create empty arrays to be filled
-                    if np.logical_or(stream == '_pb009', stream == '_pb012'):
+                    if stream[1:3] == 'pb'):
                         if cube[k].long_name == 'large_scale_ice_water_path':
                             data = np.zeros([len(cubetime)])
                         elif cube[k].long_name == 'large_scale_liquid_water_path':
