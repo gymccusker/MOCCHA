@@ -6567,7 +6567,7 @@ def pullTrack_CloudNet_VAR(cube, grid_filename, con, stream, date):
             ###---------------------------------
             ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
             ###---------------------------------
-            print 'Double-checking grid:'
+            print ('Double-checking grid:')
             if len(cube[k].dim_coords[-1].points) == 25:
                 xoffset = -239
                 yoffset = -470
