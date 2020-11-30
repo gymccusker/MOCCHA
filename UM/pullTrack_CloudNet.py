@@ -6173,7 +6173,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                             if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
                             if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
                             # print 'no averaging, itime = 1 ...'
-                            print ''
+                            print ('')
                     # print data
             # print 'data.shape = ', data.shape
 
