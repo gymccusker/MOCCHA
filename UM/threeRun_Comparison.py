@@ -8584,7 +8584,7 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     i7 = np.where(np.logical_and(data1['time_hrly'] >= p7[0], data1['time_hrly'] <= p7[-1]))
 
     #### remove flagged data
-    data1['radr_refl'][data1['radr_refl'] == -9999.0] = np.nan
+    data2['radr_refl'][data2['radr_refl'] == -9999.0] = np.nan
 
     ####### ----------------------------------------------------------------
     #######     FIGURE
@@ -8729,7 +8729,47 @@ def TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, la
     i6 = np.where(np.logical_and(data1['time_hrly'] >= p6[0], data1['time_hrly'] <= p6[-1]))
     i7 = np.where(np.logical_and(data1['time_hrly'] >= p7[0], data1['time_hrly'] <= p7[-1]))
 
+    #### remove flagged data
+    data2['mixing_length_for_momentum'][data2['mixing_length_for_momentum'] == -9999.0] = np.nan
+    data2['tke'][data2['tke'] == -9999.0] = np.nan
+
+    #### calculate Km
     data2['Km'] = data2['mixing_length_for_momentum'] * np.sqrt(data2['tke'])
+
+    ## color limits
+    cmax = 10.0
+    cmin = 0.0
+    h = 5e3
+
+    ####### ----------------------------------------------------------------
+    #######     FIGURE
+    ####### ----------------------------------------------------------------
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=LARGE_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.figure(figsize=(14,10))
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
+            hspace = 0.3, wspace = 0.2)
+
+    ax = plt.gca()
+    plt.pcolormesh(data2['time_hrly'][i2], data2['height'], np.transpose(data2['radr_refl'][i2[0],:]),
+        # vmin = cmin, vmax = cmax
+        )
+    plt.colorbar()
+    plt.ylim([0,h])
+    plt.title('(P2) ' + d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
+    ax.set_xticks(p2)
+    ax.set_xticklabels(h2)
+
+    # plt.savefig('../FIGS/TKE/PeriodComparison_UM_CASIM-100_P1_Km.png', dpi = 600)
+    plt.show()
 
 def RMSE_analysis(data1, data2, data3, obs):
 
