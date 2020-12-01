@@ -921,7 +921,7 @@ def main():
                         if stream[-2:] == '12':
                             if filename[-12:-3] == 'glm_pa012':
                                 looping = range(2,6)
-                            elif np.logical_or(stream == '_pc012', stream == '_pe012'):
+                            elif np.logical_or(stream[1:3] == 'pc', stream[1:3] == 'pe'):
                                 looping = range(12,36)
                             else:
                                 looping = range(4,12)
