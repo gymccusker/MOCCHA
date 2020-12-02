@@ -7152,7 +7152,7 @@ def writePA_Analysis(cube, aoutfile):
     ## Data dimensions
     # ###################################
     # forecast_period = dataset.createDimension('forecast_period', 24)
-    forecast_time = dataset.createDimension('forecast_time', np.size(cube[7].dim_coords[0].points))
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[7].dim_coords[0].points))     ## use downwelling sw to define
 
     ###################################
     ## Dimensions variables
