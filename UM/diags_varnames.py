@@ -5,13 +5,23 @@ List of variables names to be used
 """
 
 Var_list = { # paXXX
+              'm01s16i222': 'air_pressure_at_sea_level',
+              'm01s03i236': 'air_temperature',
+              'm01s03i250': 'dew_point_temperature',
+              'm01s03i248': 'fog_fraction',
+              'm01s03i245': 'rh',
+              'm01s03i237': 'q',
+              'm01s00i409': 'surface_air_pressure',
               'm01s02i207': 'surface_downwelling_LW_radiation',
               'm01s01i235': 'surface_downwelling_SW_radiation',
-              'm01s02i201': 'surface_net_LW_radiation',
-              'm01s01i201': 'surface_net_SW_radiation',
+              'm01s02i201': 'surface_net_LW_radiation',                         ## swath and full nest
+              'm01s01i201': 'surface_net_SW_radiation',                         ## swath and full nest
+              'm01s00i024': 'surface_temperature',
               'm01s01i207': 'toa_incoming_shortwave_flux',
               'm01s02i205': 'toa_outgoing_longwave_flux',
               'm01s01i208': 'toa_outgoing_shortwave_flux',
+              'm01s03i225': 'u_10m',
+              'm01s03i226': 'v_10m',
                # pbXXX
               'm01s03i241': 'water_evaporation_amount',
               'm01s03i304': 'turbulent_mixing_height_after_BL',
