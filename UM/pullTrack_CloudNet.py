@@ -7152,7 +7152,7 @@ def writePA_Analysis(cube, aoutfile):
     ## Data dimensions
     # ###################################
     # forecast_period = dataset.createDimension('forecast_period', 24)
-    forecast_time = dataset.createDimension('forecast_time', np.size(cube[0].dim_coords[0].points))
+    forecast_time = dataset.createDimension('forecast_time', np.size(cube[7].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
@@ -7173,18 +7173,18 @@ def writePA_Analysis(cube, aoutfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        print ('Writing ' + cube[d].var_name)
-        print ('shape = ' + cube[d].shape())
-        print ('')
-        if not cube[d].var_name in dataset.variables.keys():
-            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
-            dat.scale_factor = float(1)
-            dat.add_offset = float(0)
-            dat.units = str(cube[d].units)
-            dat.STASH = str(cube[d].attributes['STASH'])
-            if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
-            if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-            dat[:] = cube[d].data
+        if np.size(cube[d].dim_coords[0],0) == 24:      ### ignore 3-hourly data for now
+            print ('Writing ' + cube[d].var_name)
+            print ('')
+            if not cube[d].var_name in dataset.variables:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                dat.units = str(cube[d].units)
+                dat.STASH = str(cube[d].attributes['STASH'])
+                if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
+                if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
+                dat[:] = cube[d].data
 
     ###################################
     ## Write out file
