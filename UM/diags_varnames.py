@@ -87,11 +87,13 @@ Var_list = { # paXXX
               'm01s03i501': 'mixing_length_for_momentum',
               'm01s03i471': 'BL_momentum_diffusion',
               'm01s03i469': 'vertical_buoyancy_gradient',
+              'm01s03i135': 'production_rate_of_tke_by_shear',
+              'm01s03i136': 'production_rate_of_tke_by_buoyancy',
+              'm01s03i137': 'dissipation_rate_of_tke',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'qnliq',
               'm01s00i078': 'qnice',
               'm01s00i083': 'qnsolaeroliq',
-              # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'qnsolaerorain',
               'm01s00i088': 'qnsolaero',
               'm01s00i271': 'qicecrystals'

@@ -87,11 +87,13 @@ Stash_list = { # paXXX
               'm01s03i501': 'mixing_length_for_momentum',
               'm01s03i471': 'BL_momentum_diffusion',
               'm01s03i469': 'vertical_buoyancy_gradient',
+              'm01s03i135': 'production_rate_of_tke_by_shear',
+              'm01s03i136': 'production_rate_of_tke_by_buoyancy',
+              'm01s03i137': 'dissipation_rate_of_tke',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
               'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
               'm01s00i083': 'number_concentration_of_activated_soluble_aerosol_in_liquid',
-              # 'm01s00i086': 'activated_soluble_aerosol_in_ice',
               'm01s00i084': 'number_concentration_of_activated_soluble_aerosol_in_rain',
               'm01s00i088': 'number_concentration_of_activated_soluble_aerosol',
               'm01s00i271': 'mass_fraction_of_cloud_ice_crystals_in_air'
