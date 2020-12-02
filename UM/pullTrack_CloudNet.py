@@ -6992,25 +6992,25 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         print ('Appending paXXX diagnostics:')
         print ('---')
-        for d in range(0,len(ncA.variables)):
-            if ncA.variables.keys()[d] == 'forecast_time': continue
+        for d in ncA.variables:
+            if d == 'forecast_time': continue
             if not ncA.variables.keys()[d] in dataset.variables.keys():
-                print ('Writing ' + ncA.variables.keys()[d])
+                print ('Writing ' + d)
                 print ('')
-                dat = dataset.createVariable(ncA.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
-                if getattr(ncA.variables[ncA.variables.keys()[d]],'units', None):
-                    dat.units = str(ncA.variables[ncA.variables.keys()[d]].units)
+                if getattr(ncA.variables[d],'units', None):
+                    dat.units = str(ncA.variables[d].units)
                 else:
                     dat.units = 'unknown'
-                if getattr(ncA.variables[ncA.variables.keys()[d]],'STASH', None):
-                    dat.STASH = str(ncA.variables[ncA.variables.keys()[d]].STASH)
-                if getattr(ncA.variables[ncA.variables.keys()[d]],'standard_name', None):
-                    dat.standard_name = str(ncA.variables[ncA.variables.keys()[d]].standard_name)
-                if getattr(ncA.variables[ncA.variables.keys()[d]],'long_name', None):
-                    dat.long_name = str(ncA.variables[ncA.variables.keys()[d]].long_name)
-                dat[:] = ncA.variables[ncA.variables.keys()[d]][:]
+                if getattr(ncA.variables[d],'STASH', None):
+                    dat.STASH = str(ncA.variables[d].STASH)
+                if getattr(ncA.variables[d],'standard_name', None):
+                    dat.standard_name = str(ncA.variables[d].standard_name)
+                if getattr(ncA.variables[d],'long_name', None):
+                    dat.long_name = str(ncA.variables[d].long_name)
+                dat[:] = ncA.variables[d][:]
 
         ###################################
         ## Close read-only paXXX file
