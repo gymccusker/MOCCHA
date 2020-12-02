@@ -7483,25 +7483,25 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
 
         print ('Appending pbXXX diagnostics:')
         print ('---')
-        for d in range(0,len(ncB.variables)):
-            if ncB.variables.keys()[d] == 'forecast_time': continue
-            if not ncB.variables.keys()[d] in dataset.variables.keys():
-                print ('Writing ' + ncB.variables.keys()[d])
+        for d in ncB.variables:
+            if ncB.variables[d] == 'forecast_time': continue
+            if not ncB.variables[d] in dataset.variables:
+                print ('Writing ' + ncB.variables[d])
                 print ('')
-                dat = dataset.createVariable(ncB.variables.keys()[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat = dataset.createVariable(ncB.variables[d], np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
-                if getattr(ncB.variables[ncB.variables.keys()[d]],'units', None):
-                    dat.units = str(ncB.variables[ncB.variables.keys()[d]].units)
+                if getattr(ncB.variables[ncB.variables[d]],'units', None):
+                    dat.units = str(ncB.variables[ncB.variables[d]].units)
                 else:
                     dat.units = 'unknown'
-                if getattr(ncB.variables[ncB.variables.keys()[d]],'STASH', None):
-                    dat.STASH = str(ncB.variables[ncB.variables.keys()[d]].STASH)
-                if getattr(ncB.variables[ncB.variables.keys()[d]],'standard_name', None):
-                    dat.standard_name = str(ncB.variables[ncB.variables.keys()[d]].standard_name)
-                if getattr(ncB.variables[ncB.variables.keys()[d]],'long_name', None):
-                    dat.long_name = str(ncB.variables[ncB.variables.keys()[d]].long_name)
-                dat[:] = ncB.variables[ncB.variables.keys()[d]][:]
+                if getattr(ncB.variables[ncB.variables[d]],'STASH', None):
+                    dat.STASH = str(ncB.variables[ncB.variables[d]].STASH)
+                if getattr(ncB.variables[ncB.variables[d]],'standard_name', None):
+                    dat.standard_name = str(ncB.variables[ncB.variables[d]].standard_name)
+                if getattr(ncB.variables[ncB.variables[d]],'long_name', None):
+                    dat.long_name = str(ncB.variables[ncB.variables[d]].long_name)
+                dat[:] = ncB.variables[ncB.variables[d]][:]
 
         ###################################
         ## Close read-only pbXXX file
