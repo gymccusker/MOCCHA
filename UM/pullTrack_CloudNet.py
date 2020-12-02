@@ -6955,8 +6955,8 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         print ('Appending pbXXX diagnostics:')
         print ('---')
         for d in ncB.variables:
-            if ncB.variables[d] == 'forecast_time': continue
-            if not ncB.variables[d] in dataset.variables:
+            if d == 'forecast_time': continue
+            if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
                 dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
