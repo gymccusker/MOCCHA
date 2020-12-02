@@ -2266,7 +2266,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -7236,7 +7236,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
     # lwp1 = obs_data['lwp'][:,0]
     # lwp1[lwp1 == -999.0] = np.nan
@@ -7262,7 +7262,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
