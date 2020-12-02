@@ -6994,7 +6994,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         print ('---')
         for d in ncA.variables:
             if d == 'forecast_time': continue
-            if not ncA.variables.keys()[d] in dataset.variables.keys():
+            if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
                 dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
@@ -7030,25 +7030,25 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         print ('Appending peXXX diagnostics:')
         print ('---')
-        for d in range(0,len(ncE.variables)):
-            if ncE.variables.keys()[d] == 'forecast_time': continue
-            if not ncE.variables.keys()[d] in dataset.variables.keys():
-                print ('Writing ' + ncE.variables.keys()[d])
+        for d in ncE.variables:
+            if d == 'forecast_time': continue
+            if not d in dataset.variables:
+                print ('Writing ' + d)
                 print ('')
-                daat = dataset.createVariable(ncE.variables.keys()[d], np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height',), fill_value='-9999')
                 daat.scale_factor = float(1)
                 daat.add_offset = float(0)
-                if getattr(ncE.variables[ncE.variables.keys()[d]],'units', None):
-                    daat.units = str(ncE.variables[ncE.variables.keys()[d]].units)
+                if getattr(ncE.variables[d],'units', None):
+                    daat.units = str(ncE.variables[d].units)
                 else:
                     daat.units = 'unknown'
-                if getattr(ncE.variables[ncE.variables.keys()[d]],'STASH', None):
-                    daat.STASH = str(ncE.variables[ncE.variables.keys()[d]].STASH)
-                if getattr(ncE.variables[ncE.variables.keys()[d]],'standard_name', None):
-                    daat.standard_name = str(ncE.variables[ncE.variables.keys()[d]].standard_name)
-                if getattr(ncE.variables[ncE.variables.keys()[d]],'long_name', None):
-                    daat.long_name = str(ncE.variables[ncE.variables.keys()[d]].long_name)
-                daat[:,:] = ncE.variables[ncE.variables.keys()[d]][:,:]
+                if getattr(ncE.variables[d],'STASH', None):
+                    daat.STASH = str(ncE.variables[d].STASH)
+                if getattr(ncE.variables[d],'standard_name', None):
+                    daat.standard_name = str(ncE.variables[d].standard_name)
+                if getattr(ncE.variables[d],'long_name', None):
+                    daat.long_name = str(ncE.variables[d].long_name)
+                daat[:,:] = ncE.variables[d][:,:]
 
         ###################################
         ## Close read-only peXXX file
