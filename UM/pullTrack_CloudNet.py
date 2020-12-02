@@ -7174,6 +7174,7 @@ def writePA_Analysis(cube, aoutfile):
     ###################################
     for d in range(0,len(cube)):
         print ('Writing ' + cube[d].var_name)
+        print ('shape = ' + cube[d].shape())
         print ('')
         if not cube[d].var_name in dataset.variables.keys():
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
