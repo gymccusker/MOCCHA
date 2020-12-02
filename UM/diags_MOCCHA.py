@@ -55,7 +55,10 @@ Stash_list = { # paXXX
               'm01s03i226': 'northward_wind_at_10m',                            ## swath and full nest
                # pcXXX  -- CLOUDNET
               'm01s04i118': 'total_radar_reflectivity',                          # th 1-70
-              'm01s00i266': 'large_scale_cloud_area_fraction',                  # th 1-70 - pc
+              'm01s00i266': 'cloud_volume_fraction_in_atmosphere_layer',                  # th 1-70 - pc
+              'm01s00i267': 'liquid_cloud_volume_fraction_in_atmosphere_layer',
+              'm01s00i268': 'ice_cloud_volume_fraction_in_atmosphere_layer',
+              'm01s00i004': 'air_potential_temperature',
               'm01s00i408': 'air_pressure',                                     # th 1-70 - pc
               'm01s16i004': 'air_temperature',                                  # th 1-70 - pc
               'm01s00i012': 'mass_fraction_of_cloud_ice_in_air',                # th 1-70 - pc
@@ -64,8 +67,6 @@ Stash_list = { # paXXX
               'm01s00i150': 'upward_air_velocity',                              # th 1-70 - pc
               'm01s00i002': 'eastward_wind',                                    # th 1-70 - pc
               'm01s00i003': 'northward_wind',                                   # th 1-70 - pc
-              'm01s00i267': 'large_scale_liquid_cloud_area_fraction',
-              'm01s00i268': 'large_scale_ice_cloud_area_fraction',
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',

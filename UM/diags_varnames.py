@@ -5,13 +5,13 @@ List of variables names to be used
 """
 
 Var_list = { # paXXX
-              'm01s16i222': 'air_pressure_at_sea_level',
-              'm01s03i236': 'air_temperature',
+              'm01s16i222': 'pressure_at_sea_level',
+              'm01s03i236': 'temperature',
               'm01s03i250': 'dew_point_temperature',
               'm01s03i248': 'fog_fraction',
               'm01s03i245': 'rh',
               'm01s03i237': 'q',
-              'm01s00i409': 'sfc_air_pressure',
+              'm01s00i409': 'sfc_pressure',
               'm01s02i207': 'sfc_downwelling_LW',
               'm01s01i235': 'sfc_downwelling_SW',
               'm01s02i201': 'sfc_net_LW',                         ## swath and full nest
@@ -46,7 +46,7 @@ Var_list = { # paXXX
               'm01s03i237': 'q_1.5m',                        ## swath and full nest
               'm01s04i203': 'rainfall_flux',
               'm01s04i204': 'snowfall_flux',
-              'm01s00i409': 'sfc_air_pressure',                             ## swath and full nest
+              'm01s00i409': 'sfc_pressure',                             ## swath and full nest
               'm01s00i024': 'sfc_temperature',                              ## swath and full nest
               'm01s03i234': 'latent_heat_flux',
               'm01s03i217': 'sensible_heat_flux',
@@ -54,18 +54,19 @@ Var_list = { # paXXX
               'm01s03i225': 'u_10m',                             ## swath and full nest
               'm01s03i226': 'v_10m',                            ## swath and full nest
                # pcXXX  -- CLOUDNET
-              'm01s04i118': 'radr_refl',                                        # total_radar_reflectivity
-              'm01s00i266': 'cloud_fraction',                                   # large_scale_cloud_area_fraction
-              'm01s00i408': 'pressure',                                         # air_pressure
-              'm01s16i004': 'temperature',                                      # air_temperature
-              'm01s00i012': 'qice',                                             # mass_fraction_of_cloud_ice_in_air
-              'm01s00i254': 'qliq',                                             # mass_fraction_of_cloud_liquid_water_in_air
-              'm01s00i010': 'q',                                                # specific_humidity
-              'm01s00i150': 'wwind',                                            # upward_air_velocity
-              'm01s00i002': 'uwind',                                            # eastward_wind
-              'm01s00i003': 'vwind',                                            # northward_wind
+              'm01s04i118': 'radr_refl',                          # th 1-70
+              'm01s00i266': 'cloud_fraction',                  # th 1-70 - pc
               'm01s00i267': 'liquid_cloud_fraction',
               'm01s00i268': 'ice_cloud_fraction',
+              'm01s00i004': 'theta',
+              'm01s00i408': 'pressure',                                     # th 1-70 - pc
+              'm01s16i004': 'temperature',                                  # th 1-70 - pc
+              'm01s00i012': 'qice',                # th 1-70 - pc
+              'm01s00i254': 'qliq',       # th 1-70 - pc
+              'm01s00i010': 'q',                                # th 1-70 - pc
+              'm01s00i150': 'w',                              # th 1-70 - pc
+              'm01s00i002': 'u',                                    # th 1-70 - pc
+              'm01s00i003': 'v',                                   # th 1-70 - pc
               # pdXXX -- BOUNDARY LAYER
               'm01s03i362': 'entrainment_rate_SML',
               'm01s03i363': 'entrainment_rate_BL',
