@@ -7140,7 +7140,7 @@ def writePA_Analysis(cube, aoutfile):
     print (dataset.file_format)
     print ('')
 
-    # print cube
+    print (cube)
     # print cube[0].dim_coords
 
     ###################################
