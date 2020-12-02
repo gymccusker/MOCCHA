@@ -7727,7 +7727,7 @@ def main():
     ## 17_u-bz429_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics
 
     #### run with nohup:
-    ####    nohup python2.7 pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
+    ####    nohup python pullTrack_CloudNet.py > nohup_u-bn068_pullTrack_CloudNet.out &
 
     #### run on lotus (with batch_pullTrack.bsub):
     ####    bsub < batch_pullTrack.bsub
