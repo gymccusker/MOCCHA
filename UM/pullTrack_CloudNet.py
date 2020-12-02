@@ -7408,7 +7408,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         revision = 'Revision no. 0. '
     elif out_dir[2:9] == 'u-bn068':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. '
-        revision = 'Revision no. 2. '
+        revision = 'Revision no. 3. '
     elif out_dir[2:9] == 'u-bp738':
         micro = 'Global model initialised with ERA-Interim reanalyses, LAM run with RA2M_CON configuration (as u-bg610, default run). Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
         revision = 'Revision no. 0. '
@@ -7859,8 +7859,8 @@ def main():
                     ### Use the following to plot quick maps of loaded cubes
                     ### -------------------------------------------------------------
 
-                    hour = 0
-                    figure = plot_cartmap(ship_data, cube, hour, grid_filename)
+                    # hour = 0
+                    # figure = plot_cartmap(ship_data, cube, hour, grid_filename)
 
                     ########################################################################
                     ### -------------------------------------------------------------
@@ -7871,85 +7871,85 @@ def main():
                     ### 1. use the following if only want the exact ship position and no variability
                     # -------------------------------------------------------------
                     ### LOAD CUBE
-                    # nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-                    # if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
+                    nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+                    if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
+                    aoutfile = nc_outfile[:-3] + '_a.nc'
+                    boutfile = nc_outfile[:-3] + '_b.nc'
+                    doutfile = nc_outfile[:-3] + '_d.nc'
+                    eoutfile = nc_outfile[:-3] + '_e.nc'
+
+                    if stream[:3] == '_pa':
+                        if not os.path.exists(aoutfile):
+                            print (aoutfile + ' does not exist, so pulling ship track...')
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    elif stream[:3] == '_pb':
+                        if not os.path.exists(boutfile):
+                            print (boutfile + ' does not exist, so pulling ship track...')
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    elif stream[:3] == '_pd':
+                        if not os.path.exists(doutfile):
+                            print (doutfile + ' does not exist, so pulling ship track...')
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    elif stream[:3] == '_pe':
+                        if not os.path.exists(eoutfile):
+                            print (eoutfile + ' does not exist, so pulling ship track...')
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    elif stream[:3] == '_pc':
+                        if not os.path.exists(nc_outfile):
+                            print (nc_outfile + ' does not exist, so pulling ship track...')
+                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    else:
+                        print ('Valid stream not found.')
+
+                    # -------------------------------------------------------------
+                    ### 2. use the following if only want the variability over a certain grid size
+                    # -------------------------------------------------------------
+                    ### LOAD CUBE
+                    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum_VAR.nc'
+                    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum_VAR.nc'
                     # aoutfile = nc_outfile[:-3] + '_a.nc'
                     # boutfile = nc_outfile[:-3] + '_b.nc'
-                    # doutfile = nc_outfile[:-3] + '_d.nc'
                     # eoutfile = nc_outfile[:-3] + '_e.nc'
                     #
-                    # if stream[:3] == '_pa':
+                    # if stream == '_pa012':
                     #     if not os.path.exists(aoutfile):
-                    #         print (aoutfile + ' does not exist, so pulling ship track...')
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    # elif stream[:3] == '_pb':
+                    #         print aoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pb009':
                     #     if not os.path.exists(boutfile):
-                    #         print (boutfile + ' does not exist, so pulling ship track...')
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    # elif stream[:3] == '_pd':
-                    #     if not os.path.exists(doutfile):
-                    #         print (doutfile + ' does not exist, so pulling ship track...')
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    # elif stream[:3] == '_pe':
+                    #         print boutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pe011':
                     #     if not os.path.exists(eoutfile):
-                    #         print (eoutfile + ' does not exist, so pulling ship track...')
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    # elif stream[:3] == '_pc':
+                    #         print eoutfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
+                    # elif stream == '_pc011':
                     #     if not os.path.exists(nc_outfile):
-                    #         print (nc_outfile + ' does not exist, so pulling ship track...')
-                    #         outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    #         print nc_outfile + ' does not exist, so pulling ship track...'
+                    #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
                     # else:
-                    #     print ('Valid stream not found.')
-                #
-                #     # -------------------------------------------------------------
-                #     ### 2. use the following if only want the variability over a certain grid size
-                #     # -------------------------------------------------------------
-                #     ### LOAD CUBE
-                #     # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum_VAR.nc'
-                #     # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum_VAR.nc'
-                #     # aoutfile = nc_outfile[:-3] + '_a.nc'
-                #     # boutfile = nc_outfile[:-3] + '_b.nc'
-                #     # eoutfile = nc_outfile[:-3] + '_e.nc'
-                #     #
-                #     # if stream == '_pa012':
-                #     #     if not os.path.exists(aoutfile):
-                #     #         print aoutfile + ' does not exist, so pulling ship track...'
-                #     #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
-                #     # elif stream == '_pb009':
-                #     #     if not os.path.exists(boutfile):
-                #     #         print boutfile + ' does not exist, so pulling ship track...'
-                #     #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
-                #     # elif stream == '_pe011':
-                #     #     if not os.path.exists(eoutfile):
-                #     #         print eoutfile + ' does not exist, so pulling ship track...'
-                #     #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
-                #     # elif stream == '_pc011':
-                #     #     if not os.path.exists(nc_outfile):
-                #     #         print nc_outfile + ' does not exist, so pulling ship track...'
-                #     #         outfile = pullTrack_CloudNet_VAR(cube, grid_filename, global_con, stream, date)
-                #     # else:
-                #     #     print 'Valid stream not found.'
-                #
-                #     ########################################################################
-                #
-                # else:
-                #     print ('')
-                #     print ('****File does not exist****')
-                #     print ('')
-                #
-                # if stream == '_pc011':
-                #     if exist_flag == 1:
-                #         ##-------------------------------------------------------------
-                #         ## For each date, append metadata to netCDF
-                #         ## -------------------------------------------------------------
-                #         print ('******')
-                #         print ('')
-                #         print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
-                #         print ('')
-                #         # outfile = '20180902_oden_metum.nc'
-                #         out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
-                #             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                #             ### os.rename(nc_outfile, final_outfile)
+                    #     print 'Valid stream not found.'
+
+                    ########################################################################
+
+                else:
+                    print ('')
+                    print ('****File does not exist****')
+                    print ('')
+
+                if stream == '_pc011':
+                    if exist_flag == 1:
+                        ##-------------------------------------------------------------
+                        ## For each date, append metadata to netCDF
+                        ## -------------------------------------------------------------
+                        print ('******')
+                        print ('')
+                        print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
+                        print ('')
+                        # outfile = '20180902_oden_metum.nc'
+                        out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
+                            ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                            ## os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print ('******')
