@@ -71,20 +71,22 @@ Stash_list = { # paXXX
               'm01s03i362': 'entrainment_rate_for_surface_mixed_layer',
               'm01s03i363': 'entrainment_rate_for_boundary_layer',
               'm01s03i464': 'obukhov_length',
+              'm01s03i465': 'explicit_friction_velocity',
+              'm01s04i298': 'diagnosed_turbulent_dissipation_rate',
+              'm01s03i208': 'bulk_richardson_number',
               'm01s03i219': 'atmosphere_downward_eastward_stress',              # ro 1-70
               'm01s03i220': 'atmosphere_downward_northward_stress',             # ro 1-70
               'm01s03i473': 'turbulent_kinetic_energy',                         # ro 1-70
-              # 'm01s00i407': 'air_pressure',                                     # ro 1-70
+              'm01s00i004': 'air_potential_temperature',
+              'm01s00i031': 'sea_ice_area_fraction',
+              'm01s00i010': 'specific_humidity',
               'm01s03i460': 'surface_downward_eastward_stress',
               'm01s03i461': 'surface_downward_northward_stress',
-              'm01s03i223': 'surface_upward_water_flux',
               'm01s00i026': 'surface_roughness_length',
-              'm01s03i208': 'bulk_richardson_number',
+              'm01s03i223': 'surface_upward_water_flux',
               'm01s03i501': 'mixing_length_for_momentum',
-              'm01s03i465': 'explicit_friction_velocity',
               'm01s03i471': 'BL_momentum_diffusion',
               'm01s03i469': 'vertical_buoyancy_gradient',
-              'm01s00i031': 'sea_ice_fraction',
               # peXXX -- CASIM MICROPHYSICS
               'm01s00i075': 'number_concentration_of_cloud_droplets_in_air',
               'm01s00i078': 'number_concentration_of_ice_crystals_in_air',
