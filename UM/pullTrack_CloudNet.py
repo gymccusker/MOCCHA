@@ -6963,11 +6963,11 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if getattr(ncB.variables[d],'units', None):
-                    dat.units = str(ncB.variables[ncB.variables[d]].units)
+                    dat.units = str(ncB.variables[d].units)
                 else:
                     dat.units = 'unknown'
                 if getattr(ncB.variables[d],'STASH', None):
-                    dat.STASH = str(ncB.variables[ncB.variables[d]].STASH)
+                    dat.STASH = str(ncB.variables[d].STASH)
                 if getattr(ncB.variables[d],'standard_name', None):
                     dat.standard_name = str(ncB.variables[d].standard_name)
                 if getattr(ncB.variables[d],'long_name', None):
