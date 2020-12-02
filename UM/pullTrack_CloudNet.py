@@ -6959,20 +6959,20 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
             if not ncB.variables[d] in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
-                dat = dataset.createVariable(ncB.variables[d], np.float64, ('forecast_time',), fill_value='-9999')
+                dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
-                if getattr(ncB.variables[ncB.variables[d]],'units', None):
+                if getattr(ncB.variables[d],'units', None):
                     dat.units = str(ncB.variables[ncB.variables[d]].units)
                 else:
                     dat.units = 'unknown'
-                if getattr(ncB.variables[ncB.variables[d]],'STASH', None):
+                if getattr(ncB.variables[d],'STASH', None):
                     dat.STASH = str(ncB.variables[ncB.variables[d]].STASH)
-                if getattr(ncB.variables[ncB.variables[d]],'standard_name', None):
-                    dat.standard_name = str(ncB.variables[ncB.variables[d]].standard_name)
-                if getattr(ncB.variables[ncB.variables[d]],'long_name', None):
-                    dat.long_name = str(ncB.variables[ncB.variables[d]].long_name)
-                dat[:] = ncB.variables[ncB.variables[d]][:]
+                if getattr(ncB.variables[d],'standard_name', None):
+                    dat.standard_name = str(ncB.variables[d].standard_name)
+                if getattr(ncB.variables[d],'long_name', None):
+                    dat.long_name = str(ncB.variables[d].long_name)
+                dat[:] = ncB.variables[d][:]
 
         ###################################
         ## Close read-only pbXXX file
