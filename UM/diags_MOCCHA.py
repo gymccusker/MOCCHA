@@ -7,8 +7,8 @@ List of variables from the UKV
 Stash_list = { # paXXX
               'm01s16i222': 'air_pressure_at_sea_level',
               'm01s03i236': 'air_temperature',
-              'm01s03i250': 'dew_point_temperature',
-              'm01s03i248': 'fog_area_fraction',
+              'm01s03i250': 'dew_point_temperature_at_1.5m',
+              'm01s03i248': 'fog_area_fraction_at_1.5m',
               'm01s03i245': 'relative_humidity',
               'm01s03i237': 'specific_humidity',
               'm01s00i409': 'surface_air_pressure',
@@ -20,11 +20,10 @@ Stash_list = { # paXXX
               'm01s01i207': 'toa_incoming_shortwave_flux',
               'm01s02i205': 'toa_outgoing_longwave_flux',
               'm01s01i208': 'toa_outgoing_shortwave_flux',
-              'm01s03i225': 'u_10m_wind',
-              'm01s03i226': 'v_10m_wind',
+              'm01s03i225': 'eastward_wind_at_10m',
+              'm01s03i226': 'northward_wind_at_10m',
                # pbXXX
-              'm01s03i241': 'water_evaporation_amount',
-              'm01s03i304': 'turbulent mixing height after boundary layer',
+              'm01s03i304': 'turbulent_mixing_height_after_boundary_layer',
               'm01s03i360': 'height_of_decoupled_layer_base',
               'm01s03i361': 'height_of_stratocumulus_cloud_base',
               'm01s03i476': 'combined_boundary_layer_type',
@@ -32,14 +31,14 @@ Stash_list = { # paXXX
               'm01s09i217': 'cloud_area_fraction_assuming_maximum_random_overlap',
               'm01s09i221': 'wet_bulb_freezing_level_altitude',
               'm01s30i461': 'total_column_q',                                   # th 1-70
-              'm01s02i391': 'large_scale_ice_water_path',
+              'm01s03i241': 'water_evaporation_amount',
               'm01s02i392': 'large_scale_liquid_water_path',
+              'm01s02i391': 'large_scale_ice_water_path',
               'm01s16i222': 'air_pressure_at_sea_level',                        ## swath and full nest
               'm01s03i236': 'air_temperature_at_1.5m',                          ## swath and full nest
               'm01s03i025': 'atmosphere_boundary_layer_thickness',
-              'm01s03i247': 'visibility_in_air_at_1.5m',
+              'm01s03i250': 'dew_point_temperature_at_1.5m',
               'm01s03i248': 'fog_area_fraction_at_1.5m',
-              'm01s03i250': 'dew_point_temperature_at_1.5m',                    ## swath and full nest
               'm01s09i205': 'high_type_cloud_area_fraction',
               'm01s09i203': 'low_type_cloud_area_fraction',
               'm01s09i204': 'medium_type_cloud_area_fraction',
@@ -51,6 +50,7 @@ Stash_list = { # paXXX
               'm01s00i024': 'surface_temperature',                              ## swath and full nest
               'm01s03i234': 'surface_upward_latent_heat_flux',
               'm01s03i217': 'surface_upward_sensible_heat_flux',
+              'm01s03i247': 'visibility_in_air_at_1.5m',
               'm01s03i225': 'eastward_wind_at_10m',                             ## swath and full nest
               'm01s03i226': 'northward_wind_at_10m',                            ## swath and full nest
                # pcXXX  -- CLOUDNET
