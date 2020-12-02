@@ -7078,43 +7078,43 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ###################################
         print ('Appending pdXXX diagnostics:')
         print ('---')
-        for d in range(0,len(ncD.variables)):
-            if ncD.variables.keys()[d] == 'forecast_time': continue
-            if not ncD.variables.keys()[d] in dataset.variables.keys():
-                print ('Writing ' + ncD.variables.keys()[d])
+        for d in ncD.variables:
+            if d == 'forecast_time': continue
+            if not d in dataset.variables:
+                print ('Writing ' + d)
                 print ('')
-                if np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 2:
+                if np.ndim(ncD.variables[d]) == 2:
                     print ('Variable is 2D:')
-                    daat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', 'height2',), fill_value='-9999')
+                    daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height2',), fill_value='-9999')
                     daat.scale_factor = float(1)
                     daat.add_offset = float(0)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
-                        daat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
+                    if getattr(ncD.variables[d],'units', None):
+                        daat.units = str(ncD.variables[d].units)
                     else:
                         daat.units = 'unknown'
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
-                        daat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
-                        daat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
-                        daat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
-                    daat[:,:] = ncD.variables[ncD.variables.keys()[d]][:,:]
-                elif np.ndim(ncD.variables[ncD.variables.keys()[d]]) == 1:
+                    if getattr(ncD.variables[d],'STASH', None):
+                        daat.STASH = str(ncD.variables[d].STASH)
+                    if getattr(ncD.variables[d],'standard_name', None):
+                        daat.standard_name = str(ncD.variables[d].standard_name)
+                    if getattr(ncD.variables[d],'long_name', None):
+                        daat.long_name = str(ncD.variables[d].long_name)
+                    daat[:,:] = ncD.variables[d][:,:]
+                elif np.ndim(ncD.variables[d]) == 1:
                     print ('Variable is 1D:')
-                    dat = dataset.createVariable(ncD.variables.keys()[d], np.float64, ('forecast_time', ), fill_value='-9999')
+                    dat = dataset.createVariable(d, np.float64, ('forecast_time', ), fill_value='-9999')
                     dat.scale_factor = float(1)
                     dat.add_offset = float(0)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'units', None):
-                        dat.units = str(ncD.variables[ncD.variables.keys()[d]].units)
+                    if getattr(ncD.variables[d],'units', None):
+                        dat.units = str(ncD.variables[d].units)
                     else:
                         dat.units = 'unknown'
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'STASH', None):
-                        dat.STASH = str(ncD.variables[ncD.variables.keys()[d]].STASH)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'standard_name', None):
-                        dat.standard_name = str(ncD.variables[ncD.variables.keys()[d]].standard_name)
-                    if getattr(ncD.variables[ncD.variables.keys()[d]],'long_name', None):
-                        dat.long_name = str(ncD.variables[ncD.variables.keys()[d]].long_name)
-                    dat[:] = ncD.variables[ncD.variables.keys()[d]][:]
+                    if getattr(ncD.variables[d],'STASH', None):
+                        dat.STASH = str(ncD.variables[d].STASH)
+                    if getattr(ncD.variables[d],'standard_name', None):
+                        dat.standard_name = str(ncD.variables[d].standard_name)
+                    if getattr(ncD.variables[d],'long_name', None):
+                        dat.long_name = str(ncD.variables[d].long_name)
+                    dat[:] = ncD.variables[d][:]
 
         ###################################
         ## Close read-only pdXXX file
