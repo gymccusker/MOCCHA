@@ -7349,23 +7349,23 @@ def main():
                     doutfile = nc_outfile[:-3] + '_d.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
 
-                    if stream[:3] == '_pa':
+                    if stream[1:3] == 'pa':
                         if not os.path.exists(aoutfile):
                             print (aoutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[:3] == '_pb':
+                    elif stream[1:3] == 'pb':
                         if not os.path.exists(boutfile):
                             print (boutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[:3] == '_pd':
+                    elif stream[1:3] == 'pd':
                         if not os.path.exists(doutfile):
                             print (doutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[:3] == '_pe':
+                    elif stream[1:3] == 'pe':
                         if not os.path.exists(eoutfile):
                             print (eoutfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[:3] == '_pc':
+                    elif stream[1:3] == 'pc':
                         if not os.path.exists(nc_outfile):
                             print (nc_outfile + ' does not exist, so pulling ship track...')
                             outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
@@ -7408,7 +7408,7 @@ def main():
                     print ('****File does not exist****')
                     print ('')
 
-                if stream == '_pc011':
+                if stream[1:3] == 'pc':
                     if exist_flag == 1:
                         ##-------------------------------------------------------------
                         ## For each date, append metadata to netCDF
