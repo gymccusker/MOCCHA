@@ -7409,7 +7409,7 @@ def main():
                     print ('****File does not exist****')
                     print ('')
 
-                if stream == 'pc':
+                if stream[1:3] == 'pc':
                     if exist_flag == 1:
                         ##-------------------------------------------------------------
                         ## For each date, append metadata to netCDF
