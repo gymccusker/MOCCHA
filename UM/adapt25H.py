@@ -124,14 +124,18 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     #################################################################
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
-    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP','surface_downwelling_LW_radiation',
-                'surface_downwelling_SW_radiation','toa_incoming_shortwave_flux','toa_outgoing_longwave_flux',
+    radlist = ['sfc_net_SW','sfc_net_LW','IWP','LWP','sfc_downwelling_LW',
+                'sfc_downwelling_SW','toa_incoming_shortwave_flux','toa_outgoing_longwave_flux',
                 'toa_outgoing_shortwave_flux']
     flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
                 'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
                 'surface_upward_water_flux']
+    missed_list = ['theta','u','v','w','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
+                'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
+                'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
+                'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount']
 
     #################################################################
     ## CREATE NEW NETCDF
@@ -194,8 +198,8 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     for diag in nc1.variables:
     # diag = 'sfc_pressure'
     # if diag == 'sfc_pressure':
-        print ('Writing ' + diag)
         print ('')
+        print ('Writing ' + diag)
         ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
             if diag == 'forecast_time':
@@ -207,6 +211,9 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
             if diag == 'height2':
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
+            if diag in missed_list:
+                print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+                continue
             if diag in radlist:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -217,7 +224,38 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:23] = nc1.variables[diag][0:-1]
-                dat[23:25] = nc2.variables[diag][0:2]
+                if diag == 'sfc_net_SW':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = nc2.variables['surface_net_SW_radiation'][0:2]
+                elif diag == 'sfc_net_LW':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = nc2.variables['surface_net_LW_radiation'][0:2]
+                elif diag == 'sfc_downwelling_SW':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = np.nan
+                elif diag == 'sfc_downwelling_LW':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = np.nan
+                elif diag == 'toa_outgoing_longwave_flux':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = np.nan
+                elif diag == 'toa_outgoing_shortwave_flux':
+                    if diag in nc2.variables:
+                        dat[23:25] = nc2.variables[diag][0:2]
+                    else:
+                        dat[23:25] = np.nan
+                else:
+                    dat[23:25] = nc2.variables[diag][0:2]
             elif diag in flxlist:
                 continue
             else:
@@ -234,6 +272,9 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
 
         ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
+            if diag in missed_list:
+                print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+                continue
             if diag in flxlist:
                 # continue
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
