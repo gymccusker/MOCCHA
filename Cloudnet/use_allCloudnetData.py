@@ -1614,7 +1614,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_BLDepths_v2.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -1876,7 +1876,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_BLDepths.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -5261,27 +5261,32 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
                     obs_data['iwc'][t,k] = np.nan
                     obs_data['lwc_adiabatic'][t,k] = np.nan
                     obs_data['lwc'][t,k] = np.nan
+                elif obs_data['twc'][t,k] >= twc_thresh_um[k]:
                     mask0[t,k] = 1.0
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
                 um_data['model_iwc_filtered'][t,k] = np.nan
                 um_data['model_lwc'][t,k] = np.nan
+            elif um_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask1[t,k] = 1.0
             if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
                 misc_data['model_twc'][t,k] = np.nan
                 misc_data['model_iwc_filtered'][t,k] = np.nan
                 misc_data['model_lwc'][t,k] = np.nan
+            elif misc_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask2[t,k] = 1.0
             if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
                 ra2t_data['model_twc'][t,k] = np.nan
                 ra2t_data['model_iwc_filtered'][t,k] = np.nan
                 ra2t_data['model_lwc'][t,k] = np.nan
+            elif ra2t_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask4[t,k] = 1.0
         for k in range(0,np.size(ifs_data['model_twc'],1)):
             if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
                 ifs_data['model_twc'][t,k] = np.nan
                 ifs_data['model_snow_iwc_filtered'][t,k] = np.nan
                 ifs_data['model_lwc'][t,k] = np.nan
+            elif ifs_data['model_twc'][t,k] >= twc_thresh_ifs[k]:
                 mask3[t,k] = 1.0
 
     #### ---------------------------------------------------------------------------------------------------
@@ -5326,11 +5331,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
             hspace = 0.22, wspace = 0.19)
 
-    fraction0p3 = np.squeeze(obs_data['Cv'][p3,:]) # np.squeeze(mask0[p3,:])
-    fraction1p3 = np.squeeze(um_data['model_Cv_filtered'][p3,:]) # np.squeeze(mask1[p3,:])
-    fraction2p3 = np.squeeze(misc_data['model_Cv_filtered'][p3,:]) # np.squeeze(mask2[p3,:])
-    fraction3p3 = np.squeeze(ifs_data['model_snow_Cv_filtered'][p3,:]) # np.squeeze(mask3[p3,:])
-    fraction4p3 = np.squeeze(ra2t_data['model_Cv_filtered'][p3,:]) # np.squeeze(mask4[p3,:])
+    fraction0p3 = np.squeeze(mask0[p3,:]) # np.squeeze(obs_data['Cv'][p3,:]) #
+    fraction1p3 = np.squeeze(mask1[p3,:]) # np.squeeze(um_data['model_Cv_filtered'][p3,:]) #
+    fraction2p3 = np.squeeze(mask2[p3,:]) # np.squeeze(misc_data['model_Cv_filtered'][p3,:]) #
+    fraction3p3 = np.squeeze(mask3[p3,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p3,:]) #
+    fraction4p3 = np.squeeze(mask4[p3,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p3,:]) #
 
     fraction0p4 = np.squeeze(obs_data['Cv'][p4,:]) # np.squeeze(mask0[p3,:])
     fraction1p4 = np.squeeze(um_data['model_Cv_filtered'][p4,:]) # np.squeeze(mask1[p3,:])
@@ -5659,7 +5664,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p4_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -6015,7 +6020,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 
@@ -7236,7 +7241,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
     # lwp1 = obs_data['lwp'][:,0]
     # lwp1[lwp1 == -999.0] = np.nan
@@ -7262,7 +7267,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
