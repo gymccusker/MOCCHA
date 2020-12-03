@@ -5337,11 +5337,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     fraction3p3 = np.squeeze(mask3[p3,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p3,:]) #
     fraction4p3 = np.squeeze(mask4[p3,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p3,:]) #
 
-    fraction0p4 = np.squeeze(obs_data['Cv'][p4,:]) # np.squeeze(mask0[p3,:])
-    fraction1p4 = np.squeeze(um_data['model_Cv_filtered'][p4,:]) # np.squeeze(mask1[p3,:])
-    fraction2p4 = np.squeeze(misc_data['model_Cv_filtered'][p4,:]) # np.squeeze(mask2[p3,:])
-    fraction3p4 = np.squeeze(ifs_data['model_snow_Cv_filtered'][p4,:]) # np.squeeze(mask3[p3,:])
-    fraction4p4 = np.squeeze(ra2t_data['model_Cv_filtered'][p4,:]) # np.squeeze(mask4[p3,:])
+    fraction0p4 = np.squeeze(mask0[p4,:]) # np.squeeze(obs_data['Cv'][p4,:]) #
+    fraction1p4 = np.squeeze(mask1[p4,:]) # np.squeeze(um_data['model_Cv_filtered'][p4,:]) #
+    fraction2p4 = np.squeeze(mask2[p4,:]) # np.squeeze(misc_data['model_Cv_filtered'][p4,:]) #
+    fraction3p4 = np.squeeze(mask3[p4,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p4,:]) #
+    fraction4p4 = np.squeeze(mask4[p4,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p4,:]) #
 
     plt.subplot(231)
     ax2 = plt.gca()
@@ -5386,7 +5386,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(fraction4p3,0),np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 2)
     plt.plot(np.nanmean(fraction1p3,0),np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 3)
 
-    plt.xlabel('C$_{V}$')
+    # plt.xlabel('C$_{V}$')
+    plt.xlabel('TWC Cloud mask')
     plt.ylabel('Z [km]')
     # plt.title('Melt')
     plt.ylim([0,9000])
@@ -5546,7 +5547,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(fraction3p4,0) + np.nanstd(fraction3p4,0), np.nanmean(np.squeeze(ifs_data['height'][p4,:]),0),
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.xlabel('C$_{V}$')
+    # plt.xlabel('C$_{V}$')
+    plt.xlabel('TWC Cloud mask')
     # plt.title('Freeze up')
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -5663,8 +5665,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p3-p4_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
-    # plt.savefig(fileout)
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p3-p4_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
+    plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -5687,17 +5689,17 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
             hspace = 0.22, wspace = 0.19)
 
-    fraction0p5 = np.squeeze(obs_data['Cv'][p5,:]) # np.squeeze(mask0[p5,:])
-    fraction1p5 = np.squeeze(um_data['model_Cv_filtered'][p5,:]) # np.squeeze(mask1[p5,:])
-    fraction2p5 = np.squeeze(misc_data['model_Cv_filtered'][p5,:]) # np.squeeze(mask2[p5,:])
-    fraction3p5 = np.squeeze(ifs_data['model_snow_Cv_filtered'][p5,:]) # np.squeeze(mask3[p5,:])
-    fraction4p5 = np.squeeze(ra2t_data['model_Cv_filtered'][p5,:]) # np.squeeze(mask4[p5,:])
+    fraction0p5 = np.squeeze(mask0[p5,:]) # np.squeeze(obs_data['Cv'][p5,:]) #
+    fraction1p5 = np.squeeze(mask1[p5,:]) # np.squeeze(um_data['model_Cv_filtered'][p5,:]) #
+    fraction2p5 = np.squeeze(mask2[p5,:]) # np.squeeze(misc_data['model_Cv_filtered'][p5,:]) #
+    fraction3p5 = np.squeeze(mask3[p5,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p5,:]) #
+    fraction4p5 = np.squeeze(mask4[p5,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p5,:]) #
 
-    fraction0p6 = np.squeeze(obs_data['Cv'][p6,:]) # np.squeeze(mask0[p5,:])
-    fraction1p6 = np.squeeze(um_data['model_Cv_filtered'][p6,:]) # np.squeeze(mask1[p5,:])
-    fraction2p6 = np.squeeze(misc_data['model_Cv_filtered'][p6,:]) # np.squeeze(mask2[p5,:])
-    fraction3p6 = np.squeeze(ifs_data['model_snow_Cv_filtered'][p6,:]) # np.squeeze(mask3[p5,:])
-    fraction4p6 = np.squeeze(ra2t_data['model_Cv_filtered'][p6,:]) # np.squeeze(mask4[p5,:])
+    fraction0p6 = np.squeeze(mask0[p5,:]) # np.squeeze(obs_data['Cv'][p6,:]) #
+    fraction1p6 = np.squeeze(mask1[p5,:]) # np.squeeze(um_data['model_Cv_filtered'][p6,:]) #
+    fraction2p6 = np.squeeze(mask2[p5,:]) # np.squeeze(misc_data['model_Cv_filtered'][p6,:]) #
+    fraction3p6 = np.squeeze(mask3[p5,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p6,:]) #
+    fraction4p6 = np.squeeze(mask4[p5,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p6,:]) #
 
     plt.subplot(231)
     ax2 = plt.gca()
@@ -5742,7 +5744,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(fraction4p5,0),np.nanmean(np.squeeze(ra2t_data['height'][p5,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 2)
     plt.plot(np.nanmean(fraction1p5,0),np.nanmean(np.squeeze(um_data['height'][p5,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 3)
 
-    plt.xlabel('C$_{V}$')
+    # plt.xlabel('C$_{V}$')
+    plt.xlabel('TWC Cloud mask')
     plt.ylabel('Z [km]')
     # plt.title('Melt')
     plt.ylim([0,9000])
@@ -5902,7 +5905,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(fraction3p6,0) + np.nanstd(fraction3p6,0), np.nanmean(np.squeeze(ifs_data['height'][p6,:]),0),
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.xlabel('C$_{V}$')
+    # plt.xlabel('C$_{V}$')
+    plt.xlabel('TWC Cloud mask')
     # plt.title('Freeze up')
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -6019,8 +6023,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_Cv-LWC-IWC_p5-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
-    # plt.savefig(fileout)
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-100_RA2T_TWCMask-LWC-IWC_p5-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_blueNaNs_wMissingFiles_wSTDEV_newColours.svg'
+    plt.savefig(fileout)
     plt.show()
 
 
