@@ -3116,10 +3116,10 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     swdmeanice = obs['fixed_radiation']['SWd_ice'][:]
 
     ### update these to probe data['fixed_radiation']['time'] arrays instead
-    p3mod = np.where(np.logical_and(data1['fixed_radiation']['time'][::6] >= doy[0], data1['fixed_radiation']['time'][::6] < 230.0))
-    p4mod = np.where(np.logical_and(data1['fixed_radiation']['time'][::6] >= 230.0, data1['fixed_radiation']['time'][::6] < 240.0))
-    p5mod = np.where(np.logical_and(data1['fixed_radiation']['time'][::6] >= 240.0, data1['fixed_radiation']['time'][::6] < 247.0))
-    p6mod = np.where(np.logical_and(data1['fixed_radiation']['time'][::6] >= 247.0, data1['fixed_radiation']['time'][::6] < 251.0))
+    p3mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= doy[0], data1['fixed_radiation']['time'] < 230.0))
+    p4mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 230.0, data1['fixed_radiation']['time'] < 240.0))
+    p5mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 240.0, data1['fixed_radiation']['time'] < 247.0))
+    p6mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 247.0, data1['fixed_radiation']['time'] < 251.0))
     # p3mod = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
     # p4mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
     # p5mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
@@ -3135,8 +3135,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     p5ice = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
     p6ice = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
 
-    # print (p4ship[0].shape)
-    # print (p5ship[0].shape)
+    # plt.plot(data1['time'])
 
     #####-------------------------------
     #####   net LW
@@ -3313,6 +3312,8 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     data4['surface_upwelling_SW_radiation'] = data4['surface_downwelling_SW_radiation'] - data4['surface_net_SW_radiation']
     data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
 
+
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])))) + ')')
     #
     # plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
@@ -9133,11 +9134,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA_25h/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA_25h/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9267,7 +9268,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9276,8 +9277,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -9758,7 +9759,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # -------------------------------------------------------------
@@ -9766,7 +9767,7 @@ def main():
     # Sandeep - MOCCHA TKE dissipation rates
     # -------------------------------------------------------------
     # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
-    out = TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
+    # out = TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
