@@ -2693,12 +2693,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     #########-------------------------------------------------------------------------------------------
     ####       DEFINE PERIODS
     ####               all model data share a timestamp
-    p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] <= 230.0))
-    p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] <= 240.0))
-    p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] <= 247.0))
-    p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] <= 251.0))
-    p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] <= 255.5))
-    p8 = np.where(data1['time_hrly'][::6] >= 255.5)
+    p3 = np.where(np.logical_and(data1['time_hrly'] >= doy[0], data1['time_hrly'] <= 230.0))
+    p4 = np.where(np.logical_and(data1['time_hrly'] >= 230.0, data1['time_hrly'] <= 240.0))
+    p5 = np.where(np.logical_and(data1['time_hrly'] >= 240.0, data1['time_hrly'] <= 247.0))
+    p6 = np.where(np.logical_and(data1['time_hrly'] >= 247.0, data1['time_hrly'] <= 251.0))
+    p7 = np.where(np.logical_and(data1['time_hrly'] >= 251.0, data1['time_hrly'] <= 255.5))
+    p8 = np.where(data1['time_hrly'] >= 255.5)
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
@@ -2761,39 +2761,39 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     ##  melt/freeze threshold
     plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='grey')
     ## p3
-    plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [-50, -50], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p3[0][0]], -50, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p3[0][-1]], -50, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p3[0][0]], data1['time_hrly'][p3[0][-1]]], [-50, -50], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p3[0][0]], -50, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p3[0][-1]], -50, '.', color = 'r')
     plt.annotate('P3', xy=(227.5,-45), xytext=(227.5,-45), fontsize = 12, color = 'r')
-    plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    plt.plot([data1['time_hrly'][p3[0][-1]], data1['time_hrly'][p3[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p4
-    plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [-50, -50], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p4[0][0]], -50, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p4[0][-1]], -50, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p4[0][0]], data1['time_hrly'][p4[0][-1]]], [-50, -50], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p4[0][0]], -50, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p4[0][-1]], -50, '.', color = 'r')
     plt.annotate('P4', xy=(234.5,-45), xytext=(234.5,-45), fontsize = 12, color = 'r')
     # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [yA[0],yA[-1]], '--', color = 'r', linewidth = 1)
     ## p5
-    plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [70, 70], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p5[0][0]], 70, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p5[0][-1]], 70, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p5[0][0]], data1['time_hrly'][p5[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p5[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p5[0][-1]], 70, '.', color = 'r')
     plt.annotate('P5', xy=(243,59), xytext=(243,59), fontsize = 12, color = 'r')
-    plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    plt.plot([data1['time_hrly'][p5[0][-1]], data1['time_hrly'][p5[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p6
-    plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [70, 70], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p6[0][0]], 70, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p6[0][-1]], 70, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p6[0][0]], data1['time_hrly'][p6[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p6[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p6[0][-1]], 70, '.', color = 'r')
     plt.annotate('P6', xy=(248.75,59), xytext=(248.75,59), fontsize = 12, color = 'r')
-    plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    plt.plot([data1['time_hrly'][p6[0][-1]], data1['time_hrly'][p6[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p7
-    plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [70, 70], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p7[0][0]], 70, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p7[0][-1]], 70, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p7[0][0]], data1['time_hrly'][p7[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p7[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p7[0][-1]], 70, '.', color = 'r')
     plt.annotate('P7', xy=(253,59), xytext=(253,59), fontsize = 12, color = 'r')
-    plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
+    plt.plot([data1['time_hrly'][p7[0][-1]], data1['time_hrly'][p7[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p8
-    plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [70, 70], '-.', color = 'r')
-    plt.plot(data1['time_6hrly'][p8[0][0]], 70, '.', color = 'r')
-    plt.plot(data1['time_6hrly'][p8[0][-1]], 70, '.', color = 'r')
+    plt.plot([data1['time_hrly'][p8[0][0]], data1['time_hrly'][p8[0][-1]]], [70, 70], '-.', color = 'r')
+    plt.plot(data1['time_hrly'][p8[0][0]], 70, '.', color = 'r')
+    plt.plot(data1['time_hrly'][p8[0][-1]], 70, '.', color = 'r')
     plt.annotate('P8', xy=(256.5,59), xytext=(256.5,59), fontsize = 12, color = 'r')
     ##
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
@@ -2925,7 +2925,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('Obs_ship peak netRad = ' + ('%.2f' % x[maxid]))
+    # print ('UM_RA2T peak netRad = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.83,0.7,0.15,0.22])   # left, bottom, width, height
@@ -2942,7 +2942,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
     # # UM_RA2M peak SWnet = 25.25
-    # # UM_RA2T peak SWnet = 28.42
+    # # UM_RA2T peak SWnet = 26.57
     # # UM_CASIM-100 peak SWnet = 10.65
     # # ECMWF_IFS peak SWnet = 10.00
     # # Obs_ice peak SWnet = 8.67
@@ -2950,7 +2950,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('Obs_ship peak SWnet = ' + ('%.2f' % x[maxid]))
+    # print ('UM_RA2T peak SWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
@@ -2967,7 +2967,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
     # # UM_RA2M peak LWnet = -9.31
-    # # UM_RA2T peak LWnet = -11.22
+    # # UM_RA2T peak LWnet = -11.49
     # # UM_CASIM-100 peak LWnet = -5.65
     # # ECMWF_IFS peak LWnet = -6.83
     # # Obs_ice peak LWnet = -7.57
@@ -2975,7 +2975,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('Obs_ship peak LWnet = ' + ('%.2f' % x[maxid]))
+    # print ('UM_RA2T peak LWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     # plt.subplot(212)
@@ -2997,7 +2997,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.ylim([0,yDmax])
     plt.xlabel('Net Radiation [W m$^{-2}$]')
     # # UM_RA2M peak netRad = 14.91
-    # # UM_RA2T peak netRad = 16.79
+    # # UM_RA2T peak netRad = 18.18
     # # UM_CASIM-100 peak netRad = 6.10
     # # ECMWF_IFS peak netRad = 5.62
     # # Obs_ice peak netRad = 0.98
@@ -3005,7 +3005,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('Obs_ship peak netRad = ' + ('%.2f' % x[maxid]))
+    # print ('UM_RA2T peak netRad = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     print ('******')
@@ -3013,7 +3013,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -9134,11 +9134,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA_25h/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_RadPA_25h/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9268,7 +9268,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_',
             '20180901_oden_','20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9277,8 +9277,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,259)        ## set DOY for RA2T  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -9356,7 +9356,9 @@ def main():
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']
             var_list3 = ['sfc_net_sw','sfc_net_lw', 'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
             var_list2 = var_list1
-            var_list4 = var_list1
+            var_list4 = ['surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','sfc_net_SW','sfc_net_LW','sfc_downwelling_SW',
+                'sfc_downwelling_LW']
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
         else:
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
@@ -9450,10 +9452,11 @@ def main():
             ## ------------------
             print ('Starting on t=0 RA2T data:')
             for j in range(0,len(var_list4)):
-                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc4.variables[var_list4[j]]) >= 1:
-                    data4[var_list4[j]] = nc4.variables[var_list4[j]][:]
+                if var_list4[j] in nc4.variables:
+                    if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc4.variables[var_list4[j]]) >= 1:
+                        data4[var_list4[j]] = nc4.variables[var_list4[j]][:]
             nc4.close()
             ## ------------------
             #### um5
@@ -9521,13 +9524,14 @@ def main():
             print ('Appending UM data:')
             for j in range(0,len(var_list4)):
                 # print (var_list1[j])
-                if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc4.variables[var_list4[j]]) == 1:
-                    # data1[cube_um1[j].var_name] = cube_um1[j].data
-                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:])
-                elif np.ndim(nc4.variables[var_list4[j]]) == 2:
-                    data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:],0)
+                if var_list4[j] in nc4.variables:
+                    if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc4.variables[var_list4[j]]) == 1:
+                        # data1[cube_um1[j].var_name] = cube_um1[j].data
+                        data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:])
+                    elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                        data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:],0)
             # np.save('working_data1',data1)
             nc4.close()
             print ('')
@@ -9736,7 +9740,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -9759,7 +9763,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # -------------------------------------------------------------
