@@ -216,7 +216,16 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
                 continue
             if diag in radlist:
-                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                if diag == 'sfc_net_SW':
+                    dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_net_LW':
+                    dat = nc.createVariable('surface_net_LW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_SW':
+                    dat = nc.createVariable('surface_downwelling_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_LW':
+                    dat = nc.createVariable('surface_downwelling_LW_radiation', np.float64, ('forecast_time',), fill_value='-9999')      
+                else:
+                    dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
