@@ -132,10 +132,11 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
                 'surface_upward_water_flux']
-    missed_list = ['theta','u','v','w','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
+    missed_list = ['theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
                 'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
                 'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
                 'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount']
+    winds = ['u','v','w']
 
     #################################################################
     ## CREATE NEW NETCDF
@@ -311,6 +312,21 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
                 dat[0:24,:] = nc1.variables[diag][0:,:]
                 dat[24,:] = nc2.variables[diag][0,:]
+            elif diag in winds:
+                diagfull = diag + 'wind'
+                dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                if diag in nc2.variables:
+                    dat[24,:] = nc2.variables[diag][0,:]
+                else:
+                    dat[24,:] = nc2.variables[diagfull][0,:]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
