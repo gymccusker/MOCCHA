@@ -5695,11 +5695,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     fraction3p5 = np.squeeze(mask3[p5,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p5,:]) #
     fraction4p5 = np.squeeze(mask4[p5,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p5,:]) #
 
-    fraction0p6 = np.squeeze(mask0[p5,:]) # np.squeeze(obs_data['Cv'][p6,:]) #
-    fraction1p6 = np.squeeze(mask1[p5,:]) # np.squeeze(um_data['model_Cv_filtered'][p6,:]) #
-    fraction2p6 = np.squeeze(mask2[p5,:]) # np.squeeze(misc_data['model_Cv_filtered'][p6,:]) #
-    fraction3p6 = np.squeeze(mask3[p5,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p6,:]) #
-    fraction4p6 = np.squeeze(mask4[p5,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p6,:]) #
+    fraction0p6 = np.squeeze(mask0[p6,:]) # np.squeeze(obs_data['Cv'][p6,:]) #
+    fraction1p6 = np.squeeze(mask1[p6,:]) # np.squeeze(um_data['model_Cv_filtered'][p6,:]) #
+    fraction2p6 = np.squeeze(mask2[p6,:]) # np.squeeze(misc_data['model_Cv_filtered'][p6,:]) #
+    fraction3p6 = np.squeeze(mask3[p6,:]) # np.squeeze(ifs_data['model_snow_Cv_filtered'][p6,:]) #
+    fraction4p6 = np.squeeze(mask4[p6,:]) # np.squeeze(ra2t_data['model_Cv_filtered'][p6,:]) #
 
     plt.subplot(231)
     ax2 = plt.gca()
@@ -7229,7 +7229,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
@@ -7271,7 +7271,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
