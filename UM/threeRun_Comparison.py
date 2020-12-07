@@ -752,217 +752,217 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ##################################################
     ##################################################
 
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    fig = plt.figure(figsize=(13, 12))
-    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.88, left = 0.06,
-            hspace = 0.3, wspace = 0.1)
-
-    ### define axis instance
-    ax = plt.gca()
-
-    ### for reference in figures
-    zeros = np.zeros(len(data2['time']))
-
-    # ### convert radiation matlab timesteps to doy
-    # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
-    # time_radice_all = calcTime_Mat2DOY(datenums_radice)
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
     #
-    # ### calculate net LW and SW from obs
-    # time_radice = time_radice_all[:-1:2]
-    # lwd = obs['obs_temp'].variables['LWdice'][:]
-    # lwu = obs['obs_temp'].variables['LWuice'][:]
-    # lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
-    # lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
-    # swd = obs['obs_temp'].variables['SWdice'][:]
-    # swu = obs['obs_temp'].variables['SWuice'][:]
-    # swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
-    # swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
-    # netLW = lwdmean - lwumean
-    # netSW = swdmean - swumean
-
-    ########            Radiation timeseries
-    ########
-
-    sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
-    lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
-    sw4 = data4['surface_net_SW_radiation'][data4['hrly_flag']]
-    lw4 = data4['surface_net_LW_radiation'][data4['hrly_flag']]
-    crf4 = sw4 + lw4
-    crf2 = sw2 + lw2
-
-    ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
-    plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
-    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
-    plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label3)
-    plt.xlim(doy[0], doy[-1])
-    plt.ylim([-60, 70])
-    plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
-    plt.ylabel('Net radiation \n [W m$^{-2}$]')
-    plt.xlabel('Date')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-
-    ########            Cloud fraction
-    ########
-    #### set up colourmaps to grey out zeros on figures
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:20, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
-    plt.subplot(423)
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    axmajor = np.arange(0,9.01e3,3.0e3)
-    axminor = np.arange(0,9.01e3,0.5e3)
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.title(label2)# + '\n Cloud fraction')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    plt.subplot(424)
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.title(label3)# + '\n Cloud fraction')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('C$_{V}$', rotation = 270, labelpad = 25)
-
-
-    ########            NDROP
-    ########
-    #### calculate air density in kg/m3
-    data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
-    data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
-
-    ### convert /kg to /m3
-    data2['qnliq'] = data2['qnliq'] * data2['rho']
-    data4['qnliq'] = data4['qnliq'] * data4['rho']
-
-    #### set flagged um_data to nans
-    data2['qnliq'][data2['qnliq'] < 0] = 0.0
-    data4['qnliq'][data4['qnliq'] < 0] = 0.0
-
-    #### set up colourmaps to grey out zeros on figures
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
-    plt.subplot(425)
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
-        [0, 10, 50, 100, 150, 200, 250],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    plt.subplot(426)
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
-        [0, 10, 50, 100, 150, 200, 250],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp #mpl_cm.Blues
-        )
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.33, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('N$_{d}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
-
-    ########            QLIQ
-    ########
-    #### set flagged um_data to nans
-    data2['qliq'][data2['qliq'] < 0] = 0.0
-    data4['qliq'][data4['qliq'] < 0] = 0.0
-
-    #### set up colourmaps to grey out zeros on figures
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
-    plt.subplot(427)
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
-        # vmin = 0, vmax = 0.35,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlabel('Date')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    plt.subplot(428)
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
-        # vmin = 0, vmax = 0.35,
-        cmap = newcmp
-        )
-    plt.xlabel('Date')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.095, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('q$_{liq}$ [g kg$^{-1}$]', rotation = 270, labelpad = 25)
-
-
-    print ('******')
-    print ('')
-    print ('Finished plotting! :)')
-    print ('')
-
-    if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
-    # plt.savefig(fileout)
-    plt.show()
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=LARGE_SIZE)
+    # plt.rc('axes',labelsize=LARGE_SIZE)
+    # plt.rc('xtick',labelsize=LARGE_SIZE)
+    # plt.rc('ytick',labelsize=LARGE_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    # fig = plt.figure(figsize=(13, 12))
+    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.88, left = 0.06,
+    #         hspace = 0.3, wspace = 0.1)
+    #
+    # ### define axis instance
+    # ax = plt.gca()
+    #
+    # ### for reference in figures
+    # zeros = np.zeros(len(data2['time']))
+    #
+    # # ### convert radiation matlab timesteps to doy
+    # # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
+    # # time_radice_all = calcTime_Mat2DOY(datenums_radice)
+    # #
+    # # ### calculate net LW and SW from obs
+    # # time_radice = time_radice_all[:-1:2]
+    # # lwd = obs['obs_temp'].variables['LWdice'][:]
+    # # lwu = obs['obs_temp'].variables['LWuice'][:]
+    # # lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
+    # # lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
+    # # swd = obs['obs_temp'].variables['SWdice'][:]
+    # # swu = obs['obs_temp'].variables['SWuice'][:]
+    # # swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
+    # # swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
+    # # netLW = lwdmean - lwumean
+    # # netSW = swdmean - swumean
+    #
+    # ########            Radiation timeseries
+    # ########
+    #
+    # sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
+    # lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
+    # sw4 = data4['surface_net_SW_radiation'][data4['hrly_flag']]
+    # lw4 = data4['surface_net_LW_radiation'][data4['hrly_flag']]
+    # crf4 = sw4 + lw4
+    # crf2 = sw2 + lw2
+    #
+    # ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
+    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
+    # plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
+    # plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
+    # plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label3)
+    # plt.xlim(doy[0], doy[-1])
+    # plt.ylim([-60, 70])
+    # plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
+    # plt.ylabel('Net radiation \n [W m$^{-2}$]')
+    # plt.xlabel('Date')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    #
+    # ########            Cloud fraction
+    # ########
+    # #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:20, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+    #
+    # plt.subplot(423)
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
+    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # axmajor = np.arange(0,9.01e3,3.0e3)
+    # axminor = np.arange(0,9.01e3,0.5e3)
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.title(label2)# + '\n Cloud fraction')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # plt.subplot(424)
+    # ax = plt.gca()
+    # img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
+    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.title(label3)# + '\n Cloud fraction')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # plt.ylabel('C$_{V}$', rotation = 270, labelpad = 25)
+    #
+    #
+    # ########            NDROP
+    # ########
+    # #### calculate air density in kg/m3
+    # data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
+    # data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
+    #
+    # ### convert /kg to /m3
+    # data2['qnliq'] = data2['qnliq'] * data2['rho']
+    # data4['qnliq'] = data4['qnliq'] * data4['rho']
+    #
+    # #### set flagged um_data to nans
+    # data2['qnliq'][data2['qnliq'] < 0] = 0.0
+    # data4['qnliq'][data4['qnliq'] < 0] = 0.0
+    #
+    # #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:10, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+    #
+    # plt.subplot(425)
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # plt.subplot(426)
+    # ax = plt.gca()
+    # img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp #mpl_cm.Blues
+    #     )
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # cbaxes = fig.add_axes([0.9, 0.33, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # plt.ylabel('N$_{d}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
+    #
+    # ########            QLIQ
+    # ########
+    # #### set flagged um_data to nans
+    # data2['qliq'][data2['qliq'] < 0] = 0.0
+    # data4['qliq'][data4['qliq'] < 0] = 0.0
+    #
+    # #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:10, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+    #
+    # plt.subplot(427)
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
+    #     [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+    #     # vmin = 0, vmax = 0.35,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlabel('Date')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # plt.subplot(428)
+    # ax = plt.gca()
+    # img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
+    #     [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+    #     # vmin = 0, vmax = 0.35,
+    #     cmap = newcmp
+    #     )
+    # plt.xlabel('Date')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # cbaxes = fig.add_axes([0.9, 0.095, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # plt.ylabel('q$_{liq}$ [g kg$^{-1}$]', rotation = 270, labelpad = 25)
+    #
+    #
+    # print ('******')
+    # print ('')
+    # print ('Finished plotting! :)')
+    # print ('')
+    #
+    # if month_flag == -1:
+    #     fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
+    # # plt.savefig(fileout)
+    # plt.show()
 
 
     ###################################
@@ -989,16 +989,16 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     #### set flagged values to nans
     data1['temperature'][data1['temperature'] == -9999] = np.nan
     data2['temperature'][data2['temperature'] == -9999] = np.nan
-    # data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data3['temperature'][data3['temperature'] <= 0] = np.nan
     data4['temperature'][data4['temperature'] == -9999] = np.nan
-    # data5['temperature'][data5['temperature'] <= 0] = np.nan
+    data5['temperature'][data5['temperature'] <= 0] = np.nan
 
     #### set flagged values to nans
     data1['q'][data1['q'] == -9999] = np.nan
     data2['q'][data2['q'] == -9999] = np.nan
-    # data3['q'][data3['q'] <= 0] = np.nan
+    data3['q'][data3['q'] <= 0] = np.nan
     data4['q'][data4['q'] == -9999] = np.nan
-    # data5['q'][data5['q'] <= 0] = np.nan
+    data5['q'][data5['q'] <= 0] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -1021,11 +1021,17 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ymax = 9000
     qmax = 4.0
 
+    data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
 
+    data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
 
     ### all model data share a timestamp
     p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
@@ -1039,7 +1045,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ##################################################
     ##################################################
     SMALL_SIZE = 12
-    MED_SIZE = 16
+    MED_SIZE = 14
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1060,19 +1066,64 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     melt = np.where(data1['time_hrly'][::6] < 240.0)
     freeze = np.where(data1['time_hrly'][::6] >= 240.0)
 
-
     ###-------------------------
     plt.subplot(121)
     ax1 = plt.gca()
     # plt.plot([0,0], [0,1e4], '--', color='grey')
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
+    #     np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
+    #     np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
+    #     color = 'violet', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'purple', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'purple', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
+    #     np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
+    #     np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    #
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
+        np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
+        color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
         np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
-        color = 'violet', alpha = 0.15)
+         color = 'lightblue', alpha = 0.15)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
         np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
@@ -1082,11 +1133,22 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'purple', label = label4, zorder = 2)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 3)
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
+        np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
+        color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
 
-    # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
-    plt.legend(bbox_to_anchor=(1.05, 1.03, 1., .102), loc=4, ncol=3)
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    # plt.legend(bbox_to_anchor=(1.05, 1.03, 1., .102), loc=4, ncol=3)          ## 2 lines
+    plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)            ## 5 lines
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -1101,13 +1163,60 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ###-------------------------
     plt.subplot(122)
     ax1 = plt.gca()
+
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
+    #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
+    #     np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
+    #     color = 'violet', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'purple', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'purple', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
+    #     np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
+    #     np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'gold', linewidth = 0.5)
+    #
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    # plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
+        np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
+        color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+    plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'darkblue', linewidth = 0.5)
+
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
         np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
-        color = 'violet', alpha = 0.15)
+        color = 'lightblue', alpha = 0.15)
     plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
     plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
+        '--', color = 'steelblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
         np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
@@ -1117,8 +1226,19 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'purple', label = label4, zorder = 2)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 3)
+    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
+        np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
+        color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+        '--', color = 'gold', linewidth = 0.5)
+
+    plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
+    plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.legend()
     plt.xlabel('q bias [g kg$^{-1}$]')
