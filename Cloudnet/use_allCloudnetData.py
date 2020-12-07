@@ -1235,78 +1235,99 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     print (um_data.keys())
 
+    ###----------------------------------------------------------------
+    ###         2) TWC Method
+    ###----------------------------------------------------------------
     #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] < 0] = 0.0
-    um_data['model_lwc'][um_data['model_lwc'] < 0] = 0.0
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0] = 0.0
-    misc_data['model_lwc'][misc_data['model_lwc'] < 0] = 0.0
-    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0] = 0.0
-
     obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0] = 0.0
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0] = 0.0
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0] = 0.0
-    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0] = 0.0
-    #
-    # # ###----------------------------------------------------------------
-    # # ###         Calculate total water content
-    # # ###----------------------------------------------------------------
-    # obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    # um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
-    # misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
-    # ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
-    # ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
-
-    # #### set flagged um_data to nans
-    # obs_data['twc'][obs_data['twc'] < 1e-6] = np.nan
-    # um_data['model_twc'][um_data['model_twc'] < 1e-6] = np.nan
-    # ifs_data['model_twc'][ifs_data['model_twc'] < 1e-6] = np.nan
-    # ifs_data['model_twc'][ifs_data['model_twc'] >= 20.0] = np.nan
-    # misc_data['model_twc'][misc_data['model_twc'] < 1e-6] = np.nan
-    # ra2t_data['model_twc'][ra2t_data['model_twc'] < 1e-6] = np.nan
-
-    #### set flagged iwc to nans
-    obs_data['iwc'][obs_data['iwc'] <= 0] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] <= 0.0] = np.nan
-    # ifs_data['model_iwc_filtered'][ifs_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] <= 0.0] = np.nan
+    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
     ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] <= 0.0] = np.nan
-    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] <= 0.0] = np.nan
+    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0.0] = 0.0
 
-    #### set flagged lwc to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
+    # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
     ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
-    ra2t_data['model_lwc'][ra2t_data['model_lwc'] <= 0.0] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
 
-    #### ignore lwc values <1e-6 kg/m3
-    obs_data['lwc'][obs_data['lwc'] < 1e-6] = np.nan
-    obs_data['lwc'][obs_data['lwc'] >= 1e-3] = np.nan       ## exclude >1g/m3
-    um_data['model_lwc'][um_data['model_lwc'] < 1e-6] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 1e-6] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] < 1e-6] = np.nan
-    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 1e-6] = np.nan
-
-    #### ignore iwc values <1e-6 kg/m3
-    obs_data['iwc'][obs_data['iwc'] < 1e-6] = np.nan
-    um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 1e-6] = np.nan
-    ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 1e-6] = np.nan
-    misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 1e-6] = np.nan
-    ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 1e-6] = np.nan
-
-
-    # ###----------------------------------------------------------------
-    # ###         Calculate total water content
-    # ###----------------------------------------------------------------
-    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    ###----------------------------------------------------------------
+    ###         Calculate total water content
+    ###----------------------------------------------------------------
+    obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
     ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+
+    ####-------------------------------------------------------------------------
+    ### from Michael's paper:
+    ####    "we consider a grid point cloudy when cloud water exceeded
+    ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
+    ####    interpolation in between."
+    ####-------------------------------------------------------------------------
+    twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
+    twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
+
+    ####-------------------------------------------------------------------------
+    ### first look at values below 1 km
+    ###     find Z indices <= 1km, then set twc_thresh values to 1e-6
+    um_lt1km = np.where(um_data['height'][0,:]<=1e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]<=1e3)
+    twc_thresh_um[um_lt1km] = 1e-6
+    twc_thresh_ifs[ifs_lt1km] = 1e-6
+
+    ####-------------------------------------------------------------------------
+    ### next look at values above 4 km
+    ###     find Z indices >= 4km, then set twc_thresh values to 1e-7
+    um_lt1km = np.where(um_data['height'][0,:]>=4e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]>=4e3)
+    twc_thresh_um[um_lt1km] = 1e-7
+    twc_thresh_ifs[ifs_lt1km] = 1e-7
+
+    ### find heights not yet assigned
+    um_intZs = np.where(twc_thresh_um == 0.0)
+    ifs_intZs = np.where(twc_thresh_ifs == 0.0)
+
+    ### interpolate for twc_thresh_um
+    x = [1e-6, 1e-7]
+    y = [1e3, 4e3]
+    f = interp1d(y, x)
+    twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
+
+    ### interpolate for twc_thresh_ifs
+    twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
+
+    ### plot profile of threshold as sanity check
+    # plt.plot(twc_thresh_um, um_data['height'][0,:])
+    # plt.plot(twc_thresh_ifs, ifs_data['height'][0,:]); plt.show()
+    # print (twc_thresh_um)
+
+    for t in range(0,np.size(um_data['model_twc'],0)):
+        for k in range(0,np.size(um_data['model_twc'],1)):
+            if obs_switch == 'UM':
+                if obs_data['twc'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc'][t,k] = np.nan
+                    obs_data['iwc'][t,k] = np.nan
+                    obs_data['lwc_adiabatic'][t,k] = np.nan
+            if um_data['model_twc'][t,k] < twc_thresh_um[k]:
+                um_data['model_twc'][t,k] = np.nan
+                um_data['model_iwc_filtered'][t,k] = np.nan
+            if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
+                misc_data['model_twc'][t,k] = np.nan
+                misc_data['model_iwc_filtered'][t,k] = np.nan
+            if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
+                ra2t_data['model_twc'][t,k] = np.nan
+                ra2t_data['model_iwc_filtered'][t,k] = np.nan
+        for k in range(0,np.size(ifs_data['model_twc'],1)):
+            if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
+                ifs_data['model_twc'][t,k] = np.nan
+                ifs_data['model_snow_iwc_filtered'][t,k] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -1378,7 +1399,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_gt1e-6kgm3_RA2M_IFS_CASIM-100_RA2T_TWC_226-257DOY_blueNaNs_LWC-IWCthreshFirst_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_CASIM-100-AeroProf_RA2T_TWC_226-257DOY_TWC-MTThresholding_newColours.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -7233,7 +7254,7 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
@@ -7241,7 +7262,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
