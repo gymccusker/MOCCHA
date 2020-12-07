@@ -6231,6 +6231,9 @@ def main():
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        cloudnet_um1 = '4_u-bg610_RA2M_CON/'
+        cloudnet_um2 = '14_u-bu570_RA1M_CASIM/'
+        cloudnet_um4 = '7_u-bn068_RA2T_CON/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -6250,9 +6253,9 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
     if platform == 'LAPTOP':
-        cn_um_out_dir = ['4_u-bg610_RA2M_CON/cloud-fraction-metum-grid/2018/',
-                        '4_u-bg610_RA2M_CON/lwc-scaled-metum-grid/2018/',
-                        '4_u-bg610_RA2M_CON/iwc-Z-T-metum-grid/2018/']
+        cn_um_out_dir = [cloudnet_um1 + 'cloud-fraction-metum-grid/2018/',
+                        cloudnet_um1 + 'lwc-scaled-metum-grid/2018/',
+                        cloudnet_um1 + 'iwc-Z-T-metum-grid/2018/']
         cn_ifs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
                     'lwc-scaled-ecmwf-grid/2018/',
                     'iwc-Z-T-ecmwf-grid/2018/']
@@ -6269,14 +6272,14 @@ def main():
                         'lwc-adiabatic-method/2018/',
                         'iwc-Z-T-method/2018/']
         if cn_misc_flag == 0:       ## flag to compare cloudnet model data
-            cn_misc_out_dir = ['14_u-bu570_RA1M_CASIM/cloud-fraction-metum-grid/2018/',
-                            '14_u-bu570_RA1M_CASIM/lwc-scaled-metum-grid/2018/',
-                            '14_u-bu570_RA1M_CASIM/iwc-Z-T-metum-grid/2018/']
+            cn_misc_out_dir = [cloudnet_um2 + 'cloud-fraction-metum-grid/2018/',
+                            cloudnet_um2 + 'lwc-scaled-metum-grid/2018/',
+                            cloudnet_um2 + 'iwc-Z-T-metum-grid/2018/']
         elif cn_misc_flag == 1:       ## flag to compare non-cloudnet model data
             cn_misc_out_dir = '12_u-br210_RA1M_CASIM/OUT_R0/'
-        cn_ra2t_out_dir = ['7_u-bn068_RA2T_CON/cloud-fraction-metum-grid/2018/',
-                        '7_u-bn068_RA2T_CON/lwc-scaled-metum-grid/2018/',
-                        '7_u-bn068_RA2T_CON/iwc-Z-T-metum-grid/2018/']
+        cn_ra2t_out_dir = [cloudnet_um4 + 'cloud-fraction-metum-grid/2018/',
+                        cloudnet_um4 + 'lwc-scaled-metum-grid/2018/',
+                        cloudnet_um4 + 'iwc-Z-T-metum-grid/2018/']
     elif platform == 'JASMIN':
         cn_um_out_dir = 'cloud-fraction-metum-grid/2018/'
         cn_ifs_out_dir = 'cloud-fraction-ecmwf-grid/2018/'
