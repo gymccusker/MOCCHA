@@ -1614,7 +1614,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -1876,7 +1876,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -1960,7 +1960,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
@@ -7205,7 +7205,7 @@ def main():
         ifs_data[varlist_ifs[c]][wcind, :] = np.nan
         misc_data[varlist_um[c]][wcind, :] = np.nan
         ra2t_data[varlist_um[c]][wcind, :] = np.nan
-    ### remove missing lwp obs timestep (only remove from water contents)
+    ### remove missing lwpo obs timestep (only remove from water contents)
     for c in range(1, 3):
         um_data[varlist_um[c]][lwpind, :] = np.nan
         ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
