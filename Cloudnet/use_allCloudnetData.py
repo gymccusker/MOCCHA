@@ -1399,7 +1399,7 @@ def plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_CASIM-100-AeroProf_RA2T_TWC_226-257DOY_TWC-MTThresholding_newColours.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_CASIM-100_RA2M_RA2T_TWC_226-257DOY_TWC-MTThresholding_newColours.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -6248,13 +6248,15 @@ def main():
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
+        ### model directories
         out_dir1 = '12_u-br210_RA1M_CASIM/OUT_R0/'
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
-        cloudnet_um1 = '4_u-bg610_RA2M_CON/'
-        cloudnet_um2 = '12_u-br210_RA1M_CASIM/'
-        cloudnet_um4 = '7_u-bn068_RA2T_CON/'
+        ### cloudnet directories
+        cloudnet_um1 = '13_u-br409_RA1M_CASIM/'
+        cloudnet_um2 = '14_u-bu570_RA1M_CASIM/'
+        cloudnet_um4 = '12_u-br210_RA1M_CASIM/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -6270,6 +6272,7 @@ def main():
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+    ### 13_u-br409_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
 
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
@@ -7254,7 +7257,7 @@ def main():
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
