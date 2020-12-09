@@ -5943,9 +5943,9 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p6,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
         '--', color = 'k', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
         '--', color = 'k', linewidth = 0.5)
 
     plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p6,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
