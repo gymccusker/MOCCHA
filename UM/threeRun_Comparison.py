@@ -5102,7 +5102,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('')
 
     fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m_Dates_fixedRA2T.png'
-    plt.savefig(fileout, dpi=300)
+    # plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -7042,7 +7042,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     plt.savefig(fileout)
     plt.show()
 
-def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
 
     '''
     Must be run AFTER plot_RadiosondesQ and plot_RadiosondesTemperature
@@ -7436,6 +7436,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     plt.grid('on')
     plt.xlim([-5.0,2.5])
@@ -7485,6 +7486,7 @@ def period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
+    plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,p3]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.grid('on')
     plt.xlabel('q bias [g kg$^{-1}$]')
@@ -9865,12 +9867,12 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
