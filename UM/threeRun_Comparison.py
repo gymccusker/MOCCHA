@@ -767,7 +767,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
             hspace = 0.3, wspace = 0.1)
 
     ### define axis instance
-    ax = plt.gca()
+    # ax = plt.gca()
 
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
@@ -804,7 +804,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
-    plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label3)
+    plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
     plt.xlim(doy[0], doy[-1])
     plt.ylim([-60, 70])
     plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
@@ -822,7 +822,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(423)
+    # plt.subplot(434)
+    ax  = fig.add_axes([0.05,0.53,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -839,7 +840,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
-    plt.subplot(424)
+    # plt.subplot(435)
+    ax  = fig.add_axes([0.38,0.53,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
         [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -849,13 +851,36 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.title(label3)# + '\n Cloud fraction')
+    plt.title(label4)# + '\n Cloud fraction')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
+    # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.53, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('C$_{V}$', rotation = 270, labelpad = 25)
+    cbaxes.set_xlabel('C$_{V}$', rotation = 0, labelpad = 15, fontsize = 14)
+    cbaxes.xaxis.set_label_position('top')
 
+    #### set flagged data to nans
+    data2['cloud_fraction'][data2['cloud_fraction'] < 0.0] = np.nan
+    data4['cloud_fraction'][data4['cloud_fraction'] < 0.0] = np.nan
+
+    ax  = fig.add_axes([0.83,0.55,0.13,0.15])   # left, bottom, width, height
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
+        np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    ax.fill_betweenx(data4['height'],np.nanmean(data4['cloud_fraction'],0) - np.nanstd(data4['cloud_fraction'],0),
+        np.nanmean(data4['cloud_fraction'],0) + np.nanstd(data4['cloud_fraction'],0), color = 'violet', alpha = 0.15)
+    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
+    plt.plot(np.nanmean(data4['cloud_fraction'],0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    plt.xlabel('C$_{V}$')
+    # ax.xaxis.set_label_position('top')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,1])
+    plt.xticks(np.arange(0,1.01,0.25))
+    ax.set_xticklabels([0,' ',0.5,' ',1.0])
 
     ########            NDROP
     ########
@@ -878,7 +903,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(425)
+    # plt.subplot(425)
+    ax  = fig.add_axes([0.05,0.3,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
@@ -892,7 +918,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
-    plt.subplot(426)
+    # plt.subplot(426)
+    ax  = fig.add_axes([0.38,0.3,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
         [0, 10, 50, 100, 150, 200, 250],
@@ -904,9 +931,33 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax.set_yticklabels([0,3,6,9])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.33, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.3, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('N$_{d}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
+    cbaxes.set_xlabel('N$_{d}$ \n[cm$^{-3}$]', rotation = 0, labelpad = 10, fontsize = 14)
+    cbaxes.xaxis.set_label_position('top')
+
+    #### set flagged data to nans
+    data2['qnliq'][data2['qnliq'] <= 0.0] = np.nan
+    data4['qnliq'][data4['qnliq'] <= 0.0] = np.nan
+
+    ax  = fig.add_axes([0.83,0.32,0.13,0.15])   # left, bottom, width, height
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['qnliq']/1e6,0) - np.nanstd(data2['qnliq']/1e6,0),
+        np.nanmean(data2['qnliq']/1e6,0) + np.nanstd(data2['qnliq']/1e6,0), color = 'mediumaquamarine', alpha = 0.15)
+    ax.fill_betweenx(data4['height'],np.nanmean(data4['qnliq']/1e6,0) - np.nanstd(data4['qnliq']/1e6,0),
+        np.nanmean(data4['qnliq']/1e6,0) + np.nanstd(data4['qnliq']/1e6,0), color = 'violet', alpha = 0.15)
+    plt.plot(np.nanmean(data2['qnliq']/1e6,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
+    plt.plot(np.nanmean(data4['qnliq']/1e6,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    plt.xlabel('N$_{d}$ [cm$^{-3}$]')
+    # ax.xaxis.set_label_position('top')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,150])
+    plt.xticks(np.arange(0,151,25))
+    ax.set_xticklabels([0,' ',' ',75,' ',' ',150])
+    # plt.legend()
 
     ########            QLIQ
     ########
@@ -921,7 +972,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     newcolors[:10, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    plt.subplot(427)
+    # plt.subplot(427)
+    ax  = fig.add_axes([0.05,0.07,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
@@ -936,7 +988,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
-    plt.subplot(428)
+    # plt.subplot(428)
+    ax  = fig.add_axes([0.38,0.07,0.3,0.18])   # left, bottom, width, height
     ax = plt.gca()
     img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
         [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
@@ -949,10 +1002,33 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax.set_yticklabels([0,3,6,9])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.9, 0.095, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.07, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    plt.ylabel('q$_{liq}$ [g kg$^{-1}$]', rotation = 270, labelpad = 25)
+    cbaxes.set_xlabel('q$_{liq}$ \n[g kg$^{-1}$]', rotation = 0, labelpad = 10, fontsize = 14)
+    cbaxes.xaxis.set_label_position('top')
 
+    #### set flagged data to nans
+    data2['qliq'][data2['qliq'] <= 0.0] = np.nan
+    data4['qliq'][data4['qliq'] <= 0.0] = np.nan
+
+    ax  = fig.add_axes([0.83,0.09,0.13,0.15])   # left, bottom, width, height
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['qliq']*1e3,0) - np.nanstd(data2['qliq']*1e3,0),
+        np.nanmean(data2['qliq']*1e3,0) + np.nanstd(data2['qliq']*1e3,0), color = 'mediumaquamarine', alpha = 0.15)
+    ax.fill_betweenx(data4['height'],np.nanmean(data4['qliq']*1e3,0) - np.nanstd(data4['qliq']*1e3,0),
+        np.nanmean(data4['qliq']*1e3,0) + np.nanstd(data4['qliq']*1e3,0), color = 'violet', alpha = 0.15)
+    plt.plot(np.nanmean(data2['qliq']*1e3,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
+    plt.plot(np.nanmean(data4['qliq']*1e3,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.1])
+    plt.xticks(np.arange(0,0.11,0.025))
+    ax.set_xticklabels([0,' ',0.05,' ',0.1])
+    # plt.legend(bbox_to_anchor=(1.0, 0.0, 1., .102), loc=1, ncol=1)
 
     print ('******')
     print ('')
@@ -961,7 +1037,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     if month_flag == -1:
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 
