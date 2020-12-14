@@ -12,8 +12,10 @@ def py3_FixNPLoad(np):
     """
 
     import numpy as np
+    from functools import partial
+
     # save np.load
-    np_load_old = np.load
+    np_load_old = partial(np.load)
 
     # modify the default parameters of np.load
     np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
