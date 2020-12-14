@@ -253,8 +253,19 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
+
+    print ('Z = ')
+    print (np.nanmean(misc_data['height'],0))
+
+    Zindex = np.where(np.nanmean(misc_data['height'],0) == 4.55500000e+03)
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_Cv_filtered'][:,Zindex[0]],0))
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_Cv_filtered'][:,Zindex[0]],0))
+    print ('Obs = ')
+    print (np.nanmean(obs_data['Cv'][:,Zindex[0]],0))
 
 def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
 
@@ -6254,9 +6265,9 @@ def main():
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
         ### cloudnet directories
-        cloudnet_um1 = '13_u-br409_RA1M_CASIM/'
+        cloudnet_um1 = '4_u-bg610_RA2M_CON/'
         cloudnet_um2 = '14_u-bu570_RA1M_CASIM/'
-        cloudnet_um4 = '12_u-br210_RA1M_CASIM/'
+        cloudnet_um4 = '7_u-bn068_RA2T_CON/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -6273,6 +6284,9 @@ def main():
     ### 11_u-bq798_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
     ### 12_u-br210_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
+    ### 14_u-bu570_RA1M_CASIM/OUT_R0(_RadPA_25h)/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
+    ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
+    ### 16_u-bv926_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash + no subgrid mp production
 
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
@@ -7255,7 +7269,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
