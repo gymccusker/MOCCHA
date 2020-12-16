@@ -6244,7 +6244,31 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
     wc0ind = np.where(wc0index == 1)
     lwpind = np.where(lwpindex == 1)
 
-    return nanind, nanmask, wcind, lwpind
+    return nanind, nanmask, wcind, wc0ind, lwpind
+
+def setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um_var_list, misc_var_list, ifs_var_list, ra2t_var_list):
+
+    print ('*******')
+    print ('Set flagged data to nan:')
+    print ('*******')
+    print ('')
+
+    ###----------------------------------------------------------------
+    ###         Set flagged data to nans
+    ###----------------------------------------------------------------
+    for c in range(0,3):
+        for j in range(0,len(obs_var_list[c])):
+            obs_data[obs_var_list[c][j]][obs_data[obs_var_list[c][j]] == - 999] = np.nan
+        for j in range(0,len(um_var_list[c])):
+            um_data[um_var_list[c][j]][um_data[um_var_list[c][j]] == - 999] = np.nan
+        for j in range(0,len(misc_var_list[c])):
+            misc_data[misc_var_list[c][j]][misc_data[misc_var_list[c][j]] == - 999] = np.nan
+        for j in range(0,len(ifs_var_list[c])):
+            ifs_data[ifs_var_list[c][j]][ifs_data[ifs_var_list[c][j]] == - 999] = np.nan
+        for j in range(0,len(ra2t_var_list[c])):
+            ra2t_data[ra2t_var_list[c][j]][ra2t_data[ra2t_var_list[c][j]] == - 999] = np.nan
+
+    return obs_data, um_data, misc_data, ifs_data, ra2t_data
 
 def main():
 
@@ -7269,9 +7293,11 @@ def main():
     ## -------------------------------------------------------------
     ## maximise obs data available and build mask for available data
     ## -------------------------------------------------------------
+    obs_data, um_data, misc_data, ifs_data, ra2t_data = setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um_var_list, misc_var_list, ifs_var_list, ra2t_var_list)
     obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    nanind, nanmask, wcind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
+    nanind, nanmask, wcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
+    varlist_obs = ['Cv', 'lwc_adiabatic', 'iwc', 'lwp']
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
@@ -7290,6 +7316,13 @@ def main():
         ifs_data[varlist_ifs[c]][wcind, :] = np.nan
         misc_data[varlist_um[c]][wcind, :] = np.nan
         ra2t_data[varlist_um[c]][wcind, :] = np.nan
+    ### remove zeroed water content on obs timestep (only remove from water contents)
+    for c in range(1, 3):
+        obs_data[varlist_obs[c]][wc0ind, :] = np.nan
+        um_data[varlist_um[c]][wc0ind, :] = np.nan
+        ifs_data[varlist_ifs[c]][wc0ind, :] = np.nan
+        misc_data[varlist_um[c]][wc0ind, :] = np.nan
+        ra2t_data[varlist_um[c]][wc0ind, :] = np.nan
     ### remove missing lwpo obs timestep (only remove from water contents)
     for c in range(1, 3):
         um_data[varlist_um[c]][lwpind, :] = np.nan
@@ -7323,7 +7356,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
