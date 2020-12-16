@@ -6105,7 +6105,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print (np.nanmean(np.squeeze(obs_data['height'][p7,:]),0))
 
 
-def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy):
+def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
 
     ###################################
     ## Directly compare LWC and T biases
@@ -6115,6 +6115,13 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
     print ('')
     print ('Comparing radiosonde (T) and Cloudnet (LWC) biases:')
     print ('')
+
+
+    ######################################################################################################
+    ######################################################################################################
+    #####           calculate sonde biases first
+    ######################################################################################################
+    ######################################################################################################
 
     #### set flagged values to nans
     data1['temperature'][data1['temperature'] == -9999] = np.nan
@@ -6141,6 +6148,167 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
     data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, 'q')
     print ('')
     print ('Done!')
+
+    #### ---------------------------------------------------------------
+    #### calculate biases
+    #### ---------------------------------------------------------------
+
+    data3['temp_anomalies'] = data3['temp_hrly_UM'][::6] - obs['sondes']['temp_driftSondes_UM'] + 273.15
+    data1['temp_anomalies'] = data1['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = data2['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = data4['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
+
+    data3['q_anomalies'] = data3['q_hrly_UM'][::6]*1e3 - obs['sondes']['q_driftSondes_UM']
+    data1['q_anomalies'] = data1['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
+    data2['q_anomalies'] = data2['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
+    data4['q_anomalies'] = data4['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
+
+    ######################################################################################################
+    ######################################################################################################
+    #####           next, calculate LWC biases from Cloudnet
+    ######################################################################################################
+    ######################################################################################################
+
+    # print (data1['temp_anomalies'].shape)
+    # print (um_data['model_lwc'][::6,data1['universal_height_UMindex']].shape)
+
+
+    ###----------------------------------------------------------------
+    ###         2) TWC Method
+    ###----------------------------------------------------------------
+    #### set flagged um_data to nans
+    # obs_data['iwc'][obs_data['iwc'] < 0] = 0.0
+    # um_data['model_iwc_filtered'][um_data['model_iwc_filtered'] < 0.0] = 0.0
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] < 0.0] = 0.0
+    # ifs_data['model_snow_iwc_filtered'][ifs_data['model_snow_iwc_filtered'] >= 5.0e-3] = np.nan
+    # misc_data['model_iwc_filtered'][misc_data['model_iwc_filtered'] < 0.0] = 0.0
+    # ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0.0] = 0.0
+
+    #### set flagged um_data to nans
+    obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
+    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
+    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
+    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
+
+    ###----------------------------------------------------------------
+    ###         Calculate total water content
+    ###----------------------------------------------------------------
+    obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
+    obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
+    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+
+    ####-------------------------------------------------------------------------
+    ### from Michael's paper:
+    ####    "we consider a grid point cloudy when cloud water exceeded
+    ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
+    ####    interpolation in between."
+    ####-------------------------------------------------------------------------
+    twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
+    twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
+
+    ####-------------------------------------------------------------------------
+    ### first look at values below 1 km
+    ###     find Z indices <= 1km, then set twc_thresh values to 1e-6
+    um_lt1km = np.where(um_data['height'][0,:]<=1e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]<=1e3)
+    twc_thresh_um[um_lt1km] = 1e-6
+    twc_thresh_ifs[ifs_lt1km] = 1e-6
+
+    ####-------------------------------------------------------------------------
+    ### next look at values above 4 km
+    ###     find Z indices >= 4km, then set twc_thresh values to 1e-7
+    um_lt1km = np.where(um_data['height'][0,:]>=4e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]>=4e3)
+    twc_thresh_um[um_lt1km] = 1e-7
+    twc_thresh_ifs[ifs_lt1km] = 1e-7
+
+    ### find heights not yet assigned
+    um_intZs = np.where(twc_thresh_um == 0.0)
+    ifs_intZs = np.where(twc_thresh_ifs == 0.0)
+
+    ### interpolate for twc_thresh_um
+    x = [1e-6, 1e-7]
+    y = [1e3, 4e3]
+    f = interp1d(y, x)
+    twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
+
+    ### interpolate for twc_thresh_ifs
+    twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
+
+    ### plot profile of threshold as sanity check
+    # plt.plot(twc_thresh_um, um_data['height'][0,:])
+    # plt.plot(twc_thresh_ifs, ifs_data['height'][0,:]); plt.show()
+    # print (twc_thresh_um)
+
+    for t in range(0,np.size(um_data['model_twc'],0)):
+        for k in range(0,np.size(um_data['model_twc'],1)):
+            if obs_switch == 'UM':
+                if obs_data['twc'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc'][t,k] = np.nan
+                    obs_data['lwc'][t,k] = np.nan
+                if obs_data['twc_ad'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc_ad'][t,k] = np.nan
+                    obs_data['lwc_adiabatic'][t,k] = np.nan
+                if obs_data['twc_ad_nolwp'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc_ad_nolwp'][t,k] = np.nan
+                    obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
+            if um_data['model_twc'][t,k] < twc_thresh_um[k]:
+                um_data['model_twc'][t,k] = np.nan
+                um_data['model_lwc'][t,k] = np.nan
+            if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
+                misc_data['model_twc'][t,k] = np.nan
+                misc_data['model_lwc'][t,k] = np.nan
+            if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
+                ra2t_data['model_twc'][t,k] = np.nan
+                ra2t_data['model_lwc'][t,k] = np.nan
+        for k in range(0,np.size(ifs_data['model_twc'],1)):
+            if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
+                ifs_data['model_twc'][t,k] = np.nan
+                ifs_data['model_lwc'][t,k] = np.nan
+
+    um_data['lwc_bias'] = (um_data['model_lwc'][::6,data1['universal_height_UMindex']] - obs_data['lwc_adiabatic'][::6,data1['universal_height_UMindex']])*1e3
+    misc_data['lwc_bias'] = (misc_data['model_lwc'][::6,data1['universal_height_UMindex']] - obs_data['lwc_adiabatic'][::6,data1['universal_height_UMindex']])*1e3
+
+    um_data['lwc_bias'][um_data['lwc_bias'] == 0] = np.nan
+    misc_data['lwc_bias'][misc_data['lwc_bias'] == 0] = np.nan
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(6,6))
+    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
+            hspace = 0.4, wspace = 0.1)
+    plt.subplot(121)
+    plt.plot(np.nanmean(data1['temp_anomalies'],0),data1['height'][data1['universal_height_UMindex']])
+    plt.ylim([0, 1e4])
+    plt.subplot(122)
+    plt.plot(np.nanmean(um_data['lwc_bias'],0),um_data['height'][0,data1['universal_height_UMindex']])
+    plt.ylim([0, 1e4])
+
+    plt.show()
+
+
+    plt.figure()
+    plt.scatter(np.ndarray.flatten(data1['temp_anomalies']),np.ndarray.flatten(um_data['lwc_bias']), s = 3, color = 'darkblue')
+    plt.scatter(np.ndarray.flatten(data2['temp_anomalies']),np.ndarray.flatten(misc_data['lwc_bias']), s = 3, color = 'mediumseagreen')
+    plt.ylabel('LWC bias [g m$^{-3}$]')
+    plt.xlabel('T bias [K]')
+    plt.show()
 
 def reGrid_Sondes(data1, data2, data3, data4, obs, doy, var):
 
@@ -7669,7 +7837,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at biases
     # -------------------------------------------------------------
-    figure = plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy)
+    figure = plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
