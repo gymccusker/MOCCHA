@@ -1723,20 +1723,20 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
                     mask0[t,k] = 1.0
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
-            else:
+            elif um_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask1[t,k] = 1.0
             if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
                 misc_data['model_twc'][t,k] = np.nan
-            else:
+            elif misc_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask2[t,k] = 1.0
             if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
                 ra2t_data['model_twc'][t,k] = np.nan
-            else:
+            elif ra2t_data['model_twc'][t,k] >= twc_thresh_um[k]:
                 mask4[t,k] = 1.0
         for k in range(0,np.size(ifs_data['model_twc'],1)):
             if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
                 ifs_data['model_twc'][t,k] = np.nan
-            else:
+            elif ifs_data['model_twc'][t,k] >= twc_thresh_ifs[k]:
                 mask3[t,k] = 1.0
 
     # ind0 = np.where(obs_data['twc'] >= 1e-6)
