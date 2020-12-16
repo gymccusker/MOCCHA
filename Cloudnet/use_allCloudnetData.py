@@ -6105,7 +6105,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print (np.nanmean(np.squeeze(obs_data['height'][p7,:]),0))
 
 
-def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
+def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
 
     ###################################
     ## Directly compare LWC and T biases
@@ -6119,49 +6119,21 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
 
     ######################################################################################################
     ######################################################################################################
-    #####           calculate sonde biases first
+    #####           load sonde biases first
     ######################################################################################################
     ######################################################################################################
 
-    #### set flagged values to nans
-    data1['temperature'][data1['temperature'] == -9999] = np.nan
-    data2['temperature'][data2['temperature'] == -9999] = np.nan
-    data3['temperature'][data3['temperature'] <= 0] = np.nan
-    data4['temperature'][data4['temperature'] == -9999] = np.nan
-    # data5['temperature'][data5['temperature'] <= 0] = np.nan
+    data1 = np.load('UM_RA2M_SondeBiases.npy', allow_pickle=True, encoding='latin1').item()
+    data2 = np.load('UM_CASIM-100_SondeBiases.npy', allow_pickle=True, encoding='latin1').item()
+    data3 = np.load('ECMWF_IFS_SondeBiases.npy', allow_pickle=True, encoding='latin1').item()
+    data4 = np.load('UM_RA2T_SondeBiases.npy', allow_pickle=True, encoding='latin1').item()
+    data5 = np.load('UM_GLM_SondeBiases.npy', allow_pickle=True, encoding='latin1').item()
+    obs = np.load('SondeData_reGridded.npy', allow_pickle=True, encoding='latin1').item()
 
-    #### set flagged values to nans
-    data1['q'][data1['q'] == -9999] = np.nan
-    data2['q'][data2['q'] == -9999] = np.nan
-    data3['q'][data3['q'] <= 0] = np.nan
-    data4['q'][data4['q'] == -9999] = np.nan
-    # data5['q'][data5['q'] <= 0] = np.nan
-
-    #### ---------------------------------------------------------------
-    #### re-grid sonde and IFS data to UM vertical grid <10km
-    #### ---------------------------------------------------------------
-
-    print ('...')
-    print ('Re-gridding sonde and ifs data...')
-    print ('')
-    data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, 'temp')
-    data1, data2, data3, data4, obs, drift = reGrid_Sondes(data1, data2, data3, data4, obs, doy, 'q')
-    print ('')
-    print ('Done!')
-
-    #### ---------------------------------------------------------------
-    #### calculate biases
-    #### ---------------------------------------------------------------
-
-    data3['temp_anomalies'] = data3['temp_hrly_UM'][::6] - obs['sondes']['temp_driftSondes_UM'] + 273.15
-    data1['temp_anomalies'] = data1['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data2['temp_anomalies'] = data2['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    data4['temp_anomalies'] = data4['temp_6hrly'][:,data1['universal_height_UMindex']] - (obs['sondes']['temp_driftSondes_UM'] + 273.15)
-
-    data3['q_anomalies'] = data3['q_hrly_UM'][::6]*1e3 - obs['sondes']['q_driftSondes_UM']
-    data1['q_anomalies'] = data1['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
-    data2['q_anomalies'] = data2['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
-    data4['q_anomalies'] = data4['q_6hrly'][:,data1['universal_height_UMindex']]*1e3 - obs['sondes']['q_driftSondes_UM']
+    plt.figure()
+    plt.plot(np.nanmedian(data1['temp_anomalies'][:,data1['universal_height_UMindex']],0),data1['universal_height'])
+    # plt.plot(np.nanmedian(obs['temp_driftSondes_UM'] + 273.15,0),data1['universal_height'])
+    plt.show()
 
     ######################################################################################################
     ######################################################################################################
@@ -6185,14 +6157,14 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
     # ra2t_data['model_iwc_filtered'][ra2t_data['model_iwc_filtered'] < 0.0] = 0.0
 
     #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
-    obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
-    obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
-    um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
-    ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
-    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
-    ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
+    # obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    # obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
+    # obs_data['lwc_adiabatic_inc_nolwp'][obs_data['lwc_adiabatic_inc_nolwp'] == -999] = 0.0
+    # um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
+    # misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
+    # ra2t_data['model_lwc'][ra2t_data['model_lwc'] < 0.0] = 0.0
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
@@ -6280,26 +6252,28 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
     um_data['lwc_bias'][um_data['lwc_bias'] == 0] = np.nan
     misc_data['lwc_bias'][misc_data['lwc_bias'] == 0] = np.nan
 
+    ###############################
+    ### TEST FIGS
     SMALL_SIZE = 12
     MED_SIZE = 14
     LARGE_SIZE = 16
-
     plt.rc('font',size=MED_SIZE)
     plt.rc('axes',titlesize=LARGE_SIZE)
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
+
     plt.figure(figsize=(6,6))
-    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
-            hspace = 0.4, wspace = 0.1)
+    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.9, left = 0.1,
+            hspace = 0.4, wspace = 0.2)
     plt.subplot(121)
-    plt.plot(np.nanmean(data1['temp_anomalies'],0),data1['height'][data1['universal_height_UMindex']])
+    plt.plot(np.nanmedian(data1['temp_anomalies'],0),data1['universal_height'],'.-' ,color = 'darkblue', zorder = 3)
     plt.ylim([0, 1e4])
     plt.subplot(122)
     plt.plot(np.nanmean(um_data['lwc_bias'],0),um_data['height'][0,data1['universal_height_UMindex']])
     plt.ylim([0, 1e4])
-
+    plt.xlim([0, 0.1])
     plt.show()
 
 
@@ -6309,214 +6283,6 @@ def plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, mis
     plt.ylabel('LWC bias [g m$^{-3}$]')
     plt.xlabel('T bias [K]')
     plt.show()
-
-def reGrid_Sondes(data1, data2, data3, data4, obs, doy, var):
-
-    from scipy.interpolate import interp1d
-
-    ### 6-hourly time binning for model
-    ### um['time'][:24:6].data
-    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
-    ###     need to pick out where we have a repeated time value, then remove it so
-    ###     that the time array can be indexed easily
-
-    #### ---------------------------------------------------------------
-    ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
-    #### ---------------------------------------------------------------
-    if var == 'temp':
-        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature']
-    elif var == 'thetaE':
-        # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
-        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE', 'thetaE']         # use sonde calculated thetaE
-    elif var == 'theta':
-        # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
-        varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
-    elif var == 'q':
-        varlist = ['sphum','q','q','q','q','q']
-
-    # ### stop double counting of 0000 and 2400 from model data
-    # temp = np.zeros([len(data1['time'])])
-    # for i in range(0, len(temp)-1):
-    #     if data1['time'][i] == data1['time'][i+1]:
-    #         continue
-    #     else:
-    #         temp[i] = data1['time'][i]
-    # ii = np.where(temp != 0.0)      ### picks out where data are non-zero
-
-    #### ---------------------------------------------------------------
-    #### save hourly temperature model profiles (using the ii index defined by the time indices)
-    #### ---------------------------------------------------------------
-    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][data1['hrly_flag'],:])
-    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][data2['hrly_flag'],:])
-    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][data3['hrly_flag'],:])
-    data4[var + '_hrly'] = np.squeeze(data4[varlist[4]][data4['hrly_flag'],:])
-    # data5[var + '_hrly'] = np.squeeze(data5[varlist[5]][data5['hrly_flag'],:])
-
-    # print(data2[var + '_hrly'].shape)
-
-    #### ---------------------------------------------------------------
-    #### explicitly save 6-hourly temperature model profiles and time binning for ease
-    #### ---------------------------------------------------------------
-    ### can use temp for all model data since they are on the same (hourly) time binning
-    data1['time_6hrly'] = data1['time_hrly'][::6]
-    data2['time_6hrly'] = data2['time_hrly'][::6]
-    data3['time_6hrly'] = data3['time_hrly'][::6]
-    data4['time_6hrly'] = data4['time_hrly'][::6]
-    # data5['time_6hrly'] = data5['time_hrly'][::6]
-    data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
-    data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
-    data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
-    data4[var + '_6hrly'] = data4[var + '_hrly'][::6]
-    # data5[var + '_6hrly'] = data5[var + '_hrly'][::6]
-
-    print(data2[var + '_6hrly'].shape)
-
-    #### ---------------------------------------------------------------
-    #### index to only look at altitudes <10km
-    #### ---------------------------------------------------------------
-    iTim = 0        ### initialised
-    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
-    iUM = np.where(data1['height'] <= 11000)
-    # iGLM = np.where(data5['height'] <= 11000)
-    iIFS = np.where(data3['height'][iTim,:] <= 11000)
-
-    #### ---------------------------------------------------------------
-    #### remove flagged IFS heights
-    #### ---------------------------------------------------------------
-    data3['height'][data3['height'] == -9999] = 0.0
-        #### set all heights to zero if flagged. setting to nan caused problems
-        ####        further on
-    data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
-
-    #### ---------------------------------------------------------------
-    #### START INTERPOLATION
-    #### ---------------------------------------------------------------
-    print ('')
-    print ('Defining IFS temperature profile as a function:')
-    print ('using ifs.height[i,:] to define temperature profiles...')
-    data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
-    for iTim in range(0,np.size(data3['time_hrly'],0)):
-        # print (iTim)
-        # print (data3['height_hrly'].shape)
-        iIFSind = np.where(data3['height_hrly'][iTim,:] <= 11000)
-        # print (data3['height_hrly'][iTim,:])
-        if np.all(data3['height_hrly'][iTim,:] == 0.0):
-            data3[var + '_hrly_UM'][iTim,:] = np.nan
-        elif np.all(np.isnan(data3['height_hrly'][iTim,:])):
-            continue
-        else:
-            # print (iIFSind)
-            # print (np.squeeze(data3['height_hrly'][iTim,iIFSind]).shape)
-            # print (np.squeeze(data3[var + '_hrly'][iTim,iIFSind]).shape)
-            fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
-            data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
-    print ('...')
-    print ('IFS(UM Grid) function worked!')
-    print (var + ' IFS data now on UM vertical grid')
-    print ('*****')
-    ### assign for easier indexing later
-    data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
-    data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
-    data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
-
-    #### INTERPOLATION TESTING:
-    # print (data3['temp_hrly_UM'].shape),'radr_refl'
-    # print (data3['time_hrly'][::6].shape)
-    # print (data1['temp_hrly'][:,iUM[0][3:]].shape)
-    # print (data1['time_hrly'][::6].shape)
-    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
-    #     fig = plt.figure()
-    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
-    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
-    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
-    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
-    #     plt.legend()
-    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
-    #     if i == 0:
-    #         plt.show()
-    #     else:
-    #         plt.close()
-
-    print ('')
-    print ('Defining Sonde temperature profile as a function for the UM:')
-    obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
-    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
-        # print 'iTim = ', str(iTim)
-        fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
-    print ('...')
-    print ('Sonde(UM Grid) function worked!')
-    print ('All ' + var + ' sonde data now on UM vertical grid.')
-    print ('*****')
-    #
-    # print ('')
-    # print ('Defining Sonde temperature profile as a function for the IFS:')
-    # obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
-    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
-    #     # print 'iTim = ', str(iTim)
-    #     iIFS = np.where(data3['height'][iTim,:] <= 11000)
-    #     fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-    #     obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
-    # print ('...')
-    # print ('Sonde(IFS Grid) function worked!')
-    # print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
-    # print ('*****')
-
-    # print ('')
-    # print ('Defining GLM profile as a function:')
-    # data5[var + '_hrly_UM'] = np.zeros([np.size(data5['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
-    # for iTim in range(0,np.size(data5['time_hrly'],0)):
-    #     # print (iTim)
-    #     fnct_GLM = interp1d(np.squeeze(data5['height'][iGLM]), np.squeeze(data5[var + '_hrly'][iTim,iGLM]))
-    #     data5[var + '_hrly_UM'][iTim,:] = fnct_GLM(data1['height'][iUM[0][3:]].data)
-    # print ('...')
-    # print ('GLM(UM Grid) function worked!')
-    # print (var + ' GLM data now on UM(lam) vertical grid')
-    # print ('*****')
-    # ### assign for easier indexing later
-    # data5[var + '_6hrly_UM'] = data5[var + '_hrly_UM'][::6,:]
-    # # print (np.size(data5[var + '_6hrly_UM'],0))
-
-    #### ---------------------------------------------------------------
-    #### ONLY LOOK AT SONDES FROM THE DRIFT
-    #### ---------------------------------------------------------------
-    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
-    subset = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
-    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
-
-    # print (obs['sondes']['doy'][drift[0]])
-    # print (obs['sondes']['doy'][drift[-1]])
-
-    ### save in dict for ease
-    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
-    obs['sondes']['drift'] = drift
-    obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
-
-    # print (obs['sondes'][var + '_driftSondes_UM'].shape)
-    # print (data2[var + '_6hrly'].shape)
-    # print (data4[var + '_6hrly'].shape)
-
-    ### save subset of drift in dict for ease
-    obs['sondes']['doy_subset'] = obs['sondes']['doy'][subset]
-    obs['sondes']['subset'] = subset
-    obs['sondes'][var + '_subsetSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][subset[0],:]
-
-    #### ---------------------------------------------------------------
-    #### make some dictionary assignments for use later
-    #### ---------------------------------------------------------------
-    data1['universal_height'] = data1['height'][iUM[0][3:]]
-    data1['universal_height_UMindex'] = iUM[0][3:]
-
-    #### ---------------------------------------------------------------
-    #### save out working data for debugging
-    #### ---------------------------------------------------------------
-    np.save('working_data1',data1)
-    np.save('working_data2',data2)
-    np.save('working_data3',data3)
-    np.save('working_dataObs',obs['sondes'])
-    # outfiles = write_reGrid(data1, data2, data3, obs, var)
-
-    return data1, data2, data3, data4, obs, drift
 
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
@@ -7837,7 +7603,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at biases
     # -------------------------------------------------------------
-    figure = plot_BiasCorrelation(obs, data1, data2, data3, data4, obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch)
+    figure = plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
