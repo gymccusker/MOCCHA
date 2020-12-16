@@ -800,12 +800,12 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
     print (um_data.keys())
 
     #### set flagged um_data to nans
-    obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
-    obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
-    um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
-    ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
-    misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == -999] = np.nan
+    # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
+    # um_data['model_lwc'][um_data['model_lwc'] <= 0.0] = np.nan
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] <= 0.0] = np.nan
+    # ifs_data['model_lwc'][ifs_data['model_lwc'] >= 0.4] = np.nan
+    # misc_data['model_lwc'][misc_data['model_lwc'] <= 0.0] = np.nan
 
     # viridis = mpl_cm.get_cmap('viridis', 256)
     # newcolors = viridis(np.linspace(0, 1, 256))
@@ -822,7 +822,7 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
             vmin = 0.0, vmax = cmax)
             #cmap = newcmp)
     else:
-        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc'])*1e3,
+        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc_adiabatic'])*1e3,
             vmin = 0.0, vmax = cmax)
             #cmap = newcmp)
     plt.ylabel('Height [m]')
@@ -866,9 +866,9 @@ def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missi
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid_UM_IFS_CASIM-100_LWCTimeseries_226-257DOY.png'
-    plt.savefig(fileout)
-    # plt.show()
-    plt.close()
+    # plt.savefig(fileout)
+    plt.show()
+    # plt.close()
 
 def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
 
@@ -6104,6 +6104,281 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print (np.nanmean(np.squeeze(obs_data['lwc'][p7,:]),0)*1e3)
     # print (np.nanmean(np.squeeze(obs_data['height'][p7,:]),0))
 
+def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
+
+    from scipy.interpolate import interp1d
+
+    ### 6-hourly time binning for model
+    ### um['time'][:24:6].data
+    ###     BUT there is a problem since we have 25 timesteps (i.e. [24] == [25])
+    ###     need to pick out where we have a repeated time value, then remove it so
+    ###     that the time array can be indexed easily
+
+    #### ---------------------------------------------------------------
+    ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
+    #### ---------------------------------------------------------------
+    if var == 'temp':
+        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature']
+    elif var == 'thetaE':
+        # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
+        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE', 'thetaE']         # use sonde calculated thetaE
+    elif var == 'theta':
+        # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
+        varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
+    elif var == 'q':
+        varlist = ['sphum','q','q','q','q','q']
+
+    # ### stop double counting of 0000 and 2400 from model data
+    # temp = np.zeros([len(data1['time'])])
+    # for i in range(0, len(temp)-1):
+    #     if data1['time'][i] == data1['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp[i] = data1['time'][i]
+    # ii = np.where(temp != 0.0)      ### picks out where data are non-zero
+
+    #### ---------------------------------------------------------------
+    #### save hourly temperature model profiles (using the ii index defined by the time indices)
+    #### ---------------------------------------------------------------
+    data1[var + '_hrly'] = np.squeeze(data1[varlist[1]][data1['hrly_flag'],:])
+    data2[var + '_hrly'] = np.squeeze(data2[varlist[2]][data2['hrly_flag'],:])
+    data3[var + '_hrly'] = np.squeeze(data3[varlist[3]][data3['hrly_flag'],:])
+    data4[var + '_hrly'] = np.squeeze(data4[varlist[4]][data4['hrly_flag'],:])
+    data5[var + '_hrly'] = np.squeeze(data5[varlist[5]][data5['hrly_flag'],:])
+
+    # print(data2[var + '_hrly'].shape)
+
+    #### ---------------------------------------------------------------
+    #### explicitly save 6-hourly temperature model profiles and time binning for ease
+    #### ---------------------------------------------------------------
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data4['time_6hrly'] = data4['time_hrly'][::6]
+    data5['time_6hrly'] = data5['time_hrly'][::6]
+    data1[var + '_6hrly'] = data1[var + '_hrly'][::6]
+    data2[var + '_6hrly'] = data2[var + '_hrly'][::6]
+    data3[var + '_6hrly'] = data3[var + '_hrly'][::6]
+    data4[var + '_6hrly'] = data4[var + '_hrly'][::6]
+    data5[var + '_6hrly'] = data5[var + '_hrly'][::6]
+
+    print(data2[var + '_6hrly'].shape)
+
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    iTim = 0        ### initialised
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
+    iUM = np.where(data1['height'] <= 11000)
+    iGLM = np.where(data5['height'] <= 11000)
+    if ifs_flag == True:
+        iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    else:
+        iIFS = np.where(data3['height'] <= 11000)
+
+    #### ---------------------------------------------------------------
+    #### remove flagged IFS heights
+    #### ---------------------------------------------------------------
+    if ifs_flag == True:
+        data3['height'][data3['height'] == -9999] = 0.0
+            #### set all heights to zero if flagged. setting to nan caused problems
+            ####        further on
+        data3['height_hrly'] = np.squeeze(data3['height'][data3['hrly_flag'],:])  ### need to explicitly save since height coord changes at each timedump
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION
+    #### ---------------------------------------------------------------
+    if ifs_flag == True:
+        print ('')
+        print ('Defining IFS temperature profile as a function:')
+        print ('using ifs.height[i,:] to define temperature profiles...')
+        data3[var + '_hrly_UM'] = np.zeros([np.size(data3['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+        for iTim in range(0,np.size(data3['time_hrly'],0)):
+            # print (iTim)
+            iIFSind = np.where(data3['height_hrly'][iTim,:] <= 11000)
+            if np.all(data3['height_hrly'][iTim,:] == 0.0):
+                data3[var + '_hrly_UM'][iTim,:] = np.nan
+            else:
+                fnct_IFS = interp1d(np.squeeze(data3['height_hrly'][iTim,iIFSind]), np.squeeze(data3[var + '_hrly'][iTim,iIFSind]))
+                data3[var + '_hrly_UM'][iTim,:] = fnct_IFS(data1['height'][iUM[0][3:]].data)
+        print ('...')
+        print ('IFS(UM Grid) function worked!')
+        print (var + ' IFS data now on UM vertical grid')
+        print ('*****')
+        ### assign for easier indexing later
+        data3[var + '_6hrly_UM'] = data3[var + '_hrly_UM'][::6,:]
+        data3[var + '_6hrly'] = data3[var + '_hrly'][::6,:]
+        data3['height_6hrly'] = data3['height_hrly'][::6,:]  ### need to explicitly save since height coord changes at each timedump
+    else:
+        data3['universal_height'] = data3['height'][iUM[0][3:]]
+        data3['universal_height_UMindex'] = iUM[0][3:]
+        data3['height_6hrly'] = np.zeros([np.size(data3['time_6hrly']), np.size(data3['universal_height_UMindex'])])
+        for i in range(0, len(data3['time_6hrly'])): data3['height_6hrly'][i,:] = data3['universal_height'][:]
+        data3[var + '_6hrly_UM'] = data3[var + '_hrly'][::6]
+
+
+    #### INTERPOLATION TESTING:
+    # print (data3['temp_hrly_UM'].shape),'radr_refl'
+    # print (data3['time_hrly'][::6].shape)
+    # print (data1['temp_hrly'][:,iUM[0][3:]].shape)
+    # print (data1['time_hrly'][::6].shape)
+    # for i in range(0, np.size(data3['temp_6hrly_UM'],0)):
+    #     fig = plt.figure()
+    #     plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], label = 'interpd')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), label = 'height indexed')
+    #     plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height'][0,iIFS]), label = 'height0')
+    #     plt.title('IFS test ' + str(data3['time_6hrly'][i]))
+    #     plt.legend()
+    #     plt.savefig('../FIGS/regrid/IFS_test_doy' + str(data3['time_6hrly'][i]) + '.png')
+    #     if i == 0:
+    #         plt.show()
+    #     else:
+    #         plt.close()
+
+    print ('')
+    print ('Defining Sonde temperature profile as a function for the UM:')
+    obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+        # print 'iTim = ', str(iTim)
+        fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data1['height'][iUM[0][3:]].data)
+    print ('...')
+    print ('Sonde(UM Grid) function worked!')
+    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('*****')
+    #
+    # print ('')
+    # print ('Defining Sonde temperature profile as a function for the IFS:')
+    # obs['sondes'][var + '_allSondes_IFS'] = np.zeros([np.size(obs['sondes']['doy'],0),len(data1['height'][0,iIFS])])
+    # for iTim in range(0,np.size(obs['sondes']['doy'],0)):
+    #     # print 'iTim = ', str(iTim)
+    #     iIFS = np.where(data3['height'][iTim,:] <= 11000)
+    #     fnct_ObsIFS = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
+    #     obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_ObsIFS(data3['height'][iTim,iIFS])
+    # print ('...')
+    # print ('Sonde(IFS Grid) function worked!')
+    # print ('All ' + var + ' sonde data now on IFS_DATA vertical grid.')
+    # print ('*****')
+
+    print ('')
+    print ('Defining GLM profile as a function:')
+    data5[var + '_hrly_UM'] = np.zeros([np.size(data5['time_hrly'],0),len(data1['height'][iUM[0][3:]])])
+    for iTim in range(0,np.size(data5['time_hrly'],0)):
+        # print (iTim)
+        fnct_GLM = interp1d(np.squeeze(data5['height'][iGLM]), np.squeeze(data5[var + '_hrly'][iTim,iGLM]))
+        data5[var + '_hrly_UM'][iTim,:] = fnct_GLM(data1['height'][iUM[0][3:]].data)
+    print ('...')
+    print ('GLM(UM Grid) function worked!')
+    print (var + ' GLM data now on UM(lam) vertical grid')
+    print ('*****')
+    ### assign for easier indexing later
+    data5[var + '_6hrly_UM'] = data5[var + '_hrly_UM'][::6,:]
+    # print (np.size(data5[var + '_6hrly_UM'],0))
+
+    #### ---------------------------------------------------------------
+    #### ONLY LOOK AT SONDES FROM THE DRIFT
+    #### ---------------------------------------------------------------
+    drift = np.where(np.logical_and(obs['sondes']['doy'] >= 225.9, obs['sondes']['doy'] <= 258.0))
+    subset = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
+    # drift = np.where(np.logical_and(obs['sondes']['doy'] >= doy[0], obs['sondes']['doy'] <= doy[-1] + 0.05))
+
+    # print (obs['sondes']['doy'][drift[0]])
+    # print (obs['sondes']['doy'][drift[-1]])
+
+    ### save in dict for ease
+    obs['sondes']['doy_drift'] = obs['sondes']['doy'][drift]
+    obs['sondes']['drift'] = drift
+    obs['sondes'][var + '_driftSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][drift[0],:]
+
+    # print (obs['sondes'][var + '_driftSondes_UM'].shape)
+    # print (data2[var + '_6hrly'].shape)
+    # print (data4[var + '_6hrly'].shape)
+
+    ### save subset of drift in dict for ease
+    obs['sondes']['doy_subset'] = obs['sondes']['doy'][subset]
+    obs['sondes']['subset'] = subset
+    obs['sondes'][var + '_subsetSondes_UM'] = obs['sondes'][var + '_allSondes_UM'][subset[0],:]
+
+    # #### INTERPOLATION TESTING - IFS + SONDE + UM_RA2M:
+    # print (obs['sondes']['doy_drift'].shape)
+    # print (obs['sondes']['temp_allSondes_UM'][drift[0],:].shape)
+    # if var == 'temp':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['temperature'][iObs,drift[0][i]]) + 273.15,np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes']['temp_driftSondes_UM'][i,:] + 273.15,data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3['temp_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+    #         plt.plot(data3['temp_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+    #         plt.plot(data1['temp_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2['temp_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+    #         plt.plot(data4['temp_6hrly'][i,iUM[0][3:]], data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
+    #         plt.plot(np.squeeze(data5['temp_6hrly'][i,iGLM]), data5['height'][iGLM], '--', color = 'grey', label = 'um_glm')
+    #         plt.plot(data5['temp_6hrly_UM'][i,:], data1['height'][iUM[0][3:]], color = 'grey', label = 'um_glm-interpd')
+    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
+    #         plt.legend()
+    #         plt.savefig('../FIGS/regrid_v3/REGRID_Ttest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+    # elif var == 'q':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['mr'][iObs,drift[0][i]]), np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes'][var + '_driftSondes_UM'][i,:], data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3[var + '_6hrly'][i,iIFS])*1e3,np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+    #         plt.plot(data3[var + '_6hrly_UM'][i,:]*1e3,data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+    #         plt.plot(data1[var + '_6hrly'][i,iUM[0][3:]]*1e3, data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2[var + '_6hrly'][i,iUM[0][3:]]*1e3, data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+    #         plt.plot(data4[var + '_6hrly'][i,iUM[0][3:]]*1e3, data4['height'][iUM[0][3:]], color = 'steelblue', label = 'um_ra2t')
+    #         plt.plot(np.squeeze(data5['q_6hrly'][i,iGLM])*1e3, data5['height'][iGLM], '--', color = 'grey', label = 'um_glm')
+    #         plt.plot(data5['q_6hrly_UM'][i,:]*1e3, data1['height'][iUM[0][3:]], color = 'grey', label = 'um_glm-interpd')
+    #         plt.title('REGRID test ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Model time = ' + str(data1['time_6hrly'][i]))
+    #         plt.legend()
+    #         plt.savefig('../FIGS/regrid_v3/REGRID_Qtest_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+    # elif var == 'thetaE':
+    #     for i in range(0, np.size(obs['sondes']['doy_drift'])):
+    #         plt.plot(np.squeeze(obs['sondes']['thetaE'][iObs,drift[0][i]]),np.squeeze(obs['sondes']['gpsaltitude'][iObs,drift[0][i]]), '--', color = 'k', label = 'sonde-original')
+    #         plt.plot(obs['sondes']['thetaE_driftSondes_UM'][i,:],data1['height'][iUM[0][3:]], color = 'k', label = 'sonde-interpd')
+    #         plt.plot(np.squeeze(data3['thetaE_6hrly'][i,iIFS]),np.squeeze(data3['height_6hrly'][i,iIFS]), '--', color = 'gold', label = 'ifs-Zindexed')
+    #         plt.plot(data3['thetaE_6hrly_UM'][i,:],data1['height'][iUM[0][3:]], color = 'gold', label = 'ifs-interpd')
+    #         plt.plot(data1['thetaE_6hrly'][i,iUM[0][3:]], data1['height'][iUM[0][3:]], color = 'darkblue', label = 'um_ra2m')
+    #         plt.plot(data2['thetaE_6hrly'][i,iUM[0][3:]], data2['height'][iUM[0][3:]], color = 'mediumseagreen', label = 'um_casim-100')
+    #         plt.title('REGRID test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)))
+    #         plt.xlabel('$\Theta_{E}$ [K]')
+    #         plt.ylabel('Z [m]')
+    #         plt.ylim([0,3000])
+    #         plt.xlim([260,320])
+    #         plt.legend()
+    #         plt.savefig('../FIGS/inversionIdent/REGRID_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+    #         if i == 0:
+    #             plt.show()
+    #         else:
+    #             plt.close()
+
+    #### ---------------------------------------------------------------
+    #### make some dictionary assignments for use later
+    #### ---------------------------------------------------------------
+    data1['universal_height'] = data1['height'][iUM[0][3:]]
+    data1['universal_height_UMindex'] = iUM[0][3:]
+
+    # print (data2[var + '_6hrly'][:,data1['universal_height_UMindex']].shape)
+    # print (data4[var + '_6hrly'][:,data1['universal_height_UMindex']].shape)
+
+    #### ---------------------------------------------------------------
+    #### save out working data for debugging
+    #### ---------------------------------------------------------------
+    np.save('working_data1',data1)
+    np.save('working_data2',data2)
+    np.save('working_data3',data3)
+    np.save('working_dataObs',obs['sondes'])
+    # outfiles = write_reGrid(data1, data2, data3, obs, var)
+
+    return data1, data2, data3, data4, data5, obs, drift
+
 def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
     from scipy.interpolate import interp1d
@@ -6456,16 +6731,31 @@ def main():
 
     if platform == 'LAPTOP':
         print ('Load temporary ice station data from Jutta...')
-        obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_wTemp1p5m.nc','r')
-
+        obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_V3_30minres.nc','r')
         print ('Load ice station flux data from Jutta...')
         obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
-        # print ('Load cloud fraction data from Jutta/Peggy...')
-        # obs['cloudfractions'] = readMatlabStruct(cn_obs_dir + '../Gillian_cloudfraction.mat')
+        print ('Load HATPRO data used by Cloudnet...')
+        dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
+        dir = os.listdir(dirname)
+        obs['hatpro'] = {}
+        for file in dir:
+            IWVtemp = readMatlabStruct(dirname + file)
+            print (IWVtemp.keys())
+            if file == '20180814_IWV_30s_V1.mat':       ### if it is the first file
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
+            else:
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
+                obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+        obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
 
-    # print ('Load ice station radiation data from Jutta...')
-    # obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+    ### print ('Load ice station radiation data from Jutta...')
+    ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
     print ('Load radiosonde data from Jutta...')
     obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
@@ -7362,7 +7652,7 @@ def main():
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
-    # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
@@ -7403,7 +7693,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
