@@ -6223,6 +6223,7 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
     nanmask = np.zeros([np.size(obs_data['time']), np.size(obs_data['Cv'],1)])
     nanindex = np.zeros([np.size(obs_data['time'])])
     wcindex = np.zeros([np.size(obs_data['time'])])
+    wc0index = np.zeros([np.size(obs_data['time'])])
     lwpindex = np.zeros([np.size(obs_data['time'])])
     # print(nanindex.shape)
     for i in range(len(obs_data['time'])):
@@ -6233,11 +6234,14 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanindex[i] = 1
         if np.logical_and(np.isnan(np.nanmean(obs_data['lwc'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
             wcindex[i] = 1
+        elif np.logical_and(np.nanmean(obs_data['lwc'][i,:], 0) == 0, np.nanmean(obs_data['iwc'][i,:], 0) == 0):       ## if both wc profiles contain only zeros
+            wc0index[i] = 1
         elif np.isnan(obs_data['lwp'][i,0]):       ## if there are only nans in the lwp timeseries
             lwpindex[i] = 1
     nanmask[nanmask == 0.0] = np.nan
     nanind = np.where(nanindex == 1)
     wcind = np.where(wcindex == 1)
+    wc0ind = np.where(wc0index == 1)
     lwpind = np.where(lwpindex == 1)
 
     return nanind, nanmask, wcind, lwpind
