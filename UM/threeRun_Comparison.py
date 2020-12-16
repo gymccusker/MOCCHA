@@ -9951,7 +9951,7 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
@@ -9992,12 +9992,12 @@ def main():
     # -------------------------------------------------------------
     # save out radiosonde biases
     # -------------------------------------------------------------
-    # np.save('UM_RA2M_SondeBiases', data1)
-    # np.save('UM_CASIM-100_SondeBiases', data2)
-    # np.save('ECMWF_IFS_SondeBiases', data3)
-    # np.save('UM_RA2T_SondeBiases', data4)
-    # np.save('UM_GLM_SondeBiases', data5)
-    # np.save('SondeData_reGridded', obs['sondes'])
+    np.save('../Cloudnet/UM_RA2M_SondeBiases', data1)
+    np.save('../Cloudnet/UM_CASIM-100_SondeBiases', data2)
+    np.save('../Cloudnet/ECMWF_IFS_SondeBiases', data3)
+    np.save('../Cloudnet/UM_RA2T_SondeBiases', data4)
+    np.save('../Cloudnet/UM_GLM_SondeBiases', data5)
+    np.save('../Cloudnet/SondeData_reGridded', obs['sondes'])
 
     # -------------------------------------------------------------
     # FIN.
