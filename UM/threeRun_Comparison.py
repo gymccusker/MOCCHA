@@ -9990,6 +9990,16 @@ def main():
     np.save('working_dataObs', obs['sondes'])
 
     # -------------------------------------------------------------
+    # save out radiosonde biases
+    # -------------------------------------------------------------
+    # np.save('UM_RA2M_SondeBiases', data1)
+    # np.save('UM_CASIM-100_SondeBiases', data2)
+    # np.save('ECMWF_IFS_SondeBiases', data3)
+    # np.save('UM_RA2T_SondeBiases', data4)
+    # np.save('UM_GLM_SondeBiases', data5)
+    # np.save('SondeData_reGridded', obs['sondes'])
+
+    # -------------------------------------------------------------
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
