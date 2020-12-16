@@ -6131,7 +6131,7 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
     obs = np.load('SondeData_reGridded.npy', allow_pickle=True, encoding='latin1').item()
 
     plt.figure()
-    plt.plot(np.nanmedian(data1['temp_anomalies'][:,data1['universal_height_UMindex']],0),data1['universal_height'])
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'])
     # plt.plot(np.nanmedian(obs['temp_driftSondes_UM'] + 273.15,0),data1['universal_height'])
     plt.show()
 
@@ -6248,9 +6248,11 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
 
     um_data['lwc_bias'] = (um_data['model_lwc'][::6,data1['universal_height_UMindex']] - obs_data['lwc_adiabatic'][::6,data1['universal_height_UMindex']])*1e3
     misc_data['lwc_bias'] = (misc_data['model_lwc'][::6,data1['universal_height_UMindex']] - obs_data['lwc_adiabatic'][::6,data1['universal_height_UMindex']])*1e3
+    ifs_data['lwc_bias'] = (ifs_data['model_lwc'][::6,data1['universal_height_UMindex']] - obs_data['lwc_adiabatic'][::6,data1['universal_height_UMindex']])*1e3
 
     um_data['lwc_bias'][um_data['lwc_bias'] == 0] = np.nan
     misc_data['lwc_bias'][misc_data['lwc_bias'] == 0] = np.nan
+    ifs_data['lwc_bias'][ifs_data['lwc_bias'] == 0] = np.nan
 
     ###############################
     ### TEST FIGS
@@ -6268,7 +6270,7 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
     plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.9, left = 0.1,
             hspace = 0.4, wspace = 0.2)
     plt.subplot(121)
-    plt.plot(np.nanmedian(data1['temp_anomalies'],0),data1['universal_height'],'.-' ,color = 'darkblue', zorder = 3)
+    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', zorder = 3)
     plt.ylim([0, 1e4])
     plt.subplot(122)
     plt.plot(np.nanmean(um_data['lwc_bias'],0),um_data['height'][0,data1['universal_height_UMindex']])
@@ -6276,10 +6278,21 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
     plt.xlim([0, 0.1])
     plt.show()
 
+    Z1index = np.where(data1['universal_height'] <= 3e3)
+    Z2index = np.where(um_data['height'][0,:] <= 3.2e3)
+
+    print (Z1index[0].shape)
+    print (Z2index[0].shape)
+
+    print (data1['universal_height'][Z1index])
+    print (um_data['height'][0,2:Z2index[0][-1]])
 
     plt.figure()
-    plt.scatter(np.ndarray.flatten(data1['temp_anomalies']),np.ndarray.flatten(um_data['lwc_bias']), s = 3, color = 'darkblue')
-    plt.scatter(np.ndarray.flatten(data2['temp_anomalies']),np.ndarray.flatten(misc_data['lwc_bias']), s = 3, color = 'mediumseagreen')
+    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.9, left = 0.2,
+            hspace = 0.4, wspace = 0.2)
+    plt.scatter(np.ndarray.flatten(data1['temp_anomalies'][Z1index,:]),np.ndarray.flatten(um_data['lwc_bias'][:,2:Z2index[0][-1]]), s = 3, color = 'darkblue')
+    plt.scatter(np.ndarray.flatten(data2['temp_anomalies'][Z1index,:]),np.ndarray.flatten(misc_data['lwc_bias'][:,2:Z2index[0][-1]]), s = 3, color = 'mediumseagreen')
+    plt.scatter(np.ndarray.flatten(data3['temp_anomalies'][Z1index,:]),np.ndarray.flatten(ifs_data['lwc_bias'][:,2:Z2index[0][-1]]), s = 3, color = 'gold')
     plt.ylabel('LWC bias [g m$^{-3}$]')
     plt.xlabel('T bias [K]')
     plt.show()
