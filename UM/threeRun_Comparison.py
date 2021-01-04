@@ -889,6 +889,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
     data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
 
+    print(data2.keys())
+
     ### convert /kg to /m3
     data2['qnliq'] = data2['qnliq'] * data2['rho']
     data4['qnliq'] = data4['qnliq'] * data4['rho']
@@ -1038,7 +1040,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     if month_flag == -1:
         fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 
@@ -3615,6 +3617,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     # flx_conv_rain[flx_conv_rain < 0] = np.nan
     # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
 
+    flx_conv_rain = data3['flx_conv_rain'][:,0]         #### just take surface value
+    flx_conv_snow = data3['flx_conv_snow'][:,0]
     flx_ls_rain = data3['flx_ls_rain'][:,0]         #### just take surface value
     flx_ls_snow = data3['flx_ls_snow'][:,0]             #### assumes all precip which forms at altitudes
                                                         #### above evaporates/sublimes before it reaches
@@ -3627,6 +3631,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     # flx_ls_snow = np.nansum(data3['flx_ls_snow'],1)
 
     #### remove flagged values
+    flx_conv_rain[flx_conv_rain < 0] = np.nan
+    flx_conv_snow[flx_conv_snow < 0] = np.nan
     flx_ls_rain[flx_ls_rain < 0] = np.nan
     flx_ls_snow[flx_ls_snow < 0] = np.nan
 
@@ -3640,8 +3646,10 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
     precip1 = data1['rainfall_flux'][data1['hrly_flag']].data*3600 + data1['snowfall_flux'][data1['hrly_flag']].data*3600
     precip2 = data2['rainfall_flux'][data2['hrly_flag']].data*3600 + data2['snowfall_flux'][data2['hrly_flag']].data*3600
-    if ifs_flag: precip3 = flx_ls_rain[data3['hrly_flag']]*3600 + flx_ls_snow[data3['hrly_flag']]*3600
+    if ifs_flag: precip3 = (flx_ls_rain[data3['hrly_flag']] + flx_ls_snow[data3['hrly_flag']] + flx_conv_rain[data3['hrly_flag']] + flx_conv_snow[data3['hrly_flag']])*3600
     precip4 = data4['rainfall_flux'][data4['hrly_flag']].data*3600 + data4['snowfall_flux'][data4['hrly_flag']].data*3600
+
+    precip3[precip3 < 0] == np.nan
 
     res = 3         ### hourly resolution to plot
 
@@ -3702,7 +3710,21 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('')
 
     fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_ra2t_fixedRA2T_newColours_Date.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
+    plt.show()
+
+
+    ifs_convprecip = data3['flx_conv_rain'][data3['hrly_flag'],0]*3600 + data3['flx_conv_snow'][data3['hrly_flag'],0]*3600
+    ifs_convprecip[ifs_convprecip < 0] == np.nan
+
+    plt.figure()
+    ax = plt.gca()
+    plt.plot(data3['time_hrly'], precip3)
+    plt.plot(data3['time_hrly'], np.squeeze(ifs_convprecip))
+
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.show()
 
 def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
@@ -9344,7 +9366,7 @@ def main():
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
+        out_dir4 = '13_u-br409_RA1M_CASIM/OUT_R0/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9356,7 +9378,7 @@ def main():
     ### 4_u-bg610_RA2M_CON/OUT_R1(_RadPA_25h)/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
-    ### 7_u-bn068_RA2T_CON/OUT_R2R3_lam(_RadPA_25h)/              # RA2T_CON nest + global 4D stash
+    ### 7_u-bn068_RA2T_CON/OUT_R2(R3_lam)\(_RadPA_25h)/              # RA2T_CON nest + global 4D stash
     ### 7_u-bn068_RA2T_CON/OUT_R2_glm/              # RA2T_CON nest + global 4D stash
     ### 8_u-bp738_RA2M_CON/OUT_R0/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_R0/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
@@ -9573,7 +9595,7 @@ def main():
             var_list4 = var_list1
             if out_dir2[-4:-1] == 'glm':
                 var_list2 = ['cloud_fraction','qliq','qice']
-            if out_dir4 == '12_u-br210_RA1M_CASIM/OUT_R0/':
+            if np.logical_or(out_dir4 == '12_u-br210_RA1M_CASIM/OUT_R0/',out_dir4 == '13_u-br409_RA1M_CASIM/OUT_R0/'):
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice'] # , 'latent_heat_flux']
@@ -9584,7 +9606,7 @@ def main():
                 'cloud_fraction','radr_refl','tke'] #'qnliq','qnice','mixing_length_for_momentum',
                 #, 'latent_heat_flux']
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
+                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
                 'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
             if not ifs_flag:
                 if out_dir3[-4:-1] == 'glm':
@@ -9938,7 +9960,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -9951,7 +9973,7 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
@@ -9992,12 +10014,12 @@ def main():
     # -------------------------------------------------------------
     # save out radiosonde biases
     # -------------------------------------------------------------
-    np.save('../Cloudnet/UM_RA2M_SondeBiases', data1)
-    np.save('../Cloudnet/UM_CASIM-100_SondeBiases', data2)
-    np.save('../Cloudnet/ECMWF_IFS_SondeBiases', data3)
-    np.save('../Cloudnet/UM_RA2T_SondeBiases', data4)
-    np.save('../Cloudnet/UM_GLM_SondeBiases', data5)
-    np.save('../Cloudnet/SondeData_reGridded', obs['sondes'])
+    # np.save('../Cloudnet/UM_RA2M_SondeBiases', data1)
+    # np.save('../Cloudnet/UM_CASIM-100_SondeBiases', data2)
+    # np.save('../Cloudnet/ECMWF_IFS_SondeBiases', data3)
+    # np.save('../Cloudnet/UM_RA2T_SondeBiases', data4)
+    # np.save('../Cloudnet/UM_GLM_SondeBiases', data5)
+    # np.save('../Cloudnet/SondeData_reGridded', obs['sondes'])
 
     # -------------------------------------------------------------
     # FIN.
