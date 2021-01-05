@@ -7312,7 +7312,7 @@ def main():
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
-                    if out_dir[0] == '1':
+                    if np.logical_or(out_dir[0] == '1',out_dir[0] == '2'):
                         dirout = out_dir[3:10] + '/'
                     else:
                         dirout = out_dir[2:9] + '/'
