@@ -6452,19 +6452,19 @@ def setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um
     for c in range(0,3):
         for j in range(0,len(obs_var_list[c])):
             obs_data[obs_var_list[c][j]][obs_data[obs_var_list[c][j]] == -999] = np.nan
-            obs_data[obs_var_list[c][j]][obs_data[obs_var_list[c][j]] < 0] = np.nan
+            obs_data[obs_var_list[c][j]][obs_data[obs_var_list[c][j]] < 0] = 0.0
         for j in range(0,len(um_var_list[c])):
             um_data[um_var_list[c][j]][um_data[um_var_list[c][j]] == -999] = np.nan
-            um_data[um_var_list[c][j]][um_data[um_var_list[c][j]] < 0] = np.nan
+            um_data[um_var_list[c][j]][um_data[um_var_list[c][j]] < 0] = 0.0
         for j in range(0,len(misc_var_list[c])):
             misc_data[misc_var_list[c][j]][misc_data[misc_var_list[c][j]] == -999] = np.nan
-            misc_data[misc_var_list[c][j]][misc_data[misc_var_list[c][j]] < 0] = np.nan
+            misc_data[misc_var_list[c][j]][misc_data[misc_var_list[c][j]] < 0] = 0.0
         for j in range(0,len(ifs_var_list[c])):
             ifs_data[ifs_var_list[c][j]][ifs_data[ifs_var_list[c][j]] == -999] = np.nan
-            ifs_data[ifs_var_list[c][j]][ifs_data[ifs_var_list[c][j]] < 0] = np.nan
+            ifs_data[ifs_var_list[c][j]][ifs_data[ifs_var_list[c][j]] < 0] = 0.0
         for j in range(0,len(ra2t_var_list[c])):
             ra2t_data[ra2t_var_list[c][j]][ra2t_data[ra2t_var_list[c][j]] == -999] = np.nan
-            ra2t_data[ra2t_var_list[c][j]][ra2t_data[ra2t_var_list[c][j]] < 0] = np.nan
+            ra2t_data[ra2t_var_list[c][j]][ra2t_data[ra2t_var_list[c][j]] < 0] = 0.0
 
     return obs_data, um_data, misc_data, ifs_data, ra2t_data
 
@@ -7475,18 +7475,18 @@ def main():
     #     ifs_data[varlist_ifs[c]][wc0ind, :] = np.nan
     #     misc_data[varlist_um[c]][wc0ind, :] = np.nan
     #     ra2t_data[varlist_um[c]][wc0ind, :] = np.nan
-    ### remove missing lwpo obs timestep (only remove from water contents)
-    for c in range(1, 3):
-        um_data[varlist_um[c]][lwpind, :] = np.nan
-        ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
-        misc_data[varlist_um[c]][lwpind, :] = np.nan
-        ra2t_data[varlist_um[c]][lwpind, :] = np.nan
-
-    ### lwp only 1d
-    um_data['model_lwp'][lwpind] = np.nan
-    ifs_data['model_lwp'][lwpind] = np.nan
-    misc_data['model_lwp'][lwpind] = np.nan
-    ra2t_data['model_lwp'][lwpind] = np.nan
+    # ## remove missing lwpo obs timestep (only remove from water contents)
+    # for c in range(1, 3):
+    #     um_data[varlist_um[c]][lwpind, :] = np.nan
+    #     ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
+    #     misc_data[varlist_um[c]][lwpind, :] = np.nan
+    #     ra2t_data[varlist_um[c]][lwpind, :] = np.nan
+    #
+    # ### lwp only 1d
+    # um_data['model_lwp'][lwpind] = np.nan
+    # ifs_data['model_lwp'][lwpind] = np.nan
+    # misc_data['model_lwp'][lwpind] = np.nan
+    # ra2t_data['model_lwp'][lwpind] = np.nan
 
     ##################################################################################################################################
 
