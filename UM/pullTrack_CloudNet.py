@@ -6210,7 +6210,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print ('')
 
                 if stream[1:3] == 'pa':
-                    ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    if np.size(cube[k].aux_coords[1].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
+                        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    else:
+                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 else:
                     if cube[k].long_name == 'large_scale_ice_water_path':
                         ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
@@ -6915,7 +6918,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         revision = 'Revision no. 0. '
     elif out_dir[3:10] == 'u-ca362':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. CICE sea ice scheme. '
-        revision = 'Revision no. 0. '        
+        revision = 'Revision no. 0. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
