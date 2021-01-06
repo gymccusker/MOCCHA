@@ -6714,6 +6714,8 @@ def writePD_BL(cube, doutfile):
     for l in range(0,len(cube)):
         if np.ndim(cube[l]) == 2:
             lind = l
+            print ('height dim based on ' )
+            print (cube[l])
             break
 
     forecast_time = dataset.createDimension('forecast_time', np.size(cube[lind].dim_coords[0].points))
@@ -6749,6 +6751,7 @@ def writePD_BL(cube, doutfile):
     for d in range(0,len(cube)):
         print ('Writing ' + cube[d].var_name)
         print ('')
+        print
         if np.ndim(cube[d]) == 2:
             if cube[d].var_name == 'air_pressure': continue
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
