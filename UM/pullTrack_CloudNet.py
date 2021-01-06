@@ -6089,10 +6089,11 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 #################################################################
                 ## make hourly time array
                 #################################################################
-                if np.size(cube[k].coord('forecast_period').points) == 24:
-                    cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
-                else:
-                    cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)    
+                print ('cubetime = ' + str(np.size(cube[k].coord('forecast_period').points)))
+                # if np.size(cube[k].coord('forecast_period').points) == 24:
+                cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
+                # else:
+                #     cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)
 
                         #### will need to add code for dealing with forecast_period
                         ####    i.e. 1.00016 hrs past 0000 UTC
@@ -6135,7 +6136,10 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         else:
                             data = np.zeros([len(cubetime)-1])
                     elif stream[1:3] == 'pa':
-                        data = np.zeros([len(cubetime)])
+                        if len(cubetime) == 25:
+                            data = np.zeros([len(cubetime)-1])
+                        elif len(cubetime) == 24:
+                            data = np.zeros([len(cubetime)])
                     elif stream[1:3] == 'pd':
                         data = np.zeros([len(cubetime)-1])
                     dim_flag = 0       ### for next loops
