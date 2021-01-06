@@ -6744,7 +6744,7 @@ def writePD_BL(cube, doutfile):
     ## Create DIAGNOSTICS
     ###################################
     ###################################
-    ## Write paXXX stream diagnostics
+    ## Write stream diagnostics
     ###################################
     for d in range(0,len(cube)):
         print ('Writing ' + cube[d].var_name)
@@ -6758,7 +6758,10 @@ def writePD_BL(cube, doutfile):
             dat.STASH = str(cube[d].attributes['STASH'])
             if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
             if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-            dat[:,:] = cube[d].data
+            if np.size(cube[d].data,1) == 70:
+                dat[:,:] = cube[d].data[:,:-1]
+            elif np.size(cube[d].data,1) == 69:
+                dat[:,:] = cube[d].data
         elif np.ndim(cube[d]) == 1:
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
