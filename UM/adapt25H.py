@@ -621,7 +621,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '13_u-br409_RA1M_CASIM/OUT_24h/'
+    out_dir = '20_u-ca362_RA1M_CASIM/OUT_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -636,6 +636,7 @@ def main():
     ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
     ### 14_u-bu570_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
     ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
+    ### 20_u-ca362_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice albedo scheme
 
     print ('******')
     print ('')
