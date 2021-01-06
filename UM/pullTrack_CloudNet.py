@@ -6213,7 +6213,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     a = len(cube[k].aux_coords)
                     for ft in range(0,a):
                         print(cube[k].aux_coords[ft].standard_name)
-                        if cube[k].aux_coords[ft].standard_name == 'forecast_time':
+                        if cube[k].aux_coords[ft].standard_name == 'forecast_period':
                             if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
                                 ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                             else:
