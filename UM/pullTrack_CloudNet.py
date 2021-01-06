@@ -6221,7 +6221,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                     else:
                         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                print (len(ntime))
+                print (ntime.shape)
                 if dim_flag == 1:         ### 4D VARIABLE
                     if stream[1:3] == 'pd':
                         model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
