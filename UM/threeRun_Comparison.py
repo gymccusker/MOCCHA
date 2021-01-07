@@ -9499,7 +9499,7 @@ def main():
             # '20180825_oden_','20180826_oden_','20180827_oden_',
             '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            '20180902_oden_','20180903_oden_']#,'20180904_oden_']#,'20180905_oden_',
             # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
             # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
@@ -9513,7 +9513,7 @@ def main():
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,249)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
+    doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
