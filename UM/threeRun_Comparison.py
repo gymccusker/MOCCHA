@@ -9594,6 +9594,7 @@ def main():
                 'sfc_downwelling_LW']
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
         else:
+            ### BASE UM RUNS (UM_RA2M/UM_RA2T)
             var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl']
@@ -9618,6 +9619,7 @@ def main():
                     var_list3 = ['cloud_fraction','qliq','qice']
                 else:
                     var_list3 = var_list2
+            ### GLM DIAGS
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
 
         if i == 0:
