@@ -2790,6 +2790,291 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     plt.savefig(fileout)
     plt.show()
 
+def table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    from time_functions import calcTime_Mat2DOY
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('calculating radiation terms for chosen period selection:')
+    print ('')
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    # plt.figure(figsize=(9,10))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
+    #         hspace = 0.4, wspace = 0.13)
+
+    #################################################################
+    ## sort out obs['obs_temp']ervations' timestamp
+    #################################################################
+    # 0: Tship / (1)                         (time: 2324)
+    # 1: LWdice / (1)                        (time3: 1293)
+    # 2: LWuice / (1)                        (time3: 1293)
+    # 3: precip / (1)                        (time4: 2352)
+    # 4: Tice / (1)                          (time1: 1296)
+    # 5: SWdship / (1)                       (time2: 2348)
+    # 6: LWdship / (1)                       (time2: 2348)
+    # 7: SWdice / (1)                        (time3: 1293)
+    # 8: SWuice / (1)                        (time3: 1293)
+
+    # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation (ice station) on different timestep
+    # time_radice_all = calcTime_Mat2DOY(datenums_radice)
+    #
+    # datenums_radship = obs['obs_temp'].variables['time2'][:] ### radiation (ship) on different timestep
+    # time_radship_all = calcTime_Mat2DOY(datenums_radship)
+
+    datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
+    ### set diagnostic naming flags for if IFS being used
+    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+        ifs_flag = True
+    else:
+        ifs_flag = False
+
+    # UM -> um2 comparisons:
+    # 1. snowfall_flux -> sfc_ls_snow
+    # 2. rainfall_flux -> sfc_ls_rain
+    # 3. sensible_heat_flux -> sfc_down_sens_heat_flx
+    # 4. latent_heat_flux -> flx_turb_moist
+    # 5. bl_depth -> sfc_bl_height
+    # 6. sfc_pressure -> sfc_pressure
+    # 7. temp_1.5m -> sfc_temp_2m
+    # 8. surface_net_LW_radiation -> sfc_net_lw
+    # 9. surface_net_SW_radiation -> sfc_net_sw
+
+    time_radice = obs['fixed_radiation']['time_ice'][:]
+    time_radship = obs['fixed_radiation']['time_ship'][:]
+    lwdice = obs['fixed_radiation']['LWd_ice'][:]
+    lwuice = obs['fixed_radiation']['LWu_ice'][:]
+
+    netSW = obs['fixed_radiation']['SWnet_ship'][:]
+    netLW = obs['fixed_radiation']['LWnet_ship'][:]
+
+    lwdmean = obs['fixed_radiation']['LWd_ship'][:]
+    swdmean = obs['fixed_radiation']['SWd_ship'][:]
+
+    netSWice = obs['fixed_radiation']['SWnet_ice'][:]
+    netLWice = obs['fixed_radiation']['LWnet_ice'][:]
+
+    lwdmeanice = obs['fixed_radiation']['LWd_ice'][:]
+    swdmeanice = obs['fixed_radiation']['SWd_ice'][:]
+
+    ### update these to probe data['fixed_radiation']['time'] arrays instead
+    p3mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= doy[0], data1['fixed_radiation']['time'] < 230.0))
+    p4mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 230.0, data1['fixed_radiation']['time'] < 240.0))
+    p5mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 240.0, data1['fixed_radiation']['time'] < 247.0))
+    p6mod = np.where(np.logical_and(data1['fixed_radiation']['time'] >= 247.0, data1['fixed_radiation']['time'] < 251.0))
+    # p3mod = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    # p4mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    # p5mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    # p6mod = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+
+    p3ship = np.where(np.logical_and(time_radship >= doy[0], time_radship < 230.0))
+    p4ship = np.where(np.logical_and(time_radship >= 230.0, time_radship < 240.0))
+    p5ship = np.where(np.logical_and(time_radship >= 240.0, time_radship < 247.0))
+    p6ship = np.where(np.logical_and(time_radship >= 247.0, time_radship < 251.0))
+
+    p3ice = np.where(np.logical_and(time_radice >= doy[0], time_radice < 230.0))
+    p4ice = np.where(np.logical_and(time_radice >= 230.0, time_radice < 240.0))
+    p5ice = np.where(np.logical_and(time_radice >= 240.0, time_radice < 247.0))
+    p6ice = np.where(np.logical_and(time_radice >= 247.0, time_radice < 251.0))
+
+    # plt.plot(data1['time'])
+
+    #####-------------------------------
+    #####   net LW
+    #####-------------------------------
+    print (str(np.round(np.nanmean(np.squeeze(data3['sfc_net_sw'][p3mod])),2)))
+
+    print ()
+    print ('net SW (p3):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netSWice[p3ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netSW[p3ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p3mod])) - np.nanmean(np.squeeze(netSW[p3ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p3mod])) - np.nanmean(np.squeeze(netSW[p3ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p3mod])) - np.nanmean(np.squeeze(netSW[p3ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p3mod])) - np.nanmean(np.squeeze(netSW[p3ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling SW (p3):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(swdmeanice[p3ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(swdmean[p3ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p3mod])) - np.nanmean(np.squeeze(swdmean[p3ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p3mod])) - np.nanmean(np.squeeze(swdmean[p3ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p3mod])) - np.nanmean(np.squeeze(swdmean[p3ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p3mod])) - np.nanmean(np.squeeze(swdmean[p3ship])),2)) + ')')
+
+    print ()
+    print ('net LW (p3):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netLWice[p3ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netLW[p3ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p3mod])) - np.nanmean(np.squeeze(netLW[p3ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p3mod])) - np.nanmean(np.squeeze(netLW[p3ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p3mod])) - np.nanmean(np.squeeze(netLW[p3ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p3mod])) - np.nanmean(np.squeeze(netLW[p3ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling LW (p3):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(lwdmeanice[p3ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(lwdmean[p3ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p3mod])) - np.nanmean(np.squeeze(lwdmean[p3ship])))) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p3mod])) - np.nanmean(np.squeeze(lwdmean[p3ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p3mod])) - np.nanmean(np.squeeze(lwdmean[p3ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p3mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p3mod])) - np.nanmean(np.squeeze(lwdmean[p3ship])),2)) + ')')
+
+
+    print ()
+    print ('*******************')
+    print ()
+
+    print ()
+    print ('net SW (p4):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netSWice[p4ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netSW[p4ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p4mod])) - np.nanmean(np.squeeze(netSW[p4ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p4mod])) - np.nanmean(np.squeeze(netSW[p4ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p4mod])) - np.nanmean(np.squeeze(netSW[p4ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p4mod])) - np.nanmean(np.squeeze(netSW[p4ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling SW (p4):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(swdmeanice[p4ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(swdmean[p4ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p4mod])) - np.nanmean(np.squeeze(swdmean[p4ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p4mod])) - np.nanmean(np.squeeze(swdmean[p4ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p4mod])) - np.nanmean(np.squeeze(swdmean[p4ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p4mod])) - np.nanmean(np.squeeze(swdmean[p4ship])),2)) + ')')
+
+    print ()
+    print ('net LW (p4):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netLWice[p4ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netLW[p4ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p4mod])) - np.nanmean(np.squeeze(netLW[p4ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p4mod])) - np.nanmean(np.squeeze(netLW[p4ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p4mod])) - np.nanmean(np.squeeze(netLW[p4ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p4mod])) - np.nanmean(np.squeeze(netLW[p4ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling LW (p4):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(lwdmeanice[p4ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(lwdmean[p4ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p4mod])) - np.nanmean(np.squeeze(lwdmean[p4ship])))) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p4mod])) - np.nanmean(np.squeeze(lwdmean[p4ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p4mod])) - np.nanmean(np.squeeze(lwdmean[p4ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p4mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p4mod])) - np.nanmean(np.squeeze(lwdmean[p4ship])),2)) + ')')
+
+
+    print ()
+    print ('*******************')
+    print ()
+
+    print ()
+    print ('net SW (p5):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netSWice[p5ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netSW[p5ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p5mod])) - np.nanmean(np.squeeze(netSW[p5ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p5mod])) - np.nanmean(np.squeeze(netSW[p5ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p5mod])) - np.nanmean(np.squeeze(netSW[p5ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p5mod])) - np.nanmean(np.squeeze(netSW[p5ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling SW (p5):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(swdmeanice[p5ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(swdmean[p5ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p5mod])) - np.nanmean(np.squeeze(swdmean[p5ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p5mod])) - np.nanmean(np.squeeze(swdmean[p5ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p5mod])) - np.nanmean(np.squeeze(swdmean[p5ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p5mod])) - np.nanmean(np.squeeze(swdmean[p5ship])),2)) + ')')
+
+    print ()
+    print ('net LW (p5):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netLWice[p5ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netLW[p5ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p5mod])) - np.nanmean(np.squeeze(netLW[p5ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p5mod])) - np.nanmean(np.squeeze(netLW[p5ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p5mod])) - np.nanmean(np.squeeze(netLW[p5ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p5mod])) - np.nanmean(np.squeeze(netLW[p5ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling LW (p5):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(lwdmeanice[p5ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(lwdmean[p5ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p5mod])) - np.nanmean(np.squeeze(lwdmean[p5ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p5mod])) - np.nanmean(np.squeeze(lwdmean[p5ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p5mod])) - np.nanmean(np.squeeze(lwdmean[p5ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p5mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p5mod])) - np.nanmean(np.squeeze(lwdmean[p5ship])),2)) + ')')
+
+
+    print ()
+    print ('*******************')
+    print ()
+
+    print ()
+    print ('net SW (p6):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netSWice[p6ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netSW[p6ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWnet'][p6mod])) - np.nanmean(np.squeeze(netSW[p6ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWnet'][p6mod])) - np.nanmean(np.squeeze(netSW[p6ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWnet'][p6mod])) - np.nanmean(np.squeeze(netSW[p6ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWnet'][p6mod])) - np.nanmean(np.squeeze(netSW[p6ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling SW (p6):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(swdmeanice[p6ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(swdmean[p6ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['SWd'][p6mod])) - np.nanmean(np.squeeze(swdmean[p6ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['SWd'][p6mod])) - np.nanmean(np.squeeze(swdmean[p6ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['SWd'][p6mod])) - np.nanmean(np.squeeze(swdmean[p6ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['SWd'][p6mod])) - np.nanmean(np.squeeze(swdmean[p6ship])),2)) + ')')
+
+    print ()
+    print ('net LW (p6):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(netLWice[p6ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(netLW[p6ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])))) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])),2)) + ')')
+
+    print ()
+    print ('Downwelling LW (p6):')
+    print ('Obs(ice) = ' + str(np.round(np.nanmean(np.squeeze(lwdmeanice[p6ice])),2)))
+    print ('Obs(ship) = ' + str(np.round(np.nanmean(np.squeeze(lwdmean[p6ship])),2)))
+    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
+    print ('UM_CASIM-100 = ' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data2['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
+    print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
+    print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
+
+
 def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
@@ -9366,7 +9651,7 @@ def main():
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '20_u-ca362_RA1M_CASIM/OUT_R0/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9493,15 +9778,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_',
-            '20180828_oden_',
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_']#,'20180904_oden_']#,'20180905_oden_',
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9510,10 +9794,10 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
+    # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
@@ -10006,6 +10290,7 @@ def main():
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # -------------------------------------------------------------
