@@ -9513,7 +9513,7 @@ def main():
     # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
+    doy = np.arange(240,249)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
@@ -9610,6 +9610,7 @@ def main():
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','tke'] #'qnliq','qnice','mixing_length_for_momentum',
                 #, 'latent_heat_flux']
+            ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
                 'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
@@ -9877,6 +9878,7 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
     if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
     if out_dir1[:10] == '14_u-bu570': label1 = 'UM_CASIM-100'
@@ -9892,6 +9894,7 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
     if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
     if out_dir2[:10] == '14_u-bu570': label2 = 'UM_CASIM-100'
@@ -9908,6 +9911,7 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
     if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
     if out_dir3[:10] == '14_u-bu570': label3 = 'UM_CASIM-100'
@@ -9923,6 +9927,7 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
+    if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
     if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
     if out_dir4[:10] == '14_u-bu570': label4 = 'UM_CASIM-100'
