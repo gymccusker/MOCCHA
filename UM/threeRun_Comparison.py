@@ -9685,8 +9685,9 @@ def main():
             ## ------------------
             #### um4
             ## ------------------
-            print ('Starting on t=0 RA2T data:')
+            print ('Starting on t=0 RA2T data, initialising:')
             for j in range(0,len(var_list4)):
+                print (var_list4[j])
                 if var_list4[j] in nc4.variables:
                     if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
                         continue
@@ -9758,14 +9759,16 @@ def main():
             ## ------------------
             print ('Appending UM data:')
             for j in range(0,len(var_list4)):
-                # print (var_list1[j])
                 if var_list4[j] in nc4.variables:
+                    print (var_list4[j])
                     if np.ndim(nc4.variables[var_list4[j]]) == 0:     # ignore horizontal_resolution
+                        print ('ndim=0')
                         continue
                     elif np.ndim(nc4.variables[var_list4[j]]) == 1:
-                        # data1[cube_um1[j].var_name] = cube_um1[j].data
+                        print ('ndim=1')
                         data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:])
                     elif np.ndim(nc4.variables[var_list4[j]]) == 2:
+                        print ('ndim=2')
                         data4[var_list4[j]] = np.append(data4[var_list4[j]],nc4.variables[var_list4[j]][:],0)
             # np.save('working_data1',data1)
             nc4.close()
