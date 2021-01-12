@@ -963,8 +963,30 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_IFS_RA2M_CASIM-100_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_Medians.svg'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
+
+    print ('Z1 = ')
+    print (np.round(np.nanmean(um_data['height'],0),-2))
+    print ('Z3 = ')
+    print (np.round(np.nanmean(ifs_data['height'],0),-2))
+
+    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) == 4600)#<= 2e3) #== 5.e+02)#
+    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) == 4400)# <= 2e3) #== 5.e+02)#
+    print ('Zindex1 = ')
+    print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
+    print ('Zindex3 = ')
+    print (np.nanmean(ifs_data['height'][:,Zindex3[0]],0))
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_lwc'][:,Zindex1[0]],0)*1e3)
+    print ('UM_RA2T = ')
+    print (np.nanmean(ra2t_data['model_lwc'][:,Zindex1[0]],0)*1e3)
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_lwc'][:,Zindex1[0]],0)*1e3)
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(ifs_data['model_lwc'][:,Zindex3[0]],0)*1e3)
+    print ('Obs = ')
+    print (np.nanmean(obs_data['lwc_adiabatic'][:,Zindex1[0]],0)*1e3)
 
 
 def plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch): #, lon, lat):
@@ -1950,7 +1972,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -2212,7 +2234,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -2294,6 +2316,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
     plt.legend()
 
+    # plt.grid('on')
+
     print ('******')
     print ('')
     print ('Finished plotting! :)')
@@ -2301,8 +2325,34 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
+
+    print ('Z1 = ')
+    print (np.round(np.nanmean(um_data['height'],0),-2))
+    print ('Z3 = ')
+    print (np.round(np.nanmean(ifs_data['height'],0),-2))
+
+    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) == 4600)#<= 2e3) #== 5.e+02)#
+    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) == 4400)# <= 2e3) #== 5.e+02)#
+    print ('Zindex1 = ')
+    print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
+    print ('Zindex3 = ')
+    print (np.nanmean(ifs_data['height'][:,Zindex3[0]],0))
+    print ('UM_RA2M = ')
+    print (np.nanmean(mask1[:,Zindex1[0]],0))
+    print ('UM_RA2T = ')
+    print (np.nanmean(mask4[:,Zindex1[0]],0))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(mask2[:,Zindex1[0]],0))
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(mask3[:,Zindex3[0]],0))
+    print ('Obs = ')
+    print (np.nanmean(mask0[:,Zindex1[0]],0))
+
+    # print ('ECMWF_IFS/Obs = ')
+    # print ((np.nanmean(mask3[:,Zindex3[0]],0) - np.nanmean(mask0[:,Zindex1[0]],0)) / np.nanmean(mask0[:,Zindex1[0]],0))
+
 
 def plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy):
 
@@ -7863,7 +7913,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
@@ -7912,7 +7962,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # look closer at biases
