@@ -5373,6 +5373,27 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.show()
     # plt.close()
 
+    doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 245.0, data1['time_6hrly'] < 247.0))
+    print ('Z = ')
+    print (data1['universal_height'])
+
+    print ('UM_RA2M = ')
+    print (np.round(data1['q_anomalies'][:,doyindex[0]],2))
+
+    print ('UM_CASIM-100 = ')
+    print (np.round(data2['q_anomalies'][:,doyindex[0]],2))
+
+    print ('ECMWF_IFS = ')
+    print (np.round(data3['q_anomalies'][:,doyindex[0]],2))
+
+    print ('UM_RA2T = ')
+    print (np.round(data4['q_anomalies'][:,doyindex[0]],2))
+
+    print (np.nanmin(np.round(data1['q_anomalies'][:,doyindex[0]],2)))
+    print (np.nanmin(np.round(data2['q_anomalies'][:,doyindex[0]],2)))
+    print (np.nanmin(np.round(data3['q_anomalies'][:,doyindex[0]],2)))
+    print (np.nanmin(np.round(data4['q_anomalies'][:,doyindex[0]],2)))
+
 def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
 
     import iris.plot as iplt
@@ -9529,7 +9550,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '5_u-bl661_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
@@ -9773,7 +9794,7 @@ def main():
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl','latent_heat_flux']#,'tke'] #'qnliq','qnice','mixing_length_for_momentum',
+                'cloud_fraction','radr_refl', 'tke']#,'latent_heat_flux']#,'tke'] #'qnliq','qnice','mixing_length_for_momentum',
                 #, 'latent_heat_flux']
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
@@ -10152,7 +10173,7 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
@@ -10171,7 +10192,7 @@ def main():
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
 
     # -------------------------------------------------------------
