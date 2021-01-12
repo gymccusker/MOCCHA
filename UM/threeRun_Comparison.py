@@ -4723,8 +4723,29 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-100_fixedRA2T.svg'
-    plt.savefig(fileout, dpi = 300)
+    # plt.savefig(fileout, dpi = 300)
     plt.show()
+
+    doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 245.0, data1['time_6hrly'] < 247.0))
+    print ('Z = ')
+    print (data1['universal_height'])
+
+    print ('UM_RA2M = ')
+    print (np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1),2))
+
+    print ('UM_CASIM-100 = ')
+    print (np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),2))
+
+    print ('ECMWF_IFS = ')
+    print (np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1),2))
+
+    print ('UM_RA2T = ')
+    print (np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,m_ifs]),1),2))
+
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,m_ifs]),1),2)))
 
 
 def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
@@ -10172,8 +10193,8 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
