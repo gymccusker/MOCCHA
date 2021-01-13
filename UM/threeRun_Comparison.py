@@ -4726,21 +4726,23 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     # plt.savefig(fileout, dpi = 300)
     plt.show()
 
-    doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 245.0, data1['time_6hrly'] < 247.0))
+    Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1) < 0)
+    Zindex3 = np.where(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1) < 0)
     print ('Z = ')
+    print (data1['universal_height'][Zindex3])
     print (data1['universal_height'])
 
     print ('UM_RA2M = ')
-    print (np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,f_ifs]),1),2))
 
     print ('UM_CASIM-100 = ')
-    print (np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,f_ifs]),1),2))
 
     print ('ECMWF_IFS = ')
-    print (np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,f_ifs]),1),2))
 
     print ('UM_RA2T = ')
-    print (np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,m_ifs]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,f_ifs]),1),2))
 
     print (np.nanmin(np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1),2)))
     print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),2)))
@@ -5390,7 +5392,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('')
 
     fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m_Dates_fixedRA2T.png'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
