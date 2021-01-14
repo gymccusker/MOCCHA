@@ -3380,8 +3380,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-100_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-aeroprof_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
+    plt.savefig(fileout)
     plt.show()
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -3875,8 +3875,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-100_ra2t_fixedRA2T_newColours_Date.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-aeroprof_ra2t_fixedRA2T_newColours_Date.svg'
+    plt.savefig(fileout)
     plt.show()
 
 
@@ -4525,7 +4525,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,m_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.legend(bbox_to_anchor=(0.8, 1.03, 1., .102), loc=4, ncol=3)
-    plt.legend(bbox_to_anchor=(1.3, 1.01, 1., .102), loc=4, ncol=3)
+    plt.legend(bbox_to_anchor=(1.32, 1.01, 1., .102), loc=4, ncol=3)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     axmajor = np.arange(0,9.01e3,1.0e3)
@@ -4722,8 +4722,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-100_fixedRA2T.svg'
-    # plt.savefig(fileout, dpi = 300)
+    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-aeroprof_fixedRA2T.svg'
+    plt.savefig(fileout, dpi = 300)
     plt.show()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1) < 0)
@@ -5391,7 +5391,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m_Dates_fixedRA2T.png'
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-aeroprof_ra2t_ra2m_Dates_fixedRA2T.png'
     # plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
@@ -7809,8 +7809,8 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xlim([-0.6,0.6])
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-100_ra2t_periodSelection-p5-p6_wSTDEV_newColours_fixedRA2T.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-aeroprof_ra2t_periodSelection-p5-p6_wSTDEV_newColours_fixedRA2T.svg'
+    plt.savefig(fileout)
     plt.show()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1) < 0)
@@ -10109,7 +10109,7 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    # data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
+    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
