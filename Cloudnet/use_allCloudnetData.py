@@ -1299,7 +1299,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
     plt.xlim([0,0.06])
     plt.xticks(np.arange(0,0.061,0.0075))
-    ax1.set_xticklabels([0,' ',0.015,' ',0.03,' ',0.045,' ',0.06])
+    # ax1.set_xticklabels([0,' ',0.015,' ',0.03,' ',0.045,' ',0.06])
     plt.legend()
 
     plt.grid('on')
@@ -1398,10 +1398,10 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.savefig(fileout)
     # plt.show()
 
-    print ('Z1 = ')
-    print (np.round(np.nanmean(um_data['height'],0),-2))
-    print ('Z3 = ')
-    print (np.round(np.nanmean(ifs_data['height'],0),-2))
+    # print ('Z1 = ')
+    # print (np.round(np.nanmean(um_data['height'],0),-2))
+    # print ('Z3 = ')
+    # print (np.round(np.nanmean(ifs_data['height'],0),-2))
 
     Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
     Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
@@ -1409,16 +1409,16 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
     print ('Zindex3 = ')
     print (np.nanmean(ifs_data['height'][:,Zindex3[0]],0))
-    print ('UM_RA2M = ')
-    print (np.nanmean(um_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
+    # print ('UM_RA2M = ')
+    # print (np.nanmean(um_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
     print ('UM_RA2T = ')
-    print (np.nanmean(ra2t_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
-    print ('UM_CASIM-100 = ')
-    print (np.nanmean(misc_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
-    print ('ECMWF_IFS = ')
-    print (np.nanmean(ifs_data['model_snow_iwc_filtered'][:,Zindex3[0]],0)*1e3)
+    print (np.nanmean(ra2t_data['model_iwc_filtered'],0)*1e3)
+    # print ('UM_CASIM-100 = ')
+    # print (np.nanmean(misc_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
+    # print ('ECMWF_IFS = ')
+    # print (np.nanmean(ifs_data['model_snow_iwc_filtered'][:,Zindex3[0]],0)*1e3)
     print ('Obs = ')
-    print (np.nanmean(obs_data['iwc'][:,Zindex1[0]],0)*1e3)
+    print (np.nanmean(obs_data['iwc'],0)*1e3)
 
     print ('UM_RA2T - Obs = ')
     print ((np.nanmean(ra2t_data['model_iwc_filtered'][:,Zindex1[0]],0) - np.nanmean(obs_data['iwc'][:,Zindex1[0]],0))*1e3)
