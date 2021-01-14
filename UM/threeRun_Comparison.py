@@ -5139,7 +5139,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     # plt.colorbar()
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
-    ax2.set_ylabel(label2, rotation = 270, labelpad = 15)
+    ax2.set_ylabel(label2[:8], rotation = 270, labelpad = 15)
     ax2.set_yticks([])
 
     ax  = fig.add_axes([0.05,0.22,0.4,0.12])   # left, bottom, width, height
@@ -5322,7 +5322,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     plt.ylabel('Z [km]')
     ax2 = ax.twinx()
-    ax2.set_ylabel(label2, rotation = 270, labelpad = 15)
+    ax2.set_ylabel(label2[:8], rotation = 270, labelpad = 15)
     ax2.set_yticks([])
 
     ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
@@ -5392,7 +5392,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('')
 
     fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-aeroprof_ra2t_ra2m_Dates_fixedRA2T.png'
-    # plt.savefig(fileout, dpi=300)
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -7476,6 +7476,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'darkblue', label = label1 + ' median', zorder = 3)
+    # plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,p3]),1),data1['universal_height'],'.-', color = 'grey', label = label1 + ' median', zorder = 3)
 
     plt.xlabel('q bias [g kg$^{-1}$]')
     plt.ylim([0,9e3])
@@ -7747,7 +7748,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    # plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,p6]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     plt.grid('on')
     plt.xlim([-5.0,2.5])
@@ -7797,7 +7798,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4] + ' median', zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'mediumseagreen', label = label2 + ' median', zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,p6]),1),data1['universal_height'],'.-', color = 'gold', label = label3 + ' median', zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,p3]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    # plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,p6]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.grid('on')
     plt.xlabel('q bias [g kg$^{-1}$]')
@@ -7809,7 +7810,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xlim([-0.6,0.6])
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-aeroprof_ra2t_periodSelection-p5-p6_wSTDEV_newColours_fixedRA2T.svg'
+    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-aeroprof_ra2t_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
     plt.savefig(fileout)
     plt.show()
 
