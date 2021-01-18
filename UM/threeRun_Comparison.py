@@ -9597,11 +9597,11 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '12_u-br210_RA1M_CASIM/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0_RadPA_25h/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_RadPA_25h/'
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9735,7 +9735,7 @@ def main():
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
             '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_']#,'20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9744,8 +9744,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
@@ -10221,12 +10221,12 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -10239,7 +10239,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
 
