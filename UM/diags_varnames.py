@@ -22,6 +22,8 @@ Var_list = { # paXXX
               'm01s01i208': 'toa_outgoing_shortwave_flux',
               'm01s03i225': 'u_10m',
               'm01s03i226': 'v_10m',
+              'm01s01i504': 'seaice_albedo_cats',                         ## swath and full nest
+              'm01s01i505': 'seaice_albedo_agg',                         ## swath and full nest
                # pbXXX
               'm01s03i304': 'turbulent_mixing_height_after_bl',
               'm01s03i360': 'h_decoupled_layer_base',

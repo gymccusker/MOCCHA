@@ -22,6 +22,8 @@ Stash_list = { # paXXX
               'm01s01i208': 'toa_outgoing_shortwave_flux',
               'm01s03i225': 'eastward_wind_at_10m',
               'm01s03i226': 'northward_wind_at_10m',
+              'm01s01i504': 'weighted_sea_ice_albedo_categories',                         ## swath and full nest
+              'm01s01i505': 'weighted_sea_ice_albedo_aggregated',                         ## swath and full nest                                          
                # pbXXX
               'm01s03i304': 'turbulent_mixing_height_after_boundary_layer',
               'm01s03i360': 'height_of_decoupled_layer_base',
