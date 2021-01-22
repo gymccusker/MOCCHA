@@ -869,7 +869,7 @@ def main():
 
     for date in date_dir:
         # if date[0:4] == '2018':
-        if date[0:8] == '20180902':
+        if date[0:8] == '20180903':
             ## -------------------------------------------------------------------------
             ## Set fixed variable constraint (i.e. which variable to load in based on stash code)
             ## -------------------------------------------------------------------------
