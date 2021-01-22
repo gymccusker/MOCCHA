@@ -6437,15 +6437,15 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
     Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
-    # print ('Zindex1 = ')
-    # print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
+    print ('Zindex1 = ')
+    print (np.nanmean(um_data['height'][:,Zindex1[0][13]],0))
     print ('Zindex3 = ')
-    print (np.nanmean(ifs_data['height'][:,Zindex3[0]],0))
+    print (np.nanmean(ifs_data['height'][:,Zindex3[0][17]],0))
     # print ('UM_RA2M = ')
     # print (np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3)
     # print ('UM_RA2T = ')
@@ -6453,11 +6453,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print ('UM_CASIM-100 = ')
     # print (np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3)
     print ('ECMWF_IFS = ')
-    # print (np.round(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction3p6),0))
+    print (np.round(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,13]),0)*1e3,4))
+    print (np.nanmean(np.squeeze(fraction3p6[:,17]),0))
     print ('Obs = ')
-    # print (np.round(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,:]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction0p6),0))
+    print (np.round(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,13]),0)*1e3,4))
+    print (np.nanmean(np.squeeze(fraction0p6[:,17]),0))
 
 def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
 
