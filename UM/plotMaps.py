@@ -207,12 +207,12 @@ def plot_driftMap(um, ifs, ship_data):
             # )
     # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
     qplt.outline(um[0][0,:,:],
-            color = 'steelblue')
+            color = 'darkblue')
 
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
     ###---------------------------------------------------------------------------------
-    plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 120, c = 'darkorange',
+    plt.scatter(ifs['lons'][:], ifs['lats'][:], s = 120, c = 'gold',
             label = 'IFS_midpoints',
             marker = 'x',
             # alpha = 0.5,
@@ -262,8 +262,9 @@ def plot_driftMap(um, ifs, ship_data):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../FIGS/Drift_UM_IFS_grids.svg', dpi=100)
-    plt.show()
+    plt.savefig('../FIGS/Drift_UM_IFS_grids_v2.svg', dpi=100)
+    # plt.show()
+    plt.close()
 
 def readDaily(filename, date):
 
