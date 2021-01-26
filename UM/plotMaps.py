@@ -207,7 +207,7 @@ def plot_driftMap(um, ifs, ship_data):
             # )
     # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
     qplt.outline(um[0][0,:,:],
-            color = 'darkblue')
+            color = 'steelblue')
 
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
