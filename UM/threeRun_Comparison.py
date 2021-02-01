@@ -7909,21 +7909,21 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     print (data1['universal_height'])
 
     print ('UM_RA2M = ')
-    print (np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p6]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),2))
 
     print ('UM_CASIM-100 = ')
-    print (np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p6]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),2))
 
     print ('ECMWF_IFS = ')
-    print (np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),2))
 
     print ('UM_RA2T = ')
-    print (np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p6]),1),2))
+    print (np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),2))
 
-    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p6]),1),2)))
-    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p6]),1),2)))
-    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p6]),1),2)))
-    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p6]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),2)))
+    print (np.nanmin(np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),2)))
 
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
@@ -9686,7 +9686,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
@@ -9816,15 +9816,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_',
-            '20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9833,11 +9832,11 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
-    doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
@@ -10199,7 +10198,7 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    # data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
+    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
@@ -10310,12 +10309,12 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
