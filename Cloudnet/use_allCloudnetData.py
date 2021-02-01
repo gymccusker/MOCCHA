@@ -2592,10 +2592,10 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print (obs_data.keys())
 
     #### set flagged and bad data to nans
-    um_data['model_lwp'][um_data['model_lwp'] < 0] = np.nan
-    ifs_data['model_lwp'][ifs_data['model_lwp'] < 0] = np.nan
-    misc_data['model_lwp'][misc_data['model_lwp'] < 0] = np.nan
-    ra2t_data['model_lwp'][ra2t_data['model_lwp'] < 0] = np.nan
+    um_data['model_lwp'][um_data['model_lwp'] <= 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] <= 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] <= 0] = np.nan
+    ra2t_data['model_lwp'][ra2t_data['model_lwp'] <= 0] = np.nan
     # um_data['model_lwp'][um_data['model_lwp'] >= 1000] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
     # misc_data['model_lwp'][misc_data['model_lwp'] >= 1000] = np.nan
@@ -2676,11 +2676,75 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-AeroProf_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     print (np.nanmax(um_data['model_lwp']*1e3))
     print (np.nanmax(obs_data['lwp'][:,0]*1e3))
+
+    #### ---------------------------------------------------------------------------------------------------
+    #### ---------------------------------------------------------------------------------------------------
+    ####    DEFINE PERIODS
+    #### ---------------------------------------------------------------------------------------------------
+    #### ---------------------------------------------------------------------------------------------------
+    p3 = np.where(np.logical_and(obs_data['time'] >= doy[0], obs_data['time'] < 230.0))
+    p4 = np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
+    p5 = np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
+    p6 = np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
+
+    print ('')
+    print ('*****')
+    print ('P3 = ')
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_lwp'][p3]*1e3))
+    print ('UM_RA2T = ')
+    print (np.nanmean(ra2t_data['model_lwp'][p3]*1e3))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_lwp'][p3]*1e3))
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(ifs_data['model_lwp'][p3]*1e3))
+    print ('Obs = ')
+    print (np.nanmean(obs_data['lwp'][p3,0]*1e3))
+
+    print ('*****')
+    print ('P4 = ')
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_lwp'][p4]*1e3))
+    print ('UM_RA2T = ')
+    print (np.nanmean(ra2t_data['model_lwp'][p4]*1e3))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_lwp'][p4]*1e3))
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(ifs_data['model_lwp'][p4]*1e3))
+    print ('Obs = ')
+    print (np.nanmean(obs_data['lwp'][p4,0]*1e3))
+
+    print ('*****')
+    print ('P5 = ')
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_lwp'][p5]*1e3))
+    print ('UM_RA2T = ')
+    print (np.nanmean(ra2t_data['model_lwp'][p5]*1e3))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_lwp'][p5]*1e3))
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(ifs_data['model_lwp'][p5]*1e3))
+    print ('Obs = ')
+    print (np.nanmean(obs_data['lwp'][p5,0]*1e3))
+
+    print ('*****')
+    print ('P6 = ')
+    print ('UM_RA2M = ')
+    print (np.nanmean(um_data['model_lwp'][p6]*1e3))
+    print ('UM_RA2T = ')
+    print (np.nanmean(ra2t_data['model_lwp'][p6]*1e3))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(misc_data['model_lwp'][p6]*1e3))
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(ifs_data['model_lwp'][p6]*1e3))
+    print ('Obs = ')
+    print (np.nanmean(obs_data['lwp'][p6,0]*1e3))
+
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
@@ -7836,11 +7900,11 @@ def main():
     #     misc_data[varlist_um[c]][lwpind, :] = np.nan
     #     ra2t_data[varlist_um[c]][lwpind, :] = np.nan
     #
-    # ### lwp only 1d
-    # um_data['model_lwp'][lwpind] = np.nan
-    # ifs_data['model_lwp'][lwpind] = np.nan
-    # misc_data['model_lwp'][lwpind] = np.nan
-    # ra2t_data['model_lwp'][lwpind] = np.nan
+    ### lwp only 1d
+    um_data['model_lwp'][lwpind] = np.nan
+    ifs_data['model_lwp'][lwpind] = np.nan
+    misc_data['model_lwp'][lwpind] = np.nan
+    ra2t_data['model_lwp'][lwpind] = np.nan
 
     ##################################################################################################################################
 
@@ -7939,7 +8003,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
     # lwp1 = obs_data['lwp'][:,0]
     # lwp1[lwp1 == -999.0] = np.nan
@@ -7965,7 +8029,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # look closer at biases
