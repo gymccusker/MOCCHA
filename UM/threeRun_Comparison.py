@@ -5460,26 +5460,33 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.show()
     # plt.close()
 
-    doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 245.0, data1['time_6hrly'] < 247.0))
+    doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 247.0, data1['time_6hrly'] < 251.0))
     print ('Z = ')
     print (data1['universal_height'])
 
-    print ('UM_RA2M = ')
-    print (np.round(data1['q_anomalies'][:,doyindex[0]],2))
+    # print ('UM_RA2M = ')
+    # print (np.round(data1['q_anomalies'][:,doyindex[0]],2))
+    #
+    # print ('UM_CASIM-100 = ')
+    # print (np.round(data2['q_anomalies'][:,doyindex[0]],2))
+    #
+    # print ('ECMWF_IFS = ')
+    # print (np.round(data3['q_anomalies'][:,doyindex[0]],2))
+    #
+    # print ('UM_RA2T = ')
+    # print (np.round(data4['q_anomalies'][:,doyindex[0]],2))
+    #
+    # print (np.nanmin(np.round(data1['q_anomalies'][:,doyindex[0]],2)))
+    # print (np.nanmin(np.round(data2['q_anomalies'][:,doyindex[0]],2)))
+    # print (np.nanmin(np.round(data3['q_anomalies'][:,doyindex[0]],2)))
+    # print (np.nanmin(np.round(data4['q_anomalies'][:,doyindex[0]],2)))
 
     print ('UM_CASIM-100 = ')
-    print (np.round(data2['q_anomalies'][:,doyindex[0]],2))
+    print (np.round(np.nanmean(data2['temp_6hrly'][doyindex[0],:],0),2) - 273.15)
 
     print ('ECMWF_IFS = ')
-    print (np.round(data3['q_anomalies'][:,doyindex[0]],2))
+    print (np.round(np.nanmean(data3['temp_6hrly_UM'][doyindex[0],:],0),2) - 273.15)
 
-    print ('UM_RA2T = ')
-    print (np.round(data4['q_anomalies'][:,doyindex[0]],2))
-
-    print (np.nanmin(np.round(data1['q_anomalies'][:,doyindex[0]],2)))
-    print (np.nanmin(np.round(data2['q_anomalies'][:,doyindex[0]],2)))
-    print (np.nanmin(np.round(data3['q_anomalies'][:,doyindex[0]],2)))
-    print (np.nanmin(np.round(data4['q_anomalies'][:,doyindex[0]],2)))
 
 def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5):
 
@@ -10314,7 +10321,7 @@ def main():
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
