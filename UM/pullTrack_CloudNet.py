@@ -6701,6 +6701,9 @@ def writePD_BL(cube, doutfile):
     print ('')
     print (dataset.file_format)
     print ('')
+    print ('Cube is: ')
+    print (cube)
+    print ('')
 
     ###################################
     ## Switch off automatic filling
