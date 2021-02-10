@@ -132,10 +132,10 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
                 'surface_upward_water_flux']
-    missed_list = ['theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
-                'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
-                'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
-                'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount']
+    # missed_list = ['theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
+    #             'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
+    #             'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
+    #             'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount']
     winds = ['u','v','w']
 
     #################################################################
@@ -621,7 +621,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '20_u-ca362_RA1M_CASIM/OUT_24h/'
+    out_dir = '14_u-bu570_RA1M_CASIM/OUT_R1_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
