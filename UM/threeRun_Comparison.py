@@ -3739,6 +3739,10 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
     ######################################################
     p5 = np.where(np.logical_and(data3['time'] >= 240.0, data3['time'] < 247.0))
     p5ship = np.where(np.logical_and(obs['albedo']['DoY'] >= 240.0, obs['albedo']['DoY'] < 247.0))
+    p5ice = np.where(np.logical_and(obs['fixed_radiation']['time_ice'] >= 240.0, obs['fixed_radiation']['time_ice'] < 247.0))
+
+    albedo_ice = obs['fixed_radiation']['SWu_ice'] / obs['fixed_radiation']['SWd_ice']
+
 
 
     SMALL_SIZE = 12
@@ -3751,20 +3755,22 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(4.5,6))
+    plt.figure(figsize=(6,5))
     plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
             hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
     ax1 = plt.gca()
 
-    plt.plot(obs['albedo']['DoY'][p5ship], obs['albedo']['a'][p5ship], 'k')
-    plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold')
+    plt.plot(obs['fixed_radiation']['time_ice'][p5ice], albedo_ice[p5ice], color = 'grey', label = 'Ice_station')
+    plt.plot(obs['albedo']['DoY'][p5ship], obs['albedo']['a'][p5ship], 'ko', label = 'Ship')
+    plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold', label = label3)
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
     # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
     # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    plt.ylim([0.4,1.0])
-    plt.grid('on')
+    plt.legend()
+    # plt.ylim([0.4,1.0])
+    # plt.grid('on')
 
     # ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
 
