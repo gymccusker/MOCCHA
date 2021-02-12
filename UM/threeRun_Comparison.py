@@ -3732,31 +3732,25 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     print ('UM_RA2T = ' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data4['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
     print ('UM_RA2M = ' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data1['fixed_radiation']['LWd'][p6mod])) - np.nanmean(np.squeeze(lwdmean[p6ship])),2)) + ')')
 
+def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
+
     ######################################################
     #### SIMPLE CALCULATION OF ALBEDO
-    ####            may not account for necessary model assumptions, needs checking
     ######################################################
-    data1['surface_upwelling_SW_radiation'] = data1['surface_downwelling_SW_radiation'] - data1['surface_net_SW_radiation']
-    data1['surface_albedo'] = data1['surface_upwelling_SW_radiation'] / data1['surface_downwelling_SW_radiation']
-    data2['surface_upwelling_SW_radiation'] = data2['surface_downwelling_SW_radiation'] - data2['surface_net_SW_radiation']
-    data2['surface_albedo'] = data2['surface_upwelling_SW_radiation'] / data2['surface_downwelling_SW_radiation']
-    data4['surface_upwelling_SW_radiation'] = data4['surface_downwelling_SW_radiation'] - data4['surface_net_SW_radiation']
-    data4['surface_albedo'] = data4['surface_upwelling_SW_radiation'] / data4['surface_downwelling_SW_radiation']
+    p5 = np.where(np.logical_and(data3['time'] >= 240.0, data3['time'] < 247.0))
 
-
-    print ('ECMWF_IFS = ' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])),2)) + ' / (' + str(np.round(np.nanmean(np.squeeze(data3['fixed_radiation']['LWnet'][p6mod])) - np.nanmean(np.squeeze(netLW[p6ship])))) + ')')
-    #
-    # plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold')
+    plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold')
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
     # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
     # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    # plt.ylim([0.4,0.9])
-    # plt.grid('on')
-    # plt.show()
+    plt.ylim([0.4,0.9])
+    plt.grid('on')
+    plt.show()
     #
     # print (data1['surface_downwelling_SW_radiation'])
     # print (data1['surface_upwelling_SW_radiation'])
     # print (data1['surface_albedo'])
+
 
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
@@ -10316,7 +10310,7 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
@@ -10337,6 +10331,7 @@ def main():
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
+    out = plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # -------------------------------------------------------------
