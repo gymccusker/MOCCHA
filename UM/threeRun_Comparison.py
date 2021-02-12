@@ -3739,14 +3739,35 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
     ######################################################
     p5 = np.where(np.logical_and(data3['time'] >= 240.0, data3['time'] < 247.0))
 
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(4.5,6))
+    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax1 = plt.gca()
+
     plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold')
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
     # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
     # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
     plt.ylim([0.4,0.9])
     plt.grid('on')
+
+    ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
+
     plt.show()
-    #
+
     # print (data1['surface_downwelling_SW_radiation'])
     # print (data1['surface_upwelling_SW_radiation'])
     # print (data1['surface_albedo'])
@@ -9773,6 +9794,9 @@ def main():
                 obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
                 obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
         obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
+
+        print ('Load albedo estimates from Michael...')
+        obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
