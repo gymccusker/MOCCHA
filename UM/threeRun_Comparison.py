@@ -3738,6 +3738,7 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
     #### SIMPLE CALCULATION OF ALBEDO
     ######################################################
     p5 = np.where(np.logical_and(data3['time'] >= 240.0, data3['time'] < 247.0))
+    p5ship = np.where(np.logical_and(obs['albedo']['DoY'] >= 240.0, obs['albedo']['DoY'] < 247.0))
 
 
     SMALL_SIZE = 12
@@ -3757,14 +3758,15 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
     ### define axis instance
     ax1 = plt.gca()
 
+    plt.plot(obs['albedo']['DoY'][p5ship], obs['albedo']['a'][p5ship], 'k')
     plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold')
     # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
     # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
     # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    plt.ylim([0.4,0.9])
+    plt.ylim([0.4,1.0])
     plt.grid('on')
 
-    ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
+    # ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
 
     plt.show()
 
