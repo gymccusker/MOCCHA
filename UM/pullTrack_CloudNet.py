@@ -6919,7 +6919,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         revision = 'Revision no. 0. '
     elif out_dir[3:10] == 'u-br210':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation and coarse mode soluble aerosol number concentration input taken from UKCA daily average profiles provided by Ruth Price (University of Leeds) <eersp@leeds.ac.uk>. No aerosol processing. '
-        revision = 'Revision no. 1. '
+        revision = 'Revision no. 2. '
     elif out_dir[3:10] == 'u-br409':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. Passive aerosol processing. '
         revision = 'Revision no. 0. '
@@ -7217,7 +7217,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '14_u-bu570_RA1M_CASIM/'
+    out_dir = '12_u-br210_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
