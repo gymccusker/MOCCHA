@@ -539,6 +539,9 @@ def copyNC(nc1, filename1, out_dir):
                 dat[:,:] = nc1.variables[diag][:,:]
 
             elif np.logical_and(diag == 'qice', out_dir[16:21] == 'CASIM'):         ### if it's a casim run, create new total ice var
+                if out_dir[:21] == '12_u-br210_RA1M_CASIM':
+                    print ('Run is ' + out_dir[:21] + ', no qicecrystals for this run yet')
+                    continue
                 ### make total ice variable (qice)
                 dat = nc.createVariable('qice', np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
