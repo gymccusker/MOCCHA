@@ -2506,7 +2506,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.title('CRF [W/m2]')
+    plt.title('Net Radiation [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
     plt.ylim([-60,80])
@@ -2571,7 +2571,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
         lw3 = data3['surface_net_LW_radiation'][data3['hrly_flag']]
 
     ax  = fig.add_axes([0.7,0.7,0.25,0.22])   # left, bottom, width, height
-    yDmax = 0.1
+    yDmax = 0.12
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1 + lw1
     sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -2588,7 +2588,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.4,0.25,0.22])   # left, bottom, width, height
-    yEmax = 0.14
+    yEmax = 0.16
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(sw3, hist=False, color="gold", kde_kws={"shade": True})
@@ -2603,7 +2603,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.7,0.1,0.25,0.22])   # left, bottom, width, height
-    yFmax = 0.11
+    yFmax = 0.13
     plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
     sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(lw3, hist=False, color="gold", kde_kws={"shade": True})
@@ -9715,7 +9715,7 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir1 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R1/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
@@ -9745,7 +9745,7 @@ def main():
     ### 18_u-ca011_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics; 1A BL Scheme
     ### 19_u-ca012_RA2T_CON/              # RA2T_CON nest + global 4D stash; includes diagnosed turbulent dissipation rate
     ### 20_u-ca362_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
-
+    ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
 
     print ('******')
     print ('')
@@ -9849,14 +9849,15 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_',
+            '20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180902_oden_','20180903_oden_','20180904_oden_']#,'20180905_oden_',
+            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9865,10 +9866,10 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
-    # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
+    doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
     # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
@@ -9950,9 +9951,9 @@ def main():
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
         else:
             ### BASE UM RUNS (UM_RA2M/UM_RA2T)
-            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-                'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']
+            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+                'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']#,'temp_1.5m','latent_heat_flux']
             var_list4 = var_list1
             ### CASIM TESTING
             if np.logical_or(out_dir4 == '12_u-br210_RA1M_CASIM/OUT_R0/',out_dir4 == '13_u-br409_RA1M_CASIM/OUT_R0/'):
@@ -10232,12 +10233,13 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
+    # data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100_GA6alb'
     if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
     if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
@@ -10254,6 +10256,7 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100_GA6alb'
     if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
     if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
@@ -10271,6 +10274,7 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100_GA6alb'
     if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
     if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
@@ -10287,6 +10291,7 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
+    if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100_GA6alb'
     if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
     if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
@@ -10338,7 +10343,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -10354,7 +10359,7 @@ def main():
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
