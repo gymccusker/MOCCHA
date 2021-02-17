@@ -496,7 +496,16 @@ def copyNC(nc1, filename1, out_dir):
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
             if diag in radlist:
-                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                if diag == 'sfc_net_SW':
+                    dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_net_LW':
+                    dat = nc.createVariable('surface_net_LW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_SW':
+                    dat = nc.createVariable('surface_downwelling_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_LW':
+                    dat = nc.createVariable('surface_downwelling_LW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
+                else:
+                    dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
@@ -557,7 +566,17 @@ def copyNC(nc1, filename1, out_dir):
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
                 dat[:,:] = nc1.variables[diag][:,:]
-
+            elif diag in winds:
+                diagfull = diag + 'wind'
+                dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[:,:] = nc1.variables[diag][:,:]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height',), fill_value='-9999')
                 dat.scale_factor = float(1)
