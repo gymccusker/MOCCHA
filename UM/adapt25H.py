@@ -278,10 +278,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                if diag in nc1.variables:   ## check diagnostic is in both files
-                    dat[0:24] = nc1.variables[diag][0:]
-                else:
-                    dat[0:24] = np.nan
+                dat[0:24] = nc1.variables[diag][0:]
                 if diag in nc2.variables:   ## if missing, fill with nans
                     dat[24] = nc2.variables[diag][0]
                 else:
@@ -312,11 +309,8 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                # if diag in BLlist:  ## check diagnostic is in both files
-                if diag in nc1.variables:
-                    dat[0:24,:] = nc1.variables[diag][0:,:]
-                else:
-                    dat[0:24,:] = np.nan
+                dat[0:24,:] = nc1.variables[diag][0:,:]
+                ## check diagnostic is in both files
                 if diag in nc2.variables:
                     dat[24,:] = nc2.variables[diag][0,:]
                 else:
