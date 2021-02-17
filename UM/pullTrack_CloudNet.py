@@ -7335,7 +7335,7 @@ def main():
                 ### -------------------------------------------------------------------------
                 ### define output filename
                 ### -------------------------------------------------------------------------
-                if out_dir == '7_u-bn068_RA2T_CON/':    ## choose lam or global for 7_u-bn068
+                if np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/''):    ## choose lam or global for 7_u-bn068/24_u-cc324
                     #### LAM
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
