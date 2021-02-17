@@ -793,23 +793,23 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ########            Radiation timeseries
     ########
 
-    sw2 = data2['surface_net_SW_radiation'][data2['hrly_flag']]
+    sw2 = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']]# data2['surface_net_SW_radiation'][data2['hrly_flag']]
     lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
-    sw4 = data4['surface_net_SW_radiation'][data4['hrly_flag']]
+    sw4 = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']] # data4['surface_net_SW_radiation'][data4['hrly_flag']]
     lw4 = data4['surface_net_LW_radiation'][data4['hrly_flag']]
-    crf4 = sw4 + lw4
-    crf2 = sw2 + lw2
+    crf4 = sw4# + lw4
+    crf2 = sw2 #+ lw2
 
     ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey', label = 'Ice_station')
-    plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
+    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
+    plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
     plt.xlim(doy[0], doy[-1])
-    plt.ylim([-60, 70])
+    plt.ylim([-10, 220])
     plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
-    plt.ylabel('Net radiation \n [W m$^{-2}$]')
+    plt.ylabel('SW$_{\downarrow}$ \n [W m$^{-2}$]')
     plt.xlabel('Date')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -1039,8 +1039,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_CRF-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.svg'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_SWdown-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.png'
+    plt.savefig(fileout)
     plt.show()
 
 
