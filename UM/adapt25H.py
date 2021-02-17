@@ -132,7 +132,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
                 'surface_upward_water_flux']
-    BLlist = ['BL_momentum_diffusion','vertical_buoyancy_gradient','mixing_length_for_momentum']
+    # BLlist = ['BL_momentum_diffusion','vertical_buoyancy_gradient','mixing_length_for_momentum']
     missed_list = [#'theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
                 #'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
                 #'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
@@ -203,6 +203,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     # if diag == 'sfc_pressure':
         print ('')
         print ('Writing ' + diag)
+        print ('Dimensions: ' + str(np.size(np.shape(nc1.variables[diag]))) + 'D')
         ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
             if diag == 'forecast_time':
@@ -214,9 +215,9 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
             if diag == 'height2':
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
-            if diag in missed_list:
-                print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
-                continue
+            # if diag in missed_list:
+            #     print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+            #     continue
             if diag in radlist:
                 if diag == 'sfc_net_SW':
                     dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
@@ -269,7 +270,22 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 else:
                     dat[23:25] = nc2.variables[diag][0:2]
             elif diag in flxlist:
-                continue
+                dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                if diag in nc1.variables:   ## check diagnostic is in both files
+                    dat[0:24] = nc1.variables[diag][0:]
+                else:
+                    dat[0:24] = np.nan
+                if diag in nc2.variables:   ## if missing, fill with nans
+                    dat[24] = nc2.variables[diag][0]
+                else:
+                    dat[24] = np.nan
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -284,11 +300,10 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
 
         ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
-            if diag in missed_list:
-                print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
-                continue
+            # if diag in missed_list:
+            #     print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+            #     continue
             if diag in flxlist:
-                # continue
                 dat = nc.createVariable(diag, np.float64, ('forecast_time','height2',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
@@ -297,18 +312,15 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
-                if diag in BLlist:  ## check diagnostic is in both files
-                    if diag in nc1.variables:
-                        dat[0:24,:] = nc1.variables[diag][0:,:]
-                    else:
-                        dat[0:24,:] = np.nan
-                    if diag in nc2.variables:
-                        dat[24] = nc2.variables[diag][0:2]
-                    else:
-                        dat[24] = np.nan
-                else:
+                # if diag in BLlist:  ## check diagnostic is in both files
+                if diag in nc1.variables:
                     dat[0:24,:] = nc1.variables[diag][0:,:]
+                else:
+                    dat[0:24,:] = np.nan
+                if diag in nc2.variables:
                     dat[24,:] = nc2.variables[diag][0,:]
+                else:
+                    dat[24,:] = np.nan
             elif np.logical_and(diag == 'qice', out_dir[16:21] == 'CASIM'):         ### if it's a casim run, create new total ice var
                 if out_dir[:21] == '12_u-br210_RA1M_CASIM':
                     print ('Run is ' + out_dir[:21] + ', no qicecrystals for this run yet')
