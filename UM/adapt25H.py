@@ -387,14 +387,20 @@ def copyNC(nc1, filename1, out_dir):
     #################################################################
     ## MAKE BESPOKE LIST FOR DIAGS WITH RADIATION TIMESTEPS
     #################################################################
-    radlist = ['surface_net_SW_radiation','surface_net_LW_radiation','IWP','LWP','surface_downwelling_LW_radiation',
-                'surface_downwelling_SW_radiation','toa_incoming_shortwave_flux','toa_outgoing_longwave_flux',
+    radlist = ['sfc_net_SW','sfc_net_LW','IWP','LWP','sfc_downwelling_LW',
+                'sfc_downwelling_SW','toa_incoming_shortwave_flux','toa_outgoing_longwave_flux',
                 'toa_outgoing_shortwave_flux']
     flxlist = ['tke', 'atmosphere_downward_northward_stress', 'atmosphere_downward_eastward_stress',
                 'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
                 'surface_upward_water_flux']
+    missed_list = [#'theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
+                #'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
+                #'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
+                #'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount',
+                'seaice_albedo_agg']
+    winds = ['u','v','w']
 
     #################################################################
     ## CREATE NEW NETCDF
@@ -622,7 +628,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '14_u-bu570_RA1M_CASIM/OUT_R1_24h/'
+    out_dir = '12_u-br210_RA1M_CASIM/OUT_R1_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -633,7 +639,7 @@ def main():
     ### 8_u-bp738_RA2M_CON/              # ERAI
     ### 10_u-bq791_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Fletcher Nice param
     ### 11_u-bq798_RA1M_CASIM/OUT_24h/      # CASIM with 100/cc accum mode soluble aerosol w/Meyers Nice param
-    ### 12_u-br210_RA1M_CASIM/OUT_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+    ### 12_u-br210_RA1M_CASIM/OUT_R1_24h/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
     ### 13_u-br409_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
     ### 14_u-bu570_RA1M_CASIM/OUT_24h/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
     ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
