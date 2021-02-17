@@ -9632,7 +9632,8 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data3['fixed_radiation']['time'] = data3['time_hrly'][:-3]
         data4['fixed_radiation']['time'] = data4['time_hrly'][:-3]
 
-        print(data1['fixed_radiation']['time'].shape)
+        print(data2['fixed_radiation']['time'].shape)
+        print(data4['fixed_radiation']['time'].shape)
         print(data3['fixed_radiation']['time'].shape)
 
         model_swnet_badpoints = np.isnan(swnet_ship[modelindex[0]])
@@ -9955,9 +9956,9 @@ def main():
                 'cloud_fraction','radr_refl']#,'temp_1.5m','latent_heat_flux']
             var_list4 = var_list1
             ### CASIM TESTING
-            if np.logical_or(out_dir4 == '12_u-br210_RA1M_CASIM/OUT_R0/',out_dir4 == '13_u-br409_RA1M_CASIM/OUT_R0/'):
+            if np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '13_u-br409_RA1M_CASIM'):
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-                'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # , 'latent_heat_flux']
                 var_list4 = var_list2
