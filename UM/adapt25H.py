@@ -131,13 +131,13 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
                 'vertical_buoyancy_gradient','BL_momentum_diffusion','mixing_length_for_momentum',
                 'entrainment_rate_SML','entrainment_rate_BL','explicit_friction_velocity',
                 'sea_ice_fraction','bulk_richardson_number','surface_roughness_length',
-                'surface_upward_water_flux']
+                'surface_upward_water_flux','seaice_albedo_agg']
     # BLlist = ['BL_momentum_diffusion','vertical_buoyancy_gradient','mixing_length_for_momentum']
     missed_list = [#'theta','u_10m','v_10m', 'air_temperature_at_1.5m', 'q_1.5m', 'visibility',
                 #'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
                 #'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
                 #'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount',
-                'seaice_albedo_agg']
+                ]
     winds = ['u','v','w']
 
     #################################################################
@@ -215,8 +215,8 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
             if diag == 'height2':
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
-            # if diag in missed_list:
-            #     print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+            # if diag in missed_list:     ## if sea ice albedo
+            #     print ('Diagnostic is sea ice albedo, so need to append some nans.')
             #     continue
             if diag in radlist:
                 if diag == 'sfc_net_SW':
