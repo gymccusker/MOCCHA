@@ -7338,14 +7338,14 @@ def main():
                 ### -------------------------------------------------------------------------
                 if np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/'):    ## choose lam or global for 7_u-bn068/24_u-cc324
                     #### LAM
-                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    model = 'lam'
-                    dirout = out_dir[-17:-10] + '_lam/'
+                    # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    # model = 'lam'
+                    # dirout = out_dir[-17:-10] + '_lam/'
                     #### GLM
-                    # if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
-                    # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-                    # model = 'glm'
-                    # dirout = out_dir[-17:-10] + '_glm/'
+                    if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
+                    filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+                    model = 'glm'
+                    dirout = out_dir[-17:-10] + '_glm/'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
