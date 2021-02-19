@@ -7340,12 +7340,12 @@ def main():
                     #### LAM
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
-                    dirout = 'u-bn068_lam/'
+                    dirout = out_dir[-17:-10] + '_lam/'
                     #### GLM
                     # if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
                     # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
                     # model = 'glm'
-                    # dirout = 'u-bn068_glm/'
+                    # dirout = out_dir[-17:-10] + '_glm/'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
