@@ -7343,6 +7343,7 @@ def main():
                     # dirout = out_dir[-17:-10] + '_lam/'
                     #### GLM
                     if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
+                    if stream == '_pa009': stream = '_pa012'  ## hard fix for glm, pa stream *sometimes* starts at 012
                     filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
                     model = 'glm'
                     dirout = out_dir[-17:-10] + '_glm/'
