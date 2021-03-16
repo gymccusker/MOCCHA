@@ -2745,6 +2745,142 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('Obs = ')
     print (np.nanmean(obs_data['lwp'][p6,0]*1e3))
 
+def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind):
+
+    ###################################
+    ## PLOT TIMESERIES
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting LWP timeseries for whole drift period:')
+    print ('')
+
+    #### set flagged and bad data to nans
+    um_data['model_lwp'][um_data['model_lwp'] <= 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] <= 0] = np.nan
+    misc_data['model_lwp'][misc_data['model_lwp'] <= 0] = np.nan
+    ra2t_data['model_lwp'][ra2t_data['model_lwp'] <= 0] = np.nan
+    ifs_data['model_lwp'][ifs_data['model_lwp'] >= 1.0] = np.nan
+    if obs_switch == 'RADAR':
+        obs_data['lwp'][obs_data['lwp'] < 0] = np.nan     ### index 0 is mean
+    else:
+        obs_data['lwp'][obs_data['lwp'][:,0] == -999.0, 0] = np.nan     ### index 0 is mean
+
+    ###----------------------------------------------------------------
+    ###         Calculate total water content
+    ###----------------------------------------------------------------
+    # obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
+    obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
+    misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
+    ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
+    ra2t_data['model_twc'] = ra2t_data['model_lwc'] + ra2t_data['model_iwc_filtered']
+
+    #### ---------------------------------------------------------------------------------------------------
+    #### ---------------------------------------------------------------------------------------------------
+    ####            CREATE TWC MASK
+    #### ---------------------------------------------------------------------------------------------------
+    #### ---------------------------------------------------------------------------------------------------
+
+    mask0 = np.zeros([np.size(obs_data['twc'],0), np.size(obs_data['twc'],1)])
+    mask1 = np.zeros([np.size(um_data['model_twc'],0), np.size(um_data['model_twc'],1)])
+    mask2 = np.zeros([np.size(misc_data['model_twc'],0), np.size(misc_data['model_twc'],1)])
+    mask3 = np.zeros([np.size(ifs_data['model_twc'],0), np.size(ifs_data['model_twc'],1)])
+    mask4 = np.zeros([np.size(ra2t_data['model_twc'],0), np.size(ra2t_data['model_twc'],1)])
+
+    # print ('mask0 size = ' + str(mask0.shape))
+
+    ####-------------------------------------------------------------------------
+    ### from Michael's paper:
+    ####    "we consider a grid point cloudy when cloud water exceeded
+    ####    0.001 (0.0001) g kg-1 below 1 km (above 4 km), with linear
+    ####    interpolation in between."
+    ####-------------------------------------------------------------------------
+    twc_thresh_um = np.zeros([np.size(um_data['model_twc'],1)])
+    twc_thresh_ifs = np.zeros([np.size(ifs_data['model_twc'],1)])
+
+    ####-------------------------------------------------------------------------
+    ### first look at values below 1 km
+    ###     find Z indices <= 1km, then set twc_thresh values to 1e-6
+    um_lt1km = np.where(um_data['height'][0,:]<=1e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]<=1e3)
+    twc_thresh_um[um_lt1km] = 1e-6
+    twc_thresh_ifs[ifs_lt1km] = 1e-6
+
+    ####-------------------------------------------------------------------------
+    ### next look at values above 4 km
+    ###     find Z indices >= 4km, then set twc_thresh values to 1e-7
+    um_lt1km = np.where(um_data['height'][0,:]>=4e3)
+    ifs_lt1km = np.where(ifs_data['height'][0,:]>=4e3)
+    twc_thresh_um[um_lt1km] = 1e-7
+    twc_thresh_ifs[ifs_lt1km] = 1e-7
+
+    ### find heights not yet assigned
+    um_intZs = np.where(twc_thresh_um == 0.0)
+    ifs_intZs = np.where(twc_thresh_ifs == 0.0)
+
+    ### interpolate for twc_thresh_um
+    x = [1e-6, 1e-7]
+    y = [1e3, 4e3]
+    f = interp1d(y, x)
+    twc_thresh_um[um_intZs] = f(um_data['height'][0,um_intZs].data)
+
+    ### interpolate for twc_thresh_ifs
+    twc_thresh_ifs[ifs_intZs] = f(ifs_data['height'][0,ifs_intZs].data)
+
+    ### plot profile of threshold as sanity check
+    # plt.plot(twc_thresh_um, um_data['height'][0,:])
+    # plt.plot(twc_thresh_ifs, ifs_data['height'][0,:]); plt.show()
+    # print (twc_thresh_um)
+
+    for t in range(0,np.size(um_data['model_twc'],0)):
+        for k in range(0,np.size(um_data['model_twc'],1)):
+            if obs_switch == 'UM':
+                if obs_data['twc'][t,k] < twc_thresh_um[k]:
+                    obs_data['twc'][t,k] = np.nan
+                elif obs_data['twc'][t,k] >= twc_thresh_um[k]:
+                    mask0[t,k] = 1.0
+            if um_data['model_twc'][t,k] < twc_thresh_um[k]:
+                um_data['model_twc'][t,k] = np.nan
+            elif um_data['model_twc'][t,k] >= twc_thresh_um[k]:
+                mask1[t,k] = 1.0
+            if misc_data['model_twc'][t,k] < twc_thresh_um[k]:
+                misc_data['model_twc'][t,k] = np.nan
+            elif misc_data['model_twc'][t,k] >= twc_thresh_um[k]:
+                mask2[t,k] = 1.0
+            if ra2t_data['model_twc'][t,k] < twc_thresh_um[k]:
+                ra2t_data['model_twc'][t,k] = np.nan
+            elif ra2t_data['model_twc'][t,k] >= twc_thresh_um[k]:
+                mask4[t,k] = 1.0
+        for k in range(0,np.size(ifs_data['model_twc'],1)):
+            if ifs_data['model_twc'][t,k] < twc_thresh_ifs[k]:
+                ifs_data['model_twc'][t,k] = np.nan
+            elif ifs_data['model_twc'][t,k] >= twc_thresh_ifs[k]:
+                mask3[t,k] = 1.0
+
+    # ind0 = np.where(obs_data['twc'] >= 1e-6)
+    # mask0[ind0] = 1.0
+    # ind1 = np.where(um_data['model_twc'] >= 1e-6)
+    # mask1[ind1] = 1.0
+    # ind2 = np.where(misc_data['model_twc'] >= 1e-6)
+    # mask2[ind2] = 1.0
+    # ind3 = np.where(ifs_data['model_twc'] >= 1e-6)
+    # mask3[ind3] = 1.0
+    # ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
+    # mask4[ind4] = 1.0
+
+    mask0[nanind] = np.nan
+    mask1[nanind] = np.nan
+    mask2[nanind] = np.nan
+    mask3[nanind] = np.nan
+    mask4[nanind] = np.nan
+
+    mask0[wcind] = np.nan
+    mask1[wcind] = np.nan
+    mask2[wcind] = np.nan
+    mask3[wcind] = np.nan
+    mask4[wcind] = np.nan
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
@@ -7982,7 +8118,7 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
@@ -8007,13 +8143,11 @@ def main():
     # if obs_switch == 'RADAR': lwp = []
     # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
-    # lwp1 = obs_data['lwp'][:,0]
-    # lwp1[lwp1 == -999.0] = np.nan
-    # print (lwp1.shape)
-    # lwp2 = lwp[:,0]
-    # lwp2[lwp2 == -999.0] = np.nan
-    # print (lwp2.shape)
-    # plt.plot(lwp1, lwp2);plt.show()
+
+    # -------------------------------------------------------------
+    # plot bivariate distributions
+    # -------------------------------------------------------------
+    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
