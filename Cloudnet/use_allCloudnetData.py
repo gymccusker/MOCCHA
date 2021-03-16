@@ -6928,11 +6928,11 @@ def main():
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         if obs_switch == 'UM':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V6/' #QF30_metum/14_CASIM-100_QF30/' # QF30_metum/JV_LWPTesting/' #
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V7/' #QF30_metum/14_CASIM-100_QF30/' # QF30_metum/JV_LWPTesting/' #
         elif obs_switch == 'IFS':
             cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V6/'
+            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V7/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -7982,8 +7982,8 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
