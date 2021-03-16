@@ -2882,7 +2882,17 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     mask3[wcind] = np.nan
     mask4[wcind] = np.nan
 
+    print (mask0.shape)
+    print (obs_data['time'][0])
+    print (obs_data['time'][-4])
+    print (data1['fixed_radiation']['time'][0])
+    print (data1['fixed_radiation']['time'][-1])
+    print (data1['fixed_radiation']['LWnet'].shape)
+    print (obs_data['lwp'][:-3,0].shape)
 
+    plt.plot(data1['fixed_radiation']['LWnet'] - obs['fixed_radiation']['LWnet_ship'], um_data['model_lwp'][:-3],'.')
+    # plt.plot(data1['fixed_radiation']['LWnet'], np.nanmean(mask1[:-3],1),'.')
+    plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
@@ -7397,9 +7407,9 @@ def main():
     if platform == 'LAPTOP':
         ### model directories
         out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
-        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R1/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2_lam/'
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
         ### cloudnet directories
         cloudnet_um1 = '4_u-bg610_RA2M_CON/'
         cloudnet_um2 = '14_u-bu570_RA1M_CASIM/'
@@ -7659,11 +7669,12 @@ def main():
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux',
+            'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux', 'temp_1.5m',
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi']
         if not ifs_flag: var_list3 = var_list1
-        var_list4 = var_list1
+        var_list4 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
+            'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] # 'temp_1.5m',
 
         if names[i] in moccha_missing_files:        ### NOTE THIS WON'T WORK IF IT'S THE FIRST FILE THAT'S MISSING!!
             print ('File not available...')
