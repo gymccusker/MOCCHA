@@ -8441,9 +8441,6 @@ def main():
     if out_dir4[:9] == '4_u-bg610': label4 = 'UM_RA2M'
     if out_dir4 == 'UM_RA2M/': label4 = 'UM_RA2M'
 
-    label5 = 'undefined_label'
-    if out_dir5[-4:-1] == 'glm': label5 = 'UM_GLM'
-
     # -------------------------------------------------------------
     # save out working data for debugging purposes
     # -------------------------------------------------------------
