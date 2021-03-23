@@ -9161,7 +9161,14 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     i7 = np.where(np.logical_and(data1['time_hrly'] >= p7[0], data1['time_hrly'] <= p7[-1]))
 
     #### remove flagged data
+    data1['radr_refl'][data1['radr_refl'] == -9999.0] = np.nan
     data2['radr_refl'][data2['radr_refl'] == -9999.0] = np.nan
+    data4['radr_refl'][data4['radr_refl'] == -9999.0] = np.nan
+
+    data1['cloud_fraction'][data1['cloud_fraction'] == -9999.0] = np.nan
+    data2['cloud_fraction'][data2['cloud_fraction'] == -9999.0] = np.nan
+    data4['cloud_fraction'][data4['cloud_fraction'] == -9999.0] = np.nan
+
 
     ####### ----------------------------------------------------------------
     #######     FIGURE
@@ -9185,79 +9192,98 @@ def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, labe
     cmin = -35.0
     h = 5e3
 
-    plt.subplot(3, 2, 1)
-    plt.pcolormesh(data2['time_hrly'][i2], data2['height'], np.transpose(data2['radr_refl'][i2[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p2[0], p2[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.ylim([0,h])
-    plt.title('(P2) ' + d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
-    ax = plt.gca()
-    ax.set_xticks(p2)
-    ax.set_xticklabels(h2)
-
-    plt.subplot(3, 2, 2)
-    ax = plt.gca()
-    plt.pcolormesh(data2['time_hrly'][i3], data2['height'], np.transpose(data2['radr_refl'][i3[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p3[0], p3[-1]])
-    plt.colorbar()
+    # plt.subplot(3, 2, 1)
+    # plt.pcolormesh(data2['time_hrly'][i2], data2['height'], np.transpose(data2['radr_refl'][i2[0],:]),
+    #     vmin = cmin, vmax = cmax)
+    # # plt.xlim([p2[0], p2[-1]])
+    # plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,h])
+    # plt.ylim([0,h])
+    # plt.title('(P2) ' + d2 + ': ' + str(h2[0]) + ' - ' + str(h2[-1]) + 'h')
+    # ax = plt.gca()
+    # ax.set_xticks(p2)
+    # ax.set_xticklabels(h2)
+    #
+    # plt.subplot(3, 2, 2)
+    # ax = plt.gca()
+    # plt.pcolormesh(data2['time_hrly'][i3], data2['height'], np.transpose(data2['cloud_fraction'][i3[0],:]),
+    #     #vmin = cmin, vmax = cmax
+    #     )
+    # # plt.xlim([p3[0], p3[-1]])
+    # plt.colorbar()
+    # # plt.ylabel('Z [m]')
+    # plt.ylim([0,h])
+    # plt.title('(P3) ' + d3 + ': ' + str(h3[0]) + ' - ' + str(h3[-1]) + 'h')
+    # ax.set_xticks(p3)
+    # ax.set_xticklabels(h3)
+
+    ax = plt.gca()
+    plt.plot(data1['time_hrly'][i3], data1['bl_type'][i3], label = 'um_ra2m')
+    plt.plot(data2['time_hrly'][i3], data2['bl_type'][i3], label = 'um_casim-100')
+    plt.plot(data4['time_hrly'][i3], data4['bl_type'][i3], label = 'um_ra2t')
+        #vmin = cmin, vmax = cmax
+        # )
+    # plt.xlim([p3[0], p3[-1]])
+    # plt.colorbar()
+    # plt.ylabel('Z [m]')
+    # plt.ylim([0,h])
+    plt.legend()
     plt.title('(P3) ' + d3 + ': ' + str(h3[0]) + ' - ' + str(h3[-1]) + 'h')
     ax.set_xticks(p3)
     ax.set_xticklabels(h3)
+    #
 
-    plt.subplot(3, 2, 3)
-    ax = plt.gca()
-    plt.pcolormesh(data2['time_hrly'][i4], data2['height'], np.transpose(data2['radr_refl'][i4[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p4[0], p4[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.ylim([0,h])
-    plt.title('(P4) ' + d4 + ': ' + str(h4[0]) + ' - ' + str(h4[-1]) + 'h')
-    ax.set_xticks(p4)
-    ax.set_xticklabels(h4)
 
-    plt.subplot(3, 2, 4)
-    ax = plt.gca()
-    plt.pcolormesh(data2['time_hrly'][i5], data2['height'], np.transpose(data2['radr_refl'][i5[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p5[0], p5[-1]])
-    plt.colorbar()
+
+    # plt.subplot(3, 2, 3)
+    # ax = plt.gca()
+    # plt.pcolormesh(data2['time_hrly'][i4], data2['height'], np.transpose(data2['radr_refl'][i4[0],:]),
+    #     vmin = cmin, vmax = cmax)
+    # # plt.xlim([p4[0], p4[-1]])
+    # plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,h])
-    plt.title('(P5) ' + d5 + ': ' + str(h5[0]) + ' - ' + str(h5[-1]) + 'h')
-    ax.set_xticks(p5)
-    ax.set_xticklabels(h5)
-
-    plt.subplot(3, 2, 5)
-    ax = plt.gca()
-    plt.pcolormesh(data2['time_hrly'][i6], data2['height'], np.transpose(data2['radr_refl'][i6[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p6[0], p6[-1]])
-    plt.colorbar()
-    plt.ylabel('Z [m]')
-    plt.ylim([0,h])
-    plt.title('(P6) ' + d6 + ': ' + str(h6[0]) + ' - ' + str(h6[-1]) + 'h')
-    ax.set_xticks(p6)
-    ax.set_xticklabels(h6)
-
-    plt.subplot(3, 2, 6)
-    ax = plt.gca()
-    plt.pcolormesh(data2['time_hrly'][i7], data2['height'], np.transpose(data2['radr_refl'][i7[0],:]),
-        vmin = cmin, vmax = cmax)
-    # plt.xlim([p7[0], p7[-1]])
-    plt.colorbar()
+    # plt.ylim([0,h])
+    # plt.title('(P4) ' + d4 + ': ' + str(h4[0]) + ' - ' + str(h4[-1]) + 'h')
+    # ax.set_xticks(p4)
+    # ax.set_xticklabels(h4)
+    #
+    # plt.subplot(3, 2, 4)
+    # ax = plt.gca()
+    # plt.pcolormesh(data2['time_hrly'][i5], data2['height'], np.transpose(data2['radr_refl'][i5[0],:]),
+    #     vmin = cmin, vmax = cmax)
+    # # plt.xlim([p5[0], p5[-1]])
+    # plt.colorbar()
+    # # plt.ylabel('Z [m]')
+    # plt.ylim([0,h])
+    # plt.title('(P5) ' + d5 + ': ' + str(h5[0]) + ' - ' + str(h5[-1]) + 'h')
+    # ax.set_xticks(p5)
+    # ax.set_xticklabels(h5)
+    #
+    # plt.subplot(3, 2, 5)
+    # ax = plt.gca()
+    # plt.pcolormesh(data2['time_hrly'][i6], data2['height'], np.transpose(data2['radr_refl'][i6[0],:]),
+    #     vmin = cmin, vmax = cmax)
+    # # plt.xlim([p6[0], p6[-1]])
+    # plt.colorbar()
     # plt.ylabel('Z [m]')
-    plt.ylim([0,h])
-    plt.title('(P7) ' + d7 + ': ' + str(h7[0]) + ' - ' + str(h7[-1]) + 'h')
-    ax.set_xticks(p7)
-    ax.set_xticklabels(h7)
+    # plt.ylim([0,h])
+    # plt.title('(P6) ' + d6 + ': ' + str(h6[0]) + ' - ' + str(h6[-1]) + 'h')
+    # ax.set_xticks(p6)
+    # ax.set_xticklabels(h6)
+    #
+    # plt.subplot(3, 2, 6)
+    # ax = plt.gca()
+    # plt.pcolormesh(data2['time_hrly'][i7], data2['height'], np.transpose(data2['radr_refl'][i7[0],:]),
+    #     vmin = cmin, vmax = cmax)
+    # # plt.xlim([p7[0], p7[-1]])
+    # plt.colorbar()
+    # # plt.ylabel('Z [m]')
+    # plt.ylim([0,h])
+    # plt.title('(P7) ' + d7 + ': ' + str(h7[0]) + ' - ' + str(h7[-1]) + 'h')
+    # ax.set_xticks(p7)
+    # ax.set_xticklabels(h7)
 
-    plt.savefig('../FIGS/TKE/PeriodComparison_UM_CASIM-100_RadrRefl.png', dpi = 600)
+    # plt.savefig('../FIGS/TKE/PeriodComparison_UM_CASIM-100_RadrRefl.png', dpi = 600)
     plt.show()
 
 def TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
@@ -9720,7 +9746,7 @@ def main():
         out_dir2 = '14_u-bu570_RA1M_CASIM/OUT_R1/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/' # '12_u-br210_RA1M_CASIM/OUT_R1/' # 
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9964,8 +9990,8 @@ def main():
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-                'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#, 'tke']#,'latent_heat_flux']#,'tke'] #'qnliq','qnice','mixing_length_for_momentum',
+                'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']#, 'tke']#,'latent_heat_flux']#,'tke'] #'qnliq','qnice','mixing_length_for_momentum','qice',
                 #, 'latent_heat_flux']
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
@@ -10377,7 +10403,7 @@ def main():
     # -------------------------------------------------------------
     # Sandeep - MOCCHA TKE dissipation rates
     # -------------------------------------------------------------
-    # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
+    out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
     # out = TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
