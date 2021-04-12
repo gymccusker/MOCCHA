@@ -172,7 +172,7 @@ def plot_driftMap(um, ifs, ship_data):
     ax.add_feature(cartopy.feature.OCEAN, color='lightcyan', zorder=0)
     ax.add_feature(cartopy.feature.LAND, color='lightgrey', zorder=0, edgecolor='black')
     ax.add_feature(cartopy.feature.COASTLINE)
-    ax.gridlines(color='grey')
+    ax.gridlines(color='black', linestyle = '--')
 
     #################################################################
     ## plot UM data
@@ -248,7 +248,7 @@ def plot_driftMap(um, ifs, ship_data):
     #          transform = ccrs.PlateCarree(),
     #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'r', linewidth = 3,
+             color = 'firebrick', linewidth = 3,
              transform = ccrs.PlateCarree(),
              label = 'AO2018 drift',
              )
