@@ -262,7 +262,7 @@ def plot_driftMap(um, ifs, ship_data):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.svg', dpi=100)
+    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.png', dpi=100)
     # plt.show()
     plt.close()
 
