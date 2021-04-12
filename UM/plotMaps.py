@@ -206,7 +206,7 @@ def plot_driftMap(um, ifs, ship_data):
             # # transform = ccrs.PlateCarree()
             # )
     # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
-    qplt.outline(um[2][0,:,:],
+    qplt.outline(um[2][0,300:,100:400],
             color = 'steelblue')
 
     ###---------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ def plot_driftMap(um, ifs, ship_data):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.png', dpi=100)
+    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.svg', dpi=100)
     # plt.show()
     plt.close()
 
