@@ -248,7 +248,7 @@ def plot_driftMap(um, ifs, ship_data):
     #          transform = ccrs.PlateCarree(),
     #          )
     plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'k', linewidth = 3,
+             color = 'darkred', linewidth = 3,
              transform = ccrs.PlateCarree(),
              label = 'AO2018 drift',
              )
@@ -262,7 +262,7 @@ def plot_driftMap(um, ifs, ship_data):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../FIGS/Drift_UM_IFS_grids_v2.svg', dpi=100)
+    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.svg', dpi=100)
     # plt.show()
     plt.close()
 
@@ -441,7 +441,7 @@ def main():
 
     name = '20180901_oden_'
     date = name[:8]
-    filename_um = um_root_dir + '20180901T1200Z_HighArctic_1p5km_RA2M_CON_pd011_r0.pp'
+    filename_um = um_root_dir + '20180814T1200Z_HighArctic_1p5km_RA2T_CON_pa009_r0.pp'
     filename_ifs = ifs_root_dir + '20180901_moccha_ecmwf_001.nc'
     print (filename_um)
     print (filename_ifs)
