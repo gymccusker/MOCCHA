@@ -206,7 +206,7 @@ def plot_driftMap(um, ifs, ship_data):
             # # transform = ccrs.PlateCarree()
             # )
     # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
-    qplt.outline(um[0][0,:,:],
+    qplt.outline(um[2][0,:,:],
             color = 'steelblue')
 
     ###---------------------------------------------------------------------------------
