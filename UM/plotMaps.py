@@ -466,7 +466,7 @@ def main():
     # -------------------------------------------------------------
     ifs = readDaily(filename_ifs, date)
 
-    np.save('working_data',ifs)
+    # np.save('working_data',ifs)
 
     # -------------------------------------------------------------
     # Plot map
