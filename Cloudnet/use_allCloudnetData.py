@@ -2754,7 +2754,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         radiation terms. I think plotting bivariate histograms of Cv and LWP vs SWdown/LWdown/Rnet
         could really highlight the importance of these missing clear sky periods for the energy
         balance, and hint at knock on issues for the sea ice evolution at longer timescales.
-        Since this is a common issue it may have relevance for cliamte projections as well. 
+        Since this is a common issue it may have relevance for cliamte projections as well.
     '''
 
     ###################################
@@ -2897,10 +2897,23 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (obs_data['time'][-4])
     print (data1['fixed_radiation']['time'][0])
     print (data1['fixed_radiation']['time'][-1])
-    print (data1['fixed_radiation']['LWnet'].shape)
     print (obs_data['lwp'][:-3,0].shape)
 
-    plt.plot(data1['fixed_radiation']['LWnet'] - obs['fixed_radiation']['LWnet_ship'], um_data['model_lwp'][:-3],'.')
+    ### index drift period in ship radiation measurements
+    drift_ship = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['fixed_radiation']['time'][0],
+                    obs['fixed_radiation']['time_ship'] < data1['fixed_radiation']['time'][-1] + 0.05))
+                                ### obs time array ever so slightly offset (+) from models
+
+    print (drift_ship[0].shape)
+
+    print (data1['fixed_radiation']['time'][-1])
+    print (obs['fixed_radiation']['time_ship'][drift_ship[0][-1]])
+
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWnet_ship'][drift_ship[0]], 'k.')
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWnet'], 'b.')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWnet'], 'g.')
+    plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWnet'], 'y.')
     # plt.plot(data1['fixed_radiation']['LWnet'], np.nanmean(mask1[:-3],1),'.')
     plt.show()
 
@@ -7332,6 +7345,26 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data4['fixed_radiation']['SWnet'] = data4['surface_net_SW_radiation'][data4['hrly_flag']][:-3]
         data4['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
 
+        model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
+        # data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-2]
+        # data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data2['fixed_radiation']['SWd'] = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data3['fixed_radiation']['SWd'] = data3['sfc_down_sw'][data3['hrly_flag']][:-3]
+        data3['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        # data4['fixed_radiation']['SWd'] = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']][:-3]
+        # data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+
+        model_lwd_badpoints = np.isnan(lwd_ship[modelindex[0]])
+        # data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-2]
+        # data1['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data2['fixed_radiation']['LWd'] = data2['surface_downwelling_LW_radiation'][data2['hrly_flag']][:-3]
+        data2['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data3['fixed_radiation']['LWd'] = data3['sfc_down_lw'][data3['hrly_flag']][:-3]
+        data3['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        # data4['fixed_radiation']['LWd'] = data4['surface_downwelling_LW_radiation'][data4['hrly_flag']][:-3]
+        # data4['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+
         model_lwnet_badpoints = np.isnan(lwnet_ship[modelindex[0]])
         data1['fixed_radiation']['LWnet'] = data1['surface_net_LW_radiation'][data1['hrly_flag']][:-3]
         data1['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
@@ -7678,10 +7711,10 @@ def main():
         ### --------------------------------------------------------------------
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
-        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-            'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux', 'temp_1.5m',
+        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+            'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux', 'temp_1.5m',
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi']
+            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi','sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
         if not ifs_flag: var_list3 = var_list1
         var_list4 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
             'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] # 'temp_1.5m',
