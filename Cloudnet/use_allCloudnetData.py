@@ -2747,6 +2747,16 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
 def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind):
 
+    '''
+        Following Jonny's comment:
+        The one thing I was thinking that would be good to see in addition is a plot that
+        really nails down the link between the errors in cloud cover and the incoming
+        radiation terms. I think plotting bivariate histograms of Cv and LWP vs SWdown/LWdown/Rnet
+        could really highlight the importance of these missing clear sky periods for the energy
+        balance, and hint at knock on issues for the sea ice evolution at longer timescales.
+        Since this is a common issue it may have relevance for cliamte projections as well. 
+    '''
+
     ###################################
     ## PLOT TIMESERIES
     ###################################
