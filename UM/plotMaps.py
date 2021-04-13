@@ -117,7 +117,7 @@ def trackShip(data):
 
     return trackShip_index
 
-def plot_driftMap(um, ifs, ship_data):
+def plot_driftMap(um, glm, ifs, ship_data):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -208,6 +208,8 @@ def plot_driftMap(um, ifs, ship_data):
     # qplt.scatter(um[0].dim_coords[2], um[0].dim_coords[1], s = 9, c = 'steelblue')
     qplt.outline(um[2][0,300:,100:400],
             color = 'steelblue')
+    # qplt.outline(glm[1][0,:,:],
+    #         color = 'lightgrey')
 
     ###---------------------------------------------------------------------------------
     ### Plot ifs grid centres
@@ -262,7 +264,7 @@ def plot_driftMap(um, ifs, ship_data):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../FIGS/Drift_UM_IFS_grids_v3.svg', dpi=100)
+    plt.savefig('../FIGS/Drift_UM_IFS_grids_v4.png', dpi=300)
     # plt.show()
     plt.close()
 
@@ -442,21 +444,24 @@ def main():
     name = '20180901_oden_'
     date = name[:8]
     filename_um = um_root_dir + '20180814T1200Z_HighArctic_1p5km_RA2T_CON_pa009_r0.pp'
+    filename_glm = um_root_dir + '20180814T1200Z_glm_pa012_r0.pp'
     filename_ifs = ifs_root_dir + '20180901_moccha_ecmwf_001.nc'
     print (filename_um)
     print (filename_ifs)
     print ('')
 
     #### LOAD CUBE
-    print ('Loading first run diagnostics:')
+    print ('Loading UM LAM grid:')
     cube_um = iris.load(filename_um)
     print ('...')
-    # print ('Loading second run diagnostics:')
-    # cube_ifs = iris.load(filename_ifs)
+    print ('Loading UM GLM grid:')
+    cube_glm = iris.load(filename_glm)
+    print ('...')
     # -------------------------------------------------------------
     print ('...')
 
     print (cube_um)
+    print (cube_glm)
     print ('')
     # print (cube_ifs)
     # print ('')
@@ -471,7 +476,7 @@ def main():
     # -------------------------------------------------------------
     # Plot map
     # -------------------------------------------------------------
-    figure = plot_driftMap(cube_um, ifs, ship_data)
+    figure = plot_driftMap(cube_um, cube_glm, ifs, ship_data)
 
 
     # -------------------------------------------------------------
