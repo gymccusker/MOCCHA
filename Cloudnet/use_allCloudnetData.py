@@ -2747,6 +2747,10 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
 def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind):
 
+    from sklearn.metrics import r2_score
+    from sklearn import linear_model
+    from scipy import stats
+
     '''
         Following Jonny's comment:
         The one thing I was thinking that would be good to see in addition is a plot that
@@ -2909,12 +2913,42 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (data1['fixed_radiation']['time'][-1])
     print (obs['fixed_radiation']['time_ship'][drift_ship[0][-1]])
 
-    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWnet_ship'][drift_ship[0]], 'k.')
-    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWnet'], 'b.')
-    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWnet'], 'g.')
-    plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
-    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWnet'], 'y.')
-    # plt.plot(data1['fixed_radiation']['LWnet'], np.nanmean(mask1[:-3],1),'.')
+
+    slope1, intercept1, r_value1, p_value1, std_err1 = stats.linregress(iceabove[mask1], icebelow[mask1])
+    line1 = slope1*iceabove+intercept1
+    print("r-squared1:", r_value1**2)
+
+    plt.subplot(221)
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.', label = 'obs')
+    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], 'b.', label = 'um_ra2m')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['SWd'], 'g.', label = 'um_casim-100')
+    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['SWd'], 'r.', label = 'um_ra2t')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['SWd'], 'y.', label = 'ecmwf_ifs')
+    plt.legend()
+    plt.xlabel('lwp')
+    plt.ylabel('SWdown')
+
+    plt.subplot(222)
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWd_ship'][drift_ship[0]], 'k.')
+    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWd'], 'g.')
+    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWd'], 'r.')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWd'], 'y.')
+    plt.xlabel('lwp')
+    plt.ylabel('LWdown')
+
+    plt.subplot(223)
+    # plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.')
+    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3,
+        data2['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'g.')
+    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3,
+        data3['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'y.')
+    plt.grid('on')
+    plt.xlabel('lwp[mod-obs]')
+    plt.ylabel('SWdown[mod-obs]')
+
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
