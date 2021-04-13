@@ -800,19 +800,52 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     crf4 = sw4# + lw4
     crf2 = sw2 #+ lw2
 
-    ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
+    ### ---------------------------------------------
+    ### just downwelling radiation timeseries
+    ### ---------------------------------------------
+    # ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
+    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
+    # plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
+    # plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
+    # plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
+    # plt.xlim(doy[0], doy[-1])
+    # plt.ylim([-10, 220])
+    # plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
+    # plt.ylabel('SW$_{\downarrow}$ \n [W m$^{-2}$]')
+    # plt.xlabel('Date')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+
+    ### ---------------------------------------------
+    ### timeseries + pdf
+    ### ---------------------------------------------
+    ax  = fig.add_axes([0.1,0.81,0.62,0.18])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
     plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
     plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
     plt.xlim(doy[0], doy[-1])
-    plt.ylim([-10, 220])
-    plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
-    plt.ylabel('SW$_{\downarrow}$ \n [W m$^{-2}$]')
+    plt.ylim([-10, 240])
+    plt.legend(bbox_to_anchor=(-0.05, 0.92, 1., .102), loc=1, ncol=2)
+    plt.ylabel('SW$_{\downarrow}$ [W m$^{-2}$]')
     plt.xlabel('Date')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+
+
+    ax  = fig.add_axes([0.78,0.83,0.13,0.15])   # left, bottom, width, height
+    yEmax = 0.02
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    f = sns.distplot(obs['fixed_radiation']['SWd_ice'], hist=False, color="grey", kde_kws={"linewidth": 2})
+    f = sns.distplot(obs['fixed_radiation']['SWd_ship'], hist=False, color="black")
+    f = sns.distplot(crf4, hist=False, color="purple", kde_kws={"shade": True})
+    f = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    # plt.annotate('Melt', xy=(87,0.087), xytext=(87,0.087), fontsize = 14)
+    plt.xlim([-20,240])
+    plt.ylim([0,yEmax])
+    plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
 
     ########            Cloud fraction
     ########
@@ -837,7 +870,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     axminor = np.arange(0,9.01e3,0.5e3)
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.title(label2)# + '\n Cloud fraction')
+    plt.title(label2, fontsize = 14)# + '\n Cloud fraction')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
@@ -852,11 +885,11 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.title(label4)# + '\n Cloud fraction')
+    plt.title(label4, fontsize = 14)# + '\n Cloud fraction')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
-    cbaxes = fig.add_axes([0.71, 0.53, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.54, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     cbaxes.set_xlabel('C$_{V}$', rotation = 0, labelpad = 15, fontsize = 14)
     cbaxes.xaxis.set_label_position('top')
@@ -934,7 +967,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax.set_yticklabels([0,3,6,9])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.71, 0.3, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.31, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     cbaxes.set_xlabel('N$_{d}$ \n[cm$^{-3}$]', rotation = 0, labelpad = 10, fontsize = 14)
     cbaxes.xaxis.set_label_position('top')
@@ -1005,7 +1038,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax.set_yticklabels([0,3,6,9])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.71, 0.07, 0.015, 0.15])
+    cbaxes = fig.add_axes([0.71, 0.08, 0.015, 0.15])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
     cbaxes.set_xlabel('q$_{liq}$ \n[g kg$^{-1}$]', rotation = 0, labelpad = 10, fontsize = 14)
     cbaxes.xaxis.set_label_position('top')
@@ -1039,8 +1072,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_SWdown-TS-Obs_Cv_Ndrop_Qliq_hourlyCRFobs_newColours_Dates_newRadiation.png'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/CASIM/CASIM-100_CASIM-AeroProf_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
+    plt.savefig(fileout)
     plt.show()
 
 
@@ -10403,7 +10436,7 @@ def main():
     # -------------------------------------------------------------
     # Sandeep - MOCCHA TKE dissipation rates
     # -------------------------------------------------------------
-    out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
+    # out = radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
     # out = TKEDissRate_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
