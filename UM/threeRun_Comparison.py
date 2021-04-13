@@ -5387,7 +5387,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ax  = fig.add_axes([0.55,0.56,0.4,0.12])   # left, bottom, width, height
     sfig4 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['q_anomalies'],
-        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.RdBu_r)
+        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     #### plot periods
     ## p3
@@ -5419,7 +5419,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ax  = fig.add_axes([0.55,0.39,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data2['time_6hrly'], data1['universal_height'], data2['q_anomalies'],
-        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.RdBu_r)
+        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     #### plot periods
     ## p3
@@ -5448,7 +5448,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data4['time_6hrly'], data1['universal_height'], data4['q_anomalies'],
-        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.RdBu_r)
+        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     #### plot periods
     ## p3
@@ -5477,7 +5477,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ax  = fig.add_axes([0.55,0.05,0.4,0.12])   # left, bottom, width, height
     plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
-        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.RdBu_r)
+        vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
     plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
     #### plot periods
     ## p3
@@ -5512,8 +5512,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum_ifs_casim-aeroprof_ra2t_ra2m_Dates_fixedRA2T.png'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-aeroprof_ra2t_ra2m_Dates_fixedRA2T.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
