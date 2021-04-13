@@ -2913,11 +2913,42 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (data1['fixed_radiation']['time'][-1])
     print (obs['fixed_radiation']['time_ship'][drift_ship[0][-1]])
 
+    ### --------------------------------------
+    ### compute linear regression
+    ### --------------------------------------
+    x_sw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_sw2 = data2['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
+    mask2 = ~np.isnan(x_sw2) & ~np.isnan(y_sw2)
+    slope_sw2, intercept_sw2, r_value_sw2, p_value_sw2, std_err_sw2 = stats.linregress(x_sw2[mask2],y_sw2[mask2])
+    line_sw2 = slope_sw2 * x_sw2 + intercept_sw2
+    print("r-squared-SWd-um_casim-100:", r_value_sw2**2)
 
-    slope1, intercept1, r_value1, p_value1, std_err1 = stats.linregress(iceabove[mask1], icebelow[mask1])
-    line1 = slope1*iceabove+intercept1
-    print("r-squared1:", r_value1**2)
+    x_sw3 = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_sw3 = data3['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
+    mask3 = ~np.isnan(x_sw3) & ~np.isnan(y_sw3)
+    slope_sw3, intercept_sw3, r_value_sw3, p_value_sw3, std_err_sw3 = stats.linregress(x_sw3[mask3],y_sw3[mask3])
+    line_sw3 = slope_sw3 * x_sw3 + intercept_sw3
+    print("r-squared-SWd-ecmwf_ifs:", r_value_sw3**2)
 
+    x_lw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_lw2 = data2['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
+    mask2 = ~np.isnan(x_lw2) & ~np.isnan(y_lw2)
+    slope_lw2, intercept_lw2, r_value_lw2, p_value_lw2, std_err_lw2 = stats.linregress(x_lw2[mask2],y_lw2[mask2])
+    line_lw2 = slope_lw2 * x_lw2 + intercept_lw2
+    print("r-squared-LWd-um_casim-100:", r_value_lw2**2)
+
+    x_lw3 = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_lw3 = data3['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
+    mask3 = ~np.isnan(x_lw3) & ~np.isnan(y_lw3)
+    slope_lw3, intercept_lw3, r_value_lw3, p_value_lw3, std_err_lw3 = stats.linregress(x_lw3[mask3],y_lw3[mask3])
+    line_lw3 = slope_lw3 * x_lw3 + intercept_lw3
+    print("r-squared-LWd-ecmwf_ifs:", r_value_lw3**2)
+
+
+
+    ### --------------------------------------
+    ### plot figure
+    ### --------------------------------------
     plt.subplot(221)
     plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.', label = 'obs')
     # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], 'b.', label = 'um_ra2m')
@@ -2940,14 +2971,26 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(223)
     # plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.')
     # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
-    plt.plot(misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3,
-        data2['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'g.')
+    plt.plot(x_sw2, y_sw2, 'g.')
+    plt.plot(x_sw2, line_sw2, 'g')
     # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
-    plt.plot(ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3,
-        data3['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'y.')
+    plt.plot(x_sw3, y_sw3, 'y.')
+    plt.plot(x_sw3, line_sw3, 'y')
     plt.grid('on')
     plt.xlabel('lwp[mod-obs]')
     plt.ylabel('SWdown[mod-obs]')
+
+    plt.subplot(224)
+    # plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.')
+    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
+    plt.plot(x_lw2, y_lw2, 'g.')
+    plt.plot(x_lw2, line_lw2, 'g')
+    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
+    plt.plot(x_lw3, y_lw3, 'y.')
+    plt.plot(x_lw3, line_lw3, 'y')
+    plt.grid('on')
+    plt.xlabel('lwp[mod-obs]')
+    plt.ylabel('LWdown[mod-obs]')
 
     plt.show()
 
