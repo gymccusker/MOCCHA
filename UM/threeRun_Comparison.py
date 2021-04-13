@@ -845,6 +845,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     # plt.annotate('Melt', xy=(87,0.087), xytext=(87,0.087), fontsize = 14)
     plt.xlim([-20,240])
     plt.ylim([0,yEmax])
+    plt.yticks([0,0.01,0.02])
     plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
 
     ########            Cloud fraction
