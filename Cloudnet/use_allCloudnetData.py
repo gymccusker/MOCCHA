@@ -2937,6 +2937,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     line_sw3 = slope_sw3 * x_sw3 + intercept_sw3
     print("r-squared-SWd-ecmwf_ifs:", r_value_sw3**2)
 
+    x_sw4 = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_sw4 = data4['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
+    mask4 = ~np.isnan(x_sw4) & ~np.isnan(y_sw4)
+    slope_sw4, intercept_sw4, r_value_sw4, p_value_sw4, std_err_sw4 = stats.linregress(x_sw4[mask4],y_sw4[mask4])
+    line_sw4 = slope_sw4 * x_sw4 + intercept_sw4
+    print("r-squared-SWd-um_ra2t:", r_value_sw4**2)
+
     x_lw1 = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
     y_lw1 = data1['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
     mask1 = ~np.isnan(x_lw1) & ~np.isnan(y_lw1)
@@ -2958,6 +2965,12 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     line_lw3 = slope_lw3 * x_lw3 + intercept_lw3
     print("r-squared-LWd-ecmwf_ifs:", r_value_lw3**2)
 
+    x_lw4 = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_lw4 = data4['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
+    mask4 = ~np.isnan(x_lw4) & ~np.isnan(y_lw4)
+    slope_lw4, intercept_lw4, r_value_lw4, p_value_lw4, std_err_lw4 = stats.linregress(x_lw4[mask4],y_lw4[mask4])
+    line_lw4 = slope_lw4 * x_lw4 + intercept_lw4
+    print("r-squared-LWd-um_ra2t:", r_value_lw4**2)
 
     ##################################################
     ##################################################
@@ -2984,43 +2997,61 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
 
     plt.subplot(221)
-    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.', label = 'obs')
-    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], '.', color = 'darkblue', label = 'um_ra2m')
-    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['SWd'], '.', color = 'mediumseagreen', label = 'um_casim-100')
-    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['SWd'], 'r.', label = 'um_ra2t')
-    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['SWd'], '.', color = 'gold', label = 'ecmwf_ifs')
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'ko', alpha = 0.5, markersize = 4, label = 'Obs')
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'darkblue', label = 'UM_RA2M')
+    plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'steelblue', label = 'UM_RA2T')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'mediumseagreen', label = 'UM_CASIM-100')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'gold', label = 'ECMWF_IFS')
     plt.legend()
     plt.xlabel('LWP [g m$^{-2}$]')
     plt.ylabel('SW$_{\downarrow}$ [W m$^{-2}$]')
 
     plt.subplot(222)
-    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWd_ship'][drift_ship[0]], 'k.')
-    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], '.', color = 'darkblue')
-    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWd'], '.', color = 'mediumseagreen')
-    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWd'], 'r.')
-    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWd'], '.', color = 'gold')
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWd_ship'][drift_ship[0]], 'ko', alpha = 0.5, markersize = 4)
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'darkblue')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'mediumseagreen')
+    plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'gold')
     plt.xlabel('LWP [g m$^{-2}$]')
     plt.ylabel('LW$_{\downarrow}$ [W m$^{-2}$]')
 
     plt.subplot(223)
-    plt.plot(x_sw1, y_sw1, '.', color = 'darkblue')
-    plt.plot(x_sw2, y_sw2, '.', color = 'mediumseagreen')
-    plt.plot(x_sw3, y_sw3, '.', color = 'gold')
-    plt.plot(x_sw1, line_sw1, color = 'navy')
-    plt.plot(x_sw2, line_sw2, color = 'seagreen')
-    plt.plot(x_sw3, line_sw3, color = 'goldenrod')
-    plt.grid('on')
+    xmin = -250
+    xmax = 400
+    y1min = -130
+    y1max = 75
+    plt.plot(x_sw1, y_sw1, '.', alpha = 0.5, color = 'darkblue')
+    plt.plot(x_sw2, y_sw2, '.', alpha = 0.5, color = 'mediumseagreen')
+    plt.plot(x_sw3, y_sw3, '.', alpha = 0.5, color = 'gold')
+    plt.plot(x_sw4, y_sw4, '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(x_sw1, line_sw1, color = 'darkblue')
+    plt.plot(x_sw2, line_sw2, color = 'mediumseagreen')
+    plt.plot(x_sw3, line_sw3, color = 'gold')
+    plt.plot(x_sw4, line_sw4, color = 'steelblue')
+    # plt.grid('on')
+    plt.ylim([y1min,y1max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(224)
-    plt.plot(x_lw1, y_lw1, '.', color = 'darkblue')
-    plt.plot(x_lw2, y_lw2, '.', color = 'mediumseagreen')
-    plt.plot(x_lw3, y_lw3, '.', color = 'gold')
-    plt.plot(x_lw1, line_lw1, color = 'navy')
-    plt.plot(x_lw2, line_lw2, color = 'seagreen')
-    plt.plot(x_lw3, line_lw3, color = 'goldenrod')
-    plt.grid('on')
+    y2min = -80
+    y2max = 90
+    plt.plot(x_lw1, y_lw1, '.', alpha = 0.5, color = 'darkblue')
+    plt.plot(x_lw2, y_lw2, '.', alpha = 0.5, color = 'mediumseagreen')
+    plt.plot(x_lw3, y_lw3, '.', alpha = 0.5, color = 'gold')
+    plt.plot(x_lw4, y_lw4, '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(x_lw1, line_lw1, color = 'darkblue')
+    plt.plot(x_lw2, line_lw2, color = 'mediumseagreen')
+    plt.plot(x_lw3, line_lw3, color = 'gold')
+    plt.plot(x_lw4, line_lw4, color = 'steelblue')
+    # plt.grid('on')
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
