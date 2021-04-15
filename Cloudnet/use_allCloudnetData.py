@@ -7546,13 +7546,13 @@ def main():
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
         ### model directories
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
         ### cloudnet directories
         cloudnet_um1 = '4_u-bg610_RA2M_CON/'
-        cloudnet_um2 = '14_u-bu570_RA1M_CASIM/'
+        cloudnet_um2 = '23_u-cc278_RA1M_CASIM/'
         cloudnet_um4 = '7_u-bn068_RA2T_CON/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
