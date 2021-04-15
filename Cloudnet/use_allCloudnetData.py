@@ -2929,74 +2929,31 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data1['biases']['LWP']) & ~np.isnan(data1['biases'][bias])
         data1['biases'][bias + '-LWP_regres']['slope'], data1['biases'][bias + '-LWP_regres']['intercept'], data1['biases'][bias + '-LWP_regres']['r_value'], data1['biases'][bias + '-LWP_regres']['p_value'], data1['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data1['biases']['LWP'][mask],data1['biases'][bias][mask])
         data1['biases'][bias + '-LWP_regres']['line'] = data1['biases'][bias + '-LWP_regres']['slope'] * data1['biases']['LWP'] + data1['biases'][bias + '-LWP_regres']['intercept']
-        print("r-squared-SWd-um_ra2m:", data1['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-squared-' + bias + '-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data2['biases'][bias + '-LWP_regres'] = {}
-        data2['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+        data2['biases']['LWP'] = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
         data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
         mask = ~np.isnan(data2['biases']['LWP']) & ~np.isnan(data2['biases'][bias])
         data2['biases'][bias + '-LWP_regres']['slope'], data2['biases'][bias + '-LWP_regres']['intercept'], data2['biases'][bias + '-LWP_regres']['r_value'], data2['biases'][bias + '-LWP_regres']['p_value'], data2['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data2['biases']['LWP'][mask],data2['biases'][bias][mask])
         data2['biases'][bias + '-LWP_regres']['line'] = data2['biases'][bias + '-LWP_regres']['slope'] * data2['biases']['LWP'] + data2['biases'][bias + '-LWP_regres']['intercept']
-        print("r-squared-SWd-um_ra2m:", data2['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-squared-' + bias + '-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data3['biases'][bias + '-LWP_regres'] = {}
-        data3['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+        data3['biases']['LWP'] = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
         data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
         mask = ~np.isnan(data3['biases']['LWP']) & ~np.isnan(data3['biases'][bias])
         data3['biases'][bias + '-LWP_regres']['slope'], data3['biases'][bias + '-LWP_regres']['intercept'], data3['biases'][bias + '-LWP_regres']['r_value'], data3['biases'][bias + '-LWP_regres']['p_value'], data3['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data3['biases']['LWP'][mask],data3['biases'][bias][mask])
         data3['biases'][bias + '-LWP_regres']['line'] = data3['biases'][bias + '-LWP_regres']['slope'] * data3['biases']['LWP'] + data3['biases'][bias + '-LWP_regres']['intercept']
-        print("r-squared-SWd-um_ra2m:", data3['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-squared-' + bias + '-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data4['biases'][bias + '-LWP_regres'] = {}
-        data4['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+        data4['biases']['LWP'] = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
         data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
         mask = ~np.isnan(data4['biases']['LWP']) & ~np.isnan(data4['biases'][bias])
         data4['biases'][bias + '-LWP_regres']['slope'], data4['biases'][bias + '-LWP_regres']['intercept'], data4['biases'][bias + '-LWP_regres']['r_value'], data4['biases'][bias + '-LWP_regres']['p_value'], data4['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data4['biases']['LWP'][mask],data4['biases'][bias][mask])
         data4['biases'][bias + '-LWP_regres']['line'] = data4['biases'][bias + '-LWP_regres']['slope'] * data4['biases']['LWP'] + data4['biases'][bias + '-LWP_regres']['intercept']
-        print("r-squared-SWd-um_ra2m:", data4['biases'][bias + '-LWP_regres']['r_value']**2)
-
-    # x_sw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_sw2 = data2['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
-    # mask2 = ~np.isnan(x_sw2) & ~np.isnan(y_sw2)
-    # slope_sw2, intercept_sw2, r_value_sw2, p_value_sw2, std_err_sw2 = stats.linregress(x_sw2[mask2],y_sw2[mask2])
-    # line_sw2 = slope_sw2 * x_sw2 + intercept_sw2
-    # print("r-squared-SWd-um_casim-200:", r_value_sw2**2)
-    #
-    # x_sw3 = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_sw3 = data3['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
-    # mask3 = ~np.isnan(x_sw3) & ~np.isnan(y_sw3)
-    # slope_sw3, intercept_sw3, r_value_sw3, p_value_sw3, std_err_sw3 = stats.linregress(x_sw3[mask3],y_sw3[mask3])
-    # line_sw3 = slope_sw3 * x_sw3 + intercept_sw3
-    # print("r-squared-SWd-ecmwf_ifs:", r_value_sw3**2)
-    #
-    # x_sw4 = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_sw4 = data4['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
-    # mask4 = ~np.isnan(x_sw4) & ~np.isnan(y_sw4)
-    # slope_sw4, intercept_sw4, r_value_sw4, p_value_sw4, std_err_sw4 = stats.linregress(x_sw4[mask4],y_sw4[mask4])
-    # line_sw4 = slope_sw4 * x_sw4 + intercept_sw4
-    # print("r-squared-SWd-um_ra2t:", r_value_sw4**2)
-    #
-    #
-    # x_lw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_lw2 = data2['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
-    # mask2 = ~np.isnan(x_lw2) & ~np.isnan(y_lw2)
-    # slope_lw2, intercept_lw2, r_value_lw2, p_value_lw2, std_err_lw2 = stats.linregress(x_lw2[mask2],y_lw2[mask2])
-    # line_lw2 = slope_lw2 * x_lw2 + intercept_lw2
-    # print("r-squared-LWd-um_casim-100:", r_value_lw2**2)
-    #
-    # x_lw3 = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_lw3 = data3['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
-    # mask3 = ~np.isnan(x_lw3) & ~np.isnan(y_lw3)
-    # slope_lw3, intercept_lw3, r_value_lw3, p_value_lw3, std_err_lw3 = stats.linregress(x_lw3[mask3],y_lw3[mask3])
-    # line_lw3 = slope_lw3 * x_lw3 + intercept_lw3
-    # print("r-squared-LWd-ecmwf_ifs:", r_value_lw3**2)
-    #
-    # x_lw4 = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-    # y_lw4 = data4['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
-    # mask4 = ~np.isnan(x_lw4) & ~np.isnan(y_lw4)
-    # slope_lw4, intercept_lw4, r_value_lw4, p_value_lw4, std_err_lw4 = stats.linregress(x_lw4[mask4],y_lw4[mask4])
-    # line_lw4 = slope_lw4 * x_lw4 + intercept_lw4
-    # print("r-squared-LWd-um_ra2t:", r_value_lw4**2)
+        print('r-squared-' + bias + '-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value']**2)
 
     ##################################################
     ##################################################
