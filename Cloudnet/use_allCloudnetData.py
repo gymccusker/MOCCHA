@@ -7807,9 +7807,9 @@ def main():
         #### CHOOSE MODEL DIAGNOSTICS FIRST
         ### --------------------------------------------------------------------
         var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'temp_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice']
+            'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'temp_1.5m',
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-            'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] #'latent_heat_flux', 'temp_1.5m',
+            'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] # 'temp_1.5m',
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi','sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
         if not ifs_flag: var_list3 = var_list1
