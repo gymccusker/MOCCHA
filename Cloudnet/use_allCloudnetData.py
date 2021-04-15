@@ -2916,6 +2916,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ### --------------------------------------
     ### compute linear regression
     ### --------------------------------------
+    x_sw1 = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_sw1 = data1['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
+    mask1 = ~np.isnan(x_sw1) & ~np.isnan(y_sw1)
+    slope_sw1, intercept_sw1, r_value_sw1, p_value_sw1, std_err_sw1 = stats.linregress(x_sw1[mask1],y_sw1[mask1])
+    line_sw1 = slope_sw1 * x_sw1 + intercept_sw1
+    print("r-squared-SWd-um_ra2m:", r_value_sw1**2)
+
     x_sw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
     y_sw2 = data2['fixed_radiation']['SWd'] - obs['fixed_radiation']['SWd_ship'][drift_ship[0]]
     mask2 = ~np.isnan(x_sw2) & ~np.isnan(y_sw2)
@@ -2929,6 +2936,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     slope_sw3, intercept_sw3, r_value_sw3, p_value_sw3, std_err_sw3 = stats.linregress(x_sw3[mask3],y_sw3[mask3])
     line_sw3 = slope_sw3 * x_sw3 + intercept_sw3
     print("r-squared-SWd-ecmwf_ifs:", r_value_sw3**2)
+
+    x_lw1 = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+    y_lw1 = data1['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
+    mask1 = ~np.isnan(x_lw1) & ~np.isnan(y_lw1)
+    slope_lw1, intercept_lw1, r_value_lw1, p_value_lw1, std_err_lw1 = stats.linregress(x_lw1[mask1],y_lw1[mask1])
+    line_lw1 = slope_lw1 * x_lw1 + intercept_lw1
+    print("r-squared-LWd-um_ra2m:", r_value_lw1**2)
 
     x_lw2 = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
     y_lw2 = data2['fixed_radiation']['LWd'] - obs['fixed_radiation']['LWd_ship'][drift_ship[0]]
@@ -2971,7 +2985,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     plt.subplot(221)
     plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.', label = 'obs')
-    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], 'b.', label = 'um_ra2m')
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], '.', color = 'darkblue', label = 'um_ra2m')
     plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['SWd'], '.', color = 'mediumseagreen', label = 'um_casim-100')
     # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['SWd'], 'r.', label = 'um_ra2t')
     plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['SWd'], '.', color = 'gold', label = 'ecmwf_ifs')
@@ -2981,7 +2995,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     plt.subplot(222)
     plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWd_ship'][drift_ship[0]], 'k.')
-    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], '.', color = 'darkblue')
     plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWd'], '.', color = 'mediumseagreen')
     # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWd'], 'r.')
     plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['LWd'], '.', color = 'gold')
@@ -2989,11 +3003,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('LW$_{\downarrow}$ [W m$^{-2}$]')
 
     plt.subplot(223)
-    # plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.')
-    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
-    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
+    plt.plot(x_sw1, y_sw1, '.', color = 'darkblue')
     plt.plot(x_sw2, y_sw2, '.', color = 'mediumseagreen')
     plt.plot(x_sw3, y_sw3, '.', color = 'gold')
+    plt.plot(x_sw1, line_sw1, color = 'navy')
     plt.plot(x_sw2, line_sw2, color = 'seagreen')
     plt.plot(x_sw3, line_sw3, color = 'goldenrod')
     plt.grid('on')
@@ -3001,11 +3014,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(224)
-    # plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'k.')
-    # plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], 'b.')
-    # plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['LWnet'], 'r.')
+    plt.plot(x_lw1, y_lw1, '.', color = 'darkblue')
     plt.plot(x_lw2, y_lw2, '.', color = 'mediumseagreen')
     plt.plot(x_lw3, y_lw3, '.', color = 'gold')
+    plt.plot(x_lw1, line_lw1, color = 'navy')
     plt.plot(x_lw2, line_lw2, color = 'seagreen')
     plt.plot(x_lw3, line_lw3, color = 'goldenrod')
     plt.grid('on')
