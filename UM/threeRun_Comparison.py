@@ -9780,7 +9780,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9807,6 +9807,7 @@ def main():
     ### 19_u-ca012_RA2T_CON/              # RA2T_CON nest + global 4D stash; includes diagnosed turbulent dissipation rate
     ### 20_u-ca362_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
     ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
+    ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
     ### 25_u-cc568_RA2M_CON/OUT_R0/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
 
     print ('******')
