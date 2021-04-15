@@ -7455,8 +7455,8 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data4['fixed_radiation']['SWnet'][model_swnet_badpoints] = np.nan
 
         model_swd_badpoints = np.isnan(swd_ship[modelindex[0]])
-        # data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-2]
-        # data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data1['fixed_radiation']['SWd'] = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']][:-2]
+        data1['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
         data2['fixed_radiation']['SWd'] = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']][:-3]
         data2['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
         data3['fixed_radiation']['SWd'] = data3['sfc_down_sw'][data3['hrly_flag']][:-3]
@@ -7465,8 +7465,8 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         # data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
 
         model_lwd_badpoints = np.isnan(lwd_ship[modelindex[0]])
-        # data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-2]
-        # data1['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-2]
+        data1['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
         data2['fixed_radiation']['LWd'] = data2['surface_downwelling_LW_radiation'][data2['hrly_flag']][:-3]
         data2['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
         data3['fixed_radiation']['LWd'] = data3['sfc_down_lw'][data3['hrly_flag']][:-3]
