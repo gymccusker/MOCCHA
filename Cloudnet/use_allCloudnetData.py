@@ -2930,6 +2930,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data1['biases']['LWP']) & ~np.isnan(data1['biases'][bias])
         data1['biases'][bias + '-LWP_regres']['slope'], data1['biases'][bias + '-LWP_regres']['intercept'], data1['biases'][bias + '-LWP_regres']['r_value'], data1['biases'][bias + '-LWP_regres']['p_value'], data1['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data1['biases']['LWP'][mask],data1['biases'][bias][mask])
         data1['biases'][bias + '-LWP_regres']['line'] = data1['biases'][bias + '-LWP_regres']['slope'] * data1['biases']['LWP'] + data1['biases'][bias + '-LWP_regres']['intercept']
+        print('r-' + bias + '-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value'])
         print('r-squared-' + bias + '-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data2['biases'][bias + '-LWP_regres'] = {}
@@ -2938,6 +2939,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data2['biases']['LWP']) & ~np.isnan(data2['biases'][bias])
         data2['biases'][bias + '-LWP_regres']['slope'], data2['biases'][bias + '-LWP_regres']['intercept'], data2['biases'][bias + '-LWP_regres']['r_value'], data2['biases'][bias + '-LWP_regres']['p_value'], data2['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data2['biases']['LWP'][mask],data2['biases'][bias][mask])
         data2['biases'][bias + '-LWP_regres']['line'] = data2['biases'][bias + '-LWP_regres']['slope'] * data2['biases']['LWP'] + data2['biases'][bias + '-LWP_regres']['intercept']
+        print('r-' + bias + '-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value'])
         print('r-squared-' + bias + '-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data3['biases'][bias + '-LWP_regres'] = {}
@@ -2946,6 +2948,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data3['biases']['LWP']) & ~np.isnan(data3['biases'][bias])
         data3['biases'][bias + '-LWP_regres']['slope'], data3['biases'][bias + '-LWP_regres']['intercept'], data3['biases'][bias + '-LWP_regres']['r_value'], data3['biases'][bias + '-LWP_regres']['p_value'], data3['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data3['biases']['LWP'][mask],data3['biases'][bias][mask])
         data3['biases'][bias + '-LWP_regres']['line'] = data3['biases'][bias + '-LWP_regres']['slope'] * data3['biases']['LWP'] + data3['biases'][bias + '-LWP_regres']['intercept']
+        print('r-' + bias + '-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value'])
         print('r-squared-' + bias + '-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data4['biases'][bias + '-LWP_regres'] = {}
@@ -2954,6 +2957,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data4['biases']['LWP']) & ~np.isnan(data4['biases'][bias])
         data4['biases'][bias + '-LWP_regres']['slope'], data4['biases'][bias + '-LWP_regres']['intercept'], data4['biases'][bias + '-LWP_regres']['r_value'], data4['biases'][bias + '-LWP_regres']['p_value'], data4['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data4['biases']['LWP'][mask],data4['biases'][bias][mask])
         data4['biases'][bias + '-LWP_regres']['line'] = data4['biases'][bias + '-LWP_regres']['slope'] * data4['biases']['LWP'] + data4['biases'][bias + '-LWP_regres']['intercept']
+        print('r-' + bias + '-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value'])
         print('r-squared-' + bias + '-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value']**2)
 
     ##################################################
@@ -2975,12 +2979,12 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(12,7.5))
+    fig = plt.figure(figsize=(14,7.5))
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
             hspace = 0.3, wspace = 0.3)
 
 
-    plt.subplot(221)
+    plt.subplot(231)
     plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['SWd_ship'][drift_ship[0]], 'ko', alpha = 0.5, markersize = 4, label = 'Obs')
     plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'darkblue', label = 'UM_RA2M')
     plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['SWd'], '.', alpha = 0.5, color = 'steelblue', label = 'UM_RA2T')
@@ -2990,7 +2994,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP [g m$^{-2}$]')
     plt.ylabel('SW$_{\downarrow}$ [W m$^{-2}$]')
 
-    plt.subplot(222)
+    plt.subplot(232)
     plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['LWd_ship'][drift_ship[0]], 'ko', alpha = 0.5, markersize = 4)
     plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'darkblue')
     plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['LWd'], '.', alpha = 0.5, color = 'mediumseagreen')
@@ -2999,15 +3003,25 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP [g m$^{-2}$]')
     plt.ylabel('LW$_{\downarrow}$ [W m$^{-2}$]')
 
-    plt.subplot(223)
+    plt.subplot(233)
+    plt.plot(obs_data['lwp'][:-3,0]*1e3, obs['fixed_radiation']['Rnet_ship'][drift_ship[0]], 'ko', alpha = 0.5, markersize = 4)
+    plt.plot(um_data['model_lwp'][:-3]*1e3,data1['fixed_radiation']['Rnet'], '.', alpha = 0.5, color = 'darkblue')
+    plt.plot(misc_data['model_lwp'][:-3]*1e3,data2['fixed_radiation']['Rnet'], '.', alpha = 0.5, color = 'mediumseagreen')
+    plt.plot(ra2t_data['model_lwp'][:-3]*1e3,data4['fixed_radiation']['Rnet'], '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(ifs_data['model_lwp'][:-3]*1e3,data3['fixed_radiation']['Rnet'], '.', alpha = 0.5, color = 'gold')
+    plt.xlabel('LWP [g m$^{-2}$]')
+    plt.ylabel('R$_{net}$ [W m$^{-2}$]')
+
+    plt.subplot(234)
+    alf = 0.3
     xmin = -250
     xmax = 400
     y1min = -130
     y1max = 75
-    plt.plot(data1['biases']['LWP'], data1['biases']['SWd'], '.', alpha = 0.5, color = 'darkblue')
-    plt.plot(data2['biases']['LWP'], data2['biases']['SWd'], '.', alpha = 0.5, color = 'mediumseagreen')
-    plt.plot(data3['biases']['LWP'], data3['biases']['SWd'], '.', alpha = 0.5, color = 'gold')
-    plt.plot(data4['biases']['LWP'], data4['biases']['SWd'], '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(data1['biases']['LWP'], data1['biases']['SWd'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['LWP'], data2['biases']['SWd'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['LWP'], data3['biases']['SWd'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['LWP'], data4['biases']['SWd'], '.', alpha = alf, color = 'steelblue')
     plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue')
     plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen')
     plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold')
@@ -3020,13 +3034,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
-    plt.subplot(224)
+    plt.subplot(235)
     y2min = -80
     y2max = 90
-    plt.plot(data1['biases']['LWP'], data1['biases']['LWd'], '.', alpha = 0.5, color = 'darkblue')
-    plt.plot(data2['biases']['LWP'], data2['biases']['LWd'], '.', alpha = 0.5, color = 'mediumseagreen')
-    plt.plot(data3['biases']['LWP'], data3['biases']['LWd'], '.', alpha = 0.5, color = 'gold')
-    plt.plot(data4['biases']['LWP'], data4['biases']['LWd'], '.', alpha = 0.5, color = 'steelblue')
+    plt.plot(data1['biases']['LWP'], data1['biases']['LWd'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['LWP'], data2['biases']['LWd'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['LWP'], data3['biases']['LWd'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['LWP'], data4['biases']['LWd'], '.', alpha = alf, color = 'steelblue')
     plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue')
     plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen')
     plt.plot(data3['biases']['LWP'], data3['biases']['LWd-LWP_regres']['line'], color = 'gold')
@@ -3039,6 +3053,26 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
+    plt.subplot(236)
+    y3min = -80
+    y3max = 90
+    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['LWP'], data2['biases']['Rnet'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['LWP'], data3['biases']['Rnet'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['LWP'], data4['biases']['Rnet'], '.', alpha = alf, color = 'steelblue')
+    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue')
+    plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen')
+    plt.plot(data3['biases']['LWP'], data3['biases']['Rnet-LWP_regres']['line'], color = 'gold')
+    plt.plot(data4['biases']['LWP'], data4['biases']['Rnet-LWP_regres']['line'], color = 'steelblue')
+    # plt.grid('on')
+    # plt.ylim([y2min,y2max])
+    # plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('LWP [mod-obs]')
+    plt.ylabel('R$_{net}$ [mod-obs]')
+
+    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
