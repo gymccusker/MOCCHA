@@ -10308,6 +10308,7 @@ def main():
     #################################################################
     label1 = 'undefined_label'
     if out_dir1[:10] == '25_u-cc568': label1 = 'UM_RA2M'
+    if out_dir1[:10] == '24_u-cc324': label1 = 'UM_RA2T_' + out_dir1[-4:-1]
     if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100_GA6alb'
     if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
@@ -10326,6 +10327,7 @@ def main():
 
     label2 = 'undefined_label'
     if out_dir2[:10] == '25_u-cc568': label2 = 'UM_RA2M'
+    if out_dir2[:10] == '24_u-cc324': label2 = 'UM_RA2T_' + out_dir2[-4:-1]
     if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100_GA6alb'
     if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
@@ -10345,6 +10347,7 @@ def main():
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
     if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
+    if out_dir3[:10] == '24_u-cc324': label3 = 'UM_RA2T_' + out_dir3[-4:-1]
     if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100_GA6alb'
     if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
@@ -10363,6 +10366,7 @@ def main():
 
     label4 = 'undefined_label'
     if out_dir4[:10] == '25_u-cc568': label4 = 'UM_RA2M'
+    if out_dir4[:10] == '24_u-cc324': label4 = 'UM_RA2T_' + out_dir4[-4:-1]
     if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100_GA6alb'
     if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
