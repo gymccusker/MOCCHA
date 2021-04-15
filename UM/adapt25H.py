@@ -670,7 +670,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '23_u-cc278_RA1M_CASIM/OUT_R0_24h/'
+    out_dir = '25_u-cc568_RA2M_CON/OUT_R0_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
@@ -691,6 +691,8 @@ def main():
     ## 19_u-ca012_RA2T_CON/              # RA2T_CON nest + global 4D stash; includes diagnosed turbulent dissipation rate
     ## 20_u-ca362_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
     ## 23_u-cc278_RA1M_CASIM/OUT_R0_24h/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
+    ## 25_u-cc568_RA2M_CON/OUT_R0_24h/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+
 
     print ('******')
     print ('')
