@@ -7561,7 +7561,7 @@ def main():
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/'
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
         ### cloudnet directories
         cloudnet_um1 = '4_u-bg610_RA2M_CON/'
         cloudnet_um2 = '23_u-cc278_RA1M_CASIM/'
