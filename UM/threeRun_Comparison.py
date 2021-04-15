@@ -9780,7 +9780,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R1/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #'7_u-bn068_RA2T_CON/OUT_R2R3_lam/' #
+        out_dir4 = '7_u-bn068_RA2T_CON/OUT_R2R3_lam/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10301,6 +10301,7 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '25_u-cc568': label1 = 'UM_RA2M'
     if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100_GA6alb'
     if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
@@ -10318,6 +10319,7 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '25_u-cc568': label2 = 'UM_RA2M'
     if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100_GA6alb'
     if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
@@ -10336,6 +10338,7 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
     if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100_GA6alb'
     if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
@@ -10353,6 +10356,7 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
+    if out_dir4[:10] == '25_u-cc568': label4 = 'UM_RA2M'
     if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100_GA6alb'
     if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
@@ -10397,7 +10401,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -10405,7 +10409,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
