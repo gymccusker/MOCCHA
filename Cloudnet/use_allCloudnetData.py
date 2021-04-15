@@ -2921,7 +2921,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     data2['biases'] = {}
     data3['biases'] = {}
     data4['biases'] = {}
-    bias_list = ['SWd', 'LWd']
+
+    bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet','Rnet']
     for bias in bias_list:
         data1['biases'][bias + '-LWP_regres'] = {}
         data1['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
@@ -7364,6 +7365,10 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
     obs['fixed_radiation']['LWd_ship'] = lwd_ship
     obs['fixed_radiation']['SWd_ship'] = swd_ship
 
+    ### calculate net radiation for future use
+    obs['fixed_radiation']['Rnet_ship'] = obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship']
+    obs['fixed_radiation']['Rnet_ice'] = obs['fixed_radiation']['SWnet_ice'] + obs['fixed_radiation']['LWnet_ice']
+
     ##############################################################################
     ### now do the same for the model data
     ##############################################################################
@@ -7497,6 +7502,12 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data3['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
         data4['fixed_radiation']['LWnet'] = data4['surface_net_LW_radiation'][data4['hrly_flag']][:-3]
         data4['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
+
+        ### calculate net radiation for future use
+        data1['fixed_radiation']['Rnet'] = data1['fixed_radiation']['SWnet'] + data1['fixed_radiation']['LWnet']
+        data2['fixed_radiation']['Rnet'] = data2['fixed_radiation']['SWnet'] + data2['fixed_radiation']['LWnet']
+        data3['fixed_radiation']['Rnet'] = data3['fixed_radiation']['SWnet'] + data3['fixed_radiation']['LWnet']
+        data4['fixed_radiation']['Rnet'] = data4['fixed_radiation']['SWnet'] + data4['fixed_radiation']['LWnet']
 
     # plt.plot(time_radice, swdmeanice)
     # plt.plot(time_radship[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])], swdmean[np.logical_and(time_radship >= time_radice[0], time_radship <= time_radice[-1])])
