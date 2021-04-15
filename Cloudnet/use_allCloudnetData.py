@@ -7461,8 +7461,8 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data2['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
         data3['fixed_radiation']['SWd'] = data3['sfc_down_sw'][data3['hrly_flag']][:-3]
         data3['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
-        # data4['fixed_radiation']['SWd'] = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']][:-3]
-        # data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
+        data4['fixed_radiation']['SWd'] = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['SWd'][model_swd_badpoints] = np.nan
 
         model_lwd_badpoints = np.isnan(lwd_ship[modelindex[0]])
         data1['fixed_radiation']['LWd'] = data1['surface_downwelling_LW_radiation'][data1['hrly_flag']][:-3]
@@ -7471,8 +7471,8 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data2['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
         data3['fixed_radiation']['LWd'] = data3['sfc_down_lw'][data3['hrly_flag']][:-3]
         data3['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
-        # data4['fixed_radiation']['LWd'] = data4['surface_downwelling_LW_radiation'][data4['hrly_flag']][:-3]
-        # data4['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
+        data4['fixed_radiation']['LWd'] = data4['surface_downwelling_LW_radiation'][data4['hrly_flag']][:-3]
+        data4['fixed_radiation']['LWd'][model_lwd_badpoints] = np.nan
 
         model_lwnet_badpoints = np.isnan(lwnet_ship[modelindex[0]])
         data1['fixed_radiation']['LWnet'] = data1['surface_net_LW_radiation'][data1['hrly_flag']][:-3]
@@ -7825,8 +7825,8 @@ def main():
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
             'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','q','pressure','sfc_bl_height','ql','qi','sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
         if not ifs_flag: var_list3 = var_list1
-        var_list4 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-            'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] # 'temp_1.5m',
+        var_list4 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+            'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice'] # 'temp_1.5m',
 
         if names[i] in moccha_missing_files:        ### NOTE THIS WON'T WORK IF IT'S THE FIRST FILE THAT'S MISSING!!
             print ('File not available...')
