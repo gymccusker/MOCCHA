@@ -2954,20 +2954,20 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     #### plot figure
     ##################################################
     ##################################################
-    SMALL_SIZE = 12
-    MED_SIZE = 16
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-
     # ### -------------------------------
     # ### Build simple radiation-LWP bias figures
     # ### -------------------------------
+    # SMALL_SIZE = 12
+    # MED_SIZE = 16
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+
     # fig = plt.figure(figsize=(14,7.5))
     # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
     #         hspace = 0.3, wspace = 0.3)
@@ -3069,83 +3069,195 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ### -------------------------------
 
     ## create index for below 3km
-    lt3km_um = np.where(um_data['height'][0,:] <= 3000)
-    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 3000)
+    lt3km_um = np.where(um_data['height'][0,:] <= 1000)
+    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
 
     tempvar1 = np.nanmean(mask1[:,lt3km_um[0]],0) - np.nanmean(mask0[:,lt3km_um[0]],0)
     dZ_um = um_data['height'][0,lt3km_um[0][1:]] - um_data['height'][0,lt3km_um[0][:-1]]
 
-    print (tempvar1.shape)
+    # print (tempvar1.shape)
 
-    fig = plt.figure(figsize=(14,4.5))
-    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.95, left = 0.1,
-            hspace = 0.3, wspace = 0.3)
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
 
-    plt.subplot(131)
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    fig = plt.figure(figsize=(14,14))
+    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
+            hspace = 0.35, wspace = 0.35)
+
     alf = 0.3
     xmin = -250
     xmax = 400
     y1min = -130
     y1max = 75
-    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = np.nanmax(tempvar1),
-        s = 6) # vmin = 0, vmax = 1,
+    y2min = -80
+    y2max = 90
+    y3min = -80
+    y3max = 90
+
+    cloud_fractions = [obs_data['Cv'][:-3,:], um_data['model_Cv_filtered'][:-3,:], misc_data['model_Cv_filtered'][:-3,:], ifs_data['model_snow_Cv_filtered'][:-3,:], ra2t_data['model_Cv_filtered'][:-3,:]]
+    cloud_fractions_lt3km = [obs_data['Cv'][:-3,lt3km_um[0]], um_data['model_Cv_filtered'][:-3,lt3km_um[0]], misc_data['model_Cv_filtered'][:-3,lt3km_um[0]], ifs_data['model_snow_Cv_filtered'][:-3,lt3km_um[0]], ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]]]
+    cloud_masks = [mask0[:-3,:], mask1[:-3,:], mask2[:-3,:], mask3[:-3,:], mask4[:-3,:]]
+    cloud_masks_lt3km = [mask0[:-3,lt3km_um[0]], mask1[:-3,lt3km_um[0]], mask2[:-3,lt3km_um[0]], mask3[:-3,lt3km_ifs[0]], mask4[:-3,lt3km_um[0]]]
+    lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
+
+    var = cloud_fractions_lt3km
+
+    ####------          SWd
+    plt.subplot(431)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = np.nanmean(var[1],1),
+        vmin = 0, vmax = 1, s = 6)
     plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
-    # plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = np.nanmean(mask2[:-3,lt3km_um[0]],1),
-    #     vmin = 0, vmax = 1, s = 6)
-    # plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
-    # plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = np.nanmedian(mask3[:-3,lt3km_ifs[0]],1),#/(np.nanmax(np.nansum(ifs_data['model_snow_Cv_filtered'][:-3,lt3km_ifs[0]],1))),
-    #     vmin = 0, vmax = 1, s = 6)
-    #     plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold', zorder = 3)
-    # plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = np.nanmean(ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]],1),
-    #     s = 6)
-    # plt.plot(data4['biases']['LWP'], data4['biases']['SWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
-    # plt.grid('on')
     plt.ylim([y1min,y1max])
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_RA2M', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(434)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = np.nanmean(var[2],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y1min,y1max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_CASIM-100', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(437)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = np.nanmean(var[3],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold', zorder = 3)
+    plt.ylim([y1min,y1max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('ECMWF_IFS', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(4,3,10)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = np.nanmean(var[4],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data4['biases']['LWP'], data4['biases']['SWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
+    plt.ylim([y1min,y1max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.title('UM_RA2T', fontsize = 12)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
-    plt.subplot(132)
-    y2min = -80
-    y2max = 90
-    plt.plot(data1['biases']['LWP'], data1['biases']['LWd'], '.', alpha = alf, color = 'darkblue')
-    # plt.plot(data2['biases']['LWP'], data2['biases']['LWd'], '.', alpha = alf, color = 'mediumseagreen')
-    # plt.plot(data3['biases']['LWP'], data3['biases']['LWd'], '.', alpha = alf, color = 'gold')
-    # plt.plot(data4['biases']['LWP'], data4['biases']['LWd'], '.', alpha = alf, color = 'steelblue')
-    plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue')
-    # plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen')
-    # plt.plot(data3['biases']['LWP'], data3['biases']['LWd-LWP_regres']['line'], color = 'gold')
-    # plt.plot(data4['biases']['LWP'], data4['biases']['LWd-LWP_regres']['line'], color = 'steelblue')
-    # plt.grid('on')
+    ####------          LWd
+    plt.subplot(432)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = np.nanmean(var[1],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y2min,y2max])
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_RA2M', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(435)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = np.nanmean(var[2],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_CASIM-100', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(438)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = np.nanmean(var[3],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data3['biases']['LWP'], data3['biases']['LWd-LWP_regres']['line'], color = 'gold', zorder = 3)
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('ECMWF_IFS', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+
+    plt.subplot(4,3,11)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = np.nanmean(var[4],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data4['biases']['LWP'], data4['biases']['LWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.title('UM_RA2T', fontsize = 12)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
-    plt.subplot(133)
-    y3min = -80
-    y3max = 90
-    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet'], '.', alpha = alf, color = 'darkblue')
-    # plt.plot(data2['biases']['LWP'], data2['biases']['Rnet'], '.', alpha = alf, color = 'mediumseagreen')
-    # plt.plot(data3['biases']['LWP'], data3['biases']['Rnet'], '.', alpha = alf, color = 'gold')
-    # plt.plot(data4['biases']['LWP'], data4['biases']['Rnet'], '.', alpha = alf, color = 'steelblue')
-    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue')
-    # plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen')
-    # plt.plot(data3['biases']['LWP'], data3['biases']['Rnet-LWP_regres']['line'], color = 'gold')
-    # plt.plot(data4['biases']['LWP'], data4['biases']['Rnet-LWP_regres']['line'], color = 'steelblue')
-    # plt.grid('on')
-    # plt.ylim([y2min,y2max])
-    # plt.xlim([xmin,xmax])
+    ####------          Rnet
+    plt.subplot(433)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = np.nanmean(var[1],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_RA2M', fontsize = 12)
+    plt.ylabel('R$_{net}$ [mod-obs]')
+
+    plt.subplot(436)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = np.nanmean(var[2],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('UM_CASIM-100', fontsize = 12)
+    plt.ylabel('R$_{net}$ [mod-obs]')
+
+    plt.subplot(439)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = np.nanmean(var[3],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data3['biases']['LWP'], data3['biases']['Rnet-LWP_regres']['line'], color = 'gold', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.title('ECMWF_IFS', fontsize = 12)
+    plt.ylabel('R$_{net}$ [mod-obs]')
+
+    plt.subplot(4,3,12)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = np.nanmean(var[4],1),
+        vmin = 0, vmax = 1, s = 6)
+    plt.plot(data4['biases']['LWP'], data4['biases']['Rnet-LWP_regres']['line'], color = 'steelblue', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.title('UM_RA2T', fontsize = 12)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ [mod-obs]')
 
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
+    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCv-lt3km.png', dpi = 300)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
