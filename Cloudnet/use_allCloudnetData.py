@@ -7940,7 +7940,7 @@ def main():
         for file in dir:
             IWVtemp = readMatlabStruct(dirname + file)
             print (IWVtemp.keys())
-            if file == '20180814_IWV_30s_V1.mat':       ### if it is the first file
+            if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
                 obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
                 obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
                 obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
