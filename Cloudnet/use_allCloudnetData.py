@@ -3112,15 +3112,22 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
     iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
-    iwv = [obs['hatpro']['IWV'], 0, 0, 0, 0]
+    iwv = [obs['hatpro']['IWV'][drift_ship[0]], 0, 0, 0, 0]
+
+    print (obs['hatpro']['IWV'][drift_ship[0]].shape)
+    print (data1['biases']['LWP'].shape)
+    print (data1['biases']['SWd'].shape)
+    print (obs_data['iwc'][:-3,:].shape)
 
     lwc_biases = [obs_data['lwc_adiabatic'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3,
         misc_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3,
         ra2t_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3]
 
     var = lwc_biases
+    # arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
+    arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
 
-    arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]
+    print (np.nanmean(var[1],1).shape)
 
     ####------          SWd
     plt.subplot(431)
