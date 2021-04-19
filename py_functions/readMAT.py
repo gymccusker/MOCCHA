@@ -39,12 +39,14 @@ def readMatlabStruct(filename):
     #### --------------------------------------------------------------------
     print ('Dealing with intermediate data assignments...')
     struct = dat[structname]
+
     print ('')
 
     #### --------------------------------------------------------------------
     #### IDENTIFY DATA AS FIRST ENTRY IN INTERMEDIATE STRUCT
     #### --------------------------------------------------------------------
     a = struct[0,0]
+    print (a.dtype.names)
         #### data.dtype:
             #### returns keys of dictionary (normal python dictionary access
             #### commands don't quite work...). MATLAB structs come back as
@@ -55,7 +57,15 @@ def readMatlabStruct(filename):
     ####
     #### --------------------------------------------------------------------
     # aa = a.astype(float)
-    b = {name:a[name].astype(float) for name in a.dtype.names}
+    # b = {name:a[name].astype(float) for name in a.dtype.names}
+    b = {}
+    for name in a.dtype.names:
+        # print (name)
+        # print (a[name].dtype)
+        if a[name].dtype == 'object':
+            # print ('yes this is an object')
+            continue
+        b[name] = a[name].astype(float)
 
     print ('Finished! :)')
     print ('Reading out ' + structname + ' struct within .mat file')
