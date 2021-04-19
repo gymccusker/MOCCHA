@@ -3110,14 +3110,23 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cloud_masks = [mask0[:-3,:], mask1[:-3,:], mask2[:-3,:], mask3[:-3,:], mask4[:-3,:]]
     cloud_masks_lt3km = [mask0[:-3,lt3km_um[0]], mask1[:-3,lt3km_um[0]], mask2[:-3,lt3km_um[0]], mask3[:-3,lt3km_ifs[0]], mask4[:-3,lt3km_um[0]]]
     lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
-    iwp = [obs_data['iwc'][:-3,:]*1e3, data1['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
+    iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
-    var = cloud_masks
+    iwv = [obs['hatpro']['IWV'], 0, 0, 0, 0]
+
+    lwc_biases = [obs_data['lwc_adiabatic'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3,
+        misc_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3,
+        ra2t_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3]
+
+    var = lwc_biases
+
+    arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]
 
     ####------          SWd
     plt.subplot(431)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = np.nanmean(var[1],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y1min,y1max])
     plt.xlim([xmin,xmax])
@@ -3128,8 +3137,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(434)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = np.nanmean(var[2],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = arg[2], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y1min,y1max])
     plt.xlim([xmin,xmax])
@@ -3140,8 +3150,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(437)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = np.nanmean(var[3],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = arg[3], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y1min,y1max])
     plt.xlim([xmin,xmax])
@@ -3152,8 +3163,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(4,3,10)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = np.nanmean(var[4],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data4['biases']['LWP'], data4['biases']['SWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y1min,y1max])
     plt.xlim([xmin,xmax])
@@ -3165,8 +3177,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     ####------          LWd
     plt.subplot(432)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = np.nanmean(var[1],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y2min,y2max])
     plt.xlim([xmin,xmax])
@@ -3177,8 +3190,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(435)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = np.nanmean(var[2],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y2min,y2max])
     plt.xlim([xmin,xmax])
@@ -3189,8 +3203,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(438)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = np.nanmean(var[3],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = arg[3], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data3['biases']['LWP'], data3['biases']['LWd-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y2min,y2max])
     plt.xlim([xmin,xmax])
@@ -3201,8 +3216,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
     plt.subplot(4,3,11)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = np.nanmean(var[4],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data4['biases']['LWP'], data4['biases']['LWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y2min,y2max])
     plt.xlim([xmin,xmax])
@@ -3214,8 +3230,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     ####------          Rnet
     plt.subplot(433)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = np.nanmean(var[1],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = arg[1], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y3min,y3max])
     plt.xlim([xmin,xmax])
@@ -3226,8 +3243,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('R$_{net}$ [mod-obs]')
 
     plt.subplot(436)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = np.nanmean(var[2],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = arg[2], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y3min,y3max])
     plt.xlim([xmin,xmax])
@@ -3238,8 +3256,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('R$_{net}$ [mod-obs]')
 
     plt.subplot(439)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = np.nanmean(var[3],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = arg[3], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data3['biases']['LWP'], data3['biases']['Rnet-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y3min,y3max])
     plt.xlim([xmin,xmax])
@@ -3250,8 +3269,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('R$_{net}$ [mod-obs]')
 
     plt.subplot(4,3,12)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = np.nanmean(var[4],1),
-        vmin = vminn, vmax = vmaxx, s = 6)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 6,
+        # vmin = vminn, vmax = vmaxx,
+        )
     plt.plot(data4['biases']['LWP'], data4['biases']['Rnet-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y3min,y3max])
     plt.xlim([xmin,xmax])
@@ -3261,7 +3281,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ [mod-obs]')
 
-    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cTWCMask-lt3km.png', dpi = 300)
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cTWCMask-lt3km.png', dpi = 300)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -7938,17 +7958,19 @@ def main():
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
         for file in dir:
+            if file == 'V1': continue
+            print (file)
             IWVtemp = readMatlabStruct(dirname + file)
             print (IWVtemp.keys())
             if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
-                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['iwv'])
                 obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
-                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['lwp'])
                 obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
             else:
-                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['iwv']))
                 obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
-                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['lwp']))
                 obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
         obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
 
