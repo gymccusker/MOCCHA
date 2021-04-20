@@ -251,6 +251,6 @@ def calcIWV(q, height, pressure):
 
     dz = height[1:] - height[0:-1]
 
-    iwv = np.nansum(q[:,:-1 * dz_um, 1)
+    iwv = np.nansum(q[:,:-1] * dz_um, 1)
 
     return iwv
