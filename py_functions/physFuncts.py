@@ -5,6 +5,7 @@ Functions to calculate physical properties
 """
 
 import numpy as np
+from scipy.integrate import quad
 # from __future__ import print_function
 
 def calcAirDensity(temperature, pressure):
@@ -233,3 +234,23 @@ def calcRH(temperature, pressure, q):
                 #### gives RH as a percentage
 
     return rh
+
+
+def calcIWV(q, height, pressure):
+
+    """
+    Function to calculate integrated water vapour from specific humidity
+    ==============================
+    inputs:
+    specific humidity = kg/kg
+    height = m
+    pressure = Pa
+
+    equation: integral of q dz (up to 12 km, following Jutta's recommendation from radiosondes)
+    """
+
+    dz = height[1:] - height[0:-1]
+
+    iwv = np.nansum(q[:,:-1 * dz_um, 1)
+
+    return iwv
