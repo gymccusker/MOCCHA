@@ -3152,7 +3152,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.plot(obs['hatpro']['doy'], obs['hatpro']['IWV'], color = 'k')
     # plt.show()
 
-    iwv = [obs['hatpro']['IWV'][drift_ship[0]], data1['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]],
+    iwv = [obs['hatpro']['IWV'][drift_ship[0]], data1['iwv_hrly'][:-3],
         data2['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]], data3['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]],
         data4['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]]]
 
