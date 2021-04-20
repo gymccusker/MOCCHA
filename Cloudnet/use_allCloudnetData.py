@@ -20,6 +20,7 @@ import matplotlib.cm as mpl_cm
 import os
 import seaborn as sns
 from scipy.interpolate import interp1d
+from scipy.integrate import quad
 
 #### import python functions
 import sys
@@ -3072,8 +3073,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     lt3km_um = np.where(um_data['height'][0,:] <= 1000)
     lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
 
-    tempvar1 = np.nanmean(mask1[:,lt3km_um[0]],0) - np.nanmean(mask0[:,lt3km_um[0]],0)
-    dZ_um = um_data['height'][0,lt3km_um[0][1:]] - um_data['height'][0,lt3km_um[0][:-1]]
+    # tempvar1 = np.nanmean(mask1[:,lt3km_um[0]],0) - np.nanmean(mask0[:,lt3km_um[0]],0)
+    # dZ_um = um_data['height'][0,lt3km_um[0][1:]] - um_data['height'][0,lt3km_um[0][:-1]]
 
     # print (tempvar1.shape)
 
@@ -3112,22 +3113,56 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
     iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
-    iwv = [obs['hatpro']['IWV'][drift_ship[0]], 0, 0, 0, 0]
+    index_12km_um = np.where(data1['height'] <= 12000)
+    height_um = data1['height'][index_12km_um[0]]
+    dz_um = height_um[1:] - height_um[0:-1]
+    print (height_um.shape)
+    print (dz_um.shape)
+    print (data1['q'][:,:len(index_12km_um[0])-1].shape)
 
-    print (obs['hatpro']['IWV'][drift_ship[0]].shape)
-    print (data1['biases']['LWP'].shape)
-    print (data1['biases']['SWd'].shape)
-    print (obs_data['iwc'][:-3,:].shape)
+    tempindex = np.where(data3['height'][0,:] <= 12000) ### first time bin only
+    data3['iwv'] = np.zeros([np.size(data3['height'][:,tempindex[0]],0)])
+    print (data3['iwv'].shape)
+    for i in range(0,np.size(data3['height'],0)):
+        index_12km_ifs = np.where(data3['height'][i,:] <= 12000)
+        height = data3['height'][i,index_12km_ifs[0]]
+        dz = height[1:] - height[0:-1]
+        # print (dz.size)
+        if np.size(dz) == 64:
+            data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
+
+    data1['iwv'] = np.nansum(data1['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    data2['iwv'] = np.nansum(data2['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    data4['iwv'] = np.nansum(data4['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+
+    data1['iwv'][data1['iwv'] == 0.0] = np.nan
+    data2['iwv'][data2['iwv'] == 0.0] = np.nan
+    data3['iwv'][data3['iwv'] == 0.0] = np.nan
+    data4['iwv'][data4['iwv'] == 0.0] = np.nan
+
+    data1['iwv_hrly'] = data1['iwv'][data1['hrly_flag']]
+    data2['iwv_hrly'] = data2['iwv'][data2['hrly_flag']]
+    data3['iwv_hrly'] = data3['iwv'][data3['hrly_flag']]
+    data4['iwv_hrly'] = data4['iwv'][data4['hrly_flag']]
+
+    # plt.plot(data1['time_hrly'],data1['iwv_hrly'], color = 'darkblue')
+    # plt.plot(data2['time_hrly'],data2['iwv_hrly'], color = 'mediumseagreen')
+    # plt.plot(data3['time_hrly'],data3['iwv_hrly'], color = 'gold')
+    # plt.plot(data4['time_hrly'],data4['iwv_hrly'], color = 'steelblue')
+    # plt.plot(obs['hatpro']['doy'], obs['hatpro']['IWV'], color = 'k')
+    # plt.show()
+
+    iwv = [obs['hatpro']['IWV'][drift_ship[0]], data1['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]],
+        data2['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]], data3['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]],
+        data4['iwv_hrly'][:-3] - obs['hatpro']['IWV'][drift_ship[0]]]
 
     lwc_biases = [obs_data['lwc_adiabatic'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3,
         misc_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3,
         ra2t_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3]
 
-    var = lwc_biases
-    # arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
-    arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
-
-    print (np.nanmean(var[1],1).shape)
+    var = iwv
+    arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
+    # arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
 
     ####------          SWd
     plt.subplot(431)
