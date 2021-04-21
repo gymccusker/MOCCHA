@@ -3477,7 +3477,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data3['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
-    ax2.set_ylabel('ECMWF_IFS', rotation = 270, labelpad = 15)
+    ax2.set_ylabel('ECMWF_IFS', rotation = 270, labelpad = 20)
     ax2.set_yticks([])
 
     plt.subplot(436)
@@ -3496,7 +3496,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data2['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
-    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 15)
+    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 20)
     ax2.set_yticks([])
 
     plt.subplot(439)
@@ -3514,7 +3514,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data4['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
-    ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 15)
+    ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 20)
     ax2.set_yticks([])
 
     plt.subplot(4,3,12)
@@ -3534,7 +3534,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data1['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
-    ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 15)
+    ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 20)
     ax2.set_yticks([])
     cbaxes = fig.add_axes([0.83, 0.1, 0.1, 0.015])
     cb = plt.colorbar(scat, cax = cbaxes, orientation = 'horizontal')
