@@ -3341,7 +3341,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('ECMWF_IFS', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
 
     plt.subplot(434)
@@ -3358,7 +3359,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('UM_CASIM-100', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data2['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
     plt.subplot(437)
     plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 8,
@@ -3373,7 +3375,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.title('UM_RA2T', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data4['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
     plt.subplot(4,3,10)
     plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 8,
@@ -3389,7 +3392,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP bias [kg m$^{-2}$]')
     # plt.title('UM_RA2M', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data1['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
 
     ####------          LWd
@@ -3406,7 +3410,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('ECMWF_IFS', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(435)
     plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 8,
@@ -3421,7 +3426,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('UM_CASIM-100', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data2['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(438)
     plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 8,
@@ -3435,7 +3441,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.title('UM_RA2T', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data4['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(4,3,11)
     plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 8,
@@ -3450,7 +3457,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP bias [kg m$^{-2}$]')
     # plt.title('UM_RA2M', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data1['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     ####------          Rnet
     plt.subplot(433)
@@ -3465,7 +3473,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = 'goldenrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
     ax2.set_ylabel('ECMWF_IFS', rotation = 270, labelpad = 15)
@@ -3483,7 +3492,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data2['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = 'mediumseagreen')
+    plt.annotate('{:.2f}'.format(data2['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
     ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 15)
@@ -3500,7 +3510,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data4['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = 'steelblue')
+    plt.annotate('{:.2f}'.format(data4['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
     ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 15)
@@ -3519,7 +3530,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlabel('LWP bias [kg m$^{-2}$]')
     # plt.title('', fontsize = 12)
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data1['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = 'darkblue')
+    plt.annotate('{:.2f}'.format(data1['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
     ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 15)
