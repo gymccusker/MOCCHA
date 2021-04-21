@@ -17,6 +17,7 @@ import cartopy.crs as ccrs
 import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
+import matplotlib.colors as mcolors
 import os
 import seaborn as sns
 from scipy.interpolate import interp1d
@@ -2912,7 +2913,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     data3['biases'] = {}
     data4['biases'] = {}
 
-    bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet','Rnet']
+    bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet', 'Rnet']
     for bias in bias_list:
         data1['biases'][bias + '-LWP_regres'] = {}
         data1['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
@@ -2920,8 +2921,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data1['biases']['LWP']) & ~np.isnan(data1['biases'][bias])
         data1['biases'][bias + '-LWP_regres']['slope'], data1['biases'][bias + '-LWP_regres']['intercept'], data1['biases'][bias + '-LWP_regres']['r_value'], data1['biases'][bias + '-LWP_regres']['p_value'], data1['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data1['biases']['LWP'][mask],data1['biases'][bias][mask])
         data1['biases'][bias + '-LWP_regres']['line'] = data1['biases'][bias + '-LWP_regres']['slope'] * data1['biases']['LWP'] + data1['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value'])
-        print('r-squared-' + bias + '-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-' + bias + '-LWP-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value'])
+        # print('r-squared-' + bias + '-LWP-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data2['biases'][bias + '-LWP_regres'] = {}
         data2['biases']['LWP'] = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
@@ -2929,8 +2930,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data2['biases']['LWP']) & ~np.isnan(data2['biases'][bias])
         data2['biases'][bias + '-LWP_regres']['slope'], data2['biases'][bias + '-LWP_regres']['intercept'], data2['biases'][bias + '-LWP_regres']['r_value'], data2['biases'][bias + '-LWP_regres']['p_value'], data2['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data2['biases']['LWP'][mask],data2['biases'][bias][mask])
         data2['biases'][bias + '-LWP_regres']['line'] = data2['biases'][bias + '-LWP_regres']['slope'] * data2['biases']['LWP'] + data2['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value'])
-        print('r-squared-' + bias + '-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-' + bias + '-LWP-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value'])
+        # print('r-squared-' + bias + '-LWP-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data3['biases'][bias + '-LWP_regres'] = {}
         data3['biases']['LWP'] = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
@@ -2938,8 +2939,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data3['biases']['LWP']) & ~np.isnan(data3['biases'][bias])
         data3['biases'][bias + '-LWP_regres']['slope'], data3['biases'][bias + '-LWP_regres']['intercept'], data3['biases'][bias + '-LWP_regres']['r_value'], data3['biases'][bias + '-LWP_regres']['p_value'], data3['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data3['biases']['LWP'][mask],data3['biases'][bias][mask])
         data3['biases'][bias + '-LWP_regres']['line'] = data3['biases'][bias + '-LWP_regres']['slope'] * data3['biases']['LWP'] + data3['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value'])
-        print('r-squared-' + bias + '-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-' + bias + '-LWP-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value'])
+        # print('r-squared-' + bias + '-LWP-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value']**2)
 
         data4['biases'][bias + '-LWP_regres'] = {}
         data4['biases']['LWP'] = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
@@ -2947,8 +2948,102 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         mask = ~np.isnan(data4['biases']['LWP']) & ~np.isnan(data4['biases'][bias])
         data4['biases'][bias + '-LWP_regres']['slope'], data4['biases'][bias + '-LWP_regres']['intercept'], data4['biases'][bias + '-LWP_regres']['r_value'], data4['biases'][bias + '-LWP_regres']['p_value'], data4['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data4['biases']['LWP'][mask],data4['biases'][bias][mask])
         data4['biases'][bias + '-LWP_regres']['line'] = data4['biases'][bias + '-LWP_regres']['slope'] * data4['biases']['LWP'] + data4['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value'])
-        print('r-squared-' + bias + '-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value']**2)
+        print('r-' + bias + '-LWP-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value'])
+        # print('r-squared-' + bias + '-LWP-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value']**2)
+
+    tempindex = np.where(data3['height'][0,:] <= 12000) ### first time bin only
+    data3['iwv'] = np.zeros([np.size(data3['height'][:,tempindex[0]],0)])
+    print (data3['iwv'].shape)
+    for i in range(0,np.size(data3['height'],0)):
+        index_12km_ifs = np.where(data3['height'][i,:] <= 12000)
+        height = data3['height'][i,index_12km_ifs[0]]
+        dz = height[1:] - height[0:-1]
+        # print (dz.size)
+        if np.size(dz) == 64:
+            data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
+
+    #### ---------------------------------------------------------------------------------------
+    #### IWV
+    #### ---------------------------------------------------------------------------------------
+    ## create height indices
+    lt3km_um = np.where(um_data['height'][0,:] <= 1000)
+    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
+    index_12km_um = np.where(data1['height'] <= 12000)
+    height_um = data1['height'][index_12km_um[0]]
+    dz_um = height_um[1:] - height_um[0:-1]
+    print (height_um.shape)
+    print (dz_um.shape)
+    print (data1['q'][:,:len(index_12km_um[0])-1].shape)
+
+    data1['iwv'] = np.nansum(data1['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    data2['iwv'] = np.nansum(data2['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    data4['iwv'] = np.nansum(data4['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+
+    data1['iwv'][data1['iwv'] == 0.0] = np.nan
+    data2['iwv'][data2['iwv'] == 0.0] = np.nan
+    data3['iwv'][data3['iwv'] == 0.0] = np.nan
+    data4['iwv'][data4['iwv'] == 0.0] = np.nan
+
+    data1['iwv_hrly'] = data1['iwv'][data1['hrly_flag']]
+    data2['iwv_hrly'] = data2['iwv'][data2['hrly_flag']]
+    data3['iwv_hrly'] = data3['iwv'][data3['hrly_flag']]
+    data4['iwv_hrly'] = data4['iwv'][data4['hrly_flag']]
+
+    drift_hatpro = np.where(np.logical_and(obs['hatpro']['doy'] >= data1['time_hrly'][0],
+    obs['hatpro']['doy'] < data1['time_hrly'][-1]))
+
+    print (obs['hatpro']['doy'])
+
+    drift_iwv = obs['hatpro']['IWV'][drift_hatpro]
+    drift_doy = obs['hatpro']['doy'][drift_hatpro]
+    drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
+    drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
+
+    plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
+    plt.plot(data2['time_hrly'][:-3], data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'mediumseagreen')
+    plt.plot(data4['time_hrly'][:-3], data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'steelblue')
+    plt.plot(data3['time_hrly'][:-3], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'gold')
+    # plt.plot(obs['hatpro']['doy'][drift_hatpro], obs['hatpro']['IWV'][drift_hatpro], color = 'k')
+    # plt.plot(drift_doy_1hr, drift_iwv_1hr, '+', color = 'k')
+    plt.grid('on')
+    plt.show()
+
+    for bias in bias_list:
+        data1['biases'][bias + '-IWV_regres'] = {}
+        data1['biases']['IWV'] = data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+        # data1['biases'][bias] = data1['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+        mask = ~np.isnan(data1['biases']['IWV']) & ~np.isnan(data1['biases'][bias])
+        data1['biases'][bias + '-IWV_regres']['slope'], data1['biases'][bias + '-IWV_regres']['intercept'], data1['biases'][bias + '-IWV_regres']['r_value'], data1['biases'][bias + '-IWV_regres']['p_value'], data1['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data1['biases']['IWV'][mask],data1['biases'][bias][mask])
+        data1['biases'][bias + '-IWV_regres']['line'] = data1['biases'][bias + '-IWV_regres']['slope'] * data1['biases']['IWV'] + data1['biases'][bias + '-IWV_regres']['intercept']
+        print('r-' + bias + '-IWV-um_ra2m:', data1['biases'][bias + '-IWV_regres']['r_value'])
+        # print('r-squared-' + bias + '-IWV-um_ra2m:', data1['biases'][bias + '-IWV_regres']['r_value']**2)
+
+        data2['biases'][bias + '-IWV_regres'] = {}
+        data2['biases']['IWV'] = data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+        # data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+        mask = ~np.isnan(data2['biases']['IWV']) & ~np.isnan(data2['biases'][bias])
+        data2['biases'][bias + '-IWV_regres']['slope'], data2['biases'][bias + '-IWV_regres']['intercept'], data2['biases'][bias + '-IWV_regres']['r_value'], data2['biases'][bias + '-IWV_regres']['p_value'], data2['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data2['biases']['IWV'][mask],data2['biases'][bias][mask])
+        data2['biases'][bias + '-IWV_regres']['line'] = data2['biases'][bias + '-IWV_regres']['slope'] * data2['biases']['IWV'] + data2['biases'][bias + '-IWV_regres']['intercept']
+        print('r-' + bias + '-IWV-um_casim-100:', data2['biases'][bias + '-IWV_regres']['r_value'])
+        # print('r-squared-' + bias + '-IWV-um_casim-100:', data2['biases'][bias + '-IWV_regres']['r_value']**2)
+
+        data3['biases'][bias + '-IWV_regres'] = {}
+        data3['biases']['IWV'] = data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+        data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+        mask = ~np.isnan(data3['biases']['IWV']) & ~np.isnan(data3['biases'][bias])
+        data3['biases'][bias + '-IWV_regres']['slope'], data3['biases'][bias + '-IWV_regres']['intercept'], data3['biases'][bias + '-IWV_regres']['r_value'], data3['biases'][bias + '-IWV_regres']['p_value'], data3['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data3['biases']['IWV'][mask],data3['biases'][bias][mask])
+        data3['biases'][bias + '-IWV_regres']['line'] = data3['biases'][bias + '-IWV_regres']['slope'] * data3['biases']['IWV'] + data3['biases'][bias + '-IWV_regres']['intercept']
+        print('r-' + bias + '-IWV-ecmwf_ifs:', data3['biases'][bias + '-IWV_regres']['r_value'])
+        # print('r-squared-' + bias + '-IWV-ecmwf_ifs:', data3['biases'][bias + '-IWV_regres']['r_value']**2)
+
+        data4['biases'][bias + '-IWV_regres'] = {}
+        data4['biases']['IWV'] = data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+        # data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+        mask = ~np.isnan(data4['biases']['IWV']) & ~np.isnan(data4['biases'][bias])
+        data4['biases'][bias + '-IWV_regres']['slope'], data4['biases'][bias + '-IWV_regres']['intercept'], data4['biases'][bias + '-IWV_regres']['r_value'], data4['biases'][bias + '-IWV_regres']['p_value'], data4['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data4['biases']['IWV'][mask],data4['biases'][bias][mask])
+        data4['biases'][bias + '-IWV_regres']['line'] = data4['biases'][bias + '-IWV_regres']['slope'] * data4['biases']['IWV'] + data4['biases'][bias + '-IWV_regres']['intercept']
+        print('r-' + bias + '-IWV-um_ra2t:', data4['biases'][bias + '-IWV_regres']['r_value'])
+        # print('r-squared-' + bias + '-IWV-um_ra2t:', data4['biases'][bias + '-IWV_regres']['r_value']**2)
 
     ##################################################
     ##################################################
@@ -3065,72 +3160,99 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
     # plt.show()
 
+    ##################################################
+    ##################################################
+    #### plot figure
+    ##################################################
+    ##################################################
     ### -------------------------------
-    ### Build simple radiation-LWP bias figures
+    ### Build simple radiation-IWV bias figures
     ### -------------------------------
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
 
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
 
-    ## create height indices
-    lt3km_um = np.where(um_data['height'][0,:] <= 1000)
-    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
-    index_12km_um = np.where(data1['height'] <= 12000)
-    height_um = data1['height'][index_12km_um[0]]
-    dz_um = height_um[1:] - height_um[0:-1]
-    print (height_um.shape)
-    print (dz_um.shape)
-    print (data1['q'][:,:len(index_12km_um[0])-1].shape)
+    fig = plt.figure(figsize=(14,5))
+    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.95, left = 0.1,
+            hspace = 0.3, wspace = 0.3)
 
-    tempindex = np.where(data3['height'][0,:] <= 12000) ### first time bin only
-    data3['iwv'] = np.zeros([np.size(data3['height'][:,tempindex[0]],0)])
-    print (data3['iwv'].shape)
-    for i in range(0,np.size(data3['height'],0)):
-        index_12km_ifs = np.where(data3['height'][i,:] <= 12000)
-        height = data3['height'][i,index_12km_ifs[0]]
-        dz = height[1:] - height[0:-1]
-        # print (dz.size)
-        if np.size(dz) == 64:
-            data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
+    plt.subplot(131)
+    alf = 0.3
+    xmin = -3
+    xmax = 6
+    y1min = -130
+    y1max = 80
+    plt.plot(data1['biases']['IWV'], data1['biases']['SWd'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['SWd'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['SWd'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['SWd'], '.', alpha = alf, color = 'steelblue')
+    plt.plot(data1['biases']['IWV'], data1['biases']['SWd-IWV_regres']['line'], color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['SWd-IWV_regres']['line'], color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['SWd-IWV_regres']['line'], color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['SWd-IWV_regres']['line'], color = 'steelblue')
+    # plt.grid('on')
+    plt.ylim([y1min,y1max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('IWV [mod-obs]')
+    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
 
-    data1['iwv'] = np.nansum(data1['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
-    data2['iwv'] = np.nansum(data2['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
-    data4['iwv'] = np.nansum(data4['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    plt.subplot(132)
+    y2min = -80
+    y2max = 90
+    plt.plot(data1['biases']['IWV'], data1['biases']['LWd'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['LWd'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['LWd'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['LWd'], '.', alpha = alf, color = 'steelblue')
+    plt.plot(data1['biases']['IWV'], data1['biases']['LWd-IWV_regres']['line'], color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['LWd-IWV_regres']['line'], color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['LWd-IWV_regres']['line'], color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['LWd-IWV_regres']['line'], color = 'steelblue')
+    # plt.grid('on')
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('IWV [mod-obs]')
+    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
 
-    data1['iwv'][data1['iwv'] == 0.0] = np.nan
-    data2['iwv'][data2['iwv'] == 0.0] = np.nan
-    data3['iwv'][data3['iwv'] == 0.0] = np.nan
-    data4['iwv'][data4['iwv'] == 0.0] = np.nan
+    plt.subplot(133)
+    y3min = -80
+    y3max = 90
+    plt.plot(data1['biases']['IWV'], data1['biases']['Rnet'], '.', alpha = alf, color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['Rnet'], '.', alpha = alf, color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['Rnet'], '.', alpha = alf, color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['Rnet'], '.', alpha = alf, color = 'steelblue')
+    plt.plot(data1['biases']['IWV'], data1['biases']['Rnet-IWV_regres']['line'], color = 'darkblue')
+    plt.plot(data2['biases']['IWV'], data2['biases']['Rnet-IWV_regres']['line'], color = 'mediumseagreen')
+    plt.plot(data3['biases']['IWV'], data3['biases']['Rnet-IWV_regres']['line'], color = 'gold')
+    plt.plot(data4['biases']['IWV'], data4['biases']['Rnet-IWV_regres']['line'], color = 'steelblue')
+    # plt.grid('on')
+    # plt.ylim([y2min,y2max])
+    # plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('IWV [mod-obs]')
+    plt.ylabel('R$_{net}$ [mod-obs]')
 
-    data1['iwv_hrly'] = data1['iwv'][data1['hrly_flag']]
-    data2['iwv_hrly'] = data2['iwv'][data2['hrly_flag']]
-    data3['iwv_hrly'] = data3['iwv'][data3['hrly_flag']]
-    data4['iwv_hrly'] = data4['iwv'][data4['hrly_flag']]
-
-    drift_hatpro = np.where(np.logical_and(obs['hatpro']['doy'] >= data1['time_hrly'][0],
-                    obs['hatpro']['doy'] < data1['time_hrly'][-1]))
-
-    print (obs['hatpro']['doy'])
-
-    drift_iwv = obs['hatpro']['IWV'][drift_hatpro]
-    drift_doy = obs['hatpro']['doy'][drift_hatpro]
-    drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
-    drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
-
-    # print (drift_iwv.shape)
-    # print (drift_iwv_1hr.shape)
-    # print (drift_doy_1hr.shape)
-    # print (data1['time_hrly'][:-1].shape)
-    # print (drift_doy_1hr[0])
-    # print (drift_doy_1hr[-1])
-    # print (data1['time_hrly'][0])
-    # print (data1['time_hrly'][-1])
-
-    plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
-    plt.plot(data2['time_hrly'][:-3], data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'mediumseagreen')
-    plt.plot(data4['time_hrly'][:-3], data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'steelblue')
-    plt.plot(data3['time_hrly'][:-3], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'gold')
-    # plt.plot(obs['hatpro']['doy'][drift_hatpro], obs['hatpro']['IWV'][drift_hatpro], color = 'k')
-    # plt.plot(drift_doy_1hr, drift_iwv_1hr, '+', color = 'k')
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
     plt.show()
+
+    ##################################################
+    ##################################################
+    ### -------------------------------
+    ### Build radiation-LWP-IWV bias figures
+    ### -------------------------------
+    ##################################################
+    ##################################################
 
     iwv = [drift_iwv_1hr, data1['iwv_hrly'][:-1], data2['iwv_hrly'][:-1],
         data3['iwv_hrly'][:-1], data4['iwv_hrly'][:-1]]
@@ -3156,10 +3278,6 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
     iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
-    ### choose variables and plot arguments for figure
-    var = iwv_bias
-    arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
-    # arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
 
     ####------          FIGURE
     SMALL_SIZE = 12
@@ -3175,7 +3293,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     fig = plt.figure(figsize=(14,14))
     plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
-    hspace = 0.35, wspace = 0.35)
+        hspace = 0.35, wspace = 0.35)
 
     alf = 0.3
     xmin = -250
@@ -3188,13 +3306,23 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     y3max = 90
 
     vminn = -0.5
-    vmaxx = 2.0
+    vmaxx = 2.5
+
+    cmap_choice = mpl_cm.viridis
+
+    offset = mcolors.TwoSlopeNorm(vmin=vminn, vcenter=0., vmax=vmaxx)
+
+    ### choose variables and plot arguments for figure
+    var = iwv_bias
+    arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
+    # arg = [var[0], offset(var[1]), offset(var[2]), offset(var[3]), offset(var[4])]    ## 1D timeseries data (offset, diverging with midpoint 0)
+    # arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
 
     ####------          SWd
     plt.subplot(431)
     plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y1min,y1max])
@@ -3208,7 +3336,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(434)
     plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = arg[2], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y1min,y1max])
@@ -3222,7 +3350,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(437)
     plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = arg[3], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y1min,y1max])
@@ -3236,7 +3364,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(4,3,10)
     plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data4['biases']['LWP'], data4['biases']['SWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y1min,y1max])
@@ -3251,7 +3379,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(432)
     plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y2min,y2max])
@@ -3265,7 +3393,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(435)
     plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y2min,y2max])
@@ -3279,7 +3407,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(438)
     plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = arg[3], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data3['biases']['LWP'], data3['biases']['LWd-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y2min,y2max])
@@ -3293,7 +3421,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(4,3,11)
     plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data4['biases']['LWP'], data4['biases']['LWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y2min,y2max])
@@ -3308,7 +3436,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(433)
     plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = arg[1], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue', zorder = 3)
     plt.ylim([y3min,y3max])
@@ -3322,7 +3450,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(436)
     plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = arg[2], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
     plt.ylim([y3min,y3max])
@@ -3336,7 +3464,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.subplot(439)
     plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = arg[3], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data3['biases']['LWP'], data3['biases']['Rnet-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y3min,y3max])
@@ -3348,9 +3476,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.ylabel('R$_{net}$ [mod-obs]')
 
     plt.subplot(4,3,12)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 6,
+    scat = plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 6,
         vmin = vminn, vmax = vmaxx,
-        cmap = mpl_cm.coolwarm,
+        cmap = cmap_choice,
         )
     plt.plot(data4['biases']['LWP'], data4['biases']['Rnet-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y3min,y3max])
@@ -3360,6 +3488,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.title('UM_RA2T', fontsize = 12)
     plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ [mod-obs]')
+    cbaxes = fig.add_axes([0.84, 0.11, 0.1, 0.015])
+    cb = plt.colorbar(scat, cax = cbaxes, orientation = 'horizontal')
+    cbaxes.set_xlabel('IWV bias [kg m$^{-2}$]', rotation = 0, labelpad = 5, fontsize = 12)
+    # cbaxes.xaxis.set_ticks([0, 1])
+    cbaxes.set_xticklabels([-0.5, 0, 2], fontsize = 10)
+    cbaxes.xaxis.set_label_position('top')
+
 
     # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cIWV_percBIAS.png', dpi = 300)
     plt.show()
