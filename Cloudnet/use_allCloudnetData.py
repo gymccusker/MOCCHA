@@ -2904,53 +2904,11 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (data1['fixed_radiation']['time'][-1])
     print (obs['fixed_radiation']['time_ship'][drift_ship[0][-1]])
 
-    ### --------------------------------------
-    ### compute linear regression
-    ### --------------------------------------
-    ### define dictionaries
-    data1['biases'] = {}
-    data2['biases'] = {}
-    data3['biases'] = {}
-    data4['biases'] = {}
 
-    bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet', 'Rnet']
-    for bias in bias_list:
-        data1['biases'][bias + '-LWP_regres'] = {}
-        data1['biases']['LWP'] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-        data1['biases'][bias] = data1['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data1['biases']['LWP']) & ~np.isnan(data1['biases'][bias])
-        data1['biases'][bias + '-LWP_regres']['slope'], data1['biases'][bias + '-LWP_regres']['intercept'], data1['biases'][bias + '-LWP_regres']['r_value'], data1['biases'][bias + '-LWP_regres']['p_value'], data1['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data1['biases']['LWP'][mask],data1['biases'][bias][mask])
-        data1['biases'][bias + '-LWP_regres']['line'] = data1['biases'][bias + '-LWP_regres']['slope'] * data1['biases']['LWP'] + data1['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-LWP-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value'])
-        # print('r-squared-' + bias + '-LWP-um_ra2m:', data1['biases'][bias + '-LWP_regres']['r_value']**2)
-
-        data2['biases'][bias + '-LWP_regres'] = {}
-        data2['biases']['LWP'] = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-        data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data2['biases']['LWP']) & ~np.isnan(data2['biases'][bias])
-        data2['biases'][bias + '-LWP_regres']['slope'], data2['biases'][bias + '-LWP_regres']['intercept'], data2['biases'][bias + '-LWP_regres']['r_value'], data2['biases'][bias + '-LWP_regres']['p_value'], data2['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data2['biases']['LWP'][mask],data2['biases'][bias][mask])
-        data2['biases'][bias + '-LWP_regres']['line'] = data2['biases'][bias + '-LWP_regres']['slope'] * data2['biases']['LWP'] + data2['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-LWP-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value'])
-        # print('r-squared-' + bias + '-LWP-um_casim-100:', data2['biases'][bias + '-LWP_regres']['r_value']**2)
-
-        data3['biases'][bias + '-LWP_regres'] = {}
-        data3['biases']['LWP'] = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-        data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data3['biases']['LWP']) & ~np.isnan(data3['biases'][bias])
-        data3['biases'][bias + '-LWP_regres']['slope'], data3['biases'][bias + '-LWP_regres']['intercept'], data3['biases'][bias + '-LWP_regres']['r_value'], data3['biases'][bias + '-LWP_regres']['p_value'], data3['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data3['biases']['LWP'][mask],data3['biases'][bias][mask])
-        data3['biases'][bias + '-LWP_regres']['line'] = data3['biases'][bias + '-LWP_regres']['slope'] * data3['biases']['LWP'] + data3['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-LWP-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value'])
-        # print('r-squared-' + bias + '-LWP-ecmwf_ifs:', data3['biases'][bias + '-LWP_regres']['r_value']**2)
-
-        data4['biases'][bias + '-LWP_regres'] = {}
-        data4['biases']['LWP'] = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
-        data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data4['biases']['LWP']) & ~np.isnan(data4['biases'][bias])
-        data4['biases'][bias + '-LWP_regres']['slope'], data4['biases'][bias + '-LWP_regres']['intercept'], data4['biases'][bias + '-LWP_regres']['r_value'], data4['biases'][bias + '-LWP_regres']['p_value'], data4['biases'][bias + '-LWP_regres']['std_err'] = stats.linregress(data4['biases']['LWP'][mask],data4['biases'][bias][mask])
-        data4['biases'][bias + '-LWP_regres']['line'] = data4['biases'][bias + '-LWP_regres']['slope'] * data4['biases']['LWP'] + data4['biases'][bias + '-LWP_regres']['intercept']
-        print('r-' + bias + '-LWP-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value'])
-        # print('r-squared-' + bias + '-LWP-um_ra2t:', data4['biases'][bias + '-LWP_regres']['r_value']**2)
-
+    #### ---------------------------------------------------------------------------------------
+    #### IWV
+    #### ---------------------------------------------------------------------------------------
+    ## create height indices
     tempindex = np.where(data3['height'][0,:] <= 12000) ### first time bin only
     data3['iwv'] = np.zeros([np.size(data3['height'][:,tempindex[0]],0)])
     print (data3['iwv'].shape)
@@ -2961,11 +2919,6 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         # print (dz.size)
         if np.size(dz) == 64:
             data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
-
-    #### ---------------------------------------------------------------------------------------
-    #### IWV
-    #### ---------------------------------------------------------------------------------------
-    ## create height indices
     lt3km_um = np.where(um_data['height'][0,:] <= 1000)
     lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
     index_12km_um = np.where(data1['height'] <= 12000)
@@ -2999,6 +2952,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
     drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
 
+    ### test fig for iwv
     plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
     plt.plot(data2['time_hrly'][:-3], data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'mediumseagreen')
     plt.plot(data4['time_hrly'][:-3], data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'steelblue')
@@ -3008,42 +2962,68 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.grid('on')
     plt.show()
 
+
+    ### --------------------------------------
+    ### compute linear regressions
+    ### --------------------------------------
+    ### define dictionaries
+    data1['biases'] = {}
+    data2['biases'] = {}
+    data3['biases'] = {}
+    data4['biases'] = {}
+
+    bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet', 'Rnet']
+    argx_list = ['LWP', 'IWV']
     for bias in bias_list:
-        data1['biases'][bias + '-IWV_regres'] = {}
-        data1['biases']['IWV'] = data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
-        # data1['biases'][bias] = data1['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data1['biases']['IWV']) & ~np.isnan(data1['biases'][bias])
-        data1['biases'][bias + '-IWV_regres']['slope'], data1['biases'][bias + '-IWV_regres']['intercept'], data1['biases'][bias + '-IWV_regres']['r_value'], data1['biases'][bias + '-IWV_regres']['p_value'], data1['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data1['biases']['IWV'][mask],data1['biases'][bias][mask])
-        data1['biases'][bias + '-IWV_regres']['line'] = data1['biases'][bias + '-IWV_regres']['slope'] * data1['biases']['IWV'] + data1['biases'][bias + '-IWV_regres']['intercept']
-        print('r-' + bias + '-IWV-um_ra2m:', data1['biases'][bias + '-IWV_regres']['r_value'])
-        # print('r-squared-' + bias + '-IWV-um_ra2m:', data1['biases'][bias + '-IWV_regres']['r_value']**2)
+        for argx in argx_list:
+            data1['biases'][bias + '-' + argx + '_regres'] = {}
+            if argx == 'LWP':
+                data1['biases'][argx] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+            elif argx == 'IWV':
+                data1['biases'][argx] = data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            data1['biases'][bias] = data1['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+            mask = ~np.isnan(data1['biases'][argx]) & ~np.isnan(data1['biases'][bias])
+            data1['biases'][bias + '-' + argx + '_regres']['slope'], data1['biases'][bias + '-' + argx + '_regres']['intercept'], data1['biases'][bias + '-' + argx + '_regres']['r_value'], data1['biases'][bias + '-' + argx + '_regres']['p_value'], data1['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data1['biases'][argx][mask],data1['biases'][bias][mask])
+            data1['biases'][bias + '-' + argx + '_regres']['line'] = data1['biases'][bias + '-' + argx + '_regres']['slope'] * data1['biases'][argx] + data1['biases'][bias + '-' + argx + '_regres']['intercept']
+            print('r-' + bias + '-' + argx + '-um_ra2m:', data1['biases'][bias + '-' + argx + '_regres']['r_value'])
+            # print('r-squared-' + bias + '-' + argx + '-um_ra2m:', data1['biases'][bias + '-' + argx + '_regres']['r_value']**2)
 
-        data2['biases'][bias + '-IWV_regres'] = {}
-        data2['biases']['IWV'] = data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
-        # data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data2['biases']['IWV']) & ~np.isnan(data2['biases'][bias])
-        data2['biases'][bias + '-IWV_regres']['slope'], data2['biases'][bias + '-IWV_regres']['intercept'], data2['biases'][bias + '-IWV_regres']['r_value'], data2['biases'][bias + '-IWV_regres']['p_value'], data2['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data2['biases']['IWV'][mask],data2['biases'][bias][mask])
-        data2['biases'][bias + '-IWV_regres']['line'] = data2['biases'][bias + '-IWV_regres']['slope'] * data2['biases']['IWV'] + data2['biases'][bias + '-IWV_regres']['intercept']
-        print('r-' + bias + '-IWV-um_casim-100:', data2['biases'][bias + '-IWV_regres']['r_value'])
-        # print('r-squared-' + bias + '-IWV-um_casim-100:', data2['biases'][bias + '-IWV_regres']['r_value']**2)
+            data2['biases'][bias + '-' + argx + '_regres'] = {}
+            if argx == 'LWP':
+                data2['biases'][argx] = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+            elif argx == 'IWV':
+                data2['biases'][argx] = data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+            mask = ~np.isnan(data2['biases'][argx]) & ~np.isnan(data2['biases'][bias])
+            data2['biases'][bias + '-' + argx + '_regres']['slope'], data2['biases'][bias + '-' + argx + '_regres']['intercept'], data2['biases'][bias + '-' + argx + '_regres']['r_value'], data2['biases'][bias + '-' + argx + '_regres']['p_value'], data2['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data2['biases'][argx][mask],data2['biases'][bias][mask])
+            data2['biases'][bias + '-' + argx + '_regres']['line'] = data2['biases'][bias + '-' + argx + '_regres']['slope'] * data2['biases'][argx] + data2['biases'][bias + '-' + argx + '_regres']['intercept']
+            print('r-' + bias + '-' + argx + '-um_casim-100:', data2['biases'][bias + '-' + argx + '_regres']['r_value'])
+            # print('r-squared-' + bias + '-' + argx + '-um_casim-100:', data2['biases'][bias + '-' + argx + '_regres']['r_value']**2)
 
-        data3['biases'][bias + '-IWV_regres'] = {}
-        data3['biases']['IWV'] = data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
-        data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data3['biases']['IWV']) & ~np.isnan(data3['biases'][bias])
-        data3['biases'][bias + '-IWV_regres']['slope'], data3['biases'][bias + '-IWV_regres']['intercept'], data3['biases'][bias + '-IWV_regres']['r_value'], data3['biases'][bias + '-IWV_regres']['p_value'], data3['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data3['biases']['IWV'][mask],data3['biases'][bias][mask])
-        data3['biases'][bias + '-IWV_regres']['line'] = data3['biases'][bias + '-IWV_regres']['slope'] * data3['biases']['IWV'] + data3['biases'][bias + '-IWV_regres']['intercept']
-        print('r-' + bias + '-IWV-ecmwf_ifs:', data3['biases'][bias + '-IWV_regres']['r_value'])
-        # print('r-squared-' + bias + '-IWV-ecmwf_ifs:', data3['biases'][bias + '-IWV_regres']['r_value']**2)
+            data3['biases'][bias + '-' + argx + '_regres'] = {}
+            if argx == 'LWP':
+                data3['biases'][argx] = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+            elif argx == 'IWV':
+                data3['biases'][argx] = data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+            mask = ~np.isnan(data3['biases'][argx]) & ~np.isnan(data3['biases'][bias])
+            data3['biases'][bias + '-' + argx + '_regres']['slope'], data3['biases'][bias + '-' + argx + '_regres']['intercept'], data3['biases'][bias + '-' + argx + '_regres']['r_value'], data3['biases'][bias + '-' + argx + '_regres']['p_value'], data3['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data3['biases'][argx][mask],data3['biases'][bias][mask])
+            data3['biases'][bias + '-' + argx + '_regres']['line'] = data3['biases'][bias + '-' + argx + '_regres']['slope'] * data3['biases'][argx] + data3['biases'][bias + '-' + argx + '_regres']['intercept']
+            print('r-' + bias + '-' + argx + '-ecmwf_ifs:', data3['biases'][bias + '-' + argx + '_regres']['r_value'])
+            # print('r-squared-' + bias + '-' + argx + '-ecmwf_ifs:', data3['biases'][bias + '-' + argx + '_regres']['r_value']**2)
 
-        data4['biases'][bias + '-IWV_regres'] = {}
-        data4['biases']['IWV'] = data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
-        # data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
-        mask = ~np.isnan(data4['biases']['IWV']) & ~np.isnan(data4['biases'][bias])
-        data4['biases'][bias + '-IWV_regres']['slope'], data4['biases'][bias + '-IWV_regres']['intercept'], data4['biases'][bias + '-IWV_regres']['r_value'], data4['biases'][bias + '-IWV_regres']['p_value'], data4['biases'][bias + '-IWV_regres']['std_err'] = stats.linregress(data4['biases']['IWV'][mask],data4['biases'][bias][mask])
-        data4['biases'][bias + '-IWV_regres']['line'] = data4['biases'][bias + '-IWV_regres']['slope'] * data4['biases']['IWV'] + data4['biases'][bias + '-IWV_regres']['intercept']
-        print('r-' + bias + '-IWV-um_ra2t:', data4['biases'][bias + '-IWV_regres']['r_value'])
-        # print('r-squared-' + bias + '-IWV-um_ra2t:', data4['biases'][bias + '-IWV_regres']['r_value']**2)
+            data4['biases'][bias + '-' + argx + '_regres'] = {}
+            if argx == 'LWP':
+                data4['biases'][argx] = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
+            elif argx == 'IWV':
+                data4['biases'][argx] = data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
+            mask = ~np.isnan(data4['biases'][argx]) & ~np.isnan(data4['biases'][bias])
+            data4['biases'][bias + '-' + argx + '_regres']['slope'], data4['biases'][bias + '-' + argx + '_regres']['intercept'], data4['biases'][bias + '-' + argx + '_regres']['r_value'], data4['biases'][bias + '-' + argx + '_regres']['p_value'], data4['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data4['biases'][argx][mask],data4['biases'][bias][mask])
+            data4['biases'][bias + '-' + argx + '_regres']['line'] = data4['biases'][bias + '-' + argx + '_regres']['slope'] * data4['biases'][argx] + data4['biases'][bias + '-' + argx + '_regres']['intercept']
+            print('r-' + bias + '-' + argx + '-um_ra2t:', data4['biases'][bias + '-' + argx + '_regres']['r_value'])
+            # print('r-squared-' + bias + '-' + argx + '-um_ra2t:', data4['biases'][bias + '-' + argx + '_regres']['r_value']**2)
+
 
     ##################################################
     ##################################################
@@ -3269,12 +3249,12 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cloud_fractions_lt3km = [obs_data['Cv'][:-3,lt3km_um[0]], um_data['model_Cv_filtered'][:-3,lt3km_um[0]], misc_data['model_Cv_filtered'][:-3,lt3km_um[0]], ifs_data['model_snow_Cv_filtered'][:-3,lt3km_um[0]], ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]]]
     cloud_masks = [mask0[:-3,:], mask1[:-3,:], mask2[:-3,:], mask3[:-3,:], mask4[:-3,:]]
     cloud_mask_bias = [mask0[:-3,:], np.nanmean(mask1[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
-    np.nanmean(mask2[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
-    np.nanmean(mask3[:-3,:],1) - np.nanmean(mask0[:-3,:],1), np.nanmean(mask4[:-3,:],1) - np.nanmean(mask0[:-3,:],1)]
+        np.nanmean(mask2[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
+        np.nanmean(mask3[:-3,:],1) - np.nanmean(mask0[:-3,:],1), np.nanmean(mask4[:-3,:],1) - np.nanmean(mask0[:-3,:],1)]
     cloud_masks_lt3km = [mask0[:-3,lt3km_um[0]], mask1[:-3,lt3km_um[0]], mask2[:-3,lt3km_um[0]], mask3[:-3,lt3km_ifs[0]], mask4[:-3,lt3km_um[0]]]
     cloud_mask_bias_lt3km = [mask0[:-3,lt3km_um[0]], np.nanmean(mask1[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
-    np.nanmean(mask2[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
-    np.nanmean(mask3[:-3,lt3km_ifs[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1), np.nanmean(mask4[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)]
+        np.nanmean(mask2[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
+        np.nanmean(mask3[:-3,lt3km_ifs[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1), np.nanmean(mask4[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)]
     lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
     iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
