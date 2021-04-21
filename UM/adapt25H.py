@@ -782,7 +782,7 @@ def main():
     moccha_missing_files = []
 
     doy = np.arange(225,259)        ## set DOY for full moccha figures
-    # doy = np.arange(243,259)        ## set DOY for subset of moccha figures
+    # doy = np.arange(245,253)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,248)        ## set DOY for subset of moccha figures (28 Aug to 4 Sep)
     # doy = np.arange(248,258)        ## set DOY for subset of moccha figures
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (17th Aug to 14th Sep)
