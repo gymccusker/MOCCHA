@@ -2769,7 +2769,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     print ('******')
     print ('')
-    print ('Plotting LWP timeseries for whole drift period:')
+    print ('Plotting bivariate bias figures:')
     print ('')
 
     #### set flagged and bad data to nans
@@ -2795,7 +2795,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
-    ####            CREATE TWC MASK
+    ####            CREATE TWC CLOUD MASK
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
 
@@ -2887,22 +2887,24 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     mask3[wcind] = np.nan
     mask4[wcind] = np.nan
 
-    print (mask0.shape)
-    print (obs_data['time'][0])
-    print (obs_data['time'][-4])
-    print (data1['fixed_radiation']['time'][0])
-    print (data1['fixed_radiation']['time'][-1])
-    print (obs_data['lwp'][:-3,0].shape)
+
+
+    # cloud_fractions = [obs_data['Cv'][:-3,:], um_data['model_Cv_filtered'][:-3,:], misc_data['model_Cv_filtered'][:-3,:], ifs_data['model_snow_Cv_filtered'][:-3,:], ra2t_data['model_Cv_filtered'][:-3,:]]
+    # cloud_fractions_lt3km = [obs_data['Cv'][:-3,lt3km_um[0]], um_data['model_Cv_filtered'][:-3,lt3km_um[0]], misc_data['model_Cv_filtered'][:-3,lt3km_um[0]], ifs_data['model_snow_Cv_filtered'][:-3,lt3km_um[0]], ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]]]
+    # cloud_masks = [mask0[:-3,:], mask1[:-3,:], mask2[:-3,:], mask3[:-3,:], mask4[:-3,:]]
+    # cloud_mask_bias = [mask0[:-3,:], np.nanmean(mask1[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
+    #     np.nanmean(mask2[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
+    #     np.nanmean(mask3[:-3,:],1) - np.nanmean(mask0[:-3,:],1), np.nanmean(mask4[:-3,:],1) - np.nanmean(mask0[:-3,:],1)]
+    # cloud_masks_lt3km = [mask0[:-3,lt3km_um[0]], mask1[:-3,lt3km_um[0]], mask2[:-3,lt3km_um[0]], mask3[:-3,lt3km_ifs[0]], mask4[:-3,lt3km_um[0]]]
+    # cloud_mask_bias_lt3km = [mask0[:-3,lt3km_um[0]], np.nanmean(mask1[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
+    #     np.nanmean(mask2[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
+    #     np.nanmean(mask3[:-3,lt3km_ifs[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1), np.nanmean(mask4[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)]
+
 
     ### index drift period in ship radiation measurements
     drift_ship = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['fixed_radiation']['time'][0],
                     obs['fixed_radiation']['time_ship'] < data1['fixed_radiation']['time'][-1] + 0.05))
                                 ### obs time array ever so slightly offset (+) from models
-
-    print (drift_ship[0].shape)
-
-    print (data1['fixed_radiation']['time'][-1])
-    print (obs['fixed_radiation']['time_ship'][drift_ship[0][-1]])
 
 
     #### ---------------------------------------------------------------------------------------
@@ -2952,15 +2954,15 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
     drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
 
-    ### test fig for iwv
-    plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
-    plt.plot(data2['time_hrly'][:-3], data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'mediumseagreen')
-    plt.plot(data4['time_hrly'][:-3], data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'steelblue')
-    plt.plot(data3['time_hrly'][:-3], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'gold')
-    # plt.plot(obs['hatpro']['doy'][drift_hatpro], obs['hatpro']['IWV'][drift_hatpro], color = 'k')
-    # plt.plot(drift_doy_1hr, drift_iwv_1hr, '+', color = 'k')
-    plt.grid('on')
-    plt.show()
+    # ### test fig for iwv
+    # plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
+    # plt.plot(data2['time_hrly'][:-3], data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'mediumseagreen')
+    # plt.plot(data4['time_hrly'][:-3], data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'steelblue')
+    # plt.plot(data3['time_hrly'][:-3], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'gold')
+    # # plt.plot(obs['hatpro']['doy'][drift_hatpro], obs['hatpro']['IWV'][drift_hatpro], color = 'k')
+    # # plt.plot(drift_doy_1hr, drift_iwv_1hr, '+', color = 'k')
+    # plt.grid('on')
+    # plt.show()
 
 
     ### --------------------------------------
@@ -2973,7 +2975,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     data4['biases'] = {}
 
     bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet', 'Rnet']
-    argx_list = ['LWP', 'IWV']
+    argx_list = ['LWP', 'IWV','Mask3km', 'Cv3km']
     for bias in bias_list:
         for argx in argx_list:
             data1['biases'][bias + '-' + argx + '_regres'] = {}
@@ -2981,6 +2983,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
                 data1['biases'][argx] = um_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
             elif argx == 'IWV':
                 data1['biases'][argx] = data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            elif argx == 'Mask3km':
+                data1['biases'][argx] = np.nanmean(mask1[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)
+            elif argx == 'Cv3km':
+                data1['biases'][argx] = np.nanmean(um_data['model_Cv_filtered'][:-3,lt3km_um[0]],1) - np.nanmean(obs_data['Cv'][:-3,lt3km_um[0]],1)
             data1['biases'][bias] = data1['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
             mask = ~np.isnan(data1['biases'][argx]) & ~np.isnan(data1['biases'][bias])
             data1['biases'][bias + '-' + argx + '_regres']['slope'], data1['biases'][bias + '-' + argx + '_regres']['intercept'], data1['biases'][bias + '-' + argx + '_regres']['r_value'], data1['biases'][bias + '-' + argx + '_regres']['p_value'], data1['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data1['biases'][argx][mask],data1['biases'][bias][mask])
@@ -2993,6 +2999,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
                 data2['biases'][argx] = misc_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
             elif argx == 'IWV':
                 data2['biases'][argx] = data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            elif argx == 'Mask3km':
+                data2['biases'][argx] = np.nanmean(mask2[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)
+            elif argx == 'Cv3km':
+                data2['biases'][argx] = np.nanmean(misc_data['model_Cv_filtered'][:-3,lt3km_um[0]],1) - np.nanmean(obs_data['Cv'][:-3,lt3km_um[0]],1)
             data2['biases'][bias] = data2['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
             mask = ~np.isnan(data2['biases'][argx]) & ~np.isnan(data2['biases'][bias])
             data2['biases'][bias + '-' + argx + '_regres']['slope'], data2['biases'][bias + '-' + argx + '_regres']['intercept'], data2['biases'][bias + '-' + argx + '_regres']['r_value'], data2['biases'][bias + '-' + argx + '_regres']['p_value'], data2['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data2['biases'][argx][mask],data2['biases'][bias][mask])
@@ -3005,6 +3015,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
                 data3['biases'][argx] = ifs_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
             elif argx == 'IWV':
                 data3['biases'][argx] = data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            elif argx == 'Mask3km':
+                data3['biases'][argx] = np.nanmean(mask3[:-3,lt3km_ifs[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)
+            elif argx == 'Cv3km':
+                data3['biases'][argx] = np.nanmean(ifs_data['model_snow_Cv_filtered'][:-3,lt3km_ifs[0]],1) - np.nanmean(obs_data['Cv'][:-3,lt3km_um[0]],1)
             data3['biases'][bias] = data3['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
             mask = ~np.isnan(data3['biases'][argx]) & ~np.isnan(data3['biases'][bias])
             data3['biases'][bias + '-' + argx + '_regres']['slope'], data3['biases'][bias + '-' + argx + '_regres']['intercept'], data3['biases'][bias + '-' + argx + '_regres']['r_value'], data3['biases'][bias + '-' + argx + '_regres']['p_value'], data3['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data3['biases'][argx][mask],data3['biases'][bias][mask])
@@ -3017,6 +3031,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
                 data4['biases'][argx] = ra2t_data['model_lwp'][:-3]*1e3 - obs_data['lwp'][:-3,0]*1e3
             elif argx == 'IWV':
                 data4['biases'][argx] = data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]
+            elif argx == 'Mask3km':
+                data4['biases'][argx] = np.nanmean(mask4[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)
+            elif argx == 'Cv3km':
+                data4['biases'][argx] = np.nanmean(ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]],1) - np.nanmean(obs_data['Cv'][:-3,lt3km_um[0]],1)
             data4['biases'][bias] = data4['fixed_radiation'][bias] - obs['fixed_radiation'][bias + '_ship'][drift_ship[0]]
             mask = ~np.isnan(data4['biases'][argx]) & ~np.isnan(data4['biases'][bias])
             data4['biases'][bias + '-' + argx + '_regres']['slope'], data4['biases'][bias + '-' + argx + '_regres']['intercept'], data4['biases'][bias + '-' + argx + '_regres']['r_value'], data4['biases'][bias + '-' + argx + '_regres']['p_value'], data4['biases'][bias + '-' + argx + '_regres']['std_err'] = stats.linregress(data4['biases'][argx][mask],data4['biases'][bias][mask])
@@ -3148,83 +3166,95 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ### -------------------------------
     ### Build simple radiation-IWV bias figures
     ### -------------------------------
-    SMALL_SIZE = 12
-    MED_SIZE = 16
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-
-    fig = plt.figure(figsize=(14,5))
-    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.95, left = 0.1,
-            hspace = 0.3, wspace = 0.3)
-
-    plt.subplot(131)
-    alf = 0.3
-    xmin = -3
-    xmax = 6
-    y1min = -130
-    y1max = 80
-    plt.plot(data1['biases']['IWV'], data1['biases']['SWd'], '.', alpha = alf, color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['SWd'], '.', alpha = alf, color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['SWd'], '.', alpha = alf, color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['SWd'], '.', alpha = alf, color = 'steelblue')
-    plt.plot(data1['biases']['IWV'], data1['biases']['SWd-IWV_regres']['line'], color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['SWd-IWV_regres']['line'], color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['SWd-IWV_regres']['line'], color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['SWd-IWV_regres']['line'], color = 'steelblue')
-    # plt.grid('on')
-    plt.ylim([y1min,y1max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('IWV [mod-obs]')
-    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(132)
-    y2min = -80
-    y2max = 90
-    plt.plot(data1['biases']['IWV'], data1['biases']['LWd'], '.', alpha = alf, color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['LWd'], '.', alpha = alf, color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['LWd'], '.', alpha = alf, color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['LWd'], '.', alpha = alf, color = 'steelblue')
-    plt.plot(data1['biases']['IWV'], data1['biases']['LWd-IWV_regres']['line'], color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['LWd-IWV_regres']['line'], color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['LWd-IWV_regres']['line'], color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['LWd-IWV_regres']['line'], color = 'steelblue')
-    # plt.grid('on')
-    plt.ylim([y2min,y2max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('IWV [mod-obs]')
-    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(133)
-    y3min = -80
-    y3max = 90
-    plt.plot(data1['biases']['IWV'], data1['biases']['Rnet'], '.', alpha = alf, color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['Rnet'], '.', alpha = alf, color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['Rnet'], '.', alpha = alf, color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['Rnet'], '.', alpha = alf, color = 'steelblue')
-    plt.plot(data1['biases']['IWV'], data1['biases']['Rnet-IWV_regres']['line'], color = 'darkblue')
-    plt.plot(data2['biases']['IWV'], data2['biases']['Rnet-IWV_regres']['line'], color = 'mediumseagreen')
-    plt.plot(data3['biases']['IWV'], data3['biases']['Rnet-IWV_regres']['line'], color = 'gold')
-    plt.plot(data4['biases']['IWV'], data4['biases']['Rnet-IWV_regres']['line'], color = 'steelblue')
-    # plt.grid('on')
+    # SMALL_SIZE = 12
+    # MED_SIZE = 16
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    #
+    # fig = plt.figure(figsize=(14,5))
+    # plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.95, left = 0.1,
+    #         hspace = 0.3, wspace = 0.3)
+    #
+    # arg = 'Cv3km'
+    #
+    # plt.subplot(131)
+    # alf = 0.3
+    # if arg == 'IWV':
+    #     xmin = -3
+    #     xmax = 6
+    # elif arg == 'Mask3km':
+    #     xmin = -0.5
+    #     xmax = 1.0
+    # elif arg == 'LWP':
+    #     xmin = -250
+    #     xmax = 400
+    # elif arg == 'Cv3km':
+    #     xmin = -1.0
+    #     xmax = 1.0
+    # y1min = -130
+    # y1max = 80
+    # plt.plot(data1['biases'][arg], data1['biases']['SWd'], '.', alpha = alf, color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['SWd'], '.', alpha = alf, color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['SWd'], '.', alpha = alf, color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['SWd'], '.', alpha = alf, color = 'steelblue')
+    # plt.plot(data1['biases'][arg], data1['biases']['SWd-' + arg + '_regres']['line'], color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['SWd-' + arg + '_regres']['line'], color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['SWd-' + arg + '_regres']['line'], color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['SWd-' + arg + '_regres']['line'], color = 'steelblue')
+    # # plt.grid('on')
+    # plt.ylim([y1min,y1max])
+    # plt.xlim([xmin,xmax])
+    # plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel(arg + ' [mod-obs]')
+    # plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+    #
+    # plt.subplot(132)
+    # y2min = -80
+    # y2max = 90
+    # plt.plot(data1['biases'][arg], data1['biases']['LWd'], '.', alpha = alf, color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['LWd'], '.', alpha = alf, color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['LWd'], '.', alpha = alf, color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['LWd'], '.', alpha = alf, color = 'steelblue')
+    # plt.plot(data1['biases'][arg], data1['biases']['LWd-' + arg + '_regres']['line'], color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['LWd-' + arg + '_regres']['line'], color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['LWd-' + arg + '_regres']['line'], color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['LWd-' + arg + '_regres']['line'], color = 'steelblue')
+    # # plt.grid('on')
     # plt.ylim([y2min,y2max])
     # plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('IWV [mod-obs]')
-    plt.ylabel('R$_{net}$ [mod-obs]')
-
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
-    plt.show()
+    # plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel(arg + ' [mod-obs]')
+    # plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+    #
+    # plt.subplot(133)
+    # y3min = -80
+    # y3max = 120
+    # plt.plot(data1['biases'][arg], data1['biases']['Rnet'], '.', alpha = alf, color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['Rnet'], '.', alpha = alf, color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['Rnet'], '.', alpha = alf, color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['Rnet'], '.', alpha = alf, color = 'steelblue')
+    # plt.plot(data1['biases'][arg], data1['biases']['Rnet-' + arg + '_regres']['line'], color = 'darkblue')
+    # plt.plot(data2['biases'][arg], data2['biases']['Rnet-' + arg + '_regres']['line'], color = 'mediumseagreen')
+    # plt.plot(data3['biases'][arg], data3['biases']['Rnet-' + arg + '_regres']['line'], color = 'gold')
+    # plt.plot(data4['biases'][arg], data4['biases']['Rnet-' + arg + '_regres']['line'], color = 'steelblue')
+    # # plt.grid('on')
+    # plt.ylim([y2min,y2max])
+    # plt.xlim([xmin,xmax])
+    # plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel(arg + ' [mod-obs]')
+    # plt.ylabel('R$_{net}$ [mod-obs]')
+    #
+    # # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations.png', dpi = 300)
+    # plt.show()
 
     ##################################################
     ##################################################
@@ -3246,18 +3276,16 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         ra2t_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3]
 
     cloud_fractions = [obs_data['Cv'][:-3,:], um_data['model_Cv_filtered'][:-3,:], misc_data['model_Cv_filtered'][:-3,:], ifs_data['model_snow_Cv_filtered'][:-3,:], ra2t_data['model_Cv_filtered'][:-3,:]]
-    cloud_fractions_lt3km = [obs_data['Cv'][:-3,lt3km_um[0]], um_data['model_Cv_filtered'][:-3,lt3km_um[0]], misc_data['model_Cv_filtered'][:-3,lt3km_um[0]], ifs_data['model_snow_Cv_filtered'][:-3,lt3km_um[0]], ra2t_data['model_Cv_filtered'][:-3,lt3km_um[0]]]
+
     cloud_masks = [mask0[:-3,:], mask1[:-3,:], mask2[:-3,:], mask3[:-3,:], mask4[:-3,:]]
     cloud_mask_bias = [mask0[:-3,:], np.nanmean(mask1[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
         np.nanmean(mask2[:-3,:],1) - np.nanmean(mask0[:-3,:],1),
         np.nanmean(mask3[:-3,:],1) - np.nanmean(mask0[:-3,:],1), np.nanmean(mask4[:-3,:],1) - np.nanmean(mask0[:-3,:],1)]
     cloud_masks_lt3km = [mask0[:-3,lt3km_um[0]], mask1[:-3,lt3km_um[0]], mask2[:-3,lt3km_um[0]], mask3[:-3,lt3km_ifs[0]], mask4[:-3,lt3km_um[0]]]
-    cloud_mask_bias_lt3km = [mask0[:-3,lt3km_um[0]], np.nanmean(mask1[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
-        np.nanmean(mask2[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1),
-        np.nanmean(mask3[:-3,lt3km_ifs[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1), np.nanmean(mask4[:-3,lt3km_um[0]],1) - np.nanmean(mask0[:-3,lt3km_um[0]],1)]
-    lwc = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3, misc_data['model_lwc'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3, ra2t_data['model_lwc'][:-3,:]*1e3]
-    iwc = [obs_data['iwc'][:-3,:]*1e3, um_data['model_iwc'][:-3,:]*1e3, misc_data['model_iwc'][:-3,:]*1e3, ifs_data['model_iwc_filtered'][:-3,:]*1e3, ra2t_data['model_iwc'][:-3,:]*1e3]
 
+
+    cloud_mask_bias_lt3km = [mask0[:-3,lt3km_um[0]], data1['biases']['Mask3km'], data2['biases']['Mask3km'], data3['biases']['Mask3km'], data4['biases']['Mask3km']]
+    Cv_bias_lt3km = [obs_data['Cv'][:-3,lt3km_um[0]], data1['biases']['Cv3km'], data2['biases']['Cv3km'], data3['biases']['Cv3km'], data4['biases']['Cv3km']]
 
     ####------          FIGURE
     SMALL_SIZE = 12
@@ -3271,9 +3299,9 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
 
-    fig = plt.figure(figsize=(14,14))
+    fig = plt.figure(figsize=(12,12))
     plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
-        hspace = 0.35, wspace = 0.35)
+        hspace = 0.35, wspace = 0.38)
 
     alf = 0.3
     xmin = -250
@@ -3286,106 +3314,87 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     y3max = 90
 
     vminn = -0.5
-    vmaxx = 2.5
+    vmaxx = 0.5
 
-    cmap_choice = mpl_cm.viridis
+    cmap_choice = mpl_cm.coolwarm
 
-    offset = mcolors.TwoSlopeNorm(vmin=vminn, vcenter=0., vmax=vmaxx)
+    # offset = mcolors.TwoSlopeNorm(vmin=vminn, vcenter=0., vmax=vmaxx)
 
     ### choose variables and plot arguments for figure
-    var = iwv_bias
+    var = Cv_bias_lt3km
     arg = [var[0], var[1], var[2], var[3], var[4]]    ## 1D timeseries data
     # arg = [var[0], offset(var[1]), offset(var[2]), offset(var[3]), offset(var[4])]    ## 1D timeseries data (offset, diverging with midpoint 0)
     # arg = [np.nanmean(var[0],1), np.nanmean(var[1],1), np.nanmean(var[2],1), np.nanmean(var[3],1), np.nanmean(var[4],1)]    ## means of cloudnet profile data
 
     ####------          SWd
     plt.subplot(431)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
-    plt.ylim([y1min,y1max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_RA2M', fontsize = 12)
-    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(434)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = arg[2], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
-    plt.ylim([y1min,y1max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_CASIM-100', fontsize = 12)
-    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(437)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = arg[3], s = 6,
+    plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
     plt.plot(data3['biases']['LWP'], data3['biases']['SWd-LWP_regres']['line'], color = 'gold', zorder = 3)
     plt.ylim([y1min,y1max])
+    plt.yticks([-100, -50, 0, 50])
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
-    plt.title('ECMWF_IFS', fontsize = 12)
-    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+    # plt.title('ECMWF_IFS', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data3['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'goldenrod')
 
-    plt.subplot(4,3,10)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 6,
+
+    plt.subplot(434)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = arg[2], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data2['biases']['LWP'], data2['biases']['SWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y1min,y1max])
+    plt.yticks([-100, -50, 0, 50])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    # plt.title('UM_CASIM-100', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data2['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'mediumseagreen')
+
+    plt.subplot(437)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
     plt.plot(data4['biases']['LWP'], data4['biases']['SWd-LWP_regres']['line'], color = 'steelblue', zorder = 3)
     plt.ylim([y1min,y1max])
+    plt.yticks([-100, -50, 0, 50])
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.title('UM_RA2T', fontsize = 12)
-    plt.xlabel('LWP [mod-obs]')
-    plt.ylabel('SW$_{\downarrow}$ [mod-obs]')
+    # plt.title('UM_RA2T', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data4['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'steelblue')
+
+    plt.subplot(4,3,10)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data1['biases']['LWP'], data1['biases']['SWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
+    plt.ylim([y1min,y1max])
+    plt.yticks([-100, -50, 0, 50])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    # plt.title('UM_RA2M', fontsize = 12)
+    plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data1['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'darkblue')
+
 
     ####------          LWd
     plt.subplot(432)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
-    plt.ylim([y2min,y2max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_RA2M', fontsize = 12)
-    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(435)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
-    plt.ylim([y2min,y2max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_CASIM-100', fontsize = 12)
-    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
-
-    plt.subplot(438)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = arg[3], s = 6,
+    plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
@@ -3395,11 +3404,27 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
-    plt.title('ECMWF_IFS', fontsize = 12)
-    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+    # plt.title('ECMWF_IFS', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data3['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'goldenrod')
 
-    plt.subplot(4,3,11)
-    plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 6,
+    plt.subplot(435)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data2['biases']['LWP'], data2['biases']['LWd-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    # plt.title('UM_CASIM-100', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data2['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'mediumseagreen')
+
+    plt.subplot(438)
+    plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
@@ -3408,41 +3433,28 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.title('UM_RA2T', fontsize = 12)
-    plt.xlabel('LWP [mod-obs]')
-    plt.ylabel('LW$_{\downarrow}$ [mod-obs]')
+    # plt.title('UM_RA2T', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data4['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'steelblue')
+
+    plt.subplot(4,3,11)
+    plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data1['biases']['LWP'], data1['biases']['LWd-LWP_regres']['line'], color = 'darkblue', zorder = 3)
+    plt.ylim([y2min,y2max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    # plt.title('UM_RA2M', fontsize = 12)
+    plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data1['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.77), xytext=(xmax*0.72,y2max*0.77), fontsize = 12, color = 'darkblue')
 
     ####------          Rnet
     plt.subplot(433)
-    plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = arg[1], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue', zorder = 3)
-    plt.ylim([y3min,y3max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_RA2M', fontsize = 12)
-    plt.ylabel('R$_{net}$ [mod-obs]')
-
-    plt.subplot(436)
-    plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = arg[2], s = 6,
-        vmin = vminn, vmax = vmaxx,
-        cmap = cmap_choice,
-        )
-    plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
-    plt.ylim([y3min,y3max])
-    plt.xlim([xmin,xmax])
-    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    # plt.xlabel('LWP [mod-obs]')
-    plt.title('UM_CASIM-100', fontsize = 12)
-    plt.ylabel('R$_{net}$ [mod-obs]')
-
-    plt.subplot(439)
-    plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = arg[3], s = 6,
+    plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
@@ -3452,11 +3464,33 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
-    plt.title('ECMWF_IFS', fontsize = 12)
-    plt.ylabel('R$_{net}$ [mod-obs]')
+    plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'goldenrod')
+    ax = plt.gca()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('ECMWF_IFS', rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
 
-    plt.subplot(4,3,12)
-    scat = plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 6,
+    plt.subplot(436)
+    plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = arg[2], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data2['biases']['LWP'], data2['biases']['Rnet-LWP_regres']['line'], color = 'mediumseagreen', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    # plt.xlabel('LWP [mod-obs]')
+    plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data2['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'mediumseagreen')
+    ax = plt.gca()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+
+    plt.subplot(439)
+    scat = plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
         )
@@ -3465,18 +3499,40 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.title('UM_RA2T', fontsize = 12)
-    plt.xlabel('LWP [mod-obs]')
-    plt.ylabel('R$_{net}$ [mod-obs]')
-    cbaxes = fig.add_axes([0.84, 0.11, 0.1, 0.015])
+    plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data4['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'steelblue')
+    ax = plt.gca()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+
+    plt.subplot(4,3,12)
+    scat = plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = arg[1], s = 8,
+        vmin = vminn, vmax = vmaxx,
+        cmap = cmap_choice,
+        )
+    plt.plot(data1['biases']['LWP'], data1['biases']['Rnet-LWP_regres']['line'], color = 'darkblue', zorder = 3)
+    plt.ylim([y3min,y3max])
+    plt.xlim([xmin,xmax])
+    plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
+    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    # plt.title('', fontsize = 12)
+    plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
+    plt.annotate('{:.2f}'.format(data1['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.77), xytext=(xmax*0.72,y3max*0.77), fontsize = 12, color = 'darkblue')
+    ax = plt.gca()
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 15)
+    ax2.set_yticks([])
+    cbaxes = fig.add_axes([0.83, 0.1, 0.1, 0.015])
     cb = plt.colorbar(scat, cax = cbaxes, orientation = 'horizontal')
-    cbaxes.set_xlabel('IWV bias [kg m$^{-2}$]', rotation = 0, labelpad = 5, fontsize = 12)
+    cbaxes.set_xlabel('C$_{V}$ bias \n(mean below 3km)', rotation = 0, labelpad = 5, fontsize = 12)
     # cbaxes.xaxis.set_ticks([0, 1])
-    cbaxes.set_xticklabels([-0.5, 0, 2], fontsize = 10)
+    cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
 
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cIWV_percBIAS.png', dpi = 300)
+    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCvlt3km.svg', dpi = 300)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
