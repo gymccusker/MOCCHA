@@ -3207,7 +3207,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey',  linewidth = 3, label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
-    plt.ylabel('Net Radiation [W m$^{-2}$]')
+    plt.ylabel('R$_{net}$ [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -3251,7 +3251,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     lw4 = data4['fixed_radiation']['LWnet']
 
     ax  = fig.add_axes([0.64,0.7,0.15,0.22])   # left, bottom, width, height
-    yEmax = 0.1
+    yEmax = 0.11
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     f = sns.distplot(sw1[melt], hist=False, color="darkblue", kde_kws={"shade": True})
     f = sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
@@ -3259,7 +3259,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(87,0.087), xytext=(87,0.087), fontsize = 14)
+    plt.annotate('Melt', xy=(87,0.1), xytext=(87,0.1), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
@@ -3284,7 +3284,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(0,0.14), xytext=(0,0.14), fontsize = 14)
+    plt.annotate('Melt', xy=(0,0.145), xytext=(0,0.145), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
@@ -3301,7 +3301,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
-    yDmax = 0.08
+    yDmax = 0.1
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[melt] + lw1[melt]
     f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -3313,8 +3313,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt] + obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt] + obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(47,0.07), xytext=(47,0.07), fontsize = 14)
-    plt.xlabel('Net Radiation [W m$^{-2}$]')
+    plt.annotate('Melt', xy=(47,0.09), xytext=(47,0.09), fontsize = 14)
+    plt.xlabel('R$_{net}$ [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     # # UM_RA2M peak netRad = 33.57
@@ -3330,7 +3330,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.83,0.7,0.15,0.22])   # left, bottom, width, height
-    yEmax = 0.1
+    yEmax = 0.11
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     f = sns.distplot(sw1[freeze], hist=False, color="darkblue", kde_kws={"shade": True})
     f = sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
@@ -3338,7 +3338,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(77,0.087), xytext=(77,0.087), fontsize = 14)
+    plt.annotate('Freeze', xy=(77,0.1), xytext=(77,0.1), fontsize = 14)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
@@ -3363,7 +3363,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(-8,0.14), xytext=(-8,0.14), fontsize = 14)
+    plt.annotate('Freeze', xy=(-8,0.145), xytext=(-8,0.145), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
@@ -3381,7 +3381,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
 
     # plt.subplot(212)
     ax  = fig.add_axes([0.83,0.1,0.15,0.22])   # left, bottom, width, height
-    yDmax = 0.08
+    yDmax = 0.1
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     crf1 = sw1[freeze] + lw1[freeze]
     f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -3393,10 +3393,10 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze] + obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze] + obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(35,0.07), xytext=(35,0.07), fontsize = 14)
+    plt.annotate('Freeze', xy=(35,0.09), xytext=(35,0.09), fontsize = 14)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
-    plt.xlabel('Net Radiation [W m$^{-2}$]')
+    plt.xlabel('R$_{net}$ [W m$^{-2}$]')
     # # UM_RA2M peak netRad = 14.91
     # # UM_RA2T peak netRad = 18.18
     # # UM_CASIM-100 peak netRad = 6.10
@@ -3415,7 +3415,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('')
 
     fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_ifs_23-25_casim-100_ra2m_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
