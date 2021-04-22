@@ -8094,9 +8094,9 @@ def main():
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
         ### cloudnet directories
-        cloudnet_um1 = '4_u-bg610_RA2M_CON/'
+        cloudnet_um1 = '25_u-cc568_RA2M_CON/'
         cloudnet_um2 = '23_u-cc278_RA1M_CASIM/'
-        cloudnet_um4 = '7_u-bn068_RA2T_CON/'
+        cloudnet_um4 = '24_u-cc324_RA2T_CON/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
         out_dir2 = 'UM_CASIM-100/'
@@ -8116,6 +8116,11 @@ def main():
     ### 14_u-bu570_RA1M_CASIM/OUT_R0(_RadPA_25h)/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
     ### 15_u-bu687_RA2M_CON/OUT_24h/           # Wilson and Ballard 1999 uphys; new RHcrit
     ### 16_u-bv926_RA2T_CON/OUT_R0/              # RA2T_CON nest + global 4D stash + no subgrid mp production
+    ### 20_u-ca362_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
+    ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
+    ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
+    ### 25_u-cc568_RA2M_CON/OUT_R0/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+    ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
 
     ### -----------------------------------------------------------------
     ### CHOSEN RUN - CLOUDNET DATA
@@ -9069,7 +9074,10 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
-    if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100_GA6alb'
+    if out_dir1[:10] == '26_u-cd847': label1 = 'UM_CASIM-AeroProf'
+    if out_dir1[:10] == '25_u-cc568': label1 = 'UM_RA2M'
+    if out_dir1[:10] == '24_u-cc324': label1 = 'UM_RA2T_' + out_dir4[-4:-1]
+    if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100'
     if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
     if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
@@ -9086,7 +9094,10 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
-    if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100_GA6alb'
+    if out_dir2[:10] == '26_u-cd847': label2 = 'UM_CASIM-AeroProf'
+    if out_dir2[:10] == '25_u-cc568': label2 = 'UM_RA2M'
+    if out_dir2[:10] == '24_u-cc324': label2 = 'UM_RA2T_' + out_dir4[-4:-1]
+    if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100'
     if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
     if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
@@ -9104,7 +9115,10 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
-    if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100_GA6alb'
+    if out_dir3[:10] == '26_u-cd847': label3 = 'UM_CASIM-AeroProf'
+    if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
+    if out_dir3[:10] == '24_u-cc324': label3 = 'UM_RA2T_' + out_dir4[-4:-1]
+    if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100'
     if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
     if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
@@ -9121,7 +9135,10 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
-    if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100_GA6alb'
+    if out_dir4[:10] == '26_u-cd847': label4 = 'UM_CASIM-AeroProf'
+    if out_dir4[:10] == '25_u-cc568': label4 = 'UM_RA2M'
+    if out_dir4[:10] == '24_u-cc324': label4 = 'UM_RA2T_' + out_dir4[-4:-1]
+    if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100'
     if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
     if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
