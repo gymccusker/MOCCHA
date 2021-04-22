@@ -9776,7 +9776,7 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
+        out_dir1 = '12_u-br210_RA1M_CASIM/OUT_R1/'
         out_dir2 = '26_u-cd847_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
@@ -10021,10 +10021,15 @@ def main():
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                     'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
                     'cloud_fraction','radr_refl']#,'temp_1.5m']
+            elif out_dir1[:21] == '12_u-br210_RA1M_CASIM':
+                var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+                    'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                    'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                    'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # 'qice',, 'latent_heat_flux']
             else:
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-                    'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                    'cloud_fraction','radr_refl']#,'temp_1.5m','latent_heat_flux']
+                'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']#,'temp_1.5m','latent_heat_flux']
             var_list4 = var_list1
             ### CASIM RUNS
             if np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '14_u-bu570_RA1M_CASIM'):
