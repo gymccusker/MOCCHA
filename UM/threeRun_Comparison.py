@@ -2656,7 +2656,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     print ('')
 
     fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_' + label1[3:] + '_' + label3 + '_' + label2[3:] + '.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
@@ -9777,10 +9777,10 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
-        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '26_u-cd847_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' # '12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '12_u-br210_RA1M_CASIM/OUT_R1/' # '24_u-cc324_RA2T_CON/OUT_R0_LAM/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -9809,6 +9809,7 @@ def main():
     ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
     ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
     ### 25_u-cc568_RA2M_CON/OUT_R0/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+    ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
 
     print ('******')
     print ('')
@@ -9851,23 +9852,24 @@ def main():
         dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
-        for file in dir:
-            IWVtemp = readMatlabStruct(dirname + file)
-            print (IWVtemp.keys())
-            if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
-                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
-                obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
-                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
-                obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
-            else:
-                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
-                obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
-                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
-                obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
-        obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
+        if doy[0] == 226:
+            for file in dir:
+                IWVtemp = readMatlabStruct(dirname + file)
+                print (IWVtemp.keys())
+                if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
+                    obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                    obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
+                    obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                    obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
+                else:
+                    obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                    obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                    obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
+                    obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+            obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
 
-        print ('Load albedo estimates from Michael...')
-        obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
+            print ('Load albedo estimates from Michael...')
+            obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
@@ -9912,14 +9914,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
+            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            # '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_']#,
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -9928,7 +9930,7 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
@@ -9938,6 +9940,7 @@ def main():
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
     # doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
     # doy = np.arange(237,259)        ## set DOY for RA2M_newRHcrit (25th Aug to 14th Sep)
+    doy = np.arange(245,253)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -10419,7 +10422,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -10435,7 +10438,7 @@ def main():
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
