@@ -9852,24 +9852,23 @@ def main():
         dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
-        if doy[0] == 226:
-            for file in dir:
-                IWVtemp = readMatlabStruct(dirname + file)
-                print (IWVtemp.keys())
-                if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
-                    obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
-                    obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
-                    obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
-                    obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
-                else:
-                    obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
-                    obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
-                    obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
-                    obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
-            obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
+        for file in dir:
+            IWVtemp = readMatlabStruct(dirname + file)
+            print (IWVtemp.keys())
+            if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
+            else:
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
+                obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+        obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
 
-            print ('Load albedo estimates from Michael...')
-            obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
+        print ('Load albedo estimates from Michael...')
+        obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
