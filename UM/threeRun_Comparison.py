@@ -10305,7 +10305,8 @@ def main():
     #################################################################
     ## filter radiation measurements for bad/missing values
     #################################################################
-    data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
+    if doy[0] == 226.0:
+        data1, data2, data3, data4, obs = check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1)
 
     #################################################################
     ## create labels for figure legends - done here so only needs to be done once!
