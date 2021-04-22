@@ -3414,7 +3414,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_metum_ifs_casim-aeroprof_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_ifs_23-25_casim-100_ra2m_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
     # plt.savefig(fileout)
     plt.show()
 
@@ -9777,10 +9777,10 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
-        out_dir2 = '26_u-cd847_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' # 
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10317,9 +10317,10 @@ def main():
     ## create labels for figure legends - done here so only needs to be done once!
     #################################################################
     label1 = 'undefined_label'
+    if out_dir1[:10] == '26_u-cd847': label1 = 'UM_CASIM-AeroProf'
     if out_dir1[:10] == '25_u-cc568': label1 = 'UM_RA2M'
     if out_dir1[:10] == '24_u-cc324': label1 = 'UM_RA2T_' + out_dir1[-4:-1]
-    if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100_GA6alb'
+    if out_dir1[:10] == '23_u-cc278': label1 = 'UM_CASIM-100'
     if out_dir1[:10] == '20_u-ca326': label1 = 'UM_CASIM-100_CICE'
     if out_dir1[:10] == '16_u-bv926': label1 = 'UM_RA2T_noTurbMP'
     if out_dir1[:10] == '15_u-bu687': label1 = 'UM_RA2M_newRHcrit'
@@ -10336,9 +10337,10 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
+    if out_dir2[:10] == '26_u-cd847': label2 = 'UM_CASIM-AeroProf'
     if out_dir2[:10] == '25_u-cc568': label2 = 'UM_RA2M'
     if out_dir2[:10] == '24_u-cc324': label2 = 'UM_RA2T_' + out_dir2[-4:-1]
-    if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100_GA6alb'
+    if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100'
     if out_dir2[:10] == '20_u-ca326': label2 = 'UM_CASIM-100_CICE'
     if out_dir2[:10] == '16_u-bv926': label2 = 'UM_RA2T_noTurbMP'
     if out_dir2[:10] == '15_u-bu687': label2 = 'UM_RA2M_newRHcrit'
@@ -10356,9 +10358,10 @@ def main():
 
     label3 = 'undefined_label'
     if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3[:10] == '26_u-cd847': label3 = 'UM_CASIM-AeroProf'
     if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
     if out_dir3[:10] == '24_u-cc324': label3 = 'UM_RA2T_' + out_dir3[-4:-1]
-    if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100_GA6alb'
+    if out_dir3[:10] == '23_u-cc278': label3 = 'UM_CASIM-100'
     if out_dir3[:10] == '20_u-ca326': label3 = 'UM_CASIM-100_CICE'
     if out_dir3[:10] == '16_u-bv926': label3 = 'UM_RA2T_noTurbMP'
     if out_dir3[:10] == '15_u-bu687': label3 = 'UM_RA2M_newRHcrit'
@@ -10375,9 +10378,10 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
+    if out_dir4[:10] == '26_u-cd847': label4 = 'UM_CASIM-AeroProf'
     if out_dir4[:10] == '25_u-cc568': label4 = 'UM_RA2M'
     if out_dir4[:10] == '24_u-cc324': label4 = 'UM_RA2T_' + out_dir4[-4:-1]
-    if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100_GA6alb'
+    if out_dir4[:10] == '23_u-cc278': label4 = 'UM_CASIM-100'
     if out_dir4[:10] == '20_u-ca326': label4 = 'UM_CASIM-100_CICE'
     if out_dir4[:10] == '16_u-bv926': label4 = 'UM_RA2T_noTurbMP'
     if out_dir4[:10] == '15_u-bu687': label4 = 'UM_RA2M_newRHcrit'
@@ -10429,7 +10433,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -10445,7 +10449,7 @@ def main():
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
