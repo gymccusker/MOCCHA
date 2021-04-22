@@ -3996,8 +3996,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_metum_ifs-z0_casim-aeroprof_ra2t_fixedRA2T_newColours_Date.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
+    plt.savefig(fileout)
     plt.show()
 
 
@@ -10433,8 +10433,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
