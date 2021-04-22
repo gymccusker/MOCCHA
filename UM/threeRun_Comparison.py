@@ -9853,17 +9853,19 @@ def main():
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
         for file in dir:
+            if file == 'V1': continue
+            print (file)
             IWVtemp = readMatlabStruct(dirname + file)
             print (IWVtemp.keys())
             if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
-                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['iwv'])
                 obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
-                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['IWV'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['lwp'])
                 obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
             else:
-                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['IWV']))
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['iwv']))
                 obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
-                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['LWP']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['lwp']))
                 obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
         obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
 
