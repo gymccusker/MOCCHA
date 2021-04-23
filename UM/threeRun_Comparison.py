@@ -4843,8 +4843,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-aeroprof_fixedRA2T.svg'
-    plt.savefig(fileout, dpi = 300)
+    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m_ra2t_casim-100-GA6alb_fixedRA2T.svg'
+    # plt.savefig(fileout, dpi = 300)
     plt.show()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1) < 0)
@@ -5512,8 +5512,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-aeroprof_ra2t_ra2m_Dates_fixedRA2T.png'
-    # plt.savefig(fileout, dpi=300)
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m_Dates_fixedRA2T.png'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -9776,7 +9776,7 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
@@ -10434,10 +10434,10 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
