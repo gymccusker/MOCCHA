@@ -520,7 +520,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     ax2 = ax.twinx()
-    ax2.set_ylabel('UM_CASIM-AeroProf', rotation = 270, labelpad = 17)
+    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 17)
     ax2.set_yticks([])
 
     plt.subplot(514)
@@ -585,7 +585,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-AeroProf_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.svg'
+        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.svg'
     plt.savefig(fileout)
     plt.show()
 #
@@ -8089,7 +8089,7 @@ def main():
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
         ### model directories
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
@@ -9177,7 +9177,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -9185,7 +9185,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
