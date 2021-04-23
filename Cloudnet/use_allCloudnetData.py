@@ -2628,7 +2628,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     plt.plot(ifs_data['time'][::res],ifs_data['model_lwp'][::res]*1e3,
         'v', color = 'gold', markeredgecolor = 'orange', label = 'ECMWF_IFS')
     plt.plot(misc_data['time'][::res],misc_data['model_lwp'][::res]*1e3,
-        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-AeroProf')
+        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', label = 'UM_CASIM-100')
     plt.plot(ra2t_data['time'][::res],ra2t_data['model_lwp'][::res]*1e3,
         '>', color = 'steelblue', markeredgecolor = 'darkslategrey', label = 'UM_RA2T')
     plt.plot(um_data['time'][::res],um_data['model_lwp'][::res]*1e3,
@@ -2677,8 +2677,8 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-AeroProf_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.svg'
-    # plt.savefig(fileout)
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.svg'
+    plt.savefig(fileout)
     plt.show()
 
     print (np.nanmax(um_data['model_lwp']*1e3))
@@ -8089,7 +8089,7 @@ def main():
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
         ### model directories
-        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R0/'
+        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
@@ -8356,8 +8356,12 @@ def main():
         ### --------------------------------------------------------------------
         #### CHOOSE MODEL DIAGNOSTICS FIRST
         ### --------------------------------------------------------------------
-        var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-            'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','IWP'] #'temp_1.5m',
+        if out_dir1[-10:-5] == 'RadPA':
+            var_list1 = ['surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']
+        else:
+            var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','IWP'] #'temp_1.5m',
         var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
             'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','IWP'] # 'temp_1.5m',
         if ifs_flag: var_list3 = ['height', 'flx_height', 'temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
@@ -8472,7 +8476,8 @@ def main():
                     time_um4 = float(filename_um4[-16:-14]) + (nc4.variables['forecast_time'][:]/24.0)
 
                 ### define height arrays explicitly
-                data1['height'] = nc1.variables['height'][:]
+                if out_dir1[-10:-5] != 'RadPA':
+                    data1['height'] = nc1.variables['height'][:]
                 data2['height'] = nc2.variables['height'][:]
                 if not ifs_flag: data3['height'] = nc3.variables['height'][:]
                 data4['height'] = nc4.variables['height'][:]
@@ -9188,7 +9193,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
