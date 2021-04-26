@@ -2747,7 +2747,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('Obs = ')
     print (np.nanmean(obs_data['lwp'][p6,0]*1e3))
 
-def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind):
+def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1):
 
     from sklearn.metrics import r2_score
     from sklearn import linear_model
@@ -2761,6 +2761,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         could really highlight the importance of these missing clear sky periods for the energy
         balance, and hint at knock on issues for the sea ice evolution at longer timescales.
         Since this is a common issue it may have relevance for cliamte projections as well.
+
+        Needs 4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/ for now
     '''
 
     ###################################
@@ -2902,8 +2904,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
 
     ### index drift period in ship radiation measurements
-    drift_ship = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['fixed_radiation']['time'][0],
-                    obs['fixed_radiation']['time_ship'] < data1['fixed_radiation']['time'][-1] + 0.05))
+    drift_ship = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data2['fixed_radiation']['time'][0],
+                    obs['fixed_radiation']['time_ship'] < data2['fixed_radiation']['time'][-1] + 0.05))
                                 ### obs time array ever so slightly offset (+) from models
 
 
@@ -2923,36 +2925,37 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
             data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
     lt3km_um = np.where(um_data['height'][0,:] <= 1000)
     lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
-    index_12km_um = np.where(data1['height'] <= 12000)
-    height_um = data1['height'][index_12km_um[0]]
+    index_12km_um = np.where(data2['height'] <= 12000)
+    height_um = data2['height'][index_12km_um[0]]
     dz_um = height_um[1:] - height_um[0:-1]
     print (height_um.shape)
     print (dz_um.shape)
-    print (data1['q'][:,:len(index_12km_um[0])-1].shape)
+    # print (data1['q'][:,:len(index_12km_um[0])-1].shape)
 
-    data1['iwv'] = np.nansum(data1['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
-    data2['iwv'] = np.nansum(data2['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
-    data4['iwv'] = np.nansum(data4['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+    if out_dir1[-10:-5] != 'RadPA':
+        data1['iwv'] = np.nansum(data1['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+        data2['iwv'] = np.nansum(data2['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
+        data4['iwv'] = np.nansum(data4['q'][:,:len(index_12km_um[0])-1] * dz_um, 1)
 
-    data1['iwv'][data1['iwv'] == 0.0] = np.nan
-    data2['iwv'][data2['iwv'] == 0.0] = np.nan
-    data3['iwv'][data3['iwv'] == 0.0] = np.nan
-    data4['iwv'][data4['iwv'] == 0.0] = np.nan
+        data1['iwv'][data1['iwv'] == 0.0] = np.nan
+        data2['iwv'][data2['iwv'] == 0.0] = np.nan
+        data3['iwv'][data3['iwv'] == 0.0] = np.nan
+        data4['iwv'][data4['iwv'] == 0.0] = np.nan
 
-    data1['iwv_hrly'] = data1['iwv'][data1['hrly_flag']]
-    data2['iwv_hrly'] = data2['iwv'][data2['hrly_flag']]
-    data3['iwv_hrly'] = data3['iwv'][data3['hrly_flag']]
-    data4['iwv_hrly'] = data4['iwv'][data4['hrly_flag']]
+        data1['iwv_hrly'] = data1['iwv'][data1['hrly_flag']]
+        data2['iwv_hrly'] = data2['iwv'][data2['hrly_flag']]
+        data3['iwv_hrly'] = data3['iwv'][data3['hrly_flag']]
+        data4['iwv_hrly'] = data4['iwv'][data4['hrly_flag']]
 
-    drift_hatpro = np.where(np.logical_and(obs['hatpro']['doy'] >= data1['time_hrly'][0],
-    obs['hatpro']['doy'] < data1['time_hrly'][-1]))
+        drift_hatpro = np.where(np.logical_and(obs['hatpro']['doy'] >= data1['time_hrly'][0],
+        obs['hatpro']['doy'] < data1['time_hrly'][-1]))
 
-    print (obs['hatpro']['doy'])
+        print (obs['hatpro']['doy'])
 
-    drift_iwv = obs['hatpro']['IWV'][drift_hatpro]
-    drift_doy = obs['hatpro']['doy'][drift_hatpro]
-    drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
-    drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
+        drift_iwv = obs['hatpro']['IWV'][drift_hatpro]
+        drift_doy = obs['hatpro']['doy'][drift_hatpro]
+        drift_iwv_1hr = np.nanmean(drift_iwv.reshape(-1,120), axis = 1)
+        drift_doy_1hr = np.mean(drift_doy.values.reshape(-1,120), axis = 1)
 
     # ### test fig for iwv
     # plt.plot(data1['time_hrly'][:-3], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], color = 'darkblue')
@@ -2975,7 +2978,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     data4['biases'] = {}
 
     bias_list = ['SWd', 'LWd', 'SWnet', 'LWnet', 'Rnet']
-    argx_list = ['LWP', 'IWV','Mask3km', 'Cv3km']
+    argx_list = ['LWP', 'Mask3km', 'Cv3km'] # 'IWV',
     for bias in bias_list:
         for argx in argx_list:
             data1['biases'][bias + '-' + argx + '_regres'] = {}
@@ -3264,12 +3267,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ##################################################
     ##################################################
 
-    iwv = [drift_iwv_1hr, data1['iwv_hrly'][:-1], data2['iwv_hrly'][:-1],
-        data3['iwv_hrly'][:-1], data4['iwv_hrly'][:-1]]
+    if out_dir1[-10:-5] != 'RadPA':
+        iwv = [drift_iwv_1hr, data1['iwv_hrly'][:-1], data2['iwv_hrly'][:-1],
+            data3['iwv_hrly'][:-1], data4['iwv_hrly'][:-1]]
 
-    iwv_bias = [drift_iwv_1hr[:-2], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2],
-        data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2],
-        data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]]
+        iwv_bias = [drift_iwv_1hr[:-2], data1['iwv_hrly'][:-3] - drift_iwv_1hr[:-2],
+            data2['iwv_hrly'][:-3] - drift_iwv_1hr[:-2], data3['iwv_hrly'][:-3] - drift_iwv_1hr[:-2],
+            data4['iwv_hrly'][:-3] - drift_iwv_1hr[:-2]]
 
     lwc_biases = [obs_data['lwc_adiabatic'][:-3,:]*1e3, um_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3,
         misc_data['model_lwc'][:-3,:]*1e3 - obs_data['lwc_adiabatic'][:-3,:]*1e3, ifs_data['model_lwc'][:-3,:]*1e3,
@@ -3544,7 +3548,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.xaxis.set_label_position('top')
 
 
-    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCvlt3km.svg', dpi = 300)
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCvlt3km.svg', dpi = 300)
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
@@ -7956,6 +7960,12 @@ def check_Radiation(data1, data2, data3, data4, obs, doy, out_dir1):
         data4['fixed_radiation']['LWnet'] = data4['surface_net_LW_radiation'][data4['hrly_flag']][:-3]
         data4['fixed_radiation']['LWnet'][model_lwnet_badpoints] = np.nan
 
+        ### calculate net radiation for future use
+        data1['fixed_radiation']['Rnet'] = data1['fixed_radiation']['SWnet'] + data1['fixed_radiation']['LWnet']
+        data2['fixed_radiation']['Rnet'] = data2['fixed_radiation']['SWnet'] + data2['fixed_radiation']['LWnet']
+        data3['fixed_radiation']['Rnet'] = data3['fixed_radiation']['SWnet'] + data3['fixed_radiation']['LWnet']
+        data4['fixed_radiation']['Rnet'] = data4['fixed_radiation']['SWnet'] + data4['fixed_radiation']['LWnet']
+
     else:
         modelindex = np.where(np.logical_and(obs['fixed_radiation']['time_ship'] >= data1['time_hrly'][0],
                 obs['fixed_radiation']['time_ship'] <= data1['time_hrly'][-3]))
@@ -9212,7 +9222,7 @@ def main():
     # -------------------------------------------------------------
     # plot bivariate distributions
     # -------------------------------------------------------------
-    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind)
+    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
