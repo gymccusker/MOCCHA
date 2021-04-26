@@ -2765,15 +2765,15 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         Needs 4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/ for now
     '''
 
-    ###################################
-    ## Remove flagged data
-    ###################################
 
     print ('******')
     print ('')
     print ('Plotting bivariate bias figures:')
     print ('')
 
+    ###################################
+    ## Remove flagged data
+    ###################################
     #### set flagged and bad data to nans
     um_data['model_lwp'][um_data['model_lwp'] <= 0] = np.nan
     ifs_data['model_lwp'][ifs_data['model_lwp'] <= 0] = np.nan
@@ -9102,7 +9102,6 @@ def main():
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
-    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
     # print(um_data.keys())
 
     ### remove missing Cv obs timesteps (remove from all)
@@ -9281,7 +9280,9 @@ def main():
 
     # -------------------------------------------------------------
     # plot bivariate distributions
+    #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
+    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
     figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
 
     # -------------------------------------------------------------
