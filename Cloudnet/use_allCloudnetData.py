@@ -2766,7 +2766,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     '''
 
     ###################################
-    ## PLOT TIMESERIES
+    ## Remove flagged data
     ###################################
 
     print ('******')
@@ -2784,6 +2784,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         obs_data['lwp'][obs_data['lwp'] < 0] = np.nan     ### index 0 is mean
     else:
         obs_data['lwp'][obs_data['lwp'][:,0] == -999.0, 0] = np.nan     ### index 0 is mean
+
+    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
 
     ###----------------------------------------------------------------
     ###         Calculate total water content
@@ -3309,7 +3311,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     alf = 0.3
     xmin = -250
-    xmax = 400
+    xmax = 470
     y1min = -130
     y1max = 75
     y2min = -80
@@ -3547,8 +3549,38 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
-
     # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCvlt3km.svg', dpi = 300)
+    plt.show()
+
+
+    print (np.nanmax(data2['biases']['LWP']))
+    index = np.where(data2['biases']['LWP'] == np.nanmax(data2['biases']['LWP']))
+    print (data2['fixed_radiation']['time'][index])
+    print (obs_data['time'][index])
+    print ('LWPs:')
+    print ('UM_RA2M: ' + str(um_data['model_lwp'][index]))
+    print (data1['biases']['Cv3km'][index])
+    print ('UM_CASIM-100: ' + str(misc_data['model_lwp'][index]))
+    print (data2['biases']['Cv3km'][index])
+    print ('ECMWF_IFS: ' + str(ifs_data['model_lwp'][index]))
+    print (data3['biases']['Cv3km'][index])
+    print ('UM_RA2T: ' + str(ra2t_data['model_lwp'][index]))
+    print (data4['biases']['Cv3km'][index])
+    print ('Obs: ' + str(obs_data['lwp'][index,0]))
+    # print (data1['biases']['Cv3km'][index])
+
+    plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
+    plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
+    plt.plot(np.squeeze(ifs_data['model_snow_Cv_filtered'][index,:]), np.squeeze(ifs_data['height'][index,:]),'y')
+    plt.plot(np.squeeze(ra2t_data['model_Cv_filtered'][index,:]), np.squeeze(ra2t_data['height'][index,:]),'r')
+    plt.plot(np.squeeze(obs_data['Cv'][index,:]), np.squeeze(obs_data['height'][index,:]),'k')
+    plt.plot(np.squeeze(np.nanmean(ifs_data['model_snow_Cv_filtered'][index,lt3km_ifs[0]])), 2000, 'yd')
+    plt.plot(np.squeeze(np.nanmean(um_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'bd')
+    plt.plot(np.squeeze(np.nanmean(misc_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'gd')
+    plt.plot(np.squeeze(np.nanmean(ra2t_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'rd')
+    plt.plot(np.squeeze(np.nanmean(obs_data['Cv'][index,lt3km_um[0]])), 2000, 'kd')
+
+    plt.ylim([0, 3e3])
     plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
