@@ -3549,13 +3549,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_4-RA2M-RadPA_cCvlt3km.svg', dpi = 300)
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_4-RA2M-RadPA_cCvlt3km_lt155m-NaN.svg', dpi = 300)
     plt.show()
 
 
     print (np.nanmax(data2['biases']['LWP']))
     # index = np.where(data2['biases']['LWP'] == np.nanmax(data2['biases']['LWP'])) ### high casim lwp bias
-    index = 400
+    index = 250
     print (data2['fixed_radiation']['time'][index])
     print (obs_data['time'][index])
     print ('LWPs:')
