@@ -3571,19 +3571,19 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (obs_data['height'][index,:10])
     print (obs_data['Cv'][index,:10])
 
-    plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
-    plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
-    plt.plot(np.squeeze(ifs_data['model_snow_Cv_filtered'][index,:]), np.squeeze(ifs_data['height'][index,:]),'y')
-    plt.plot(np.squeeze(ra2t_data['model_Cv_filtered'][index,:]), np.squeeze(ra2t_data['height'][index,:]),'r')
-    plt.plot(np.squeeze(obs_data['Cv'][index,:]), np.squeeze(obs_data['height'][index,:]),'k')
-    plt.plot(np.squeeze(np.nanmean(ifs_data['model_snow_Cv_filtered'][index,lt3km_ifs[0]])), 2000, 'yd')
-    plt.plot(np.squeeze(np.nanmean(um_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'bd')
-    plt.plot(np.squeeze(np.nanmean(misc_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'gd')
-    plt.plot(np.squeeze(np.nanmean(ra2t_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'rd')
-    plt.plot(np.squeeze(np.nanmean(obs_data['Cv'][index,lt3km_um[0]])), 2000, 'kd')
-
-    plt.ylim([0, 3e3])
-    plt.show()
+    # plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
+    # plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
+    # plt.plot(np.squeeze(ifs_data['model_snow_Cv_filtered'][index,:]), np.squeeze(ifs_data['height'][index,:]),'y')
+    # plt.plot(np.squeeze(ra2t_data['model_Cv_filtered'][index,:]), np.squeeze(ra2t_data['height'][index,:]),'r')
+    # plt.plot(np.squeeze(obs_data['Cv'][index,:]), np.squeeze(obs_data['height'][index,:]),'k')
+    # plt.plot(np.squeeze(np.nanmean(ifs_data['model_snow_Cv_filtered'][index,lt3km_ifs[0]])), 2000, 'yd')
+    # plt.plot(np.squeeze(np.nanmean(um_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'bd')
+    # plt.plot(np.squeeze(np.nanmean(misc_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'gd')
+    # plt.plot(np.squeeze(np.nanmean(ra2t_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'rd')
+    # plt.plot(np.squeeze(np.nanmean(obs_data['Cv'][index,lt3km_um[0]])), 2000, 'kd')
+    #
+    # plt.ylim([0, 3e3])
+    # plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
