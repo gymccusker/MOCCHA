@@ -3549,12 +3549,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_cCvlt3km.svg', dpi = 300)
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_4-RA2M-RadPA_cCvlt3km.svg', dpi = 300)
     plt.show()
 
 
     print (np.nanmax(data2['biases']['LWP']))
-    index = np.where(data2['biases']['LWP'] == np.nanmax(data2['biases']['LWP']))
+    # index = np.where(data2['biases']['LWP'] == np.nanmax(data2['biases']['LWP'])) ### high casim lwp bias
+    index = 400
     print (data2['fixed_radiation']['time'][index])
     print (obs_data['time'][index])
     print ('LWPs:')
@@ -3567,7 +3568,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print ('UM_RA2T: ' + str(ra2t_data['model_lwp'][index]))
     print (data4['biases']['Cv3km'][index])
     print ('Obs: ' + str(obs_data['lwp'][index,0]))
-    # print (data1['biases']['Cv3km'][index])
+    print (obs_data['height'][index,:10])
+    print (obs_data['Cv'][index,:10])
 
     plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
     plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
@@ -7694,6 +7696,31 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
 
     return nanind, nanmask, wcind, wc0ind, lwpind
 
+def fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs):
+
+    print ('*******')
+    print ('Only include model data where we have observations:')
+    print ('set levels lower than 155 m ([where we have no cloudnet obs data) to NaN')
+    print ('*******')
+    print ('')
+
+    for i in range(0, len(obs_data['time'])):
+        # print (i)
+        for c in range(0, len(varlist_obs)):
+            # print (varlist_um[c])
+            index = np.where(um_data['height'][i,:] < 155.0)
+            if np.ndim(um_data[varlist_um[c]]) == 2:
+                um_data[varlist_um[c]][i,index] = np.nan
+            if np.ndim(misc_data[varlist_um[c]]) == 2:
+                misc_data[varlist_um[c]][i,index] = np.nan
+            if np.ndim(ra2t_data[varlist_um[c]]) == 2:
+                ra2t_data[varlist_um[c]][i,index] = np.nan
+            index = np.where(ifs_data['height'][i,:] < 155.0)
+            if np.ndim(ifs_data[varlist_ifs[c]]) == 2:
+                ifs_data[varlist_ifs[c]][i,index] = np.nan
+
+    return obs_data, um_data, misc_data, ifs_data, ra2t_data
+
 def setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um_var_list, misc_var_list, ifs_var_list, ra2t_var_list):
 
     print ('*******')
@@ -9075,6 +9102,7 @@ def main():
     varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
     varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
+    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
     # print(um_data.keys())
 
     ### remove missing Cv obs timesteps (remove from all)
