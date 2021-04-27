@@ -2712,6 +2712,9 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     ### change matlab time for obs
     ### -------------------------------
     time_iceStation = calcTime_Mat2DOY(np.squeeze(obs['ice_station_fluxes']['mday'][:]))
+    print (time_iceStation.shape)
+    print (time_iceStation[0:10])
+    print (data1['time_hrly'][0:10])
 
     ### -------------------------------
     ### Build figure (timeseries)
@@ -2723,9 +2726,9 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1],
         obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1],
         'kv', markersize = 5, label = 'Foremast')
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['taflag'][:]==1)],
-        np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
-        '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
+    # plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['taflag'][:]==1)],
+    #     np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
+    #     '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue', label = label1)
     plt.plot(data4['time'], data4['sensible_heat_flux'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'mediumseagreen', label = label2)
@@ -2734,8 +2737,8 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'gold')
     plt.ylim([-20, 50])
-    plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
-    plt.title('sensible_heat_flux [W/m2]')
+    plt.legend(bbox_to_anchor=(-0.1, 0.72, 1., .102), loc=4, ncol=3)
+    plt.ylabel('SHF [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
 
     ax  = fig.add_axes([0.07,0.1,0.53,0.35])   # left, bottom, width, height
@@ -2743,10 +2746,9 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1],
         obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1],
         'kv', markersize = 5, label = 'Foremast')
-    # index = np.logical_and(obs['ice_station_fluxes']['lrflux']>=-30, obs['ice_station_fluxes']['lrflux']<=70)
-    plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['lrflag'][:]==1)],
-        np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
-        '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
+    # plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['lrflag'][:]==1)],
+    #     np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
+    #     '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
     plt.plot(data4['time'], data4['latent_heat_flux'].data, color = 'steelblue')# * -1.0)
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'mediumseagreen')# * -1.0)
@@ -2754,7 +2756,7 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
     else:
         plt.plot(data3['time'], data3['latent_heat_flux'].data, color = 'gold')# * -1.0)
-    plt.title('latent_heat_flux [W/m2]')
+    plt.ylabel('LHF [W m$^{-2}$]')
     plt.ylim([-20, 60])
     ax.set_xlim([doy[0],doy[-1]])
     plt.xlabel('Day of year')
@@ -2796,7 +2798,7 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
 
     ax  = fig.add_axes([0.64,0.55,0.15,0.35])   # left, bottom, width, height
     # zerosC = np.zeros(len(data2['time']))
-    yCmax = 0.16
+    yCmax = 0.36
     plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
     ##---
     indextaum = np.logical_and(shf1[melt] >= -50, shf1[melt] <= 50)
@@ -2814,15 +2816,15 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     indextafmst = np.logical_and(fmst_taflux[shipmelt]>=-50, fmst_taflux[shipmelt]<=50)
     sns.distplot(fmst_taflux[shipmelt][indextafmst], hist=False, color="black")#, kde_kws={"shade": True}, label = 'Foremast')
     ##---
-    indexta = np.logical_and(taflux[icemelt]>=-50, taflux[icemelt]<=50)
-    sns.distplot(taflux[icemelt][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
-    plt.title('sensible_heat_flux [W/m2]')
+    # indexta = np.logical_and(taflux[icemelt]>=-50, taflux[icemelt]<=50)
+    # sns.distplot(taflux[icemelt][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.xlabel('SHF [W m$^{-2}$]')
     # plt.legend()
     plt.xlim([-20,50])
     plt.ylim([0,yCmax])
 
     ax  = fig.add_axes([0.64,0.1,0.15,0.35])   # left, bottom, width, height
-    yDmax = 0.12
+    yDmax = 0.28
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     ##---
     indexlrum = np.logical_and(lhf1[melt] >= -50, lhf1[melt] <= 50)
@@ -2840,15 +2842,15 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     indexlrfmst = np.logical_and(fmst_lrflux[shipmelt]>=-50, fmst_lrflux[shipmelt]<=50)
     sns.distplot(fmst_lrflux[shipmelt][indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
     ##---
-    indexlr = np.logical_and(lrflux[icemelt]>=-50, lrflux[icemelt]<=50)
-    sns.distplot(lrflux[icemelt][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
-    plt.title('latent_heat_flux [W/m2]')
+    # indexlr = np.logical_and(lrflux[icemelt]>=-50, lrflux[icemelt]<=50)
+    # sns.distplot(lrflux[icemelt][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.xlabel('LHF [W m$^{-2}$]')
     plt.xlim([-20,50])
     plt.ylim([0,yDmax])
 
     ax  = fig.add_axes([0.83,0.55,0.15,0.35])   # left, bottom, width, height
     # zerosC = np.zeros(len(data2['time']))
-    yCmax = 0.16
+    yCmax = 0.36
     plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
     ##---
     indextaum = np.logical_and(shf1[freeze] >= -50, shf1[freeze] <= 50)
@@ -2866,15 +2868,15 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     indextafmst = np.logical_and(fmst_taflux[shipfreeze]>=-50, fmst_taflux[shipfreeze]<=50)
     sns.distplot(fmst_taflux[shipfreeze][indextafmst], hist=False, color="black")#, kde_kws={"shade": True}, label = 'Foremast')
     ##---
-    indexta = np.logical_and(taflux[icefreeze]>=-50, taflux[icefreeze]<=50)
-    sns.distplot(taflux[icefreeze][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
-    plt.title('sensible_heat_flux [W/m2]')
+    # indexta = np.logical_and(taflux[icefreeze]>=-50, taflux[icefreeze]<=50)
+    # sns.distplot(taflux[icefreeze][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.xlabel('SHF [W m$^{-2}$]')
     # plt.legend()
     plt.xlim([-20,50])
     plt.ylim([0,yCmax])
 
     ax  = fig.add_axes([0.83,0.1,0.15,0.35])   # left, bottom, width, height
-    yDmax = 0.12
+    yDmax = 0.28
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     ##---
     indexlrum = np.logical_and(lhf1[freeze] >= -50, lhf1[freeze] <= 50)
@@ -2892,9 +2894,9 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     indexlrfmst = np.logical_and(fmst_lrflux[shipfreeze]>=-50, fmst_lrflux[shipfreeze]<=50)
     sns.distplot(fmst_lrflux[shipfreeze][indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
     ##---
-    indexlr = np.logical_and(lrflux[icefreeze]>=-50, lrflux[icefreeze]<=50)
-    sns.distplot(lrflux[icefreeze][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
-    plt.title('latent_heat_flux [W/m2]')
+    # indexlr = np.logical_and(lrflux[icefreeze]>=-50, lrflux[icefreeze]<=50)
+    # sns.distplot(lrflux[icefreeze][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.xlabel('LHF [W m$^{-2}$]')
     plt.xlim([-20,50])
     plt.ylim([0,yDmax])
 
