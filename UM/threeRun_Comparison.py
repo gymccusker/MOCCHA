@@ -2659,7 +2659,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     # plt.savefig(fileout)
     plt.show()
 
-def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
+def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2685,7 +2685,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 18
+    MED_SIZE = 16
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -2718,7 +2718,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     fig = plt.figure(figsize=(18,12))
 
-    ax  = fig.add_axes([0.07,0.55,0.56,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.55,0.53,0.35])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1],
         obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1],
@@ -2727,16 +2727,18 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['sensible_heat_flux'].data, color = 'darkblue', label = label1)
+    plt.plot(data4['time'], data4['sensible_heat_flux'].data, color = 'steelblue', label = label4[:-4])
     plt.plot(data2['time'], data2['sensible_heat_flux'].data, color = 'mediumseagreen', label = label2)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_sens_heat_flx'].data * -1.0, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['sensible_heat_flux'].data, color = 'gold')
-    plt.ylim([-20, 40])
+    plt.ylim([-20, 50])
+    plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
     plt.title('sensible_heat_flux [W/m2]')
     ax.set_xlim([doy[0],doy[-1]])
 
-    ax  = fig.add_axes([0.07,0.1,0.56,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.07,0.1,0.53,0.35])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1],
         obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1],
@@ -2746,6 +2748,7 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
         np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
         '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
     plt.plot(data1['time'], data1['latent_heat_flux'].data, color = 'darkblue')
+    plt.plot(data4['time'], data4['latent_heat_flux'].data, color = 'steelblue')# * -1.0)
     plt.plot(data2['time'], data2['latent_heat_flux'].data, color = 'mediumseagreen')# * -1.0)
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_down_lat_heat_flx'].data * -1.0, color = 'gold')
@@ -2759,69 +2762,145 @@ def plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, o
     ### -------------------------------
     ### Build figure (PDFs)
     ### -------------------------------
-    # f, axes = plt.subplots(2, 1, figsize=(7, 7))#, sharex=True)
-    # fig = plt.figure(figsize=(7,9))
-    # plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
-    #         hspace = 0.3, wspace = 0.15)
-    # plt.subplot(211)
-    ax  = fig.add_axes([0.7,0.55,0.27,0.35])   # left, bottom, width, height
+    #### only compare with observations where we have data:
+    ####        all model data share a timestamp
+    melt = np.where(np.logical_and(data1['time_hrly'][:-3] >= time_iceStation[0], data1['time_hrly'][:-3] < 240.0))
+    freeze = np.where(data1['time_hrly'][:-3] >= 240.0)
+
+    # for var in obs['foremast'].variables: print (var)
+    # print (obs['foremast'].variables['time'][:])
+    # print (obs['foremast'].variables['doy'][:])
+
+    icemelt = np.where(time_iceStation < 240.0)
+    icefreeze = np.where(time_iceStation >= 240.0)
+    shipmelt = np.where(obs['foremast'].variables['doy'][:] < 240.0)
+    shipfreeze = np.where(obs['foremast'].variables['doy'][:] >= 240.0)
+
+    shf1 = data1['sensible_heat_flux'][data1['hrly_flag'][:-3]].data
+    shf2 = data2['sensible_heat_flux'][data2['hrly_flag'][:-3]].data
+    shf4 = data4['sensible_heat_flux'][data4['hrly_flag'][:-3]].data
+    shf3 = data3['sfc_down_sens_heat_flx'][data3['hrly_flag'][:-3]].data * -1.0
+    lhf1 = data1['latent_heat_flux'][data1['hrly_flag'][:-3]].data
+    lhf2 = data2['latent_heat_flux'][data2['hrly_flag'][:-3]].data
+    lhf4 = data4['latent_heat_flux'][data4['hrly_flag'][:-3]].data
+    lhf3 = data3['sfc_down_lat_heat_flx'][data3['hrly_flag'][:-3]].data * -1.0
+
+    fmst_taflux = obs['foremast'].variables['taflux'][:]
+    fmst_taflux[obs['foremast'].variables['taflag'][:] == 0] = np.nan
+    taflux = obs['ice_station_fluxes']['taflux'][:]
+    taflux[obs['ice_station_fluxes']['taflag'][:] == 1] = np.nan
+    fmst_lrflux = obs['foremast'].variables['rflux'][:]
+    fmst_lrflux[obs['foremast'].variables['rflag'][:] == 0] = np.nan
+    lrflux = obs['ice_station_fluxes']['lrflux'][:]
+    lrflux[obs['ice_station_fluxes']['lrflag'][:] == 0] = np.nan
+
+    ax  = fig.add_axes([0.64,0.55,0.15,0.35])   # left, bottom, width, height
     # zerosC = np.zeros(len(data2['time']))
     yCmax = 0.16
     plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
     ##---
-    shf1 = data1['sensible_heat_flux'][data1['hrly_flag']].data
-    indextaum = np.logical_and(shf1 >= -50, shf1 <= 50)
-    sns.distplot(shf1[indextaum], hist=False, color="darkblue", kde_kws={"shade": True}, label = label1)
+    indextaum = np.logical_and(shf1[melt] >= -50, shf1[melt] <= 50)
+    sns.distplot(shf1[melt][indextaum], hist=False, color="darkblue", kde_kws={"shade": True})
     ##---
-    shf3 = data3['sfc_down_sens_heat_flx'][data3['hrly_flag']].data * -1.0
-    indextaifs = np.logical_and(shf3 >= -50, shf3 <= 50)
-    sns.distplot(shf3[indextaifs], hist=False, color="gold", kde_kws={"shade": True}, label = label3)
+    indextara2t = np.logical_and(shf4[melt] >= -50, shf4[melt] <= 50)
+    sns.distplot(shf4[melt][indextara2t], hist=False, color="steelblue", kde_kws={"shade": True})
     ##---
-    shf2 = data2['sensible_heat_flux'][data2['hrly_flag']].data
-    indextacasim = np.logical_and(shf2 >= -50, shf2 <= 50)
-    sns.distplot(shf2[indextacasim], hist=False, color="mediumseagreen", kde_kws={"shade": True}, label = label2)
+    indextacasim = np.logical_and(shf2[melt] >= -50, shf2[melt] <= 50)
+    sns.distplot(shf2[melt][indextacasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     ##---
-    fmst_taflux = obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1]
-    indextafmst = np.logical_and(fmst_taflux>=-50, fmst_taflux<=50)
-    sns.distplot(fmst_taflux[indextafmst], hist=False, color="black", label = 'Foremast')#, kde_kws={"shade": True}, label = 'Foremast')
+    indextaifs = np.logical_and(shf3[melt] >= -50, shf3[melt] <= 50)
+    sns.distplot(shf3[melt][indextaifs], hist=False, color="gold", kde_kws={"shade": True})
     ##---
-    taflux = np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1])
-    indexta = np.logical_and(taflux>=-50, taflux<=50)
-    sns.distplot(taflux[indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3}, label = 'Ice_station')
+    indextafmst = np.logical_and(fmst_taflux[shipmelt]>=-50, fmst_taflux[shipmelt]<=50)
+    sns.distplot(fmst_taflux[shipmelt][indextafmst], hist=False, color="black")#, kde_kws={"shade": True}, label = 'Foremast')
+    ##---
+    indexta = np.logical_and(taflux[icemelt]>=-50, taflux[icemelt]<=50)
+    sns.distplot(taflux[icemelt][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('sensible_heat_flux [W/m2]')
-    plt.legend()
+    # plt.legend()
     plt.xlim([-20,50])
     plt.ylim([0,yCmax])
 
-    ax  = fig.add_axes([0.7,0.1,0.27,0.35])   # left, bottom, width, height
+    ax  = fig.add_axes([0.64,0.1,0.15,0.35])   # left, bottom, width, height
     yDmax = 0.12
     plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
     ##---
-    lhf1 = data1['latent_heat_flux'][data1['hrly_flag']].data
-    indexlrum = np.logical_and(lhf1 >= -50, lhf1 <= 50)
-    sns.distplot(lhf1[indexlrum], hist=False, color="darkblue", kde_kws={"shade": True})
+    indexlrum = np.logical_and(lhf1[melt] >= -50, lhf1[melt] <= 50)
+    sns.distplot(lhf1[melt][indexlrum], hist=False, color="darkblue", kde_kws={"shade": True})
     ##---
-    lhf3 = data3['sfc_down_lat_heat_flx'][data3['hrly_flag']].data * -1.0
-    indexlrifs = np.logical_and(lhf3 >= -50, lhf3 <= 50)
-    sns.distplot(lhf3[indexlrifs], hist=False, color="gold", kde_kws={"shade": True})
+    indexlrra2t = np.logical_and(lhf4[melt] >= -50, lhf4[melt] <= 50)
+    sns.distplot(lhf4[melt][indexlrra2t], hist=False, color="steelblue", kde_kws={"shade": True})
     ##---
-    lhf2 = data2['latent_heat_flux'][data2['hrly_flag']].data
-    indexlrcasim = np.logical_and(lhf2 >= -50, lhf2 <= 50)
-    sns.distplot(lhf2[indexlrcasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    indexlrcasim = np.logical_and(lhf2[melt] >= -50, lhf2[melt] <= 50)
+    sns.distplot(lhf2[melt][indexlrcasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     ##---
-    fmst_lrflux = obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1]
-    indexlrfmst = np.logical_and(fmst_lrflux>=-50, fmst_lrflux<=50)
-    sns.distplot(fmst_lrflux[indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
+    indexlrifs = np.logical_and(lhf3[melt] >= -50, lhf3[melt] <= 50)
+    sns.distplot(lhf3[melt][indexlrifs], hist=False, color="gold", kde_kws={"shade": True})
     ##---
-    lrflux = np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1])
-    indexlr = np.logical_and(lrflux>=-50, lrflux<=50)
-    sns.distplot(lrflux[indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    indexlrfmst = np.logical_and(fmst_lrflux[shipmelt]>=-50, fmst_lrflux[shipmelt]<=50)
+    sns.distplot(fmst_lrflux[shipmelt][indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
+    ##---
+    indexlr = np.logical_and(lrflux[icemelt]>=-50, lrflux[icemelt]<=50)
+    sns.distplot(lrflux[icemelt][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
     plt.title('latent_heat_flux [W/m2]')
     plt.xlim([-20,50])
     plt.ylim([0,yDmax])
 
+    ax  = fig.add_axes([0.83,0.55,0.15,0.35])   # left, bottom, width, height
+    # zerosC = np.zeros(len(data2['time']))
+    yCmax = 0.16
+    plt.plot([0,0],[0,yCmax],'--', color='lightgrey')
+    ##---
+    indextaum = np.logical_and(shf1[freeze] >= -50, shf1[freeze] <= 50)
+    sns.distplot(shf1[freeze][indextaum], hist=False, color="darkblue", kde_kws={"shade": True})
+    ##---
+    indextara2t = np.logical_and(shf4[freeze] >= -50, shf4[freeze] <= 50)
+    sns.distplot(shf4[freeze][indextara2t], hist=False, color="steelblue", kde_kws={"shade": True})
+    ##---
+    indextacasim = np.logical_and(shf2[freeze] >= -50, shf2[freeze] <= 50)
+    sns.distplot(shf2[freeze][indextacasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    ##---
+    indextaifs = np.logical_and(shf3[freeze] >= -50, shf3[freeze] <= 50)
+    sns.distplot(shf3[freeze][indextaifs], hist=False, color="gold", kde_kws={"shade": True})
+    ##---
+    indextafmst = np.logical_and(fmst_taflux[shipfreeze]>=-50, fmst_taflux[shipfreeze]<=50)
+    sns.distplot(fmst_taflux[shipfreeze][indextafmst], hist=False, color="black")#, kde_kws={"shade": True}, label = 'Foremast')
+    ##---
+    indexta = np.logical_and(taflux[icefreeze]>=-50, taflux[icefreeze]<=50)
+    sns.distplot(taflux[icefreeze][indexta], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.title('sensible_heat_flux [W/m2]')
+    # plt.legend()
+    plt.xlim([-20,50])
+    plt.ylim([0,yCmax])
+
+    ax  = fig.add_axes([0.83,0.1,0.15,0.35])   # left, bottom, width, height
+    yDmax = 0.12
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    ##---
+    indexlrum = np.logical_and(lhf1[freeze] >= -50, lhf1[freeze] <= 50)
+    sns.distplot(lhf1[freeze][indexlrum], hist=False, color="darkblue", kde_kws={"shade": True})
+    ##---
+    indexlrra2t = np.logical_and(lhf4[freeze] >= -50, lhf4[freeze] <= 50)
+    sns.distplot(lhf4[freeze][indexlrra2t], hist=False, color="steelblue", kde_kws={"shade": True})
+    ##---
+    indexlrcasim = np.logical_and(lhf2[freeze] >= -50, lhf2[freeze] <= 50)
+    sns.distplot(lhf2[freeze][indexlrcasim], hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    ##---
+    indexlrifs = np.logical_and(lhf3[freeze] >= -50, lhf3[freeze] <= 50)
+    sns.distplot(lhf3[freeze][indexlrifs], hist=False, color="gold", kde_kws={"shade": True})
+    ##---
+    indexlrfmst = np.logical_and(fmst_lrflux[shipfreeze]>=-50, fmst_lrflux[shipfreeze]<=50)
+    sns.distplot(fmst_lrflux[shipfreeze][indexlrfmst], hist=False, color="black")#, kde_kws={"shade": True})
+    ##---
+    indexlr = np.logical_and(lrflux[icefreeze]>=-50, lrflux[icefreeze]<=50)
+    sns.distplot(lrflux[icefreeze][indexlr], hist=False, color="grey", kde_kws={'linestyle':'--','linewidth':3})
+    plt.title('latent_heat_flux [W/m2]')
+    plt.xlim([-20,50])
+    plt.ylim([0,yDmax])
+
+
     fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStationQC_metum_ifs_casim-100.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 def table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -10029,7 +10108,7 @@ def main():
             else:
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#,'temp_1.5m','latent_heat_flux']
+                'cloud_fraction','radr_refl','latent_heat_flux']#,'temp_1.5m']
             var_list4 = var_list1
             ### CASIM RUNS
             if np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '14_u-bu570_RA1M_CASIM'):
@@ -10039,9 +10118,9 @@ def main():
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # , 'latent_heat_flux']
                 var_list4 = var_list2
             else:
-                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
                 'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#, 'tke']#,'latent_heat_flux']#,'tke'] #'qnliq','qnice','mixing_length_for_momentum','qice',
+                'cloud_fraction','radr_refl']#, 'tke']#]#,'tke'] #'qnliq','qnice','mixing_length_for_momentum','qice',
                 #, 'latent_heat_flux']
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
@@ -10435,18 +10514,18 @@ def main():
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    # figure = plot_paperFluxes(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
