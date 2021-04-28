@@ -46,3 +46,13 @@ def calcTime_Date2DOY(date):
     print ('')
 
     return doy
+
+def running_mean(x, N):
+
+    '''
+    Equivalent to matlab's movmean
+    '''
+
+    cumsum = np.cumsum(np.insert(x, 0, 0))
+
+    return (cumsum[N:] - cumsum[:-N]) / float(N) 
