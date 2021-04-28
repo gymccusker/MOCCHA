@@ -19,11 +19,12 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
 import seaborn as sns
+from scipy.ndimage.filters import uniform_filter1d
 
 #### import python functions
 import sys
 sys.path.insert(1, '../py_functions/')
-from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY
+from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY, running_mean
 from readMAT import readMatlabStruct
 from physFuncts import calcThetaE, calcThetaVL
 from pyFixes import py3_FixNPLoad
@@ -4004,8 +4005,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     flx_ls_rain[flx_ls_rain < 0] = np.nan
     flx_ls_snow[flx_ls_snow < 0] = np.nan
 
-    ### doy drift flag
-    drift = np.squeeze(np.where(np.logical_and(obs['pws']['doy'] >= 226.0, obs['pws']['doy'] <= 258.0)))
+
 
     # print (drift.shape)
 
@@ -4021,6 +4021,48 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
     res = 3         ### hourly resolution to plot
 
+    pwd_precip = np.nanmean(obs['pws']['prec_int'][:-59].reshape(-1, 60), axis=1) # obs['pws']['prec_int'][drift[0]]
+    pwd_time = np.nanmean(obs['pws']['doy'][:-59].reshape(-1, 60), axis=1)# obs['pws']['doy'][drift[0]]#
+
+    ### doy drift flag
+    drift_pwd = np.squeeze(np.where(np.logical_and(pwd_time >= 226.0, pwd_time <= 258.0)))
+
+    mrr_rain_reshape = np.mean(obs['mrr']['rainrate'][:-80].reshape(-1, 60), axis=1) # obs['mrr']['rainrate']
+    mrr_time_reshape = np.mean(obs['mrr']['doy'][:-80].reshape(-1, 60), axis=1) # obs['mrr']['doy']
+
+    mrr_time = np.squeeze(obs['mrr']['doy'])
+    mrr_rain = np.squeeze(obs['mrr']['rainrate'])
+    mrr_rain_movmean = running_mean(obs['mrr']['rainrate'],60)
+    mrr_rain_time = running_mean(obs['mrr']['doy'],60)
+
+    print (mrr_time.shape)
+    print (mrr_rain.shape)
+    print (mrr_rain_movmean.shape)
+    print (mrr_rain_time.shape)
+
+    diff = np.size(mrr_time) - np.size(mrr_rain_movmean)
+    print (diff)
+    drift_mrr = np.squeeze(np.where(np.logical_and(mrr_time >= 226.0, mrr_time <= 258.0)))
+    drift_mrr_movmean = np.squeeze(np.where(np.logical_and(mrr_rain_time >= 226.0, mrr_rain_time <= 258.0)))
+    drift_mrr_reshape = np.squeeze(np.where(np.logical_and(mrr_time_reshape >= 226.0, mrr_time_reshape <= 258.0)))
+
+    plt.plot(mrr_time[drift_mrr],mrr_rain[drift_mrr])
+    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean])
+    plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], '--')
+    plt.show()
+
+    # temp = obs['mrr']['doy'][drift_mrr[0][:-116]].reshape(-1, 60)
+    # print (temp.shape)
+    # temp = obs['mrr']['doy'][:-80].reshape(-1, 60)
+    # print (temp[2,:])
+    # print (obs['mrr']['doy'][120:180])
+    # print (np.nanmean(temp[2,:]))
+    # print (np.nanmean(obs['mrr']['doy'][120:180]))
+    # print (np.nanmean(temp[0:25,:], axis = 1))
+
+    # print (pwd_time)
+    # print (mrr_time)
+
     #################################################################
     ## create figure and axes instances
     #################################################################
@@ -4034,25 +4076,26 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], color = 'grey', label = 'Obs_PWS', zorder = 1)
-    plt.plot(obs['mrr']['time'], obs['mrr']['rain']/24.0, color = 'purple', label = 'Obs_MRR')
-    if ifs_flag == True:
-        plt.plot(data3['time_hrly'][::res], precip3[::res],
-            'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
-    plt.plot(data2['time_hrly'][::res], precip2[::res],
-        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', zorder = 1)
-    plt.plot(data4['time_hrly'][::res], precip4[::res],
-        '>', color = 'steelblue', markeredgecolor = 'darkslategrey', zorder = 1)
-    plt.plot(data1['time_hrly'][::res], precip1[::res],
-        '^', color = 'darkblue', markeredgecolor = 'midnightblue', zorder = 1)
+    # plt.plot(obs['mrr']['doy'], obs['mrr']['rainrate'], color = 'purple', label = 'Obs_MRR', zorder = 0)
+    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR', zorder = 0)
+    plt.plot(pwd_time[drift_pwd],pwd_precip[drift_pwd], color = 'grey', label = 'Obs_PWS', zorder = 1)
+    # if ifs_flag == True:
+    #     plt.plot(data3['time_hrly'][::res], precip3[::res],
+    #         'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
+    # plt.plot(data2['time_hrly'][::res], precip2[::res],
+    #     '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', zorder = 1)
+    # plt.plot(data4['time_hrly'][::res], precip4[::res],
+    #     '>', color = 'steelblue', markeredgecolor = 'darkslategrey', zorder = 1)
+    # plt.plot(data1['time_hrly'][::res], precip1[::res],
+    #     '^', color = 'darkblue', markeredgecolor = 'midnightblue', zorder = 1)
     plt.ylabel('Precipitation flux [mm hr$^{-1}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    # plt.ylim([0,2])
+    plt.ylim([0,2])
     plt.xlabel('Date')
-    plt.yscale('log')
-    plt.ylim([3e-2,2e0])
+    # plt.ylim([0,4.0])
+    # plt.yscale('log'); plt.ylim([3e-2,2e0])
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -4062,15 +4105,18 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             zorder = 2)
     plt.legend(bbox_to_anchor=(0.0, 0.81, 1., .102), loc=3, ncol=2)
 
+
+
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
-    sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
-    sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
-    sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
-    sns.distplot(obs['pws']['prec_int'][drift[0]], hist=False, color="grey")
-    plt.xlim([0,0.4])
-    plt.yscale('log')
-    plt.ylim([1e-1,3e1])
+    # sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    # sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
+    sns.distplot(pwd_precip[drift_pwd], hist=False, color="grey")
+    sns.distplot(mrr_rain_movmean[drift_mrr_movmean], hist=False, color="purple")
+    plt.xlim([0,0.5])
+    # plt.yscale('log')
+    # plt.ylim([5e-2,3e1])
     plt.xlabel('Precipitation flux [mm hr$^{-1}$]')
 
     print ('******')
@@ -4078,23 +4124,23 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
-    plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws-mrr_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
+    # plt.savefig(fileout)
     plt.show()
 
 
-    ifs_convprecip = data3['flx_conv_rain'][data3['hrly_flag'],0]*3600 + data3['flx_conv_snow'][data3['hrly_flag'],0]*3600
-    ifs_convprecip[ifs_convprecip < 0] == np.nan
-
-    plt.figure()
-    ax = plt.gca()
-    plt.plot(data3['time_hrly'], precip3)
-    plt.plot(data3['time_hrly'], np.squeeze(ifs_convprecip))
-
-    ax.set_xlim([doy[0],doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    plt.show()
+    # ifs_convprecip = data3['flx_conv_rain'][data3['hrly_flag'],0]*3600 + data3['flx_conv_snow'][data3['hrly_flag'],0]*3600
+    # ifs_convprecip[ifs_convprecip < 0] == np.nan
+    #
+    # plt.figure()
+    # ax = plt.gca()
+    # plt.plot(data3['time_hrly'], precip3)
+    # plt.plot(data3['time_hrly'], np.squeeze(ifs_convprecip))
+    #
+    # ax.set_xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.show()
 
 def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
 
@@ -9936,9 +9982,9 @@ def main():
         obs['hatpro'] = {}
         for file in dir:
             if file == 'V1': continue
-            print (file)
+            # print (file)
             IWVtemp = readMatlabStruct(dirname + file)
-            print (IWVtemp.keys())
+            # print (IWVtemp.keys())
             if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
                 obs['hatpro']['IWV'] = np.squeeze(IWVtemp['iwv'])
                 obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
@@ -9958,25 +10004,20 @@ def main():
         mrr_dirname = '/home/gillian/MOCCHA/ODEN/DATA/MRR/rain/'
         mrr_dir = os.listdir(mrr_dirname)
         obs['mrr'] = {}
-        i = 0
-        for file in mrr_dir:
-            doy = np.arange(226,258)
-            mrr = Dataset(mrr_dirname + file,'r')
-            if file == '20180814_oden_mrr.nc':       ### if it is the first file
-                obs['mrr']['rain'] = mrr.variables['rain'][:]
-                obs['mrr']['time'] = mrr.variables['time'][:]/24.0 + doy[0]
-                # obs['mrr']['time'] = obs['mrr']['time']/24.0 + doy[0]
-            else:
-                i = i + 1
-                obs['mrr']['rain'] = np.append(obs['mrr']['rain'],mrr.variables['rain'][:])
-                obs['mrr']['time'] = np.append(obs['mrr']['time'],mrr.variables['time'][:]/24.0 + doy[i])
-                # obs['mrr']['time'] = obs['mrr']['time']/24.0 + doy[0]
-                # obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['iwv']))
-                # obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
-                # obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['lwp']))
-                # obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
-            # plt.plot(obs['mrr']['time'],obs['mrr']['rain']); plt.show()
-            # obs['mrr'] = Dataset(obs_root_dir + 'MRR/rain/' + file,'r')
+        mrr_filename = 'rainrate.mat'
+        obs['mrr'] = readMatlabStruct(mrr_dirname + mrr_filename)
+        print (obs['mrr'].keys())
+        # i = 0
+        # for file in mrr_dir:
+        #     doy = np.arange(226,258)
+            # mrr = Dataset(mrr_dirname + file,'r')
+            # if file == '20180814_oden_mrr.nc':       ### if it is the first file
+            #     obs['mrr']['rain'] = mrr.variables['rain'][:]
+            #     obs['mrr']['time'] = mrr.variables['time'][:]/24.0 + doy[0]
+            # else:
+            #     i = i + 1
+            #     obs['mrr']['rain'] = np.append(obs['mrr']['rain'],mrr.variables['rain'][:])
+            #     obs['mrr']['time'] = np.append(obs['mrr']['time'],mrr.variables['time'][:]/24.0 + doy[i])
 
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
@@ -9994,7 +10035,7 @@ def main():
     obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
 
     print ('Load weather sensor data from John...')
-    obs['pws'] = readMatlabStruct(obs_root_dir + '7thDeck/ACAS_AO2018_PWD_30min_v1_0.mat')
+    obs['pws'] = readMatlabStruct(obs_root_dir + '7thDeck/ACAS_AO2018_PWD_1min_v1_0.mat')
 
     print ('...')
 
@@ -10586,7 +10627,7 @@ def main():
     np.save('working_data3', data3)
     np.save('working_data4', data4)
     np.save('working_data5', data5)
-    np.save('working_dataObs', obs['sondes'])
+    np.save('working_dataPWD', obs['pws'])
 
     # -------------------------------------------------------------
     # save out radiosonde biases
