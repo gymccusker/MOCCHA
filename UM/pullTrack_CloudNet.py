@@ -7371,6 +7371,7 @@ def main():
                         dirout = out_dir[2:9] + '/'
 
                 print ('Checking: ' + filename)
+                exist_flag = 0 # initialise exist_flag
                 if os.path.exists(filename):
                     exist_flag = 1
                     #### LOAD CUBE
