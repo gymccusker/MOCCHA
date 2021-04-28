@@ -4035,6 +4035,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['pws']['doy'][drift[0]],obs['pws']['prec_int'][drift[0]], color = 'grey', label = 'Obs_PWS', zorder = 1)
+    plt.plot(obs['mrr']['time'], obs['mrr']['rain']/24.0, color = 'purple', label = 'Obs_MRR')
     if ifs_flag == True:
         plt.plot(data3['time_hrly'][::res], precip3[::res],
             'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
@@ -9953,6 +9954,30 @@ def main():
         print ('Load albedo estimates from Michael...')
         obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
+        print ('Load MRR rainrate data from Jutta...')
+        mrr_dirname = '/home/gillian/MOCCHA/ODEN/DATA/MRR/rain/'
+        mrr_dir = os.listdir(mrr_dirname)
+        obs['mrr'] = {}
+        i = 0
+        for file in mrr_dir:
+            doy = np.arange(226,258)
+            mrr = Dataset(mrr_dirname + file,'r')
+            if file == '20180814_oden_mrr.nc':       ### if it is the first file
+                obs['mrr']['rain'] = mrr.variables['rain'][:]
+                obs['mrr']['time'] = mrr.variables['time'][:]/24.0 + doy[0]
+                # obs['mrr']['time'] = obs['mrr']['time']/24.0 + doy[0]
+            else:
+                i = i + 1
+                obs['mrr']['rain'] = np.append(obs['mrr']['rain'],mrr.variables['rain'][:])
+                obs['mrr']['time'] = np.append(obs['mrr']['time'],mrr.variables['time'][:]/24.0 + doy[i])
+                # obs['mrr']['time'] = obs['mrr']['time']/24.0 + doy[0]
+                # obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['iwv']))
+                # obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                # obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['lwp']))
+                # obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+            # plt.plot(obs['mrr']['time'],obs['mrr']['rain']); plt.show()
+            # obs['mrr'] = Dataset(obs_root_dir + 'MRR/rain/' + file,'r')
+
     ### print ('Load ice station radiation data from Jutta...')
     ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
 
@@ -10516,9 +10541,9 @@ def main():
     # -------------------------------------------------------------
     # Plot paper figures
     # -------------------------------------------------------------
-    figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
