@@ -4077,7 +4077,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     # plt.plot(obs['mrr']['doy'], obs['mrr']['rainrate'], color = 'purple', label = 'Obs_MRR', zorder = 0)
-    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR', zorder = 0)
+    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR_movmean', zorder = 0)
+    plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], color = 'purple', label = 'Obs_MRR_reshape', zorder = 0)
     plt.plot(pwd_time[drift_pwd],pwd_precip[drift_pwd], color = 'grey', label = 'Obs_PWS', zorder = 1)
     # if ifs_flag == True:
     #     plt.plot(data3['time_hrly'][::res], precip3[::res],
@@ -4113,7 +4114,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     # sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     # sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(pwd_precip[drift_pwd], hist=False, color="grey")
-    sns.distplot(mrr_rain_movmean[drift_mrr_movmean], hist=False, color="purple")
+    sns.distplot(mrr_rain_movmean[drift_mrr_movmean], hist=False, color="k")
+    sns.distplot(mrr_rain_reshape[drift_mrr_reshape], hist=False, color="purple")
     plt.xlim([0,0.5])
     # plt.yscale('log')
     # plt.ylim([5e-2,3e1])
@@ -10001,16 +10003,16 @@ def main():
         obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
         print ('Load MRR rainrate data from Jutta...')
-        mrr_dirname = '/home/gillian/MOCCHA/ODEN/DATA/MRR/rain/'
+        mrr_dirname = '/home/gillian/MOCCHA/ODEN/DATA/MRR/'
         mrr_dir = os.listdir(mrr_dirname)
         obs['mrr'] = {}
-        mrr_filename = 'rainrate.mat'
+        mrr_filename = 'Rainrate_from_jutta.mat'
         obs['mrr'] = readMatlabStruct(mrr_dirname + mrr_filename)
         print (obs['mrr'].keys())
         # i = 0
         # for file in mrr_dir:
         #     doy = np.arange(226,258)
-            # mrr = Dataset(mrr_dirname + file,'r')
+            # mrr = Dataset(mrr_dirname + 'rain/' + file,'r')
             # if file == '20180814_oden_mrr.nc':       ### if it is the first file
             #     obs['mrr']['rain'] = mrr.variables['rain'][:]
             #     obs['mrr']['time'] = mrr.variables['time'][:]/24.0 + doy[0]
