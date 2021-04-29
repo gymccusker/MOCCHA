@@ -3208,7 +3208,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWnet_ice'], color = 'grey', linewidth = 3, label = 'Ice_station')
+    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWnet_ice'], color = 'grey', linewidth = 3, label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWnet_ship'], color = 'k', linewidth = 2, label = 'Ship')
     plt.ylabel('SW$_{net}$ [W m$^{-2}$]')
     plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
@@ -3229,7 +3229,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_lw'].data, color = 'gold')
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data, color = 'gold')
-    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'], color = 'grey', linewidth = 3)
+    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'], color = 'grey', linewidth = 3)
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'], color = 'k')
     plt.ylabel('LW$_{net}$ [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -3287,7 +3287,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
         plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
         plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey',  linewidth = 3, label = 'Ice_station')
+    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['LWnet_ice'] + obs['fixed_radiation']['SWnet_ice'], color = 'grey',  linewidth = 3, label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['LWnet_ship'] + obs['fixed_radiation']['SWnet_ship'], color = 'k', label = 'Ship')
     plt.ylabel('R$_{net}$ [W m$^{-2}$]')
     ax.set_xlim([doy[0],doy[-1]])
@@ -3339,7 +3339,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(sw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     f = sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(87,0.1), xytext=(87,0.1), fontsize = 14)
     plt.xlim([-10,110])
@@ -3364,7 +3364,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw4[melt], hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(lw2[melt], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     f = sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(0,0.145), xytext=(0,0.145), fontsize = 14)
     plt.xlim([-80,20])
@@ -3393,7 +3393,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf3 = sw3[melt] + lw3[melt]
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt] + obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt] + obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt] + obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
     plt.annotate('Melt', xy=(47,0.09), xytext=(47,0.09), fontsize = 14)
     plt.xlabel('R$_{net}$ [W m$^{-2}$]')
@@ -3418,7 +3418,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(sw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     f = sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(77,0.1), xytext=(77,0.1), fontsize = 14)
     plt.xlim([-10,110])
@@ -3443,7 +3443,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     f = sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(-8,0.145), xytext=(-8,0.145), fontsize = 14)
     plt.xlim([-80,20])
@@ -3473,7 +3473,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
     crf3 = sw3[freeze] + lw3[freeze]
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze] + obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze] + obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze] + obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(35,0.09), xytext=(35,0.09), fontsize = 14)
     plt.xlim([-80,80])
@@ -3496,7 +3496,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_oden_iceStation_ifs_23-25_casim-100_ra2m_ra2t_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -4113,7 +4113,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m-4_ra2t_fixedRA2T_newColours_Date.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -5204,8 +5204,8 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     plt.grid('on')
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m_wUMGlobal.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m-25_wUMGlobal.svg'
+    plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -5629,7 +5629,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m_Dates_fixedRA2T.png'
+    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m-25_Dates_fixedRA2T.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
@@ -9893,7 +9893,7 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1/'
+        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
@@ -9925,7 +9925,7 @@ def main():
     ### 20_u-ca362_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
     ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
     ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
-    ### 25_u-cc568_RA2M_CON/OUT_R0/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+    ### 25_u-cc568_RA2M_CON/OUT_R1/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
     ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
 
     print ('******')
@@ -10573,11 +10573,11 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
