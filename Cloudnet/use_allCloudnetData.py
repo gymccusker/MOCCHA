@@ -2761,8 +2761,6 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         could really highlight the importance of these missing clear sky periods for the energy
         balance, and hint at knock on issues for the sea ice evolution at longer timescales.
         Since this is a common issue it may have relevance for cliamte projections as well.
-
-        Needs 4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/ for now
     '''
 
 
@@ -8158,7 +8156,7 @@ def main():
     ### CHOSEN RUN - MODEL DATA
     if platform == 'LAPTOP':
         ### model directories
-        out_dir1 = '4_u-bg610_RA2M_CON/OUT_R1_RadPA_25h/'
+        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
@@ -8188,7 +8186,7 @@ def main():
     ### 20_u-ca362_RA1M_CASIM/OUT_R0/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice scheme
     ### 23_u-cc278_RA1M_CASIM/OUT_R0/           # 100/cc accum mde aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
     ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
-    ### 25_u-cc568_RA2M_CON/OUT_R0/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+    ### 25_u-cc568_RA2M_CON/OUT_R1/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
     ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
 
     ### -----------------------------------------------------------------
