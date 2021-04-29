@@ -2534,24 +2534,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     yA = [-65, 85]
     # plt.plot([240.0,240.0],[yA[0],yA[-1]],'--', color='red')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice, netLW + netSW, color = 'black', label = 'Ice_station')
-    plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
-    plt.plot(data2['time'], data2['surface_net_LW_radiation'].data + data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
-    if ifs_flag == True:
-        plt.plot(data3['time'], data3['sfc_net_lw'].data + data3['sfc_net_sw'].data, color = 'gold', label = label3)
-    else:
-        plt.plot(data3['time'], data3['surface_net_LW_radiation'].data + data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
-    plt.title('Net Radiation [W/m2]')
-    ax.set_xlim([doy[0],doy[-1]])
-    plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
-    plt.ylim([-60,80])
-
-    ax  = fig.add_axes([0.07,0.4,0.55,0.22])   # left, bottom, width, height
-    ax = plt.gca()
-    yB = [-10, 120]
-    # plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:] - obs['obs_temp'].variables['SWuice'][:]), color = 'black', label = 'Ice_station')
+    plt.plot(time_radice, netSW, color = 'black', label = 'Ice_station')
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'purple', label = label2)
     if ifs_flag == True:
@@ -2559,6 +2542,23 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     else:
         plt.plot(data3['time'], data3['surface_net_SW_radiation'].data, color = 'gold', label = label3)
     plt.title('surface_net_SW_radiation [W/m2]')
+    ax.set_xlim([doy[0],doy[-1]])
+    plt.legend(bbox_to_anchor=(-0.11, 0.65, 1., .102), loc=4, ncol=2)
+    plt.ylim([-3,120])
+
+    ax  = fig.add_axes([0.07,0.4,0.55,0.22])   # left, bottom, width, height
+    ax = plt.gca()
+    yB = [-10, 120]
+    # plt.plot([240.0,240.0],[yB[0],yB[-1]],'--', color='red')
+    plt.plot(data2['time'], zeros,'--', color='lightgrey')
+    plt.plot(time_radice,(obs['obs_temp'].variables['SWdice'][:]), color = 'black', label = 'Ice_station')
+    plt.plot(data1['time'], data1['surface_downwelling_SW_radiation'].data, color = 'darkblue', label = label1)
+    plt.plot(data2['time'], data2['surface_downwelling_SW_radiation'].data, color = 'purple', label = label2)
+    if ifs_flag == True:
+        plt.plot(data3['time'], data3['sfc_down_sw'].data, color = 'gold', label = label3)
+    else:
+        plt.plot(data3['time'], data3['surface_downwelling_SW_radiation'].data, color = 'gold', label = label3)
+    plt.title('surface_downwelling_SW_radiation [W/m2]')
     # plt.legend()
     ax.set_xlim([doy[0],doy[-1]])
     plt.ylim([-3,120])
@@ -2656,8 +2656,8 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/CRF_netSW_netLW_line+PDFS_oden_iceStation_' + label1[3:] + '_' + label3 + '_' + label2[3:] + '.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/netSW_downSW_netLW_line+PDFS_oden_iceStation_' + label1 + '_' + label3 + '_' + label2 + '.png'
+    plt.savefig(fileout)
     plt.show()
 
 def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -10077,7 +10077,7 @@ def main():
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
     # doy = np.arange(244,250)        ## set DOY for UM_RA2T_noTurbMP (1st Sep to 5th Sep)
     # doy = np.arange(237,259)        ## set DOY for RA2M_newRHcrit (25th Aug to 14th Sep)
-    # doy = np.arange(245,253)        ## set DOY for subset of moccha figures
+    # doy = np.arange(245,258)        ## set DOY for subset of moccha figures
 
     # names = ['umnsaa_pa000','umnsaa_pc000.nc']       ### DEFAULT OUTPUT NAMES FOR TESTING
 
@@ -10163,9 +10163,9 @@ def main():
                     'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                     'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # 'qice',, 'latent_heat_flux']
             else:
-                var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-                'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl','latent_heat_flux']#,'temp_1.5m']
+                var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']#,'temp_1.5m'],'latent_heat_flux'
             var_list4 = var_list1
             ### CASIM RUNS
             if np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '14_u-bu570_RA1M_CASIM'):
@@ -10175,8 +10175,8 @@ def main():
                 'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # , 'latent_heat_flux']
                 var_list4 = var_list2
             else:
-                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux','latent_heat_flux',
-                'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                'sensible_heat_flux','latent_heat_flux','air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl']#, 'tke']#]#,'tke'] #'qnliq','qnice','mixing_length_for_momentum','qice',
                 #, 'latent_heat_flux']
             ### IFS DIAGS
@@ -10476,7 +10476,7 @@ def main():
     if out_dir1 == 'UM_RA2M/': label1 = 'UM_RA2M'
 
     label2 = 'undefined_label'
-    if out_dir2[:10] == '26_u-cd847': label2 = 'UM_CASIM-AeroProf'
+    if out_dir2[:10] == '26_u-cd847': label2 = 'UM_CASIM-AeroProf-GA6alb'
     if out_dir2[:10] == '25_u-cc568': label2 = 'UM_RA2M'
     if out_dir2[:10] == '24_u-cc324': label2 = 'UM_RA2T_' + out_dir2[-4:-1]
     if out_dir2[:10] == '23_u-cc278': label2 = 'UM_CASIM-100'
@@ -10576,7 +10576,7 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
@@ -10588,7 +10588,7 @@ def main():
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_Cv_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, out_dir4, obs, doy, label1, label2, label3, label4)
     # figure = plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plotWinds(data1, data2, data3, obs, doy, label1, label2, label3)
 
     # -------------------------------------------------------------
