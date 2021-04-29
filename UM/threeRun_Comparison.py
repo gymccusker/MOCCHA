@@ -4035,33 +4035,21 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     mrr_rain_movmean = running_mean(obs['mrr']['rainrate'],60)
     mrr_rain_time = running_mean(obs['mrr']['doy'],60)
 
-    print (mrr_time.shape)
-    print (mrr_rain.shape)
-    print (mrr_rain_movmean.shape)
-    print (mrr_rain_time.shape)
+    # print (mrr_time.shape)
+    # print (mrr_rain.shape)
+    # print (mrr_rain_movmean.shape)
+    # print (mrr_rain_time.shape)
 
     diff = np.size(mrr_time) - np.size(mrr_rain_movmean)
-    print (diff)
+    # print (diff)
     drift_mrr = np.squeeze(np.where(np.logical_and(mrr_time >= 226.0, mrr_time <= 258.0)))
     drift_mrr_movmean = np.squeeze(np.where(np.logical_and(mrr_rain_time >= 226.0, mrr_rain_time <= 258.0)))
     drift_mrr_reshape = np.squeeze(np.where(np.logical_and(mrr_time_reshape >= 226.0, mrr_time_reshape <= 258.0)))
 
-    plt.plot(mrr_time[drift_mrr],mrr_rain[drift_mrr])
-    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean])
-    plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], '--')
-    plt.show()
-
-    # temp = obs['mrr']['doy'][drift_mrr[0][:-116]].reshape(-1, 60)
-    # print (temp.shape)
-    # temp = obs['mrr']['doy'][:-80].reshape(-1, 60)
-    # print (temp[2,:])
-    # print (obs['mrr']['doy'][120:180])
-    # print (np.nanmean(temp[2,:]))
-    # print (np.nanmean(obs['mrr']['doy'][120:180]))
-    # print (np.nanmean(temp[0:25,:], axis = 1))
-
-    # print (pwd_time)
-    # print (mrr_time)
+    # plt.plot(mrr_time[drift_mrr],mrr_rain[drift_mrr])
+    # plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean])
+    # plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], '--')
+    # plt.show()
 
     #################################################################
     ## create figure and axes instances
@@ -4077,26 +4065,25 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     # plt.plot(obs['mrr']['doy'], obs['mrr']['rainrate'], color = 'purple', label = 'Obs_MRR', zorder = 0)
-    plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR_movmean', zorder = 0)
-    plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], color = 'purple', label = 'Obs_MRR_reshape', zorder = 0)
+    # plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR_movmean', zorder = 0)
+    # plt.plot(mrr_time_reshape[drift_mrr_reshape],mrr_rain_reshape[drift_mrr_reshape], color = 'purple', label = 'Obs_MRR_reshape', zorder = 0)
     plt.plot(pwd_time[drift_pwd],pwd_precip[drift_pwd], color = 'grey', label = 'Obs_PWS', zorder = 1)
-    # if ifs_flag == True:
-    #     plt.plot(data3['time_hrly'][::res], precip3[::res],
-    #         'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
-    # plt.plot(data2['time_hrly'][::res], precip2[::res],
-    #     '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', zorder = 1)
-    # plt.plot(data4['time_hrly'][::res], precip4[::res],
-    #     '>', color = 'steelblue', markeredgecolor = 'darkslategrey', zorder = 1)
-    # plt.plot(data1['time_hrly'][::res], precip1[::res],
-    #     '^', color = 'darkblue', markeredgecolor = 'midnightblue', zorder = 1)
+    if ifs_flag == True:
+        plt.plot(data3['time_hrly'][::res], precip3[::res],
+            'v', color = 'gold', markeredgecolor = 'orange',zorder = 1)
+    plt.plot(data2['time_hrly'][::res], precip2[::res],
+        '<', color = 'mediumseagreen', markeredgecolor = 'darkgreen', zorder = 1)
+    plt.plot(data4['time_hrly'][::res], precip4[::res],
+        '>', color = 'steelblue', markeredgecolor = 'darkslategrey', zorder = 1)
+    plt.plot(data1['time_hrly'][::res], precip1[::res],
+        '^', color = 'darkblue', markeredgecolor = 'midnightblue', zorder = 1)
     plt.ylabel('Precipitation flux [mm hr$^{-1}$]')
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    plt.ylim([0,2])
     plt.xlabel('Date')
-    # plt.ylim([0,4.0])
-    # plt.yscale('log'); plt.ylim([3e-2,2e0])
+    plt.ylim([0,4.0])
+    plt.yscale('log'); plt.ylim([3e-2,2e0])
     ax = plt.gca()
     nans = ax.get_ylim()
     for file in missing_files:
@@ -4109,16 +4096,16 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
 
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
-    # sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
-    # sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    # sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
+    sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
+    sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
+    sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
+    sns.distplot(precip3, hist=False, color="gold", kde_kws={"shade": True})
     sns.distplot(pwd_precip[drift_pwd], hist=False, color="grey")
-    sns.distplot(mrr_rain_movmean[drift_mrr_movmean], hist=False, color="k")
-    sns.distplot(mrr_rain_reshape[drift_mrr_reshape], hist=False, color="purple")
+    # sns.distplot(mrr_rain_movmean[drift_mrr_movmean], hist=False, color="k")
+    # sns.distplot(mrr_rain_reshape[drift_mrr_reshape], hist=False, color="purple")
     plt.xlim([0,0.5])
-    # plt.yscale('log')
-    # plt.ylim([5e-2,3e1])
+    plt.yscale('log')
+    plt.ylim([5e-2,3e1])
     plt.xlabel('Precipitation flux [mm hr$^{-1}$]')
 
     print ('******')
@@ -4126,8 +4113,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws-mrr_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m_ra2t_fixedRA2T_newColours_Date.svg'
+    plt.savefig(fileout)
     plt.show()
 
 
