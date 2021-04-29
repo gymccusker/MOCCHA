@@ -7070,50 +7070,17 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ncA.close()
 
     ###################################
-    ## Open peXXX netCDF file
-    ###################################
-    eoutfile = outfile[:-3] + '_e.nc'
-
-    if os.path.exists(eoutfile):
-        ncE = Dataset(eoutfile, 'r')
-
-        ###################################
-        ## Append paXXX stream diagnostics
-        ###################################
-        print ('Appending peXXX diagnostics:')
-        print ('---')
-        for d in ncE.variables:
-            if d == 'forecast_time': continue
-            if not d in dataset.variables:
-                print ('Writing ' + d)
-                print ('')
-                daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height',), fill_value='-9999')
-                daat.scale_factor = float(1)
-                daat.add_offset = float(0)
-                if getattr(ncE.variables[d],'units', None):
-                    daat.units = str(ncE.variables[d].units)
-                else:
-                    daat.units = 'unknown'
-                if getattr(ncE.variables[d],'STASH', None):
-                    daat.STASH = str(ncE.variables[d].STASH)
-                if getattr(ncE.variables[d],'standard_name', None):
-                    daat.standard_name = str(ncE.variables[d].standard_name)
-                if getattr(ncE.variables[d],'long_name', None):
-                    daat.long_name = str(ncE.variables[d].long_name)
-                daat[:,:] = ncE.variables[d][:,:]
-
-        ###################################
-        ## Close read-only peXXX file
-        ###################################
-        ncE.close()
-
-    ###################################
     ## Open pdXXX netCDF file
     ###################################
     doutfile = outfile[:-3] + '_d.nc'
 
+    print ('What variables do we have before pdXXX read in?:')
+    for var in dat.variables(): print (var)
+
     if os.path.exists(doutfile):
         ncD = Dataset(doutfile, 'r')
+
+        print (ncD)
 
         #### height on rho levels
         height2 = dataset.createDimension('height2', np.size(ncD.variables['height'][:]))
@@ -7131,6 +7098,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         print ('Appending pdXXX diagnostics:')
         print ('---')
         for d in ncD.variables:
+            print (d)
             if d == 'forecast_time': continue
             if not d in dataset.variables:
                 print ('Writing ' + d)
@@ -7172,6 +7140,44 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
         ## Close read-only pdXXX file
         ###################################
         ncD.close()
+
+    ###################################
+    ## Open peXXX netCDF file
+    ###################################
+    eoutfile = outfile[:-3] + '_e.nc'
+
+    if os.path.exists(eoutfile):
+        ncE = Dataset(eoutfile, 'r')
+
+        ###################################
+        ## Append paXXX stream diagnostics
+        ###################################
+        print ('Appending peXXX diagnostics:')
+        print ('---')
+        for d in ncE.variables:
+            if d == 'forecast_time': continue
+            if not d in dataset.variables:
+                print ('Writing ' + d)
+                print ('')
+                daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                daat.scale_factor = float(1)
+                daat.add_offset = float(0)
+                if getattr(ncE.variables[d],'units', None):
+                    daat.units = str(ncE.variables[d].units)
+                else:
+                    daat.units = 'unknown'
+                if getattr(ncE.variables[d],'STASH', None):
+                    daat.STASH = str(ncE.variables[d].STASH)
+                if getattr(ncE.variables[d],'standard_name', None):
+                    daat.standard_name = str(ncE.variables[d].standard_name)
+                if getattr(ncE.variables[d],'long_name', None):
+                    daat.long_name = str(ncE.variables[d].long_name)
+                daat[:,:] = ncE.variables[d][:,:]
+
+        ###################################
+        ## Close read-only peXXX file
+        ###################################
+        ncE.close()
 
     ###################################
     ## Write out file
