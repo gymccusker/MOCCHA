@@ -7075,7 +7075,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     doutfile = outfile[:-3] + '_d.nc'
 
     print ('What variables do we have before pdXXX read in?:')
-    for var in dataset.variables(): print (var)
+    print (dataset)
 
     if os.path.exists(doutfile):
         ncD = Dataset(doutfile, 'r')
