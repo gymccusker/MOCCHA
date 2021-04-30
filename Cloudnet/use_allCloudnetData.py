@@ -4754,7 +4754,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # plt.savefig(fileout, dpi=300)
     plt.show()
 
-def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
+def plot_scaledBLCv_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -4847,7 +4847,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
     #### ------------------------------------------------------------------------------
     ### define scaledZ array to sort data in to
-    ###     will act as mid point of vertical "boxes" of width 0.1
+    ###     will act as mid point of vertical "boxes" of defined width
     binres = 0.1
     Zpts = np.arange(0.0 + binres/2.0, 1.0 + binres/2.0, binres)
 
@@ -5775,7 +5775,7 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
     plt.legend()
     plt.show()
 
-def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var):
+def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, var):
 
     ###################################
     ## PLOT TIMESERIES OF BL DEPTH
@@ -5798,7 +5798,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     #################################################################
     ### interpolate obs cloudnet data for continuous array
     #################################################################
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
 
     #### ---------------------------------------------------------------
     #### prepare cloudnet data
@@ -5810,15 +5810,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
         ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
         misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
-    elif var == 'lwc':
-        obs_data['lwc'][obs_data['lwc'] == -999] = 0.0
+    elif var == 'lwc_adiabatic':
+        obs_data['lwc_adiabatic'][obs_data['lwc_adiabatic'] == -999] = 0.0
         # obs_data['lwc'][obs_data['lwc'] == 0] = np.nan
         um_data['model_lwc'][um_data['model_lwc'] < 0.0] = 0.0
         ifs_data['model_lwc'][ifs_data['model_lwc'] < 0.0] = 0.0
         ifs_data['model_lwc'][ifs_data['model_lwc'] >= 20.0] = np.nan
         misc_data['model_lwc'][misc_data['model_lwc'] < 0.0] = 0.0
         #### change units to g/m3
-        obs_data['lwc'] = obs_data['lwc'] * 1e3
+        obs_data['lwc_adiabatic'] = obs_data['lwc_adiabatic'] * 1e3
         um_data['model_lwc'] = um_data['model_lwc'] * 1e3
         misc_data['model_lwc'] = misc_data['model_lwc'] * 1e3
         ifs_data['model_lwc'] = ifs_data['model_lwc'] * 1e3
@@ -5849,10 +5849,10 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     #### ------------------------------------------------------------------------------
     #### need to identify what cloudnet indices correspond to radiosondes
     #### ------------------------------------------------------------------------------
-    missing_files = [225, 230, 253, 257]    # manually set missing files doy for now
+    missing_files = [225, 253]    # manually set missing files doy for now
 
     #### remove DOY 230, 253, 257 manually for now
-    nanindices = np.array([16,17,18,19,108,109,110,111,124,125,126,127])
+    nanindices = np.array([16,17,18,19,124,125,126,127])
 
     ### need to build new arrays manually, isn't allowing indexing + ==nan for some reason...
     temp_time = obs['inversions']['thetaE']['time']         #### temporary time array for indexing
@@ -5860,29 +5860,39 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     temp_time2[:] = np.nan
     temp_time2[:nanindices[0]] = temp_time[:nanindices[0]]
     temp_time2[nanindices[3]+1:nanindices[4]] = temp_time[nanindices[3]+1:nanindices[4]]
-    temp_time2[nanindices[7]+1:nanindices[8]] = temp_time[nanindices[7]+1:nanindices[8]]
+    temp_time2[nanindices[-1]:] = temp_time[nanindices[-1]:]
     temp_inv = np.zeros(len(obsinv))
-    temp_inv[:] = np.nan
+    # temp_inv[:] = np.nan
     temp_inv[:nanindices[0]] = obsinv[:nanindices[0]]
     temp_inv[nanindices[3]+1:nanindices[4]] = obsinv[nanindices[3]+1:nanindices[4]]
-    temp_inv[nanindices[7]+1:nanindices[8]] = obsinv[nanindices[7]+1:nanindices[8]]
+    temp_inv[nanindices[-1]:] = temp_inv[nanindices[-1]:]
     temp_sfml = np.zeros(len(obsmlh))
-    temp_sfml[:] = np.nan
+    # temp_sfml[:] = np.nan
     temp_sfml[:nanindices[0]] = obsmlh[:nanindices[0]]
     temp_sfml[nanindices[3]+1:nanindices[4]] = obsmlh[nanindices[3]+1:nanindices[4]]
-    temp_sfml[nanindices[7]+1:nanindices[8]] = obsmlh[nanindices[7]+1:nanindices[8]]
+    temp_sfml[nanindices[-1]:] = temp_sfml[nanindices[-1]:]
+    temp_sfml[temp_sfml>1e4] = 0.0
 
     ### reset time array with new one accounting for missing FILES
     obs['inversions']['thetaE']['time'] = temp_time2
     obsinv = temp_inv
     obsmlh = temp_sfml
 
+    plt.plot(temp_time2, obsinv, '.');
+    plt.plot(temp_time2, obsmlh, '.');
+    plt.show()
+
     ### save non-nan values to dictionary
     ###         these arrays will be used for picking out inversions in the cloudnet files
     ###             (and so miss out dates where we're missing cloudnet data)
-    obs['inversions']['TimesForCloudnet'] = obs['inversions']['thetaE']['time'][~np.isnan(obs['inversions']['thetaE']['time'])]
+    obs['inversions']['TimesForCloudnet'] = obs['inversions']['thetaE']['time']#[~np.isnan(obs['inversions']['thetaE']['time'])]
     obs['inversions']['InvBasesForCloudnet'] = obsinv[~np.isnan(obsinv)]
     obs['inversions']['sfmlForCloudnet'] = obsmlh[~np.isnan(obsmlh)]
+
+    print (obs['inversions']['TimesForCloudnet'].shape)
+    print (obs['inversions']['InvBasesForCloudnet'].shape)
+    print (obs['inversions']['sfmlForCloudnet'].shape)
+    print (obs_data['height'][::6,:].shape)
 
     #### ------------------------------------------------------------------------------
     #### fill obs array with Cloudnet height index of main inversion base / sfml height
@@ -5980,25 +5990,31 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     tim1[:] = np.nan
     tim1[:nanindices[0]] = data1['inversions']['time'][:nanindices[0]]
     tim1[nanindices[3]+1:nanindices[4]] = data1['inversions']['time'][nanindices[3]+1:nanindices[4]]
-    tim1[nanindices[7]+1:nanindices[8]] = data1['inversions']['time'][nanindices[7]+1:nanindices[8]]
+    tim1[nanindices[-1]:] = data1['inversions']['time'][nanindices[-1]:]
     tim2 = tim1
     tim3 = tim1
+    tim4 = tim1
     ####        inversions
     inv1 = np.zeros(len(data1['inversions']['invbase']))
     inv1[:] = np.nan
     inv1[:nanindices[0]] = data1['inversions']['invbase'][:nanindices[0]]
     inv1[nanindices[3]+1:nanindices[4]] = data1['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
-    inv1[nanindices[7]+1:nanindices[8]] = data1['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv1[nanindices[-1]:] = data1['inversions']['invbase'][nanindices[-1]:]
     inv2 = np.zeros(len(data2['inversions']['invbase']))
     inv2[:] = np.nan
     inv2[:nanindices[0]] = data2['inversions']['invbase'][:nanindices[0]]
     inv2[nanindices[3]+1:nanindices[4]] = data2['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
-    inv2[nanindices[7]+1:nanindices[8]] = data2['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv2[nanindices[-1]:] = data2['inversions']['invbase'][nanindices[-1]:]
     inv3 = np.zeros(len(data3['inversions']['invbase']))
     inv3[:] = np.nan
     inv3[:nanindices[0]] = data3['inversions']['invbase'][:nanindices[0]]
     inv3[nanindices[3]+1:nanindices[4]] = data3['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
-    inv3[nanindices[7]+1:nanindices[8]] = data3['inversions']['invbase'][nanindices[7]+1:nanindices[8]]
+    inv3[nanindices[-1]:] = data3['inversions']['invbase'][nanindices[-1]:]
+    inv4 = np.zeros(len(data4['inversions']['invbase']))
+    inv4[:] = np.nan
+    inv4[:nanindices[0]] = data4['inversions']['invbase'][:nanindices[0]]
+    inv4[nanindices[3]+1:nanindices[4]] = data4['inversions']['invbase'][nanindices[3]+1:nanindices[4]]
+    inv4[nanindices[-1]:] = data4['inversions']['invbase'][nanindices[-1]:]
 
     ### save non-nan values
     ###         these arrays will be used for picking out inversions in the cloudnet files
@@ -6006,9 +6022,11 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     tim1 = tim1[~np.isnan(tim1)]
     tim2 = tim2[~np.isnan(tim2)]
     tim3 = tim3[~np.isnan(tim3)]
+    tim4 = tim4[~np.isnan(tim4)]
     inv1 = inv1[~np.isnan(inv1)]
     inv2 = inv2[~np.isnan(inv2)]
     inv3 = inv3[~np.isnan(inv3)]
+    inv4 = inv4[~np.isnan(inv4)]
 
     #### calculate inversion algorithm success rate
     ind1 = np.where(inv1 >= 0.0)  ## non-nan values
@@ -6017,10 +6035,13 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data2['inversions']['successRate'] = np.size(ind2[0]) / np.float(np.size(inv2)) * 100.0
     ind3 = np.where(inv3 >= 0.0)  ## non-nan values
     data3['inversions']['successRate'] = np.size(ind3[0]) / np.float(np.size(inv3)) * 100.0
+    ind4 = np.where(inv4 >= 0.0)  ## non-nan values
+    data4['inversions']['successRate'] = np.size(ind4[0]) / np.float(np.size(inv4)) * 100.0
 
     print (label1 + ' inversion algorithm success rate = ' + str(data1['inversions']['successRate']))
     print (label2 + ' inversion algorithm success rate = ' + str(data2['inversions']['successRate']))
     print (label3 + ' inversion algorithm success rate = ' + str(data3['inversions']['successRate']))
+    print (label4 + ' inversion algorithm success rate = ' + str(data4['inversions']['successRate']))
     print ('****')
 
     # #### ---------------------------------------------------------------
@@ -6066,6 +6087,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data2['scaledTime'] = misc_data['time'].data[::6]
     data3['scaledZ'] = Zpts
     data3['scaledTime'] = ifs_data['time'].data[::6]
+    data4['scaledZ'] = Zpts
+    data4['scaledTime'] = ra2t_data['time'].data[::6]
 
     #### define empty arrays of nans to fill with scaled data
     data1['scaled' + var] = {}
@@ -6086,6 +6109,12 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data3['scaled' + var]['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data3['scaled' + var]['stdev'][:] = np.nan
     data3['bl' + var] = np.zeros([np.size(data1['scaledTime']),np.size(ifs_data['height'],1)]); data3['bl' + var][:] = np.nan
 
+    data4['scaled' + var] = {}
+    data4['scaled' + var]['binned'] = {}
+    data4['scaled' + var]['mean'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data4['scaled' + var]['mean'][:] = np.nan
+    data4['scaled' + var]['stdev'] = np.zeros([np.size(data1['scaledTime']),len(Zpts)]); data4['scaled' + var]['stdev'][:] = np.nan
+    data4['bl' + var] = np.zeros([np.size(data1['scaledTime']),np.size(ra2t_data['height'],1)]); data4['bl' + var][:] = np.nan
+
     ### ------------------------------------------------------------------------------------------
     ### find cloudnet timesteps which match the inversion timesteps
     ### ------------------------------------------------------------------------------------------
@@ -6095,6 +6124,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     data2['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data2['scaled' + var]['inversionForCloudnet'][:] = np.nan
     data3['scaled' + var]['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data3['scaled' + var]['inversion_Tindex'][:] = np.nan
     data3['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data3['scaled' + var]['inversionForCloudnet'][:] = np.nan
+    data4['scaled' + var]['inversion_Tindex'] = np.zeros(np.size(data1['scaledTime'])); data4['scaled' + var]['inversion_Tindex'][:] = np.nan
+    data4['scaled' + var]['inversionForCloudnet'] = np.zeros(np.size(data1['scaledTime'])); data4['scaled' + var]['inversionForCloudnet'][:] = np.nan
 
     for i in range(0, len(tim1)):
         ## find the cloudnet time INDEX which matches the inversion timestep
@@ -6107,6 +6138,9 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         if np.size(np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))) > 0:
             ### gives INDEX of CLOUDNET DATA corresponding to that timestep
             data3['scaled' + var]['inversion_Tindex'][i] = np.where(np.round(data3['scaledTime'],3) == np.round(tim3[i],3))[0][0]
+        if np.size(np.where(np.round(data4['scaledTime'],3) == np.round(tim4[i],3))) > 0:
+            ### gives INDEX of CLOUDNET DATA corresponding to that timestep
+            data4['scaled' + var]['inversion_Tindex'][i] = np.where(np.round(data4['scaledTime'],3) == np.round(tim4[i],3))[0][0]
 
 
         ### use inversion_Tindices to define new inversion height array on cloudnet timesteps for looping over
@@ -6117,6 +6151,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             data2['scaled' + var]['inversionForCloudnet'][int(data2['scaled' + var]['inversion_Tindex'][i])] = inv2[i]
         if data3['scaled' + var]['inversion_Tindex'][i] >= 0.0:
             data3['scaled' + var]['inversionForCloudnet'][int(data3['scaled' + var]['inversion_Tindex'][i])] = inv3[i]
+        if data4['scaled' + var]['inversion_Tindex'][i] >= 0.0:
+            data4['scaled' + var]['inversionForCloudnet'][int(data4['scaled' + var]['inversion_Tindex'][i])] = inv4[i]
     #
     # np.save('working_data1', data1)
     # np.save('working_data2', data2)
@@ -6129,6 +6165,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     zind1 = np.zeros(np.size(data1['scaledTime'])); zind1[:] = np.nan
     zind2 = np.zeros(np.size(data2['scaledTime'])); zind2[:] = np.nan
     zind3 = np.zeros(np.size(data3['scaledTime'])); zind3[:] = np.nan
+    zind4 = np.zeros(np.size(data4['scaledTime'])); zind4[:] = np.nan
 
     #### ------------------------------------------------------------------------------
     #### fill model arrays with height index of main inversion base / sfml height
@@ -6146,34 +6183,44 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         if np.size(np.where(ifs_data['height'][i,:].data <= data3['scaled' + var]['inversionForCloudnet'][i])) > 0.0:
             temp = ifs_data['height'][i,:].data <= data3['scaled' + var]['inversionForCloudnet'][i]
             zind3[i] = np.where(temp == True)[0][-1]
+        if np.size(np.where(ra2t_data['height'][i,:].data == data4['scaled' + var]['inversionForCloudnet'][i])) > 0.0:
+            zind4[i] = np.where(ra2t_data['height'][i,:].data == data4['scaled' + var]['inversionForCloudnet'][i])[0][0]
 
     #### assign height indices to dictionary for later use
     data1['inversions']['invbase_kIndex'] = zind1
     data2['inversions']['invbase_kIndex'] = zind2
     data3['inversions']['invbase_kIndex'] = zind3
+    data4['inversions']['invbase_kIndex'] = zind4
 
     fig = plt.figure(figsize=(9,10))
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.1,
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
             hspace = 0.3, wspace = 0.3)
-    plt.subplot(311)
+    plt.subplot(411)
     plt.title(label1)
     for i in range(0, np.size(zind1)):
         if ~np.isnan(zind1[i]): plt.plot(data1['scaledTime'][i],um_data['height'][i,int(zind1[i])],'o')
     plt.plot(tim1,inv1)
     plt.ylabel('Z [m]')
     plt.ylim([0,3e3])
-    plt.subplot(312)
+    plt.subplot(412)
     plt.title(label2)
     for i in range(0, np.size(zind2)):
         if ~np.isnan(zind2[i]): plt.plot(data2['scaledTime'][i],misc_data['height'][i,int(zind2[i])],'o')
     plt.plot(tim2, inv2)
     plt.ylim([0,3e3])
     plt.ylabel('Z [m]')
-    plt.subplot(313)
+    plt.subplot(413)
     plt.title(label3)
     for i in range(0, np.size(zind3)):
         if ~np.isnan(zind3[i]): plt.plot(data3['scaledTime'][i],ifs_data['height'][i,int(zind3[i])],'o')
     plt.plot(tim3, inv3)
+    plt.ylim([0,3e3])
+    plt.ylabel('Z [m]')
+    plt.subplot(414)
+    plt.title(label4[:-4])
+    for i in range(0, np.size(zind4)):
+        if ~np.isnan(zind4[i]): plt.plot(data4['scaledTime'][i],ra2t_data['height'][i,int(zind4[i])],'o')
+    plt.plot(tim4, inv4)
     plt.ylim([0,3e3])
     plt.ylabel('Z [m]')
     plt.xlabel('DOY')
@@ -6184,14 +6231,17 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     if var == 'Cv':
         ra2m_var = um_data['model_Cv_filtered'][::6,:]
         casim_var = misc_data['model_Cv_filtered'][::6,:]
+        ra2t_var = ra2t_data['model_Cv_filtered'][::6,:]
         ifs_var = ifs_data['model_snow_Cv_filtered'][::6,:]
     elif var == 'lwc':
         ra2m_var = um_data['model_lwc'][::6,:]
         casim_var = misc_data['model_lwc'][::6,:]
+        ra2t_var = ra2t_data['model_lwc'][::6,:]
         ifs_var = ifs_data['model_lwc'][::6,:]
     elif var == 'iwc':
         ra2m_var = um_data['model_iwc_filtered'][::6,:]
         casim_var = misc_data['model_iwc_filtered'][::6,:]
+        ra2t_var = ra2t_data['model_iwc_filtered'][::6,:]
         ifs_var = ifs_data['model_snow_iwc_filtered'][::6,:]
 
     ### find all Cv data below identified inversion
@@ -6203,6 +6253,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
         data1['scaled' + var]['binned']['t' + str(i)] = {}
         data2['scaled' + var]['binned']['t' + str(i)] = {}
         data3['scaled' + var]['binned']['t' + str(i)] = {}
+        data4['scaled' + var]['binned']['t' + str(i)] = {}
 
         ###-----------------------------------------------------------------------------------------
         ### for main inversion
@@ -6220,22 +6271,29 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
             hgts3 = ifs_data['height'][i,:int(data3['inversions']['invbase_kIndex'][i])]
         else:
             continue
+        if data4['inversions']['invbase_kIndex'][i] >= 0.0:
+            hgts4 = ra2t_data['height'][i,:int(data4['inversions']['invbase_kIndex'][i])]
+        else:
+            continue
 
         ### scale BL height array by the inversion depth to give range Z 0 to 1 (1 = inversion height) (temporary variable)
         scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
         scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
         scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+        scaled_hgts4 = hgts4 / ra2t_data['height'][i,int(data4['inversions']['invbase_kIndex'][i])]
 
         # find Cv values below the BL inversion
         data1['bl' + var][i,:int(data1['inversions']['invbase_kIndex'][i]+1)] = ra2m_var[i,:int(data1['inversions']['invbase_kIndex'][i]+1)]
         data2['bl' + var][i,:int(data2['inversions']['invbase_kIndex'][i]+1)] = casim_var[i,:int(data2['inversions']['invbase_kIndex'][i]+1)]
         data3['bl' + var][i,:int(data3['inversions']['invbase_kIndex'][i]+1)] = ifs_var[i,:int(data3['inversions']['invbase_kIndex'][i]+1)]
+        data4['bl' + var][i,:int(data4['inversions']['invbase_kIndex'][i]+1)] = ra2t_var[i,:int(data4['inversions']['invbase_kIndex'][i]+1)]
 
         ## bin scaled BL heights into pre-set Zpts array so every timestep can be compared
         for k in range(len(Zpts)):
             tempvar1 = np.where(np.logical_and(scaled_hgts1 >= Zpts[k] - binres/2.0, scaled_hgts1 < Zpts[k] + binres/2.0))
             tempvar2 = np.where(np.logical_and(scaled_hgts2 >= Zpts[k] - binres/2.0, scaled_hgts2 < Zpts[k] + binres/2.0))
             tempvar3 = np.where(np.logical_and(scaled_hgts3 >= Zpts[k] - binres/2.0, scaled_hgts3 < Zpts[k] + binres/2.0))
+            tempvar4 = np.where(np.logical_and(scaled_hgts4 >= Zpts[k] - binres/2.0, scaled_hgts4 < Zpts[k] + binres/2.0))
 
             ### find mean and stdev of points within given Zpts range
             data1['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data1['bl' + var][i,tempvar1]
@@ -6253,6 +6311,11 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
                 data3['scaled' + var]['mean'][i,k] = np.nanmean(data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
             data3['scaled' + var]['stdev'][i,k] = np.nanstd(data3['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
 
+            data4['scaled' + var]['binned']['t' + str(i)][Zpts[k]] = data4['bl' + var][i,tempvar4]
+            if np.size(data4['scaled' + var]['binned']['t' + str(i)][Zpts[k]]) > 0:
+                data4['scaled' + var]['mean'][i,k] = np.nanmean(data4['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
+            data4['scaled' + var]['stdev'][i,k] = np.nanstd(data4['scaled' + var]['binned']['t' + str(i)][Zpts[k]])
+
     ### save working data for debug
     # np.save('working_data1', data1)
 
@@ -6264,21 +6327,25 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
 
     ### timeseries
     fig = plt.figure(figsize=(8,12))
-    plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.1,
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
             hspace = 0.3, wspace = 0.3)
-    plt.subplot(411)
+    plt.subplot(511)
     plt.title('Obs')
     plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.ylabel('Z [scaled]')
-    plt.subplot(412)
+    plt.subplot(512)
     plt.title(label1)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.ylabel('Z [scaled]')
-    plt.subplot(413)
+    plt.subplot(513)
+    plt.title(label4[:-4])
+    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.ylabel('Z [scaled]')
+    plt.subplot(514)
     plt.title(label2)
     plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.ylabel('Z [scaled]')
-    plt.subplot(414)
+    plt.subplot(515)
     plt.title(label3)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
     plt.ylabel('Z [scaled]')
@@ -6309,7 +6376,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
-    # plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
+    plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
     plt.show()
 
     ### um_casim-100
@@ -6325,6 +6392,19 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.savefig('FIGS/' + var + '_CASIM-100_scaledZ_timeseries.png')
     plt.show()
 
+    ### um_ra2t
+    fig = plt.figure(figsize=(8,6))
+    plt.subplot(211)
+    plt.title(label4[:-4])
+    plt.pcolor(data4['scaledTime'],ra2t_data['height'][0,:].data,np.transpose(data4['bl' + var])); plt.ylim([0,3e3])
+    plt.plot(data4['inversions']['time'],data4['inversions']['invbase'],'r')
+    plt.xlim([226,258])
+    plt.subplot(212)
+    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.xlim([226,258])
+    plt.savefig('FIGS/' + var + '_RA2T_scaledZ_timeseries.png')
+    plt.show()
+
     ### ecmwf_ifs
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
@@ -6335,7 +6415,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.subplot(212)
     plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean'])); plt.ylim([0,1])
     plt.xlim([226,258])
-    # plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
+    plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
     plt.show()
 
     ####================================================================
@@ -6343,6 +6423,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ###         loop through and set all zeros to nans
     obsmean = obs['inversions']['scaled' + var]['mean']
     ra2mmean = data1['scaled' + var]['mean']
+    ra2tmean = data4['scaled' + var]['mean']
     casimmean = data2['scaled' + var]['mean']
     ifsmean = data3['scaled' + var]['mean']
     # for i in range(0, len(data1['scaledTime'])):
@@ -6372,6 +6453,8 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     ### Build figure (profiles)
     ### -------------------------------
     fig = plt.figure(figsize=(5,6))
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.95, left = 0.1,
+            hspace = 0.4, wspace = 0.13)
     ax1  = fig.add_axes([0.2,0.1,0.7,0.8])   # left, bottom, width, height
     plt.plot(np.nanmean(obsmean,0),obs['inversions']['scaledZ'], '--', color = 'k', linewidth = 2, label = 'Obs')
     ax1.fill_betweenx(data1['scaledZ'],np.nanmean(obsmean,0) - np.nanstd(obsmean,0),
@@ -6381,21 +6464,27 @@ def plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_
     plt.plot(np.nanmean(ra2mmean,0),data1['scaledZ'], '^-',
         color = 'darkblue', markeredgecolor = 'midnightblue', linewidth = 2, label = label1)
     ax1.fill_betweenx(data1['scaledZ'],np.nanmean(ra2mmean,0) - np.nanstd(ra2mmean,0),
-        np.nanmean(ra2mmean,0) + np.nanstd(ra2mmean,0), color = 'lightblue', alpha = 0.4)
+        np.nanmean(ra2mmean,0) + np.nanstd(ra2mmean,0), color = 'blue', alpha = 0.05)
     # ax1.fill_betweenx(data1['scaledZ'],np.nanmean(ra2mmean,0) - np.nanstd(data1['scaled' + var]['stdev'],0),
     #     np.nanmean(ra2mmean,0) + np.nanstd(data1['scaled' + var]['stdev'],0), color = 'lightblue', alpha = 0.4)
-    plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-',
-        color = 'gold', markeredgecolor = 'saddlebrown', linewidth = 2, label = label3)
-    ax1.fill_betweenx(data3['scaledZ'],np.nanmean(ifsmean,0) - np.nanstd(ifsmean,0),
-        np.nanmean(ifsmean,0) + np.nanstd(ifsmean,0), color = 'navajowhite', alpha = 0.35)
-    # ax1.fill_betweenx(data3['scaledZ'],np.nanmean(ifsmean,0) - np.nanstd(data3['scaled' + var]['stdev'],0),
-    #     np.nanmean(ifsmean,0) + np.nanstd(data3['scaled' + var]['stdev'],0), color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(ra2tmean,0),data4['scaledZ'], '>-',
+        color = 'steelblue', markeredgecolor = 'midnightblue', linewidth = 2, label = label4[:-4])
+    ax1.fill_betweenx(data4['scaledZ'],np.nanmean(ra2tmean,0) - np.nanstd(ra2tmean,0),
+        np.nanmean(ra2tmean,0) + np.nanstd(ra2tmean,0), color = 'lightblue', alpha = 0.3)
+    # ax1.fill_betweenx(data1['scaledZ'],np.nanmean(ra2mmean,0) - np.nanstd(data1['scaled' + var]['stdev'],0),
+    #     np.nanmean(ra2mmean,0) + np.nanstd(data1['scaled' + var]['stdev'],0), color = 'lightblue', alpha = 0.4)
     plt.plot(np.nanmean(casimmean,0),data2['scaledZ'], 'v-',
         color = 'mediumseagreen', markeredgecolor = 'darkslategrey', linewidth = 2, label = label2)
     ax1.fill_betweenx(data2['scaledZ'],np.nanmean(casimmean,0) - np.nanstd(casimmean,0),
         np.nanmean(casimmean,0) + np.nanstd(casimmean,0), color = 'mediumaquamarine', alpha = 0.15)
     # ax1.fill_betweenx(data2['scaledZ'],np.nanmean(casimmean,0) - np.nanstd(data2['scaled' + var]['stdev'],0),
     #     np.nanmean(casimmean,0) + np.nanstd(data2['scaled' + var]['stdev'],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(ifsmean,0),data3['scaledZ'], 'd-',
+    color = 'gold', markeredgecolor = 'saddlebrown', linewidth = 2, label = label3)
+    ax1.fill_betweenx(data3['scaledZ'],np.nanmean(ifsmean,0) - np.nanstd(ifsmean,0),
+    np.nanmean(ifsmean,0) + np.nanstd(ifsmean,0), color = 'navajowhite', alpha = 0.35)
+    # ax1.fill_betweenx(data3['scaledZ'],np.nanmean(ifsmean,0) - np.nanstd(data3['scaled' + var]['stdev'],0),
+    #     np.nanmean(ifsmean,0) + np.nanstd(data3['scaled' + var]['stdev'],0), color = 'navajowhite', alpha = 0.35)
     if var == 'Cv': plt.xlim([0,1])
     if var == 'lwc': plt.xlim([0,0.2])
     if var == 'iwc': plt.xlim([0,0.02])
@@ -9344,6 +9433,7 @@ def main():
     data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v3.npy').item()
     data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v3.npy').item()
     data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v3.npy').item()
+    data4['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2t_inversions_v3.npy').item()
 
     # -------------------------------------------------------------
     ### use IFS named directory to allocate variable to plot
@@ -9351,10 +9441,10 @@ def main():
     # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
     # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
-    var = 'Cv'
+    var = 'lwc_adiabatic'
 
-    # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var)
-    figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, var)
+    # figure = plot_scaledBLCv_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -9374,7 +9464,8 @@ def main():
     np.save('working_ifs_data', ifs_data)
     if cn_misc_flag != -1: np.save('working_misc_data', misc_data)
     np.save('working_ra2t_data', ra2t_data)
-    np.save('working_obsV6_data', obs_data)
+    np.save('working_obsV7_data', obs_data)
+
 
     # print (data1['height'][:])
     # print (data1['height'][data1['height'] <= 1e3])
