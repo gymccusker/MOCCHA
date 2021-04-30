@@ -2731,7 +2731,7 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['taflag'][:] == 1],
         obs['foremast'].variables['taflux'][obs['foremast'].variables['taflag'][:] == 1],
-        'kv', markersize = 5, label = 'Foremast')
+        'kv', markersize = 5, label = 'Foremast', zorder = 3)
     # plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['taflag'][:]==1)],
     #     np.squeeze(obs['ice_station_fluxes']['taflux'][obs['ice_station_fluxes']['taflag'][:] == 1]),
     #     '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
@@ -2751,7 +2751,7 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(obs['foremast'].variables['doy'][obs['foremast'].variables['rflag'][:] == 1],
         obs['foremast'].variables['rflux'][obs['foremast'].variables['rflag'][:] == 1],
-        'kv', markersize = 5, label = 'Foremast')
+        'kv', markersize = 5, label = 'Foremast', zorder = 3)
     # plt.plot(time_iceStation[np.squeeze(obs['ice_station_fluxes']['lrflag'][:]==1)],
     #     np.squeeze(obs['ice_station_fluxes']['lrflux'][obs['ice_station_fluxes']['lrflag'][:] == 1]),
     #     '^', color = 'darkgrey', markersize = 7, markeredgecolor = 'grey', label = 'Ice_station')
@@ -2907,8 +2907,8 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     plt.ylim([0,yDmax])
 
 
-    fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast+iceStationQC_metum_ifs_casim-100.svg'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/comparisons/SHF_LHF_line+PDFS_oden_foremast_ra2m-25_ra2t-24_ifs_casim-100-23.png'
+    plt.savefig(fileout)
     plt.show()
 
 def table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -3864,42 +3864,60 @@ def plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_di
 
     albedo_ice = obs['fixed_radiation']['SWu_ice'] / obs['fixed_radiation']['SWd_ice']
 
-
-
     SMALL_SIZE = 12
     MED_SIZE = 14
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=LARGE_SIZE)
-    plt.rc('axes',labelsize=LARGE_SIZE)
-    plt.rc('xtick',labelsize=LARGE_SIZE)
-    plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(6,5))
-    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(8,4))
+    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.95, left = 0.15,
             hspace = 0.4, wspace = 0.1)
 
     ### define axis instance
-    ax1 = plt.gca()
+    ax = plt.gca()
 
-    plt.plot(obs['fixed_radiation']['time_ice'][p5ice], albedo_ice[p5ice], color = 'grey', label = 'Ice_station')
-    plt.plot(obs['albedo']['DoY'][p5ship], obs['albedo']['a'][p5ship], 'ko', label = 'Ship')
-    plt.plot(data3['time'][p5],data3['sfc_albedo'][p5], color = 'gold', label = label3)
-    # plt.plot(data1['time'],data1['surface_albedo'],color = 'darkblue')
-    # plt.plot(data2['time'],data2['surface_albedo'],color = 'mediumseagreen')
-    # plt.plot(data4['time'],data4['surface_albedo'],color = 'steelblue')
-    plt.legend()
+    # plt.plot(obs['fixed_radiation']['time_ice'], albedo_ice, color = 'grey', label = 'Ice_station')
+    plt.plot(obs['albedo']['DoY'], obs['albedo']['a'], 'k+', label = 'Obs')
+    plt.plot(data3['time'],data3['sfc_albedo'], color = 'gold', label = label3)
+    plt.plot(data2['time'],data2['seaice_albedo_agg'],color = 'mediumseagreen', label = label2)
+    plt.plot(data4['time'],data4['seaice_albedo_agg'],color = 'steelblue', label = label4[:-4])
+    plt.plot(data1['time'],data1['seaice_albedo_agg'],color = 'darkblue', label = label1)
+    plt.legend(bbox_to_anchor=(0.0, 0.05, 1., .102), loc=4, ncol=3)
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    plt.xlabel('Date')
+    plt.ylabel('Surface albedo')
     # plt.ylim([0.4,1.0])
     # plt.grid('on')
 
     # ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
 
+    # plt.savefig('../FIGS/comparisons/SurfaceAlbedo_Ship_RA2M-25_RA2T-24_CASIM-100-23_IFS.svg')
     plt.show()
 
-    # print (data1['surface_downwelling_SW_radiation'])
-    # print (data1['surface_upwelling_SW_radiation'])
-    # print (data1['surface_albedo'])
+
+    datenums_tice = obs['obs_temp'].variables['time1'][:] ### ice camp data on different timestep
+    time_tice = calcTime_Mat2DOY(datenums_tice)
+
+    plt.figure()
+    ax1 = plt.gca()
+    ax1.plot(time_tice,obs['obs_temp'].variables['Tice'][:] + 273.16, color = 'black', label = 'obs: ice')
+    ax1.plot(data1['time'], data1['air_temperature_at_1.5m'].data, color = 'darkblue', label = '1.5m')
+    ax1.plot(data1['time'], data1['sfc_temperature'].data, '--', color = 'darkblue', label = 'sfc')
+    ax1.plot(data4['time'], data4['air_temperature_at_1.5m'].data, color = 'steelblue')#, label = '2m')
+    ax1.plot(data4['time'], data4['sfc_temperature'].data, '--', color = 'steelblue')
+    # ax1.plot(data2['time'], data2['air_temperature_at_1.5m'].data, color = 'mediumseagreen')#, label = '2m')
+    ax1.plot(data3['time'], data3['sfc_temp_2m'].data, color = 'gold', label = '2m')
+    ax1.plot(data3['time'], data3['sfc_skin_temp'].data, '--', color = 'gold', label = 'Skin')
+    plt.title('near-sfc_temperature [K]')
+    plt.legend()
+    plt.show()
 
 
 def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
@@ -8084,7 +8102,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xlim([-0.6,0.6])
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_metum_ifs_casim-100-GA6alb_ra2t_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
+    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -8110,7 +8128,6 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),2)))
     print (np.nanmin(np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),2)))
     print (np.nanmin(np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),2)))
-
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
 
@@ -8687,7 +8704,7 @@ def checkInvbaseBelow(invbaseID, thetaEDiff, dthresh):
 
     return invbaseID
 
-def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
+def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3):
 
     print ('******')
     print ('')
@@ -8710,12 +8727,18 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data1['temperature'][data1['temperature'] == -9999] = np.nan
     data2['temperature'][data2['temperature'] == -9999] = np.nan
     data3['temperature'][data3['temperature'] <= 0] = np.nan
+    data4['temperature'][data4['temperature'] == -9999] = np.nan
+    data5['temperature'][data5['temperature'] == -9999] = np.nan
     data1['pressure'][data1['pressure'] == -9999] = np.nan
     data2['pressure'][data2['pressure'] == -9999] = np.nan
     data3['pressure'][data3['pressure'] <= 0] = np.nan
+    data4['pressure'][data4['pressure'] == -9999] = np.nan
+    data5['pressure'][data5['pressure'] == -9999] = np.nan
     data1['q'][data1['q'] == -9999] = np.nan
     data2['q'][data2['q'] == -9999] = np.nan
     data3['q'][data3['q'] <= 0] = np.nan
+    data4['q'][data4['q'] == -9999] = np.nan
+    data5['q'][data5['q'] == -9999] = np.nan
 
     #### ---------------------------------------------------------------
     #### calculate equivalent potential temperature
@@ -8723,6 +8746,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data1['theta'], data1['thetaE'] = calcThetaE(data1['temperature'], data1['pressure'], data1['q'])
     data2['theta'], data2['thetaE'] = calcThetaE(data2['temperature'], data2['pressure'], data2['q'])
     data3['theta'], data3['thetaE'] = calcThetaE(data3['temperature'], data3['pressure'], data3['q'])
+    data4['theta'], data4['thetaE'] = calcThetaE(data4['temperature'], data4['pressure'], data4['q'])
+    data5['theta'], data5['thetaE'] = calcThetaE(data5['temperature'], data5['pressure'], data5['q'])
 
     obs['sondes']['theta'], obs['sondes']['thetaE'] = calcThetaE(np.transpose(obs['sondes']['temperature'])+273.15,
         np.transpose(obs['sondes']['pressure'])*1e2, np.transpose(obs['sondes']['mr'])/1e3)
@@ -8769,7 +8794,8 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     print ('...')
     print ('Re-gridding sonde and ifs data...')
     print ('')
-    data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'thetaE')
+    # data1, data2, data3, obs, drift = reGrid_Sondes(data1, data2, data3, obs, doy, 'thetaE')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'thetaE')
     print ('')
     print ('Done!')
 
@@ -9001,15 +9027,15 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     #### ---------------------------------------------------------------
     #### load working cloudnet data to mark cloud depth
     #### ---------------------------------------------------------------
-    obs_data = np.load('../Cloudnet/obs_Cv_data.npy').item()
-    um_data = np.load('../Cloudnet/um_Cv_data.npy').item()
-    misc_data = np.load('../Cloudnet/casim_Cv_data.npy').item()
-    ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
-
-    obs_cv = obs_data['Cv'][::6,:]
-    um_ra2m_cv = um_data['model_Cv_filtered'][::6,:].data
-    um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
-    ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
+    # obs_data = np.load('../Cloudnet/obs_Cv_data.npy').item()
+    # um_data = np.load('../Cloudnet/um_Cv_data.npy').item()
+    # misc_data = np.load('../Cloudnet/casim_Cv_data.npy').item()
+    # ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
+    #
+    # obs_cv = obs_data['Cv'][::6,:]
+    # um_ra2m_cv = um_data['model_Cv_filtered'][::6,:].data
+    # um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
+    # ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
 
     #### ---------------------------------------------------------------
     #### Look at drift sondes only from Jutta's inversion code
@@ -9143,37 +9169,37 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
 
         ##### plot cloudnet cloud fraction as markers
         #####       need to find the correct cloudnet index for this model timestep
-        timeind = 0.0       ### initialise
-        timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
-        if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
-            # tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
-            tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
-            tmp1[:] = 310
-            # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'darkblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-            ax.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Blues, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-            # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
-            tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
-            tmp2[:] = 312
-            # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
-            ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
-            # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
-            tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
-            tmp3[:] = 314
-            # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'gold', label = 'ecmwf_ifs Cv > 0')
-            ax.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
-            # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
-            tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
-            tmp0[:] = 316
-            # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
-            #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
-            ax.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
-                vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
+        # timeind = 0.0       ### initialise
+        # timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
+        # if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
+        #     # tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+        #     tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
+        #     tmp1[:] = 310
+        #     # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
+        #     #     '.', markersize = 6, color = 'darkblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+        #     ax.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
+        #         vmin = 0, vmax = 1, cmap = mpl_cm.Blues, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+        #     # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+        #     tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
+        #     tmp2[:] = 312
+        #     # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+        #     #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
+        #     ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
+        #         vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
+        #     # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+        #     tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
+        #     tmp3[:] = 314
+        #     # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
+        #     #     '.', markersize = 6, color = 'gold', label = 'ecmwf_ifs Cv > 0')
+        #     ax.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
+        #         vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
+        #     # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
+        #     tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
+        #     tmp0[:] = 316
+        #     # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
+        #     #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
+        #     ax.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
+        #         vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Cloudnet cloud fractions indicated on RHS')
         plt.xlabel('$\Theta_{E}$ [K]')
@@ -9195,7 +9221,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
             fontsize = 12)
 
         legend2 = ax.legend(bbox_to_anchor=(0.7, 0.0, 1., .102), loc=4, ncol=1)
-        plt.savefig('../FIGS/inversionIdent/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
+        plt.savefig('../FIGS/inversionIdent_v2/InvIdent_ThetaE_doy' + str(np.round(obs['sondes']['doy_drift'][i],1)) + '.png')
         if i == 0:
             plt.show()
         else:
@@ -9268,7 +9294,7 @@ def inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out
     data_3['height'] = data1['universal_height']
     np.save('ecmwf_ifs_inversions_v3', data_3)
 
-    return data1, data2, data3, obs
+    return data1, data2, data3, data4, data5, obs
 
 def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
 
@@ -9902,7 +9928,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10158,10 +10184,10 @@ def main():
             var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
         else:
             ### BASE UM RUNS (UM_RA2M/UM_RA2T)
-            if out_dir1[:21] == '25_u-cc568_RA2M_CON':
+            if out_dir1[:19] == '25_u-cc568_RA2M_CON':
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                     'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                    'cloud_fraction','radr_refl']#,'temp_1.5m']
+                    'cloud_fraction','radr_refl','seaice_albedo_agg','air_temperature_at_1.5m', 'sfc_temperature']#]
             elif out_dir1[:21] == '12_u-br210_RA1M_CASIM':
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                     'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
@@ -10170,31 +10196,30 @@ def main():
             else:
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                 'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#,'temp_1.5m'],'latent_heat_flux'
+                'cloud_fraction','radr_refl','seaice_albedo_agg']#,'temp_1.5m'],'latent_heat_flux'
             var_list4 = var_list1
             ### CASIM RUNS
             if np.logical_or(np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '14_u-bu570_RA1M_CASIM'), out_dir4[:21] == '26_u-cd847_RA1M_CASIM'):
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux'] # 'qice',, 'latent_heat_flux']
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                 'sensible_heat_flux','latent_heat_flux','air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#, 'tke']#]#,'tke'] #'qnliq','qnice','mixing_length_for_momentum','qice',
-                #, 'latent_heat_flux']
+                'cloud_fraction','radr_refl','seaice_albedo_agg', 'tke','qnliq','qnice','mixing_length_for_momentum','air_temperature_at_1.5m', 'sfc_temperature']
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
-                'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo']
+                'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo', 'sfc_skin_temp']
             if not ifs_flag:
                 if out_dir3[-4:-1] == 'glm':
                     var_list3 = ['cloud_fraction','qliq','qice']
                 else:
                     var_list3 = var_list1
             ### GLM DIAGS
-            var_list5 = ['cloud_fraction','qliq','qice','temperature','q']
+            var_list5 = ['cloud_fraction','qliq','qice','temperature','q', 'pressure']
 
         if i == 0:
             ## ------------------
@@ -10569,7 +10594,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -10599,7 +10624,7 @@ def main():
     # -------------------------------------------------------------
     # Further analysis
     # -------------------------------------------------------------
-    # data1, data2, data3, obs = inversionIdent(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    data1, data2, data3, data4, data5, obs = inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2

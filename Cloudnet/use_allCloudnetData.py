@@ -29,6 +29,7 @@ sys.path.insert(1, '../py_functions/')
 from time_functions import calcTime_Mat2DOY
 from readMAT import readMatlabStruct
 from physFuncts import calcThetaE, calcThetaVL
+from pyFixes import py3_FixNPLoad
 # from conversionFuncts import reGrid_Sondes
 
 def readfile(filename):
@@ -600,7 +601,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.svg'
+        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.svg'
     plt.savefig(fileout)
     plt.show()
 #
@@ -2692,7 +2693,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -3562,7 +3563,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
-    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_4-RA2M-RadPA_cCvlt3km_lt155m-NaN.svg', dpi = 300)
+    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_RA2M-25_cCvlt3km_lt155m-NaN.svg', dpi = 300)
     plt.show()
 
 
@@ -4856,7 +4857,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
     obs_data['time_6hrly'] = obs_data['time'][::6]      ### 6 hourly cloudnet data
 
     ### initialise array to hold height indices, set all to nan before filling
-    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); obsind[:] = np.nan
+    obsind = np.zeros(np.size(obs['inversions']['InvBasesForCloudnet'])); #obsind[:] = np.nan
     obssfml = np.zeros(np.size(obs['inversions']['sfmlForCloudnet'])); obssfml[:] = np.nan
 
     ### look for altitudes < invbase in obs cloudnet data
@@ -4869,6 +4870,9 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, ob
         if np.size(np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])) > 0.0:
             ### if there is, set obssfml to the last level before the sfmlheight
             obssfml[i] = np.where(obs_data['height_6hrly'][i,:] <= obs['inversions']['sfmlForCloudnet'][i])[0][-1]
+
+    # obsind[obsind == np.nan] = 0
+    print (obsind)
 
     plt.figure()
     plt.title('temp fig: radiosonde invbase w/pulled cloudnet inv height')
@@ -6767,7 +6771,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adb', zorder = 3)
     plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'gold', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-AeroProf', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
     plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 1)
     plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
 
@@ -7352,8 +7356,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags.svg'
-    # plt.savefig(fileout)
+    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags.svg'
+    plt.savefig(fileout)
     plt.show()
 
     Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
@@ -9275,7 +9279,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -9335,11 +9339,11 @@ def main():
     # data2['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/UM_CASIM-100_inversion_results.mat')
     # data3['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/ECMWF_IFS_inversion_results.mat')
 
-    # print ('Load calculated model inversion heights (GY algorithm)...')
-    # obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v2.npy').item()
-    # data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v2.npy').item()
-    # data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v2.npy').item()
-    # data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v2.npy').item()
+    print ('Load calculated model inversion heights (GY algorithm)...')
+    obs['inversions']['thetaE'] = np.load(um_root_dir[:-5] + 'obs_inversions_v3.npy').item()
+    data1['inversions'] = np.load(um_root_dir[:-5] + 'um_ra2m_inversions_v3.npy').item()
+    data2['inversions'] = np.load(um_root_dir[:-5] + 'um_casim-100_inversions_v3.npy').item()
+    data3['inversions'] = np.load(um_root_dir[:-5] + 'ecmwf_ifs_inversions_v3.npy').item()
 
     # -------------------------------------------------------------
     ### use IFS named directory to allocate variable to plot
@@ -9347,11 +9351,10 @@ def main():
     # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
     # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
-    # var = 'lwc'
+    var = 'Cv'
 
-    # obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
     # figure = plot_scaledBL_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, var)
-    # figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    figure = plot_scaledBLCv_thetaE(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
