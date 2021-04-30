@@ -253,7 +253,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -267,6 +267,21 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print (np.nanmean(um_data['model_Cv_filtered'][:,Zindex[0]],0))
     print ('Obs = ')
     print (np.nanmean(obs_data['Cv'][:,Zindex[0]],0))
+
+
+    print ('Mean below 155m: ')
+    Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 155.0)
+    Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 155.0)
+    print ('ECMWF_IFS = ')
+    print (np.nanmean(np.nanmean(ifs_data['model_snow_Cv_filtered'][:,Zindex_ifs[0]],0)))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(np.nanmean(misc_data['model_Cv_filtered'][:,Zindex_um[0]],0)))
+    print ('UM_RA2M = ')
+    print (np.nanmean(np.nanmean(um_data['model_Cv_filtered'][:,Zindex_um[0]],0)))
+    print ('UM_RA2T = ')
+    print (np.nanmean(np.nanmean(ra2t_data['model_Cv_filtered'][:,Zindex_um[0]],0)))
+    print ('Obs = ')
+    print (np.nanmean(np.nanmean(obs_data['Cv'][:,Zindex_um[0]],0)))
 
     ##################################################
     ##################################################
@@ -843,7 +858,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
     plt.savefig(fileout)
     plt.show()
@@ -1312,7 +1327,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V7_UM_IFS_CASIM-100-GA6alb_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V7_RA2M-25_RA2T_IFS_CASIM-100-GA6alb_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -1991,7 +2006,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -2253,7 +2268,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -2344,7 +2359,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -8161,7 +8176,7 @@ def main():
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
         ### cloudnet directories
-        cloudnet_um1 = '4_u-bg610_RA2M_CON/'
+        cloudnet_um1 = '25_u-cc568_RA2M_CON/'
         cloudnet_um2 = '23_u-cc278_RA1M_CASIM/'
         cloudnet_um4 = '24_u-cc324_RA2T_CON/'
     elif platform == 'JASMIN':
@@ -9260,7 +9275,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -9280,8 +9295,8 @@ def main():
     # plot bivariate distributions
     #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
-    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
-    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
+    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
