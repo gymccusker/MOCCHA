@@ -6233,16 +6233,22 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
         casim_var = misc_data['model_Cv_filtered'][::6,:]
         ra2t_var = ra2t_data['model_Cv_filtered'][::6,:]
         ifs_var = ifs_data['model_snow_Cv_filtered'][::6,:]
-    elif var == 'lwc':
+        vminn = 0.0
+        vmaxx = 1.0
+    elif var == 'lwc_adiabatic':
         ra2m_var = um_data['model_lwc'][::6,:]
         casim_var = misc_data['model_lwc'][::6,:]
         ra2t_var = ra2t_data['model_lwc'][::6,:]
         ifs_var = ifs_data['model_lwc'][::6,:]
+        vminn = 0.0
+        vmaxx = 0.3
     elif var == 'iwc':
         ra2m_var = um_data['model_iwc_filtered'][::6,:]
         casim_var = misc_data['model_iwc_filtered'][::6,:]
         ra2t_var = ra2t_data['model_iwc_filtered'][::6,:]
         ifs_var = ifs_data['model_snow_iwc_filtered'][::6,:]
+        vminn = 0.0
+        vmaxx = 0.2
 
     ### find all Cv data below identified inversion
     for i in range(0,np.size(data1['scaledTime'])):     ## loop over time
@@ -6325,29 +6331,41 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     ##################################################
     ##################################################
 
+
+
     ### timeseries
     fig = plt.figure(figsize=(8,12))
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.98, left = 0.1,
             hspace = 0.3, wspace = 0.3)
     plt.subplot(511)
     plt.title('Obs')
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        )
     plt.ylabel('Z [scaled]')
     plt.subplot(512)
     plt.title(label1)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        )
     plt.ylabel('Z [scaled]')
     plt.subplot(513)
     plt.title(label4[:-4])
-    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        )
     plt.ylabel('Z [scaled]')
     plt.subplot(514)
     plt.title(label2)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        )
     plt.ylabel('Z [scaled]')
     plt.subplot(515)
     plt.title(label3)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']), vmin = 0, vmax = 1)
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        )
     plt.ylabel('Z [scaled]')
     plt.xlabel('DOY')
     # plt.savefig('FIGS/' + var + '_ALL_scaledZ_timeseries.png')
@@ -6357,11 +6375,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title('Obs - 6hourly because inversions from radiosondes')
-    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['bl' + var])); plt.ylim([0,3e3])
+    plt.pcolor(obs_data['time_6hrly'].data,obs_data['height_6hrly'][0,:].data,np.transpose(obs['inversions']['bl' + var]),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,3e3])
     plt.plot(np.squeeze(obs['inversions']['thetaE']['time']),np.squeeze(obs['inversions']['thetaE']['invbase']),'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.pcolor(obs['inversions']['scaledTime'],obs['inversions']['scaledZ'],np.transpose(obs['inversions']['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.savefig('FIGS/' + var + '_obs_scaledZ_timeseries.png')
     plt.show()
@@ -6370,11 +6392,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label1)
-    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['bl' + var])); plt.ylim([0,3e3])
+    plt.pcolor(data1['scaledTime'],um_data['height'][0,:].data,np.transpose(data1['bl' + var]),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,3e3])
     plt.plot(data1['inversions']['time'],data1['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.pcolor(data1['scaledTime'],data1['scaledZ'],np.transpose(data1['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.savefig('FIGS/' + var + '_RA2M_scaledZ_timeseries.png')
     plt.show()
@@ -6383,11 +6409,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label2)
-    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['bl' + var])); plt.ylim([0,3e3])
+    plt.pcolor(data2['scaledTime'],misc_data['height'][0,:].data,np.transpose(data2['bl' + var]),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,3e3])
     plt.plot(data2['inversions']['time'],data2['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.pcolor(data2['scaledTime'],data2['scaledZ'],np.transpose(data2['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.savefig('FIGS/' + var + '_CASIM-100_scaledZ_timeseries.png')
     plt.show()
@@ -6396,11 +6426,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label4[:-4])
-    plt.pcolor(data4['scaledTime'],ra2t_data['height'][0,:].data,np.transpose(data4['bl' + var])); plt.ylim([0,3e3])
+    plt.pcolor(data4['scaledTime'],ra2t_data['height'][0,:].data,np.transpose(data4['bl' + var]),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,3e3])
     plt.plot(data4['inversions']['time'],data4['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.pcolor(data4['scaledTime'],data4['scaledZ'],np.transpose(data4['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.savefig('FIGS/' + var + '_RA2T_scaledZ_timeseries.png')
     plt.show()
@@ -6409,11 +6443,15 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     fig = plt.figure(figsize=(8,6))
     plt.subplot(211)
     plt.title(label3)
-    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['bl' + var])); plt.ylim([0,3e3])
+    plt.pcolor(data3['scaledTime'],ifs_data['height'][0,:].data,np.transpose(data3['bl' + var]),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,3e3])
     plt.plot(data3['inversions']['time'],data3['inversions']['invbase'],'r')
     plt.xlim([226,258])
     plt.subplot(212)
-    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean'])); plt.ylim([0,1])
+    plt.pcolor(data3['scaledTime'],data3['scaledZ'],np.transpose(data3['scaled' + var]['mean']),
+        vmin = vminn, vmax = vmaxx,
+        ); plt.ylim([0,1])
     plt.xlim([226,258])
     plt.savefig('FIGS/' + var + '_IFS_scaledZ_timeseries.png')
     plt.show()
