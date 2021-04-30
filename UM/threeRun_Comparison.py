@@ -9359,7 +9359,7 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     data_4['time'] = data4['time_6hrly'][:]
     data_4['sfmlheight'] = data4['thetaE_decoupleZ'][:]
     data_4['height'] = data1['universal_height']
-    np.save('um_ra2m_inversions_v3', data_1)
+    np.save('um_ra2t_inversions_v3', data_4)
 
     return data1, data2, data3, data4, data5, obs
 
