@@ -9061,15 +9061,17 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     #### ---------------------------------------------------------------
     #### load working cloudnet data to mark cloud depth
     #### ---------------------------------------------------------------
-    # obs_data = np.load('../Cloudnet/obs_Cv_data.npy').item()
-    # um_data = np.load('../Cloudnet/um_Cv_data.npy').item()
-    # misc_data = np.load('../Cloudnet/casim_Cv_data.npy').item()
-    # ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
-    #
-    # obs_cv = obs_data['Cv'][::6,:]
-    # um_ra2m_cv = um_data['model_Cv_filtered'][::6,:].data
-    # um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
-    # ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
+    obs_data = np.load('../Cloudnet/working_obsV7_data.npy').item()
+    um_data = np.load('../Cloudnet/working_um_data.npy').item()
+    misc_data = np.load('../Cloudnet/working_misc_data.npy').item()
+    ra2t_data = np.load('../Cloudnet/working_ra2t_data.npy').item()
+    ifs_data = np.load('../Cloudnet/working_ifs_data.npy').item()
+
+    obs_cv = obs_data['Cv'][::6,:]
+    um_ra2m_cv = um_data['model_Cv_filtered'][::6,:].data
+    um_casim_cv = misc_data['model_Cv_filtered'][::6,:].data
+    um_ra2t_cv = ra2t_data['model_Cv_filtered'][::6,:].data
+    ecmwf_ifs_cv = ifs_data['model_snow_Cv_filtered'][::6,:].data
 
     #### ---------------------------------------------------------------
     #### Look at drift sondes only from Jutta's inversion code
@@ -9215,37 +9217,44 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
 
         ##### plot cloudnet cloud fraction as markers
         #####       need to find the correct cloudnet index for this model timestep
-        # timeind = 0.0       ### initialise
-        # timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
-        # if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
-        #     # tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
-        #     tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
-        #     tmp1[:] = 310
-        #     # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
-        #     #     '.', markersize = 6, color = 'darkblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-        #     ax.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
-        #         vmin = 0, vmax = 1, cmap = mpl_cm.Blues, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
-        #     # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
-        #     tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
-        #     tmp2[:] = 312
-        #     # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
-        #     #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
-        #     ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
-        #         vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
-        #     # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
-        #     tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
-        #     tmp3[:] = 314
-        #     # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
-        #     #     '.', markersize = 6, color = 'gold', label = 'ecmwf_ifs Cv > 0')
-        #     ax.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
-        #         vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
-        #     # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
-        #     tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
-        #     tmp0[:] = 316
-        #     # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
-        #     #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
-        #     ax.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
-        #         vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
+        timeind = 0.0       ### initialise
+        timeind = np.where(data1['time_6hrly'][i] == um_data['time'][::6])
+        if np.size(timeind) > 0:        ### if there is cloudnet data at this sonde timestep
+            # tmp1 = np.zeros(len(np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]))
+            tmp1 = np.zeros(len(um_ra2m_cv[timeind[0][0],:29]))
+            tmp1[:] = 310
+            # plt.plot(tmp1,um_data['height'][i,np.where(um_ra2m_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'darkblue', label = 'um_ra2m Cv > 0 at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            ax.scatter(tmp1,um_data['height'][i,:29], s = 7, c = um_ra2m_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Purples, label = 'Cv at t = ' + str(um_data['time'][::6][timeind[0][0]]))
+            # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            tmp2 = np.zeros(len(um_casim_cv[timeind[0][0],:29]))
+            tmp2[:] = 312
+            # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
+            ax.scatter(tmp2,misc_data['height'][i,:29], s = 7, c = um_casim_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greens)#, label = 'um_casim-100 Cv > 0')
+            # tmp3 = np.zeros(len(np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp3 = np.zeros(len(ecmwf_ifs_cv[timeind[0][0],:29]))
+            tmp3[:] = 314
+            # plt.plot(tmp3,ifs_data['height'][i,np.where(ecmwf_ifs_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'gold', label = 'ecmwf_ifs Cv > 0')
+            ax.scatter(tmp3,ifs_data['height'][i,:29], s = 7, c = ecmwf_ifs_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Oranges)#, label = 'ecmwf_ifs Cv > 0')
+            # tmp2 = np.zeros(len(np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]))
+            tmp4 = np.zeros(len(um_ra2t_cv[timeind[0][0],:29]))
+            tmp4[:] = 316
+            # plt.plot(tmp2,misc_data['height'][i,np.where(um_casim_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'mediumseagreen', label = 'um_casim-100 Cv > 0')
+            ax.scatter(tmp4,ra2t_data['height'][i,:29], s = 7, c = um_ra2t_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Blues)#, label = 'um_casim-100 Cv > 0')
+            # tmp0 = np.zeros(len(np.where(obs_cv[timeind[0][0],:29] > 0)[0]))
+            tmp0 = np.zeros(len(obs_cv[timeind[0][0],:29]))
+            tmp0[:] = 318
+            # plt.plot(tmp0,obs_data['height'][i,np.where(obs_cv[timeind[0][0],:29] > 0)[0]],
+            #     '.', markersize = 6, color = 'k', label = 'obs Cv > 0')
+            ax.scatter(tmp0,obs_data['height'][i,:29], s = 7, c = obs_cv[timeind[0][0],:29],
+                vmin = 0, vmax = 1, cmap = mpl_cm.Greys)#, label = 'obs Cv > 0')
 
         plt.title('Inversion identification test DOY ' + str(np.round(obs['sondes']['doy_drift'][i],2)) + '\n Cloudnet cloud fractions indicated on RHS')
         plt.xlabel('$\Theta_{E}$ [K]')
