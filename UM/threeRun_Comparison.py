@@ -8782,6 +8782,7 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     #################################################################
     bldepth1 = data1['bl_depth'][data1['hrly_flag']]
     bldepth2 = data2['bl_depth'][data2['hrly_flag']]
+    bldepth4 = data4['bl_depth'][data4['hrly_flag']]
     if ifs_flag == True:
         bldepth3 = data3['sfc_bl_height'][data3['hrly_flag']]
     else:
@@ -8806,6 +8807,7 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     data1['dThetaE'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data1['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
     data2['dThetaE'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data2['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
     data3['dThetaE'] = data3['thetaE_6hrly_UM'][:,1:] - data3['thetaE_6hrly_UM'][:,0:-1]
+    data4['dThetaE'] = data4['thetaE_6hrly'][:,data1['universal_height_UMindex'][1:]].data - data4['thetaE_6hrly'][:,data1['universal_height_UMindex'][0:-1]].data
     data1['dZ'] = data1['universal_height'][1:27].data - data1['universal_height'][:26].data
 
     #### ---------------------------------------------------------------
@@ -8815,12 +8817,14 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     data1['dThetaEdZ'] = data1['dThetaE'][:,:26] / data1['dZ']
     data2['dThetaEdZ'] = data2['dThetaE'][:,:26] / data1['dZ']
     data3['dThetaEdZ'] = data3['dThetaE'][:,:26] / data1['dZ']
+    data4['dThetaEdZ'] = data4['dThetaE'][:,:26] / data1['dZ']
 
     #### ---------------------------------------------------------------
     #### build bespoke thetaE arrays for casim-100 and ra2m on universal  (for ease)
     #### ---------------------------------------------------------------
     data1['thetaE_6hrly_UM'] = data1['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
     data2['thetaE_6hrly_UM'] = data2['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
+    data4['thetaE_6hrly_UM'] = data4['thetaE_6hrly'][:,data1['universal_height_UMindex']].data
 
     #### ---------------------------------------------------------------
     #### choose "inversion" gradient dthreshold (K)
@@ -8838,31 +8842,37 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     obs['sondes']['thetaE_invbaseID'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['thetaE_invbaseID'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['thetaE_invbaseID'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['thetaE_invbaseID'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['thetaE_invbaseID'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['thetaE_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['dThetaEdZ_invbaseID'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['dThetaEdZ_invbaseID'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['dThetaEdZ_invbaseID'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['dThetaEdZ_invbaseID'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['dThetaEdZ_invbaseID'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['dThetaEdZ_invbaseID'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['thetaE_invbase'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['thetaE_invbase'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['thetaE_invbase'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['thetaE_invbase'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['thetaE_invbase'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['thetaE_invbase'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['dThetaEdZ_2ndinvID'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['dThetaEdZ_2ndinvID'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['dThetaEdZ_2ndinvID'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['dThetaEdZ_2ndinvID'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['dThetaEdZ_2ndinvID'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['dThetaEdZ_2ndinvID'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['dThetaEdZ_decoupID'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['dThetaEdZ_decoupID'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['dThetaEdZ_decoupID'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['dThetaEdZ_decoupID'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['dThetaEdZ_decoupID'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['dThetaEdZ_decoupID'][:] = np.nan           ## fill with nans to account for missing files when populating
     obs['sondes']['thetaE_decoupleZ'] = np.zeros([np.size(obs['sondes']['dThetaE'],0)])
     data1['thetaE_decoupleZ'] = np.zeros([np.size(data1['dThetaE'],0)])
     data2['thetaE_decoupleZ'] = np.zeros([np.size(data2['dThetaE'],0)])
+    data4['thetaE_decoupleZ'] = np.zeros([np.size(data4['dThetaE'],0)])
     data3['thetaE_decoupleZ'] = np.zeros([np.size(data3['dThetaE'],0)])
     data3['thetaE_decoupleZ'][:] = np.nan           ## fill with nans to account for missing files when populating
 
@@ -8891,6 +8901,8 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
                 np.nanmax(data1['dThetaEdZ'][i,:]))[0][0]
         data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
                 np.nanmax(data2['dThetaEdZ'][i,:]))[0][0]
+        data4['dThetaEdZ_invbaseID'][i] = np.where(data4['dThetaEdZ'][i,:] ==
+                np.nanmax(data4['dThetaEdZ'][i,:]))[0][0]
         if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
             data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                     np.nanmax(data3['dThetaEdZ'][i,:]))[0][0]
@@ -8904,6 +8916,8 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
             np.sort(data1['dThetaEdZ'][i,:])[::-1][1])[0][0]
         data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
             np.sort(data2['dThetaEdZ'][i,:])[::-1][1])[0][0]
+        data4['dThetaEdZ_2ndinvID'][i] = np.where(data4['dThetaEdZ'][i,:] ==
+            np.sort(data4['dThetaEdZ'][i,:])[::-1][1])[0][0]
         if np.nanmax(data3['dThetaE'][i,lt3000]) >= 0.0:       ### ignore missing files (filled with nans)
             data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
                 np.sort(data3['dThetaEdZ'][i,:])[::-1][1])[0][0]
@@ -8924,6 +8938,10 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
                 data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
                 data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
                     np.sort(data2['dThetaEdZ'][i,:])[::-1][2])[0][0]
+        if data4['dThetaEdZ_invbaseID'][i]-1 == data4['dThetaEdZ_2ndinvID'][i]:
+                data4['dThetaEdZ_invbaseID'][i] = data4['dThetaEdZ_2ndinvID'][i]
+                data4['dThetaEdZ_2ndinvID'][i] = np.where(data4['dThetaEdZ'][i,:] ==
+                    np.sort(data4['dThetaEdZ'][i,:])[::-1][2])[0][0]
         if data3['dThetaEdZ_invbaseID'][i]-1 == data3['dThetaEdZ_2ndinvID'][i]:
                 data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
                 data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
@@ -8948,6 +8966,10 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
             data2['dThetaEdZ_decoupID'][i] = data2['dThetaEdZ_2ndinvID'][i]
             data2['dThetaEdZ_2ndinvID'][i] = np.where(data2['dThetaEdZ'][i,:] ==
                 np.sort(data2['dThetaEdZ'][i,:])[::-1][3])[0][0]
+        if np.logical_and(data4['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data4['dThetaEdZ_2ndinvID'][i] < data4['dThetaEdZ_invbaseID'][i]):
+            data4['dThetaEdZ_decoupID'][i] = data4['dThetaEdZ_2ndinvID'][i]
+            data4['dThetaEdZ_2ndinvID'][i] = np.where(data4['dThetaEdZ'][i,:] ==
+                np.sort(data4['dThetaEdZ'][i,:])[::-1][3])[0][0]
         if np.logical_and(data3['dThetaEdZ_2ndinvID'][i] < hind[0][-1], data3['dThetaEdZ_2ndinvID'][i] < data3['dThetaEdZ_invbaseID'][i]):
             data3['dThetaEdZ_decoupID'][i] = data3['dThetaEdZ_2ndinvID'][i]
             data3['dThetaEdZ_2ndinvID'][i] = np.where(data3['dThetaEdZ'][i,:] ==
@@ -8966,6 +8988,9 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         if data2['dThetaEdZ_invbaseID'][i]-1 == data2['dThetaEdZ_decoupID'][i]:
                 data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_decoupID'][i]
                 data2['dThetaEdZ_decoupID'][i] = 0.0
+        if data4['dThetaEdZ_invbaseID'][i]-1 == data4['dThetaEdZ_decoupID'][i]:
+                data4['dThetaEdZ_invbaseID'][i] = data4['dThetaEdZ_decoupID'][i]
+                data4['dThetaEdZ_decoupID'][i] = 0.0
         if data3['dThetaEdZ_invbaseID'][i]-1 == data3['dThetaEdZ_decoupID'][i]:
                 data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_decoupID'][i]
                 data3['dThetaEdZ_decoupID'][i] = 0.0
@@ -8985,6 +9010,9 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         if data2['dThetaEdZ_invbaseID'][i] == 0.0:
             data2['dThetaEdZ_invbaseID'][i] = data2['dThetaEdZ_2ndinvID'][i]
             data2['dThetaEdZ_decoupID'][i] = -1.0
+        if data4['dThetaEdZ_invbaseID'][i] == 0.0:
+            data4['dThetaEdZ_invbaseID'][i] = data4['dThetaEdZ_2ndinvID'][i]
+            data4['dThetaEdZ_decoupID'][i] = -1.0
         if data3['dThetaEdZ_invbaseID'][i] == 0.0:
             data3['dThetaEdZ_invbaseID'][i] = data3['dThetaEdZ_2ndinvID'][i]
             data3['dThetaEdZ_decoupID'][i] = -1.0
@@ -9005,6 +9033,10 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
             data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaE'][i,:] == np.nanmax(data2['dThetaE'][i,:21]))[0][0]
             if np.logical_or(data2['dThetaEdZ_invbaseID'][i] == 0.0, data2['dThetaEdZ_invbaseID'][i] == 1.0):
                 data2['dThetaEdZ_invbaseID'][i] = np.where(data2['dThetaE'][i,:] == np.sort(data2['dThetaE'][i,:21])[::-1][1])[0][0]
+        if np.logical_or(data4['dThetaEdZ_invbaseID'][i] == 1.0, data4['dThetaEdZ_invbaseID'][i] == 2.0):
+            data4['dThetaEdZ_invbaseID'][i] = np.where(data4['dThetaE'][i,:] == np.nanmax(data4['dThetaE'][i,:21]))[0][0]
+            if np.logical_or(data4['dThetaEdZ_invbaseID'][i] == 0.0, data4['dThetaEdZ_invbaseID'][i] == 1.0):
+                data4['dThetaEdZ_invbaseID'][i] = np.where(data4['dThetaE'][i,:] == np.sort(data4['dThetaE'][i,:21])[::-1][1])[0][0]
         if np.logical_or(data3['dThetaEdZ_invbaseID'][i] == 1.0, data3['dThetaEdZ_invbaseID'][i] == 2.0):
             data3['dThetaEdZ_invbaseID'][i] = np.where(data3['dThetaE'][i,:] == np.nanmax(data3['dThetaE'][i,:21]))[0][0]
             if np.logical_or(data3['dThetaEdZ_invbaseID'][i] == 0.0, data3['dThetaEdZ_invbaseID'][i] == 1.0):
@@ -9016,12 +9048,14 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         obs['sondes']['thetaE_invbase'][i] = data1['universal_height'][int(obs['sondes']['dThetaEdZ_invbaseID'][i])] ##data1['universal_height'][int(obs['sondes']['thetaE_invbaseID'][i])]
         data1['thetaE_invbase'][i] = data1['universal_height'][int(data1['dThetaEdZ_invbaseID'][i])] ## data1['universal_height'][int(data1['thetaE_invbaseID'][i])]
         data2['thetaE_invbase'][i] = data1['universal_height'][int(data2['dThetaEdZ_invbaseID'][i])] ## data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
+        data4['thetaE_invbase'][i] = data1['universal_height'][int(data4['dThetaEdZ_invbaseID'][i])] ## data1['universal_height'][int(data2['thetaE_invbaseID'][i])]
         if data3['dThetaEdZ_invbaseID'][i] >= 0.0: data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['dThetaEdZ_invbaseID'][i])]
                 ##data3['thetaE_invbase'][i] = data1['universal_height'][int(data3['thetaE_invbaseID'][i])]
 
         obs['sondes']['thetaE_decoupleZ'][i] = data1['universal_height'][int(obs['sondes']['dThetaEdZ_decoupID'][i])]
         data1['thetaE_decoupleZ'][i] = data1['universal_height'][int(data1['dThetaEdZ_decoupID'][i])]
         data2['thetaE_decoupleZ'][i] = data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]
+        data4['thetaE_decoupleZ'][i] = data1['universal_height'][int(data4['dThetaEdZ_decoupID'][i])]
         if data3['dThetaEdZ_decoupID'][i] >= 0.0: data3['thetaE_decoupleZ'][i] = data1['universal_height'][int(data3['dThetaEdZ_decoupID'][i])]
 
     #### ---------------------------------------------------------------
@@ -9053,6 +9087,7 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
 
     bltype1 = data1['bl_type'][data1['hrly_flag']][::6].data
     bltype2 = data2['bl_type'][data2['hrly_flag']][::6].data
+    bltype4 = data4['bl_type'][data4['hrly_flag']][::6].data
 
     # Type I: Stable boundary layer (with or without cloud)
     # Type II: Boundary layer with stratocumulus over a stable near-surface layer
@@ -9157,6 +9192,13 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         #         np.squeeze(data1['universal_height'][int(data2['dThetaEdZ_decoupID'][i])]),
         #         'o', color = 'mediumseagreen', markeredgecolor = 'darkslategrey', label = 'um_casim-100 decoup surf d$\Theta_{E}$/dz')
 
+        ############## UM_RA2T
+        plt.plot(data4['thetaE_6hrly'][i,data1['universal_height_UMindex']], data1['universal_height'], color = 'steelblue')#, label = 'um_casim-100')
+        plt.plot(np.squeeze(data4['thetaE_6hrly_UM'][i,int(data4['dThetaEdZ_invbaseID'][i])]),
+            np.squeeze(data1['universal_height'][int(data4['dThetaEdZ_invbaseID'][i])]),
+            's', markersize = 8, color = 'steelblue', markeredgecolor = 'darkslategrey', label = 'um_ra2t max d$\Theta_{E}$/dZ')
+
+
         ########## plot model diagnosed boundary layer depth as marker
         plt.plot([298,308],[np.squeeze(obs['inversions']['invbase'][drift][i]),np.squeeze(obs['inversions']['invbase'][drift][i])],
             'x--', markersize = 7, color = 'k', linewidth = 1, label = 'radiosondes (Vuellers et al., 2020)')
@@ -9164,8 +9206,12 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
             'x--', markersize = 7, color = 'darkblue', linewidth = 1, label = 'um_ra2m bl_depth')
         plt.plot([298,308],[bldepth2[::6][i],bldepth2[::6][i]],
             'x--', markersize = 7, color = 'mediumseagreen', linewidth = 1, label = 'um_casim-100 bl_depth')
+        plt.plot([298,308],[bldepth4[::6][i],bldepth4[::6][i]],
+            'x--', markersize = 7, color = 'steelblue', linewidth = 1, label = 'um_ra2t bl_depth')
         plt.plot([298,308],[bldepth3[::6][i],bldepth3[::6][i]],
             'x--', markersize = 7, color = 'gold', linewidth = 1, label = 'ecmwf_ifs sfc_bl_height')
+
+
 
         ##### plot cloudnet cloud fraction as markers
         #####       need to find the correct cloudnet index for this model timestep
@@ -9217,7 +9263,8 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         # print(i)
         ax.text(323, 2550, 'UM Boundary layer classifications: \n' +
             'UM_RA2M: ' + doc[int(bltype1[i])-1] + '\n' +
-            'UM_CASIM-100: ' + doc[int(bltype2[i])-1],
+            'UM_CASIM-100: ' + doc[int(bltype2[i])-1] + '\n' +
+            'UM_RA2T: ' + doc[int(bltype4[i])-1],
             fontsize = 12)
 
         legend2 = ax.legend(bbox_to_anchor=(0.7, 0.0, 1., .102), loc=4, ncol=1)
@@ -9240,6 +9287,8 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
     plt.plot(data2['time_6hrly'], data2['thetaE_invbase'],
         'v', color = 'mediumseagreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+    plt.plot(data4['time_6hrly'], data4['thetaE_invbase'],
+        'v', color = 'steelblue',  markeredgecolor = 'darkslategrey', label = 'um_ra2t')
     plt.plot(data3['time_6hrly'], data3['thetaE_invbase'],
         'd', color = 'gold',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
     plt.xlabel('DOY')
@@ -9252,13 +9301,15 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
         '^', color = 'darkblue', markeredgecolor = 'midnightblue', label = 'um_ra2m')
     plt.plot(obs['sondes']['thetaE_invbase'], data2['thetaE_invbase'],
         'v', color = 'mediumseagreen',  markeredgecolor = 'darkslategrey', label = 'um_casim-100')
+    plt.plot(obs['sondes']['thetaE_invbase'], data4['thetaE_invbase'],
+        'v', color = 'steelblue',  markeredgecolor = 'darkslategrey', label = 'um_ra2t')
     plt.plot(obs['sondes']['thetaE_invbase'], data3['thetaE_invbase'],
         'd', color = 'gold',  markeredgecolor = 'saddlebrown', label = 'ecmwf_ifs')
     plt.xlabel('Obs')
     plt.ylabel('Models')
     plt.ylim([0, 3000])
     plt.xlim([0, 3000])
-    plt.savefig('../FIGS/inversionIdent/InvbaseTS_dThetaEdZ.png')
+    plt.savefig('../FIGS/inversionIdent_v2/InvbaseTS_dThetaEdZ.png')
     plt.show()
 
 
@@ -9293,6 +9344,13 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     data_3['sfmlheight'] = data3['thetaE_decoupleZ'][:]
     data_3['height'] = data1['universal_height']
     np.save('ecmwf_ifs_inversions_v3', data_3)
+
+    data_4 = {}
+    data_4['invbase'] = data4['thetaE_invbase'][:]
+    data_4['time'] = data4['time_6hrly'][:]
+    data_4['sfmlheight'] = data4['thetaE_decoupleZ'][:]
+    data_4['height'] = data4['universal_height']
+    np.save('um_ra2m_inversions_v3', data_1)
 
     return data1, data2, data3, data4, data5, obs
 
