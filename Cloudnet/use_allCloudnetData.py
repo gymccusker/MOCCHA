@@ -2939,8 +2939,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
         # print (dz.size)
         if np.size(dz) == 64:
             data3['iwv'][i] = np.nansum(data3['q'][i,:len(index_12km_ifs[0])-1] * dz)
-    lt3km_um = np.where(um_data['height'][0,:] <= 1000)
-    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 1000)
+    lt3km_um = np.where(um_data['height'][0,:] <= 3000)
+    lt3km_ifs = np.where(ifs_data['height'][0,:] <= 3000)
     index_12km_um = np.where(data2['height'] <= 12000)
     height_um = data2['height'][index_12km_um[0]]
     dz_um = height_um[1:] - height_um[0:-1]
@@ -3585,19 +3585,19 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     print (obs_data['height'][index,:10])
     print (obs_data['Cv'][index,:10])
 
-    # plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
-    # plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
-    # plt.plot(np.squeeze(ifs_data['model_snow_Cv_filtered'][index,:]), np.squeeze(ifs_data['height'][index,:]),'y')
-    # plt.plot(np.squeeze(ra2t_data['model_Cv_filtered'][index,:]), np.squeeze(ra2t_data['height'][index,:]),'r')
-    # plt.plot(np.squeeze(obs_data['Cv'][index,:]), np.squeeze(obs_data['height'][index,:]),'k')
-    # plt.plot(np.squeeze(np.nanmean(ifs_data['model_snow_Cv_filtered'][index,lt3km_ifs[0]])), 2000, 'yd')
-    # plt.plot(np.squeeze(np.nanmean(um_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'bd')
-    # plt.plot(np.squeeze(np.nanmean(misc_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'gd')
-    # plt.plot(np.squeeze(np.nanmean(ra2t_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'rd')
-    # plt.plot(np.squeeze(np.nanmean(obs_data['Cv'][index,lt3km_um[0]])), 2000, 'kd')
-    #
-    # plt.ylim([0, 3e3])
-    # plt.show()
+    plt.plot(np.squeeze(um_data['model_Cv_filtered'][index,:]), np.squeeze(um_data['height'][index,:]),'b')
+    plt.plot(np.squeeze(misc_data['model_Cv_filtered'][index,:]), np.squeeze(misc_data['height'][index,:]),'g')
+    plt.plot(np.squeeze(ifs_data['model_snow_Cv_filtered'][index,:]), np.squeeze(ifs_data['height'][index,:]),'y')
+    plt.plot(np.squeeze(ra2t_data['model_Cv_filtered'][index,:]), np.squeeze(ra2t_data['height'][index,:]),'r')
+    plt.plot(np.squeeze(obs_data['Cv'][index,:]), np.squeeze(obs_data['height'][index,:]),'k')
+    plt.plot(np.squeeze(np.nanmean(ifs_data['model_snow_Cv_filtered'][index,lt3km_ifs[0]])), 2000, 'yd')
+    plt.plot(np.squeeze(np.nanmean(um_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'bd')
+    plt.plot(np.squeeze(np.nanmean(misc_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'gd')
+    plt.plot(np.squeeze(np.nanmean(ra2t_data['model_Cv_filtered'][index,lt3km_um[0]])), 2000, 'rd')
+    plt.plot(np.squeeze(np.nanmean(obs_data['Cv'][index,lt3km_um[0]])), 2000, 'kd')
+
+    plt.ylim([0, 3e3])
+    plt.show()
 
 def plot_ObsGridComparison(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy): #, lon, lat):
 
@@ -5675,6 +5675,9 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
         scaled_hgts1 = hgts1 / um_data['height'][i,int(data1['inversions']['invbase_kIndex'][i])]
         scaled_hgts2 = hgts2 / misc_data['height'][i,int(data2['inversions']['invbase_kIndex'][i])]
         scaled_hgts3 = hgts3 / ifs_data['height'][i,int(data3['inversions']['invbase_kIndex'][i])]
+
+        ### only include k-indices >155m (radar range gate limitation)
+        # um_radarMinK = np.where()
 
         # find Cv values below the BL inversion
         data1['blCv'][i,:int(data1['inversions']['invbase_kIndex'][i])] = um_data['model_Cv_filtered'][i,:int(data1['inversions']['invbase_kIndex'][i])]
@@ -9437,8 +9440,8 @@ def main():
     # plot bivariate distributions
     #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
-    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
-    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
+    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
@@ -9490,9 +9493,10 @@ def main():
     # if cn_ifs_out_dir[0] == 'cloud-fraction-ecmwf-grid/2018/': var = 'Cv'
     # if cn_ifs_out_dir[0] == 'lwc-scaled-ecmwf-grid/2018/': var = 'lwc'
     # if cn_ifs_out_dir[0] == 'iwc-Z-T-ecmwf-grid/2018/': var = 'iwc'
-    var = 'iwc'
+    var = 'Cv'
 
-    figure = plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, var)
+    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    # figure = plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, var)
     # figure = plot_scaledBLCv_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_scaledBLlwc(data1, data2, data3, um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
