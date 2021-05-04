@@ -10069,7 +10069,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' #'24_u-cc324_RA2T_CON/OUT_R0_LAM/'#  #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' # #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10345,7 +10345,7 @@ def main():
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']#,'seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
