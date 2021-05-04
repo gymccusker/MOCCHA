@@ -4199,7 +4199,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('')
 
     fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m-4_ra2t_fixedRA2T_newColours_Date.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 
@@ -4215,6 +4215,18 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     # plt.xticks([230,235,240,245,250,255])
     # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.show()
+
+    plt.plot(precip2, precip4,'.')
+    plt.show()
+
+    plt.plot(pwd_precip[drift_pwd[:-1]], precip2,'.')
+    plt.plot(pwd_precip[drift_pwd[:-1]], precip4,'.')
+    plt.show()
+
+    plt.plot(data2['time_hrly'][::res], precip2[::res])
+    plt.plot(data4['time_hrly'][::res], precip4[::res])
+    plt.show()
+
 
 def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
 
@@ -10057,7 +10069,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/' #'24_u-cc324_RA2T_CON/OUT_R0_LAM/'#  #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '7_u-bn068_RA2T_CON/OUT_R2_glm/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10087,7 +10099,8 @@ def main():
     ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
     ### 25_u-cc568_RA2M_CON/OUT_R1/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
     ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
-                ### 26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/           # TEMP - uses Run 12 files for August dates
+            ### 26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/           # TEMP - uses Run 12 files for August dates
+
     print ('******')
     print ('')
     print ('Identifying .nc file: ')
@@ -10316,7 +10329,7 @@ def main():
             if out_dir1[:19] == '25_u-cc568_RA2M_CON':
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
                     'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','qice','uwind','vwind','wwind',
-                    'cloud_fraction','radr_refl','seaice_albedo_agg','air_temperature_at_1.5m', 'sfc_temperature']#]
+                    'cloud_fraction','radr_refl','air_temperature_at_1.5m', 'sfc_temperature','seaice_albedo_agg']
             elif out_dir1[:21] == '12_u-br210_RA1M_CASIM':
                 var_list1 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                     'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
@@ -10332,7 +10345,7 @@ def main():
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']#,'seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
@@ -10731,8 +10744,8 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
