@@ -3353,13 +3353,13 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # ## Obs_ship peak SWnet = 18.22
     # ## Obs_ice peak SWnet = 13.30
     # ## ECMWF_IFS peak SWnet = 21.61
-    # ## UM_CASIM-100 peak SWnet = 26.92
+    # ## UM_CASIM-100 peak SWnet = 18.74
     # ## UM_RA2T peak SWnet = 41.85
-    # ## UM_RA2M peak SWnet = 40.41
+    # ## UM_RA2M peak SWnet = 40.52
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('UM_RA2M peak SWnet = ' + ('%.2f' % x[maxid]))
+    # print ('peak SWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.64,0.4,0.15,0.22])   # left, bottom, width, height
@@ -3375,16 +3375,16 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-    # # UM_RA2M peak LWnet = -3.40
+    # # UM_RA2M peak LWnet = -3.58
     # # UM_RA2T peak LWnet = -4.01
-    # # UM_CASIM-100 peak LWnet = -2.05
+    # # UM_CASIM-100 peak LWnet = -2.08
     # # ECMWF_IFS peak LWnet = -3.68
     # # Obs_ice peak LWnet = -3.71
     # # Obs_ship peak LWnet = -2.12
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('Obs_ship peak LWnet = ' + ('%.2f' % x[maxid]))
+    # print ('peak LWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.64,0.1,0.15,0.22])   # left, bottom, width, height
@@ -3404,16 +3404,16 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlabel('R$_{net}$ [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
-    # # UM_RA2M peak netRad = 33.57
+    # # UM_RA2M peak netRad = 33.00
     # # UM_RA2T peak netRad = 37.46
-    # # UM_CASIM-100 peak netRad = 22.47
+    # # UM_CASIM-100 peak netRad = 15.01
     # # ECMWF_IFS peak netRad = 15.56
     # # Obs_ice peak netRad = 8.31
     # # Obs_ship peak netRad = 16.94
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('UM_RA2T peak netRad = ' + ('%.2f' % x[maxid]))
+    # print ('peak Rnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.83,0.7,0.15,0.22])   # left, bottom, width, height
@@ -3429,16 +3429,16 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
-    # # UM_RA2M peak SWnet = 25.25
+    # # UM_RA2M peak SWnet = 25.03
     # # UM_RA2T peak SWnet = 26.57
-    # # UM_CASIM-100 peak SWnet = 10.65
+    # # UM_CASIM-100 peak SWnet = 10.37
     # # ECMWF_IFS peak SWnet = 10.00
     # # Obs_ice peak SWnet = 8.67
     # # Obs_ship peak SWnet = 7.87
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('UM_RA2T peak SWnet = ' + ('%.2f' % x[maxid]))
+    # print ('peak SWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     ax  = fig.add_axes([0.83,0.4,0.15,0.22])   # left, bottom, width, height
@@ -3448,22 +3448,22 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw4[freeze], hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(lw2[freeze], hist=False, color="mediumseagreen", kde_kws={"shade": True})
     f = sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
-    # f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
+    f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
     plt.annotate('Freeze', xy=(-8,0.145), xytext=(-8,0.145), fontsize = 14)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-    # # UM_RA2M peak LWnet = -9.31
+    # # UM_RA2M peak LWnet = -9.40
     # # UM_RA2T peak LWnet = -11.49
-    # # UM_CASIM-100 peak LWnet = -5.65
+    # # UM_CASIM-100 peak LWnet = -5.53
     # # ECMWF_IFS peak LWnet = -6.83
     # # Obs_ice peak LWnet = -7.57
     # # Obs_ship peak LWnet = -6.50
     # y = f.lines[0].get_ydata()
     # x = f.lines[0].get_xdata()
     # maxid = np.argmax(y)
-    # print ('UM_RA2T peak LWnet = ' + ('%.2f' % x[maxid]))
+    # print ('peak LWnet = ' + ('%.2f' % x[maxid]))
     # plt.plot(x[maxid],y[maxid],'o')
 
     # plt.subplot(212)
@@ -3484,17 +3484,17 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     plt.xlabel('R$_{net}$ [W m$^{-2}$]')
-    # # UM_RA2M peak netRad = 14.91
+    # # UM_RA2M peak netRad = 14.73
     # # UM_RA2T peak netRad = 18.18
-    # # UM_CASIM-100 peak netRad = 6.10
+    # # UM_CASIM-100 peak netRad = 7.16
     # # ECMWF_IFS peak netRad = 5.62
     # # Obs_ice peak netRad = 0.98
     # # Obs_ship peak netRad = 1.73
-    # y = f.lines[0].get_ydata()
-    # x = f.lines[0].get_xdata()
-    # maxid = np.argmax(y)
-    # print ('UM_RA2T peak netRad = ' + ('%.2f' % x[maxid]))
-    # plt.plot(x[maxid],y[maxid],'o')
+    y = f.lines[0].get_ydata()
+    x = f.lines[0].get_xdata()
+    maxid = np.argmax(y)
+    print ('peak Rnet = ' + ('%.2f' % x[maxid]))
+    plt.plot(x[maxid],y[maxid],'o')
 
     print ('******')
     print ('')
@@ -3507,63 +3507,63 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
 
 
 
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    plt.figure(figsize=(9,3))
-    # plt.rc('figure',titlesize=LARGE_SIZE)
-    plt.subplots_adjust(top = 0.95, bottom = 0.2, right = 0.95, left = 0.1,
-            hspace = 0.4, wspace = 0.35)
-
-    plt.subplot(131)
-    yEmax = 0.08
-    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    # f = sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
-    f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
-    f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ship'], hist=False, color="black")
-    plt.xlim([-10,110])
-    plt.ylim([0,yEmax])
-    plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
-
-    plt.subplot(132)
-    yFmax = 0.11
-    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    # f = sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
-    f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
-    f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
-    plt.xlim([-80,20])
-    plt.ylim([0,yFmax])
-    plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-
-    plt.subplot(133)
-    yDmax = 0.08
-    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    # crf1 = sw1 + lw1
-    # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # crf4 = sw4 + lw4
-    # f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
-    crf2 = sw2 + lw2
-    f = sns.distplot(crf2, hist=False, color="steelblue", kde_kws={"shade": True})
-    crf3 = sw3 + lw3
-    f = sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
-    plt.xlim([-80,80])
-    plt.ylim([0,yDmax])
-    plt.xlabel('R$_{net}$ [W m$^{-2}$]')
-
-    # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
-    plt.show()
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    # plt.figure(figsize=(9,3))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.2, right = 0.95, left = 0.1,
+    #         hspace = 0.4, wspace = 0.35)
+    #
+    # plt.subplot(131)
+    # yEmax = 0.08
+    # plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    # # f = sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'], hist=False, color="black")
+    # plt.xlim([-10,110])
+    # plt.ylim([0,yEmax])
+    # plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
+    #
+    # plt.subplot(132)
+    # yFmax = 0.11
+    # plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
+    # # f = sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
+    # plt.xlim([-80,20])
+    # plt.ylim([0,yFmax])
+    # plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
+    #
+    # plt.subplot(133)
+    # yDmax = 0.08
+    # plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    # # crf1 = sw1 + lw1
+    # # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # crf4 = sw4 + lw4
+    # # f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # crf2 = sw2 + lw2
+    # f = sns.distplot(crf2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # crf3 = sw3 + lw3
+    # f = sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
+    # plt.xlim([-80,80])
+    # plt.ylim([0,yDmax])
+    # plt.xlabel('R$_{net}$ [W m$^{-2}$]')
+    #
+    # # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
+    # plt.show()
 
 
 
@@ -10808,7 +10808,7 @@ def main():
     # Further analysis
     # -------------------------------------------------------------
     # data1, data2, data3, data4, data5, obs = inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
     # out = plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
