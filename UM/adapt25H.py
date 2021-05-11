@@ -419,7 +419,8 @@ def copyNC(nc1, filename1, out_dir):
                 #'fog_fraction', 'dew_point_temperature_at_1.5m', 'turbulent_mixing_height_after_bl',
                 #'cloud_area_fraction_assuming_random_overlap','cloud_area_fraction_assuming_maximum_random_overlap',
                 #'wet_bulb_freezing_level_altitude','air_pressure_at_sea_level','water_evaporation_amount',
-                'seaice_albedo_agg']
+                # 'seaice_albedo_agg'
+                ]
     winds = ['u','v','w']
 
     #################################################################
@@ -514,8 +515,16 @@ def copyNC(nc1, filename1, out_dir):
                 if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:23] = nc1.variables[diag][0:-1]
-            elif diag in flxlist:
-                continue
+            # elif diag in flxlist:
+            #     dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
+            #     dat.scale_factor = float(1)
+            #     dat.add_offset = float(0)
+            #     if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+            #     if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+            #     if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+            #     if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+            #     if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+            #     dat[0:24] = nc1.variables[diag][0:]
             else:
                 dat = nc.createVariable(diag, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
@@ -670,7 +679,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '26_u-cd847_RA1M_CASIM/OUT_R0_24h/'
+    out_dir = '23_u-cc278_RA1M_CASIM/OUT_R0_24h/'
     out_dir3 = 'MET_DATA/'
 
     ### TESTING/domain_tests/umnsaa_pa000
