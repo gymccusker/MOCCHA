@@ -3566,6 +3566,73 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.show()
 
 
+    sw1 = data1['fixed_radiation']['SWd']
+    lw1 = data1['fixed_radiation']['LWd']
+    sw2 = data2['fixed_radiation']['SWd']
+    lw2 = data2['fixed_radiation']['LWd']
+    sw3 = data3['fixed_radiation']['SWd']
+    lw3 = data3['fixed_radiation']['LWd']
+    sw4 = data4['fixed_radiation']['SWd']
+    lw4 = data4['fixed_radiation']['LWd']
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(9,3))
+    # plt.rc('figure',titlesize=LARGE_SIZE)
+    plt.subplots_adjust(top = 0.95, bottom = 0.2, right = 0.95, left = 0.1,
+            hspace = 0.4, wspace = 0.35)
+
+    plt.subplot(131)
+    yEmax = 0.08
+    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    # f = sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    f = sns.distplot(obs['fixed_radiation']['SWd_ship'], hist=False, color="black")
+    # plt.xlim([-10,110])
+    # plt.ylim([0,yEmax])
+    plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
+
+    plt.subplot(132)
+    yFmax = 0.11
+    plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
+    # f = sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    f = sns.distplot(obs['fixed_radiation']['LWd_ship'], hist=False, color="black")
+    # plt.xlim([-80,20])
+    # plt.ylim([0,yFmax])
+    plt.xlabel('LW$_{\downarrow}$ [W m$^{-2}$]')
+
+    # plt.subplot(133)
+    # yDmax = 0.08
+    # plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    # # crf1 = sw1 + lw1
+    # # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # crf4 = sw4 + lw4
+    # # f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # crf2 = sw2 + lw2
+    # f = sns.distplot(crf2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # crf3 = sw3 + lw3
+    # f = sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
+    # plt.xlim([-80,80])
+    # plt.ylim([0,yDmax])
+    # plt.xlabel('R$_{net}$ [W m$^{-2}$]')
+
+    # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
+    plt.show()
+
 
 def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
@@ -9435,6 +9502,27 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     data_4['height'] = data1['universal_height']
     np.save('um_ra2t_inversions_v3', data_4)
 
+    # dataset = Dataset('ECMWF_IFS_inversion_heights.nc', 'w', format ='NETCDF4_CLASSIC')
+    # time = dataset.createDimension('time', np.size(data_1['time']))
+    # height = dataset.createDimension('height', np.size(data_1['height']))
+    # times = dataset.createVariable('time', np.float64, ('time',), fill_value='-9999')
+    # times.units = 'DOY'
+    # times.long_name = 'Day of the year'
+    # times[:] = data_3['time']
+    # hgt = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
+    # hgt.units = 'm'
+    # hgt.long_name = 'Height'
+    # hgt[:] = data_3['height']
+    # # sfmlhgt = dataset.createVariable(sfmlheight, np.float64, ('time',), fill_value='-9999')
+    # # sfmlhgt.units = 'm'
+    # # sfmlhgt.long_name = 'Surface Mixed-Layer Height (identified)'
+    # # sfmlhgt[:] = data_1['sfmlheight']
+    # invbase = dataset.createVariable('invbase', np.float64, ('time',), fill_value='-9999')
+    # invbase.units = 'm'
+    # invbase.long_name = 'Inversion base height'
+    # invbase[:] = data_3['invbase']
+    # dataset.close()
+
     return data1, data2, data3, data4, data5, obs
 
 def radarRefl_Sandeep(data1, data2, data3, data4, obs, doy, label1, label2, label3, label4):
@@ -10785,7 +10873,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
@@ -10807,7 +10895,7 @@ def main():
     # -------------------------------------------------------------
     # Further analysis
     # -------------------------------------------------------------
-    # data1, data2, data3, data4, data5, obs = inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
+    data1, data2, data3, data4, data5, obs = inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
