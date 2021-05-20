@@ -10195,10 +10195,10 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
-        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
+        out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/' # '23_u-cc278_RA1M_CASIM/OUT_R0/'
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' #  #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
+        out_dir4 = '28_u-ce627_RA2T_CON/OUT_R0_GLM/'# '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' #  #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #
         out_dir5 = '24_u-cc324_RA2T_CON/OUT_R0_GLM/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10228,7 +10228,7 @@ def main():
     ### 24_u-cc324_RA2T_CON/OUT_R0_LAM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
     ### 25_u-cc568_RA2M_CON/OUT_R1/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
     ### 26_u-cd847_RA1M_CASIM/OUT_R0/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
-            ### 26_u-cd847_RA1M_CASIM/OUT_R0_r12-Aug/           # TEMP - uses Run 12 files for August dates
+    ### 28_u-ce627_RA2T_CON/OUT_R0_GLM/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included. Mid-level convection switched off in GLM.
 
     print ('******')
     print ('')
