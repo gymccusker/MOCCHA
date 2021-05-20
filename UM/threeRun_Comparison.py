@@ -5898,13 +5898,13 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
     data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
     data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
-    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:-1]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
 
     data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
     data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
-    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:-1])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
 
     ##################################################
     ##################################################
@@ -10819,6 +10819,8 @@ def main():
     if out_dir3 == 'ECMWF_IFS/': label3 = 'ECMWF_IFS'
 
     label4 = 'undefined_label'
+    if np.logical_and(out_dir4[:10] == '28_u-ce627',out_dir4[-4:-1] == 'LAM'): label4 = 'UM_RA2T_GLM_noMLConv'
+    if np.logical_and(out_dir4[:10] == '28_u-ce627',out_dir4[-4:-1] == 'GLM'): label4 = 'UM_GLM_noMLConv'
     if out_dir4[:10] == '26_u-cd847': label4 = 'UM_CASIM-AeroProf'
     if out_dir4[:10] == '25_u-cc568': label4 = 'UM_RA2M'
     if out_dir4[:10] == '24_u-cc324': label4 = 'UM_RA2T_' + out_dir4[-4:-1]
@@ -10840,6 +10842,11 @@ def main():
 
     label5 = 'undefined_label'
     if out_dir5[-4:-1] == 'glm': label5 = 'UM_GLM'
+    if out_dir5[-4:-1] == 'GLM':
+        label5 = 'UM_GLM'
+    elif out_dir5[:10] == '28_u-ce627':
+        label5 = 'UM_GLM_noMLConv'
+    # UM_GLM_noMLConv
 
     # -------------------------------------------------------------
     # save out working data for debugging purposes
