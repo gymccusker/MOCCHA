@@ -155,9 +155,9 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
     ## Data dimensions
     ###################################
     forecast_time = nc.createDimension('forecast_time', 25)
-    if np.logical_or(out_dir[-6:-1] != 'RadPA':
+    if out_dir[-6:-1] != 'RadPA':
         height = nc.createDimension('height', np.size(nc1.variables['height']))
-        if np.logical_or(out_dir[-8:-5] != 'GLM':
+        if out_dir[-8:-5] != 'GLM':
             height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
 
     ###################################
@@ -185,7 +185,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir):
         height.long_name = 'height'
         height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
-        if np.logical_or(out_dir[-8:-5] != 'GLM':
+        if out_dir[-8:-5] != 'GLM':
             # #### height2
             height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
             height2.scale_factor = float(1)
