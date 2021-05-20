@@ -443,7 +443,8 @@ def copyNC(nc1, filename1, out_dir):
     forecast_time = nc.createDimension('forecast_time', 24)
     if out_dir[-6:-1] != 'RadPA':
         height = nc.createDimension('height', np.size(nc1.variables['height']))
-        height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
+        if out_dir[-8:-5] != 'GLM':
+            height2 = nc.createDimension('height2', np.size(nc1.variables['height2']))
 
     ###################################
     ## Dimensions variables
@@ -468,14 +469,15 @@ def copyNC(nc1, filename1, out_dir):
         height.long_name = 'height'
         height[:] = nc1.variables['height'][:]      ### forecast time (ignore first 12h)
 
-        # #### height2
-        height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
-        height2.scale_factor = float(1)
-        height2.add_offset = float(0)
-        height2.comment = ''
-        height2.units = 'm'
-        height2.long_name = 'height2'
-        height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
+        if out_dir[-8:-5] != 'GLM':
+            # #### height2
+            height2 = nc.createVariable('height2', np.float64, ('height2',), fill_value='-9999')
+            height2.scale_factor = float(1)
+            height2.add_offset = float(0)
+            height2.comment = ''
+            height2.units = 'm'
+            height2.long_name = 'height2'
+            height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
     ###################################
     ## Create DIAGNOSTICS
