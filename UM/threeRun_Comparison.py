@@ -5972,7 +5972,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
 
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
-    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
@@ -5986,7 +5986,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-2.0,1.5])
+    # plt.xlim([-2.0,1.5])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -6027,7 +6027,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
 
     plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
     plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
-    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
     plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
@@ -6038,7 +6038,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.4,0.4])#plt.xlim([-0.05,0.45])
+    # plt.xlim([-0.4,0.4])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
     ###-------------------------
