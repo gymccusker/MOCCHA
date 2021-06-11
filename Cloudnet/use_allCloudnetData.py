@@ -2104,6 +2104,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     # ind4 = np.where(ra2t_data['model_twc'] >= 1e-6)
     # mask4[ind4] = 1.0
 
+    ### find height indices below retrieval height limit (155m)
+    ###         only need to look at first timestep since using uniform UM vertical grid
+    retrieval_index = np.where(obs_data['height'][0,:] < 155.0)
+    mask0[:,retrieval_index[0]] = np.nan
+
     mask0[nanind] = np.nan
     mask1[nanind] = np.nan
     mask2[nanind] = np.nan
@@ -6877,6 +6882,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     p4 = np.where(np.logical_and(obs_data['time'] >= 230.0, obs_data['time'] < 240.0))
     p5 = np.where(np.logical_and(obs_data['time'] >= 240.0, obs_data['time'] < 247.0))
     p6 = np.where(np.logical_and(obs_data['time'] >= 247.0, obs_data['time'] < 251.0))
+
+    ### find height indices below retrieval height limit (155m)
+    ###         only need to look at first timestep since using uniform UM vertical grid
+    retrieval_index = np.where(obs_data['height'][0,:] < 155.0)
+    mask0[:,retrieval_index[0]] = np.nan
 
     mask0[nanind] = np.nan
     mask1[nanind] = np.nan
