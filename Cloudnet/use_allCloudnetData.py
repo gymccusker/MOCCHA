@@ -254,7 +254,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
     plt.savefig(fileout)
     plt.show()
 
@@ -601,7 +601,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.svg'
+        fileout = 'FIGS/Obs-UMGrid-qf70_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.png'
     plt.savefig(fileout)
     plt.show()
 #
@@ -9525,7 +9525,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -9575,7 +9575,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # look closer at biases
