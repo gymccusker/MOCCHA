@@ -255,7 +255,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     print ('Z = ')
@@ -271,8 +271,8 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
 
     print ('Mean below 155m: ')
-    Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 155.0)
-    Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 155.0)
+    Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 500.0)
+    Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 500.0)
     print ('ECMWF_IFS = ')
     print (np.nanmean(np.nanmean(ifs_data['model_snow_Cv_filtered'][:,Zindex_ifs[0]],0)))
     print ('UM_CASIM-100 = ')
@@ -861,7 +861,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ###----------------------------------------------------------------
@@ -2008,7 +2008,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -2275,7 +2275,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -2366,7 +2366,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     print ('Z1 = ')
@@ -2699,7 +2699,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     print (np.nanmax(um_data['model_lwp']*1e3))
@@ -7620,21 +7620,21 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
     Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
     print ('Zindex1 = ')
-    print (np.nanmean(um_data['height'][:,Zindex1[0][13]],0))
+    print (np.nanmean(um_data['height'][:,Zindex1[0][12]],0))
     print ('Zindex3 = ')
-    print (np.nanmean(ifs_data['height'][:,Zindex3[0][17]],0))
+    print (np.nanmean(ifs_data['height'][:,Zindex3[0][16]],0))
     # print ('UM_RA2M = ')
     # print (np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3)
     # print ('UM_RA2T = ')
     # print (np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3)
-    # print ('UM_CASIM-100 = ')
-    # print (np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3)
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(np.squeeze(misc_data['model_lwc'][p6,13]),0)*1e3)
     print ('ECMWF_IFS = ')
     print (np.round(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,13]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction3p6[:,17]),0))
+    print (np.nanmean(np.squeeze(fraction3p6[:,16]),0))
     print ('Obs = ')
     print (np.round(np.nanmean(np.squeeze(obs_data['lwc_adiabatic'][p6,13]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction0p6[:,17]),0))
+    print (np.nanmean(np.squeeze(fraction0p6[:,12]),0))
 
 def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
 
@@ -9556,8 +9556,8 @@ def main():
     # plot bivariate distributions
     #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
-    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
-    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
+    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
@@ -9575,7 +9575,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
 
     # -------------------------------------------------------------
     # look closer at biases
