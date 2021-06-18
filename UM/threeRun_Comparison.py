@@ -3501,7 +3501,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.svg'
+    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100-GAalb_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -10196,7 +10196,7 @@ def main():
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
-        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
+        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' #  #'14_u-bu570_RA1M_CASIM/OUT_R1/' #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
@@ -10479,8 +10479,8 @@ def main():
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'sensible_heat_flux','latent_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#,'tke','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
+                'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                'cloud_fraction','radr_refl']#,'tke','latent_heat_flux','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
@@ -10881,7 +10881,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
