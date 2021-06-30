@@ -323,8 +323,12 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     from scipy.interpolate import interp1d
 
     ###################################
-    ## interpolate UKCA aerosol profiles from Ruth on to my UM height grid
+    ## interpolate UKCA aerosol profiles from Ruth on to my UM height grid and MONC Case study grid
     ###################################
+
+    ### design monc vertical grid:
+    monc_Z = np.arange(0., 1000., 50.)
+    monc_Z = np.append(monc_Z, np.arange(1000., 2501., 100.))
 
     print('******')
     print('')
@@ -350,6 +354,7 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     print('')
     print('Next: test function on um_height')
     newAccum = fnct_accum(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    moncAccum = fnct_accum(monc_Z[1:])
     print('')
     print('Function worked! :)')
     print('')
@@ -359,6 +364,7 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     print('')
     print('Next: test function on um_height')
     newCoarse = fnct_coarse(um_height[3:].data)        ### z=3 == 22m, lower altitude bins below 1st UKCA bin
+    moncCoarse = fnct_coarse(monc_Z[1:])
     print('')
     print('Function worked! :)')
     print('')
@@ -434,6 +440,15 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     print('numAccum.shape = ', numAccum.shape)
     print('numCoarse.shape = ', numCoarse.shape)
 
+    #### fill in lowest MONC levels with data at [1]
+    moncNumAccum = np.zeros(np.size(monc_Z))
+    moncNumAccum[0] = moncAccum[0]*1e6
+    moncNumAccum[1:] = moncAccum[:]*1e6
+
+    moncNumCoarse = np.zeros(np.size(monc_Z))
+    moncNumCoarse[0] = moncCoarse[0]*1e6
+    moncNumCoarse[1:] = moncCoarse[:]*1e6
+
     ##################################################
     ##################################################
     #### 	SET UP FIGURE PROPERTIES
@@ -449,32 +464,39 @@ def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
     plt.rc('axes',labelsize=LARGE_SIZE)
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
-    plt.rc('legend',fontsize=LARGE_SIZE)
-    plt.figure(figsize=(12,7))
+    plt.rc('legend',fontsize=MED_SIZE)
+    plt.figure(figsize=(10,7))
     plt.subplots_adjust(top = 0.9, bottom = 0.1, right = 0.96, left = 0.13,
             hspace = 0.4, wspace = 0.2)
 
     plt.subplot(121)
     plt.plot(naer_accum[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
     plt.plot(numAccum, um_height[1:], '--', label = 'UM Interpolated')
+    plt.plot(moncNumAccum, monc_Z, 'k.', label = 'MONC Interpolated')
+    plt.plot([1e8, 1e8], [monc_Z[0], monc_Z[-1]], '--', color='grey', label = '100 cm$^{-3}$ approximation')
     plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, accum}$ [m$^{-3}$]')
-    plt.ylim([0, 40000])
+    plt.ylim([0, 2500])
+    plt.xlim([0, 1.1e8])
+    # plt.grid('on')
     plt.legend()
 
     plt.subplot(122)
     plt.plot(naer_coarse[ukca_index,:]*1e6, ukca_height, label = 'UKCA')
     plt.plot(numCoarse, um_height[1:], '--', label = 'UM Interpolated')
+    plt.plot(moncNumCoarse, monc_Z, 'k.', label = 'MONC Interpolated')
     # plt.ylabel('Z [m]')
     plt.xlabel('N$_{aer, coarse}$ [m$^{-3}$]')
-    plt.ylim([0, 40000])
+    plt.ylim([0, 2500])
+    plt.xlim([0, 8e4])
+    # plt.grid('on')
     # plt.legend()
 
-    fileout = '../FIGS/UKCA/UKCA_UM_numAccum_numCoarse_example.svg'
+    fileout = '../FIGS/UKCA/UKCA_UM_MONC_numSolAccum_numSolCoarse_20180913.svg'
     # plt.savefig(fileout)
     plt.show()
 
-    return numAccum, numCoarse
+    return numAccum, numCoarse, moncNumAccum, moncNumCoarse
 
 def scaleMass(numAccum, numCoarse):
 
@@ -713,7 +735,7 @@ def main():
     #### -------------------------------------------------------------
     #### -------------------------------------------------------------
 
-    date = '20180906'
+    date = '20180913'
     doyIndex = calcTime_Date2DOY(date)
     ukca_index = np.where(nc2.variables['day_of_year'][:] == doyIndex)
     # um_index = np.where(data1['time'][:] == doyIndex)
@@ -745,12 +767,17 @@ def main():
     #### -------------------------------------------------------------
     #### PLOT AEROSOL PROFILES
     #### -------------------------------------------------------------
-    figure = plot_aeroProfiles(nc2, nc3, doy)
+    # figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
     #### CREATE N_AER PROFILES (IN /M)
     #### -------------------------------------------------------------
-    # numAccum, numCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
+    numAccum, numCoarse, moncNumAccum, moncNumCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
+
+    # data = {}
+    # data['moncNumAccum'] = moncNumAccum
+    # data['moncNumCoarse'] = moncNumCoarse
+    # np.save('MONC_UKCAInputs-20180913', data)
 
     #### -------------------------------------------------------------
     #### SCALE AEROSOL MASS
