@@ -540,17 +540,17 @@ def estimateMass(N, rho_air, flag):
     # M = 1.0
     if flag == 1:
         sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
-        rho = 1.7770        #### == fixed_aerosol_density (mphys_constants.F90); g/m3
+        rho = 1.7770        #### == fixed_aerosol_density (mphys_constants.F90); g/cm3
         Rm = 0.5*1.0e-6     #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
     elif flag == 2:
         sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
-        rho = 2.0000        #### == fixed_aerosol_density (mphys_constants.F90); g/m3
+        rho = 2.0000        #### == fixed_aerosol_density (mphys_constants.F90); g/cm3
         Rm = 5*1.0e-6       #### == fixed_aerosol_rm (mphys_constants.F90); 5 um
     else:
         print('****Mode option not valid!****')
 
     print('Calculating aerosol mass mixing ratio assuming: ')
-    print('rho_aer = ', rho, ' kg/m3')
+    print('rho_aer = ', rho, ' g/cm3')
     print('Rm = ', Rm*1e6, ' um')
     print('...')
 
@@ -560,7 +560,7 @@ def estimateMass(N, rho_air, flag):
                 ### just copied from casim/lognormal_funcs.F90
 
     mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho) / (np.exp(-4.5*np.log(sigma)**2))
-            ### gives mass concentration in kg/m3
+            ### gives mass concentration in g/cm3
 
     #### need mass concentration in kg/kg for casim input
     M = mass / rho_air
