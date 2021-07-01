@@ -540,11 +540,11 @@ def estimateMass(N, rho_air, flag):
     # M = 1.0
     if flag == 1:
         sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
-        rho = 1777.0        #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
+        rho = 1.7770        #### == fixed_aerosol_density (mphys_constants.F90); g/m3
         Rm = 0.5*1.0e-6     #### == fixed_aerosol_rm (mphys_constants.F90); 500nm
     elif flag == 2:
         sigma = 1.5         #### == fixed_aerosol_sigma (mphys_constants.F90)
-        rho = 2000.0        #### == fixed_aerosol_density (mphys_constants.F90); kg/m3
+        rho = 2.0000        #### == fixed_aerosol_density (mphys_constants.F90); g/m3
         Rm = 5*1.0e-6       #### == fixed_aerosol_rm (mphys_constants.F90); 5 um
     else:
         print('****Mode option not valid!****')
@@ -779,37 +779,38 @@ def main():
     # data['moncNumCoarse'] = moncNumCoarse
     # np.save('MONC_UKCAInputs-20180913', data)
 
-    #### -------------------------------------------------------------
-    #### SCALE AEROSOL MASS
-    ####        Accum: 1.5*1e-9 for every 1.00*1e8 aerosol particles
-    #### -------------------------------------------------------------
-    # massAccum, massCoarse = scaleMass(numAccum, numCoarse)
+    ## ### -------------------------------------------------------------
+    ## ### SCALE AEROSOL MASS
+    ## ###        Accum: 1.5*1e-9 for every 1.00*1e8 aerosol particles
+    ## ### -------------------------------------------------------------
+    ## massAccum, massCoarse = scaleMass(numAccum, numCoarse)
 
     #### -------------------------------------------------------------
     #### CALCULATE DAY MEAN AIR DENSITY
     ####        for use in mass conversion calculation
     #### -------------------------------------------------------------
-    # rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:],0))
-    # plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
+    # print(nc1.variables['pressure'][0,0])
+    rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:]/1e2,0))
+    plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
 
     #### -------------------------------------------------------------
     #### ESTIMATE AEROSOL MASS
     ####        assume spherical particles
     #### -------------------------------------------------------------
 
-    # print('****')
-    # print('Estimate accumulation mode mass:')
-    # print('')
-    # modeFlag = 1
-    # massAccum = estimateMass(numAccum, rho_air, modeFlag)
-    # plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
-    #
-    # print('****')
-    # print('Estimate coarse mode mass:')
-    # print('')
-    # modeFlag = 2
-    # massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
-    # plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
+    print('****')
+    print('Estimate accumulation mode mass:')
+    print('')
+    modeFlag = 1
+    massAccum = estimateMass(numAccum, rho_air, modeFlag)
+    plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
+
+    print('****')
+    print('Estimate coarse mode mass:')
+    print('')
+    modeFlag = 2
+    massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
+    plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
 
     #### -------------------------------------------------------------
     #### FORMAT OUTPUT FOR UM/ROSE-APP.CONF
