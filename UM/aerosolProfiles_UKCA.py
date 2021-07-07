@@ -560,7 +560,7 @@ def estimateMass(N, rho_air, flag):
                 ### just copied from casim/lognormal_funcs.F90
 
     mass = ( (4.0/3.0)*np.pi*Rm**3 ) * (N*rho) / (np.exp(-4.5*np.log(sigma)**2))
-            ### gives mass concentration in g/cm3
+            ### gives mass concentration in kg/m3
 
     #### need mass concentration in kg/kg for casim input
     M = mass / rho_air
