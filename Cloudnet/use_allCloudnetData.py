@@ -463,9 +463,10 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['sfmlheight']), color = 'grey', linewidth = 1.0)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -495,9 +496,10 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -522,9 +524,10 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -549,9 +552,10 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -577,9 +581,10 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -601,7 +606,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid-qf70_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP.png'
+        fileout = 'FIGS/Obs-UMGrid-qf70_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP_lt500m.png'
     plt.savefig(fileout)
     plt.show()
 #
@@ -763,6 +768,10 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
             hspace = 0.4, wspace = 0.1)
 
+    lwc_binlimit = 6
+
+    print (np.nanmean(obs_data['height'][:,lwc_binlimit],0))
+
     ### define axis instance
     ax1 = plt.gca()
     if obs_switch == 'RADAR':
@@ -780,14 +789,14 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         # plt.plot(np.nanmean(obs_data['lwc'],0)*1e3 + np.nanstd(obs_data['lwc'],0)*1e3, np.nanmean(obs_data['height'],0),
         #     '--', color = 'grey', linewidth = 0.5)
         #### ADIABATIC LWC (where there are HATPRO LWP data available)
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3,np.nanmean(obs_data['height'],0), color = 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3,np.nanmean(obs_data['height'][:,lwc_binlimit:],0), color = 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
         # plt.plot(np.nanmedian(obs_data['lwc_adiabatic'],0)*1e3,np.nanmedian(obs_data['height'],0), '--', color = 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
-        ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc'],0)*1e3,
-            np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, color = 'lightgrey', alpha = 0.5)
+        ax1.fill_betweenx(np.nanmean(obs_data['height'][:,lwc_binlimit:],0),np.nanmean(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3,
+            np.nanmean(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3, color = 'lightgrey', alpha = 0.5)
         # plt.xlim([0,0.2])
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3, np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
             '--', color = 'k', linewidth = 0.5)
-        plt.plot(np.nanmean(obs_data['lwc_adiabatic'],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'],0)*1e3, np.nanmean(obs_data['height'],0),
+        plt.plot(np.nanmean(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic'][:,lwc_binlimit:],0)*1e3, np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
             '--', color = 'k', linewidth = 0.5)
         # #### ADIABATIC LWC (all times)
         # plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3,np.nanmean(obs_data['height'],0), color = 'purple', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic-incNoLWP', zorder = 5)
@@ -859,9 +868,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_rangeGate-pl1.png'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
-    # plt.savefig(fileout)
+    plt.savefig(fileout)
     plt.show()
 
     ###----------------------------------------------------------------
@@ -2156,9 +2165,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2183,9 +2193,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2208,9 +2219,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2233,9 +2245,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2258,9 +2271,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks([0,3e3,6e3,9e3])
-    ax.set_yticklabels([0, 3, 6, 9])
+    plt.ylim([0,500])
+    # plt.ylim([0,9000])
+    # plt.yticks([0,3e3,6e3,9e3])
+    # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2274,7 +2288,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC.png'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC_lt500m.png'
     plt.savefig(fileout)
     plt.show()
 
@@ -9534,14 +9548,14 @@ def main():
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
