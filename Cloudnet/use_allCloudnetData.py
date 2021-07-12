@@ -525,7 +525,7 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             zorder = 2)
     ax2 = ax.twinx()
     if obs_testing_flag != 1: ax2.set_ylabel('ECMWF_IFS \n (C$_{V}$ including snow)', rotation = 270, labelpad = 36)
-    if obs_testing_flag == 1: ax2.set_ylabel('(Ceilometer) Measurements \n (1 hour sampling)'', rotation = 270, labelpad = 36)
+    if obs_testing_flag == 1: ax2.set_ylabel('(Ceilometer) Measurements \n (1 hour sampling)', rotation = 270, labelpad = 36)
     ax2.set_yticks([])
 
     plt.subplot(513)
