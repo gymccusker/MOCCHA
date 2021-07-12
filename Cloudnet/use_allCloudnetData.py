@@ -244,8 +244,8 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
     plt.xlabel('C$_{V}$')
     plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(np.arange(0,9.01e3,0.5e3))
+    plt.ylim([0,1000])
+    # plt.yticks(np.arange(0,9.01e3,0.5e3))
     ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
     plt.xlim([0,1])
     plt.xticks(np.arange(0,1.01,0.1))
@@ -258,8 +258,9 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
-    # plt.savefig(fileout)
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
+        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30-Ceilometer_RA2M-25_CASIM-100-GA6alb_RA2T_Cv_226-250DOY.png'
+    plt.savefig(fileout)
     plt.show()
 
     print ('Z = ')
@@ -473,8 +474,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.yticks([0,3e3,6e3,9e3])
     # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    if obs_testing_flag != 1:
+        plt.xticks([230,235,240,245,250,255])
+        ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     # plt.title('Measured C$_{V}$, 1 hour sampling')
     # plt.title('Measured cloud fraction by volume, 1.5km sampling')
     nans = ax.get_ylim()
@@ -543,8 +545,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.yticks([0,3e3,6e3,9e3])
     # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    if obs_testing_flag != 1:
+        plt.xticks([230,235,240,245,250,255])
+        ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     # plt.title('UM_CASIM-100; C$_{V}$')
     nans = ax.get_ylim()
     for file in missing_files:
@@ -571,8 +574,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.yticks([0,3e3,6e3,9e3])
     # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    if obs_testing_flag != 1:
+        plt.xticks([230,235,240,245,250,255])
+        ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     # plt.title('UM_RA2T; C$_{V}$')
     nans = ax.get_ylim()
     for file in missing_files:
@@ -600,8 +604,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.yticks([0,3e3,6e3,9e3])
     # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    if obs_testing_flag != 1:
+        plt.xticks([230,235,240,245,250,255])
+        ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     # plt.title('UM_RA2M; C$_{V}$')
     plt.xlabel('Date')
     nans = ax.get_ylim()
@@ -620,7 +625,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-UMGrid-qf70_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP_lt500m.png'
+        # fileout = 'FIGS/Obs-UMGrid-qf70_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-257DOY_fixedRA2T_whiteNaNs_Dates_noOffsetLWP_lt500m.png'
+        fileout = 'FIGS/Obs-UMGrid-qf70-Ceilometer_RA2M-25_CASIM-100-GA6alb_RA2T_CvTimeseries_226-250DOY_lt500m.png'
     plt.savefig(fileout)
     plt.show()
 #
@@ -9577,7 +9583,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -9585,7 +9591,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
+    figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
