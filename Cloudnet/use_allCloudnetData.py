@@ -127,7 +127,7 @@ def trackShip(data, date):
 
     return trackShip_index
 
-def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs, obs_switch): #, lon, lat):
+def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs, obs_switch, obs_testing_flag): #, lon, lat):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -178,7 +178,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     # obs_data['Cv_adv'][obs_data['Cv_adv'] == -999] = np.nan
     # # um_data['Cv'][um_data['Cv'] == 0] = np.nan
     # um_data['model_Cv_filtered'][um_data['model_Cv_filtered'] < 0.0] = np.nan
-    ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
+    if obs_testing_flag != 1: ifs_data['model_snow_Cv_filtered'][ifs_data['model_snow_Cv_filtered'] < 0.0] = np.nan
     # misc_data['model_Cv_filtered'][misc_data['model_Cv_filtered'] < 0.0] = np.nan
     # ra2t_data['model_Cv_filtered'][ra2t_data['model_Cv_filtered'] < 0.0] = np.nan
 
@@ -205,12 +205,13 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
         plt.plot(np.nanmean(obs_data['Cv'],0) + np.nanstd(obs_data['Cv'],0), np.nanmean(obs_data['height'],0),
             '--', color = 'k', linewidth = 0.5)
 
-    ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
-        np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0), np.nanmean(ifs_data['height'],0),
-        '--', color = 'gold', linewidth = 0.5)
-    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), np.nanmean(ifs_data['height'],0),
-        '--', color = 'gold', linewidth = 0.5)
+    if obs_testing_flag != 1:
+        ax.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0),
+            np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), color = 'navajowhite', alpha = 0.35)
+        plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0) - np.nanstd(ifs_data['model_snow_Cv_filtered'],0), np.nanmean(ifs_data['height'],0),
+            '--', color = 'gold', linewidth = 0.5)
+        plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0) + np.nanstd(ifs_data['model_snow_Cv_filtered'],0), np.nanmean(ifs_data['height'],0),
+            '--', color = 'gold', linewidth = 0.5)
 
     ax.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_Cv_filtered'],0) - np.nanstd(misc_data['model_Cv_filtered'],0),
         np.nanmean(misc_data['model_Cv_filtered'],0) + np.nanstd(misc_data['model_Cv_filtered'],0), color = 'mediumaquamarine', alpha = 0.15)
@@ -233,7 +234,10 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     plt.plot(np.nanmean(um_data['model_Cv_filtered'],0) + np.nanstd(um_data['model_Cv_filtered'],0), np.nanmean(um_data['height'],0),
         '--', color = 'darkblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    if obs_testing_flag != 1:
+        plt.plot(np.nanmean(ifs_data['model_snow_Cv_filtered'],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    elif obs_testing_flag == 1:
+        plt.plot(np.nanmean(ifs_data['Cv'],0),np.nanmean(ifs_data['height'],0), color = 'grey', linewidth = 3, label = 'Obs_Ceilometer', zorder = 4)
     plt.plot(np.nanmean(misc_data['model_Cv_filtered'],0),np.nanmean(misc_data['height'],0), color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
     plt.plot(np.nanmean(ra2t_data['model_Cv_filtered'],0),np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
     plt.plot(np.nanmean(um_data['model_Cv_filtered'],0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
@@ -273,8 +277,9 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     print ('Mean below 155m: ')
     Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 500.0)
     Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 500.0)
-    print ('ECMWF_IFS = ')
-    print (np.nanmean(np.nanmean(ifs_data['model_snow_Cv_filtered'][:,Zindex_ifs[0]],0)))
+    if obs_testing_flag != 1:
+        print ('ECMWF_IFS = ')
+        print (np.nanmean(np.nanmean(ifs_data['model_snow_Cv_filtered'][:,Zindex_ifs[0]],0)))
     print ('UM_CASIM-100 = ')
     print (np.nanmean(np.nanmean(misc_data['model_Cv_filtered'][:,Zindex_um[0]],0)))
     print ('UM_RA2M = ')
@@ -386,7 +391,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     # plt.savefig(fileout)
     # plt.show()
 
-def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4):
+def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -479,7 +484,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     ax2 = ax.twinx()
-    ax2.set_ylabel('Measurements \n (1 hour sampling)', rotation = 270, labelpad = 35)
+    if obs_testing_flag != 1: ax2.set_ylabel('Measurements \n (1 hour sampling)', rotation = 270, labelpad = 35)
+    if obs_testing_flag == 1: ax2.set_ylabel('(Lidar) Measurements \n (1 hour sampling)', rotation = 270, labelpad = 35)
     ax2.set_yticks([])
     cbaxes = fig.add_axes([0.225, 0.96, 0.6, 0.015])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
@@ -489,10 +495,16 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     plt.subplot(512)
     ax = plt.gca()
     # ax.set_facecolor('aliceblue')
-    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
-        np.arange(0,1.1,0.1),
-        cmap = newcmp,
-        zorder = 1)
+    if obs_testing_flag != 1:
+        plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+            np.arange(0,1.1,0.1),
+            cmap = newcmp,
+            zorder = 1)
+    elif obs_testing_flag == 1:
+        plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['Cv']),
+            np.arange(0,1.1,0.1),
+            cmap = newcmp,
+            zorder = 1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     plt.ylabel('Z [km]')
@@ -501,8 +513,9 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
     # plt.yticks([0,3e3,6e3,9e3])
     # ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    if obs_testing_flag != 1:
+        plt.xticks([230,235,240,245,250,255])
+        ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
     # plt.title('ECMWF_IFS; C$_{V}$ (including snow)')
     nans = ax.get_ylim()
     for file in missing_files:
@@ -511,7 +524,8 @@ def plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_f
             # hatch = 'x',
             zorder = 2)
     ax2 = ax.twinx()
-    ax2.set_ylabel('ECMWF_IFS \n (C$_{V}$ including snow)', rotation = 270, labelpad = 36)
+    if obs_testing_flag != 1: ax2.set_ylabel('ECMWF_IFS \n (C$_{V}$ including snow)', rotation = 270, labelpad = 36)
+    if obs_testing_flag == 1: ax2.set_ylabel('(Ceilometer) Measurements \n (1 hour sampling)'', rotation = 270, labelpad = 36)
     ax2.set_yticks([])
 
     plt.subplot(513)
@@ -8409,6 +8423,7 @@ def main():
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
     obs_switch = 'UM'
+    obs_testing_flag = 1 # use ifs input to test obs ceilometer data
 
     ### only works on laptop for now
 
@@ -8433,7 +8448,10 @@ def main():
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
         ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
         cn_um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
-        cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+        if obs_testing_flag == 1:
+            cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/ceilometer/'# '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+        else:
+            cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         # cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
         cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
@@ -8493,9 +8511,14 @@ def main():
         cn_um_out_dir = [cloudnet_um1 + 'cloud-fraction-metum-grid/2018/',
                         cloudnet_um1 + 'lwc-scaled-metum-grid/2018/',
                         cloudnet_um1 + 'iwc-Z-T-metum-grid/2018/']
-        cn_ifs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
-                    'lwc-scaled-ecmwf-grid/2018/',
-                    'iwc-Z-T-ecmwf-grid/2018/']
+        if obs_testing_flag == 1:
+            cn_ifs_out_dir = ['cloud-fraction-metum-grid/2018/',
+                        'lwc-adiabatic-metum-grid/2018/',
+                        'iwc-Z-T-metum-grid/2018/']
+        else:
+            cn_ifs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
+                        'lwc-scaled-ecmwf-grid/2018/',
+                        'iwc-Z-T-ecmwf-grid/2018/']
         if obs_switch == 'IFS':
             cn_obs_out_dir = ['cloud-fraction-ecmwf-grid/2018/',
                         'lwc-scaled-ecmwf-grid/2018/', #'lwc-adiabatic-ecmwf-grid/2018/',
@@ -8661,9 +8684,9 @@ def main():
             '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
-            '20180914_oden_']
+            '20180906_oden_','20180907_oden_','20180908_oden_']#,'20180909_oden_',
+            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
+            # '20180914_oden_']
 
     Aug_missing_files = []
 
@@ -8672,7 +8695,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,253)        ## set DOY for ceilometer testing  (14th Aug to 8th Sep)
     # doy = np.arange(228,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,244)        ## set DOY for Aug dates
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -9153,7 +9177,12 @@ def main():
                         ['lwc','lwp','model_lwc','model_lwp'],
                         ['height','iwc','model_iwc','model_iwc_filtered']]   ### time always read in separately
 
-            ifs_var_list = [['Cv','model_snow_Cv_filtered','model_temperature'],
+            if obs_testing_flag == 1:
+                ifs_var_list = [['Cv', 'Cv_adv'],
+                            ['lwc','lwp','lwc_adiabatic','lwc_adiabatic_inc_nolwp'],
+                            ['height','iwc']]
+            else:
+                ifs_var_list = [['Cv','model_snow_Cv_filtered','model_temperature'],
                     ['lwc','lwp','model_lwc','model_lwp'],
                     ['height','iwc','model_iwc','model_snow_iwc_filtered','model_iwc_filtered']]   ### time always read in separately
 
@@ -9391,47 +9420,48 @@ def main():
     ## maximise obs data available and build mask for available data
     ## -------------------------------------------------------------
     obs_data, um_data, misc_data, ifs_data, ra2t_data = setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um_var_list, misc_var_list, ifs_var_list, ra2t_var_list)
-    obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    nanind, nanmask, wcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
+    if obs_testing_flag != 1: obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
+    if obs_testing_flag != 1: nanind, nanmask, wcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
-    varlist_obs = ['Cv', 'lwc_adiabatic', 'iwc', 'lwp']
-    varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
-    varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
+    if obs_testing_flag != 1:
+        varlist_obs = ['Cv', 'lwc_adiabatic', 'iwc', 'lwp']
+        varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
+        varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
-    # print(um_data.keys())
+        # print(um_data.keys())
 
-    ### remove missing Cv obs timesteps (remove from all)
-    for c in range(0, 1):
-        # print(c)
-        um_data[varlist_um[c]][nanind, :] = np.nan
-        ifs_data[varlist_ifs[c]][nanind, :] = np.nan
-        misc_data[varlist_um[c]][nanind, :] = np.nan
-        ra2t_data[varlist_um[c]][nanind, :] = np.nan
-    ### remove missing water content obs timestep (only remove from water contents)
-    for c in range(1, 3):
-        um_data[varlist_um[c]][wcind, :] = np.nan
-        ifs_data[varlist_ifs[c]][wcind, :] = np.nan
-        misc_data[varlist_um[c]][wcind, :] = np.nan
-        ra2t_data[varlist_um[c]][wcind, :] = np.nan
-    # ### remove zeroed water content on obs timestep (only remove from water contents)
-    # for c in range(1, 3):
-    #     obs_data[varlist_obs[c]][wc0ind, :] = np.nan
-    #     um_data[varlist_um[c]][wc0ind, :] = np.nan
-    #     ifs_data[varlist_ifs[c]][wc0ind, :] = np.nan
-    #     misc_data[varlist_um[c]][wc0ind, :] = np.nan
-    #     ra2t_data[varlist_um[c]][wc0ind, :] = np.nan
-    # ## remove missing lwpo obs timestep (only remove from water contents)
-    # for c in range(1, 3):
-    #     um_data[varlist_um[c]][lwpind, :] = np.nan
-    #     ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
-    #     misc_data[varlist_um[c]][lwpind, :] = np.nan
-    #     ra2t_data[varlist_um[c]][lwpind, :] = np.nan
-    #
-    ### lwp only 1d
-    um_data['model_lwp'][lwpind] = np.nan
-    ifs_data['model_lwp'][lwpind] = np.nan
-    misc_data['model_lwp'][lwpind] = np.nan
-    ra2t_data['model_lwp'][lwpind] = np.nan
+        ### remove missing Cv obs timesteps (remove from all)
+        for c in range(0, 1):
+            # print(c)
+            um_data[varlist_um[c]][nanind, :] = np.nan
+            ifs_data[varlist_ifs[c]][nanind, :] = np.nan
+            misc_data[varlist_um[c]][nanind, :] = np.nan
+            ra2t_data[varlist_um[c]][nanind, :] = np.nan
+        ### remove missing water content obs timestep (only remove from water contents)
+        for c in range(1, 3):
+            um_data[varlist_um[c]][wcind, :] = np.nan
+            ifs_data[varlist_ifs[c]][wcind, :] = np.nan
+            misc_data[varlist_um[c]][wcind, :] = np.nan
+            ra2t_data[varlist_um[c]][wcind, :] = np.nan
+        # ### remove zeroed water content on obs timestep (only remove from water contents)
+        # for c in range(1, 3):
+        #     obs_data[varlist_obs[c]][wc0ind, :] = np.nan
+        #     um_data[varlist_um[c]][wc0ind, :] = np.nan
+        #     ifs_data[varlist_ifs[c]][wc0ind, :] = np.nan
+        #     misc_data[varlist_um[c]][wc0ind, :] = np.nan
+        #     ra2t_data[varlist_um[c]][wc0ind, :] = np.nan
+        # ## remove missing lwpo obs timestep (only remove from water contents)
+        # for c in range(1, 3):
+        #     um_data[varlist_um[c]][lwpind, :] = np.nan
+        #     ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
+        #     misc_data[varlist_um[c]][lwpind, :] = np.nan
+        #     ra2t_data[varlist_um[c]][lwpind, :] = np.nan
+        #
+        ### lwp only 1d
+        um_data['model_lwp'][lwpind] = np.nan
+        ifs_data['model_lwp'][lwpind] = np.nan
+        misc_data['model_lwp'][lwpind] = np.nan
+        ra2t_data['model_lwp'][lwpind] = np.nan
 
     ##################################################################################################################################
     #################################################################
@@ -9547,15 +9577,15 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch)
-    figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
+    # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
     # Cloudnet plot: Plot contour timeseries
     # -------------------------------------------------------------
-    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4)
+    # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
