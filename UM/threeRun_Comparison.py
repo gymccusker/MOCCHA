@@ -5651,13 +5651,13 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
-    # data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
 
     data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
-    # data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
 
     ##################################################
     ##################################################
@@ -5724,7 +5724,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -5798,6 +5798,77 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m-25_wUMGlobal.svg'
     plt.savefig(fileout)
     plt.show()
+
+    ##################################################
+    ##################################################
+    #### MEDIAN PROFILES
+    ##################################################
+    ##################################################
+    SMALL_SIZE = 12
+    MED_SIZE = 16
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=MED_SIZE)
+    plt.rc('ytick',labelsize=MED_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+
+    ### -------------------------------
+    ### Build figure (timeseries)
+    ### -------------------------------
+    fig = plt.figure(figsize=(7.5,5.5))
+    plt.subplots_adjust(top = 0.8, bottom = 0.15, right = 0.97, left = 0.1,
+            hspace = 0.3, wspace = 0.2)
+
+    ####        all model data share a timestamp
+    melt = np.where(data1['time_hrly'][::6] < 240.0)
+    freeze = np.where(data1['time_hrly'][::6] >= 240.0)
+
+
+    ###-------------------------
+    plt.subplot(121)
+    ax1 = plt.gca()
+    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkorange', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'steelblue', label = label2[:-8], zorder = 1)
+    plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    axmajor = np.arange(0,9.01e3,1.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-2.0,1.0])
+    plt.xlabel('T bias [K]')
+
+    ###-------------------------
+    plt.subplot(122)
+    ax1 = plt.gca()
+    plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkorange', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'steelblue', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+
+    # plt.legend()
+    plt.xlabel('q bias [g kg$^{-1}$]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    ax1.set_yticks(axminor, minor = True)
+    ax1.grid(which = 'major', alpha = 0.5)
+    plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    plt.grid('on')
+
+    ###-------------------------
+    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_wUMGlobal.svg'
+    plt.savefig(fileout)
+    plt.show()
+
 
     ##################################################
     ##################################################
@@ -6221,7 +6292,6 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('')
 
     fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m-25_Dates_fixedRA2T.png'
-    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -8868,7 +8938,9 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
     print ('*****')
     ### assign for easier indexing later
     data5[var + '_6hrly_UM'] = data5[var + '_hrly_UM'][::6,:]
-    # print (np.size(data5[var + '_6hrly_UM'],0))
+
+    print (np.size(data5[var + '_hrly_UM'],0))
+    print (np.size(data5[var + '_6hrly_UM'],0))
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
@@ -10626,7 +10698,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_25H/'
-        out_dir4 = '14_u-bu570_RA1M_CASIM/OUT_R1/'# '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
+        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '14_u-bu570_RA1M_CASIM/OUT_R1/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
         out_dir5 = '24_u-cc324_RA2T_CON/OUT_R0_GLM/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -10902,7 +10974,7 @@ def main():
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
                 'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
                 'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux']#,'seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
+                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
                 var_list4 = var_list2
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
@@ -11102,7 +11174,7 @@ def main():
     temp2 = np.zeros([len(data2['time'])])
     temp3 = np.zeros([len(data3['time'])])
     temp4 = np.zeros([len(data4['time'])])
-    # temp5 = np.zeros([len(data5['time'])])
+    temp5 = np.zeros([len(data5['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
@@ -11123,35 +11195,37 @@ def main():
             continue
         else:
             temp4[i] = data4['time'][i]
-    # for i in range(0, len(temp5)-1):
-    #     if data5['time'][i] == data5['time'][i+1]:
-    #         continue
-    #     else:
-    #         temp5[i] = data5['time'][i]
+    for i in range(0, len(temp5)-1):
+        if data5['time'][i] == data5['time'][i+1]:
+            continue
+        else:
+            temp5[i] = data5['time'][i]
     ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
     ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
     ii4 = np.where(temp4 != 0.0)      ### picks out where data are non-zero
-    # ii5 = np.where(temp5 != 0.0)      ### picks out where data are non-zero (shouldn't be any - not cloudnet-ed)
+    ii5 = np.where(temp5 != 0.0)      ### picks out where data are non-zero (shouldn't be any - not cloudnet-ed)
 
     ### can use temp for all model data since they are on the same (hourly) time binning
     data1['time_hrly'] = temp1[ii1]
     data2['time_hrly'] = temp2[ii2]
     data3['time_hrly'] = temp3[ii3]
     data4['time_hrly'] = temp4[ii4]
+    data5['time_hrly'] = temp5[ii4]
     data1['time_6hrly'] = data1['time_hrly'][::6]
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data3['time_6hrly'] = data3['time_hrly'][::6]
     data4['time_6hrly'] = data4['time_hrly'][::6]
+    data5['time_6hrly'] = data5['time_hrly'][::6]
     data1['hrly_flag'] = ii1
     data2['hrly_flag'] = ii2
     data3['hrly_flag'] = ii3
     data4['hrly_flag'] = ii4
-    # data5['hrly_flag'] = ii5
+    data5['hrly_flag'] = ii5
 
     ### hard code glm time since not cloudnet-ed
-    data5['time_hrly'] = data5['time']
-    data5['hrly_flag'] = np.arange(len(data5['time_hrly']))
+    # data5['time_hrly'] = data5['time']
+    # data5['hrly_flag'] = np.arange(len(data5['time_hrly']))
 
     #### add override for data2 to allow 24h data to be used for testing purposes
     if out_dir2[-4:] == '24h/':
@@ -11309,12 +11383,12 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
