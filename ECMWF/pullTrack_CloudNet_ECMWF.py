@@ -705,7 +705,7 @@ def pullTrack(ship_data, data, date, outfile):
     print ('')
     print ('Write out hourly gridded EC IFS data:')
     print ('')
-    # out = writeNetCDF(data, date, outfile)
+    out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
@@ -861,15 +861,15 @@ def writeNetCDF(data, date, outfile):
     ###################################
     #### load in a cube to define dimensions
     ###################################
-    cube0 = iris.load('DATA/' + date + '_moccha_ecmwf_001.nc')
+    cube0 = iris.load('DATA/' + date + '_moccha_ecmwf_003.nc')
 
     ###################################
     ## Data dimensions
     ###################################
     timem = dataset.createDimension('time', np.size(cube0[0].dim_coords[0].points) - 1)
-    level = dataset.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
-    flevel = dataset.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
-    freq = dataset.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
+    level = dataset.createDimension('model_level_number', np.size(cube0[0].dim_coords[1].points))
+    flevel = dataset.createDimension('model_flux_level', np.size(cube0[9].dim_coords[1].points))
+    freq = dataset.createDimension('frequency', np.size(cube0[10].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
