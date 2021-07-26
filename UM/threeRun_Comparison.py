@@ -10983,7 +10983,7 @@ def main():
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
                 'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
-                'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo', 'sfc_skin_temp']
+                'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo', 'sfc_skin_temp','cloud_fraction']
             if not ifs_flag:
                 if out_dir3[-4:-1] == 'glm':
                     var_list3 = ['cloud_fraction','qliq','qice']
