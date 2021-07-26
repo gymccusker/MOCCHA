@@ -7877,7 +7877,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     from scipy.interpolate import interp1d
 
     print ('*******')
-    print ('Interpolate obs cloudnet field for continuous array:')
+    print ('Interpolate obs cloudnet fields for continuous array:')
     print ('*******')
     print ('')
 
@@ -7935,26 +7935,33 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
                             mncv = np.nanmean(cv[i,:])
                             # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
+        if var == 'Cv':
+            vvmin = 0; vvmax = 1
+        if var == 'lwc':
+            vvmin = 0; vvmax = 1e-3
+        if var == 'iwc':
+            vvmin = 0; vvmax = 1e-4
+
         # fig = plt.figure(figsize=(12,6))
         # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
         #         hspace = 0.3, wspace = 0.3)
         # plt.subplot(211)
-        # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data['Cv'].data), vmin = 0, vmax = 1)
+        # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data[var].data), vmin = vvmin, vmax = vvmax)
         # plt.xlim([226,258])
         # plt.ylim([0,3000])
         # plt.ylabel('Z [m]')
         # plt.title('original')
         # plt.subplot(212)
-        # plt.pcolor(times,height,np.transpose(cv), vmin = 0, vmax = 1)
+        # plt.pcolor(times,height,np.transpose(cv), vmin = vvmin, vmax = vvmax)
         # plt.xlim([226,258])
         # plt.ylim([0,3000])
         # plt.xlabel('DOY')
         # plt.ylabel('Z [m]')
         # plt.title('interpolated')
-        # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
+        # # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
         # plt.show()
-        #
-        #
+
+
         # fig = plt.figure(figsize=(12,6))
         # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
         #         hspace = 0.3, wspace = 0.3)
@@ -7971,7 +7978,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
         # plt.xlabel('DOY')
         # plt.ylabel('Z [m]')
         # plt.title('interpolated, 6hrly')
-        # plt.savefig('FIGS/Cv_TS_6hrly_orig_interpd.png')
+        # # plt.savefig('FIGS/Cv_TS_6hrly_orig_interpd.png')
         # plt.show()
 
 
@@ -9597,7 +9604,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
