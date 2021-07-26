@@ -2039,7 +2039,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
@@ -2311,7 +2311,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC_lt500m.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -2402,7 +2402,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     print ('Z1 = ')
@@ -8431,7 +8431,7 @@ def main():
 
     ### Choose observations vertical gridding used in Cloudnet processing (UM/IFS/RADAR)
     obs_switch = 'UM'
-    obs_testing_flag = 1 # use ifs input to test obs ceilometer data
+    obs_testing_flag = 0 # use ifs input to test obs ceilometer data
 
     ### only works on laptop for now
 
@@ -8692,9 +8692,9 @@ def main():
             '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
             '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
             '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_']#,'20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
-            # '20180914_oden_']
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_',
+            '20180914_oden_']
 
     Aug_missing_files = []
 
@@ -8703,8 +8703,8 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
-    doy = np.arange(226,253)        ## set DOY for ceilometer testing  (14th Aug to 8th Sep)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    # doy = np.arange(226,253)        ## set DOY for ceilometer testing  (14th Aug to 8th Sep)
     # doy = np.arange(228,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,244)        ## set DOY for Aug dates
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
@@ -9585,7 +9585,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
@@ -9596,7 +9596,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
