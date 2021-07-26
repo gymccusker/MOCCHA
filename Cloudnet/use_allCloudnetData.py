@@ -6700,7 +6700,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     plt.savefig('FIGS/' + var + '_Obs-IFSgrid-QF10_scaledZ.png')
     plt.show()
 
-def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind):
+def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind):
 
     # #### ---------------------------------------------------------------
     # #### Define meteorological periods from Jutta's paper
@@ -6930,17 +6930,23 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     retrieval_index = np.where(obs_data['height'][0,:] < 155.0)
     mask0[:,retrieval_index[0]] = np.nan
 
-    mask0[nanind] = np.nan
-    mask1[nanind] = np.nan
-    mask2[nanind] = np.nan
-    mask3[nanind] = np.nan
-    mask4[nanind] = np.nan
+    # mask0[nanind] = np.nan
+    # mask1[nanind] = np.nan
+    # mask2[nanind] = np.nan
+    # mask3[nanind] = np.nan
+    # mask4[nanind] = np.nan
 
-    mask0[wcind] = np.nan
-    mask1[wcind] = np.nan
-    mask2[wcind] = np.nan
-    mask3[wcind] = np.nan
-    mask4[wcind] = np.nan
+    mask0[lwcind] = np.nan
+    mask1[lwcind] = np.nan
+    mask2[lwcind] = np.nan
+    mask3[lwcind] = np.nan
+    mask4[lwcind] = np.nan
+
+    mask0[iwcind] = np.nan
+    mask1[iwcind] = np.nan
+    mask2[iwcind] = np.nan
+    mask3[iwcind] = np.nan
+    mask4[iwcind] = np.nan
 
     ##################################################
     ##################################################
@@ -9676,7 +9682,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -9715,7 +9721,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, wcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
     # -------------------------------------------------------------
     # look closer at biases
