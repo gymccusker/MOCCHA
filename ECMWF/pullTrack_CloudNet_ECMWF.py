@@ -23,9 +23,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -42,9 +42,9 @@ def pullLatLon(filename):
 
     from netCDF4 import Dataset
 
-    print '*****'
-    print 'Extracting lat/lon from ECMWF netCDF file'
-    print ''
+    print ('*****')
+    print ('Extracting lat/lon from ECMWF netCDF file')
+    print ('')
 
     nc = Dataset(filename,'r')
 
@@ -52,7 +52,7 @@ def pullLatLon(filename):
     lon = nc.variables['longitude'][:]
     time = nc.variables['time'][:]
 
-    print 'ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')'
+    print ('ECMWF file at: (' + str(lon) + ', ' + str(lat) + ')')
 
     nc.close()
 
@@ -140,8 +140,8 @@ def designGrid(data):
     ###---------------------------------------------------------------------------------
     ### find eastern boundaries of gridpoints
     rblons = ((data['lons'][1:] - data['lons'][0:-1]) / 2.0) + data['lons'][0:-1]       ## RH bounds for longitude
-    print 'rblons = ' + str(rblons.shape)
-    print 'lons = ' + str(np.size(data['lons'][:]))
+    # print 'rblons = ' + str(rblons.shape)
+    # print 'lons = ' + str(np.size(data['lons'][:]))
     data['rb_lons'] = np.zeros([np.size(data['lons'][:])])
     data['rb_lons'][0] = data['lons'][1]
     data['rb_lons'][1] = rblons[1]
@@ -203,15 +203,15 @@ def designGrid(data):
     data['lb_lons'][36] = data['lons'][36] - (data['rb_lons'][36] - data['lons'][36])
     data['lb_lons'][37] = data['rb_lons'][36]#; data['rb_lons'][37] = data['lons'][37] + (data['lons'][37] - data['rb_lons'][36])
 
-    print 'All boundaries loaded :)'
+    print ('All boundaries loaded :)')
 
     return data
 
 def checkLatLon(ship_data, date, data):
 
-    print ''
-    print 'Finding lat/lon of ship track'
-    print '...'
+    print ('')
+    print ('Finding lat/lon of ship track')
+    print ('...')
 
     lats = data['lats'][:]
     lons = data['lons'][:]
@@ -222,14 +222,14 @@ def checkLatLon(ship_data, date, data):
     #################################################################
     data['day_ind'] = np.array([])
     data['day_ind'] = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
-    print 'Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts '
+    print ('Daily ship track: ' + str(len(data['day_ind'][0])) + ' pts ')
     # print data['day_ind'][0]
 
     #################################################################
     ## print ship track coordinates
     #################################################################
-    print 'Ship start (lon,lat): ' + str(ship_data.values[data['day_ind'][0][0],7]) + ', ' + str(ship_data.values[data['day_ind'][0][0],6])
-    print 'Ship end (lon,lat): ' + str(ship_data.values[data['day_ind'][0][-1],7]) + ', ' + str(ship_data.values[data['day_ind'][0][-1],6])
+    print ('Ship start (lon,lat): ' + str(ship_data.values[data['day_ind'][0][0],7]) + ', ' + str(ship_data.values[data['day_ind'][0][0],6]))
+    print ('Ship end (lon,lat): ' + str(ship_data.values[data['day_ind'][0][-1],7]) + ', ' + str(ship_data.values[data['day_ind'][0][-1],6]))
 
     ship_lats = ship_data.values[data['day_ind'],7]
     ship_lons = ship_data.values[data['day_ind'],6]
@@ -244,15 +244,15 @@ def checkLatLon(ship_data, date, data):
     jflag = np.zeros(25)
     for h in hours:
         # works for hour = 0
-        print ''
-        print 'hour = ' + str(h)
+        print ('')
+        print ('hour = ' + str(h))
         for j in range(0,len(data['sb_lats'])):
             if np.logical_and(ship_lats[0][h] >= data['sb_lats'][j], ship_lats[0][h] < data['nb_lats'][j]):
                 # print 'j=' + str(j)
                 # temp = j
                 # templat = lats[j]
                 if np.logical_and(ship_lons[0][h] >= data['lb_lons'][j], ship_lons[0][h] < data['rb_lons'][j]):
-                    print 'lats and lons match at j = ' + str(j)
+                    print ('lats and lons match at j = ' + str(j))
                     jflag[h] = jflag[h] + 1
                     # print jflag[h]
                     # templon = lons[j]
@@ -279,13 +279,13 @@ def checkLatLon(ship_data, date, data):
         ### want to increment jflag if h is different gpt than h-1
         if h > 0:
             if data['ship_lons'][h] != data['ship_lons'][h-1]:
-                print 'lon changes between h = ' + str(h-1) + ' and h = ' + str(h)
+                print ('lon changes between h = ' + str(h-1) + ' and h = ' + str(h))
                 if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
             if data['ship_lons'][h] == data['ship_lons'][h-1]:
                 # print 'reset jflag at h = ' + str(h-1)
                 if jflag[h-1] != 1: jflag[h-1] = 1         # manually increment flag if not already done so
             if data['ship_lats'][h] != data['ship_lats'][h-1]:
-                print 'lat changes between h = ' + str(h-1) + ' and h = ' + str(h)
+                print ('lat changes between h = ' + str(h-1) + ' and h = ' + str(h))
                 if jflag[h-1] != 2: jflag[h-1] = 2         # manually increment flag if not already done so
 
         data['jflag'] = jflag       ### so jflag is written out for testing
@@ -294,7 +294,7 @@ def checkLatLon(ship_data, date, data):
         ### want to compare two hourly points (i.e. between 0h and 1h where was the ship)
         if h > 0:
             if jflag[h] > jflag[h-1]:
-                print 'Grid crossed at h = ' + str(h)
+                print ('Grid crossed at h = ' + str(h))
                 grid_crossed = h
 
     ### hard code 20180813 jflags out of loop so as to not confuse algorithm
@@ -302,11 +302,11 @@ def checkLatLon(ship_data, date, data):
         data['jflag'][2] = 1
         data['jflag'][3] = 2
 
-    print ''
-    print 'Ship indices are:'
-    print data['ship_ind']
-    print 'Final jflag is: '
-    print data['jflag']
+    print ('')
+    print ('Ship indices are:')
+    print (data['ship_ind'])
+    print ('Final jflag is: ')
+    print (data['jflag'])
 
     return data
 
@@ -320,12 +320,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -346,19 +346,19 @@ def inIce(data):
     Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
     # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
+    print ('CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4]))
+    print ('')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
+    print ('Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')')
     # print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
     # print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    print ('')
 
     return inIce_index
 
@@ -375,15 +375,15 @@ def trackShip(data, date):
         trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    print ('Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
     # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
     # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    print ('trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print ('')
 
     return trackShip_index
 
@@ -395,11 +395,11 @@ def plot_basemap(ship_data, lats, lons, tim):
     ###################################
     ## PLOT MAP
     ###################################
-
-    print '******'
-    print ''
-    print 'Plot basemap:'
-    print ''
+    #
+    # print '******'
+    # print ''
+    # print 'Plot basemap:'
+    # print ''
 
     ##################################################
     ##################################################
@@ -504,17 +504,17 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     ## CHOOSE DIAGNOSTIC
     ###################################
     # diag = 1
-    print ''
-    print 'Available diags are: ', data.keys()
+    print ('')
+    print ('Available diags are: ', data.keys())
 
     ###################################
     ## PLOT MAP
     ###################################
 
-    print '******'
-    print ''
-    print 'Plotting cartopy map:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Plotting cartopy map:')
+    print ('')
 
     ##################################################
     ##################################################
@@ -658,10 +658,10 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
 
     plt.legend()
 
-    print '******'
-    print ''
-    print 'Finished plotting cartopy map! :)'
-    print ''
+    print ('******')
+    print ('')
+    print ('Finished plotting cartopy map! :)')
+    print ('')
 
     plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
@@ -674,24 +674,24 @@ def pullTrack(ship_data, data, date, outfile):
     from iris.cube import Cube
     import iris.plot as iplt
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     #################################################################
     ## design grid boundaries
     #################################################################
     # print '******'
     # print ''
-    print 'Designing grid boundaries:'
-    print ''
+    print ('Designing grid boundaries:')
+    print ('')
     data = designGrid(data)
 
     #################################################################
     ## check position of ship track
     #################################################################
-    print '******'
-    print ''
-    print 'Gridding from ship lat/lon:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Gridding from ship lat/lon:')
+    print ('')
 
     data = checkLatLon(ship_data, date, data)
     np.save('working_data', data)
@@ -699,19 +699,19 @@ def pullTrack(ship_data, data, date, outfile):
     #################################################################
     ## write out data
     #################################################################
-    print '******'
-    print ''
-    print 'Write out hourly gridded EC IFS data:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Write out hourly gridded EC IFS data:')
+    print ('')
     out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
     # #################################################################
-    print '******'
-    print ''
-    print 'Appending metadata:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Appending metadata:')
+    print ('')
     out = appendMetaNetCDF(outfile, date)
 
     return data
@@ -720,14 +720,14 @@ def readCube(name):
 
     ### LOOP OVER FILENAMES TO EXTRACT DIAGNOSTIC OVER ALL GRIDBOXES
 
-    print 'Filename to load is: ' + name
+    print ('Filename to load is: ' + name)
 
     diag = 24
 
     data = {}
     dat = np.zeros([25,137])
     cube = iris.load(name)
-    print 'Diag will be ' + cube[diag].var_name
+    print ('Diag will be ' + cube[diag].var_name)
     tims = cube[diag].dim_coords[0].points
     hgts = cube[35].data
     lats = cube[40].data
@@ -770,7 +770,7 @@ def readDaily(filenames, date):
     data['mlevs'] = np.zeros([137])
     for name in filenames:
         i = i + 1
-        print 'i = ' + str(i)
+        print ('i = ' + str(i))
         dat, cube, diag = readCube(name)
         # print dat
         data['pressure'][i, :, :] = dat['pressure'][:, :]
@@ -923,109 +923,109 @@ def writeNetCDF(data, date, outfile):
     ## Loop over diagnostics
     ###################################
     for d in range(0,len(cube0)):
-        print ''
-        print '**** New diagnostic loop ****'
+        print ('')
+        print ('**** New diagnostic loop ****')
         for h in range(0,25):
             #### increment ship_ind by 1 to change from python counting (from 0) to 1-38
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
-            print ''
-            print 'Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h])
+            print ('')
+            print ('Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h]))
             if data['jflag'][h] == 1:
-                print 'So loading ' + file + ' only '
+                print ('So loading ' + file + ' only ')
                 cube = iris.load(file)
-                print 'Writing ' + cube[d].var_name
+                print ('Writing ' + cube[d].var_name)
                 if h == 0:
                     if np.size(cube[d].shape) == 0:
-                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        print ('Diagnostic is a scalar field, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube[d].var_name, np.float64, fill_value='-9999')
                         dat[:] = cube[d].data
                         break
                     elif np.size(cube[d].shape) == 1:
-                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 1D, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube[d].var_name, np.float64, ('time',), fill_value='-9999')
                         dat[h] = cube[d].data[h]
                     elif np.size(cube[d].shape) == 2:
-                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 2D, so writing hour = ' + str(h))
                         if cube[d].var_name in fluxes:
-                            print 'Diagnostic is on flux levels.'
+                            print ('Diagnostic is on flux levels.')
                             dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
                         else:
-                            print 'Diagnostic is on model levels.'
+                            print ('Diagnostic is on model levels.')
                             dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
                         dat[h,:] = cube[d].data[h,:]
                     elif np.size(cube[d].shape) == 3:
-                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 3D, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
                         dat[:,h,:] = cube[d].data[:,h,:]
                 else:
                     if np.size(cube[d].shape) == 0:
-                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        print ('Diagnostic is a scalar field, so writing hour = ' + str(h))
                         dat[:] = cube[d].data
                     elif np.size(cube[d].shape) == 1:
-                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 1D, so writing hour = ' + str(h))
                         dat[h] = cube[d].data[h]
                     elif np.size(cube[d].shape) == 2:
-                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 2D, so writing hour = ' + str(h))
                         dat[h,:] = cube[d].data[h,:]
                     elif np.size(cube[d].shape) == 3:
-                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 3D, so writing hour = ' + str(h))
                         dat[:,h,:] = cube[d].data[:,h,:]
             elif data['jflag'][h] == 2:
-                print 'h = ' + str(int(data['ship_ind'][h]))
-                print 'h+1 = ' + str(int(data['ship_ind'][h+1]))
+                print ('h = ' + str(int(data['ship_ind'][h])))
+                print ('h+1 = ' + str(int(data['ship_ind'][h+1])))
                 file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1]) + 1).zfill(3) + '.nc'
-                print 'So averaging between ' + file + ' and ' + file2
-                print 'Loading ' + file + '...'
+                print ('So averaging between ' + file + ' and ' + file2)
+                print ('Loading ' + file + '...')
                 cube1 = iris.load(file)
                 if cube1[d].var_name in qfields:
-                    print 'Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...'
+                    print ('Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...')
                     cube1[d].data[cube1[d].data == 0.0] = np.nan
-                print 'Loading ' + file2 + '...'
+                print ('Loading ' + file2 + '...')
                 cube2 = iris.load(file2)
                 if cube2[d].var_name in qfields:
-                    print 'Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...'
+                    print ('Diagnostic is a Q-field, so setting all zeros to NaNs before averaging...')
                     cube2[d].data[cube2[d].data == 0.0] = np.nan
-                print 'Averaging ' + cube1[d].var_name
+                print ('Averaging ' + cube1[d].var_name)
                 if h == 0:
                     if np.size(cube1[d].shape) == 0:
-                        print 'Diagnostic is a scalar field, so writing hour = ' + str(h)
+                        print ('Diagnostic is a scalar field, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube1[d].var_name, np.float64, fill_value='-9999')
                         dat[:] = np.nanmean([cube1[d].data,cube2[d].data])
                         break
                     elif np.size(cube1[d].shape) == 1:
-                        print 'Diagnostic is 1D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 1D, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube1[d].var_name, np.float64, ('time',), fill_value='-9999')
                         dat[h] = np.nanmean([cube1[d].data[h],cube2[d].data[h]])
                     elif np.size(cube1[d].shape) == 2:
-                        print 'Diagnostic is 2D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 2D, so writing hour = ' + str(h))
                         if cube1[d].var_name in fluxes:
-                            print 'Diagnostic is on flux levels.'
+                            print ('Diagnostic is on flux levels.')
                             dat = dataset.createVariable(cube1[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
                         else:
-                            print 'Diagnostic is on model levels.'
+                            print ('Diagnostic is on model levels.')
                             dat = dataset.createVariable(cube1[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
                         # dat[h,:] = cube[d].data[h,:]
                         dat[h,:] = np.nanmean([cube1[d].data[h,:],cube2[d].data[h,:]],0)
                     elif np.size(cube1[d].shape) == 3:
-                        print 'Diagnostic is 3D, so writing hour = ' + str(h)
+                        print ('Diagnostic is 3D, so writing hour = ' + str(h))
                         dat = dataset.createVariable(cube1[d].var_name, np.float64, ('frequency','time','model_level_number',), fill_value='-9999')
                         # dat[:,h,:] = cube1[d].data[:,h,:]
                         dat[:,h,:] = np.nanmean([cube[d].data[:,h,:],cube2[d].data[:,h,:]],1)
                 else:
                     if np.size(cube[d].shape) == 0:
-                        print 'Diagnostic is a scalar field, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1)
+                        print ('Diagnostic is a scalar field, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1))
                         # dat[:] = cube[d].data
                         dat[:] = np.nanmean([cube1[d].data,cube2[d].data])
                     elif np.size(cube[d].shape) == 1:
-                        print 'Diagnostic is 1D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1)
+                        print ('Diagnostic is 1D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1))
                         # dat[h] = cube[d].data[h]
                         dat[h] = np.nanmean([cube1[d].data[h],cube2[d].data[h]])
                     elif np.size(cube[d].shape) == 2:
-                        print 'Diagnostic is 2D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1)
+                        print ('Diagnostic is 2D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1))
                         # dat[h,:] = cube[d].data[h,:]
                         dat[h,:] = np.nanmean([cube1[d].data[h,:],cube2[d].data[h,:]],0)
                     elif np.size(cube[d].shape) == 3:
-                        print 'Diagnostic is 3D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1)
+                        print ('Diagnostic is 3D, so averaging between hour = ' + str(h) + ' and h = ' + str(h+1))
                         # dat[:,h,:] = cube[d].data[:,h,:]
                         dat[:,h,:] = np.nanmean([cube[d].data[:,h,:],cube2[d].data[:,h,:]],1)
             dat.scale_factor = float(1)
@@ -1105,19 +1105,19 @@ def appendMetaNetCDF(outfile, date):
     import time
     from datetime import datetime, timedelta
 
-    print '******'
-    print ''
-    print 'Appending metadata to ' + outfile
-    print ''
+    print ('******')
+    print ('')
+    print( 'Appending metadata to ' + outfile)
+    print ('')
 
     ###################################
     ## Open File
     ###################################
     dataset = Dataset(outfile, 'a', format ='NETCDF4_CLASSIC')
     # infile = net.Dataset("2015%s%s-160000_0.nc" % (month,day), "a")
-    print ''
-    print dataset.file_format
-    print ''
+    print ('')
+    print (dataset.file_format)
+    print ('')
 
     ###################################
     ## Global Attributes
@@ -1143,10 +1143,10 @@ def appendMetaNetCDF(outfile, date):
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print( '******')
+    print( '')
+    print( 'Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -1168,32 +1168,32 @@ def main():
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc file: ')
+    print ('')
 
     # # -------------------------------------------------------------
     # # Load data
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin data read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Begin data read in at ' + time.strftime("%c"))
+    print (' ')
 
     ### -------------------------------------------------------------------------
     ### define input filenames
     ### -------------------------------------------------------------------------
-    date = '20180914'
+    date = '20180904'
     outfile = date + '_oden_ecmwf.nc'
-    print 'Outfile will be: ' + outfile
+    print ('Outfile will be: ' + outfile)
     base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
@@ -1203,8 +1203,8 @@ def main():
         names[i] = base_name + str_i + '.nc'
         filenames[i] = root_dir + names[i]
 
-    print filenames[0] + ' ... ' + filenames[-1]
-    print ''
+    print (filenames[0] + ' ... ' + filenames[-1])
+    print ('')
 
     # -------------------------------------------------------------
     # Find ECMWF grid
@@ -1243,10 +1243,10 @@ def main():
     data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
