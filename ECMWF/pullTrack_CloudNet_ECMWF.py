@@ -235,17 +235,19 @@ def checkLatLon(ship_data, date, data):
     ship_lons = ship_data.values[data['day_ind'],6]
 
     ### compare hourly lat-lon with ECMWF grid
-    data['ship_lons'] = np.zeros(25)
-    data['ship_lats'] = np.zeros(25)
-    data['ship_ind'] = np.zeros(25)
+    data['ship_lons'] = np.zeros(24)
+    data['ship_lats'] = np.zeros(24)
+    data['ship_ind'] = np.zeros(24)
     data['ship_ind'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_hour'] = np.zeros(25)
-    hours = np.arange(0,25)
-    jflag = np.zeros(25)
+    hours = np.arange(0,24)
+    data['ship_hour'] = np.zeros(24)
+    jflag = np.zeros(24)
     for h in hours:
         # works for hour = 0
         print ('')
         print ('hour = ' + str(h))
+        print (len(data['sb_lats']))
+        print (ship_lats[0][h])
         for j in range(0,len(data['sb_lats'])):
             if np.logical_and(ship_lats[0][h] >= data['sb_lats'][j], ship_lats[0][h] < data['nb_lats'][j]):
                 # print 'j=' + str(j)
@@ -663,7 +665,7 @@ def plot_cartmap(ship_data, data, date): #, lon, lat):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
+    # plt.savefig('FIGS/ECMWF_gridBoundaries_wTRACK.svg')
     plt.show()
 
     return data
@@ -694,7 +696,7 @@ def pullTrack(ship_data, data, date, outfile):
     print ('')
 
     data = checkLatLon(ship_data, date, data)
-    np.save('working_data', data)
+    # np.save('working_data', data)
 
     #################################################################
     ## write out data
@@ -703,7 +705,7 @@ def pullTrack(ship_data, data, date, outfile):
     print ('')
     print ('Write out hourly gridded EC IFS data:')
     print ('')
-    out = writeNetCDF(data, date, outfile)
+    # out = writeNetCDF(data, date, outfile)
 
     # #################################################################
     # ## append metadata
@@ -712,7 +714,7 @@ def pullTrack(ship_data, data, date, outfile):
     print ('')
     print ('Appending metadata:')
     print ('')
-    out = appendMetaNetCDF(outfile, date)
+    # out = appendMetaNetCDF(outfile, date)
 
     return data
 
@@ -779,23 +781,26 @@ def readDaily(filenames, date):
         data['lons'][i] = dat['lons']
     data['tims'][:] = dat['tims'][:]
     data['mlevs'][:] = dat['mlevs'][:]
-    if date == '20180904':
-        data['lons'][:] = np.array([36.66999817, 38.08000183, 41.54000092, 43.20000076, 45.        ,
-               46.95999908, 45.        , 47.13999939, 45.        , 49.5       ,
-               47.36999893, 50.        , 55.        , 52.93999863, 58.24000168,
-               56.25      , 60.        , 57.86000061, 62.31000137, 30.        ,
-               37.5       , 67.5       , 75.        ,  8.18000031, 16.36000061,
-               24.54999924, 32.72999954, 40.90999985, 57.27000046, 65.44999695,
-               9.        , 18.        , 27.        , 36.        , 45.        ,
-               54.        , 20.        , 30.        ])
-        data['lats'][:] = np.array([88.40000153, 88.47000122, 88.47000122, 88.54000092, 88.61000061,
-               88.68000031, 88.75      , 88.81999969, 88.88999939, 88.88999939,
-               88.95999908, 89.02999878, 89.02999878, 89.09999847, 89.09999847,
-               89.16999817, 89.23999786, 89.30999756, 89.37999725, 89.44999695,
-               89.44999695, 89.44999695, 89.44999695, 89.52999878, 89.52999878,
-               89.52999878, 89.52999878, 89.52999878, 89.52999878, 89.52999878,
-               89.59999847, 89.59999847, 89.59999847, 89.59999847, 89.59999847,
-               89.59999847, 89.66999817, 89.66999817])
+
+    # print (data['lons'][:])
+    # print (data['lats'][:])
+    # if date == '20180904':
+    #     data['lons'][:] = np.array([36.66999817, 38.08000183, 41.54000092, 43.20000076, 45.        ,
+    #            46.95999908, 45.        , 47.13999939, 45.        , 49.5       ,
+    #            47.36999893, 50.        , 55.        , 52.93999863, 58.24000168,
+    #            56.25      , 60.        , 57.86000061, 62.31000137, 30.        ,
+    #            37.5       , 67.5       , 75.        ,  8.18000031, 16.36000061,
+    #            24.54999924, 32.72999954, 40.90999985, 57.27000046, 65.44999695,
+    #            9.        , 18.        , 27.        , 36.        , 45.        ,
+    #            54.        , 20.        , 30.        ])
+    #     data['lats'][:] = np.array([88.40000153, 88.47000122, 88.47000122, 88.54000092, 88.61000061,
+    #            88.68000031, 88.75      , 88.81999969, 88.88999939, 88.88999939,
+    #            88.95999908, 89.02999878, 89.02999878, 89.09999847, 89.09999847,
+    #            89.16999817, 89.23999786, 89.30999756, 89.37999725, 89.44999695,
+    #            89.44999695, 89.44999695, 89.44999695, 89.52999878, 89.52999878,
+    #            89.52999878, 89.52999878, 89.52999878, 89.52999878, 89.52999878,
+    #            89.59999847, 89.59999847, 89.59999847, 89.59999847, 89.59999847,
+    #            89.59999847, 89.66999817, 89.66999817])
 
     #################################################################
     ## CREATE EMPTY CUBE
@@ -1223,24 +1228,24 @@ def main():
     # -------------------------------------------------------------
     data = readDaily(filenames, date)
 
-    # -------------------------------------------------------------
-    # Plot data (map)
-    # -------------------------------------------------------------
-    # map = plot_basemap(ship_data, lats, lons, tim)
-
+    # # -------------------------------------------------------------
+    # # Plot data (map)
+    # # -------------------------------------------------------------
+    # # map = plot_basemap(ship_data, lats, lons, tim)
+    #
     # -------------------------------------------------------------
     # Pull daily gridded ship track from netCDFs
     # -------------------------------------------------------------
     data = pullTrack(ship_data, data, date, outfile)
-
-    ### temporary data save for development/debugging
-    # np.save('working_data', data)
-    ### load with data = np.load('working_data.npy').item())
-
-    # -------------------------------------------------------------
-    # Plot data (cartopy map)
-    # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    #
+    # ### temporary data save for development/debugging
+    # # np.save('working_data', data)
+    # ### load with data = np.load('working_data.npy').item())
+    #
+    # # -------------------------------------------------------------
+    # # Plot data (cartopy map)
+    # # -------------------------------------------------------------
+    # data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print ('******')
