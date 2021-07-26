@@ -932,7 +932,10 @@ def writeNetCDF(data, date, outfile):
         print ('**** New diagnostic loop ****')
         for h in range(0,24):
             #### increment ship_ind by 1 to change from python counting (from 0) to 1-38
-            file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
+            if date == '20180904':
+                file = 'DATA/20180904_new/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
+            else:
+                file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
             print ('')
             print ('Ship index = ' + str(data['ship_ind'][h]) + ', h = ' + str(h) + ', and JFLAG = ' + str(data['jflag'][h]))
             if data['jflag'][h] == 1:
@@ -980,7 +983,10 @@ def writeNetCDF(data, date, outfile):
             elif data['jflag'][h] == 2:
                 print ('h = ' + str(int(data['ship_ind'][h])))
                 print ('h+1 = ' + str(int(data['ship_ind'][h+1])))
-                file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1]) + 1).zfill(3) + '.nc'
+                if date == '20180904':
+                    file2 = 'DATA/20180904_new/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1]) + 1).zfill(3) + '.nc'
+                else:
+                    file2 = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h+1]) + 1).zfill(3) + '.nc'
                 print ('So averaging between ' + file + ' and ' + file2)
                 print ('Loading ' + file + '...')
                 cube1 = iris.load(file)
@@ -1250,7 +1256,7 @@ def main():
     # # -------------------------------------------------------------
     # # Plot data (cartopy map)
     # # -------------------------------------------------------------
-    data = plot_cartmap(ship_data, data, date)
+    # data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print ('******')
