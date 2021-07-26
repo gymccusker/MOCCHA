@@ -146,9 +146,9 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ## Data dimensions
     ###################################
     timem = nc.createDimension('time', 25)
-    level = nc.createDimension('model_level_number', np.size(cube0[1].dim_coords[1].points))
-    flevel = nc.createDimension('model_flux_level', np.size(cube0[3].dim_coords[1].points))
-    freq = nc.createDimension('frequency', np.size(cube0[2].dim_coords[0].points))
+    level = nc.createDimension('model_level_number', np.size(cube0[9].dim_coords[1].points))
+    flevel = nc.createDimension('model_flux_level', np.size(cube0[0].dim_coords[1].points))
+    freq = nc.createDimension('frequency', np.size(cube0[10].dim_coords[0].points))
 
     ###################################
     ## Dimensions variables
@@ -172,7 +172,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     level.long_name = 'model_level'
     level.standard_name = 'model_level_number'
     level.positive = 'down'
-    level[:] = cube0[1].dim_coords[1].points
+    level[:] = cube0[9].dim_coords[1].points
 
     #### flux model level
     flevel = nc.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
@@ -182,7 +182,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     flevel.units = '1'
     flevel.long_name = 'model_flux_level'
     flevel.positive = 'down'
-    flevel[:] = cube0[3].dim_coords[1].points
+    flevel[:] = cube0[0].dim_coords[1].points
 
     #### frequency
     freq = nc.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
@@ -192,7 +192,7 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     freq.units = 'GHz'
     freq.long_name = 'microwave_frequency'
     freq.missing_value = -999.0
-    freq[:] = cube0[2].dim_coords[0].points
+    freq[:] = cube0[10].dim_coords[0].points
 
     ###################################
     ## Create DIAGNOSTICS
@@ -285,13 +285,34 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ###################################
     ## Add Global Attributes
     ###################################
-    nc.title = nc1.title
-    nc.description = nc1.description
-    nc.history = nc1.history
-    nc.source = nc1.source
-    nc.project = nc1.project
-    nc.institution = nc1.institution
-    nc.initialization_time = nc1.initialization_time
+    if 'title' in nc1.ncattrs():
+        nc.title = nc1.title
+    elif 'title' in nc2.ncattrs():
+        nc.title = nc2.title
+    if 'description' in nc1.ncattrs():
+        nc.description = nc1.description
+    elif 'description' in nc2.ncattrs():
+        nc.description = nc2.description
+    if 'history' in nc1.ncattrs():
+        nc.history = nc1.history
+    elif 'history' in nc2.ncattrs():
+        nc.history = nc2.history
+    if 'source' in nc1.ncattrs():
+        nc.source = nc1.source
+    elif 'source' in nc2.ncattrs():
+        nc.source = nc2.source
+    if 'project' in nc1.ncattrs():
+        nc.project = nc1.project
+    elif 'project' in nc2.ncattrs():
+        nc.project = nc2.project
+    if 'institution' in nc1.ncattrs():
+        nc.institution = nc1.institution
+    elif 'institution' in nc2.ncattrs():
+        nc.institution = nc2.institution
+    if 'initialization_time' in nc1.ncattrs():
+        nc.initialization_time = nc1.initialization_time
+    if date == '20180904':
+        nc.initialization_time = '2018-09-04 00:00:00 +00:00'
 
     nc.close()
 
