@@ -1856,7 +1856,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ###         Calculate total water content
     ###----------------------------------------------------------------
     # obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
-    obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -7887,7 +7887,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     print ('*******')
     print ('')
 
-    varlist = ['Cv', 'lwc', 'iwc']
+    varlist = ['Cv', 'lwc_adiabatic', 'iwc']
 
     for var in varlist:
         ### remove bad and flagged data
@@ -7943,29 +7943,29 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
 
         if var == 'Cv':
             vvmin = 0; vvmax = 1
-        if var == 'lwc':
+        if var == 'lwc_adiabatic':
             vvmin = 0; vvmax = 1e-3
         if var == 'iwc':
             vvmin = 0; vvmax = 1e-4
 
-        # fig = plt.figure(figsize=(12,6))
-        # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
-        #         hspace = 0.3, wspace = 0.3)
-        # plt.subplot(211)
-        # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data[var].data), vmin = vvmin, vmax = vvmax)
-        # plt.xlim([226,258])
-        # plt.ylim([0,3000])
-        # plt.ylabel('Z [m]')
-        # plt.title('original')
-        # plt.subplot(212)
-        # plt.pcolor(times,height,np.transpose(cv), vmin = vvmin, vmax = vvmax)
-        # plt.xlim([226,258])
-        # plt.ylim([0,3000])
-        # plt.xlabel('DOY')
-        # plt.ylabel('Z [m]')
-        # plt.title('interpolated')
-        # # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
-        # plt.show()
+        fig = plt.figure(figsize=(12,6))
+        plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+                hspace = 0.3, wspace = 0.3)
+        plt.subplot(211)
+        plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data[var].data), vmin = vvmin, vmax = vvmax)
+        plt.xlim([226,258])
+        plt.ylim([0,3000])
+        plt.ylabel('Z [m]')
+        plt.title('original')
+        plt.subplot(212)
+        plt.pcolor(times,height,np.transpose(cv), vmin = vvmin, vmax = vvmax)
+        plt.xlim([226,258])
+        plt.ylim([0,3000])
+        plt.xlabel('DOY')
+        plt.ylabel('Z [m]')
+        plt.title('interpolated')
+        # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
+        plt.show()
 
 
         # fig = plt.figure(figsize=(12,6))
