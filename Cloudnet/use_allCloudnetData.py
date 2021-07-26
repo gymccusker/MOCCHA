@@ -9354,11 +9354,12 @@ def main():
             ### --------------------------------------------------------------------
             ### Close cloudnet netCDF files
             ### --------------------------------------------------------------------
-            for c in range(0,3): cn_nc0[c].close()
-            for c in range(0,3): cn_nc1[c].close()
-            for c in range(0,3): cn_nc2[c].close()
-            for c in range(0,3): cn_nc3[c].close()
-            for c in range(0,3): cn_nc4[c].close()
+            for c in range(0,3):
+                cn_nc0[c].close()
+                cn_nc1[c].close()
+                cn_nc2[c].close()
+                cn_nc3[c].close()
+                cn_nc4[c].close()
 
         # print (lwp.shape)
         # print (time_obs.shape)
