@@ -24,9 +24,9 @@ def readfile(filename):
     import pandas as pd
 
     # print '******'
-    print ''
-    print 'Reading .txt file with pandas'
-    print ''
+    print ('')
+    print ('Reading .txt file with pandas')
+    print ('')
 
     data = pd.read_csv(filename, sep = " ")
     values = data.values
@@ -49,12 +49,12 @@ def iceDrift(data):
     Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     drift_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
-    print '******'
-    print ''
+    print ('******')
+    print ('')
     # print 'Aug drift: ' + str(data.values[Aug_drift_index[0][0],0:3]) + ' - ' + str(data.values[Aug_drift_index[0][-1],0:3])
     # print 'Sep drift: ' + str(data.values[Sep_drift_index[0][0],0:3]) + ' - ' + str(data.values[Sep_drift_index[0][-1],0:3])
-    print 'Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4])
-    print ''
+    print ('Whole drift: ' + str(data.values[drift_index[0],0:4]) + ' - ' + str(data.values[drift_index[-1],0:4]))
+    print ('')
 
     return drift_index
 
@@ -76,19 +76,19 @@ def inIce(data):
     # # Sep_inIce = np.where(np.logical_and(np.logical_and(data.values[:,2]<=20,data.values[:,1]==9),data.values[:,3]<=1))
     # inIce_index = range(Aug_inIce[0][0],Sep_inIce[0][-1])
 
-    print '******'
-    print ''
-    # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
-    # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
-    # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
-    print ''
-    print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
-    print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
-    print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
-    print ''
+    # print '******'
+    # print ''
+    # # print 'Aug drift: ' + str(data.values[Aug_inIce[0][0],0:3]) + ' - ' + str(data.values[Aug_inIce[0][-1],0:3])
+    # # print 'Sep drift: ' + str(data.values[Sep_inIce[0][0],0:3]) + ' - ' + str(data.values[Sep_inIce[0][-1],0:3])
+    # # print 'In ice: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    # print 'CloudNET: ' + str(data.values[inIce_index[0],0:4]) + ' - ' + str(data.values[inIce_index[-1],0:4])
+    # print ''
+    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    # print 'Lon/lat of start point: (' + str(data.values[inIce_index[0],6]) + ', ' + str(data.values[inIce_index[0],7]) + ')'
+    # print 'Lon/lat of end point: (' + str(data.values[inIce_index[-1],6]) + ', ' + str(data.values[inIce_index[-1],7]) + ')'
+    # print 'Min/max longitude: ' + str(np.nanmin(data.values[inIce_index,6])) + ', ' + str(np.nanmax(data.values[inIce_index,6]))
+    # print 'Min/max latitude: ' + str(np.nanmin(data.values[inIce_index,7])) + ', ' + str(np.nanmax(data.values[inIce_index,7]))
+    # print ''
 
     return inIce_index
 
@@ -102,15 +102,15 @@ def trackShip(data, date):
     # trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==(int(date[-2:]) + 1),data.values[:,1]==int(date[-4:-2])),data.values[:,3]==1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
-    print '******'
-    print ''
-    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
-    print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
-    print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
-    # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
-    # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
-    print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
-    print ''
+    # print '******'
+    # print ''
+    # # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    # print 'Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')'
+    # print 'Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')'
+    # # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
+    # # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
+    # print 'trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4])
+    # print ''
 
     return trackShip_index
 
@@ -133,9 +133,9 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     ## CREATE NEW NETCDF
     #################################################################
     nc = Dataset(filename1[-22:], 'w', format ='NETCDF4_CLASSIC')
-    print ''
-    print nc.file_format
-    print ''
+    print ('')
+    print (nc.file_format)
+    print ('')
 
     ###################################
     #### load in a cube to define dimensions
@@ -200,21 +200,21 @@ def combineNC(nc1, nc2, filename1, filename2, date):
     for diag in nc1.variables:
     # diag = 'sfc_pressure'
     # if diag == 'sfc_pressure':
-        print 'Writing ' + diag
-        print ''
+        print ('Writing ' + diag)
+        print ('')
         ### 1Dimension
         if np.size(np.shape(nc1.variables[diag])) == 1:
             if diag == 'time':
-                print 'Diagnostic is forecast_time which is already defined... skipping.'
+                print ('Diagnostic is forecast_time which is already defined... skipping.')
                 continue
             if diag == 'model_level_number':
-                print 'Diagnostic is model_level_number which is already defined... skipping.'
+                print ('Diagnostic is model_level_number which is already defined... skipping.')
                 continue
             if diag == 'model_flux_level':
-                print 'Diagnostic is model_flux_level which is already defined... skipping.'
+                print ('Diagnostic is model_flux_level which is already defined... skipping.')
                 continue
             if diag == 'frequency':
-                print 'Diagnostic is frequency which is already defined... skipping.'
+                print ('Diagnostic is frequency which is already defined... skipping.')
                 continue
             dat = nc.createVariable(diag, np.float64, ('time',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -230,10 +230,10 @@ def combineNC(nc1, nc2, filename1, filename2, date):
         ### 2Dimensions:         time: 24; model_level_number: 137 / time: 24; model_flux_level: 138
         elif np.size(np.shape(nc1.variables[diag])) == 2:
             if diag in fluxes:
-                print 'Diagnostic is on flux levels.'
+                print ('Diagnostic is on flux levels.')
                 dat = nc.createVariable(diag, np.float64, ('time','model_flux_level',), fill_value='-9999')
             else:
-                print 'Diagnostic is on model levels.'
+                print ('Diagnostic is on model levels.')
                 dat = nc.createVariable(diag, np.float64, ('time','model_level_number',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
@@ -261,21 +261,21 @@ def combineNC(nc1, nc2, filename1, filename2, date):
         ### 0Dimensions
         else:
             if diag == 'horizontal_resolution':
-                print 'Diagnostic is horizontal_resolution which needs to be defined separately...'
+                print ('Diagnostic is horizontal_resolution which needs to be defined separately...')
                 dat = nc.createVariable('horizontal_resolution', np.float32, fill_value='-9999')
                 dat.comment = 'Horizontal grid size.'
                 dat.units = 'km'
                 dat[:] = nc1.variables['horizontal_resolution'][:]
                 continue
             elif diag == 'latitude':
-                print 'Diagnostic is latitude which needs to be defined separately...'
+                print ('Diagnostic is latitude which needs to be defined separately...')
                 dat = nc.createVariable('latitude', np.float32, fill_value='-9999')
                 dat.standard_name = 'latitude'
                 dat.units = 'degrees_N'
                 dat[:] = nc1.variables['latitude'][:]
                 continue
             elif diag == 'longitude':
-                print 'Diagnostic is longitude which needs to be defined separately...'
+                print ('Diagnostic is longitude which needs to be defined separately...')
                 dat = nc.createVariable('longitude', np.float32, fill_value='-9999')
                 dat.standard_name = 'longitude'
                 dat.units = 'degrees_E'
@@ -298,10 +298,10 @@ def combineNC(nc1, nc2, filename1, filename2, date):
 def main():
 
     START_TIME = time.time()
-    print '******'
-    print ''
-    print 'Start: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'LAPTOP'
@@ -330,18 +330,18 @@ def main():
     ### 5_u-bl661_RA1M_CASIM/OUT/
     ### 6_u-bm410_RA1M_CASIM/OUT/
 
-    print '******'
-    print ''
-    print 'Identifying .nc file: '
-    print ''
+    print ('******')
+    print ('')
+    print ('Identifying .nc file: ')
+    print ('')
 
     # -------------------------------------------------------------
     # Load ship track
     # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Load in ship track file:'
-    print ''
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
     ship_data = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
@@ -356,10 +356,10 @@ def main():
     # # -------------------------------------------------------------
     # # Load cube
     # # -------------------------------------------------------------
-    print '******'
-    print ''
-    print 'Begin cube read in at ' + time.strftime("%c")
-    print ' '
+    print ('******')
+    print ('')
+    print ('Begin cube read in at ' + time.strftime("%c"))
+    print (' ')
 
     ### -------------------------------------------------------------------------
     ### define input filename
@@ -405,24 +405,24 @@ def main():
     for i in range(0,len(moccha_names) - 1):
         filename1 = root_dir + out_dir + names[i]
         filename2 = root_dir + out_dir + names[i+1]
-        print filename1
-        print filename2
-        print ''
+        print (filename1)
+        print (filename2)
+        print ('')
         date = names[i][0:8]
-        print 'Date = ' + date
+        print ('Date = ' + date)
 
         #### -------------------------------------------------------------
         #### LOAD NETCDF FILES
         #### -------------------------------------------------------------
         # cube1 = iris.load(filename1)
         nc1 = Dataset(filename1,'r')
-        print nc1
-        print ''
+        print (nc1)
+        print ('')
 
         # cube2 = iris.load(filename1)
         nc2 = Dataset(filename2,'r')
-        print nc2
-        print ''
+        print (nc2)
+        print ('')
 
         #### -------------------------------------------------------------
         #### COMBINE NETCDF FILES
@@ -439,10 +439,10 @@ def main():
     # FIN.
     # -------------------------------------------------------------
     END_TIME = time.time()
-    print '******'
-    print ''
-    print 'End: ' + time.strftime("%c")
-    print ''
+    print ('******')
+    print ('')
+    print ('End: ' + time.strftime("%c"))
+    print ('')
 
     #### DIAGNOSTICS TO CHOOSE FROM:
 
