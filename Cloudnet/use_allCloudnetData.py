@@ -2193,10 +2193,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,500])
-    # plt.ylim([0,9000])
-    # plt.yticks([0,3e3,6e3,9e3])
-    # ax.set_yticklabels([0, 3, 6, 9])
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2221,10 +2221,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,500])
-    # plt.ylim([0,9000])
-    # plt.yticks([0,3e3,6e3,9e3])
-    # ax.set_yticklabels([0, 3, 6, 9])
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2247,10 +2247,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,500])
-    # plt.ylim([0,9000])
-    # plt.yticks([0,3e3,6e3,9e3])
-    # ax.set_yticklabels([0, 3, 6, 9])
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2273,10 +2273,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,500])
-    # plt.ylim([0,9000])
-    # plt.yticks([0,3e3,6e3,9e3])
-    # ax.set_yticklabels([0, 3, 6, 9])
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -2299,10 +2299,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
-    plt.ylim([0,500])
-    # plt.ylim([0,9000])
-    # plt.yticks([0,3e3,6e3,9e3])
-    # ax.set_yticklabels([0, 3, 6, 9])
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -7901,45 +7901,29 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
         ### check if the mean of the column is NaN
         # np.isnan(np.nanmean(cv[0,:]))
 
+        tries = [1,1,2,3,1]#,4]
+
         ### need 3 points for interp, so start for loop at i = 2 (remember to finish at i-1!)
         ### check if the column mean == nan but next timestep is non-nan:
-        for i in range(2,len(times)-1):
-            mn = np.nanmean(cv[i,:])
-            # print(str(mn))
-            if np.isnan(np.nanmean(cv[i,:])) == True:
-                # print ('column i = ' + str(i) + ' needs to be fixed:')
-                if np.isnan(np.nanmean(cv[i+1,:])) == False:
-                    if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                        # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
-                        cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
-                        mncv = np.nanmean(cv[i,:])
-                        # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
-                    else:
-                        # print ('need to find last non-nan instance...')
-                        if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                            # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
-                            cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
+        for t in tries:
+            for i in range(t+1,len(times)-(1+t)):
+                mn = np.nanmean(cv[i,:])
+                # print(str(mn))
+                if np.isnan(np.nanmean(cv[i,:])) == True:
+                    # print ('column i = ' + str(i) + ' needs to be fixed:')
+                    if np.isnan(np.nanmean(cv[i+t,:])) == False:
+                        if np.isnan(np.nanmean(cv[i-t,:])) == False:        ### if the timestep before is non-nan
+                            # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
+                            cv[i,:] = (cv[i-t,:] + cv[i+t,:]) / 2.0
                             mncv = np.nanmean(cv[i,:])
                             # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
-
-        for i in range(2,len(times)-1):
-            mn = np.nanmean(cv[i,:])
-            # print(str(mn))
-            if np.isnan(np.nanmean(cv[i,:])) == True:
-                # print ('column i = ' + str(i) + ' needs to be fixed:')
-                if np.isnan(np.nanmean(cv[i+1,:])) == False:
-                    if np.isnan(np.nanmean(cv[i-1,:])) == False:        ### if the timestep before is non-nan
-                        # print (str(i-1) + ' and ' + str(i+1) + ' = yes')
-                        cv[i,:] = (cv[i-1,:] + cv[i+1,:]) / 2.0
-                        mncv = np.nanmean(cv[i,:])
-                        # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
-                    else:
-                        # print ('need to find last non-nan instance...')
-                        if np.isnan(np.nanmean(cv[i-2,:])) == False:        ### if the timestep before is non-nan
-                            # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
-                            cv[i,:] = (cv[i-2,:] + cv[i+1,:]) / 2.0
-                            mncv = np.nanmean(cv[i,:])
-                            # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
+                        else:
+                            # print ('need to find last non-nan instance...')
+                            if np.isnan(np.nanmean(cv[i-t-1,:])) == False:        ### if the timestep before is non-nan
+                                # print (str(i-2) + ' and ' + str(i+1) + ' = yes')
+                                cv[i,:] = (cv[i-t-1,:] + cv[i+t,:]) / 2.0
+                                mncv = np.nanmean(cv[i,:])
+                                # print ('new mean for i = ' + str(i) + ' is: ' + str(mncv))
 
         if var == 'Cv':
             vvmin = 0; vvmax = 1
