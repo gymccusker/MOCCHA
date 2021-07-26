@@ -4618,7 +4618,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # time_obs['deck7th'] = calcTime_Mat2DOY(datenums_obs['deck7th'])
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_25H/',out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H//',out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4693,7 +4693,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # data1['surface_net_SW_radiation'].data[data1['surface_net_SW_radiation'].data == 0] = np.nan
     # data2['surface_net_SW_radiation'].data[data2['surface_net_SW_radiation'].data == 0] = np.nan
-    # if out_dir3 != 'OUT_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir3 != 'OUT_R1_25H//': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -4810,7 +4810,7 @@ def plot_scaledBLCv_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_d
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5337,7 +5337,7 @@ def plot_scaledBLCv_JVInv(data1, data2, data3, um_data, ifs_data, misc_data, obs
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5834,7 +5834,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_25H/', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -8489,7 +8489,7 @@ def main():
         ### model directories
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'
-        out_dir3 = 'OUT_25H/'
+        out_dir3 = 'OUT_R1_25H//'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'
         ### cloudnet directories
         cloudnet_um1 = '25_u-cc568_RA2M_CON/'
@@ -8500,7 +8500,7 @@ def main():
         out_dir2 = 'UM_CASIM-100/'
         out_dir3 = 'ECMWF_IFS/'
 
-    ### IFS: OUT_25H/
+    ### IFS: OUT_R1_25H//
     ### 4_u-bg610_RA2M_CON/OUT_R1/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
@@ -8742,7 +8742,7 @@ def main():
         print ('Load raw model data first: ')
         filename_um1 = um_root_dir + out_dir1 + names[i] + 'metum.nc'
         filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
-        if np.logical_or(out_dir3 == 'OUT_25H/',out_dir3 == 'ECMWF_IFS/'):
+        if np.logical_or(out_dir3 == 'OUT_R1_25H//',out_dir3 == 'ECMWF_IFS/'):
             print( '***IFS being compared***')
             ifs_flag = True
             filename_um3 = ifs_root_dir + out_dir3 + names[i] + 'ecmwf.nc'
@@ -9458,8 +9458,9 @@ def main():
         varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
         ### fix IFS nan LWCs
-        ifs_data['model_lwc'][np.isnan(ifs_data['model_lwc'])] = 0.0
-        ifs_data['model_lwc'][ifs_data['model_lwc'] > 1.0] = np.nan
+        for var in varlist_ifs:
+            ifs_data[var][np.isnan(ifs_data[var])] = 0.0
+            ifs_data[var][ifs_data[var] > 1.0] = np.nan
 
         # print(um_data.keys())
 
@@ -9496,56 +9497,61 @@ def main():
         # misc_data['model_lwp'][lwpind] = np.nan
         # ra2t_data['model_lwp'][lwpind] = np.nan
 
+        sep4 = np.where(np.round(ifs_data['time'] == 247.0))
+        print (ifs_data['Cv'][sep4[0]])
+        print (ifs_data['model_snow_Cv_filtered'][sep4[0]])
+        plt.subplot(211);plt.pcolor(ifs_data['Cv'][sep4[0]])
+        plt.subplot(212);plt.pcolor(ifs_data['model_snow_Cv_filtered'][sep4[0]]); plt.show()
 
         ### set colour max as var
-        cmax = 0.3
-        plt.subplot(511)
-        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc_adiabatic'])*1e3,
-            vmin = 0.0, vmax = cmax)
-            #cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('Obs')
-        plt.colorbar()
-
-        plt.subplot(512)
-        plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('UM_RA2M')
-        plt.colorbar()
-
-        plt.subplot(513)
-        plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_lwc'])*1e3,
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
+        # cmax = 1.0
+        # plt.subplot(511)
+        # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+        #     vmin = 0.0, vmax = cmax)
+        #     #cmap = newcmp)
+        # plt.ylabel('Height [m]')
+        # plt.ylim([0,5000])
+        # plt.title('Obs')
+        # plt.colorbar()
+        #
+        # plt.subplot(512)
+        # plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
+        #     vmin = 0.0, vmax = cmax)
+        #     # cmap = newcmp)
+        # plt.ylabel('Height [m]')
+        # plt.ylim([0,5000])
+        # plt.title('UM_RA2M')
+        # plt.colorbar()
+        #
+        # plt.subplot(513)
+        # plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
+        #     vmin = 0.0, vmax = cmax)
+        #     # cmap = newcmp)
+        # plt.ylabel('Height [m]')
+        # plt.ylim([0,5000])
+        # # plt.xlabel('DOY')
+        # plt.title('UM_RA2T')
+        # plt.colorbar()
+        #
+        # plt.subplot(514)
+        # plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
+        #     vmin = 0.0, vmax = cmax)
+        #     # cmap = newcmp)
+        # plt.ylabel('Height [m]')
+        # plt.ylim([0,5000])
+        # plt.title('UM_CASIM-100')
+        # plt.colorbar()
+        #
+        # plt.subplot(515)
+        # plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+        #     vmin = 0.0, vmax = cmax)
+        #     # cmap = newcmp)
+        # plt.ylabel('Height [m]')
+        # plt.ylim([0,5000])
         # plt.xlabel('DOY')
-        plt.title('UM_RA2T')
-        plt.colorbar()
-
-        plt.subplot(514)
-        plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('UM_CASIM-100')
-        plt.colorbar()
-
-        plt.subplot(515)
-        plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.xlabel('DOY')
-        plt.title('ECMWF_IFS')
-        plt.colorbar()
-        plt.show()
+        # plt.title('ECMWF_IFS')
+        # plt.colorbar()
+        # plt.show()
 
     ##################################################################################################################################
     #################################################################
@@ -9598,7 +9604,7 @@ def main():
     if out_dir2 == 'UM_CASIM-100/': label2 = 'UM_CASIM-100'
 
     label3 = 'undefined_label'
-    if out_dir3 == 'OUT_25H/': label3 = 'ECMWF_IFS'
+    if out_dir3 == 'OUT_R1_25H//': label3 = 'ECMWF_IFS'
     if out_dir3[:10] == '26_u-cd847': label3 = 'UM_CASIM-AeroProf'
     if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
     if out_dir3[:10] == '24_u-cc324': label3 = 'UM_RA2T_' + out_dir4[-4:-1]
