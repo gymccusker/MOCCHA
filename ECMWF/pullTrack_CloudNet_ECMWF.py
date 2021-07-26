@@ -867,8 +867,8 @@ def writeNetCDF(data, date, outfile):
     ## Data dimensions
     ###################################
     timem = dataset.createDimension('time', np.size(cube0[0].dim_coords[0].points) - 1)
-    level = dataset.createDimension('model_level_number', np.size(cube0[0].dim_coords[1].points))
-    flevel = dataset.createDimension('model_flux_level', np.size(cube0[9].dim_coords[1].points))
+    level = dataset.createDimension('model_level_number', np.size(cube0[9].dim_coords[1].points))
+    flevel = dataset.createDimension('model_flux_level', np.size(cube0[0].dim_coords[1].points))
     freq = dataset.createDimension('frequency', np.size(cube0[10].dim_coords[0].points))
 
     ###################################
@@ -893,7 +893,7 @@ def writeNetCDF(data, date, outfile):
     level.long_name = 'model_level'
     level.standard_name = 'model_level_number'
     level.positive = 'down'
-    level[:] = cube0[0].dim_coords[1].points
+    level[:] = cube0[9].dim_coords[1].points
 
     #### flux model level
     flevel = dataset.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
@@ -903,7 +903,7 @@ def writeNetCDF(data, date, outfile):
     flevel.units = '1'
     flevel.long_name = 'model_flux_level'
     flevel.positive = 'down'
-    flevel[:] = cube0[9].dim_coords[1].points
+    flevel[:] = cube0[0].dim_coords[1].points
 
     #### frequency
     freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
@@ -930,7 +930,7 @@ def writeNetCDF(data, date, outfile):
     for d in range(0,len(cube0)):
         print ('')
         print ('**** New diagnostic loop ****')
-        for h in range(0,25):
+        for h in range(0,24):
             #### increment ship_ind by 1 to change from python counting (from 0) to 1-38
             file = 'DATA/' + date + '_moccha_ecmwf_' + str(int(data['ship_ind'][h] + 1)).zfill(3) + '.nc'
             print ('')
@@ -939,6 +939,7 @@ def writeNetCDF(data, date, outfile):
                 print ('So loading ' + file + ' only ')
                 cube = iris.load(file)
                 print ('Writing ' + cube[d].var_name)
+                print (cube[d].var_name + str(cube[d]) )
                 if h == 0:
                     if np.size(cube[d].shape) == 0:
                         print ('Diagnostic is a scalar field, so writing hour = ' + str(h))
@@ -954,6 +955,7 @@ def writeNetCDF(data, date, outfile):
                         if cube[d].var_name in fluxes:
                             print ('Diagnostic is on flux levels.')
                             dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_flux_level',), fill_value='-9999')
+                            print ('dat.shape = ' + str(dat.shape))
                         else:
                             print ('Diagnostic is on model levels.')
                             dat = dataset.createVariable(cube[d].var_name, np.float64, ('time','model_level_number',), fill_value='-9999')
@@ -1199,7 +1201,10 @@ def main():
     date = '20180904'
     outfile = date + '_oden_ecmwf.nc'
     print ('Outfile will be: ' + outfile)
-    base_name = date + '_moccha_ecmwf_'
+    if date == '20180904':
+        base_name = '20180904_new/20180904_moccha_ecmwf_'
+    else:
+        base_name = date + '_moccha_ecmwf_'
     names = [None] * 38         ## 'empty' list of 38 elements. can assign index without list.append
     filenames = [None] * 38
     for i in range(0,38):
@@ -1245,7 +1250,7 @@ def main():
     # # -------------------------------------------------------------
     # # Plot data (cartopy map)
     # # -------------------------------------------------------------
-    # data = plot_cartmap(ship_data, data, date)
+    data = plot_cartmap(ship_data, data, date)
 
     END_TIME = time.time()
     print ('******')
