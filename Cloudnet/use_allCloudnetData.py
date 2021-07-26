@@ -9465,12 +9465,12 @@ def main():
         # print(um_data.keys())
 
         ### remove missing Cv obs timesteps (remove from all)
-        # for c in range(0, 1):
-        #     # print(c)
-        #     um_data[varlist_um[c]][nanind, :] = np.nan
-        #     ifs_data[varlist_ifs[c]][nanind, :] = np.nan
-        #     misc_data[varlist_um[c]][nanind, :] = np.nan
-        #     ra2t_data[varlist_um[c]][nanind, :] = np.nan
+        for c in range(0, 1):
+            # print(c)
+            um_data[varlist_um[c]][nanind, :] = np.nan
+            ifs_data[varlist_ifs[c]][nanind, :] = np.nan
+            misc_data[varlist_um[c]][nanind, :] = np.nan
+            ra2t_data[varlist_um[c]][nanind, :] = np.nan
         # ### remove missing water content obs timestep (only remove from water contents)
         # for c in range(1, 3):
         #     um_data[varlist_um[c]][wcind, :] = np.nan
@@ -9497,61 +9497,55 @@ def main():
         # misc_data['model_lwp'][lwpind] = np.nan
         # ra2t_data['model_lwp'][lwpind] = np.nan
 
-        sep4 = np.where(np.round(ifs_data['time'] == 247.0))
-        print (ifs_data['Cv'][sep4[0]])
-        print (ifs_data['model_snow_Cv_filtered'][sep4[0]])
-        plt.subplot(211);plt.pcolor(ifs_data['Cv'][sep4[0]])
-        plt.subplot(212);plt.pcolor(ifs_data['model_snow_Cv_filtered'][sep4[0]]); plt.show()
+        ## set colour max as var
+        cmax = 1.0
+        plt.subplot(511)
+        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc_adiabatic']),
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('Obs')
+        plt.colorbar()
 
-        ### set colour max as var
-        # cmax = 1.0
-        # plt.subplot(511)
-        # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
-        #     vmin = 0.0, vmax = cmax)
-        #     #cmap = newcmp)
-        # plt.ylabel('Height [m]')
-        # plt.ylim([0,5000])
-        # plt.title('Obs')
-        # plt.colorbar()
-        #
-        # plt.subplot(512)
-        # plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
-        #     vmin = 0.0, vmax = cmax)
-        #     # cmap = newcmp)
-        # plt.ylabel('Height [m]')
-        # plt.ylim([0,5000])
-        # plt.title('UM_RA2M')
-        # plt.colorbar()
-        #
-        # plt.subplot(513)
-        # plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
-        #     vmin = 0.0, vmax = cmax)
-        #     # cmap = newcmp)
-        # plt.ylabel('Height [m]')
-        # plt.ylim([0,5000])
-        # # plt.xlabel('DOY')
-        # plt.title('UM_RA2T')
-        # plt.colorbar()
-        #
-        # plt.subplot(514)
-        # plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
-        #     vmin = 0.0, vmax = cmax)
-        #     # cmap = newcmp)
-        # plt.ylabel('Height [m]')
-        # plt.ylim([0,5000])
-        # plt.title('UM_CASIM-100')
-        # plt.colorbar()
-        #
-        # plt.subplot(515)
-        # plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
-        #     vmin = 0.0, vmax = cmax)
-        #     # cmap = newcmp)
-        # plt.ylabel('Height [m]')
-        # plt.ylim([0,5000])
+        plt.subplot(512)
+        plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc']),
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('UM_RA2M')
+        plt.colorbar()
+
+        plt.subplot(513)
+        plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_lwc']),
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
         # plt.xlabel('DOY')
-        # plt.title('ECMWF_IFS')
-        # plt.colorbar()
-        # plt.show()
+        plt.title('UM_RA2T')
+        plt.colorbar()
+
+        plt.subplot(514)
+        plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc']),
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('UM_CASIM-100')
+        plt.colorbar()
+
+        plt.subplot(515)
+        plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc']),
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.xlabel('DOY')
+        plt.title('ECMWF_IFS')
+        plt.colorbar()
+        plt.show()
 
     ##################################################################################################################################
     #################################################################
