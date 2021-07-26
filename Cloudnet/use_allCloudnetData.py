@@ -7997,7 +7997,8 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
     ### build nanmask
     nanmask = np.zeros([np.size(obs_data['time']), np.size(obs_data['Cv'],1)])
     nanindex = np.zeros([np.size(obs_data['time'])])
-    wcindex = np.zeros([np.size(obs_data['time'])])
+    lwcindex = np.zeros([np.size(obs_data['time'])])
+    iwcindex = np.zeros([np.size(obs_data['time'])])
     wc0index = np.zeros([np.size(obs_data['time'])])
     lwpindex = np.zeros([np.size(obs_data['time'])])
     # print(nanindex.shape)
@@ -8007,19 +8008,23 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanmask[i-1,:] = 1.0
             nanmask[i+1,:] = 1.0
             nanindex[i] = 1
-        if np.logical_and(np.isnan(np.nanmean(obs_data['lwc_adiabatic'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
-            wcindex[i] = 1
+        # if np.logical_or(np.isnan(np.nanmean(obs_data['lwc_adiabatic'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
+        if np.isnan(np.nanmean(obs_data['lwc_adiabatic'][i,:], 0)):
+            lwcindex[i] = 1
+        if np.isnan(np.nanmean(obs_data['iwc'][i,:], 0)):
+            iwcindex[i] = 1
         elif np.logical_and(np.nanmean(obs_data['lwc'][i,:], 0) == 0, np.nanmean(obs_data['iwc'][i,:], 0) == 0):       ## if both wc profiles contain only zeros
             wc0index[i] = 1
         elif np.isnan(obs_data['lwp'][i,0]):       ## if there are only nans in the lwp timeseries
             lwpindex[i] = 1
     nanmask[nanmask == 0.0] = np.nan
     nanind = np.where(nanindex == 1)
-    wcind = np.where(wcindex == 1)
+    lwcind = np.where(lwcindex == 1)
+    iwcind = np.where(iwcindex == 1)
     wc0ind = np.where(wc0index == 1)
     lwpind = np.where(lwpindex == 1)
 
-    return nanind, nanmask, wcind, wc0ind, lwpind
+    return nanind, nanmask, lwcind, iwcind, wc0ind, lwpind
 
 def fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs):
 
@@ -9450,7 +9455,7 @@ def main():
     ## -------------------------------------------------------------
     obs_data, um_data, misc_data, ifs_data, ra2t_data = setFlags(obs_data, um_data, misc_data, ifs_data, ra2t_data, obs_var_list, um_var_list, misc_var_list, ifs_var_list, ra2t_var_list)
     if obs_testing_flag != 1: obs_data = interpCloudnet(obs_data, month_flag, missing_files, doy)
-    if obs_testing_flag != 1: nanind, nanmask, wcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
+    if obs_testing_flag != 1: nanind, nanmask, lwcind, iwcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
     if obs_testing_flag != 1:
         varlist_obs = ['Cv', 'lwc_adiabatic', 'iwc', 'lwp']
@@ -9471,12 +9476,19 @@ def main():
             ifs_data[varlist_ifs[c]][nanind, :] = np.nan
             misc_data[varlist_um[c]][nanind, :] = np.nan
             ra2t_data[varlist_um[c]][nanind, :] = np.nan
-        # ### remove missing water content obs timestep (only remove from water contents)
-        # for c in range(1, 3):
-        #     um_data[varlist_um[c]][wcind, :] = np.nan
-        #     ifs_data[varlist_ifs[c]][wcind, :] = np.nan
-        #     misc_data[varlist_um[c]][wcind, :] = np.nan
-        #     ra2t_data[varlist_um[c]][wcind, :] = np.nan
+        # ### remove missing liquid water content obs timestep
+        for c in range(1, 2):
+            um_data[varlist_um[c]][lwcind, :] = np.nan
+            ifs_data[varlist_ifs[c]][lwcind, :] = np.nan
+            misc_data[varlist_um[c]][lwcind, :] = np.nan
+            ra2t_data[varlist_um[c]][lwcind, :] = np.nan
+        # ### remove missing liquid water content obs timestep
+        for c in range(2, 3):
+            um_data[varlist_um[c]][iwcind, :] = np.nan
+            ifs_data[varlist_ifs[c]][iwcind, :] = np.nan
+            misc_data[varlist_um[c]][iwcind, :] = np.nan
+            ra2t_data[varlist_um[c]][iwcind, :] = np.nan
+
         # ### remove zeroed water content on obs timestep (only remove from water contents)
         # for c in range(1, 3):
         #     obs_data[varlist_obs[c]][wc0ind, :] = np.nan
@@ -9497,55 +9509,57 @@ def main():
         # misc_data['model_lwp'][lwpind] = np.nan
         # ra2t_data['model_lwp'][lwpind] = np.nan
 
-        ## set colour max as var
-        cmax = 1.0
-        plt.subplot(511)
-        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc_adiabatic']),
-            vmin = 0.0, vmax = cmax)
-            #cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('Obs')
-        plt.colorbar()
-
-        plt.subplot(512)
-        plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc']),
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('UM_RA2M')
-        plt.colorbar()
-
-        plt.subplot(513)
-        plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_lwc']),
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        # plt.xlabel('DOY')
-        plt.title('UM_RA2T')
-        plt.colorbar()
-
-        plt.subplot(514)
-        plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc']),
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.title('UM_CASIM-100')
-        plt.colorbar()
-
-        plt.subplot(515)
-        plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc']),
-            vmin = 0.0, vmax = cmax)
-            # cmap = newcmp)
-        plt.ylabel('Height [m]')
-        plt.ylim([0,5000])
-        plt.xlabel('DOY')
-        plt.title('ECMWF_IFS')
-        plt.colorbar()
-        plt.show()
+            # ## set colour max as var
+            # if varlist_obs[c] == 'Cv': cmax = 1
+            # if varlist_obs[c] == 'lwc_adiabatic': cmax = 1e-4
+            # if varlist_obs[c] == 'iwc': cmax = 1e-5
+            # plt.subplot(511)
+            # plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data[varlist_obs[c]]),
+            #     vmin = 0.0, vmax = cmax)
+            #     #cmap = newcmp)
+            # plt.ylabel('Height [m]')
+            # plt.ylim([0,5000])
+            # plt.title('Obs')
+            # plt.colorbar()
+            #
+            # plt.subplot(512)
+            # plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data[varlist_um[c]]),
+            #     vmin = 0.0, vmax = cmax)
+            #     # cmap = newcmp)
+            # plt.ylabel('Height [m]')
+            # plt.ylim([0,5000])
+            # plt.title('UM_RA2M')
+            # plt.colorbar()
+            #
+            # plt.subplot(513)
+            # plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data[varlist_um[c]]),
+            #     vmin = 0.0, vmax = cmax)
+            #     # cmap = newcmp)
+            # plt.ylabel('Height [m]')
+            # plt.ylim([0,5000])
+            # # plt.xlabel('DOY')
+            # plt.title('UM_RA2T')
+            # plt.colorbar()
+            #
+            # plt.subplot(514)
+            # plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data[varlist_um[c]]),
+            #     vmin = 0.0, vmax = cmax)
+            #     # cmap = newcmp)
+            # plt.ylabel('Height [m]')
+            # plt.ylim([0,5000])
+            # plt.title('UM_CASIM-100')
+            # plt.colorbar()
+            #
+            # plt.subplot(515)
+            # plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data[varlist_ifs[c]]),
+            #     vmin = 0.0, vmax = cmax)
+            #     # cmap = newcmp)
+            # plt.ylabel('Height [m]')
+            # plt.ylim([0,5000])
+            # plt.xlabel('DOY')
+            # plt.title('ECMWF_IFS')
+            # plt.colorbar()
+            # plt.show()
 
     ##################################################################################################################################
     #################################################################
