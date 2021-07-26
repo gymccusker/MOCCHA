@@ -893,7 +893,7 @@ def writeNetCDF(data, date, outfile):
     level.long_name = 'model_level'
     level.standard_name = 'model_level_number'
     level.positive = 'down'
-    level[:] = cube0[1].dim_coords[1].points
+    level[:] = cube0[0].dim_coords[1].points
 
     #### flux model level
     flevel = dataset.createVariable('model_flux_level', np.float64, ('model_flux_level',), fill_value='-9999')
@@ -903,7 +903,7 @@ def writeNetCDF(data, date, outfile):
     flevel.units = '1'
     flevel.long_name = 'model_flux_level'
     flevel.positive = 'down'
-    flevel[:] = cube0[3].dim_coords[1].points
+    flevel[:] = cube0[9].dim_coords[1].points
 
     #### frequency
     freq = dataset.createVariable('frequency', np.float64, ('frequency',), fill_value='-9999')
@@ -913,7 +913,7 @@ def writeNetCDF(data, date, outfile):
     freq.units = 'GHz'
     freq.long_name = 'microwave_frequency'
     freq.missing_value = -999.0
-    freq[:] = cube0[2].dim_coords[0].points
+    freq[:] = cube0[10].dim_coords[0].points
 
 
     ###################################
