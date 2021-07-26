@@ -8927,8 +8927,7 @@ def main():
                     nanarray[:] = np.nan
                     time_um1 = np.append(time_um1, nanarray)
                     time_um2 = np.append(time_um2, nanarray)
-                    if ifs_flag: time_um3 = np.append(time_um3, nanarray)
-                    if not ifs_flag: time_um3 = np.append(time_um3, nanarray)
+                    time_um3 = np.append(time_um3, nanarray)
                     time_um4 = np.append(time_um4, nanarray)
                     for j in range(0,len(var_list1)):
                         if np.ndim(nc1.variables[var_list1[j]]) == 0:     # ignore horizontal_resolution
@@ -9131,7 +9130,7 @@ def main():
                             ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],nanarray,0)
                         else:
                             nanarray = np.zeros([24,137])
-                            nanarray[:] = np.nan
+                            nanarray[:] = 1000.0    ## nan'd later - nan-ing here didn#t work...?
                             ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],nanarray,0)
                 print ('Filling ra2t_data...')
                 for j in range(0,len(ra2t_var_list[c])):
@@ -9345,9 +9344,23 @@ def main():
                     ### --------------------------------------------------------------------
                     for j in range(0,len(ifs_var_list[c])):
                         if np.ndim(cn_nc3[c].variables[ifs_var_list[c][j]]) == 1:
-                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc3[c].variables[ifs_var_list[c][j]][:])
+                            for t in cn_nc3[c].variables['time'][:]:
+                                tmpvar = np.zeros(np.size(cn_nc3[c].variables[ifs_var_list[c][j]]))
+                                tmp = np.copy(cn_nc3[c].variables[ifs_var_list[c][j]][t].data)
+                                tmp[tmp == -999.0] = np.nan
+                                # print (tmp)
+                                tmpvar[int(t)] = tmp
+                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],tmpvar)
                         else:
-                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],cn_nc3[c].variables[ifs_var_list[c][j]][:],0)
+                            tmpvar = np.zeros([np.size(cn_nc3[c].variables[ifs_var_list[c][j]],0), np.size(cn_nc3[c].variables[ifs_var_list[c][j]],1)])
+                            for t in cn_nc3[c].variables['time'][:]:
+                                tmp = np.copy(cn_nc3[c].variables[ifs_var_list[c][j]][t,:].data)
+                                # print (tmp.shape)
+                                tmp[tmp == -999.0] = np.nan
+                                # print (tmp)
+                                tmpvar[int(t),:] = tmp
+                            ifs_data[ifs_var_list[c][j]] = np.append(ifs_data[ifs_var_list[c][j]],tmpvar,0)
+                        print (ifs_data[ifs_var_list[c][j]].shape)
                     ### --------------------------------------------------------------------
                     ### append rest of UM_RA2T data
                     ### --------------------------------------------------------------------
@@ -9444,21 +9457,25 @@ def main():
         varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
         varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
+        ### fix IFS nan LWCs
+        ifs_data['model_lwc'][np.isnan(ifs_data['model_lwc'])] = 0.0
+        ifs_data['model_lwc'][ifs_data['model_lwc'] > 1.0] = np.nan
+
         # print(um_data.keys())
 
         ### remove missing Cv obs timesteps (remove from all)
-        for c in range(0, 1):
-            # print(c)
-            um_data[varlist_um[c]][nanind, :] = np.nan
-            ifs_data[varlist_ifs[c]][nanind, :] = np.nan
-            misc_data[varlist_um[c]][nanind, :] = np.nan
-            ra2t_data[varlist_um[c]][nanind, :] = np.nan
-        ### remove missing water content obs timestep (only remove from water contents)
-        for c in range(1, 3):
-            um_data[varlist_um[c]][wcind, :] = np.nan
-            ifs_data[varlist_ifs[c]][wcind, :] = np.nan
-            misc_data[varlist_um[c]][wcind, :] = np.nan
-            ra2t_data[varlist_um[c]][wcind, :] = np.nan
+        # for c in range(0, 1):
+        #     # print(c)
+        #     um_data[varlist_um[c]][nanind, :] = np.nan
+        #     ifs_data[varlist_ifs[c]][nanind, :] = np.nan
+        #     misc_data[varlist_um[c]][nanind, :] = np.nan
+        #     ra2t_data[varlist_um[c]][nanind, :] = np.nan
+        # ### remove missing water content obs timestep (only remove from water contents)
+        # for c in range(1, 3):
+        #     um_data[varlist_um[c]][wcind, :] = np.nan
+        #     ifs_data[varlist_ifs[c]][wcind, :] = np.nan
+        #     misc_data[varlist_um[c]][wcind, :] = np.nan
+        #     ra2t_data[varlist_um[c]][wcind, :] = np.nan
         # ### remove zeroed water content on obs timestep (only remove from water contents)
         # for c in range(1, 3):
         #     obs_data[varlist_obs[c]][wc0ind, :] = np.nan
@@ -9472,12 +9489,63 @@ def main():
         #     ifs_data[varlist_ifs[c]][lwpind, :] = np.nan
         #     misc_data[varlist_um[c]][lwpind, :] = np.nan
         #     ra2t_data[varlist_um[c]][lwpind, :] = np.nan
-        #
+
         ### lwp only 1d
-        um_data['model_lwp'][lwpind] = np.nan
-        ifs_data['model_lwp'][lwpind] = np.nan
-        misc_data['model_lwp'][lwpind] = np.nan
-        ra2t_data['model_lwp'][lwpind] = np.nan
+        # um_data['model_lwp'][lwpind] = np.nan
+        # ifs_data['model_lwp'][lwpind] = np.nan
+        # misc_data['model_lwp'][lwpind] = np.nan
+        # ra2t_data['model_lwp'][lwpind] = np.nan
+
+
+        ### set colour max as var
+        cmax = 0.3
+        plt.subplot(511)
+        plt.pcolor(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['lwc_adiabatic'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            #cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('Obs')
+        plt.colorbar()
+
+        plt.subplot(512)
+        plt.pcolor(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('UM_RA2M')
+        plt.colorbar()
+
+        plt.subplot(513)
+        plt.pcolor(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        # plt.xlabel('DOY')
+        plt.title('UM_RA2T')
+        plt.colorbar()
+
+        plt.subplot(514)
+        plt.pcolor(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.title('UM_CASIM-100')
+        plt.colorbar()
+
+        plt.subplot(515)
+        plt.pcolor(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_lwc'])*1e3,
+            vmin = 0.0, vmax = cmax)
+            # cmap = newcmp)
+        plt.ylabel('Height [m]')
+        plt.ylim([0,5000])
+        plt.xlabel('DOY')
+        plt.title('ECMWF_IFS')
+        plt.colorbar()
+        plt.show()
 
     ##################################################################################################################################
     #################################################################
