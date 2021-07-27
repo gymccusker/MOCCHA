@@ -894,7 +894,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_rangeGate-pl1.png'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
-        fileout = 'FIGS/PaperSubmission_Figure4c.png'
+        fileout = 'FIGS/PaperSubmission_Figure4c.svg'
     # plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -1364,7 +1364,7 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-V7_RA2M-25_RA2T_IFS_CASIM-100-GA6alb_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
-        fileout = 'FIGS/PaperSubmission_Figure4d.png'
+        fileout = 'FIGS/PaperSubmission_Figure4d.svg'
     # plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -9957,7 +9957,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
 
     # -------------------------------------------------------------
