@@ -3069,7 +3069,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('Obs = ')
     print (np.nanmean(obs_data['lwp'][p6,0]*1e3))
 
-def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1):
+def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, lwcind, iwcind, out_dir1):
 
     from sklearn.metrics import r2_score
     from sklearn import linear_model
@@ -3199,18 +3199,24 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
             elif ifs_data['model_twc'][t,k] >= twc_thresh_ifs[k]:
                 mask3[t,k] = 1.0
 
-    mask0[nanind] = np.nan
-    mask1[nanind] = np.nan
-    mask2[nanind] = np.nan
-    mask3[nanind] = np.nan
-    mask4[nanind] = np.nan
+    # mask0[nanind] = np.nan
+    # mask1[nanind] = np.nan
+    # mask2[nanind] = np.nan
+    # mask3[nanind] = np.nan
+    # mask4[nanind] = np.nan
 
-    mask0[wcind] = np.nan
-    mask1[wcind] = np.nan
-    mask2[wcind] = np.nan
-    mask3[wcind] = np.nan
-    mask4[wcind] = np.nan
 
+    mask0[lwcind] = np.nan
+    mask1[lwcind] = np.nan
+    mask2[lwcind] = np.nan
+    mask3[lwcind] = np.nan
+    mask4[lwcind] = np.nan
+
+    mask0[iwcind] = np.nan
+    mask1[iwcind] = np.nan
+    mask2[iwcind] = np.nan
+    mask3[iwcind] = np.nan
+    mask4[iwcind] = np.nan
 
 
     # cloud_fractions = [obs_data['Cv'][:-3,:], um_data['model_Cv_filtered'][:-3,:], misc_data['model_Cv_filtered'][:-3,:], ifs_data['model_snow_Cv_filtered'][:-3,:], ra2t_data['model_Cv_filtered'][:-3,:]]
@@ -3869,8 +3875,10 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.set_xticklabels([-0.5, 0, 0.5], fontsize = 10)
     cbaxes.xaxis.set_label_position('top')
 
-    plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_RA2M-25_cCvlt3km-ObsQF70_lt155m-NaN.svg', dpi = 300)
-    plt.show()
+    # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_RA2M-25_cCvlt3km-ObsQF70_lt155m-NaN.svg', dpi = 300)
+    # plt.savefig('FIGS/PaperSubmission_Figure6.png', dpi = 300)
+    # plt.show()
+    plt.close()
 
 
     print (np.nanmax(data2['biases']['LWP']))
@@ -9964,8 +9972,8 @@ def main():
     # plot bivariate distributions
     #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
-    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
-    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, wcind, out_dir1)
+    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, lwcind, iwcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
