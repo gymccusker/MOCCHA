@@ -697,7 +697,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     ###----------------------------------------------------------------
     obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
     obs_data['twc_ad'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
-    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -757,7 +757,7 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
                     obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
                 if obs_data['twc_ad_nolwp'][t,k] < twc_thresh_um[k]:
                     obs_data['twc_ad_nolwp'][t,k] = np.nan
-                    obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'][t,k] = np.nan
+                    obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
                 um_data['model_lwc'][t,k] = np.nan
@@ -2851,8 +2851,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
-    # obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
-    obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -5899,7 +5899,7 @@ def plot_scaledBL_thetaE(data1, data2, data3, data4, um_data, ifs_data, misc_dat
     ###----------------------------------------------------------------
 
     obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
-    # obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -7757,8 +7757,8 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
     ###         Calculate total water content
     ###----------------------------------------------------------------
     obs_data['twc'] = obs_data['lwc'] + obs_data['iwc']
-    obs_data['twc_ad'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
-    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
+    obs_data['twc_ad_nolwp'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -7815,10 +7815,10 @@ def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy,
                     obs_data['lwc'][t,k] = np.nan
                 if obs_data['twc_ad'][t,k] < twc_thresh_um[k]:
                     obs_data['twc_ad'][t,k] = np.nan
-                    obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
+                    obs_data['lwc_adiabatic'][t,k] = np.nan
                 if obs_data['twc_ad_nolwp'][t,k] < twc_thresh_um[k]:
                     obs_data['twc_ad_nolwp'][t,k] = np.nan
-                    obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'][t,k] = np.nan
+                    obs_data['lwc_adiabatic_inc_nolwp'][t,k] = np.nan
             if um_data['model_twc'][t,k] < twc_thresh_um[k]:
                 um_data['model_twc'][t,k] = np.nan
                 um_data['model_lwc'][t,k] = np.nan
@@ -7893,7 +7893,7 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
     print ('*******')
     print ('')
 
-    varlist = ['Cv', 'lwc_adiabatic', 'lwc_adiabatic_inc_nolwp_inc_nolwp', 'iwc']
+    varlist = ['Cv', 'lwc_adiabatic', 'lwc_adiabatic_inc_nolwp', 'iwc']
 
     for var in varlist:
         ### remove bad and flagged data
@@ -8005,7 +8005,7 @@ def buildNaNMask(obs_data, month_flag, missing_files, doy):
             nanmask[i+1,:] = 1.0
             nanindex[i] = 1
         # if np.logical_or(np.isnan(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'][i,:], 0)), np.isnan(np.nanmean(obs_data['iwc'][i,:], 0))):       ## if both wc profiles contain only nans
-        if np.isnan(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp_inc_nolwp'][i,:], 0)):
+        if np.isnan(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'][i,:], 0)):
             lwcindex[i] = 1
         if np.isnan(np.nanmean(obs_data['iwc'][i,:], 0)):
             iwcindex[i] = 1
@@ -9174,7 +9174,7 @@ def main():
             ### --------------------------------------------------------------------
             #### LOAD IN SPECIFIC DIAGNOSTICS
             obs_var_list = [['Cv', 'Cv_adv'],
-                        ['lwc','lwp','lwc_adiabatic_inc_nolwp','lwc_adiabatic_inc_nolwp_inc_nolwp'],
+                        ['lwc','lwp','lwc_adiabatic','lwc_adiabatic_inc_nolwp'],
                         ['height','iwc']]
 
             um_var_list = [['Cv','model_Cv_filtered','model_temperature'],
@@ -9194,7 +9194,7 @@ def main():
 
             if obs_testing_flag == 1:
                 ifs_var_list = [['Cv', 'Cv_adv'],
-                            ['lwc','lwp','lwc_adiabatic_inc_nolwp','lwc_adiabatic_inc_nolwp_inc_nolwp'],
+                            ['lwc','lwp','lwc_adiabatic','lwc_adiabatic_inc_nolwp'],
                             ['height','iwc']]
             else:
                 ifs_var_list = [['Cv','model_snow_Cv_filtered','model_temperature'],
