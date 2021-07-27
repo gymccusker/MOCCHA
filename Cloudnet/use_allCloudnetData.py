@@ -2282,9 +2282,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
-        fileout = 'FIGS/PaperSubmission_Figure3.svg'
-    plt.savefig(fileout)
-    plt.show()
+        fileout = 'FIGS/PaperSubmission_Figure3.png'
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
     #### ---------------------------------------------------------------------------------------------------
     #### ---------------------------------------------------------------------------------------------------
