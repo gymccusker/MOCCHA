@@ -1878,6 +1878,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     newcmp = ListedColormap(newcolors)
 
     intervals = np.arange(0,0.28,0.0005)
+    levs = [1e-4, 1e-3, 1e-2, 1e-1, 1e0]
 
     ##################################################
     ##################################################
@@ -1901,11 +1902,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(511)
     ax = plt.gca()
-    # ax.set_facecolor('aliceblue')
+    ax.set_facecolor(greyclr)
     img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
-        intervals,
         # locator=ticker.LogLocator(base = 10.0),
-        # levels=[1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        # intervals,
+        levels=levs, norm = LogNorm(),
         cmap = newcmp)
         # )
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1929,11 +1930,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(512)
     ax = plt.gca()
-    # ax.set_facecolor('aliceblue')
+    ax.set_facecolor(greyclr)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        intervals,
+        levels=levs, norm = LogNorm(),
+        # intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
@@ -1956,11 +1957,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(513)
     ax = plt.gca()
-    # ax.set_facecolor('aliceblue')
+    ax.set_facecolor(greyclr)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        intervals,
+        levels=levs, norm = LogNorm(),
+        # intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
@@ -1982,11 +1983,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(514)
     ax = plt.gca()
-    # ax.set_facecolor('gainsboro')
+    ax.set_facecolor(greyclr)
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        intervals,
+        levels=levs, norm = LogNorm(),
+        # intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
@@ -2008,11 +2009,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     plt.subplot(515)
     ax = plt.gca()
-    # ax.set_facecolor('aliceblue')
+    ax.set_facecolor(greyclr)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        intervals,
+        levels=levs, norm = LogNorm(),
+        # intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
