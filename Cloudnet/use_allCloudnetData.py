@@ -1855,8 +1855,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ###----------------------------------------------------------------
     ###         Calculate total water content
     ###----------------------------------------------------------------
-    # obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
     obs_data['twc'] = obs_data['lwc_adiabatic_inc_nolwp'] + obs_data['iwc']
+    obs_data['twc_ad'] = obs_data['lwc_adiabatic'] + obs_data['iwc']
     um_data['model_twc'] = um_data['model_lwc'] + um_data['model_iwc_filtered']
     misc_data['model_twc'] = misc_data['model_lwc'] + misc_data['model_iwc_filtered']
     ifs_data['model_twc'] = ifs_data['model_lwc'] + ifs_data['model_snow_iwc_filtered']
@@ -1874,8 +1874,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     viridis = mpl_cm.get_cmap('viridis', 256)
     newcolors = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
+    newcolors[:1, :] = greyclr
     newcmp = ListedColormap(newcolors)
+
+    intervals = np.arange(0,0.28,0.0005)
 
     ##################################################
     ##################################################
@@ -1901,9 +1903,9 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ax = plt.gca()
     # ax.set_facecolor('aliceblue')
     img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
-        # np.arange(0,0.31,0.01),
+        intervals,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        # levels=[1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
         cmap = newcmp)
         # )
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
@@ -1911,7 +1913,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            # hatch = 'x',
+            hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1930,8 +1932,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     # ax.set_facecolor('aliceblue')
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        # np.arange(0,0.31,0.001),
+        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
@@ -1939,7 +1941,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            # hatch = 'x',
+            hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1957,8 +1959,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     # ax.set_facecolor('aliceblue')
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        # np.arange(0,0.31,0.001),
+        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
@@ -1966,7 +1968,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            # hatch = 'x',
+            hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1983,8 +1985,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     # ax.set_facecolor('gainsboro')
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        # np.arange(0,0.31,0.001),
+        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
@@ -1992,7 +1994,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            # hatch = 'x',
+            hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -2009,8 +2011,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     # ax.set_facecolor('aliceblue')
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
-        levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
-        # np.arange(0,0.31,0.001),
+        # levels=[1e-4, 1e-3, 1e-2, 1e-1, 1e0], norm = LogNorm(),
+        intervals,
         cmap = newcmp)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
@@ -2018,7 +2020,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            # hatch = 'x',
+            hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -7938,24 +7940,24 @@ def interpCloudnet(obs_data, month_flag, missing_files, doy):
         if var == 'iwc':
             vvmin = 0; vvmax = 1e-4
 
-        fig = plt.figure(figsize=(12,6))
-        plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
-                hspace = 0.3, wspace = 0.3)
-        plt.subplot(211)
-        plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data[var].data), vmin = vvmin, vmax = vvmax)
-        plt.xlim([226,258])
-        plt.ylim([0,3000])
-        plt.ylabel('Z [m]')
-        plt.title('original')
-        plt.subplot(212)
-        plt.pcolor(times,height,np.transpose(cv), vmin = vvmin, vmax = vvmax)
-        plt.xlim([226,258])
-        plt.ylim([0,3000])
-        plt.xlabel('DOY')
-        plt.ylabel('Z [m]')
-        plt.title('interpolated')
-        # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
-        plt.show()
+        # fig = plt.figure(figsize=(12,6))
+        # plt.subplots_adjust(top = 0.9, bottom = 0.15, right = 0.98, left = 0.12,
+        #         hspace = 0.3, wspace = 0.3)
+        # plt.subplot(211)
+        # plt.pcolor(obs_data['time'].data,obs_data['height'][0,:].data,np.transpose(obs_data[var].data), vmin = vvmin, vmax = vvmax)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.ylabel('Z [m]')
+        # plt.title('original')
+        # plt.subplot(212)
+        # plt.pcolor(times,height,np.transpose(cv), vmin = vvmin, vmax = vvmax)
+        # plt.xlim([226,258])
+        # plt.ylim([0,3000])
+        # plt.xlabel('DOY')
+        # plt.ylabel('Z [m]')
+        # plt.title('interpolated')
+        # # plt.savefig('FIGS/Cv_TS_orig_interpd.png')
+        # plt.show()
 
 
         # fig = plt.figure(figsize=(12,6))
@@ -9454,7 +9456,7 @@ def main():
     if obs_testing_flag != 1: nanind, nanmask, lwcind, iwcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
     if obs_testing_flag != 1:
-        varlist_obs = ['Cv', 'lwc_adiabatic_inc_nolwp', 'iwc', 'lwp']
+        varlist_obs = ['Cv', 'lwc_adiabatic','lwc_adiabatic_inc_nolwp', 'iwc', 'lwp']
         varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
         varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
 
@@ -9682,7 +9684,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
