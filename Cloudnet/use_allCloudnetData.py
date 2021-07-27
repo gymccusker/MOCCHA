@@ -1872,13 +1872,18 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     cmax = 0.3
 
     viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
+    newcolors1 = viridis(np.linspace(0, 1, 256))
+    newcolors2 = viridis(np.linspace(0, 1, 256))
     greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:1, :] = greyclr
-    newcmp = ListedColormap(newcolors)
+    newcolors1[:1, :] = greyclr
+    newcolors2[:20, :] = greyclr
+    newcmp1 = ListedColormap(newcolors1)
+    newcmp2 = ListedColormap(newcolors2)
 
     intervals = np.arange(0,0.28,0.0005)
     levs = [1e-4, 1e-3, 1e-2, 1e-1, 1e0]
+
+    bkgrnd = greyclr
 
     ##################################################
     ##################################################
@@ -1887,7 +1892,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     ##################################################
 
     SMALL_SIZE = 12
-    MED_SIZE = 15
+    MED_SIZE = 12
     LARGE_SIZE = 16
 
     plt.rc('font',size=MED_SIZE)
@@ -1896,26 +1901,35 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.rc('xtick',labelsize=MED_SIZE)
     plt.rc('ytick',labelsize=MED_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    fig = plt.figure(figsize=(9.5,13))
-    plt.subplots_adjust(top = 0.9, bottom = 0.06, right = 0.98, left = 0.08,
-            hspace = 0.4, wspace = 0.2)
+    fig = plt.figure(figsize=(12,8))
+    plt.subplots_adjust(top = 0.9, bottom = 0.08, right = 0.94, left = 0.08,
+            hspace = 0.4, wspace = 0.13)
 
-    plt.subplot(511)
+    plt.subplot(521)
     ax = plt.gca()
-    ax.set_facecolor(greyclr)
+    ax.set_facecolor(bkgrnd)
     img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), twc0,
         # locator=ticker.LogLocator(base = 10.0),
         # intervals,
         levels=levs, norm = LogNorm(),
-        cmap = newcmp)
+        cmap = newcmp1)
         # )
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'white',
-            # hatch = 'x',
-            zorder = 2)
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['twc'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -1923,27 +1937,36 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('Obs-' + obs_switch + 'grid')
-    cbaxes = fig.add_axes([0.225, 0.95, 0.6, 0.015])
+    # plt.title('Obs-' + obs_switch + 'grid')
+    cbaxes = fig.add_axes([0.13, 0.95, 0.3, 0.015])
     cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
     plt.title('TWC [g m$^{-3}$]')
 
-    plt.subplot(512)
+    plt.subplot(523)
     ax = plt.gca()
-    ax.set_facecolor(greyclr)
+    ax.set_facecolor(bkgrnd)
     plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
         levels=levs, norm = LogNorm(),
         # intervals,
-        cmap = newcmp)
+        cmap = newcmp1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'white',
-            # hatch = 'x',
-            zorder = 2)
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['twc'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -1951,26 +1974,35 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('ECMWF_IFS')
+    # plt.title('ECMWF_IFS')
     # plt.colorbar()
 
 
-    plt.subplot(513)
+    plt.subplot(525)
     ax = plt.gca()
-    ax.set_facecolor(greyclr)
+    ax.set_facecolor(bkgrnd)
     plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
         levels=levs, norm = LogNorm(),
         # intervals,
-        cmap = newcmp)
+        cmap = newcmp1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'white',
-            # hatch = 'x',
-            zorder = 2)
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['twc'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -1978,25 +2010,34 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_CASIM-100')
+    # plt.title('UM_CASIM-100')
     # plt.colorbar()
 
-    plt.subplot(514)
+    plt.subplot(527)
     ax = plt.gca()
-    ax.set_facecolor(greyclr)
+    ax.set_facecolor(bkgrnd)
     plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
         levels=levs, norm = LogNorm(),
         # intervals,
-        cmap = newcmp)
+        cmap = newcmp1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data4['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
-    for file in missing_files:
-        ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
-            facecolor = 'white',
-            # hatch = 'x',
-            zorder = 2)
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['twc'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -2004,17 +2045,17 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_RA2T')
+    # plt.title('UM_RA2T')
     # plt.colorbar()
 
-    plt.subplot(515)
+    plt.subplot(5,2,9)
     ax = plt.gca()
-    ax.set_facecolor(greyclr)
+    ax.set_facecolor(bkgrnd)
     plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_twc'])*1e3,
         # locator=ticker.LogLocator(base = 10.0),
         levels=levs, norm = LogNorm(),
         # intervals,
-        cmap = newcmp)
+        cmap = newcmp1)
     # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
     # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
     nans = ax.get_ylim()
@@ -2023,6 +2064,15 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
             facecolor = 'white',
             # hatch = 'x',
             zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['twc'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks([0,3e3,6e3,9e3])
@@ -2030,10 +2080,200 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     plt.xlim([doy[0], doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-    plt.title('UM_RA2M')
+    # plt.title('UM_RA2M')
+    # plt.colorbar()
+    plt.xlabel('Date')
+
+    #### ------------------------------------------------------------------------------------
+
+    plt.subplot(522)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    img = plt.contourf(obs_data['time'], np.squeeze(obs_data['height'][0,:]), np.transpose(obs_data['Cv']),
+            np.arange(0,1.1,0.1),
+            cmap = newcmp2,
+            zorder = 1)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    nans = ax.get_ylim()
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['Cv'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('Measurements \n (1 hour sampling)', rotation = 270, labelpad = 28, fontsize = 10)
+    ax2.set_yticks([])
+    cbaxes = fig.add_axes([0.59, 0.95, 0.3, 0.015])
+    cb = plt.colorbar(img, cax = cbaxes, orientation = 'horizontal')
+    plt.title('C$_{V}$')
     # plt.colorbar()
 
+    plt.subplot(524)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(ifs_data['time'], np.squeeze(ifs_data['height'][0,:]), np.transpose(ifs_data['model_snow_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp2,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(data3['time_hrly'][::6], bldepth3[::6], 'k', linewidth = 1.0)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    # plt.title('ECMWF_IFS; C$_{V}$ (including snow)')
+    nans = ax.get_ylim()
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['Cv'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('ECMWF_IFS \n (C$_{V}$ including snow)', rotation = 270, labelpad = 30, fontsize = 10)
+    ax2.set_yticks([])
+
+    plt.subplot(526)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(misc_data['time'], np.squeeze(misc_data['height'][0,:]), np.transpose(misc_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp2,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth2[::6], 'k', linewidth = 1.0)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    # plt.title('UM_CASIM-100; C$_{V}$')
+    nans = ax.get_ylim()
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['Cv'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_CASIM-100', rotation = 270, labelpad = 17, fontsize = 10)
+    ax2.set_yticks([])
+
+    plt.subplot(528)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(ra2t_data['time'], np.squeeze(ra2t_data['height'][0,:]), np.transpose(ra2t_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp2,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(data2['time_hrly'][::6], bldepth4[::6], 'k', linewidth = 1.0)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    # plt.title('UM_RA2T; C$_{V}$')
+    nans = ax.get_ylim()
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['Cv'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2T', rotation = 270, labelpad = 17, fontsize = 10)
+    ax2.set_yticks([])
+
+
+    plt.subplot(5,2,10)
+    ax = plt.gca()
+    # ax.set_facecolor('aliceblue')
+    plt.contourf(um_data['time'], np.squeeze(um_data['height'][0,:]), np.transpose(um_data['model_Cv_filtered']),
+        np.arange(0,1.1,0.1),
+        cmap = newcmp2,
+        zorder = 1)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k', linewidth = 1.0)
+    # plt.plot(data1['time_hrly'][::6], bldepth1[::6], 'k', linewidth = 1.0)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,500])
+    plt.ylim([0,9000])
+    plt.yticks([0,3e3,6e3,9e3])
+    ax.set_yticklabels([0, 3, 6, 9])
+    plt.xlim([doy[0], doy[-1]])
+    plt.xticks([230,235,240,245,250,255])
+    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
+    # plt.title('UM_RA2M; C$_{V}$')
     plt.xlabel('Date')
+    nans = ax.get_ylim()
+    # for file in missing_files:
+    #     ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
+    #         facecolor = 'white',
+    #         # hatch = 'x',
+    #         zorder = 2)
+    for t in range(len(obs_data['time'])-1):
+        # print (t)
+        data_nans = np.isnan(np.nanmean(obs_data['Cv'][t,:],0))
+        # print (data_nans)
+        if data_nans == True:
+            ax.fill_between(np.arange(obs_data['time'][t-1],  obs_data['time'][t+1], 1/24.0), nans[0], nans[-1],
+                facecolor = 'white',
+                hatch = '//',
+                zorder = 2)
+    ax2 = ax.twinx()
+    ax2.set_ylabel('UM_RA2M', rotation = 270, labelpad = 17, fontsize = 10)
+    ax2.set_yticks([])
+
 
     print ('******')
     print ('')
@@ -2041,8 +2281,9 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
-    # plt.savefig(fileout)
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
+        fileout = 'FIGS/PaperSubmission_Figure3.svg'
+    plt.savefig(fileout)
     plt.show()
 
     #### ---------------------------------------------------------------------------------------------------
