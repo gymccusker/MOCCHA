@@ -7311,46 +7311,46 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #----------------------
     plt.subplot(232)
     ax2 = plt.gca()
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,lwc_binlimit:]),0),np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'k', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'k', linewidth = 0.5)
 
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p3,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3,
-        np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3, color = 'blue', alpha = 0.05)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p3,lwc_binlimit:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(um_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'darkblue', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(um_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(um_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'darkblue', linewidth = 0.5)
 
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0),np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,:])*1e3,0),
-        np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3, color = 'lightblue', alpha = 0.15)
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p3,lwc_binlimit:]),0),np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:])*1e3,0),
+        np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, color = 'lightblue', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ra2t_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'steelblue', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ra2t_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'steelblue', linewidth = 0.5)
 
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p3,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p3,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p3,lwc_binlimit:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(misc_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'mediumseagreen', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(misc_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(misc_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0),
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p3,lwc_binlimit:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'gold', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0),
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p3,lwc_binlimit:]),0),
         '--', color = 'gold', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adb', zorder = 3)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][p3,:]),0), color = 'gold', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p3,:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(ra2t_data['height'][p3,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 1)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p3,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc'][p3,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p3,lwc_binlimit:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adb', zorder = 3)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][p3,lwc_binlimit:]),0), color = 'gold', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p3,lwc_binlimit:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(ra2t_data['height'][p3,lwc_binlimit:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p3,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p3,lwc_binlimit:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
 
     plt.xlabel('LWC [g m$^{-3}$]')
     # plt.title('Melt')
@@ -7470,44 +7470,44 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #--------------
     plt.subplot(235)
     ax2 = plt.gca()
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p6,:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3,
-        np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(obs_data['height'][p6,lwc_binlimit:]),0), 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p6,lwc_binlimit:]),0),np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3, color = 'lightgrey', alpha = 0.5)
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'k', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(obs_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'k', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p6,:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p6,:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3,
-        np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3, color = 'blue', alpha = 0.05)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(um_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(um_data['height'][p6,lwc_binlimit:]),0), color = 'darkblue', linewidth = 2, label = 'UM_RA2M', zorder = 2)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(um_data['height'][p6,lwc_binlimit:]),0),np.nanmean(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(um_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'darkblue', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(um_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(um_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(um_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'darkblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3,np.nanmean(np.squeeze(ra2t_data['height'][p6,:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 1)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p6,:]),0),np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,:])*1e3,0),
-        np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3, color = 'lightblue', alpha = 0.15)
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(ra2t_data['height'][p6,lwc_binlimit:]),0), color = 'steelblue', linewidth = 2, label = 'UM_RA2T', zorder = 1)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ra2t_data['height'][p6,lwc_binlimit:]),0),np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:])*1e3,0),
+        np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, color = 'lightblue', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ra2t_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'steelblue', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(ra2t_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ra2t_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ra2t_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'steelblue', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p6,:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p6,:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p6,:])*1e3,0),
-        np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(misc_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:],0)*1e3,np.nanmean(np.squeeze(misc_data['height'][p6,lwc_binlimit:]),0), color = 'mediumseagreen', linewidth = 2, label = 'UM_CASIM-100', zorder = 1)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(misc_data['height'][p6,lwc_binlimit:]),0),np.nanmean(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:])*1e3,0),
+        np.nanmean(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(misc_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'mediumseagreen', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(misc_data['height'],0),
+    plt.plot(np.nanmean(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(misc_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(misc_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][p6,:]),0), color = 'gold', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
-    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p6,:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3,
-        np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3,np.nanmean(np.squeeze(ifs_data['height'][p6,lwc_binlimit:]),0), color = 'gold', linewidth = 2, label = 'ECMWF_IFS', zorder = 2)
+    ax2.fill_betweenx(np.nanmean(np.squeeze(ifs_data['height'][p6,lwc_binlimit:]),0),np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3,
+        np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'gold', linewidth = 0.5)
-    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p6,:]),0),
+    plt.plot(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(ifs_data['model_lwc'][p6,lwc_binlimit:]),0)*1e3, np.nanmean(np.squeeze(ifs_data['height'][p6,lwc_binlimit:]),0),
         '--', color = 'gold', linewidth = 0.5)
 
     plt.xlabel('LWC [g m$^{-3}$]')
@@ -9972,8 +9972,8 @@ def main():
     # plot bivariate distributions
     #           first, set model data < 156 m to NaN for direct comparisons with observations
     # -------------------------------------------------------------
-    obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
-    figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, lwcind, iwcind, out_dir1)
+    # obs_data, um_data, misc_data, ifs_data, ra2t_data = fix_lowLevelData(obs_data, um_data, misc_data, ifs_data, ra2t_data, month_flag, missing_files, doy, varlist_obs, varlist_um, varlist_ifs)
+    # figure = plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, data1, data2, data3, data4, nanind, lwcind, iwcind, out_dir1)
 
     # -------------------------------------------------------------
     # make obs comparison fig between um and ifs grids
@@ -9991,12 +9991,12 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
-    # -------------------------------------------------------------
-    # look closer at biases
-    # -------------------------------------------------------------
-    # figure = plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch)
+    ## -------------------------------------------------------------
+    ## look closer at biases - not used
+    ## -------------------------------------------------------------
+    ## figure = plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch)
 
     # -------------------------------------------------------------
     # cloud properties scaled by BL depth
