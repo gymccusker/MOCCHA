@@ -2891,6 +2891,8 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     ##################################################
     ##################################################
 
+    # plt.plot(ifs_data['time'],ifs_data['model_lwp']*1e3);plt.show()
+
     SMALL_SIZE = 12
     MED_SIZE = 14
     LARGE_SIZE = 16
@@ -2995,9 +2997,11 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.png'
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.png'
+        fileout = 'FIGS/PaperSubmission_Figure5ab.png'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
     print (np.nanmax(um_data['model_lwp']*1e3))
     print (np.nanmax(obs_data['lwp'][:,0]*1e3))
@@ -9603,8 +9607,8 @@ def main():
                     ### --------------------------------------------------------------------
                     for j in range(0,len(ifs_var_list[c])):
                         if np.ndim(cn_nc3[c].variables[ifs_var_list[c][j]]) == 1:
+                            tmpvar = np.zeros(np.size(cn_nc3[c].variables[ifs_var_list[c][j]]))
                             for t in cn_nc3[c].variables['time'][:]:
-                                tmpvar = np.zeros(np.size(cn_nc3[c].variables[ifs_var_list[c][j]]))
                                 tmp = np.copy(cn_nc3[c].variables[ifs_var_list[c][j]][t].data)
                                 tmp[tmp == -999.0] = np.nan
                                 # print (tmp)
@@ -9712,9 +9716,9 @@ def main():
     if obs_testing_flag != 1: nanind, nanmask, lwcind, iwcind, wc0ind, lwpind = buildNaNMask(obs_data, month_flag, missing_files, doy)
 
     if obs_testing_flag != 1:
-        varlist_obs = ['Cv', 'lwc_adiabatic','lwc_adiabatic_inc_nolwp', 'iwc', 'lwp']
-        varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered', 'model_lwp']
-        varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered', 'model_lwp']
+        varlist_obs = ['Cv', 'lwc_adiabatic_inc_nolwp', 'iwc']
+        varlist_um = ['model_Cv_filtered', 'model_lwc', 'model_iwc_filtered']
+        varlist_ifs = ['model_snow_Cv_filtered', 'model_lwc', 'model_snow_iwc_filtered']
 
         ### fix IFS nan LWCs
         for var in varlist_ifs:
@@ -9931,7 +9935,7 @@ def main():
     # -------------------------------------------------------------
     # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
+    # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_twcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
     # -------------------------------------------------------------
@@ -9953,7 +9957,7 @@ def main():
     # plot LWP timeseries with missing files accounted for
     # -------------------------------------------------------------
     # if obs_switch == 'RADAR': lwp = []
-    # figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
+    figure = plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)#, lwp) #, lon, lat):
 
 
     # -------------------------------------------------------------
