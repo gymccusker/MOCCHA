@@ -1913,7 +1913,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            hatch = 'x',
+            # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1941,7 +1941,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            hatch = 'x',
+            # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1968,7 +1968,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            hatch = 'x',
+            # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1994,7 +1994,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            hatch = 'x',
+            # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -2020,7 +2020,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     for file in missing_files:
         ax.fill_between(np.arange(file, file + 1, 1/24.0), nans[0], nans[-1],
             facecolor = 'white',
-            hatch = 'x',
+            # hatch = 'x',
             zorder = 2)
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -2318,9 +2318,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC_lt500m.png'
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC_lt500m.png'
+        fileout = 'FIGS/PaperSubmission_FigureS3.png'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
     ##################################################
     ##################################################
@@ -2409,9 +2411,11 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('')
 
     if month_flag == -1:
-        fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
+        fileout = 'FIGS/PaperSubmission_Figure4b.svg'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
     print ('Z1 = ')
     print (np.round(np.nanmean(um_data['height'],0),-2))
@@ -9687,7 +9691,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     # figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
     # figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -9726,7 +9730,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
     # -------------------------------------------------------------
     # look closer at biases
