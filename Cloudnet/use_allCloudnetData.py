@@ -7714,9 +7714,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
+    # fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
+    # fileout = '../FIGS/PaperSubmission/Figure13a.png'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
     Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
     Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
@@ -8236,9 +8238,11 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p4-p5_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
+    # fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p4-p5_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
+    # fileout = '../FIGS/PaperSubmission/FigureS7a.png'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
     #-------------------------
 
