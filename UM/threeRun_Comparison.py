@@ -4695,9 +4695,11 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m-4_ra2t_fixedRA2T_newColours_Date.svg'
+    # fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m-4_ra2t_fixedRA2T_newColours_Date.svg'
+    fileout = '../FIGS/PaperSubmission/Figure5cd.png'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
 
     # ifs_convprecip = data3['flx_conv_rain'][data3['hrly_flag'],0]*3600 + data3['flx_conv_snow'][data3['hrly_flag'],0]*3600
@@ -4713,16 +4715,16 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
     # plt.show()
 
-    plt.plot(precip2, precip4,'.')
-    plt.show()
-
-    plt.plot(pwd_precip[drift_pwd[:-1]], precip2,'.')
-    plt.plot(pwd_precip[drift_pwd[:-1]], precip4,'.')
-    plt.show()
-
-    plt.plot(data2['time_hrly'][::res], precip2[::res])
-    plt.plot(data4['time_hrly'][::res], precip4[::res])
-    plt.show()
+    # plt.plot(precip2, precip4,'.')
+    # plt.show()
+    #
+    # plt.plot(pwd_precip[drift_pwd[:-1]], precip2,'.')
+    # plt.plot(pwd_precip[drift_pwd[:-1]], precip4,'.')
+    # plt.show()
+    #
+    # plt.plot(data2['time_hrly'][::res], precip2[::res])
+    # plt.plot(data4['time_hrly'][::res], precip4[::res])
+    # plt.show()
 
 
 def plotWinds(data1, data2, data3, obs, doy, label1, label2, label3):
@@ -11385,9 +11387,9 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
