@@ -829,7 +829,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
     # plt.plot(data1['time'][data1['hrly_flag']], crf1, color = 'darkblue', label = label1)
-    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
+    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2[:-8])
     plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
     plt.xlim(doy[0], doy[-1])
     plt.ylim([-10, 240])
@@ -877,7 +877,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     axminor = np.arange(0,9.01e3,0.5e3)
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.title(label2, fontsize = 14)# + '\n Cloud fraction')
+    plt.title(label2[:-8], fontsize = 14)# + '\n Cloud fraction')
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
 
@@ -1079,9 +1079,11 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     print ('')
 
     if month_flag == -1:
-        fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
-    plt.savefig(fileout)
-    plt.show()
+        # fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
+        fileout = '../FIGS/PaperSubmission/Figure7.png'
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
 
     ###################################
@@ -1371,8 +1373,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     ###-------------------------
     fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
-    plt.savefig(fileout)
-    plt.show()
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
 
     # ##################################################
@@ -10713,7 +10716,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_R1_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '14_u-bu570_RA1M_CASIM/OUT_R1/'# '26_u-cd847_RA1M_CASIM/OUT_R0/' # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
+        out_dir4 = '26_u-cd847_RA1M_CASIM/OUT_R0/'#'24_u-cc324_RA2T_CON/OUT_R0_LAM/'# '14_u-bu570_RA1M_CASIM/OUT_R1/'#  # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
         out_dir5 = '24_u-cc324_RA2T_CON/OUT_R0_GLM/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -11393,7 +11396,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -11408,7 +11411,7 @@ def main():
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
