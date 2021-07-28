@@ -805,19 +805,19 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         plt.xlim([0,1.0])
     else:
         # #### SCALED LWC
-        plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
-            np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
-            color = 'grey', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-obsLWP', zorder = 5)
-        ax1.fill_betweenx(np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
-            np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
-            np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
-            color = 'lightgrey', alpha = 0.3)
-        plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
-            np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
-            '--', color = 'grey', linewidth = 0.5)
-        plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
-            np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
-            '--', color = 'grey', linewidth = 0.5)
+        # plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
+        #     np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
+        #     color = 'grey', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-obsLWP', zorder = 5)
+        # ax1.fill_betweenx(np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
+        #     np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
+        #     np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
+        #     color = 'lightgrey', alpha = 0.3)
+        # plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 - np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
+        #     np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
+        #     '--', color = 'grey', linewidth = 0.5)
+        # plt.plot(np.nanmean(obs_data['lwc'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc'][:,lwc_binlimit:],0)*1e3,
+        #     np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
+        #     '--', color = 'grey', linewidth = 0.5)
         #### ADIABATIC LWC (all times, independent of whether HATPRO data are available)
         plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'][:,lwc_binlimit:],0)*1e3,np.nanmean(obs_data['height'][:,lwc_binlimit:],0), color = 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
         # plt.plot(np.nanmedian(obs_data['lwc_adiabatic_inc_nolwp'],0)*1e3,np.nanmedian(obs_data['height'],0), '--', color = 'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid-adiabatic', zorder = 5)
@@ -829,38 +829,38 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         plt.plot(np.nanmean(obs_data['lwc_adiabatic_inc_nolwp'][:,lwc_binlimit:],0)*1e3 + np.nanstd(obs_data['lwc_adiabatic_inc_nolwp'][:,lwc_binlimit:],0)*1e3, np.nanmean(obs_data['height'][:,lwc_binlimit:],0),
             '--', color = 'k', linewidth = 0.5)
 
-    # ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
-    #     np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3, np.nanmean(ifs_data['height'],0),
-    #     '--', color = 'gold', linewidth = 0.5)
-    # plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, np.nanmean(ifs_data['height'],0),
-    #     '--', color = 'gold', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc']*1e3,0),
-    #     np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
-    # plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc'],0)*1e3, np.nanmean(misc_data['height'],0),
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    # plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, np.nanmean(misc_data['height'],0),
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc']*1e3,0),
-    #     np.nanmean(ra2t_data['model_lwc'],0)*1e3 + np.nanstd(ra2t_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.3)
-    # plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3 + np.nanstd(ra2t_data['model_lwc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
-    #     np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'blue', alpha = 0.05)
-    # plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc'],0)*1e3, np.nanmean(um_data['height'],0),
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    # plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, np.nanmean(um_data['height'],0),
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    #
-    # plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
-    # plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
-    # plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3,np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
-    # plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
+    ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3,
+        np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, color = 'navajowhite', alpha = 0.35)
+    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3 - np.nanstd(ifs_data['model_lwc'],0)*1e3, np.nanmean(ifs_data['height'],0),
+        '--', color = 'gold', linewidth = 0.5)
+    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3 + np.nanstd(ifs_data['model_lwc'],0)*1e3, np.nanmean(ifs_data['height'],0),
+        '--', color = 'gold', linewidth = 0.5)
+
+    ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc']*1e3,0),
+        np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3 - np.nanstd(misc_data['model_lwc'],0)*1e3, np.nanmean(misc_data['height'],0),
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+    plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3 + np.nanstd(misc_data['model_lwc'],0)*1e3, np.nanmean(misc_data['height'],0),
+        '--', color = 'mediumseagreen', linewidth = 0.5)
+
+    ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc']*1e3,0),
+        np.nanmean(ra2t_data['model_lwc'],0)*1e3 + np.nanstd(ra2t_data['model_lwc'],0)*1e3, color = 'lightblue', alpha = 0.3)
+    plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3 - np.nanstd(ra2t_data['model_lwc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
+    plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3 + np.nanstd(ra2t_data['model_lwc'],0)*1e3, np.nanmean(ra2t_data['height'],0),
+        '--', color = 'steelblue', linewidth = 0.5)
+
+    ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc']*1e3,0),
+        np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, color = 'blue', alpha = 0.05)
+    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3 - np.nanstd(um_data['model_lwc'],0)*1e3, np.nanmean(um_data['height'],0),
+        '--', color = 'darkblue', linewidth = 0.5)
+    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3 + np.nanstd(um_data['model_lwc'],0)*1e3, np.nanmean(um_data['height'],0),
+        '--', color = 'darkblue', linewidth = 0.5)
+
+    plt.plot(np.nanmean(ifs_data['model_lwc'],0)*1e3,np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    plt.plot(np.nanmean(misc_data['model_lwc'],0)*1e3,np.nanmean(misc_data['height'],0), color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
+    plt.plot(np.nanmean(ra2t_data['model_lwc'],0)*1e3,np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
+    plt.plot(np.nanmean(um_data['model_lwc'],0)*1e3,np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
 
     plt.xlabel('Liquid water content [g m$^{-3}$]')
     plt.ylabel('Z [km]')
@@ -887,9 +887,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
         # fileout = '../FIGS/PaperSubmission/Figure4c.png'
         fileout = '../FIGS/PaperSubmission/FigureA1.png'
-    plt.savefig(fileout)
-    plt.show()
-    # plt.close()
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
     ###----------------------------------------------------------------
     ###         Plot figure - Median profiles
