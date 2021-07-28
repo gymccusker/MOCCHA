@@ -1179,8 +1179,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(7.5,5.5))
-    plt.subplots_adjust(top = 0.8, bottom = 0.15, right = 0.97, left = 0.1,
+    fig = plt.figure(figsize=(6,5))
+    plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
             hspace = 0.3, wspace = 0.2)
 
     ####        all model data share a timestamp
@@ -1225,7 +1225,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     #     '--', color = 'gold', linewidth = 0.5)
 
     # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
     # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -1268,7 +1268,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
-    plt.legend(bbox_to_anchor=(1.05, 1.03, 1., .102), loc=4, ncol=3)          ## 2 lines
+    plt.legend(bbox_to_anchor=(1.2, 1.03, 1., .102), loc=4, ncol=3)          ## 2 lines
     # plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)            ## 5 lines
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -1372,10 +1372,11 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.grid('on')
 
     ###-------------------------
-    fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
-    # plt.savefig(fileout)
-    # plt.show()
-    plt.close()
+    # fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
+    fileout = '../FIGS/PaperSubmission/Figure10.png'
+    plt.savefig(fileout)
+    plt.show()
+    # plt.close()
 
 
     # ##################################################
