@@ -5557,9 +5557,10 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     # fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m-25_ra2t_casim-100-GA6alb_fixedRA2T.svg'
-    fileout = '../FIGS/PaperSubmission/Figure9.png'
-    plt.savefig(fileout, dpi = 300)
-    plt.show()
+    # fileout = '../FIGS/PaperSubmission/Figure9.png'
+    # plt.savefig(fileout, dpi = 300)
+    # plt.show()
+    plt.close()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1) < 0)
     Zindex3 = np.where(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1) < 0)
@@ -8526,9 +8527,11 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xlim([-0.6,0.6])
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
-    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
-    plt.savefig(fileout)
-    plt.show()
+    # fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
+    # fileout = '../FIGS/PaperSubmission/Figure13b.png'
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) < 0)
     Zindex3 = np.where(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) < 0)
@@ -8772,9 +8775,11 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
 
-    fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p4-p5_wSTDEV_newColours_fixedRA2T.svg'
-    plt.savefig(fileout)
-    plt.show()
+    # fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p4-p5_wSTDEV_newColours_fixedRA2T.svg'
+    # fileout = '../FIGS/PaperSubmission/FigureS7b.png'
+    # plt.savefig(fileout)
+    # plt.show()
+    plt.close()
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
 
@@ -11395,13 +11400,13 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
