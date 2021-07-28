@@ -5353,7 +5353,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,m_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -5415,7 +5415,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4[:-4], zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,m_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,m_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -5477,7 +5477,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4, zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['temp_anomalies'][:,f_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -5537,7 +5537,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
         '--', color = 'gold', linewidth = 0.5)
 
     plt.plot(np.nanmedian(np.squeeze(data3['q_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'gold', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(np.squeeze(data2['q_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(np.squeeze(data4['q_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'steelblue', label = label4, zorder = 2)
     plt.plot(np.nanmedian(np.squeeze(data1['q_anomalies'][:,f_ifs]),1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
     plt.plot(np.nanmedian(np.squeeze(data5['q_anomalies'][:,f_um]),1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
@@ -5556,7 +5556,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ax2.set_yticks([])
 
     ###-------------------------
-    fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m-25_ra2t_casim-100-GA6alb_fixedRA2T.svg'
+    # fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m-25_ra2t_casim-100-GA6alb_fixedRA2T.svg'
+    fileout = '../FIGS/PaperSubmission/Figure9.png'
     plt.savefig(fileout, dpi = 300)
     plt.show()
 
@@ -11394,8 +11395,8 @@ def main():
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
