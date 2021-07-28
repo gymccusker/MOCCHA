@@ -5801,7 +5801,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m-25_wUMGlobal.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
     ##################################################
@@ -5871,7 +5871,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_wUMGlobal.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
 
 
@@ -6296,9 +6296,11 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m-25_Dates_fixedRA2T.png'
-    plt.show()
-    # plt.close()
+    # fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m-25_Dates_fixedRA2T.png'
+    fileout = '../FIGS/PaperSubmission/Figure8.svg'
+    # plt.savefig(fileout, dpi=300)
+    # plt.show()
+    plt.close()
 
     doyindex = np.where(np.logical_and(data1['time_6hrly'] >= 247.0, data1['time_6hrly'] < 251.0))
     print ('Z = ')
@@ -11389,11 +11391,11 @@ def main():
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
