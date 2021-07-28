@@ -3098,26 +3098,6 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Plotting combined timeseries and PDFs of radiation terms:')
     print ('')
 
-    ##################################################
-    ##################################################
-    #### 	CARTOPY
-    ##################################################
-    ##################################################
-
-    SMALL_SIZE = 12
-    MED_SIZE = 14
-    LARGE_SIZE = 16
-
-    plt.rc('font',size=MED_SIZE)
-    plt.rc('axes',titlesize=MED_SIZE)
-    plt.rc('axes',labelsize=MED_SIZE)
-    plt.rc('xtick',labelsize=MED_SIZE)
-    plt.rc('ytick',labelsize=MED_SIZE)
-    plt.rc('legend',fontsize=MED_SIZE)
-    # plt.figure(figsize=(9,10))
-    # # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
-    #         hspace = 0.4, wspace = 0.13)
 
     #################################################################
     ## sort out obs['obs_temp']ervations' timestamp
@@ -3194,10 +3174,30 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     #################################################################
     ## create figure and axes instances
     #################################################################
+
+    ##################################################
+    ##################################################
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 10
+    MED_SIZE = 12
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=MED_SIZE)
+    plt.rc('axes',labelsize=MED_SIZE)
+    plt.rc('xtick',labelsize=SMALL_SIZE)
+    plt.rc('ytick',labelsize=SMALL_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    # plt.figure(figsize=(9,10))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.08,
+    #         hspace = 0.4, wspace = 0.13)
     ### -------------------------------
     ### Build figure (timeseries)
     ### -------------------------------
-    fig = plt.figure(figsize=(18,12))
+    fig = plt.figure(figsize=(12,8))
 
     ax  = fig.add_axes([0.07,0.7,0.53,0.22])   # left, bottom, width, height
 
@@ -3208,7 +3208,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.plot(data1['time_hrly'][:-3], data1['fixed_radiation']['SWnet'].data, color = 'darkblue', label = label1)
     plt.plot(data1['time'], data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
     plt.plot(data4['time'], data4['surface_net_SW_radiation'].data, color = 'steelblue', label = label4[:-4])
-    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2)
+    plt.plot(data2['time'], data2['surface_net_SW_radiation'].data, color = 'mediumseagreen', label = label2[:-8])
     if ifs_flag == True:
         plt.plot(data3['time'], data3['sfc_net_sw'].data, color = 'gold', label = label3)
     else:
@@ -3216,7 +3216,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWnet_ice'], color = 'grey', linewidth = 3, label = 'Ice_station')
     plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWnet_ship'], color = 'k', linewidth = 2, label = 'Ship')
     plt.ylabel('SW$_{net}$ [W m$^{-2}$]')
-    plt.legend(bbox_to_anchor=(-0.08, 0.67, 1., .102), loc=4, ncol=3)
+    plt.legend(bbox_to_anchor=(-0.08, 0.62, 1., .102), loc=4, ncol=3)
     ax.set_xlim([doy[0],doy[-1]])
     plt.xticks([230,235,240,245,250,255])
     ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
@@ -3252,37 +3252,37 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     plt.plot([data1['time_hrly'][p3[0][0]], data1['time_hrly'][p3[0][-1]]], [-50, -50], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p3[0][0]], -50, '.', color = 'r')
     plt.plot(data1['time_hrly'][p3[0][-1]], -50, '.', color = 'r')
-    plt.annotate('P3', xy=(227.5,-45), xytext=(227.5,-45), fontsize = 12, color = 'r')
+    plt.annotate('P3', xy=(227.5,-45), xytext=(227.5,-45), fontsize = 10, color = 'r')
     plt.plot([data1['time_hrly'][p3[0][-1]], data1['time_hrly'][p3[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p4
     plt.plot([data1['time_hrly'][p4[0][0]], data1['time_hrly'][p4[0][-1]]], [-50, -50], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p4[0][0]], -50, '.', color = 'r')
     plt.plot(data1['time_hrly'][p4[0][-1]], -50, '.', color = 'r')
-    plt.annotate('P4', xy=(234.5,-45), xytext=(234.5,-45), fontsize = 12, color = 'r')
+    plt.annotate('P4', xy=(234.5,-45), xytext=(234.5,-45), fontsize = 10, color = 'r')
     # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [yA[0],yA[-1]], '--', color = 'r', linewidth = 1)
     ## p5
     plt.plot([data1['time_hrly'][p5[0][0]], data1['time_hrly'][p5[0][-1]]], [70, 70], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p5[0][0]], 70, '.', color = 'r')
     plt.plot(data1['time_hrly'][p5[0][-1]], 70, '.', color = 'r')
-    plt.annotate('P5', xy=(243,59), xytext=(243,59), fontsize = 12, color = 'r')
+    plt.annotate('P5', xy=(243,59), xytext=(243,59), fontsize = 10, color = 'r')
     plt.plot([data1['time_hrly'][p5[0][-1]], data1['time_hrly'][p5[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p6
     plt.plot([data1['time_hrly'][p6[0][0]], data1['time_hrly'][p6[0][-1]]], [70, 70], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p6[0][0]], 70, '.', color = 'r')
     plt.plot(data1['time_hrly'][p6[0][-1]], 70, '.', color = 'r')
-    plt.annotate('P6', xy=(248.75,59), xytext=(248.75,59), fontsize = 12, color = 'r')
+    plt.annotate('P6', xy=(248.75,59), xytext=(248.75,59), fontsize = 10, color = 'r')
     plt.plot([data1['time_hrly'][p6[0][-1]], data1['time_hrly'][p6[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p7
     plt.plot([data1['time_hrly'][p7[0][0]], data1['time_hrly'][p7[0][-1]]], [70, 70], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p7[0][0]], 70, '.', color = 'r')
     plt.plot(data1['time_hrly'][p7[0][-1]], 70, '.', color = 'r')
-    plt.annotate('P7', xy=(253,59), xytext=(253,59), fontsize = 12, color = 'r')
+    plt.annotate('P7', xy=(253,59), xytext=(253,59), fontsize = 10, color = 'r')
     plt.plot([data1['time_hrly'][p7[0][-1]], data1['time_hrly'][p7[0][-1]]], [yA[0],yA[-1]], '-.', color = 'r', linewidth = 1)
     ## p8
     plt.plot([data1['time_hrly'][p8[0][0]], data1['time_hrly'][p8[0][-1]]], [70, 70], '-.', color = 'r')
     plt.plot(data1['time_hrly'][p8[0][0]], 70, '.', color = 'r')
     plt.plot(data1['time_hrly'][p8[0][-1]], 70, '.', color = 'r')
-    plt.annotate('P8', xy=(256.5,59), xytext=(256.5,59), fontsize = 12, color = 'r')
+    plt.annotate('P8', xy=(256.5,59), xytext=(256.5,59), fontsize = 10, color = 'r')
     ##
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     plt.plot(data1['time'], data1['surface_net_LW_radiation'].data + data1['surface_net_SW_radiation'].data, color = 'darkblue', label = label1)
@@ -3346,7 +3346,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(87,0.1), xytext=(87,0.1), fontsize = 14)
+    plt.annotate('Melt', xy=(87,0.1), xytext=(87,0.1), fontsize = 10)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
@@ -3371,7 +3371,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw3[melt], hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(0,0.145), xytext=(0,0.145), fontsize = 14)
+    plt.annotate('Melt', xy=(0,0.145), xytext=(0,0.145), fontsize = 10)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
@@ -3400,7 +3400,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icemelt] + obs['fixed_radiation']['LWnet_ice'][icemelt], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipmelt] + obs['fixed_radiation']['LWnet_ship'][shipmelt], hist=False, color="black")
-    plt.annotate('Melt', xy=(47,0.09), xytext=(47,0.09), fontsize = 14)
+    plt.annotate('Melt', xy=(47,0.09), xytext=(47,0.09), fontsize = 10)
     plt.xlabel('R$_{net}$ [W m$^{-2}$]')
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
@@ -3425,7 +3425,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(sw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(77,0.1), xytext=(77,0.1), fontsize = 14)
+    plt.annotate('Freeze', xy=(77,0.1), xytext=(77,0.1), fontsize = 10)
     plt.xlim([-10,110])
     plt.ylim([0,yEmax])
     plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
@@ -3450,7 +3450,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(lw3[freeze], hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(-8,0.145), xytext=(-8,0.145), fontsize = 14)
+    plt.annotate('Freeze', xy=(-8,0.145), xytext=(-8,0.145), fontsize = 10)
     plt.xlim([-80,20])
     plt.ylim([0,yFmax])
     plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
@@ -3480,7 +3480,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     f = sns.distplot(crf3, hist=False, color="gold", kde_kws={"shade": True})
     # f = sns.distplot(obs['fixed_radiation']['SWnet_ice'][icefreeze] + obs['fixed_radiation']['LWnet_ice'][icefreeze], hist=False, color="grey", kde_kws={"linewidth": 3})
     f = sns.distplot(obs['fixed_radiation']['SWnet_ship'][shipfreeze] + obs['fixed_radiation']['LWnet_ship'][shipfreeze], hist=False, color="black")
-    plt.annotate('Freeze', xy=(35,0.09), xytext=(35,0.09), fontsize = 14)
+    plt.annotate('Freeze', xy=(35,0.09), xytext=(35,0.09), fontsize = 10)
     plt.xlim([-80,80])
     plt.ylim([0,yDmax])
     plt.xlabel('R$_{net}$ [W m$^{-2}$]')
@@ -3501,9 +3501,11 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100-GAalb_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.png'
+    # fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100-GAalb_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.png'
+    fileout = '../FIGS/PaperSubmission/Figure2.svg'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
+    plt.close()
 
 
 
@@ -3631,7 +3633,8 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # plt.xlabel('R$_{net}$ [W m$^{-2}$]')
 
     # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
-    plt.show()
+    # plt.show()
+    plt.close()
 
 def plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
