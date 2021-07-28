@@ -190,7 +190,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
     # time_obs['deck7th'] = calcTime_Mat2DOY(datenums_obs['deck7th'])
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -265,7 +265,7 @@ def plot_line_TSa(data1, data2, data3, month_flag, missing_files, out_dir1, out_
 
     # data1['surface_net_SW_radiation'].data[data1['surface_net_SW_radiation'].data == 0] = np.nan
     # data2['surface_net_SW_radiation'].data[data2['surface_net_SW_radiation'].data == 0] = np.nan
-    # if out_dir3 != 'OUT_R1_25H//': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
+    # if out_dir3 != 'OUT_R1_25H/': data3['surface_net_SW_radiation'].data[data3['surface_net_SW_radiation'].data == 0] = np.nan
 
     plt.subplot(3,2,3)
     ax = plt.gca()
@@ -380,7 +380,7 @@ def plot_line_RAD(data1, data2, data3, cube_um1, cube_um2, cube_um3, month_flag,
         # from matplotlib.patches import Polygon
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -598,7 +598,7 @@ def plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1097,7 +1097,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -1908,7 +1908,7 @@ def plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2332,7 +2332,7 @@ def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir
         crange = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15]
         lab = 'IWMR [g/kg]'
         modname = 'model_iwc_filtered'
-        if out_dir3 == 'OUT_R1_25H//':
+        if out_dir3 == 'OUT_R1_25H/':
             modname3 = 'model_snow_iwc_filtered'
         else:
             modname3 = modname
@@ -2369,7 +2369,7 @@ def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir
 
     ax3 = fig.add_axes([0.08,0.1,0.58,0.22])   # left, bottom, width, height
     ax3 = plt.gca()
-    # if out_dir3 == 'OUT_R1_25H//':
+    # if out_dir3 == 'OUT_R1_25H/':
     #     continue
     #     # ifs_data = np.load('../Cloudnet/ifs_Cv_data.npy').item()
     #     # plt.contourf(ifs_data['time'], np.nanmean(ifs_data['height'],0), np.transpose(ifs_data[modname3]),
@@ -2411,7 +2411,7 @@ def plot_CWC_RA2T(data1, data2, data3, data4, month_flag, missing_files, out_dir
     plt.plot(np.nanmean(data2[var]*1e3,0),data2['height'], color = 'purple', linewidth = 3, label = label2)
     ax4.fill_betweenx(data2['height'],np.nanmean(data2[var]*1e3,0) - np.nanstd(data2[var]*1e3,0),
         np.nanmean(data2[var]*1e3,0) + np.nanstd(data2[var]*1e3,0), color = 'thistle', alpha = 0.35)
-    # if out_dir3 == 'OUT_R1_25H//':
+    # if out_dir3 == 'OUT_R1_25H/':
     #     continue
     #     # plt.plot(np.nanmean(ifs_data[modname3],0),np.nanmean(ifs_data['height'],0), color = 'gold', linewidth = 3, label = 'ECMWF_IFS [g/m3]')
     #     # ax4.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(ifs_data[modname3],0) - np.nanstd(ifs_data[modname3],0),
@@ -2500,7 +2500,7 @@ def plot_line_subSect(data1, data2, data3, month_flag, missing_files, out_dir1, 
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2704,7 +2704,7 @@ def plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_
     ### -------------------------------
     ### set diagnostic naming flags for if IFS being used
     ### -------------------------------
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -2955,7 +2955,7 @@ def table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1
     # time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3139,7 +3139,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -3695,7 +3695,7 @@ def plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files,
     # time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4126,7 +4126,7 @@ def table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_d
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4537,7 +4537,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     time_tice = calcTime_Mat2DOY(datenums_tice)
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -4836,7 +4836,7 @@ def plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_d
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5062,7 +5062,7 @@ def plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_di
     # 5. bl_depth -> sfc_bl_height
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5220,7 +5220,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -5604,7 +5604,7 @@ def plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -6348,7 +6348,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -6592,7 +6592,7 @@ def plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, m
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -6829,7 +6829,7 @@ def plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -7330,7 +7330,7 @@ def plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -7832,7 +7832,7 @@ def plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_d
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -8070,7 +8070,7 @@ def plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_di
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -9356,7 +9356,7 @@ def inversionIdent(data1, data2, data3, data4, data5, month_flag, missing_files,
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### set diagnostic naming flags for if IFS being used
-    if np.logical_or(out_dir3 == 'OUT_R1_25H//', out_dir3 == 'ECMWF_IFS/'):
+    if np.logical_or(out_dir3 == 'OUT_R1_25H/', out_dir3 == 'ECMWF_IFS/'):
         ifs_flag = True
     else:
         ifs_flag = False
@@ -10706,7 +10706,7 @@ def main():
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'ECMWF_IFS/'
 
-    ### IFS: OUT_R1_25H//
+    ### IFS: OUT_R1_25H/
     ### 4_u-bg610_RA2M_CON/OUT_R1(_RadPA_25h)/
     ### 5_u-bl661_RA1M_CASIM/OUT_R0/            # 100/cc accum mode aerosol
     ### 6_u-bm410_RA1M_CASIM/                   # 200/cc accum mode aerosol
@@ -11299,7 +11299,7 @@ def main():
     if out_dir2 == 'UM_CASIM-100/': label2 = 'UM_CASIM-100'
 
     label3 = 'undefined_label'
-    if out_dir3 == 'OUT_R1_25H//': label3 = 'ECMWF_IFS'
+    if out_dir3 == 'OUT_R1_25H/': label3 = 'ECMWF_IFS'
     if out_dir3[:10] == '26_u-cd847': label3 = 'UM_CASIM-AeroProf'
     if out_dir3[:10] == '25_u-cc568': label3 = 'UM_RA2M'
     if out_dir3[:10] == '24_u-cc324': label3 = 'UM_RA2T_' + out_dir3[-4:-1]
@@ -11382,7 +11382,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
