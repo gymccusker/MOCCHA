@@ -10989,24 +10989,25 @@ def main():
                 'cloud_fraction','radr_refl','seaice_albedo_agg']#,'temp_1.5m'],'latent_heat_flux'
             var_list4 = var_list1
             ### CASIM RUNS
-            if np.logical_or(np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '14_u-bu570_RA1M_CASIM'), out_dir4[:21] == '26_u-cd847_RA1M_CASIM'):
+            if np.logical_or(out_dir2[:21] == '23_u-cc278_RA1M_CASIM', out_dir2[:21] == '14_u-bu570_RA1M_CASIM'):
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-                'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
-                var_list4 = var_list2
+                    'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                    'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
+                    'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg'] # 'qice',, 'latent_heat_flux']
             elif out_dir2[:2] == '8_':
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation',#,'surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#,'tke','latent_heat_flux','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
+                    'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                    'cloud_fraction','radr_refl']#,'tke','latent_heat_flux','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
             else:
                 var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation',
-                'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
-                'cloud_fraction','radr_refl']#,'tke','latent_heat_flux','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
+                    'sensible_heat_flux','rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+                    'cloud_fraction','radr_refl']#,'tke','latent_heat_flux','qnice','mixing_length_for_momentum','sfc_temperature','air_temperature_at_1.5m','seaice_albedo_agg','qnliq',
+            if np.logical_or(out_dir4[:21] == '12_u-br210_RA1M_CASIM',out_dir4[:21] == '26_u-cd847_RA1M_CASIM'):
+                var_list4 = var_list2
             ### IFS DIAGS
             if ifs_flag: var_list3 = ['height','flx_height','temperature','sfc_net_sw','sfc_net_lw','sfc_down_lat_heat_flx','sfc_down_sens_heat_flx',
-                'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
-                'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo', 'sfc_skin_temp','cloud_fraction']
+                            'sfc_temp_2m','flx_ls_rain','flx_conv_rain','flx_ls_snow','flx_conv_snow','q','pressure','sfc_bl_height','uwind','vwind','wwind',
+                            'sfc_down_lw', 'sfc_down_sw', 'sfc_albedo', 'sfc_skin_temp','cloud_fraction']
             if not ifs_flag:
                 if out_dir3[-4:-1] == 'glm':
                     var_list3 = ['cloud_fraction','qliq','qice']
@@ -11432,7 +11433,7 @@ def main():
     # out = table_Radiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # out = table_Fluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
             ### need to use run #5 instead of run #14 for data2
-    # out = plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    out = plot_sfcAlbedo(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
 
     # -------------------------------------------------------------
     # -------------------------------------------------------------
