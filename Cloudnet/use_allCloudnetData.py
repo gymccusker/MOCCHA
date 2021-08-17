@@ -9167,24 +9167,24 @@ def main():
         cn_misc_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/UM_CASIM-100/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         cn_obs_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/Cloudnet/Observations/'
     if platform == 'LAPTOP':
-        um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        ifs_root_dir = '/home/gillian/MOCCHA/ECMWF/'
-        obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-        cn_um_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'
+        um_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/'
+        ifs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ECMWF/'
+        obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
+        ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
+        cn_um_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/UM_DATA/'
         if obs_testing_flag == 1:
-            cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/ceilometer/'# '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+            cn_ifs_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/OBS_DATA/ceilometer/'# '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
         else:
-            cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/IFS_DATA/'
+            cn_ifs_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/IFS_DATA/'
         # cn_ifs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/'
         # cn_misc_dir = '/home/gillian/MOCCHA/UM/DATA/'; cn_misc_flag = 1              ### FOR NON-CLOUDNET UM DATA
-        cn_misc_dir = '/home/gillian/MOCCHA/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
+        cn_misc_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/UM_DATA/'; cn_misc_flag = 0  ### FOR CLOUDNET UM DATA
         if obs_switch == 'UM':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V7/' #QF30_metum/14_CASIM-100_QF30/' # QF30_metum/JV_LWPTesting/' #
+            cn_obs_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/OBS_DATA/measurements_V7/' #QF30_metum/14_CASIM-100_QF30/' # QF30_metum/JV_LWPTesting/' #
         elif obs_switch == 'IFS':
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/QF10_ecmwf/'
+            cn_obs_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/OBS_DATA/QF10_ecmwf/'
         else:
-            cn_obs_dir = '/home/gillian/MOCCHA/Cloudnet/OBS_DATA/measurements_V7/'
+            cn_obs_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/Cloudnet/OBS_DATA/measurements_V7/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -9334,7 +9334,7 @@ def main():
         obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
         print ('Load HATPRO data used by Cloudnet...')
-        dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
+        dirname = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/hatpro/'
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
         for file in dir:

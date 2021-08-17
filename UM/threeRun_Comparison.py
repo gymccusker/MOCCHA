@@ -10745,10 +10745,10 @@ def main():
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
     if platform == 'LAPTOP':
         platformflag = 'laptop'
-        um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        misc_root_dir = '/home/gillian/MOCCHA/ECMWF/'
-        obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        um_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/'
+        misc_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ECMWF/'
+        obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
+        ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -10832,7 +10832,7 @@ def main():
         obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
 
         print ('Load HATPRO data used by Cloudnet...')
-        dirname = '/home/gillian/MOCCHA/ODEN/DATA/hatpro/'
+        dirname = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/hatpro/'
         dir = os.listdir(dirname)
         obs['hatpro'] = {}
         for file in dir:
@@ -10856,7 +10856,7 @@ def main():
         obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
 
         print ('Load MRR rainrate data from Jutta...')
-        mrr_dirname = '/home/gillian/MOCCHA/ODEN/DATA/MRR/'
+        mrr_dirname = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/MRR/'
         mrr_dir = os.listdir(mrr_dirname)
         obs['mrr'] = {}
         mrr_filename = 'Rainrate_from_jutta.mat'
