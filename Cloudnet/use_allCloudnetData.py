@@ -280,8 +280,8 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
 
     print ('Mean below 155m: ')
-    Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 500.0)
-    Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 500.0)
+    Zindex_um = np.where(np.nanmean(misc_data['height'],0) <= 155.0)
+    Zindex_ifs = np.where(np.nanmean(ifs_data['height'],0) <= 155.0)
     if obs_testing_flag != 1:
         print ('ECMWF_IFS = ')
         print (np.nanmean(np.nanmean(ifs_data['model_snow_Cv_filtered'][:,Zindex_ifs[0]],0)))
@@ -1450,8 +1450,8 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print ('Z3 = ')
     # print (np.round(np.nanmean(ifs_data['height'],0),-2))
 
-    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
-    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
+    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) == 5.e+02)#<= 4000)#<= 2e3) #
+    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) == 5.e+02)#<= 4000)# <= 2e3) #
     print ('Zindex1 = ')
     print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
     print ('Zindex3 = ')
@@ -1459,13 +1459,13 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # print ('UM_RA2M = ')
     # print (np.nanmean(um_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
     print ('UM_RA2T = ')
-    print (np.nanmean(ra2t_data['model_iwc_filtered'],0)*1e3)
+    print (np.nanmean(ra2t_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
     # print ('UM_CASIM-100 = ')
     # print (np.nanmean(misc_data['model_iwc_filtered'][:,Zindex1[0]],0)*1e3)
     # print ('ECMWF_IFS = ')
     # print (np.nanmean(ifs_data['model_snow_iwc_filtered'][:,Zindex3[0]],0)*1e3)
     print ('Obs = ')
-    print (np.nanmean(obs_data['iwc'],0)*1e3)
+    print (np.nanmean(obs_data['iwc'][:,Zindex1[0]],0)*1e3)
 
     print ('UM_RA2T - Obs = ')
     print ((np.nanmean(ra2t_data['model_iwc_filtered'][:,Zindex1[0]],0) - np.nanmean(obs_data['iwc'][:,Zindex1[0]],0))*1e3)
@@ -2723,8 +2723,10 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     print ('Z3 = ')
     print (np.round(np.nanmean(ifs_data['height'],0),-2))
 
-    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) < 600)#<= 2e3) #== 5.e+02)#
-    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) < 600)# <= 2e3) #== 5.e+02)#
+    # print ('Mean below 500m:')
+    print ('Mean at 4.5 km:')
+    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) == 4.6e3)#<= 500)#<= 2e3) #== 5.e+02)#
+    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) ==4.6e3)#<= 500)# <= 2e3) #== 5.e+02)#
     print ('Zindex1 = ')
     print (np.nanmean(um_data['height'][:,Zindex1[0]],0))
     print ('Zindex3 = ')
@@ -7866,29 +7868,6 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     # plt.show()
     plt.close()
 
-    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
-    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
-    print ('Zindex1 = ')
-    print (np.nanmean(um_data['height'][:,Zindex1[0][12]],0))
-    print ('Zindex3 = ')
-    print (np.nanmean(ifs_data['height'][:,Zindex3[0][16]],0))
-    # print ('UM_RA2M = ')
-    # print (np.nanmean(np.squeeze(um_data['model_lwc'][p3,:]),0)*1e3)
-    # print ('UM_RA2T = ')
-    # print (np.nanmean(np.squeeze(ra2t_data['model_lwc'][p3,:]),0)*1e3)
-    print ('UM_CASIM-100 = ')
-    print (np.nanmean(np.squeeze(misc_data['model_lwc'][p6,13]),0)*1e3)
-    print ('ECMWF_IFS = ')
-    print (np.round(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,13]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction3p6[:,16]),0))
-    print ('Obs = ')
-    print (np.round(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,13]),0)*1e3,4))
-    print (np.nanmean(np.squeeze(fraction0p6[:,12]),0))
-
-
-
-
-
     ##################################################
     ##################################################
     #### 	P5 AND P6
@@ -8391,6 +8370,31 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     plt.close()
 
     #-------------------------
+
+
+
+    Zindex1 = np.where(np.round(np.nanmean(um_data['height'],0),-2) <= 4000)#<= 2e3) # == 5.e+02)#
+    Zindex3 = np.where(np.round(np.nanmean(ifs_data['height'],0),-2) <= 4000)# <= 2e3) #== 5.e+02)#
+    print ('Zindex1 = ')
+    print (np.nanmean(um_data['height'][:,Zindex1[0][12]],0))
+    print ('Zindex3 = ')
+    print (np.nanmean(ifs_data['height'][:,Zindex3[0][16]],0))
+    print ('UM_RA2M = ')
+    print (np.nanmean(np.squeeze(um_data['model_lwc'][p6,Zindex1[0][12]]),0)*1e3)
+    print (np.nanmean(np.squeeze(fraction1p6[:,Zindex1[0][12]]),0))
+    print ('UM_RA2T = ')
+    print (np.nanmean(np.squeeze(ra2t_data['model_lwc'][p6,Zindex1[0][12]]),0)*1e3)
+    print (np.nanmean(np.squeeze(fraction4p6[:,Zindex1[0][12]]),0))
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(np.squeeze(misc_data['model_lwc'][p6,Zindex1[0][12]]),0)*1e3)
+    print (np.nanmean(np.squeeze(fraction2p6[:,Zindex1[0][12]]),0))
+    print ('ECMWF_IFS = ')
+    print (np.round(np.nanmean(np.squeeze(ifs_data['model_lwc'][p6,Zindex3[0][16]]),0)*1e3,4))
+    print (np.nanmean(np.squeeze(fraction3p6[:,Zindex3[0][16]]),0))
+    print ('Obs = ')
+    print (np.round(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,Zindex1[0][12]]),0)*1e3,4))
+    print (np.nanmean(np.squeeze(fraction0p6[:,Zindex1[0][12]]),0))
+
 
 def plot_BiasCorrelation(obs_data, um_data, misc_data, ifs_data, ra2t_data, doy, obs_switch):
 
@@ -10385,7 +10389,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     #### figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     #### figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
     #### figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -10424,7 +10428,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
     ## -------------------------------------------------------------
     ## look closer at biases - not used
