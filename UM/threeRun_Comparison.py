@@ -1081,8 +1081,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     if month_flag == -1:
         # fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
         fileout = '../FIGS/PaperSubmission/Figure7.png'
-    # plt.savefig(fileout)
-    # plt.show()
+    plt.savefig(fileout)
+    plt.show()
     plt.close()
 
 
@@ -1190,6 +1190,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ###-------------------------
     plt.subplot(121)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     #
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
@@ -1284,6 +1285,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ###-------------------------
     plt.subplot(122)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
 
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
     #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
@@ -1373,7 +1375,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     ###-------------------------
     # fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
-    fileout = '../FIGS/PaperSubmission/Figure10.png'
+    fileout = '../FIGS/ACPD/Figure10.svg'
     plt.savefig(fileout)
     plt.show()
     # plt.close()
@@ -3515,7 +3517,7 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     print ('')
 
     # fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100-GAalb_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.png'
-    fileout = '../FIGS/ACPD/Figure2.png'
+    fileout = '../FIGS/ACPD/Figure2.svg'
     plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -4703,6 +4705,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
             hspace = 0.4, wspace = 0.1)
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
+    ax.set_facecolor('whitesmoke')
     plt.plot(data2['time'], zeros,'--', color='lightgrey')
     # plt.plot(obs['mrr']['doy'], obs['mrr']['rainrate'], color = 'purple', label = 'Obs_MRR', zorder = 0)
     # plt.plot(mrr_rain_time[drift_mrr_movmean],mrr_rain_movmean[drift_mrr_movmean], color = 'k', label = 'Obs_MRR_movmean', zorder = 0)
@@ -4736,6 +4739,7 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
 
 
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
+    ax.set_facecolor('whitesmoke')
     sns.distplot(precip1, hist=False, color="darkblue", kde_kws={"shade": True})
     sns.distplot(precip4, hist=False, color="steelblue", kde_kws={"shade": True})
     sns.distplot(precip2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
@@ -4754,8 +4758,8 @@ def plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, ou
     print ('')
 
     # fileout = '../FIGS/comparisons/TotalPrecip_oden-pws_ifs-z0_casim-100_ra2m-4_ra2t_fixedRA2T_newColours_Date.svg'
-    fileout = '../FIGS/PaperSubmission/Figure5cd.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/ACPD/Figure5cd.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -5370,6 +5374,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ###-------------------------
     plt.subplot(221)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data5['temp_anomalies'][:,m_um]),1) - np.nanstd(np.squeeze(data5['temp_anomalies'][:,m_um]),1),
     #     np.nanmedian(np.squeeze(data5['temp_anomalies'][:,m_um]),1) + np.nanstd(np.squeeze(data5['temp_anomalies'][:,m_um]),1),
     #     color = 'lightgrey', alpha = 0.3)
@@ -5432,6 +5437,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ###-------------------------
     plt.subplot(222)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data5['q_anomalies'][:,m_um]),1) - np.nanstd(np.squeeze(data5['q_anomalies'][:,m_um]),1),
     #     np.nanmedian(np.squeeze(data5['q_anomalies'][:,m_um]),1) + np.nanstd(np.squeeze(data5['q_anomalies'][:,m_um]),1),
     #     color = 'lightgrey', alpha = 0.3)
@@ -5494,6 +5500,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ###-------------------------
     plt.subplot(223)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
+
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data5['temp_anomalies'][:,f_um]),1) - np.nanstd(np.squeeze(data5['temp_anomalies'][:,f_um]),1),
     #     np.nanmedian(np.squeeze(data5['temp_anomalies'][:,f_um]),1) + np.nanstd(np.squeeze(data5['temp_anomalies'][:,f_um]),1),
     #     color = 'lightgrey', alpha = 0.3)
@@ -5554,6 +5562,7 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
     ###-------------------------
     plt.subplot(224)
     ax1 = plt.gca()
+    ax1.set_facecolor('whitesmoke')
     # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data5['q_anomalies'][:,f_um]),1) - np.nanstd(np.squeeze(data5['q_anomalies'][:,f_um]),1),
     # np.nanmedian(np.squeeze(data5['q_anomalies'][:,f_um]),1) + np.nanstd(np.squeeze(data5['q_anomalies'][:,f_um]),1),
     # color = 'lightgrey', alpha = 0.3)
@@ -5615,8 +5624,8 @@ def plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing
 
     ###-------------------------
     # fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_UMGlobal_ra2m-25_ra2t_casim-100-GA6alb_fixedRA2T.svg'
-    # fileout = '../FIGS/PaperSubmission/Figure9.png'
-    # plt.savefig(fileout, dpi = 300)
+    fileout = '../FIGS/ACPD/Figure9.svg'
+    plt.savefig(fileout, dpi = 300)
     # plt.show()
     plt.close()
 
@@ -8388,6 +8397,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(221)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p3]),1),
@@ -8438,6 +8448,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(222)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p3]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p3]),1),
@@ -8488,6 +8499,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(223)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p6]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p6]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p6]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p6]),1),
@@ -8538,6 +8550,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(224)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p6]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p6]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p6]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p6]),1),
@@ -8588,8 +8601,8 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
     plt.xticks([-0.6,-0.3,0,0.3,0.6])
 
     # fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
-    # fileout = '../FIGS/PaperSubmission/Figure13b.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/ACPD/Figure13b.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -10771,7 +10784,7 @@ def main():
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_R1_25H/'
-        out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'#'14_u-bu570_RA1M_CASIM/OUT_R1/'# '26_u-cd847_RA1M_CASIM/OUT_R0/'##  # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
+        out_dir4 = '26_u-cd847_RA1M_CASIM/OUT_R0/'#'24_u-cc324_RA2T_CON/OUT_R0_LAM/'#'14_u-bu570_RA1M_CASIM/OUT_R1/'# ##  # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
         out_dir5 = '24_u-cc324_RA2T_CON/OUT_R0_GLM/'
     elif platform == 'JASMIN':
         out_dir1 = 'UM_RA2M/'
@@ -11455,7 +11468,7 @@ def main():
     # CASIM plots
     # -------------------------------------------------------------
     # figure = plot_line_CASIM_NiceTest(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    # figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_CASIM_NiceTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_CASIM_QliqTimeseries(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
 
@@ -11463,7 +11476,7 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
