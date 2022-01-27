@@ -168,7 +168,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
 
     ### define axis instance
     ax = plt.gca()
-    ax.set_facecolor('whitesmoke')
+    # ax.set_facecolor('whitesmoke')
 
     print (um_data.keys())
 
