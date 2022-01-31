@@ -1084,8 +1084,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
         # fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
         fileout = '../FIGS/PaperSubmission/Figure7.png'
     # plt.savefig(fileout)
-    plt.show()
-    # plt.close()
+    # plt.show()
+    plt.close()
 
 
     ###################################
@@ -1377,12 +1377,30 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     ###-------------------------
     # fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
-    # fileout = '../FIGS/ACPD/Figure10.svg'
+    fileout = '../FIGS/ACPD/Figure10.svg'
     # plt.savefig(fileout)
-    plt.show()
+    # plt.show()
     # plt.close()
 
+    Zindex = np.where(data1['height'][:] < 500.)
+    print ('Z = ')
+    print (data1['height'][Zindex])
+    # print (data1['universal_height'])
 
+    # print (np.size(data2['qnliq'][:,Zindex]))
+
+    print ('UM_CASIM-100 = ')
+    print (np.nanmean(np.nanmean(data2['qnliq'][:,Zindex[0]],1),0)/1e6)
+    print (np.nanstd(np.nanmean(data2['qnliq'][:,Zindex[0]],1),0)/1e6)  ## std of mean Ndrop below 500m throughout drift
+
+    print ('UM_CASIM-AeroProf = ')
+    print (np.nanmean(np.nanmean(data4['qnliq'][:,Zindex[0]],1),0)/1e6)
+    print (np.nanstd(np.nanmean(data4['qnliq'][:,Zindex[0]],1),0)/1e6)  ## std of mean Ndrop below 500m throughout drift
+
+    # print (np.nanmin(np.round(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1),2)))
+    # print (np.nanmin(np.round(np.nanmedian(np.squeeze(data2['temp_anomalies'][:,p3]),1),2)))
+    # print (np.nanmin(np.round(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1),2)))
+    # print (np.nanmin(np.round(np.nanmedian(np.squeeze(data4['temp_anomalies'][:,p3]),1),2)))
 
 
     # ##################################################
