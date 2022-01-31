@@ -873,6 +873,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
         )
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
+    # axmajor = np.arange(0,9.01e3,0.5e3)
     axmajor = np.arange(0,9.01e3,3.0e3)
     axminor = np.arange(0,9.01e3,0.5e3)
     plt.yticks(axmajor)
@@ -1067,6 +1068,7 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
     plt.yticks(axmajor)
+    # plt.grid('on')
     ax.set_yticklabels([0,3,6,9])
     plt.xlim([0,0.1])
     plt.xticks(np.arange(0,0.11,0.025))
@@ -1081,9 +1083,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     if month_flag == -1:
         # fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
         fileout = '../FIGS/PaperSubmission/Figure7.png'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     plt.show()
-    plt.close()
+    # plt.close()
 
 
     ###################################
@@ -1375,10 +1377,12 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
 
     ###-------------------------
     # fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
-    fileout = '../FIGS/ACPD/Figure10.svg'
-    plt.savefig(fileout)
+    # fileout = '../FIGS/ACPD/Figure10.svg'
+    # plt.savefig(fileout)
     plt.show()
     # plt.close()
+
+
 
 
     # ##################################################
