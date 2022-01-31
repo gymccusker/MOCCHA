@@ -326,8 +326,18 @@ def plot_aeroProfiles(nc2, nc3, doy):
     plt.ylabel('N$_{aer, sol, accum}$ [cm$^{-3}$]', rotation = 270, labelpad = 25)
 
     fileout = '../FIGS/UKCA/UKCA_aeroProfiles_Lat-2_LonAll_226-257DOY_Dates.png'
-    plt.savefig(fileout, dpi = 300)
-    plt.show()
+    # plt.savefig(fileout, dpi = 300)
+    # plt.show()
+    plt.close()
+
+    Z = nc2.variables['level_height'][:]
+    naer = np.nanmean(np.nanmean(nc2.variables['number_concentration_of_soluble_accumulation_mode_aerosol'][:,:,-2:,:],3),2)
+
+    Zindex = np.where(Z < 500.)
+
+    print ('UKCA_Naer,sol,accum = ')
+    print (np.nanmean(np.nanmean(naer[:,Zindex[0]],1),0))
+    print (np.nanstd(np.nanmean(naer[:,Zindex[0]],1),0))
 
 def interpolate_aeroProfiles(nc1, nc2, nc3, doy, ukca_index):
 
