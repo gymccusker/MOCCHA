@@ -263,7 +263,7 @@ def plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fla
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_Cv_226-257DOY_fixedRA2T_noOffsetLWP_wSetFlags.svg'
         # if obs_testing_flag == 1: fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf70-QF30-Ceilometer_RA2M-25_CASIM-100-GA6alb_RA2T_Cv_226-250DOY.png'
-        fileout = '../FIGS/ACPD/Figure4a.png'
+        fileout = '../FIGS/ACPD/Figure4a.svg'
     plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -886,9 +886,9 @@ def plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-V6_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWC_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_rangeGate-pl1.png'
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_LWC_MTThresholding-wLWCadiabatic_noOffsetLWP_226-257DOY_blueNaNs_newColours.png'
-        # fileout = '../FIGS/PaperSubmission/Figure4c.png'
-        fileout = '../FIGS/PaperSubmission/FigureA1.png'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/ACPD/Figure4c.svg'
+        # fileout = '../FIGS/ACPD/FigureA1.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -1357,8 +1357,8 @@ def plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-V7_RA2M-25_RA2T_IFS_CASIM-100-GA6alb_IWC-MTThresholding-wLWCadiabatic-noOfsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
-        fileout = '../FIGS/PaperSubmission/Figure4d.png'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/ACPD/Figure4d.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -2281,7 +2281,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWCTimeseries-MTThresholding-noOffsetLWP_226-257DOY_LogScale_fixedRA2T_wSetFlags_wFixedIWC.svg'
-        fileout = '../FIGS/PaperSubmission/Figure3.svg'
+        fileout = '../FIGS/ACPD/Figure3.png'
     # plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -2621,7 +2621,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_TWC-MASKTimeseries_MTThresholding-noOfsetLWP_226-257DOY_whiteMissingFiles_fixedRA2T_wSetFlags_wFixedIWC_lt500m.png'
-        fileout = '../FIGS/PaperSubmission/FigureS3.svg'
+        fileout = '../FIGS/ACPD/FigureS3.png'
     # plt.savefig(fileout)
     # plt.show()
     plt.close()
@@ -2714,8 +2714,8 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
-        fileout = '../FIGS/PaperSubmission/Figure4b.png'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/ACPD/Figure4b.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -3085,6 +3085,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
     res = 3 ### hourly resolution to plot
 
     ax  = fig.add_axes([0.09,0.18,0.6,0.76])   # left, bottom, width, height
+    ax.set_facecolor('whitesmoke')
     plt.plot(obs['deck7th']['doy'][:],obs['deck7th']['lwp'][:], color = 'grey', label = 'Obs_HATPRO', zorder = 2)
     if obs_switch == 'RADAR':
         plt.plot(obs_data['time'][:],obs_data['lwp'][:]*1e3, color = 'purple', label = 'Obs_' + obs_switch + 'grid')
@@ -3120,6 +3121,7 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
             zorder = 2)
 
     ax  = fig.add_axes([0.76,0.27,0.22,0.6])   # left, bottom, width, height
+    ax.set_facecolor('whitesmoke')
     yEmax = 0.012
     plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
     sns.distplot(um_data['model_lwp']*1e3, hist=False, color="darkblue", kde_kws={"shade": True})
@@ -3147,8 +3149,8 @@ def plot_LWP(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_flag,
 
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-qf30_IFS_RA2M-25_CASIM-100-GA6alb_RA2T_LWP_226-257DOY_newColours_Date_noOffsetLWP-LWPbugfixed_fixedRA2T.png'
-        fileout = '../FIGS/PaperSubmission/Figure5ab.svg'
-    # plt.savefig(fileout)
+        fileout = '../FIGS/ACPD/Figure5ab.png'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -3809,6 +3811,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     ####------          SWd
     plt.subplot(431)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data3['biases']['LWP'], data3['biases']['SWd'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3822,11 +3826,13 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('ECMWF_IFS', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = '#FFC107enrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = '#FFC107')
     plt.annotate('{:.2f}'.format(data3['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
 
     plt.subplot(434)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data2['biases']['LWP'], data2['biases']['SWd'], c = arg[2], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3844,6 +3850,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data2['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
     plt.subplot(437)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data4['biases']['LWP'], data4['biases']['SWd'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3860,6 +3868,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data4['biases']['SWd-Cv3km_regres']['r_value']), xy=(xmax*0.7,y1max*0.45), xytext=(xmax*0.7,y1max*0.45), fontsize = 12, color = 'firebrick')
 
     plt.subplot(4,3,10)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data1['biases']['LWP'], data1['biases']['SWd'], c = arg[1], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3870,7 +3880,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y1min,y1max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    plt.xlabel('LWP bias [g m$^{-2}$]')
     # plt.title('UM_RA2M', fontsize = 12)
     plt.ylabel('SW$_{\downarrow}$ bias [W m$^{-2}$]')
     plt.annotate('{:.2f}'.format(data1['biases']['SWd-LWP_regres']['r_value']), xy=(xmax*0.7,y1max*0.7), xytext=(xmax*0.7,y1max*0.7), fontsize = 12, color = 'darkblue')
@@ -3879,6 +3889,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     ####------          LWd
     plt.subplot(432)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data3['biases']['LWP'], data3['biases']['LWd'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3891,10 +3903,12 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     # plt.xlabel('LWP [mod-obs]')
     # plt.title('ECMWF_IFS', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = '#FFC107enrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = '#FFC107')
     plt.annotate('{:.2f}'.format(data3['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(435)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data2['biases']['LWP'], data2['biases']['LWd'], c = arg[2], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3911,6 +3925,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data2['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(438)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data4['biases']['LWP'], data4['biases']['LWd'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3926,6 +3942,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.annotate('{:.2f}'.format(data4['biases']['LWd-Cv3km_regres']['r_value']), xy=(xmax*0.72,y2max*0.65), xytext=(xmax*0.72,y2max*0.65), fontsize = 12, color = 'firebrick')
 
     plt.subplot(4,3,11)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data1['biases']['LWP'], data1['biases']['LWd'], c = arg[1], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3935,7 +3953,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y2min,y2max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    plt.xlabel('LWP bias [g m$^{-2}$]')
     # plt.title('UM_RA2M', fontsize = 12)
     plt.ylabel('LW$_{\downarrow}$ bias [W m$^{-2}$]')
     plt.annotate('{:.2f}'.format(data1['biases']['LWd-LWP_regres']['r_value']), xy=(xmax*0.72,y2max*0.8), xytext=(xmax*0.72,y2max*0.8), fontsize = 12, color = 'darkblue')
@@ -3943,6 +3961,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
 
     ####------          Rnet
     plt.subplot(433)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data3['biases']['LWP'], data3['biases']['Rnet'], c = arg[3], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3954,7 +3974,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
     # plt.xlabel('LWP [mod-obs]')
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
-    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = '#FFC107enrod')
+    plt.annotate('{:.2f}'.format(data3['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = '#FFC107')
     plt.annotate('{:.2f}'.format(data3['biases']['Rnet-Cv3km_regres']['r_value']), xy=(xmax*0.72,y3max*0.65), xytext=(xmax*0.72,y3max*0.65), fontsize = 12, color = 'firebrick')
     ax = plt.gca()
     ax2 = ax.twinx()
@@ -3962,6 +3982,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ax2.set_yticks([])
 
     plt.subplot(436)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     plt.scatter(data2['biases']['LWP'], data2['biases']['Rnet'], c = arg[2], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3981,6 +4003,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ax2.set_yticks([])
 
     plt.subplot(439)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     scat = plt.scatter(data4['biases']['LWP'], data4['biases']['Rnet'], c = arg[4], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -3999,6 +4023,8 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     ax2.set_yticks([])
 
     plt.subplot(4,3,12)
+    ax = plt.gca()
+    ax.set_facecolor('whitesmoke')
     scat = plt.scatter(data1['biases']['LWP'], data1['biases']['Rnet'], c = arg[1], s = 8,
         vmin = vminn, vmax = vmaxx,
         cmap = cmap_choice,
@@ -4008,7 +4034,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     plt.xlim([xmin,xmax])
     plt.plot([xmin,xmax],[0,0],'--', color='lightgrey', linewidth = 1, zorder=0)
     plt.plot([0,0],[y3min,y3max],'--', color='lightgrey', linewidth = 1, zorder=0)
-    plt.xlabel('LWP bias [kg m$^{-2}$]')
+    plt.xlabel('LWP bias [g m$^{-2}$]')
     # plt.title('', fontsize = 12)
     plt.ylabel('R$_{net}$ bias [W m$^{-2}$]')
     plt.annotate('{:.2f}'.format(data1['biases']['Rnet-LWP_regres']['r_value']), xy=(xmax*0.72,y3max*0.8), xytext=(xmax*0.72,y3max*0.8), fontsize = 12, color = 'darkblue')
@@ -4025,7 +4051,7 @@ def plot_BiVAR(um_data, ifs_data, misc_data, ra2t_data, obs_data, obs, month_fla
     cbaxes.xaxis.set_label_position('top')
 
     # plt.savefig('../FIGS/comparisons/Radiation-LWP_Correlations_RA2M-25_cCvlt3km-ObsQF70_lt155m-NaN.svg', dpi = 300)
-    # plt.savefig('../FIGS/PaperSubmission/Figure6.svg', dpi = 300)
+    plt.savefig('../FIGS/ACPD/Figure6.png', dpi = 300)
     # plt.show()
     plt.close()
 
@@ -7403,6 +7429,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.subplot(231)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),np.nanmean(fraction0p3,0) - np.nanstd(fraction0p3,0),
         np.nanmean(fraction0p3,0) + np.nanstd(fraction0p3,0), color = 'lightgrey', alpha = 0.5)
     plt.plot(np.nanmean(fraction0p3,0) - np.nanstd(fraction0p3,0), np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),
@@ -7460,6 +7487,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #----------------------
     plt.subplot(232)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p3,lwc_binlimit:]),0),
         np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 - np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3 + np.nanstd(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p3,lwc_binlimit:]),0)*1e3,
@@ -7539,6 +7567,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #-------------------------
     plt.subplot(233)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p3,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['height'][p3,:]),0),
         'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
@@ -7620,6 +7649,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
 
     plt.subplot(234)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     plt.plot(np.nanmean(fraction0p6,0), np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
         'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
     ax2.fill_betweenx(np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
@@ -7699,6 +7729,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #--------------
     plt.subplot(235)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     plt.plot(np.nanmean(np.squeeze(obs_data['lwc_adiabatic_inc_nolwp'][p6,lwc_binlimit:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['height'][p6,lwc_binlimit:]),0),
         'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
@@ -7780,6 +7811,7 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     #---------------------------
     plt.subplot(236)
     ax2 = plt.gca()
+    ax2.set_facecolor('whitesmoke')
     plt.plot(np.nanmean(np.squeeze(obs_data['iwc'][p6,:]),0)*1e3,
         np.nanmean(np.squeeze(obs_data['height'][p6,:]),0),
         'k', linewidth = 3, label = 'Obs_' + obs_switch + 'grid', zorder = 3)
@@ -7864,8 +7896,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     # fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
-    # fileout = '../FIGS/PaperSubmission/Figure13a.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/ACPD/Figure13a.svg'
+    plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -10380,7 +10412,7 @@ def main():
     # -------------------------------------------------------------
     # Cloudnet plot: Plot Cv statistics from drift period
     # -------------------------------------------------------------
-    figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
+    # figure = plot_CvProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs, obs_switch, obs_testing_flag)
     # figure = plot_lwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     # figure = plot_iwcProfiles(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
 
@@ -10429,7 +10461,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
     ## -------------------------------------------------------------
     ## look closer at biases - not used
