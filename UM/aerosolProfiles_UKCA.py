@@ -603,9 +603,9 @@ def main():
         root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
         ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        um_root_dir = '/home/gillian/MOCCHA/UM/DATA/'
-        obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        um_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/'
+        obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
+        ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -778,12 +778,12 @@ def main():
     #### -------------------------------------------------------------
     #### PLOT AEROSOL PROFILES
     #### -------------------------------------------------------------
-    # figure = plot_aeroProfiles(nc2, nc3, doy)
+    figure = plot_aeroProfiles(nc2, nc3, doy)
 
     #### -------------------------------------------------------------
     #### CREATE N_AER PROFILES (IN /M)
     #### -------------------------------------------------------------
-    numAccum, numCoarse, moncNumAccum, moncNumCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
+    # numAccum, numCoarse, moncNumAccum, moncNumCoarse = interpolate_aeroProfiles(nc1, nc2, nc3, doy, np.squeeze(ukca_index))
 
     # data = {}
     # data['moncNumAccum'] = moncNumAccum
@@ -800,28 +800,28 @@ def main():
     #### CALCULATE DAY MEAN AIR DENSITY
     ####        for use in mass conversion calculation
     #### -------------------------------------------------------------
-    # print(nc1.variables['pressure'][0,0])
-    rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:]/1e2,0))
-    plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
+    # # print(nc1.variables['pressure'][0,0])
+    # rho_air = calcAirDensity(np.nanmean(nc1.variables['temperature'][:,1:],0),np.nanmean(nc1.variables['pressure'][:,1:]/1e2,0))
+    # plt.plot(rho_air[:],nc1.variables['height'][1:]);plt.show()
 
     #### -------------------------------------------------------------
     #### ESTIMATE AEROSOL MASS
     ####        assume spherical particles
     #### -------------------------------------------------------------
 
-    print('****')
-    print('Estimate accumulation mode mass:')
-    print('')
-    modeFlag = 1
-    massAccum = estimateMass(numAccum, rho_air, modeFlag)
-    plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
-
-    print('****')
-    print('Estimate coarse mode mass:')
-    print('')
-    modeFlag = 2
-    massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
-    plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
+    # print('****')
+    # print('Estimate accumulation mode mass:')
+    # print('')
+    # modeFlag = 1
+    # massAccum = estimateMass(numAccum, rho_air, modeFlag)
+    # plt.plot(massAccum,nc1.variables['height'][1:]); plt.title('massAccum'); plt.show()
+    #
+    # print('****')
+    # print('Estimate coarse mode mass:')
+    # print('')
+    # modeFlag = 2
+    # massCoarse = estimateMass(numCoarse, rho_air, modeFlag)
+    # plt.plot(massCoarse,nc1.variables['height'][1:]);  plt.title('massCoarse');plt.show()
 
     #### -------------------------------------------------------------
     #### FORMAT OUTPUT FOR UM/ROSE-APP.CONF
