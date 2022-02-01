@@ -26,7 +26,7 @@ import sys
 sys.path.insert(1, '../py_functions/')
 from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY, running_mean
 from readMAT import readMatlabStruct
-from physFuncts import calcThetaE, calcThetaVL
+from physFuncts import calcThetaE, calcThetaVL, calcRH
 from pyFixes import py3_FixNPLoad
 
 def readfile(filename):
@@ -1127,13 +1127,36 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     #### re-grid sonde and IFS data to UM vertical grid <10km
     #### ---------------------------------------------------------------
 
+
+    print ('Calculating RH:')
+
+    rh1 = calcRH(data1['temperature'][:], data1['pressure'][:], data1['q'][:])
+    data1['rh'] = rh1#/100.
+
+    rh2 = calcRH(data2['temperature'][:], data2['pressure'][:], data2['q'][:])
+    data2['rh'] = rh2#/100.
+
+    rh3 = calcRH(data3['temperature'][:], data3['pressure'][:], data3['q'][:])
+    data3['rh'] = rh3#/100.
+
+    rh4 = calcRH(data4['temperature'][:], data4['pressure'][:], data4['q'][:])
+    data4['rh'] = rh4#/100.
+
+    rh5 = calcRH(data5['temperature'][:], data5['pressure'][:], data5['q'][:])
+    data5['rh'] = rh5#/100.
+
     print ('...')
     print ('Re-gridding sonde and ifs data...')
     print ('')
+
     data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'temp')
     data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'q')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'rh')
     print ('')
     print ('Done!')
+
+    ### remove flagged sonde RH data
+    obs['sondes']['rh_driftSondes_UM'][obs['sondes']['rh_driftSondes_UM'] == 99999.0] = np.nan
 
     print ('')
     print ('Starting radiosonde figure (quite slow!)...:')
@@ -1155,6 +1178,16 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
     data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+
+    data3['rh_anomalies'] = np.transpose(data3['rh_hrly_UM'][::6]) - np.transpose(obs['sondes']['rh_driftSondes_UM'])
+    data1['rh_anomalies'] = np.transpose(data1['rh_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['rh_driftSondes_UM'])
+    data2['rh_anomalies'] = np.transpose(data2['rh_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['rh_driftSondes_UM'])
+    data4['rh_anomalies'] = np.transpose(data4['rh_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['rh_driftSondes_UM'])
+    data5['rh_anomalies'] = np.transpose(data5['rh_6hrly_UM'][:]) - np.transpose(obs['sondes']['rh_driftSondes_UM'])
+
+    print (np.nanmax(obs['sondes']['rh_driftSondes_UM']))
+    print (np.nanmax(data2['rh_anomalies']))
+    print (np.nanmax(data4['rh_anomalies']))
 
     ### all model data share a timestamp
     p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
@@ -1194,14 +1227,6 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax1 = plt.gca()
     ax1.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
-    #     np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
-    #     color = 'blue', alpha = 0.05)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
 
     ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
         np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
@@ -1219,57 +1244,8 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
         '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
-    #     np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
-    #     color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
     plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
     plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
-
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
-    #     np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
-    #     color = 'blue', alpha = 0.05)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
-    #     np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
-    #      color = 'lightblue', alpha = 0.15)
-    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
-    #     np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
-    #     color = 'mediumaquamarine', alpha = 0.15)
-    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
-    #     np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
-    #     color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    #
-    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
-    # plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
-    # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     plt.legend(bbox_to_anchor=(1.2, 1.03, 1., .102), loc=4, ncol=3)          ## 2 lines
     # plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)            ## 5 lines
@@ -1289,84 +1265,53 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ax1 = plt.gca()
     ax1.set_facecolor('whitesmoke')
 
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
-    #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
-    #     color = 'blue', alpha = 0.05)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
+    var = 'q' # 'q'
 
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
-        np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
-        color = 'violet', alpha = 0.15)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'purple', linewidth = 0.5)
+    if var == 'q':
+        ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
+            np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
+            color = 'violet', alpha = 0.15)
+        plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+            '--', color = 'purple', linewidth = 0.5)
+        plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+            '--', color = 'purple', linewidth = 0.5)
 
-    ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
-        np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
-        color = 'mediumaquamarine', alpha = 0.15)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-        '--', color = 'mediumseagreen', linewidth = 0.5)
+        ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
+            np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
+            color = 'mediumaquamarine', alpha = 0.15)
+        plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+            '--', color = 'mediumseagreen', linewidth = 0.5)
+        plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+            '--', color = 'mediumseagreen', linewidth = 0.5)
 
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
-    #     np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
-    #     color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
+        plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+        plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
 
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    # plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+        plt.xlabel('q bias [g kg$^{-1}$]')
 
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
-    #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
-    #     color = 'blue', alpha = 0.05)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'darkblue', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
-    #     np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
-    #     color = 'lightblue', alpha = 0.15)
-    # plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'steelblue', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
-    #     np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
-    #     color = 'mediumaquamarine', alpha = 0.15)
-    # plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = 'mediumseagreen', linewidth = 0.5)
-    #
-    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
-    #     np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
-    #     color = 'navajowhite', alpha = 0.35)
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
-    #     '--', color = '#FFC107', linewidth = 0.5)
-    #
-    # plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
-    # plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
-    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
-    # plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    # plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    elif var == 'rh':
+        ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['rh_anomalies'],1) - np.nanstd(data4['rh_anomalies'],1),
+            np.nanmedian(data4['rh_anomalies'],1) + np.nanstd(data4['rh_anomalies'],1),
+            color = 'violet', alpha = 0.15)
+        plt.plot(np.nanmedian(data4['rh_anomalies'],1) - np.nanstd(data4['rh_anomalies'],1), data1['universal_height'],
+            '--', color = 'purple', linewidth = 0.5)
+        plt.plot(np.nanmedian(data4['rh_anomalies'],1) + np.nanstd(data4['rh_anomalies'],1), data1['universal_height'],
+            '--', color = 'purple', linewidth = 0.5)
 
-    # plt.legend()
-    plt.xlabel('q bias [g kg$^{-1}$]')
+        ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['rh_anomalies'],1) - np.nanstd(data2['rh_anomalies'],1),
+            np.nanmedian(data2['rh_anomalies'],1) + np.nanstd(data2['rh_anomalies'],1),
+            color = 'mediumaquamarine', alpha = 0.15)
+        plt.plot(np.nanmedian(data2['rh_anomalies'],1) - np.nanstd(data2['rh_anomalies'],1), data1['universal_height'],
+            '--', color = 'mediumseagreen', linewidth = 0.5)
+        plt.plot(np.nanmedian(data2['rh_anomalies'],1) + np.nanstd(data2['rh_anomalies'],1), data1['universal_height'],
+            '--', color = 'mediumseagreen', linewidth = 0.5)
+
+        plt.plot(np.nanmedian(data2['rh_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+        plt.plot(np.nanmedian(data4['rh_anomalies'],1),data1['universal_height'],'.-', color = 'purple', label = label4, zorder = 2)
+
+        plt.xlabel('RH bias')
+        # plt.xlim([-1,1])
+
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
@@ -1378,8 +1323,9 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ###-------------------------
     # fileout = '../FIGS/CASIM/MedianProfiles_TandSpHum_casim-100-23_casim-aeroprof-26_wholeDrift.svg'
     fileout = '../FIGS/ACPD/Figure10.svg'
+    # fileout = '../FIGS/ACPD/FigureS-X1.svg'
     # plt.savefig(fileout)
-    # plt.show()
+    plt.show()
     # plt.close()
 
     Zindex = np.where(data1['height'][:] < 500.)
@@ -8899,6 +8845,8 @@ def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
         varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
         varlist = ['sphum','q','q','q','q','q']
+    elif var == 'rh':
+        varlist = ['RH','rh','rh','rh','rh','rh']
 
     # ### stop double counting of 0000 and 2400 from model data
     # temp = np.zeros([len(data1['time'])])
