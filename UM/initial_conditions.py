@@ -923,7 +923,7 @@ def main():
                         print ('')
 
                         ### define range to loop over
-                        if np.logical_or(stream[1:3] == 'pa'mstream[1:3] == 'pb'):
+                        if np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
                             looping = range(0,33)
                         elif np.logical_or(np.logical_or(stream[1:3] == 'pc', stream[1:3] == 'pd'),  stream[1:3] == 'pe'):
                             looping = range(0,36)
