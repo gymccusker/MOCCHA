@@ -40,6 +40,36 @@ def calcAirDensity(temperature, pressure):
 
     return rho
 
+def calcAirPressure(temperature, rho):
+
+    """
+    Function to calculate pressure from temperature and air density
+    ==============================
+
+    """
+
+        #### EXAMPLE OF USE:
+        #### data = calcAirPressure(data['temperature'][:], data['rho'][:])
+        ####        temperature = K
+        ####        pressure = hPa
+
+    R = 2.8704  #### hPa kg-1 K-1
+
+    print('Calculating air pressure profile:')
+    print('')
+    ### if temperature is 1D
+    if np.ndim(temperature) == 1:
+        pressure = np.zeros([np.size(temperature)])
+        for k in range(0,np.size(temperature)):
+            pressure[k] = rho[k] * R * temperature[k]
+    ### if temperature is 2D
+    elif np.ndim(temperature) == 2:
+        pressure = np.zeros([np.size(temperature,0), np.size(temperature,1)])
+        for k in range(0,np.size(temperature, 1)):
+             pressure[:,k] = rho[:,k] * R * temperature[:,k]
+
+    return pressure
+
 def calcThetaE(temperature, pressure, q):
 
     """
