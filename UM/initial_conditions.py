@@ -922,14 +922,18 @@ def main():
                         print ('Start files exist, continuing:')
                         print ('')
 
+                        print (filename[-12:-9])
+
                         ### define range to loop over
                         if np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
                             looping = range(0,11)
+                            print ('Loop over 3 hours')
                         elif filename[-12:-9] == 'glm':
                             looping = range(0,6)
-                            print ('Global model run : loop over 6 hours')
+                            print ('Loop over 6 hours')
                         else:
                             looping = range(0,36)
+                            print ('Loop every hour')
 
                         for i in looping:
                             if np.size(looping) == 11:
