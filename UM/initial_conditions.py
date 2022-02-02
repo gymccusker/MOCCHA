@@ -925,12 +925,12 @@ def main():
                         print (filename[-12:-9])
 
                         ### define range to loop over
-                        if np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
-                            looping = range(0,11)
-                            print ('Loop over 3 hours')
-                        elif filename[-12:-9] == 'glm':
+                        if filename[-12:-9] == 'glm':
                             looping = range(0,6)
                             print ('Loop over 6 hours')
+                        elif np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
+                            looping = range(0,11)
+                            print ('Loop over 3 hours')
                         else:
                             looping = range(0,36)
                             print ('Loop every hour')
