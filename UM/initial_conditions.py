@@ -911,18 +911,11 @@ def main():
                 ### -------------------------------------------------------------------------
                 # 20180827T1200Z_glm_pc035.pp
                 filename1 = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-                if stream == '_pb009':
-                    filename2 = root_dir + out_dir + date + '/' + date + '_glm_pb012.pp'    ### FIX: no pb009 file for glm, starts at 012
-                else:
-                    filename2 = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
+                filename2 = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
                 filenames = [filename1, filename2]
                 for filename in filenames:
                     print ('Checking: ' + filename)
                     if os.path.exists(filename):
-                        # filename1 = root_dir + out_dir + date + '/umnsaa_pa012'
-                        # filename1 = root_dir + out_dir + date + '/umnsaa_pb012'
-                        # filename1 = root_dir + out_dir + date + '/umnsaa_pc011'
-                        # filename1 = root_dir + out_dir + date + '/umnsaa_pd011'
                         pp_filename = filename[:-3] + '_r0.pp'
 
                         print ('---')
@@ -930,23 +923,16 @@ def main():
                         print ('')
 
                         ### define range to loop over
-                        if stream[-2:] == '12':
-                            if filename[-12:-3] == 'glm_pa012':
-                                looping = range(2,6)
-                            elif np.logical_or(stream[1:3] == 'pc', stream[1:3] == 'pe'):
-                                looping = range(12,36)
-                            else:
-                                looping = range(4,12)
-                        if stream[-2:] == '11': looping = range(11,36)
-                        if stream[-2:] == '09': looping = range(3,12)
-                        if filename[-12:-3] == 'glm_pb012': looping = range(4,12)
+                        if np.logical_or(stream[1:3] == 'pa'mstream[1:3] == 'pb'):
+                            looping = range(0,33)
+                        elif np.logical_or(np.logical_or(stream[1:3] == 'pc', stream[1:3] == 'pd'),  stream[1:3] == 'pe'):
+                            looping = range(0,36)
+
                         for i in looping:
-                            if np.size(looping) > 9:
-                                res = i #* 3     # how many hourly dumps in file
-                            elif filename[-12:-3] == 'glm_pa012':
-                                res = i*6
-                            else:
-                                res = i*3
+                            if np.size(looping) == 11:
+                                res = i*3     # how many hourly dumps in file
+                            else
+                                res = i
                             str_i = "%03d" % res # file number
                             # fileout = root_dir + out_dir + date + stream[:-3] + str_i
                             if filename == filename1: fileout = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream[:-3] + str_i + '.pp'
@@ -992,7 +978,7 @@ def main():
                                 #### remove file to keep directory tidy
                                 print ('Directory clean up: removing ' + fileout)
                                 print ('')
-                                os.remove(fileout)
+                                # os.remove(fileout)
                     else:
                         print ('Combined output files already exist, or the directory does not exist')
                         print ('')
