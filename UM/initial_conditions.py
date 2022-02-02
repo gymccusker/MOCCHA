@@ -927,6 +927,7 @@ def main():
                             looping = range(0,11)
                         elif filename[-12:-9] == 'glm':
                             looping = range(0,6)
+                            print ('Global model run : loop over 6 hours')
                         else:
                             looping = range(0,36)
 
