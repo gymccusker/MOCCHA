@@ -925,12 +925,16 @@ def main():
                         ### define range to loop over
                         if np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
                             looping = range(0,11)
-                        elif np.logical_or(np.logical_or(stream[1:3] == 'pc', stream[1:3] == 'pd'),  stream[1:3] == 'pe'):
+                        elif filename[-12:-9] == 'glm':
+                            looping = range(0,6)
+                        else:
                             looping = range(0,36)
 
                         for i in looping:
                             if np.size(looping) == 11:
                                 res = i*3     # how many hourly dumps in file
+                            elif filename[-12:-9] == 'glm':
+                                res = i*6
                             else:
                                 res = i
                             str_i = "%03d" % res # file number
