@@ -1107,7 +1107,7 @@ def main():
                         # print (filename[-12:-9])
 
                         ### define range to loop over
-                        if filename[-12:-9] == 'glm':
+                        if filename[-12:-6] == 'glm_pa':
                             looping = range(0,6)
                             print ('Loop over 6 hours')
                         elif np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
@@ -1120,7 +1120,7 @@ def main():
                         for i in looping:
                             if np.size(looping) == 11:
                                 res = i*3     # how many hourly dumps in file
-                            elif filename[-12:-9] == 'glm':
+                            elif filename[-12:-6] == 'glm_pa':
                                 res = i*6
                             else:
                                 res = i
