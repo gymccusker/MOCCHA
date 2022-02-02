@@ -922,7 +922,7 @@ def main():
                         print ('Start files exist, continuing:')
                         print ('')
 
-                        print (filename[-12:-9])
+                        # print (filename[-12:-9])
 
                         ### define range to loop over
                         if filename[-12:-9] == 'glm':
