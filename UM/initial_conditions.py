@@ -917,6 +917,20 @@ def readGlobal(cube, ship_data, date_dir):
 
     return tim, ilat, ilon
 
+def loadUMStartDump(filename):
+
+    '''
+    Loads in data from UM start dump used to drive global model
+    Only loads in specific data relevant for calculating cloud + thermodynamic biases
+    '''
+
+    varlist = ['air_potential_temperature', 'sea_ice_thickness', 'mass_fraction_of_cloud_liquid_water_in_air',
+                'mass_fraction_of_cloud_ice_in_air', 'specific_humidity']
+
+    cube = iris.load(filename, varlist)
+
+    return cube
+
 def main():
 
     START_TIME = time.time()
@@ -1039,6 +1053,11 @@ def main():
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Combine output pp streams
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
     for date in date_dir:
         if date[0:4] == '2018':
         # if date[0:8] == '20180903':
@@ -1155,6 +1174,18 @@ def main():
                         print ('Combined output files already exist, or the directory does not exist')
                         print ('')
 
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load in relevant UM start dump data
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+
+    ### list start dumps in UM_STARTFILES/
+    umdumps = os.listdir(init_dir)
+
+    ### test out with first file
+    startdump = loadUMStartDump(umdumps[0])
 
     END_TIME = time.time()
     print ('******')
