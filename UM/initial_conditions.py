@@ -961,7 +961,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '23_u-cc278_RA1M_CASIM/'
+    out_dir = '24_u-cc324_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -1169,7 +1169,7 @@ def main():
                                 #### remove file to keep directory tidy
                                 print ('Directory clean up: removing ' + fileout)
                                 print ('')
-                                # os.remove(fileout)
+                                os.remove(fileout)
                     else:
                         print ('Combined output files already exist, or the directory does not exist')
                         print ('')
@@ -1181,11 +1181,11 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
 
-    ### list start dumps in UM_STARTFILES/
-    umdumps = os.listdir(init_dir)
-
-    ### test out with first file
-    startdump = loadUMStartDump(umdumps[0])
+    # ### list start dumps in UM_STARTFILES/
+    # umdumps = os.listdir(init_dir)
+    #
+    # ### test out with first file
+    # startdump = loadUMStartDump(umdumps[0])
 
     END_TIME = time.time()
     print ('******')
