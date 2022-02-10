@@ -1118,7 +1118,7 @@ def main():
                             print ('Loop every hour')
 
                         for i in looping:
-                            if np.size(looping) == 11:
+                            if np.size(looping) == 12:
                                 res = i*3     # how many hourly dumps in file
                             elif filename[-12:-6] == 'glm_pa':
                                 res = i*6
