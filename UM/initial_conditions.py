@@ -1111,7 +1111,7 @@ def main():
                             looping = range(0,6)
                             print ('Loop over 6 hours')
                         elif np.logical_or(stream[1:3] == 'pa', stream[1:3] == 'pb'):
-                            looping = range(0,11)
+                            looping = range(0,12)
                             print ('Loop over 3 hours')
                         else:
                             looping = range(0,36)
