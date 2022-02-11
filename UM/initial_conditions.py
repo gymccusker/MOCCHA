@@ -1111,7 +1111,7 @@ def loadPA(root_dir, out_dir, date_dir):
     for date in date_dir:
         filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
 
-        cubea{date} = iris.load(filename)
+        cubea[date] = iris.load(filename)
 
     return cubea
 
