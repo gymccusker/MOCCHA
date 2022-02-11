@@ -1100,7 +1100,7 @@ def loadPA(root_dir, out_dir, date_dir):
     Load in PA stream, combined pp file (suffix _r0.pp)
     '''
     model = ['_HighArctic_1p5km_','_glm']
-    stream = 'pa000_r0'
+    stream = '_pa000_r0'
 
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
