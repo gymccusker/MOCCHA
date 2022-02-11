@@ -961,7 +961,8 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '25_u-cc568_RA2M_CON/'
+    out_dir = '24_u-cc324_RA2T_CON//'
+    out_dir_glm = '24_u-cc324_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
