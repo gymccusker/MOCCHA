@@ -946,6 +946,8 @@ def combinePP(root_dir, out_dir, date_dir):
     names = ['_pa000','_pb000','_pc000','_pd000','_pe000']
 
     print ('out_dir is: ' + out_dir)
+    print ('...')
+    print ('')
 
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
