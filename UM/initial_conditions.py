@@ -1094,6 +1094,27 @@ def combinePP(root_dir, out_dir, date_dir):
 
     return dummy
 
+def loadPA(root_dir, out_dir, date_dir):
+
+    '''
+    Load in PA stream, combined pp file (suffix _r0.pp)
+    '''
+    model = ['_HighArctic_1p5km_','_glm']
+    stream = ['pa000_r0']
+
+    if out_dir[-6:-1] == 'CASIM':
+        expt = out_dir[-11:-1]
+    elif out_dir[-4:-1] == 'CON':
+        expt = out_dir[-9:-1]
+
+    cubea = {}
+    for date in date_dir:
+        filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
+
+        cubea{date} = iris.load(filename)
+
+    return cubea
+
 def main():
 
     START_TIME = time.time()
@@ -1195,6 +1216,15 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     dummy = combinePP(root_dir, out_dir, date_dir)
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load combined PP files - pa
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    cubea = loadPA(root_dir, out_dir, date_dir)
+
+    print (cubea)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
