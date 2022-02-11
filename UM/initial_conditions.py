@@ -938,9 +938,15 @@ def combinePP(root_dir, out_dir, date_dir):
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
+    print ('Checking if .pp files need to be combined:')
+    print ('...')
+
     dummy = []
 
     names = ['_pa000','_pb000','_pc000','_pd000','_pe000']
+
+    print ('out_dir is: ' + out_dir)
+
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
