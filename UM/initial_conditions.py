@@ -1186,7 +1186,7 @@ def loadPC(root_dir, out_dir, date_dir):
     for date in date_dir:
         filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
 
-        cubec[date] = iris.load(filename, , global_con, callback)
+        cubec[date] = iris.load(filename, global_con, callback)
         # cubea[date] = date
         #
         # for i in range(0, len(cube[date])):
