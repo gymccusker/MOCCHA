@@ -938,6 +938,8 @@ def combinePP(root_dir, out_dir, date_dir):
     #           start at 012 if 3h dumps (a, b)
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
+    dummy = []
+
     names = ['_pa000','_pb000','_pc000','_pd000','_pe000']
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
@@ -1082,7 +1084,7 @@ def combinePP(root_dir, out_dir, date_dir):
                         print ('Combined output files already exist, or the directory does not exist')
                         print ('')
 
-    return
+    return dummy
 
 def main():
 
