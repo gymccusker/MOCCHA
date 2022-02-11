@@ -1107,6 +1107,18 @@ def loadPA(root_dir, out_dir, date_dir):
     elif out_dir[-4:-1] == 'CON':
         expt = out_dir[-9:-1]
 
+    # -------------------------------------------------------------------------
+    # make global stash list and constraint
+    # -------------------------------------------------------------------------
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
+    GlobalStashList = makeGlobalStashList()
+    global_con = iris.AttributeConstraint(
+        STASH=lambda stash: str(stash) in GlobalStashList)
+            ### defines which stash variables to load - should be within a loop
+
     def hourly_data(cell):
        # return True or False as to whether the cell in question should be kept
        # in this case, should return hourly data
