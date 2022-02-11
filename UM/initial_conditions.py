@@ -204,8 +204,8 @@ def plot_cartmap(ship_data, cube):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    # plt.savefig('FIGS/Test_AirPressure_t0_wShipTrack.png', dpi=200)
-    plt.show()
+    plt.savefig('../../FIGS/Figure_1.png')
+    plt.close()
 
 def plot_basemap(ship_data, cube):
 
