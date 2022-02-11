@@ -166,7 +166,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0,:,:])
+    qplt.outline(cube[0][0,0,:,:])
 
     #################################################################
     ## plot ship track
