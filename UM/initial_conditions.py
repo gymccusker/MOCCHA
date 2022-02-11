@@ -931,100 +931,7 @@ def loadUMStartDump(filename):
 
     return cube
 
-def main():
-
-    START_TIME = time.time()
-    print ('******')
-    print ('')
-    print ('Start: ' + time.strftime("%c"))
-    print ('')
-
-    ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
-
-    ### JASMIN
-    ### LAPTOP
-    ### MONSOON
-    ### DESKTOP
-
-    if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
-        init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
-        ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-    if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-    if platform == 'MONSOON':
-        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
-    if platform == 'DESKTOP':
-        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
-        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
-
-    ### CHOSEN RUN
-    out_dir = '24_u-cc324_RA2T_CON//'
-    out_dir_glm = '24_u-cc324_RA2T_CON/'
-    date_dir = os.listdir(root_dir + out_dir)
-
-    ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
-    ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
-    ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
-    ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
-    ## 8_u-bp738_RA2M_CON/              # ERAI
-    ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
-    ## 11_u-bq798_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Meyers
-    ## 12_u-br210_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
-    ## 13_u-br409_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
-    ## 14_u-bu570_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
-    ## 15_u-bu687_RA2M_CON/           # Wilson and Ballard 1999 uphys; new RHcrit
-    ## 16_u-bv926_RA2T_CON/              # RA2T_CON nest + global 4D stash + no subgrid mp production
-    ## 17_u-bz429_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics
-    ## 18_u-ca011_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics; 1A BL Scheme
-    ## 19_u-ca012_RA2T_CON/              # RA2T_CON nest + global 4D stash; includes diagnosed turbulent dissipation rate
-    ## 20_u-ca362_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice albedo scheme
-    ## 23_u-cc278_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
-    ## 24_u-cc324_RA2T_CON/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
-    ## 25_u-cc568_RA2M_CON/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
-    ## 26_u-cd847_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
-    ## 27_u-ce112_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, GA6 albedo options. passive aerosol processing.
-    ## 28_u-ce627_RA2T_CON/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included. Mid-level convection switched off in GLM.
-    ## 30_u-cg179_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM; passive aerosol processing
-    ## 31_u-cl349_RA2M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM; jules fluxes
-
-    # -------------------------------------------------------------
-    # Extract from MASS with:
-    # -------------------------------------------------------------
-    #### moo select stash_extract_CloudNet.p2 moose:crum/u-bg610/apm.pp 4_u-bg610_RA2M_CON/20180811T1200Z/
-    #### moo select stash_extract_CASIM.p5 moose:crum/u-bl661/apm.pp 5_u-bl661_RA1M_CASIM/20180831T1200Z/
-    #### moo select stash_extract_CASIM.p5 moose:crum/u-bm410/apm.pp 6_u-bm410_RA1M_CASIM/20180905T1200Z/
-    #### moo select stash_extract_all.p4 moose:crum/u-bn068/apm.pp 7_u-bn068_RA2T_CON/20180827T1200Z/
-    #### moo select stash_extract_all.p4 moose:crum/u-bp738/apm.pp 8_u-bp738_RA2M_CON/20180904T1200Z/
-    #### moo select stash_extract_CASIM_BL.p6 moose:crum/u-br210/apm.pp 12_u-br210_RA1M_CASIM/20180901T1200Z/
-    #### moo select stash_extract_CASIM_BL.p6 moose:crum/u-br409/apm.pp 13_u-br409_RA1M_CASIM/20180901T1200Z/
-
-    #### stash CASIM:
-    ####    2, 3, 4, 10, 12, 24, 75, 78, 83, 86, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409, 1201,
-    ####    2201, 2391, 2392, 3025, 3217, 3234, 3236, 3245, 3247, 3248, 3360, 3361, 3476, 4118, 4203, 4204,
-    ####    5216, 9203, 9204, 9205, 16004, 30461
-
-    #### stash CASIM_BL:
-    #### 2, 3, 4, 10, 12, 24, 26, 31, 75, 78, 83, 84, 88, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409,
-    #### 1201, 2201, 2391, 2392, 3002, 3025, 3208, 3217, 3219, 3220, 3223, 3234, 3236, 3245, 3247, 3248, 3360,
-    #### 3361, 3362, 3363, 3460, 3461, 3464, 3465, 3469, 3471, 3473, 3476, 3501, 4118, 4203, 4204, 5216, 9203,
-    #### 9204, 9205, 16004, 30461
-
-    ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
-    #### module load jaspy
-    #### nohup python diags_CloudNet.py > nohup_u-bz429_diags_CloudNet.out &
-
-    # -------------------------------------------------------------
-    # Load ship track
-    # -------------------------------------------------------------
-    print ('******')
-    print ('')
-    print ('Load in ship track file:')
-    print ('')
-    ship_data, values = readfile(ship_filename)
-    columns = assignColumns(ship_data)
+def combinePP(root_dir, out_dir, date_dir):
 
     # -------------------------------------------------------------
     # Define output stream filenames to look at:
@@ -1175,6 +1082,109 @@ def main():
                         print ('Combined output files already exist, or the directory does not exist')
                         print ('')
 
+    return
+
+def main():
+
+    START_TIME = time.time()
+    print ('******')
+    print ('')
+    print ('Start: ' + time.strftime("%c"))
+    print ('')
+
+    ### CHOOSE PLATFORM (OPTIONS BELOW)
+    platform = 'JASMIN'
+
+    ### JASMIN
+    ### LAPTOP
+    ### MONSOON
+    ### DESKTOP
+
+    if platform == 'JASMIN':
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
+        init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
+        ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    if platform == 'LAPTOP':
+        root_dir = '~/MOCCHA/UM/DATA/'
+        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+    if platform == 'MONSOON':
+        root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
+    if platform == 'DESKTOP':
+        root_dir = '/nfs/a96/MOCCHA/working/gillian/UM/DATA/'
+        ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
+
+    ### CHOSEN RUN
+    out_dir = '24_u-cc324_RA2T_CON//'
+    out_dir_glm = '24_u-cc324_RA2T_CON/'
+    date_dir = os.listdir(root_dir + out_dir)
+
+    ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
+    ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
+    ## 6_u-bm410_RA1M_CASIM/            # 200/cc accum mode aerosol
+    ## 7_u-bn068_RA2T_CON/              # RA2T_CON nest + global 4D stash
+    ## 8_u-bp738_RA2M_CON/              # ERAI
+    ## 10_u-bq791_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Fletcher
+    ## 11_u-bq798_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Meyers
+    ## 12_u-br210_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, identical suite = u-bm507
+    ## 13_u-br409_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; passive aerosol processing
+    ## 14_u-bu570_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit
+    ## 15_u-bu687_RA2M_CON/           # Wilson and Ballard 1999 uphys; new RHcrit
+    ## 16_u-bv926_RA2T_CON/              # RA2T_CON nest + global 4D stash + no subgrid mp production
+    ## 17_u-bz429_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics
+    ## 18_u-ca011_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; 15 min res 3D diagnostics; 1A BL Scheme
+    ## 19_u-ca012_RA2T_CON/              # RA2T_CON nest + global 4D stash; includes diagnosed turbulent dissipation rate
+    ## 20_u-ca362_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; CICE sea ice albedo scheme
+    ## 23_u-cc278_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM
+    ## 24_u-cc324_RA2T_CON/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included
+    ## 25_u-cc568_RA2M_CON/             # Wilson and Ballard 1999 uphys. sea ice albedo and extra BL diags
+    ## 26_u-cd847_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, GA6 albedo options. identical suite = u-cd852
+    ## 27_u-ce112_RA1M_CASIM/           # UKCA daily averaged aerosol profiles, GA6 albedo options. passive aerosol processing.
+    ## 28_u-ce627_RA2T_CON/             # RA2T_CON nest + global 4D stash. sea ice albedo (GLM+LAM) and extra BL diags (LAM) included. Mid-level convection switched off in GLM.
+    ## 30_u-cg179_RA1M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM; passive aerosol processing
+    ## 31_u-cl349_RA2M_CASIM/           # 100/cc accum mode aerosol; ARG + Cooper; new RHcrit; sea ice albedo options as GLM; jules fluxes
+
+    # -------------------------------------------------------------
+    # Extract from MASS with:
+    # -------------------------------------------------------------
+    #### moo select stash_extract_CloudNet.p2 moose:crum/u-bg610/apm.pp 4_u-bg610_RA2M_CON/20180811T1200Z/
+    #### moo select stash_extract_CASIM.p5 moose:crum/u-bl661/apm.pp 5_u-bl661_RA1M_CASIM/20180831T1200Z/
+    #### moo select stash_extract_CASIM.p5 moose:crum/u-bm410/apm.pp 6_u-bm410_RA1M_CASIM/20180905T1200Z/
+    #### moo select stash_extract_all.p4 moose:crum/u-bn068/apm.pp 7_u-bn068_RA2T_CON/20180827T1200Z/
+    #### moo select stash_extract_all.p4 moose:crum/u-bp738/apm.pp 8_u-bp738_RA2M_CON/20180904T1200Z/
+    #### moo select stash_extract_CASIM_BL.p6 moose:crum/u-br210/apm.pp 12_u-br210_RA1M_CASIM/20180901T1200Z/
+    #### moo select stash_extract_CASIM_BL.p6 moose:crum/u-br409/apm.pp 13_u-br409_RA1M_CASIM/20180901T1200Z/
+
+    #### stash CASIM:
+    ####    2, 3, 4, 10, 12, 24, 75, 78, 83, 86, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409, 1201,
+    ####    2201, 2391, 2392, 3025, 3217, 3234, 3236, 3245, 3247, 3248, 3360, 3361, 3476, 4118, 4203, 4204,
+    ####    5216, 9203, 9204, 9205, 16004, 30461
+
+    #### stash CASIM_BL:
+    #### 2, 3, 4, 10, 12, 24, 26, 31, 75, 78, 83, 84, 88, 150, 254, 266, 267, 268, 271, 272, 273, 408, 409,
+    #### 1201, 2201, 2391, 2392, 3002, 3025, 3208, 3217, 3219, 3220, 3223, 3234, 3236, 3245, 3247, 3248, 3360,
+    #### 3361, 3362, 3363, 3460, 3461, 3464, 3465, 3469, 3471, 3473, 3476, 3501, 4118, 4203, 4204, 5216, 9203,
+    #### 9204, 9205, 16004, 30461
+
+    ####    RUN SCRIPT IN BACKGROUND (change to executable with chmod +x diags_CloudNet.py)
+    #### module load jaspy
+    #### nohup python diags_CloudNet.py > nohup_u-bz429_diags_CloudNet.out &
+
+    # -------------------------------------------------------------
+    # Load ship track
+    # -------------------------------------------------------------
+    print ('******')
+    print ('')
+    print ('Load in ship track file:')
+    print ('')
+    ship_data, values = readfile(ship_filename)
+    columns = assignColumns(ship_data)
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Combine PP files
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    dummy = combinePP(root_dir, out_dir, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -1187,6 +1197,8 @@ def main():
     #
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
+
+
 
     END_TIME = time.time()
     print ('******')
