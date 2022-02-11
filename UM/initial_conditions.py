@@ -152,21 +152,21 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## plot UM data
     #################################################################
-    if np.size(cube.shape) == 3:
-        iplt.pcolormesh(cube[9,:,:])
-    elif np.size(cube.shape) == 2:
-        iplt.pcolormesh(cube[:,:])
-    if cube.units in locals():
-        plt.title(cube.standard_name + ', ' + str(cube.units))
-    else:
-        plt.title(cube.standard_name)
-    plt.colorbar()
+    # if np.size(cube.shape) == 3:
+    #     iplt.pcolormesh(cube[9,:,:])
+    # elif np.size(cube.shape) == 2:
+    #     iplt.pcolormesh(cube[:,:])
+    # if cube.units in locals():
+    #     plt.title(cube.standard_name + ', ' + str(cube.units))
+    # else:
+    #     plt.title(cube.standard_name)
+    # plt.colorbar()
 
     #################################################################
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    # qplt.outline(cube[0,380:500,230:285])
+    qplt.outline(cube[0,:,:])
 
     #################################################################
     ## plot ship track
@@ -1305,9 +1305,16 @@ def main():
     ### Load combined PP files - pa
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    cubea = loadPC(root_dir, out_dir, date_dir)
+    cubec = loadPC(root_dir, out_dir, date_dir)
 
-    print (cubea)
+    print (cubec)
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Plot cartopy map
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    figure = plot_cartmap(ship_data, cubec)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
