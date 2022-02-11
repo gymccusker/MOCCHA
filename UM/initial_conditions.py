@@ -16,6 +16,8 @@ import iris
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
 import os
+import datetime
+from iris.time import PartialDateTime
 
 #### import python functions
 import sys
@@ -1124,7 +1126,9 @@ def loadPA(root_dir, out_dir, date_dir):
        # in this case, should return hourly data
        return cell >= 30
 
-    time_hourly = iris.Constraint(time=hourly_data)
+
+    # time_hourly_with_stash = iris.AttributeConstraint(STASH=lambda stash: str(stash) in GlobalStashList) & iris.Constraint(time=hourly_data)
+    # time_hourly = iris.Constraint(time=hourly_data)
 
     cube = {}
     cubea = {}
@@ -1142,6 +1146,57 @@ def loadPA(root_dir, out_dir, date_dir):
 
 
     return cubea
+
+def loadPC(root_dir, out_dir, date_dir):
+
+    '''
+    Load in PA stream, combined pp file (suffix _r0.pp)
+    '''
+    model = ['_HighArctic_1p5km_','_glm']
+    stream = '_pc000_r0'
+
+    if out_dir[-6:-1] == 'CASIM':
+        expt = out_dir[-11:-1]
+    elif out_dir[-4:-1] == 'CON':
+        expt = out_dir[-9:-1]
+
+    # -------------------------------------------------------------------------
+    # make global stash list and constraint
+    # -------------------------------------------------------------------------
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
+    GlobalStashList = makeGlobalStashList()
+    global_con = iris.AttributeConstraint(
+        STASH=lambda stash: str(stash) in GlobalStashList)
+            ### defines which stash variables to load - should be within a loop
+
+    def hourly_data(cell):
+       # return True or False as to whether the cell in question should be kept
+       # in this case, should return hourly data
+       return cell >= 30
+
+
+    # time_hourly_with_stash = iris.AttributeConstraint(STASH=lambda stash: str(stash) in GlobalStashList) & iris.Constraint(time=hourly_data)
+    # time_hourly = iris.Constraint(time=hourly_data)
+
+    # cube = {}
+    cubec = {}
+    for date in date_dir:
+        filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
+
+        cubec[date] = iris.load(filename, , global_con, callback)
+        # cubea[date] = date
+        #
+        # for i in range(0, len(cube[date])):
+        #     ### only load swath variables (size n=94)
+        #      if np.size(cube[date][i].dim_coords[1],0) <= 100.:
+        #          # print (cube[date][i].dim_coords[1])
+        #          cubea[date] = cube[date][i]
+
+
+    return cubec
 
 def main():
 
@@ -1250,7 +1305,7 @@ def main():
     ### Load combined PP files - pa
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    cubea = loadPA(root_dir, out_dir, date_dir)
+    cubea = loadPC(root_dir, out_dir, date_dir)
 
     print (cubea)
 
