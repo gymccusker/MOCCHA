@@ -1107,11 +1107,27 @@ def loadPA(root_dir, out_dir, date_dir):
     elif out_dir[-4:-1] == 'CON':
         expt = out_dir[-9:-1]
 
+    def hourly_data(cell):
+       # return True or False as to whether the cell in question should be kept
+       # in this case, should return hourly data
+       return cell >= 30
+
+    time_hourly = iris.Constraint(time=hourly_data)
+
+    cube = {}
     cubea = {}
     for date in date_dir:
         filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
 
-        cubea[date] = iris.load(filename, global_con, callback)
+        cubea[date] = iris.load(filename, global_con, callback, time_hourly)
+        # cubea[date] = date
+        #
+        # for i in range(0, len(cube[date])):
+        #     ### only load swath variables (size n=94)
+        #      if np.size(cube[date][i].dim_coords[1],0) <= 100.:
+        #          # print (cube[date][i].dim_coords[1])
+        #          cubea[date] = cube[date][i]
+
 
     return cubea
 
