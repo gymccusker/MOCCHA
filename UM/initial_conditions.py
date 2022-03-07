@@ -95,7 +95,32 @@ def inIce(data):
 
     return inIce_index
 
-def plot_cartmap(ship_data, cube):
+def trackShip(data, date):
+
+    ###################################
+    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
+    ###################################
+
+    month = date[5]
+    day = date[6:8]
+
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=0))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]==0))
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
+
+    print ('******')
+    print ('')
+    # print 'Mean lon/lat of ship track: (' + str(np.nanmedian(data.values[inIce_index,6])) + ', ' + str(np.nanmedian(data.values[inIce_index,7])) + ')'
+    print ('Lon/lat of start point: (' + str(data.values[trackShip_index[0],6]) + ', ' + str(data.values[trackShip_index[0],7]) + ')')
+    print ('Lon/lat of end point: (' + str(data.values[trackShip_index[-1],6]) + ', ' + str(data.values[trackShip_index[-1],7]) + ')')
+    # print 'Start: ' + str(data.values[trackShip_start[0][0],0:4])
+    # print 'End: ' + str(data.values[trackShip_end[0][-1],0:4])
+    print ('trackShip: ' + str(data.values[trackShip_index[0],0:4]) + ' - ' + str(data.values[trackShip_index[-1],0:4]))
+    print ('')
+
+    return trackShip_index
+
+def plot_cartmap(ship_data, cube, date_dir):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -134,72 +159,69 @@ def plot_cartmap(ship_data, cube):
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(5,4))
-    # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-    ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
+    plt.figure(figsize=(10,4))
+    i = -1
+    for date in date_dir:
+        i = i + 1
+        plt.subplot(1,3,i)
+        # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+        ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
 
 
-    ### set size
-    # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())      ### full track
-    ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
+        ### set size
+        # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())      ### full track
+        ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
 
-    ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+        ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
-    #################################################################
-    ## add geographic features/guides for reference
-    #################################################################
-    ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    # ax.set_global()
-    ax.gridlines()
+        #################################################################
+        ## add geographic features/guides for reference
+        #################################################################
+        ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+        ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+        # ax.set_global()
+        ax.gridlines()
 
-    #################################################################
-    ## plot UM data
-    #################################################################
-    # if np.size(cube.shape) == 3:
-    #     iplt.pcolormesh(cube[9,:,:])
-    # elif np.size(cube.shape) == 2:
-    #     iplt.pcolormesh(cube[:,:])
-    # if cube.units in locals():
-    #     plt.title(cube.standard_name + ', ' + str(cube.units))
-    # else:
-    #     plt.title(cube.standard_name)
-    # plt.colorbar()
+        #################################################################
+        ## plot UM data
+        #################################################################
+        # if np.size(cube.shape) == 3:
+        #     iplt.pcolormesh(cube[9,:,:])
+        # elif np.size(cube.shape) == 2:
+        #     iplt.pcolormesh(cube[:,:])
+        # if cube.units in locals():
+        #     plt.title(cube.standard_name + ', ' + str(cube.units))
+        # else:
+        #     plt.title(cube.standard_name)
+        # plt.colorbar()
 
-    #################################################################
-    ## plot UM nest
-    #################################################################
-    ### draw outline of grid
-    # qplt.outline(cube[0][0,0,:,:])
+        #################################################################
+        ## plot UM nest
+        #################################################################
+        ### draw outline of grid
+        # qplt.outline(cube[0][0,0,:,:])
 
-    #################################################################
-    ## plot ship track
-    #################################################################
-    ### DEFINE DRIFT + IN_ICE PERIODS
-    drift_index = iceDrift(ship_data)
-    inIce_index = inIce(ship_data)
+        #################################################################
+        ## plot ship track
+        #################################################################
+        ### DEFINE DRIFT + IN_ICE PERIODS
+        drift_index = iceDrift(ship_data)
+        inIce_index = inIce(ship_data)
+        trackShip_index = trackShip(ship_data, date)
 
-    ### Plot tracks as line plot
-    # plt.plot(ship_data.values[:,6], ship_data.values[:,7],
-    #          color = 'yellow', linewidth = 2,
-    #          transform = ccrs.PlateCarree(), label = 'Whole',
-    #          )
-    plt.plot(ship_data.values[inIce_index,6], ship_data.values[inIce_index,7],
-             color = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(), label = 'In Ice',
-             )
-    plt.plot(ship_data.values[inIce_index[0],6], ship_data.values[inIce_index[0],7],
-             'k^', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[inIce_index[-1],6], ship_data.values[inIce_index[-1],7],
-             'kv', markerfacecolor = 'darkorange', linewidth = 3,
-             transform = ccrs.PlateCarree(),
-             )
-    plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
-             color = 'red', linewidth = 4,
-             transform = ccrs.PlateCarree(), label = 'Drift',
-             )
+        ### Plot tracks as line plot
+        plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+                 color = 'darkorange', linewidth = 3,
+                 transform = ccrs.PlateCarree(), label = 'Ship track',
+                 )
+        plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+                 'k^', markerfacecolor = 'darkorange', linewidth = 3,
+                 transform = ccrs.PlateCarree(),
+                 )
+        plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+                 'kv', markerfacecolor = 'darkorange', linewidth = 3,
+                 transform = ccrs.PlateCarree(),
+                 )
 
     plt.legend()
 
@@ -1176,10 +1198,10 @@ def loadPC(root_dir, out_dir, date_dir):
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
 
-    def hourly_data(cell):
-       # return True or False as to whether the cell in question should be kept
-       # in this case, should return hourly data
-       return cell >= 30
+    # def hourly_data(cell):
+    #    # return True or False as to whether the cell in question should be kept
+    #    # in this case, should return hourly data
+    #    return cell >= 30
 
 
     # time_hourly_with_stash = iris.AttributeConstraint(STASH=lambda stash: str(stash) in GlobalStashList) & iris.Constraint(time=hourly_data)
@@ -1318,7 +1340,7 @@ def main():
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    figure = plot_cartmap(ship_data, cubec)
+    figure = plot_cartmap(ship_data, cubec, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
