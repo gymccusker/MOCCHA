@@ -166,7 +166,7 @@ def plot_cartmap(ship_data, cube):
     ## plot UM nest
     #################################################################
     ### draw outline of grid
-    qplt.outline(cube[0][0,0,:,:])
+    # qplt.outline(cube[0][0,0,:,:])
 
     #################################################################
     ## plot ship track
@@ -1150,7 +1150,7 @@ def loadPA(root_dir, out_dir, date_dir):
 def loadPC(root_dir, out_dir, date_dir):
 
     '''
-    Load in PA stream, combined pp file (suffix _r0.pp)
+    Load in PC stream, combined pp file (suffix _r0.pp)
     '''
     model = ['_HighArctic_1p5km_','_glm']
     stream = '_pc000_r0'
