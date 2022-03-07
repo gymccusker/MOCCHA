@@ -199,7 +199,7 @@ def plot_cartmap(ship_data, cube, date_dir):
         #################################################################
         ## plot UM data
         #################################################################
-        iplt.pcolormesh(cube[date][0,:,:])
+        iplt.pcolormesh(cube[date][0][0,:,:])
         plt.title(cube[date][0].standard_name)
         if i ==3: plt.colorbar()
 
