@@ -200,15 +200,9 @@ def plot_cartmap(ship_data, cube, date_dir):
         #################################################################
         ## plot UM data
         #################################################################
-        # if np.size(cube.shape) == 3:
-        #     iplt.pcolormesh(cube[9,:,:])
-        # elif np.size(cube.shape) == 2:
-        #     iplt.pcolormesh(cube[:,:])
-        # if cube.units in locals():
-        #     plt.title(cube.standard_name + ', ' + str(cube.units))
-        # else:
-        #     plt.title(cube.standard_name)
-        # plt.colorbar()
+        iplt.pcolormesh(cube[date][0,:,:])
+        plt.title(cube[date].standard_name)
+        if i ==3: plt.colorbar()
 
         #################################################################
         ## plot UM nest
