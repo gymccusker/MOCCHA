@@ -167,9 +167,7 @@ def plot_cartmap(ship_data, cube, date_dir):
     plt.rc('xtick',labelsize=SMALL_SIZE)
     plt.rc('ytick',labelsize=SMALL_SIZE)
     plt.rc('legend',fontsize=SMALL_SIZE)
-    plt.figure(figsize=(10,4))
-    plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
-            hspace = 0.3, wspace = 0.3)
+
 
     #################################################################
     ## create figure and axes instances
@@ -177,8 +175,9 @@ def plot_cartmap(ship_data, cube, date_dir):
     i = 0
     for date in date_dir:
         i = i + 1
-        print ('i = ' + str(i))
-        plt.subplot(1,3,i)
+        plt.figure(figsize=(5,4))
+        plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
+                hspace = 0.3, wspace = 0.3)
         # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
         ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
 
@@ -234,13 +233,15 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         plt.legend()
 
+        plt.savefig('../../FIGS/Figure_' + str(i) + '.png')
+        plt.close()
+
     print ('******')
     print ('')
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-    plt.savefig('../../FIGS/Figure_1.png')
-    plt.close()
+
 
 def plot_basemap(ship_data, cube):
 
