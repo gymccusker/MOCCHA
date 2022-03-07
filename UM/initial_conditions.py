@@ -1173,13 +1173,13 @@ def loadPA(root_dir, out_dir, date_dir):
 
     return cubea
 
-def loadPC(root_dir, out_dir, date_dir):
+def loadPD(root_dir, out_dir, date_dir):
 
     '''
-    Load in PC stream, combined pp file (suffix _r0.pp)
+    Load in PD stream, combined pp file (suffix _r0.pp)
     '''
     model = ['_HighArctic_1p5km_','_glm']
-    stream = '_pc000_r0'
+    stream = '_pd000_r0'
 
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
@@ -1212,7 +1212,7 @@ def loadPC(root_dir, out_dir, date_dir):
     for date in date_dir:
         filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
 
-        cubec[date] = iris.load(filename, 'air_temperature') #global_con, callback)
+        cubec[date] = iris.load(filename, 'sea_ice_area_fraction') #global_con, callback)
         # cubea[date] = date
         #
         # for i in range(0, len(cube[date])):
@@ -1331,16 +1331,16 @@ def main():
     ### Load combined PP files - pa
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    cubec = loadPC(root_dir, out_dir, date_dir)
+    cubed = loadPD(root_dir, out_dir, date_dir)
 
-    print (cubec)
+    print (cubed)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    figure = plot_cartmap(ship_data, cubec, date_dir)
+    figure = plot_cartmap(ship_data, cubed, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
