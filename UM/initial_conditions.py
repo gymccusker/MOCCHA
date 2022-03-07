@@ -103,9 +103,10 @@ def trackShip(data, date):
 
     month = date[5]
     day = date[6:8]
+    endpt = str(int(day)+2)
 
-    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=0))
-    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]==0))
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=12))
+    trackShip_end = np.where(np.logical_and(np.logical_and(data.values[:,2]==endpt,data.values[:,1]==month),data.values[:,3]<=1))
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][-1])
 
     print ('******')
