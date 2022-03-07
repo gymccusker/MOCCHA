@@ -213,7 +213,7 @@ def plot_cartmap(ship_data, cube, date_dir):
         ### Plot tracks as line plot
         plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
                  color = 'darkorange', linewidth = 3,
-                 transform = ccrs.PlateCarree(), label = 'Ship track',
+                 transform = ccrs.PlateCarree(), label = date,
                  )
         plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
                  'k^', markerfacecolor = 'darkorange', linewidth = 3,
@@ -224,7 +224,7 @@ def plot_cartmap(ship_data, cube, date_dir):
                  transform = ccrs.PlateCarree(),
                  )
 
-    plt.legend()
+        plt.legend()
 
     print ('******')
     print ('')
