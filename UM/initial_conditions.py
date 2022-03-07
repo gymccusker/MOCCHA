@@ -167,13 +167,13 @@ def plot_cartmap(ship_data, cube, date_dir):
     plt.rc('xtick',labelsize=SMALL_SIZE)
     plt.rc('ytick',labelsize=SMALL_SIZE)
     plt.rc('legend',fontsize=SMALL_SIZE)
+    plt.figure(figsize=(10,4))
     plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
-            hspace = 0.3, wspace = 0.2)
+            hspace = 0.3, wspace = 0.3)
 
     #################################################################
     ## create figure and axes instances
     #################################################################
-    plt.figure(figsize=(10,4))
     i = 0
     for date in date_dir:
         i = i + 1
