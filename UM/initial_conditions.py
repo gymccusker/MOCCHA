@@ -160,7 +160,7 @@ def plot_cartmap(ship_data, cube, date_dir):
     ## create figure and axes instances
     #################################################################
     plt.figure(figsize=(10,4))
-    i = -1
+    i = 0
     for date in date_dir:
         i = i + 1
         plt.subplot(1,3,i)
