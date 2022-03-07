@@ -101,8 +101,8 @@ def trackShip(data, date):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
 
-    month = date[5]
-    day = date[6:8]
+    month = int(date[5])
+    day = int(date[6:8])
     endpt = str(int(day)+2)
 
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=12))
