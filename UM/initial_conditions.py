@@ -105,7 +105,7 @@ def trackShip(data, date):
 
     month = int(date[5])
     day = int(date[6:8])
-    endpt = str(int(day)+2)
+    endpt = int(day)+2
 
     print ('month = ' + str(month))
     print ('start point = ' + str(day))
@@ -114,7 +114,7 @@ def trackShip(data, date):
     print (data)
 
     trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=12))
-    trackShip_end = np.where(np.logical_and(data.values[:,2]==endpt,data.values[:,1]==month))
+    trackShip_end = np.where(np.logical_and(data.values[:,2]==endpt ,data.values[:,1]==month))
 
     print (trackShip_start[0])
     print (trackShip_end[0])
