@@ -233,7 +233,7 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         plt.legend()
 
-        plt.savefig('../../FIGS/Figure_' + str(i) + '.png')
+        plt.savefig('../../FIGS/Seaice_track_' + date + '.png')
         plt.close()
 
     print ('******')
