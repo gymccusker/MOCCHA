@@ -173,6 +173,7 @@ def plot_cartmap(ship_data, cube, date_dir):
     ### DEFINE OFFSETS DEPENDENT ON NEST ROI
     ###---------------------------------
     print ('What grid are we looking at?')
+    diag = 0
     if len(cube[diag].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
