@@ -95,6 +95,24 @@ def inIce(data):
 
     return inIce_index
 
+def readGriddedTrack(grid_filename):
+
+    import pandas as pd
+
+    print ('******')
+    print ('')
+    print ('Reading ' + grid_filename + ' file with pandas')
+    print ('')
+
+    data = pd.read_csv(grid_filename, sep = " ")
+    values = data.values
+
+    tim = values[:,1]
+    ilon = values[:,2]
+    ilat = values[:,3]
+
+    return tim, ilat, ilon
+
 def trackShip(data, date):
 
     ###################################
@@ -231,6 +249,16 @@ def plot_cartmap(ship_data, cube, date_dir):
                  'kv', markerfacecolor = 'darkorange', linewidth = 3,
                  transform = ccrs.PlateCarree(),
                  )
+
+        #################################################################
+        ## read in and plot gridded ship track
+        #################################################################
+        tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+        ### Plot tracks as line plot
+        for i in range(0, len(ilon)-1):
+            iplt.scatter(cube[diag].dim_coords[2][int(ilon[i] + xoffset)], cube[diag].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+
 
         plt.legend()
 
