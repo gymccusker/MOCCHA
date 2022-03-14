@@ -284,15 +284,18 @@ def plot_cartmap(ship_data, cube, date_dir):
         #################################################################
         ## read in and plot gridded ship track
         #################################################################
-        grid_dirname = 'AUX_DATA/'
-        if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
-        if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+        date_extension =[0, 1]
 
-        tim, ilat, ilon = readGriddedTrack(grid_filename)
+        for t in date_extension:
+            grid_dirname = 'AUX_DATA/'
+            if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
+            if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
 
-        ### Plot tracks as line plot
-        for i in range(0, len(ilon)-1):
-            iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='black')
+            tim, ilat, ilon = readGriddedTrack(grid_filename)
+
+            ### Plot tracks as line plot
+            for i in range(0, len(ilon)-1):
+                iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='black')
 
 
         plt.legend()
