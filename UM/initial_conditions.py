@@ -174,23 +174,24 @@ def plot_cartmap(ship_data, cube, date_dir):
     ###---------------------------------
     print ('What grid are we looking at?')
     diag = 0
-    if len(cube[diag].dim_coords[-1].points) == 25:
+    dd = date_dir[0]
+    if len(cube[dd][diag].dim_coords[-1].points) == 25:
     # if cube[0,0].shape >= 25-1:    # ll = 240, 471
         xoffset = -239
         yoffset = -470
-    elif len(cube[diag].dim_coords[-1].points) == 56:
+    elif len(cube[dd][diag].dim_coords[-1].points) == 56:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -210
         yoffset = -385
-    elif len(cube[diag].dim_coords[-1].points) == 94:
+    elif len(cube[dd][diag].dim_coords[-1].points) == 94:
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -211
         yoffset = -385
-    elif len(cube[diag].dim_coords[-1].points) == 81:          ### 14th and 24th August
+    elif len(cube[dd][diag].dim_coords[-1].points) == 81:          ### 14th and 24th August
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -209
         yoffset = -399
-    elif len(cube[diag].dim_coords[-1].points) == 380:         ### needs checked
+    elif len(cube[dd][diag].dim_coords[-1].points) == 380:         ### needs checked
     # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
         xoffset = -60
         yoffset = -110
