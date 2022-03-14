@@ -200,15 +200,15 @@ def plot_cartmap(ship_data, cube, date_dir):
         #################################################################
         ## plot UM data
         #################################################################
-        iplt.pcolormesh(cube[date][0][0,:,:], vmin = 0.8, vmax = 1.0, cmap=mpl_cm.Blues_r)
-        plt.title(cube[date][0].standard_name)
-        plt.colorbar()
+        # iplt.pcolormesh(cube[date][0][0,:,:], vmin = 0.8, vmax = 1.0, cmap=mpl_cm.Blues_r)
+        # plt.title(cube[date][0].standard_name)
+        # plt.colorbar()
 
         #################################################################
         ## plot UM nest
         #################################################################
         ### draw outline of grid
-        # qplt.outline(cube[0][0,0,:,:])
+        qplt.outline(cube[0][0,:,:])
 
         #################################################################
         ## plot ship track
@@ -234,7 +234,7 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         plt.legend()
 
-        plt.savefig('../../FIGS/Seaice_ZoomedTrack_' + date + '.png')
+        plt.savefig('../../FIGS/Grid_ZoomedTrack_' + date + '.png')
         plt.close()
 
     print ('******')
