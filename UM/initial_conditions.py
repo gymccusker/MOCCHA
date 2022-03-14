@@ -253,6 +253,10 @@ def plot_cartmap(ship_data, cube, date_dir):
         #################################################################
         ## read in and plot gridded ship track
         #################################################################
+        grid_dirname = 'AUX_DATA/'
+        if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+        if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+1) + '_ShipTrack_GRIDDED.csv'
+
         tim, ilat, ilon = readGriddedTrack(grid_filename)
 
         ### Plot tracks as line plot
