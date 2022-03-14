@@ -184,7 +184,8 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         ### set size
         # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())      ### full track
-        ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
+        # ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
+        ax.set_extent([30, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
 
         ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
@@ -233,7 +234,7 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         plt.legend()
 
-        plt.savefig('../../FIGS/Seaice_track_' + date + '.png')
+        plt.savefig('../../FIGS/Seaice_ZoomedTrack_' + date + '.png')
         plt.close()
 
     print ('******')
