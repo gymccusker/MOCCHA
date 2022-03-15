@@ -326,6 +326,9 @@ def plot_cartmap(ship_data, cube, date_dir):
 
         out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
 
+        for i in range(0, len(time_forecast)):
+            iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], markersize = 4, color='red')
+
         plt.legend()
 
         plt.savefig('../../FIGS/Grid_ZoomedTrack_' + date + '.png')
