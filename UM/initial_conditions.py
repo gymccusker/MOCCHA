@@ -2411,7 +2411,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
 
     return dataset
 
-def pullTrack(date, con, stream, model, ship_data, nc_outfile):
+def pullTrack(date, root_dir, out_dir, global_con, stream, model, ship_data):
 
     # # -------------------------------------------------------------
     # # Load cube
@@ -2428,6 +2428,9 @@ def pullTrack(date, con, stream, model, ship_data, nc_outfile):
     if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])) + '-36HForecast_ShipTrack_GRIDDED.csv'
     if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])) + '-36HForecast_ShipTrack_GRIDDED.csv'
 
+    print ('Loading grid:...')
+    print (grid_filename)
+
     ### -------------------------------------------------------------------------
     ### define input filename
     ### -------------------------------------------------------------------------
@@ -2437,9 +2440,8 @@ def pullTrack(date, con, stream, model, ship_data, nc_outfile):
     #           start at 009 if 1h dumps in pb
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
-    # names = ['_pa012','_pb012','_pd012','_pe012','_pc012']
-    # names = ['_pb009']         ### only do specific files as a test
+    # names = ['_pa000_r0','_pb000_r0','_pd000_r0','_pe000_r0','_pc000_r0']
+    names = ['_pa000_r0']         ### only do specific files as a test
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
@@ -2452,17 +2454,15 @@ def pullTrack(date, con, stream, model, ship_data, nc_outfile):
         ### -------------------------------------------------------------------------
         if np.logical_or(np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/'), out_dir == '28_u-ce627_RA2T_CON/'):    ## choose lam or global for 7_u-bn068/24_u-cc324/28_u-ce627
             # #### LAM
-            # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-            # model = 'lam'
-            # dirout = out_dir[-17:-10] + '_lam/'
+            filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
+            model = 'lam'
+            dirout = out_dir[-17:-10] + '_lam/'
             ### GLM
-            if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
-            if stream == '_pa009': stream = '_pa012'  ## hard fix for glm, pa stream *sometimes* starts at 012
-            filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-            model = 'glm'
-            dirout = out_dir[-17:-10] + '_glm/'
+            # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+            # model = 'glm'
+            # dirout = out_dir[-17:-10] + '_glm/'
         else:
-            filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+            filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
             model = 'lam'
             if np.logical_or(np.logical_or(out_dir[0] == '1',out_dir[0] == '2'),out_dir[0] == '3'):
                 dirout = out_dir[3:10] + '/'
@@ -2504,35 +2504,35 @@ def pullTrack(date, con, stream, model, ship_data, nc_outfile):
             ### 1. use the following if only want the exact ship position and no variability
             # -------------------------------------------------------------
             ### LOAD CUBE
-            nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-            if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
-            aoutfile = nc_outfile[:-3] + '_a.nc'
-            boutfile = nc_outfile[:-3] + '_b.nc'
-            doutfile = nc_outfile[:-3] + '_d.nc'
-            eoutfile = nc_outfile[:-3] + '_e.nc'
-
-            if stream[1:3] == 'pa':
-                if not os.path.exists(aoutfile):
-                    print (aoutfile + ' does not exist, so pulling ship track...')
-                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            elif stream[1:3] == 'pb':
-                if not os.path.exists(boutfile):
-                    print (boutfile + ' does not exist, so pulling ship track...')
-                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            elif stream[1:3] == 'pd':
-                if not os.path.exists(doutfile):
-                    print (doutfile + ' does not exist, so pulling ship track...')
-                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            elif stream[1:3] == 'pe':
-                if not os.path.exists(eoutfile):
-                    print (eoutfile + ' does not exist, so pulling ship track...')
-                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            elif stream[1:3] == 'pc':
-                if not os.path.exists(nc_outfile):
-                    print (nc_outfile + ' does not exist, so pulling ship track...')
-                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            else:
-                print ('Valid stream not found.')
+            # nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+            # if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
+            # aoutfile = nc_outfile[:-3] + '_a.nc'
+            # boutfile = nc_outfile[:-3] + '_b.nc'
+            # doutfile = nc_outfile[:-3] + '_d.nc'
+            # eoutfile = nc_outfile[:-3] + '_e.nc'
+            #
+            # if stream[1:3] == 'pa':
+            #     if not os.path.exists(aoutfile):
+            #         print (aoutfile + ' does not exist, so pulling ship track...')
+            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            # elif stream[1:3] == 'pb':
+            #     if not os.path.exists(boutfile):
+            #         print (boutfile + ' does not exist, so pulling ship track...')
+            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            # elif stream[1:3] == 'pd':
+            #     if not os.path.exists(doutfile):
+            #         print (doutfile + ' does not exist, so pulling ship track...')
+            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            # elif stream[1:3] == 'pe':
+            #     if not os.path.exists(eoutfile):
+            #         print (eoutfile + ' does not exist, so pulling ship track...')
+            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            # elif stream[1:3] == 'pc':
+            #     if not os.path.exists(nc_outfile):
+            #         print (nc_outfile + ' does not exist, so pulling ship track...')
+            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            # else:
+            #     print ('Valid stream not found.')
 
 def main():
 
@@ -2650,7 +2650,7 @@ def main():
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    figure = plot_cartmap(ship_data, cubed, date_dir)
+    # figure = plot_cartmap(ship_data, cubed, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -2659,7 +2659,9 @@ def main():
     ### -------------------------------------------------------------------------
 
     # for date in date_dir:
-    #     data = pullTrack(date, global_con, stream, model, ship_data, nc_outfile)
+    date = '20180815T1200Z'
+    model = 'lam'
+    data = pullTrack(date, root_dir, out_dir, global_con, stream, model, ship_data)
 
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
