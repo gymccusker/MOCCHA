@@ -303,10 +303,22 @@ def plot_cartmap(ship_data, cube, date_dir):
             lats = ilat[loop_index]
             cc = ['black', 'blue']
 
+            ###
+            ### plot for sanity check
+            ###
             for i in range(0, len(times)):
                 iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[i])
                 print (times[i])
 
+            ###
+            ### prepare output arrays for writing
+            ###
+            if t == 0:
+                time_forecast = np.copy(times)
+                lons_forecast = np.copy(lons)
+                lats_forecast = np.copy(lats)
+
+        out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
 
         plt.legend()
 
@@ -318,7 +330,27 @@ def plot_cartmap(ship_data, cube, date_dir):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
+def writeout36HGrid(tim, lat, lon, date):
 
+    import pandas as pd
+
+    # ******
+    # write to csv file
+    # ******
+
+    print ('******')
+    print ('Writing ' + date + ' grid to file:')
+    print ('')
+    dat = np.zeros([len(tim), 3])
+    dat[:,0] = tim
+    dat[:,1] = lon
+    dat[:,2] = lat
+    df = pd.DataFrame(dat)
+    filename = 'AUX_DATA/' + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    df.to_csv(filename,  sep = " ")
+    print ('... finished!')
+    print ('')
+    print ('******')
 
 def plot_basemap(ship_data, cube):
 
