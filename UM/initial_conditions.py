@@ -2504,17 +2504,16 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             ### 1. use the following if only want the exact ship position and no variability
             # -------------------------------------------------------------
             ### LOAD CUBE
-            # nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-            # if date == '20180831T1200Z': nc_outfile = dirout + '20180901_oden_metum.nc'
-            # aoutfile = nc_outfile[:-3] + '_a.nc'
-            # boutfile = nc_outfile[:-3] + '_b.nc'
-            # doutfile = nc_outfile[:-3] + '_d.nc'
-            # eoutfile = nc_outfile[:-3] + '_e.nc'
-            #
-            # if stream[1:3] == 'pa':
-            #     if not os.path.exists(aoutfile):
-            #         print (aoutfile + ' does not exist, so pulling ship track...')
-            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            nc_outfile = dirout + date[:6] + str(int(date[6:8])+1).zfill(2) + '-36H_oden_metum.nc'
+            aoutfile = nc_outfile[:-3] + '_a.nc'
+            boutfile = nc_outfile[:-3] + '_b.nc'
+            doutfile = nc_outfile[:-3] + '_d.nc'
+            eoutfile = nc_outfile[:-3] + '_e.nc'
+
+            if stream[1:3] == 'pa':
+                if not os.path.exists(aoutfile):
+                    print (aoutfile + ' does not exist, so pulling ship track...')
+                    # outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
             # elif stream[1:3] == 'pb':
             #     if not os.path.exists(boutfile):
             #         print (boutfile + ' does not exist, so pulling ship track...')
