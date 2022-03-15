@@ -294,9 +294,15 @@ def plot_cartmap(ship_data, cube, date_dir):
             tim, ilat, ilon = readGriddedTrack(grid_filename)
 
             ### Plot tracks as line plot
-            for i in range(0, len(tim)):
+            if t == 0:
+                loop_index = np.where(tim>=12.0)        ### only from 1200Z on day 0
+            else:
+                loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
+            times = tim[loop_index]
+
+            for i in range(0, len(times)):
                 iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='black')
-                print (tim[i])
+                print (times[i])
 
 
         plt.legend()
