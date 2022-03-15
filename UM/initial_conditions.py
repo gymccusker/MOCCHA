@@ -307,7 +307,7 @@ def plot_cartmap(ship_data, cube, date_dir):
             ### plot for sanity check
             ###
             for i in range(0, len(times)):
-                iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[i])
+                iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
                 print (times[i])
 
             ###
