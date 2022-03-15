@@ -315,8 +315,14 @@ def plot_cartmap(ship_data, cube, date_dir):
             ###
             if t == 0:
                 time_forecast = np.copy(times)
+                time_forecast = time_forecast - 12.0
                 lons_forecast = np.copy(lons)
                 lats_forecast = np.copy(lats)
+            else:
+                times_extended = times + 12.0
+                time_forecast = np.append(time_forecast, times_extended)
+                lons_forecast = np.append(lons_forecast, lons)
+                lats_forecast = np.append(lats_forecast, lats)
 
         out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
 
