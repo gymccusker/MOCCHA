@@ -1236,34 +1236,11 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
         #################################################################
-        ncube = Cube(np.zeros([np.size(cube),70,24]))
+        ncube = Cube(np.zeros([np.size(cube),70,36]))
 
         #################################################################
-        ## POPULATE NP ARRAY WITH DATA
+        ## POPULATE CUBE WITH EACH INDIVIDUAL VARIABLE
         #################################################################
-        ### populate 0th dimension with time field
-        # data[:,0] = cubetime[:,:-1]
-
-        # #################################################################
-        # ## if our diagnostics are 3-hourly, ignore
-        # #################################################################
-        # if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
-        #     print cube[k].standard_name
-        #     print 'Diagnostic is 3-hourly, break from loop'
-        #     break
-        # # elif len(np.round(cube[k].coord('forecast_period').points)) > 10:
-        # #     if xoffset == 0:
-        # #         print cube[k].standard_name
-        # #         print 'Diagnostic is 1-hourly, BUT this is a STASH typo since diagnostic covers whole nest.'
-        # #         ok = False
-        # else:
-        #     print cube[k].standard_name
-        #     # if int(xoffset) != 0:
-        #     print 'Diagnostic is 1-hourly, pull ship track...'
-        #     ok = True
-        #
-        # if not ok: continue
-
         for k in range(0,np.size(cube)):            ### loop over number of variables
             print ('')
             print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
@@ -1271,7 +1248,7 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
             #################################################################
             ## only consider hourly diagnostics
             #################################################################
-            if len(np.round(cube[k].coord('forecast_period').points)) > 10:
+            if len(np.round(cube[k].coord('forecast_period').points)) > 13:
                 ###---------------------------------
                 ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
                 ###---------------------------------
@@ -1306,18 +1283,8 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
                 ## make hourly time array
                 #################################################################
                 print ('cubetime = ' + str(np.size(cube[k].coord('forecast_period').points)))
-                # if np.size(cube[k].coord('forecast_period').points) == 24:
-                cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
-                # else:
-                #     cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)
 
-                        #### will need to add code for dealing with forecast_period
-                        ####    i.e. 1.00016 hrs past 0000 UTC
-                        ####     will need to concatenate from next day's file?
-
-                # print ''
-                # print 'Cube times relative to forecast start:', cubetime[:-1]
-                # print ''
+                cubetime = np.round(cube[k].coord('forecast_period').points)      ### full 36H forecast period
 
                 #################################################################
                 ## PROBE VARIABLE
@@ -1352,9 +1319,9 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
                         else:
                             data = np.zeros([len(cubetime)-1])
                     elif stream[1:3] == 'pa':
-                        if len(cubetime) == 25:
+                        if len(cubetime) == 36:
                             data = np.zeros([len(cubetime)-1])
-                        elif len(cubetime) == 24:
+                        elif len(cubetime) == 35:
                             data = np.zeros([len(cubetime)])
                     elif stream[1:3] == 'pd':
                         data = np.zeros([len(cubetime)-1])
@@ -1490,140 +1457,140 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
 
         # print fcube
 
-    else:
-        print ('')
-        print ('Only one variable constraint. Proceeding...')
-        print ('')
-
-        cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
-        print ('')
-        print ('Cube times relative to forecast start (excluding first 12H):', cubetime[:-1])
-        print ('')
-
-        #################################################################
-        ## CREATE EMPTY CUBE
-        #################################################################
-        ncube = Cube(np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1]))
-
-        #################################################################
-        ## PROBE VARIABLE
-        #################################################################
-        ### do we want to average exluding zeros?
-        stash_flag, stash = excludeZeros(cube)
-
-        #################################################################
-        ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
-        #################################################################
-        if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
-            print ('Variable is 4D:')
-            print ('')
-            #### create empty arrays to be filled
-            data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
-            dim_flag = 1        ### for next loops
-            print ('data.shape = ', str(data.shape))
-            print ('')
-        else:
-            print ('Variable is 3D:')
-            print ('')
-            #### create empty arrays to be filled
-            data = np.zeros([len(cubetime)-1])
-            dim_flag = 0       ### for next loops
-            print ('data.shape = ', str(data.shape))
-            print ('')
-
-        #################################################################
-        ## POPULATE NP ARRAY WITH DATA
-        #################################################################
-        ### populate 0th dimension with time field
-        # data[:,0] = cubetime[:,:-1]
-
-        for j in range(0,len(cubetime)-1):
-            if j < len(cubetime[:-1]):
-                itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-            else:
-                ### end point (23h)
-                itime = np.where(tim >= cubetime[-1])
-            print ('For ', str(j), 'h, itime = ', itime)
-            if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
-            if dim_flag == 0: dat = np.zeros([len(itime[0])])
-            for i in range(0, len(itime[0])):
-                if np.size(itime) > 1:
-                    # print 'Processing i = ', str(itime[0][i])
-                    if dim_flag == 1: temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-                    if dim_flag == 0: temp = cube[j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-                else:
-                    # print 'Processing i = ', str(itime[i])
-                    if dim_flag == 1: temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                    if dim_flag == 0: temp = cube[j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                if dim_flag == 1: dat[:,i] = temp.data
-                if dim_flag == 0: dat[i] = temp.data
-                if np.size(itime) > 1:
-                    if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                    if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                    if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                    # print 'averaging over itime...'
-                else:
-                    if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                    if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                    # print 'no averaging, itime = 1...'
-        # print data
-        # print 'data.shape = ', data.shape
-
-        #################################################################
-        ## FIGURES TO TEST OUTPUT
-        #################################################################
-        ### timeseries of lowest model level
-        # plt.figure(figsize=(7,5))
-        # plt.plot(cubetime[:-1],data[0:10,:])
-        # plt.show()
-
-        ### vertical profile of 1st timestep
-        # plt.figure(figsize=(7,5))
-        # plt.plot(data[:,0],cube.coord('model_level_number').points)
-        # plt.show()
-
-        ### pcolormesh of timeseries
-        # plt.figure(figsize=(7,5))
-        # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
-        # plt.colorbar()
-        # plt.show()
-
-        #################################################################
-        ## CREATE CUBE
-        #################################################################
-        ### ECMWF FIELD NAMES
-        # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
-        #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
-        #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
-
-        varname = varnames.findfieldName(stash)
-        print ('standard_name = ', cube.standard_name)
-        print ('long name = ', cube.long_name)
-        print ('varname = ', varname)
-        print ('')
-
-        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-        if dim_flag == 1:             ### 4D VARIABLE
-            model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-            comdata = fixHeight(data, cube)
-            ncube = Cube(np.transpose(data),
-                    dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-                    standard_name = cube.standard_name,
-                    long_name = cube.long_name,
-                    units = cube.units,
-                    var_name = varname,
-                    )
-        elif dim_flag == 0:             ### 3D VARIABLE
-            ncube = Cube(np.transpose(data),
-                    dim_coords_and_dims=[(ntime, 0)],
-                    standard_name = cube.standard_name,
-                    long_name = cube.long_name,
-                    units = cube.units,
-                    var_name = varname,
-                    )
-        ncube.attributes = cube.attributes
-        ### for consistency with multi-diag option
-        fcube = ncube
+    # else:
+    #     print ('')
+    #     print ('Only one variable constraint. Proceeding...')
+    #     print ('')
+    #
+    #     cubetime = np.round(cube.coord('forecast_period').points)      ### forecast period (ignore first 12h)
+    #     print ('')
+    #     print ('Cube times relative to forecast start (excluding first 12H):', cubetime[:-1])
+    #     print ('')
+    #
+    #     #################################################################
+    #     ## CREATE EMPTY CUBE
+    #     #################################################################
+    #     ncube = Cube(np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1]))
+    #
+    #     #################################################################
+    #     ## PROBE VARIABLE
+    #     #################################################################
+    #     ### do we want to average exluding zeros?
+    #     stash_flag, stash = excludeZeros(cube)
+    #
+    #     #################################################################
+    #     ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
+    #     #################################################################
+    #     if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
+    #         print ('Variable is 4D:')
+    #         print ('')
+    #         #### create empty arrays to be filled
+    #         data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
+    #         dim_flag = 1        ### for next loops
+    #         print ('data.shape = ', str(data.shape))
+    #         print ('')
+    #     else:
+    #         print ('Variable is 3D:')
+    #         print ('')
+    #         #### create empty arrays to be filled
+    #         data = np.zeros([len(cubetime)-1])
+    #         dim_flag = 0       ### for next loops
+    #         print ('data.shape = ', str(data.shape))
+    #         print ('')
+    #
+    #     #################################################################
+    #     ## POPULATE NP ARRAY WITH DATA
+    #     #################################################################
+    #     ### populate 0th dimension with time field
+    #     # data[:,0] = cubetime[:,:-1]
+    #
+    #     for j in range(0,len(cubetime)-1):
+    #         if j < len(cubetime[:-1]):
+    #             itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+    #         else:
+    #             ### end point (23h)
+    #             itime = np.where(tim >= cubetime[-1])
+    #         print ('For ', str(j), 'h, itime = ', itime)
+    #         if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+    #         if dim_flag == 0: dat = np.zeros([len(itime[0])])
+    #         for i in range(0, len(itime[0])):
+    #             if np.size(itime) > 1:
+    #                 # print 'Processing i = ', str(itime[0][i])
+    #                 if dim_flag == 1: temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+    #                 if dim_flag == 0: temp = cube[j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+    #             else:
+    #                 # print 'Processing i = ', str(itime[i])
+    #                 if dim_flag == 1: temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+    #                 if dim_flag == 0: temp = cube[j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+    #             if dim_flag == 1: dat[:,i] = temp.data
+    #             if dim_flag == 0: dat[i] = temp.data
+    #             if np.size(itime) > 1:
+    #                 if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+    #                 if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+    #                 if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+    #                 # print 'averaging over itime...'
+    #             else:
+    #                 if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+    #                 if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+    #                 # print 'no averaging, itime = 1...'
+    #     # print data
+    #     # print 'data.shape = ', data.shape
+    #
+    #     #################################################################
+    #     ## FIGURES TO TEST OUTPUT
+    #     #################################################################
+    #     ### timeseries of lowest model level
+    #     # plt.figure(figsize=(7,5))
+    #     # plt.plot(cubetime[:-1],data[0:10,:])
+    #     # plt.show()
+    #
+    #     ### vertical profile of 1st timestep
+    #     # plt.figure(figsize=(7,5))
+    #     # plt.plot(data[:,0],cube.coord('model_level_number').points)
+    #     # plt.show()
+    #
+    #     ### pcolormesh of timeseries
+    #     # plt.figure(figsize=(7,5))
+    #     # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+    #     # plt.colorbar()
+    #     # plt.show()
+    #
+    #     #################################################################
+    #     ## CREATE CUBE
+    #     #################################################################
+    #     ### ECMWF FIELD NAMES
+    #     # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+    #     #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+    #     #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+    #
+    #     varname = varnames.findfieldName(stash)
+    #     print ('standard_name = ', cube.standard_name)
+    #     print ('long name = ', cube.long_name)
+    #     print ('varname = ', varname)
+    #     print ('')
+    #
+    #     ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+    #     if dim_flag == 1:             ### 4D VARIABLE
+    #         model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+    #         comdata = fixHeight(data, cube)
+    #         ncube = Cube(np.transpose(data),
+    #                 dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+    #                 standard_name = cube.standard_name,
+    #                 long_name = cube.long_name,
+    #                 units = cube.units,
+    #                 var_name = varname,
+    #                 )
+    #     elif dim_flag == 0:             ### 3D VARIABLE
+    #         ncube = Cube(np.transpose(data),
+    #                 dim_coords_and_dims=[(ntime, 0)],
+    #                 standard_name = cube.standard_name,
+    #                 long_name = cube.long_name,
+    #                 units = cube.units,
+    #                 var_name = varname,
+    #                 )
+    #     ncube.attributes = cube.attributes
+    #     ### for consistency with multi-diag option
+    #     fcube = ncube
 
     #################################################################
     ## define output filename
@@ -2411,6 +2378,41 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
 
     return dataset
 
+def excludeZeros(cube):
+
+    print ('')
+    print ('Checking stash list:')
+
+    print ('Want to exclude zeros in the following fields:')
+    ### list of stash items where we want to exclude zeros
+    STASH = ['m01s00i012','m01s00i254','m01s00i075','m01s00i076','m01s00i078',
+        'm01s00i079','m01s00i081','m01s00i271','m01s00i273','m01s00i272',
+        'm01s00i083','m01s00i084','m01s00i088']
+    print (STASH)
+
+    print ('Diag is:')
+    str_m = "%02d" % cube.attributes['STASH'][0]
+    str_s = "%02d" % cube.attributes['STASH'][1]
+    str_i = "%03d" % cube.attributes['STASH'][2]
+    stash = str('m' + str_m + 's' + str_s + 'i' + str_i)
+    print (stash)
+
+    for i in range(0, len(STASH)):
+        if STASH[i] == stash:
+            # data[data==0] = np.nan              # set zeros to nans
+            flag = 1                           # flagging if in list
+            print ('In list, so excluding zeros')
+            break
+        else:
+            flag = 0                           # flagging if not in list
+            print ('Not in list, so not excluding zeros')
+
+    # if flag == 1:
+    # if flag == 0:
+    # print ''
+
+    return flag, stash
+
 def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
 
     # # -------------------------------------------------------------
@@ -2510,28 +2512,31 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             doutfile = nc_outfile[:-3] + '_d.nc'
             eoutfile = nc_outfile[:-3] + '_e.nc'
 
+            print ('...')
+            print (' ')
+
             if stream[1:3] == 'pa':
                 if not os.path.exists(aoutfile):
                     print (aoutfile + ' does not exist, so pulling ship track...')
+                    outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            elif stream[1:3] == 'pb':
+                if not os.path.exists(boutfile):
+                    print (boutfile + ' does not exist, so pulling ship track...')
                     # outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            # elif stream[1:3] == 'pb':
-            #     if not os.path.exists(boutfile):
-            #         print (boutfile + ' does not exist, so pulling ship track...')
-            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            # elif stream[1:3] == 'pd':
-            #     if not os.path.exists(doutfile):
-            #         print (doutfile + ' does not exist, so pulling ship track...')
-            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            # elif stream[1:3] == 'pe':
-            #     if not os.path.exists(eoutfile):
-            #         print (eoutfile + ' does not exist, so pulling ship track...')
-            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            # elif stream[1:3] == 'pc':
-            #     if not os.path.exists(nc_outfile):
-            #         print (nc_outfile + ' does not exist, so pulling ship track...')
-            #         outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
-            # else:
-            #     print ('Valid stream not found.')
+            elif stream[1:3] == 'pd':
+                if not os.path.exists(doutfile):
+                    print (doutfile + ' does not exist, so pulling ship track...')
+                    # outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            elif stream[1:3] == 'pe':
+                if not os.path.exists(eoutfile):
+                    print (eoutfile + ' does not exist, so pulling ship track...')
+                    # outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            elif stream[1:3] == 'pc':
+                if not os.path.exists(nc_outfile):
+                    print (nc_outfile + ' does not exist, so pulling ship track...')
+                    # outfile = pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile)
+            else:
+                print ('Valid stream not found.')
 
 def main():
 
