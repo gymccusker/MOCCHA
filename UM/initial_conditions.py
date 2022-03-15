@@ -2629,6 +2629,18 @@ def main():
     ship_data, values = readfile(ship_filename)
     columns = assignColumns(ship_data)
 
+    # -------------------------------------------------------------------------
+    # make global stash list and constraint
+    # -------------------------------------------------------------------------
+    print ('******')
+    print ('')
+    print ('Make stash list for cube read in at ' + time.strftime("%c"))
+    print (' ')
+    GlobalStashList = makeGlobalStashList()
+    global_con = iris.AttributeConstraint(
+        STASH=lambda stash: str(stash) in GlobalStashList)
+            ### defines which stash variables to load - should be within a loop
+
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Combine PP files
