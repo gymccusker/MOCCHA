@@ -299,10 +299,12 @@ def plot_cartmap(ship_data, cube, date_dir):
             else:
                 loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
             times = tim[loop_index]
+            lons = ilon[loop_index]
+            lats = ilat[loop_index]
             cc = ['black', 'blue']
 
             for i in range(0, len(times)):
-                iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color=cc[i])
+                iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[i])
                 print (times[i])
 
 
