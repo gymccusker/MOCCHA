@@ -1654,7 +1654,7 @@ def writePB_Cloudnet(cube, boutfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    timem.comment = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 1200Z UTC initialisation.'
     timem.units = 'hours'
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
@@ -1728,10 +1728,10 @@ def writePA_Analysis(cube, aoutfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    timem.comment = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 1200Z UTC initialisation.'
     timem.units = 'hours'
     timem.long_name = 'forecast_time'
-    timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
+    timem[:] = cube[0].dim_coords[0].points      ### forecast time
 
     ###################################
     ## Create DIAGNOSTICS
@@ -1740,7 +1740,7 @@ def writePA_Analysis(cube, aoutfile):
     ## Write paXXX stream diagnostics
     ###################################
     for d in range(0,len(cube)):
-        if np.size(cube[d].dim_coords[0],0) == 24:      ### ignore 3-hourly data for now
+        if np.size(cube[d].dim_coords[0],0) > 24:      ### ignore 3-hourly data for now
             print ('Writing ' + cube[d].var_name)
             print ('')
             if not cube[d].var_name in dataset.variables:
@@ -1811,10 +1811,10 @@ def writePD_BL(cube, doutfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    timem.comment = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 1200Z UTC initialisation.'
     timem.units = 'hours'
     timem.long_name = 'forecast_time'
-    timem[:] = cube[lind].dim_coords[0].points      ### forecast time (ignore first 12h)
+    timem[:] = cube[lind].dim_coords[0].points      ### forecast time
 
     #### height
     height = dataset.createVariable('height', np.float64, ('height',), fill_value='-9999')
@@ -1823,7 +1823,7 @@ def writePD_BL(cube, doutfile):
     height.comment = ''
     height.units = 'm'
     height.long_name = 'height'
-    height[:] = cube[lind].dim_coords[1].points      ### forecast time (ignore first 12h)
+    height[:] = cube[lind].dim_coords[1].points      ### forecast time
 
     ###################################
     ## Create DIAGNOSTICS
@@ -1912,7 +1912,7 @@ def writeFile_netCDF4(cube, eoutfile):
     timem = dataset.createVariable('forecast_time', np.float64, ('forecast_time',), fill_value='-9999')
     timem.scale_factor = float(1)
     timem.add_offset = float(0)
-    timem.comment = 'Hours since 0000 UTC.'
+    timem.comment = 'Hours since 1200Z UTC initialisation.'
     timem.units = 'hours'
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
