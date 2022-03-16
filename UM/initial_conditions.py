@@ -1945,81 +1945,19 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     ###################################
     dataset.title = 'Met Office Unified Model single-site (Oden) output during MOCCHA'
     revision = 'undefined'
-    if out_dir[2:9] == 'u-bg610':
-        micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
-        revision = 'Revision no. 1. '
-    elif out_dir[2:9] == 'u-bl661':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
-        revision = 'Revision no. 0. '
-    elif out_dir[2:9] == 'u-bm410':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 2.00e8 /m3, mass = 3.00e-9 kg/kg. No aerosol processing. '
-        revision = 'Revision no. 0. '
-    elif out_dir[2:9] == 'u-bn068':
-        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. '
-        revision = 'Revision no. 3. '
-    elif out_dir[2:9] == 'u-bp738':
-        micro = 'Global model initialised with ERA-Interim reanalyses, LAM run with RA2M_CON configuration (as u-bg610, default run). Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). '
-        revision = 'Revision no. 0. '
-    elif out_dir[2:9] == 'u-bq791':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Fletcher (1962) for consistency with Wilson and Ballard (1999) microphysics]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
-        revision = 'Revision no. 0. '
-    elif out_dir[2:9] == 'u-bq798':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Meyers et al., (1992)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. No aerosol processing. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-br210':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation and coarse mode soluble aerosol number concentration input taken from UKCA daily average profiles provided by Ruth Price (University of Leeds) <eersp@leeds.ac.uk>. No aerosol processing. '
-        revision = 'Revision no. 2. '
-    elif out_dir[3:10] == 'u-br409':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. Passive aerosol processing. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-bu570':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. Sea ice albedo available between 28 Aug and 4 Sep. '
-        revision = 'Revision no. 1. '
-    elif out_dir[2:9] == 'u-bu687':
-        micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). Updated RHcrit profile for vn11.4. '
-        revision = 'Revision no. 0. '
-    elif out_dir[2:9] == 'u-bv926':
-        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. l_subgrid_qcl_mp to .false. to not allow for turbulent production of mixed-phase cloud. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-bz429':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. 15 min temporal resolution of key 3D diagnostics. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-ca011':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. 15 min temporal resolution of key 3D diagnostics. Prognostic 1A BL scheme. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-ca012':
-        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. Includes diagnosed turbulent dissipation rate diagnostic. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-ca362':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. CICE sea ice scheme. '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-cc278':
+    if out_dir[3:10] == 'u-cc278':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
-        revision = 'Revision no. 0. '
+        revision = 'Revision no. 2. '
     elif out_dir[3:10] == 'u-cc324':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. Extended BL diagnostic list. '
-        revision = 'Revision no. 0. '
+        revision = 'Revision no. 2. '
     elif out_dir[3:10] == 'u-cc568':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). Extended BL diagnostic list. Updated revision of suite u-bg610. '
-        revision = 'Revision no. 1. '
-    elif out_dir[3:10] == 'u-cd847':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation and coarse mode soluble aerosol number concentration input taken from UKCA daily average profiles provided by Ruth Price (University of Leeds) <eersp@leeds.ac.uk>. No aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-ce112':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation and coarse mode soluble aerosol number concentration input taken from UKCA daily average profiles provided by Ruth Price (University of Leeds) <eersp@leeds.ac.uk>. Passive aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-ce627':
-        micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. Extended BL diagnostic list. Mid-level convection switched off in GLM (LAM untouched, as u-cc324). '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-cg179':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. Passive aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
-        revision = 'Revision no. 0. '
-    elif out_dir[3:10] == 'u-cl349':
-        micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). Surface fluxes from JULES. '
-        revision = 'Revision no. 0. '
+        revision = 'Revision no. 2. '
     else:
         micro = '<MICROPHYSICS UNDEFINED IN META>'
     wind = 'U and V wind components interpolated on to common vertical grid. '
+    forecast_notes = 'Full 36-H forecast, rather than daily files used for main body of study (Young et al., 2021; ACPD). '
     dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' by Gillian Young McCusker <G.Y.McCusker@leeds.ac.uk> using Python (Iris/netCDF4).'
     # dataset.source = 'UK Met Office Unified Model, version 11.1. Microphysics = ' + micro
     dataset.references = 'Rose suite ID: ' + out_dir[2:10]
@@ -2030,7 +1968,7 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     elif model == 'glm':
         modelnote = 'UM global model. '
         dataset.description = 'Hourly data taken from grid box closest to ship location. '
-    dataset.comment = revision + modelnote + micro + wind
+    dataset.comment = revision + modelnote + forecast_notes + micro + wind
     dataset.institution = 'University of Leeds.'
     dataset.initialization_time = date[0:4] + '-' + date[4:6] + '-' + date[6:8] + ' ' + date[9:14] + '.'
 
