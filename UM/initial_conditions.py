@@ -2374,6 +2374,11 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
                 if not os.path.exists(nc_outfile):
                     print (nc_outfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    print ('******')
+                    print ('')
+                    print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
+                    print ('')
+                    out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
             else:
                 print ('Valid stream not found.')
 
