@@ -1172,6 +1172,37 @@ def loadPD(root_dir, out_dir, date_dir):
 
     return cubec
 
+def fixHeight(data, cube):
+
+    print ('******')
+    print ('')
+    print ('Adjusting height to common vertical grid...')
+    print ('')
+
+    # height = cube[1].aux_coords[2].points.data       ### 71 levels
+
+    ### wind fields have Z[0] == 2.5
+    ### all other 4D fields have Z[0] >= 5.0
+
+    if np.round(cube.aux_coords[2][0].points) > 3:
+    # if np.round(cube.aux_coords[2][0].points) == 5:
+        ### making 70 levels into 71 for common grid
+        cubedata = np.zeros([71,24])
+        cubedata[1:,:] = data
+        cubedata[0,:] = np.nan
+    elif np.round(cube.aux_coords[2][0].points) == 2:
+        ### interpolating to n71 common grid
+        ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
+        cubedata = np.zeros([71,24])
+        for i in range(0,24):
+            temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+            cubedata[1:,i] = temp
+            cubedata[0,i] = np.nan
+    else:
+        cubedata = data
+
+    return cubedata
+
 def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile):
 
     from iris.coords import DimCoord
