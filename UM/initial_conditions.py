@@ -2517,10 +2517,10 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
 
-    # for date in date_dir:
-    date = '20180815T1200Z'
     model = 'lam'
-    data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
+    for date in date_dir:
+    # date = '20180815T1200Z'
+        data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
