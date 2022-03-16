@@ -2337,7 +2337,7 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             elif stream[1:3] == 'pc':
                 if not os.path.exists(nc_outfile):
                     print (nc_outfile + ' does not exist, so pulling ship track...')
-                    # outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                    outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
             else:
                 print ('Valid stream not found.')
 
