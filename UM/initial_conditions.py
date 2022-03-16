@@ -2350,22 +2350,27 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             print (' ')
 
             if stream[1:3] == 'pa':
+                print ('Checking: ' + aoutfile + '...')
                 if not os.path.exists(aoutfile):
                     print (aoutfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
             elif stream[1:3] == 'pb':
+                print ('Checking: ' + boutfile + '...')
                 if not os.path.exists(boutfile):
                     print (boutfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
             elif stream[1:3] == 'pd':
+                print ('Checking: ' + doutfile + '...')
                 if not os.path.exists(doutfile):
                     print (doutfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
             elif stream[1:3] == 'pe':
+                print ('Checking: ' + eoutfile + '...')
                 if not os.path.exists(eoutfile):
                     print (eoutfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
             elif stream[1:3] == 'pc':
+                print ('Checking: ' + coutfile + '...')
                 if not os.path.exists(nc_outfile):
                     print (nc_outfile + ' does not exist, so pulling ship track...')
                     outfile = pull36HTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
