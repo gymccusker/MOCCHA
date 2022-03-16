@@ -2412,7 +2412,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '23_u-cc278_RA1M_CASIM/'
+    out_dir = '25_u-cc568_RA2M_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
