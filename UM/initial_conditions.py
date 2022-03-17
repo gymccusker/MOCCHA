@@ -449,9 +449,9 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                     ###
                     ### plot for sanity check
                     ###
-                    for i in range(0, len(times)):
+                    for i in range(0, len(tim)):
                         iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
-                        print (times[i])
+                        print (tim[i])
 
             plt.legend()
 
