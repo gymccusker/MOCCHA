@@ -1111,8 +1111,15 @@ def loadPA(root_dir, out_dir, date_dir, model_flag):
     elif model_flag == 1:
         model_expt = model[model_flag]
 
+    print(root_dir)
+    print(out_dir)
+    print(date)
+    print(model_expt)
+    print(stream)
+
     for date in date_dir:
         filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
+        print (filename)
 
         cubea[date] = iris.load(filename)
         # cubea[date] = date
