@@ -152,7 +152,7 @@ def trackShip(data, date):
 
     return trackShip_index
 
-def plot_cartmap(ship_data, cube, date_dir):
+def plot_cartmap(ship_data, cube, date_dir, model):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -288,51 +288,52 @@ def plot_cartmap(ship_data, cube, date_dir):
         date_extension =[0, 1]
 
         for t in date_extension:
-            grid_dirname = 'AUX_DATA/'
-            if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
-            if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
+            if model == 'lam':
+                grid_dirname = 'AUX_DATA/'
+                if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
+                if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
 
-            tim, ilat, ilon = readGriddedTrack(grid_filename)
+                tim, ilat, ilon = readGriddedTrack(grid_filename)
 
-            ### Plot tracks as line plot
-            if t == 0:
-                loop_index = np.where(tim>=12.0)        ### only from 1200Z on day 0
-            else:
-                loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
-            times = tim[loop_index]
-            lons = ilon[loop_index]
-            lats = ilat[loop_index]
-            cc = ['black', 'blue']
+                ### Plot tracks as line plot
+                if t == 0:
+                    loop_index = np.where(tim>=12.0)        ### only from 1200Z on day 0
+                else:
+                    loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
+                times = tim[loop_index]
+                lons = ilon[loop_index]
+                lats = ilat[loop_index]
+                cc = ['black', 'blue']
 
-            ###
-            ### plot for sanity check
-            ###
-            for i in range(0, len(times)):
-                iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
-                print (times[i])
+                ###
+                ### plot for sanity check
+                ###
+                for i in range(0, len(times)):
+                    iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
+                    print (times[i])
 
-            ###
-            ### prepare output arrays for writing
-            ###
-            if t == 0:
-                time_forecast = np.copy(times)
-                time_forecast = time_forecast - 12.0
-                lons_forecast = np.copy(lons)
-                lats_forecast = np.copy(lats)
-            else:
-                times_extended = times + 12.0
-                time_forecast = np.append(time_forecast, times_extended)
-                lons_forecast = np.append(lons_forecast, lons)
-                lats_forecast = np.append(lats_forecast, lats)
+                ###
+                ### prepare output arrays for writing
+                ###
+                if t == 0:
+                    time_forecast = np.copy(times)
+                    time_forecast = time_forecast - 12.0
+                    lons_forecast = np.copy(lons)
+                    lats_forecast = np.copy(lats)
+                else:
+                    times_extended = times + 12.0
+                    time_forecast = np.append(time_forecast, times_extended)
+                    lons_forecast = np.append(lons_forecast, lons)
+                    lats_forecast = np.append(lats_forecast, lats)
 
-        out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
+                out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
 
-        for i in range(0, len(time_forecast)):
-            iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
+                # for i in range(0, len(time_forecast)):
+                #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
 
         plt.legend()
 
-        plt.savefig('../../FIGS/Grid_ZoomedTrack_' + date + '.png')
+        plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
         plt.close()
 
     print ('******')
@@ -2531,7 +2532,7 @@ def main():
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # figure = plot_cartmap(ship_data, cubed, date_dir)
+    figure = plot_cartmap(ship_data, cubed, date_dir, model)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
