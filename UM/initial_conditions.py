@@ -224,112 +224,113 @@ def plot_cartmap(ship_data, cube, date_dir, model):
     #################################################################
     i = 0
     for date in date_dir:
-        i = i + 1
-        plt.figure(figsize=(5,4))
-        plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
-                hspace = 0.3, wspace = 0.3)
-        # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
-        ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
+        if date[:4] == '2018':
+            i = i + 1
+            plt.figure(figsize=(5,4))
+            plt.subplots_adjust(top = 0.85, bottom = 0.15, right = 0.97, left = 0.1,
+                    hspace = 0.3, wspace = 0.3)
+            # ax = plt.axes(projection=ccrs.Orthographic(0, 90))    # NP Stereo
+            ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=0))
 
 
-        ### set size
-        # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())      ### full track
-        # ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
-        ax.set_extent([20, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
+            ### set size
+            # ax.set_extent([-180, 190, 80, 90], crs=ccrs.PlateCarree())      ### full track
+            # ax.set_extent([20, 50, 88.35, 89.95], crs=ccrs.PlateCarree())     ### SWATH
+            ax.set_extent([20, 60, 89.1, 89.6], crs=ccrs.PlateCarree())       ### ZOOM
 
-        ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+            ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
 
-        #################################################################
-        ## add geographic features/guides for reference
-        #################################################################
-        ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-        ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-        # ax.set_global()
-        ax.gridlines()
+            #################################################################
+            ## add geographic features/guides for reference
+            #################################################################
+            ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+            ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+            # ax.set_global()
+            ax.gridlines()
 
-        #################################################################
-        ## plot UM data
-        #################################################################
-        # iplt.pcolormesh(cube[date][0][0,:,:], vmin = 0.8, vmax = 1.0, cmap=mpl_cm.Blues_r)
-        # plt.title(cube[date][0].standard_name)
-        # plt.colorbar()
+            #################################################################
+            ## plot UM data
+            #################################################################
+            # iplt.pcolormesh(cube[date][0][0,:,:], vmin = 0.8, vmax = 1.0, cmap=mpl_cm.Blues_r)
+            # plt.title(cube[date][0].standard_name)
+            # plt.colorbar()
 
-        #################################################################
-        ## plot UM nest
-        #################################################################
-        ### draw outline of grid
-        qplt.outline(cube[date][0][0,:,:])
+            #################################################################
+            ## plot UM nest
+            #################################################################
+            ### draw outline of grid
+            qplt.outline(cube[date][0][0,:,:])
 
-        #################################################################
-        ## plot ship track
-        #################################################################
-        ### DEFINE DRIFT + IN_ICE PERIODS
-        drift_index = iceDrift(ship_data)
-        inIce_index = inIce(ship_data)
-        trackShip_index = trackShip(ship_data, date)
+            #################################################################
+            ## plot ship track
+            #################################################################
+            ### DEFINE DRIFT + IN_ICE PERIODS
+            drift_index = iceDrift(ship_data)
+            inIce_index = inIce(ship_data)
+            trackShip_index = trackShip(ship_data, date)
 
-        ### Plot tracks as line plot
-        plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
-                 color = 'darkorange', linewidth = 3,
-                 transform = ccrs.PlateCarree(), label = date,
-                 )
-        plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
-                 'k^', markerfacecolor = 'darkorange', linewidth = 3,
-                 transform = ccrs.PlateCarree(),
-                 )
-        plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
-                 'kv', markerfacecolor = 'darkorange', linewidth = 3,
-                 transform = ccrs.PlateCarree(),
-                 )
+            ### Plot tracks as line plot
+            plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+                     color = 'darkorange', linewidth = 3,
+                     transform = ccrs.PlateCarree(), label = date,
+                     )
+            plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+                     'k^', markerfacecolor = 'darkorange', linewidth = 3,
+                     transform = ccrs.PlateCarree(),
+                     )
+            plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+                     'kv', markerfacecolor = 'darkorange', linewidth = 3,
+                     transform = ccrs.PlateCarree(),
+                     )
 
-        #################################################################
-        ## read in and plot gridded ship track
-        #################################################################
-        date_extension =[0, 1]
+            #################################################################
+            ## read in and plot gridded ship track
+            #################################################################
+            date_extension =[0, 1]
 
-        for t in date_extension:
-            if model == 'lam':
-                grid_dirname = 'AUX_DATA/'
-                if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
-                if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
+            for t in date_extension:
+                if model == 'lam':
+                    grid_dirname = 'AUX_DATA/'
+                    if int(date[6:8]) <= 8: grid_filename = grid_dirname + date[:6] + '0' + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
+                    if int(date[6:8]) >= 9: grid_filename = grid_dirname + date[:6] + str(int(date[6:8])+t) + '_ShipTrack_GRIDDED.csv'
 
-                tim, ilat, ilon = readGriddedTrack(grid_filename)
+                    tim, ilat, ilon = readGriddedTrack(grid_filename)
 
-                ### Plot tracks as line plot
-                if t == 0:
-                    loop_index = np.where(tim>=12.0)        ### only from 1200Z on day 0
-                else:
-                    loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
-                times = tim[loop_index]
-                lons = ilon[loop_index]
-                lats = ilat[loop_index]
-                cc = ['black', 'blue']
+                    ### Plot tracks as line plot
+                    if t == 0:
+                        loop_index = np.where(tim>=12.0)        ### only from 1200Z on day 0
+                    else:
+                        loop_index = np.where(tim>=0.0)         ### from 0000Z on day 1
+                    times = tim[loop_index]
+                    lons = ilon[loop_index]
+                    lats = ilat[loop_index]
+                    cc = ['black', 'blue']
 
-                ###
-                ### plot for sanity check
-                ###
-                for i in range(0, len(times)):
-                    iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
-                    print (times[i])
+                    ###
+                    ### plot for sanity check
+                    ###
+                    for i in range(0, len(times)):
+                        iplt.scatter(cube[date][0].dim_coords[2][int(lons[i] + xoffset)], cube[date][0].dim_coords[1][int(lats[i] + yoffset)],color=cc[t])
+                        print (times[i])
 
-                ###
-                ### prepare output arrays for writing
-                ###
-                if t == 0:
-                    time_forecast = np.copy(times)
-                    time_forecast = time_forecast - 12.0
-                    lons_forecast = np.copy(lons)
-                    lats_forecast = np.copy(lats)
-                else:
-                    times_extended = times + 12.0
-                    time_forecast = np.append(time_forecast, times_extended)
-                    lons_forecast = np.append(lons_forecast, lons)
-                    lats_forecast = np.append(lats_forecast, lats)
+                    ###
+                    ### prepare output arrays for writing
+                    ###
+                    if t == 0:
+                        time_forecast = np.copy(times)
+                        time_forecast = time_forecast - 12.0
+                        lons_forecast = np.copy(lons)
+                        lats_forecast = np.copy(lats)
+                    else:
+                        times_extended = times + 12.0
+                        time_forecast = np.append(time_forecast, times_extended)
+                        lons_forecast = np.append(lons_forecast, lons)
+                        lats_forecast = np.append(lats_forecast, lats)
 
-                out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
+                    out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
 
-                # for i in range(0, len(time_forecast)):
-                #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
+                    # for i in range(0, len(time_forecast)):
+                    #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
 
         plt.legend()
 
