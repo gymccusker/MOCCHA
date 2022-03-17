@@ -1157,8 +1157,13 @@ def loadPD(root_dir, out_dir, date_dir):
 
     # cube = {}
     cubec = {}
+    if model_flag == 0:
+        model_expt = model[model_flag] + expt
+    elif model_flag == 1:
+        model_expt = model[model_flag]
+        
     for date in date_dir:
-        filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
+        filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
 
         cubec[date] = iris.load(filename, 'sea_ice_area_fraction') #global_con, callback)
         # cubea[date] = date
