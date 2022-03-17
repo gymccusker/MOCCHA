@@ -1070,7 +1070,7 @@ def combinePP(root_dir, out_dir, date_dir):
 
     return dummy
 
-def loadPA(root_dir, out_dir, date_dir):
+def loadPA(root_dir, out_dir, date_dir, model_flag):
 
     '''
     Load in PA stream, combined pp file (suffix _r0.pp)
@@ -1094,11 +1094,11 @@ def loadPA(root_dir, out_dir, date_dir):
     global_con = iris.AttributeConstraint(
         STASH=lambda stash: str(stash) in GlobalStashList)
             ### defines which stash variables to load - should be within a loop
-
-    def hourly_data(cell):
-       # return True or False as to whether the cell in question should be kept
-       # in this case, should return hourly data
-       return cell >= 30
+    #
+    # def hourly_data(cell):
+    #    # return True or False as to whether the cell in question should be kept
+    #    # in this case, should return hourly data
+    #    return cell >= 30
 
 
     # time_hourly_with_stash = iris.AttributeConstraint(STASH=lambda stash: str(stash) in GlobalStashList) & iris.Constraint(time=hourly_data)
@@ -1107,7 +1107,7 @@ def loadPA(root_dir, out_dir, date_dir):
     cube = {}
     cubea = {}
     for date in date_dir:
-        filename = root_dir + out_dir + date + '/' + date + model[0] + expt + stream + '.pp'
+        filename = root_dir + out_dir + date + '/' + date + model[model_flag] + expt + stream + '.pp'
 
         cubea[date] = iris.load(filename, time_hourly)
         # cubea[date] = date
@@ -2501,15 +2501,19 @@ def main():
     ### Load combined PP files - pd for sea ice area fraction cartopy plot
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # cubed = loadPD(root_dir, out_dir, date_dir)
-    # print (cubed)
+    model = 'glm'
+    model_flag = 1 # 0 for LAM, 1 for GLM
+
+    # cube = loadPD(root_dir, out_dir, date_dir)
+    cube = loadPA(root_dir, out_dir, date_dir, model_flag)
+    print (cube)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # figure = plot_cartmap(ship_data, cubed, date_dir)
+    figure = plot_cartmap(ship_data, cubed, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -2517,7 +2521,6 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
 
-    model = 'glm'
     # for date in date_dir:
     date = '20180815T1200Z'
     data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
