@@ -1230,12 +1230,12 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
     print ('Pulling gridded track from cube:')
     print ('')
 
-    if model == 'lam':
-        tim, ilat, ilon = readGriddedTrack(grid_filename)
-    elif model == 'glm':
-        tim, ilat, ilon = readGlobal(cube, ship_data, date)
-    else:
-        print ('Model option is not valid')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+    # if model == 'lam':
+    # elif model == 'glm':
+    #     tim, ilat, ilon = readGlobal(cube, ship_data, date)
+    # else:
+    #     print ('Model option is not valid')
 
     #################################################################
     ## fix time index
