@@ -1113,11 +1113,11 @@ def loadPA(root_dir, out_dir, date_dir, model_flag):
 
     print(root_dir)
     print(out_dir)
-    print(date)
     print(model_expt)
     print(stream)
 
     for date in date_dir:
+        print(date)
         filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
         print (filename)
 
