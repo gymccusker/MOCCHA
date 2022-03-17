@@ -358,7 +358,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
             ## plot UM nest
             #################################################################
             ### draw outline of grid
-            qplt.outline(cube[date][0][0,:,:])
+            if model == 'lam': qplt.outline(cube[date][0][0,:,:])
 
             #################################################################
             ## plot ship track
