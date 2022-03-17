@@ -444,6 +444,9 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                     #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
 
                 elif model == 'glm':
+
+                    qplt.outline(cube[date][0][0,:,::10])
+
                     tim, ilat, ilon = readGlobal(cube, ship_data, date)
 
                     ###
@@ -451,7 +454,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                     ###
                     for i in range(0, len(tim)):
                         iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='k')
-                        print (tim[i])
+                        # print (tim[i])
 
             plt.legend()
 
