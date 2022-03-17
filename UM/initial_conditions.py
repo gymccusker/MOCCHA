@@ -171,8 +171,8 @@ def readGlobal(cube, ship_data, date):
     #################################################################
     ## save daily lat/lons as temp vars
     #################################################################
-    ship_lats = ship_data.values[day_ind[0],7]
-    ship_lons = ship_data.values[day_ind[0],6]
+    ship_lats = ship_data.values[day_ind,7]
+    ship_lons = ship_data.values[day_ind,6]
 
     print ('ship_lats.shape = ' + str(ship_lats.shape))
 
