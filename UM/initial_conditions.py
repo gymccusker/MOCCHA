@@ -152,8 +152,18 @@ def readGlobal(cube, ship_data, date):
     #################################################################
     ## find date of interest
     #################################################################
-    day_ind = np.array([])
-    day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[6:8]),ship_data.values[:,1] == float(date[4:6])))
+    month = int(date[5])
+    day = int(date[6:8])
+    endpt = int(day)+2
+
+    trackShip_start = np.where(np.logical_and(np.logical_and(data.values[:,2]==day,data.values[:,1]==month),data.values[:,3]>=12))
+    trackShip_end = np.where(np.logical_and(data.values[:,2]==endpt ,data.values[:,1]==month))
+
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][0])
+    day_ind = trackShip_index
+
+    # day_ind = np.array([])
+    # day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[6:8]),ship_data.values[:,1] == float(date[4:6])))
     print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
 
     #################################################################
