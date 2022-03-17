@@ -2412,7 +2412,7 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '25_u-cc568_RA2M_CON/'
+    out_dir = '24_u-cc324_RA2T_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
@@ -2517,10 +2517,10 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
 
-    model = 'lam'
-    for date in date_dir:
-    # date = '20180815T1200Z'
-        data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
+    model = 'glm'
+    # for date in date_dir:
+    date = '20180815T1200Z'
+    data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
