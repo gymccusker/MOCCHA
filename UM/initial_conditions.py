@@ -2259,8 +2259,8 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
     #           start at 009 if 1h dumps in pb
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    # names = ['_pa000_r0','_pb000_r0','_pd000_r0','_pe000_r0','_pc000_r0']
-    names = ['_pa000_r0']         ### only do specific files as a test
+    names = ['_pa000_r0','_pb000_r0','_pd000_r0','_pe000_r0','_pc000_r0']
+    # names = ['_pa000_r0']         ### only do specific files as a test
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
