@@ -438,7 +438,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                         lons_forecast = np.append(lons_forecast, lons)
                         lats_forecast = np.append(lats_forecast, lats)
 
-                    out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
+                    out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date, model)
 
                     # for i in range(0, len(time_forecast)):
                     #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
@@ -448,7 +448,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                     qplt.outline(cube[date][0][0,:,::10])
 
                     tim, ilat, ilon = readGlobal(cube, ship_data, date)
-
+                    out = writeout36HGrid(tim, ilat, ilon, date, model)
                     ###
                     ### plot for sanity check
                     ###
@@ -466,7 +466,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-def writeout36HGrid(tim, lat, lon, date):
+def writeout36HGrid(tim, lat, lon, date, model):
 
     import pandas as pd
 
@@ -482,7 +482,8 @@ def writeout36HGrid(tim, lat, lon, date):
     dat[:,1] = lon
     dat[:,2] = lat
     df = pd.DataFrame(dat)
-    filename = 'AUX_DATA/' + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'lam': filename = 'AUX_DATA/' + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'glm': filename = 'AUX_DATA/' + date + '-36HForecast-GLM_ShipTrack_GRIDDED.csv'
     df.to_csv(filename,  sep = " ")
     print ('... finished!')
     print ('')
