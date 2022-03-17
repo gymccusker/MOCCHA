@@ -1122,7 +1122,7 @@ def loadPA(root_dir, out_dir, date_dir, model_flag):
             filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
             print (filename)
 
-            cubea[date] = iris.load(filename)
+            cubea[date] = iris.load(filename, 'm01s01i505')
             # cubea[date] = date
             #
             # for i in range(0, len(cube[date])):
