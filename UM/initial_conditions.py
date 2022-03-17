@@ -2277,7 +2277,7 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             dirout = out_dir[3:10] + '_lam/'
         elif model == 'glm':
             ### GLM
-            filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+            filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
             dirout = out_dir[3:10] + '_glm/'
         print ('dirout is: ' + dirout)
 
