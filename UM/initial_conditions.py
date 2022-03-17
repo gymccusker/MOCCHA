@@ -2371,6 +2371,9 @@ def main():
     print ('Start: ' + time.strftime("%c"))
     print ('')
 
+    ### close any leftover figure instances
+    plt.close()
+
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'JASMIN'
 
