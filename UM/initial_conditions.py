@@ -2244,7 +2244,8 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
     # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     grid_dirname = 'AUX_DATA/'
-    grid_filename = grid_dirname + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'lam': grid_filename = grid_dirname + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'glm': grid_filename = grid_dirname + date + '-36HForecast-GLM_ShipTrack_GRIDDED.csv'
 
     print ('Loading grid:...')
     print (grid_filename)
@@ -2258,8 +2259,8 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
     #           start at 009 if 1h dumps in pb
     #           start at 011 if 1h dumps (c--e)
     # -------------------------------------------------------------
-    names = ['_pa000_r0','_pb000_r0','_pd000_r0','_pe000_r0','_pc000_r0']
-    # names = ['_pa000_r0']         ### only do specific files as a test
+    # names = ['_pa000_r0','_pb000_r0','_pd000_r0','_pe000_r0','_pc000_r0']
+    names = ['_pa000_r0']         ### only do specific files as a test
     if out_dir[-6:-1] == 'CASIM':
         expt = out_dir[-11:-1]
     elif out_dir[-4:-1] == 'CON':
@@ -2270,22 +2271,20 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
         ### -------------------------------------------------------------------------
         ### define output filename
         ### -------------------------------------------------------------------------
-        if np.logical_or(np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/'), out_dir == '28_u-ce627_RA2T_CON/'):    ## choose lam or global for 7_u-bn068/24_u-cc324/28_u-ce627
+        if model == 'lam'
             # #### LAM
             filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-            model = 'lam'
-            dirout = out_dir[-17:-10] + '_lam/'
+            dirout = out_dir[3:10] + '_lam/'
+        elif model == 'glm':
             ### GLM
-            # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-            # model = 'glm'
-            # dirout = out_dir[-17:-10] + '_glm/'
-        else:
-            filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-            model = 'lam'
-            if np.logical_or(np.logical_or(out_dir[0] == '1',out_dir[0] == '2'),out_dir[0] == '3'):
-                dirout = out_dir[3:10] + '/'
-            else:
-                dirout = out_dir[2:9] + '/'
+            filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+            dirout = out_dir[3:10] + '_glm/'
+        print ('dirout is: ' + dirout)
+
+        # if np.logical_or(np.logical_or(out_dir[0] == '1',out_dir[0] == '2'),out_dir[0] == '3'):
+        #     dirout = out_dir[3:10] + '/'
+        # else:
+        #     dirout = out_dir[2:9] + '/'
 
         print ('Checking: ' + filename)
         exist_flag = 0 # initialise exist_flag
@@ -2487,15 +2486,15 @@ def main():
     model_flag = 1 # 0 for LAM, 1 for GLM
 
     # cube = loadPD(root_dir, out_dir, date_dir)
-    cube = loadPA(root_dir, out_dir, date_dir, model_flag)
-    print (cube)
+    # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
+    # print (cube)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    figure = plot_cartmap(ship_data, cube, date_dir, model)
+    # figure = plot_cartmap(ship_data, cube, date_dir, model)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -2505,7 +2504,7 @@ def main():
 
     # for date in date_dir:
     date = '20180815T1200Z'
-    # data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
+    data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
