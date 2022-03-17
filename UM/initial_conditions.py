@@ -1117,18 +1117,19 @@ def loadPA(root_dir, out_dir, date_dir, model_flag):
     print(stream)
 
     for date in date_dir:
-        print(date)
-        filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
-        print (filename)
+        if date[:4] == '2018':
+            print(date)
+            filename = root_dir + out_dir + date + '/' + date + model_expt + stream + '.pp'
+            print (filename)
 
-        cubea[date] = iris.load(filename)
-        # cubea[date] = date
-        #
-        # for i in range(0, len(cube[date])):
-        #     ### only load swath variables (size n=94)
-        #      if np.size(cube[date][i].dim_coords[1],0) <= 100.:
-        #          # print (cube[date][i].dim_coords[1])
-        #          cubea[date] = cube[date][i]
+            cubea[date] = iris.load(filename)
+            # cubea[date] = date
+            #
+            # for i in range(0, len(cube[date])):
+            #     ### only load swath variables (size n=94)
+            #      if np.size(cube[date][i].dim_coords[1],0) <= 100.:
+            #          # print (cube[date][i].dim_coords[1])
+            #          cubea[date] = cube[date][i]
 
 
     return cubea
