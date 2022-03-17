@@ -162,9 +162,11 @@ def readGlobal(cube, ship_data, date):
     trackShip_index = range(trackShip_start[0][0],trackShip_end[0][0])
     day_ind = trackShip_index
 
+    print(day_ind)
+
     # day_ind = np.array([])
     # day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[6:8]),ship_data.values[:,1] == float(date[4:6])))
-    print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
+    print ('Daily ship track for ' + date + ': ' + str(len(day_ind)) + ' pts ')
 
     #################################################################
     ## save daily lat/lons as temp vars
