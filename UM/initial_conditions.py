@@ -2271,7 +2271,7 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
         ### -------------------------------------------------------------------------
         ### define output filename
         ### -------------------------------------------------------------------------
-        if model == 'lam'
+        if model == 'lam':
             # #### LAM
             filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
             dirout = out_dir[3:10] + '_lam/'
