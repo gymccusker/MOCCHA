@@ -332,10 +332,10 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                     # for i in range(0, len(time_forecast)):
                     #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
 
-        plt.legend()
+            plt.legend()
 
-        plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
-        plt.close()
+            plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
+            plt.close()
 
     print ('******')
     print ('')
