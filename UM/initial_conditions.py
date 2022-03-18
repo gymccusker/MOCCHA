@@ -2363,6 +2363,96 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
             else:
                 print ('Valid stream not found.')
 
+def loadObservations(obs, platform, obs_root_dir):
+
+    # -------------------------------------------------------------
+    # Load observations
+    # -------------------------------------------------------------
+    print ('Loading observations:')
+            # -------------------------------------------------------------
+            # Which file does what?
+            # -------------------------------------------------------------
+            #### ice station: net LW / net SW
+                    #### obs['ice_station_fluxes']/mast_radiation_30min_v2.3.mat
+            #### obs['foremast']:
+                    #### obs['foremast']/ACAS_AO2018_obs['foremast']_30min_v2_0.nc
+            #### 7th deck: temperature, surface temperature, RH, downwelling SW, downwelling LW
+                    #### 7thDeck/ACAS_AO2018_WX_30min_v2_0.nc
+
+    if platform == 'LAPTOP':
+        print ('Load temporary ice station data from Jutta...')
+        obs['obs_temp'] = Dataset(obs_root_dir + 'MET_DATA/MetData_Gillian_V3_30minres.nc','r')
+        print ('Load ice station flux data from Jutta...')
+        obs['ice_station_fluxes'] = readMatlabStruct(obs_root_dir + 'ice_station/flux30qc_trhwxrel.mat')
+
+        print ('Load HATPRO data used by Cloudnet...')
+        dirname = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/hatpro/'
+        dir = os.listdir(dirname)
+        obs['hatpro'] = {}
+        for file in dir:
+            if file == 'V1': continue
+            # print (file)
+            IWVtemp = readMatlabStruct(dirname + file)
+            # print (IWVtemp.keys())
+            if file == '20180814_IWV_30s_V2.mat':       ### if it is the first file
+                obs['hatpro']['IWV'] = np.squeeze(IWVtemp['iwv'])
+                obs['hatpro']['mday'] = np.squeeze(IWVtemp['mday'])
+                obs['hatpro']['LWP'] = np.squeeze(IWVtemp['lwp'])
+                obs['hatpro']['rainflag'] = np.squeeze(IWVtemp['rainflag'])
+            else:
+                obs['hatpro']['IWV'] = np.append(np.squeeze(obs['hatpro']['IWV']),np.squeeze(IWVtemp['iwv']))
+                obs['hatpro']['mday'] = np.append(np.squeeze(obs['hatpro']['mday']),np.squeeze(IWVtemp['mday']))
+                obs['hatpro']['LWP'] = np.append(np.squeeze(obs['hatpro']['LWP']),np.squeeze(IWVtemp['lwp']))
+                obs['hatpro']['rainflag'] = np.append(np.squeeze(obs['hatpro']['rainflag']),np.squeeze(IWVtemp['rainflag']))
+        obs['hatpro']['doy'] = calcTime_Mat2DOY(obs['hatpro']['mday'])
+
+        print ('Load albedo estimates from Michael...')
+        obs['albedo'] = readMatlabStruct(obs_root_dir + 'MOCCHA_Albedo_estimates_Michael.mat')
+
+        print ('Load MRR rainrate data from Jutta...')
+        mrr_dirname = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/MRR/'
+        mrr_dir = os.listdir(mrr_dirname)
+        obs['mrr'] = {}
+        mrr_filename = 'Rainrate_from_jutta.mat'
+        obs['mrr'] = readMatlabStruct(mrr_dirname + mrr_filename)
+        print (obs['mrr'].keys())
+        # i = 0
+        # for file in mrr_dir:
+        #     doy = np.arange(226,258)
+            # mrr = Dataset(mrr_dirname + 'rain/' + file,'r')
+            # if file == '20180814_oden_mrr.nc':       ### if it is the first file
+            #     obs['mrr']['rain'] = mrr.variables['rain'][:]
+            #     obs['mrr']['time'] = mrr.variables['time'][:]/24.0 + doy[0]
+            # else:
+            #     i = i + 1
+            #     obs['mrr']['rain'] = np.append(obs['mrr']['rain'],mrr.variables['rain'][:])
+            #     obs['mrr']['time'] = np.append(obs['mrr']['time'],mrr.variables['time'][:]/24.0 + doy[i])
+
+    ### print ('Load ice station radiation data from Jutta...')
+    ### obs['ice_station_radiation'] = readMatlabStruct(obs_root_dir + 'ice_station/mast_radiation_30min_v2.3.mat')
+
+    print ('Load radiosonde data from Jutta...')
+    obs['sondes'] = readMatlabStruct(obs_root_dir + 'radiosondes/SondeData_h10int_V02.mat')
+
+    print ('Load observations inversion height data from Jutta...')
+    obs['inversions'] = readMatlabStruct(obs_root_dir + 'radiosondes/InversionHeights_RSh05int_final_V03.mat')
+
+    print ('Load foremast data from John...')
+    obs['foremast'] = Dataset(obs_root_dir + 'foremast/ACAS_AO2018_foremast_30min_v2_0.nc','r')
+
+    print ('Load 7th deck weather station data from John...')
+    obs['deck7th'] = Dataset(obs_root_dir + '7thDeck/ACAS_AO2018_WX_30min_v2_0.nc','r')
+
+    print ('Load weather sensor data from John...')
+    obs['pws'] = readMatlabStruct(obs_root_dir + '7thDeck/ACAS_AO2018_PWD_1min_v1_0.mat')
+
+    print ('...')
+
+
+# def loadNCs(date, root_dir, dir, model):
+
+
+
 def main():
 
     START_TIME = time.time()
@@ -2396,9 +2486,13 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '24_u-cc324_RA2T_CON/'
+    out_dir = '23_u-cc278_RA1M_CASIM/'
+    out_dir2 = '24_u-cc324_RA2T_CON/'
+    out_dir3 = '25_u-cc568_RA2M_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
     date_dir = os.listdir(root_dir + out_dir)
+
+    out_dirs = [out_dir, out_dir2, out_dir3]
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
@@ -2514,15 +2608,21 @@ def main():
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
+
+    obs = {}
+    obs = loadObservations(obs, platform, obs_root_dir)
+
+
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Load pulled track file
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    for date in date_dir:
-    # date = '20180815T1200Z'
-        if date[:4] == '2018':
-            data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
+    # for dir in out_dirs:
+    #     # for date in date_dir:
+    #     date = '20180815T1200Z'
+    #     if date[:4] == '2018':
+    #         data = loadNCs(date, root_dir, dir, model)
 
     END_TIME = time.time()
     print ('******')
