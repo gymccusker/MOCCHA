@@ -2375,7 +2375,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -2491,32 +2491,38 @@ def main():
     # cube = loadPD(root_dir, out_dir, date_dir)
     # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
     # print (cube)
+    # figure = plot_cartmap(ship_data, cube, date_dir, model)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    ### Plot cartopy map
+    ### Pull track (LAM AND GLM Functional)
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # figure = plot_cartmap(ship_data, cube, date_dir, model)
+    # for date in date_dir:
+    # # date = '20180815T1200Z'
+    #     if date[:4] == '2018':
+    #         data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Load in relevant UM start dump data
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-
-    for date in date_dir:
-    # date = '20180815T1200Z'
-        if date[:4] == '2018':
-            data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
-
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
     #
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
-
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load pulled track file
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    for date in date_dir:
+    # date = '20180815T1200Z'
+        if date[:4] == '2018':
+            data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     END_TIME = time.time()
     print ('******')
