@@ -2453,7 +2453,7 @@ def loadObservations(obs, platform, obs_root_dir):
 
     return obs
 
-def loadNCs(data, root_dir, dir, model):
+def loadNCs(nc, data, root_dir, dir, model):
 
     '''
     Load in netCDF files of 36H forecasts into numpy dictionary (called 'data')
@@ -2462,16 +2462,21 @@ def loadNCs(data, root_dir, dir, model):
     filenames = os.listdir(root_dir + dir)
 
     #### read in netcdf data and initialise postprocessing dictionary
+    print ('***')
+    print ('Loading in: ' + dir[:2])
 
     for filename in filenames:
+        print (filename + ' + ' + model)
         if model == 'lam':
-            data[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
-            data[dir[:2]][filename[:8]]['postproc'] = {}
+            nc[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
+            data[dir[:2]][filename[:8]] = {}
+            # print (nc[dir[:2]][filename[:8]])
         if model == 'glm':
-            data[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
-            data[dir[:2] + '_glm'][filename[:8]]['postproc']
+            nc[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
+            data[dir[:2] + '_glm'][filename[:8]] = {}
+            # print (nc[dir[:2] + '_glm'][filename[:8]])
 
-    return data
+    return nc, data
 
 def reGrid_Sondes(data, obs, dir, filenames, model_list, var):
 
@@ -2755,10 +2760,11 @@ def radiosondeAnalysis(data, dir, obs, filenames, model_list):
 
     #### change matlab time to doy
     # obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
-    print (obs.keys())
+    print (obs['sondes'].keys())
 
     ### for reference in figures
-    zeros = np.zeros(len(data[dir[:2][filenames[0][:8]]]['forecast_time']))
+    print()
+    zeros = np.zeros(len(data[dir[:2]][filenames[0][:8]]['forecast_time']))
 
     #### set flagged values to nans
     for filename in filenames:
@@ -3492,7 +3498,7 @@ def main():
 
     ### Define model of interest (for pulling track only)
     model_list = ['lam','glm']
-    model_flag = 1 # 0 for LAM, 1 for GLM
+    model_flag = 0 # 0 for LAM, 1 for GLM
     model = model_list[model_flag]
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -3630,16 +3636,30 @@ def main():
 
     out_dirs = [dir1, dir2, dir3, dir_glm]
 
-    data = {}   ### load netcdfs into a single dictionary
+    nc = {}   ### load netcdfs into a single dictionary
+    data = {}   ### load postprocessed data into a single dictionary
     for dir in out_dirs:
+        model = model_list[model_flag]  ## reset model assignment
         # dir = dir1
         if dir[:2] == '24':
             for model in model_list:
-                if model == 'lam': data[dir[:2]] = {}  ### use run number as dictionary index
-                if model == 'glm': data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+                if model == 'lam':
+                    nc[dir[:2]] = {}  ### use run number as dictionary index
+                    data[dir[:2]] = {}  ### use run number as dictionary index
+                    nc, data = loadNCs(nc, data, root_dir, dir, model)
+                elif model == 'glm':
+                    nc[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+                    data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+                    nc, data = loadNCs(nc, data, root_dir, dir, model)
         else:
+            nc[dir[:2]] = {}
             data[dir[:2]] = {}
-        data = loadNCs(data, root_dir, dir, model_list)
+            nc, data = loadNCs(nc, data, root_dir, dir, model)
+
+    print (nc.keys())
+    print (data.keys())
+
+
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -3647,8 +3667,9 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     filenames = os.listdir(root_dir + dir)
-    for dir in out_dirs:
-        data = radiosondeAnalysis(data, dir, obs, filenames, model_list)
+    # for dir in out_dirs:
+    #     print (data[dir[:2]].keys())
+    #     data = radiosondeAnalysis(data, dir, obs, filenames, model_list)
 
     np.save('working_data', data)
     # np.save('working_obs', obs['sondes'])
