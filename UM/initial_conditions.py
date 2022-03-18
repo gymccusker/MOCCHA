@@ -2651,6 +2651,8 @@ def main():
             for model in model_list:
                 if model == 'lam': data[dir[:2]] = {}  ### use run number as dictionary index
                 if model == 'glm': data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+        else:
+            data[dir[:2]] = {}
         data = loadNCs(data, root_dir, dir, model_list)
 
     print (data.keys())
