@@ -2738,7 +2738,7 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, var):
 
     return data, obs
 
-def radiosondeAnalysis(data, dir, obs, filenames, model_list):
+def radiosondeAnalysis(nc, data, dir, obs, filenames, model_list):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2764,25 +2764,26 @@ def radiosondeAnalysis(data, dir, obs, filenames, model_list):
 
     ### for reference in figures
     print()
-    zeros = np.zeros(len(data[dir[:2]][filenames[0][:8]]['forecast_time']))
+    zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
 
     #### set flagged values to nans
     for filename in filenames:
         for model in model_list:
             if model == 'lam':
-                data[dir[:2]][filename[:8]]['postproc']['temperature'] = data[dir[:2]][filename[:8]]['temperature'][:]
-                data[dir[:2]][filename[:8]]['postproc']['q'] = data[dir[:2]][filename[:8]]['q'][:]
-                data[dir[:2]][filename[:8]]['postproc']['temperature'][data[dir[:2]][filename[:8]]['postproc']['temperature'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['postproc']['temperature'][data[dir[:2]][filename[:8]]['postproc']['temperature'] <= 0] = np.nan
-                data[dir[:2]][filename[:8]]['postproc']['q'][data[dir[:2]][filename[:8]]['postproc']['q'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['postproc']['q'][data[dir[:2]][filename[:8]]['postproc']['q'] <= 0] = np.nan
+                data[dir[:2]][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
+                data[dir[:2]][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
+                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
             elif model == 'glm':
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] = data[dir[:2] + '_glm'][filename[:8]]['temperature'][:]
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] = data[dir[:2] + '_glm'][filename[:8]]['q'][:]
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] == -9999] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] <= 0] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] == -9999] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] <= 0] = np.nan
+                if dir[:2] + '_glm' in data.keys():
+                    data[dir[:2] + '_glm'][filename[:8]]['temperature'] = nc[dir[:2] + '_glm'][filename[:8]]['temperature'][:]
+                    data[dir[:2] + '_glm'][filename[:8]]['q'] = nc[dir[:2] + '_glm'][filename[:8]]['q'][:]
+                    data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2] + '_glm'][filename[:8]]['temperature'] == -9999] = np.nan
+                    data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2] + '_glm'][filename[:8]]['temperature'] <= 0] = np.nan
+                    data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2] + '_glm'][filename[:8]]['q'] == -9999] = np.nan
+                    data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2] + '_glm'][filename[:8]]['q'] <= 0] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -3455,7 +3456,7 @@ def radiosondeAnalysis(data, dir, obs, filenames, model_list):
     # # plt.show()
     # plt.close()
 
-    return data
+    return nc, data
 
 def main():
 
@@ -3667,9 +3668,9 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     filenames = os.listdir(root_dir + dir)
-    # for dir in out_dirs:
-    #     print (data[dir[:2]].keys())
-    #     data = radiosondeAnalysis(data, dir, obs, filenames, model_list)
+    for dir in out_dirs:
+        print (data[dir[:2]].keys())
+        nc, data = radiosondeAnalysis(nc, data, dir, obs, filenames, model_list)
 
     np.save('working_data', data)
     # np.save('working_obs', obs['sondes'])
