@@ -2459,11 +2459,733 @@ def loadNCs(data, root_dir, dir, model):
 
     filenames = os.listdir(root_dir + dir)
 
+    #### read in netcdf data and initialise postprocessing dictionary
+
     for filename in filenames:
-        if model == 'lam': data[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
-        if model == 'glm': data[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
+        if model == 'lam':
+            data[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
+            data[dir[:2]][filename[:8]]['postproc'] = {}
+        if model == 'glm':
+            data[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
+            data[dir[:2] + '_glm'][filename[:8]]['postproc']
 
     return data
+
+def radiosondeAnalysis(data, dir, obs, filenames, model_list):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+    import matplotlib.cm as mpl_cm
+    # from scipy.interpolate import interp1d
+
+        # from matplotlib.patches import Polygon
+
+    ###################################
+    ## PLOT MAP
+    ###################################
+
+    print ('******')
+    print ('')
+    print ('Plotting radiosonde and model temperature profiles:')
+    print ('')
+
+    #### change matlab time to doy
+    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+
+    ### for reference in figures
+    zeros = np.zeros(len(data[dir[:2]]['forecast_time']))
+
+
+
+    #### set flagged values to nans
+    for filename in filenames:
+        for model in model_list:
+            if model == 'lam':
+                data[dir[:2]][filename[:8]]['postproc']['temperature']
+                data[dir[:2]][filename[:8]]['temperature'][data4['temperature']data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                data[dir[:2]][filename[:8]]['q'][data4['q']data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+            elif model == 'glm':
+                data[dir[:2] + '_glm'][filename[:8]]['temperature'][data4['temperature']data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['q'][data4['q']data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+
+    #### ---------------------------------------------------------------
+    #### re-grid sonde and IFS data to UM vertical grid <10km
+    #### ---------------------------------------------------------------
+
+    print ('...')
+    print ('Re-gridding sonde and ifs data...')
+    print ('')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'temp')
+    data1, data2, data3, data4, data5, obs, drift = reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, 'q')
+    print ('')
+    print ('Done!')
+
+    print ('')
+    print ('Starting radiosonde figure (quite slow!)...:')
+    print ('...')
+
+    Tmin = -45
+    Tmax = 5
+    ymax = 9000
+    qmax = 4.0
+
+    data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data4['temp_anomalies'] = np.transpose(data4['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    data5['temp_anomalies'] = np.transpose(data5['temp_6hrly_UM'][:]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+
+    data3['q_anomalies'] = np.transpose(data3['q_hrly_UM'][::6])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data1['q_anomalies'] = np.transpose(data1['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+    data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'][:])*1e3 - np.transpose(obs['sondes']['q_driftSondes_UM'])
+
+    # ##################################################
+    # ##################################################
+    # #### MEDIAN PROFILES
+    # ##################################################
+    # ##################################################
+    # SMALL_SIZE = 12
+    # MED_SIZE = 16
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    #
+    # ### -------------------------------
+    # ### Build figure (timeseries)
+    # ### -------------------------------
+    # fig = plt.figure(figsize=(7.5,5.5))
+    # plt.subplots_adjust(top = 0.8, bottom = 0.15, right = 0.97, left = 0.1,
+    #         hspace = 0.3, wspace = 0.2)
+    #
+    # ####        all model data share a timestamp
+    # melt = np.where(data1['time_hrly'][::6] < 240.0)
+    # freeze = np.where(data1['time_hrly'][::6] >= 240.0)
+    #
+    #
+    # ###-------------------------
+    # plt.subplot(121)
+    # ax1 = plt.gca()
+    # # plt.plot([0,0], [0,1e4], '--', color='grey')
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1),
+    #     np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) - np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1) + np.nanstd(data1['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1),
+    #     np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1),
+    #      color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) - np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1) + np.nanstd(data4['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1),
+    #     np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) - np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1) + np.nanstd(data2['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1),
+    #     np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) - np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    #
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2[:-8], zorder = 1)
+    # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    # plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    # # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    #
+    # # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    # plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # axmajor = np.arange(0,9.01e3,1.0e3)
+    # axminor = np.arange(0,9.01e3,0.5e3)
+    # plt.yticks(axmajor)
+    # ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    # ax1.set_yticks(axminor, minor = True)
+    # ax1.grid(which = 'major', alpha = 0.5)
+    # plt.xlim([-2.0,1.0])
+    # plt.xlabel('T bias [K]')
+    #
+    # ###-------------------------
+    # plt.subplot(122)
+    # ax1 = plt.gca()
+    # # plt.plot([0,0], [0,1e4], '--', color='grey')
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1),
+    #     np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1),
+    #     color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) - np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1) + np.nanstd(data1['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1),
+    #     np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1),
+    #     color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) - np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1) + np.nanstd(data4['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1),
+    #     np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1),
+    #     color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) - np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1) + np.nanstd(data2['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(data1['universal_height'], np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1),
+    #     np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1),
+    #     color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) - np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    #
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'mediumseagreen', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4[:-4], zorder = 2)
+    # plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    # # plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    #
+    # # plt.legend()
+    # plt.xlabel('q bias [g kg$^{-1}$]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    # ax1.set_yticks(axminor, minor = True)
+    # ax1.grid(which = 'major', alpha = 0.5)
+    # plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    # plt.grid('on')
+    #
+    # ###-------------------------
+    # fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_ra2t_ra2m-25_wUMGlobal.svg'
+    # # plt.savefig(fileout)
+    # plt.show()
+
+    # ##################################################
+    # ##################################################
+    # #### MEDIAN PROFILES
+    # ##################################################
+    # ##################################################
+    # SMALL_SIZE = 12
+    # MED_SIZE = 16
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    #
+    # ### -------------------------------
+    # ### Build figure (timeseries)
+    # ### -------------------------------
+    # fig = plt.figure(figsize=(7.5,5.5))
+    # plt.subplots_adjust(top = 0.8, bottom = 0.15, right = 0.97, left = 0.1,
+    #         hspace = 0.3, wspace = 0.2)
+    #
+    # ####        all model data share a timestamp
+    # melt = np.where(data1['time_hrly'][::6] < 240.0)
+    # freeze = np.where(data1['time_hrly'][::6] >= 240.0)
+    #
+    #
+    # ###-------------------------
+    # plt.subplot(121)
+    # ax1 = plt.gca()
+    # plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkorange', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'steelblue', label = label2[:-8], zorder = 1)
+    # plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    #
+    # # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
+    # plt.legend(bbox_to_anchor=(1.25, 1.03, 1., .102), loc=4, ncol=3)
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # axmajor = np.arange(0,9.01e3,1.0e3)
+    # axminor = np.arange(0,9.01e3,0.5e3)
+    # plt.yticks(axmajor)
+    # ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    # ax1.set_yticks(axminor, minor = True)
+    # ax1.grid(which = 'major', alpha = 0.5)
+    # plt.xlim([-2.0,1.0])
+    # plt.xlabel('T bias [K]')
+    #
+    # ###-------------------------
+    # plt.subplot(122)
+    # ax1 = plt.gca()
+    # plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkorange', label = label3, zorder = 4)
+    # plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'steelblue', label = label2, zorder = 1)
+    # plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    #
+    # # plt.legend()
+    # plt.xlabel('q bias [g kg$^{-1}$]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
+    # ax1.set_yticks(axminor, minor = True)
+    # ax1.grid(which = 'major', alpha = 0.5)
+    # plt.xlim([-0.25,0.45])#plt.xlim([-0.05,0.45])
+    # plt.grid('on')
+    #
+    # ###-------------------------
+    # fileout = '../FIGS/comparisons/MedianProfiles_TandSpHum_ifs_casim-100_wUMGlobal.svg'
+    # # plt.savefig(fileout)
+    # plt.show()
+
+    #
+    # ##################################################
+    # ##################################################
+    # #### PCOLOR TIMESERIES
+    # ##################################################
+    # ##################################################
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    #
+    # ### -------------------------------
+    # ### Build figure (timeseries)
+    # ### -------------------------------
+    # fig = plt.figure(figsize=(12,11))
+    #
+    # Tmin = -45
+    # Tmax = 5
+    # qbiasmin = -1.0
+    # qbiasmax = 1.0
+    # ymax = 9000
+    # yticklist = [0, 3e3, 6e3, 9e3]
+    #
+    # #########-------------------------------------------------------------------------------------------
+    # ####       DEFINE PERIODS
+    # ####               all model data share a timestamp
+    # p3 = np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] <= 230.0))
+    # p4 = np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] <= 240.0))
+    # p5 = np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] <= 247.0))
+    # p6 = np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] <= 251.0))
+    # p7 = np.where(np.logical_and(data1['time_hrly'][::6] >= 251.0, data1['time_hrly'][::6] <= 255.5))
+    # p8 = np.where(data1['time_hrly'][::6] >= 255.5)
+    # #   p3: np.where(np.logical_and(data1['time_hrly'][::6] >= doy[0], data1['time_hrly'][::6] < 230.0))
+    # #   p4: np.where(np.logical_and(data1['time_hrly'][::6] >= 230.0, data1['time_hrly'][::6] < 240.0))
+    # #   p5: np.where(np.logical_and(data1['time_hrly'][::6] >= 240.0, data1['time_hrly'][::6] < 247.0))
+    # #   p6: np.where(np.logical_and(data1['time_hrly'][::6] >= 247.0, data1['time_hrly'][::6] < 251.0))
+    #
+    # #########-------------------------------------------------------------------------------------------
+    #
+    # ### -------------------------------
+    # ### model temp anomalies wrt radiosondes
+    # ### ------------------------------
+    # ax  = fig.add_axes([0.05,0.81,0.4,0.12])   # left, bottom, width, height
+    # sfig1 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['temp_driftSondes_UM']),
+    #     vmin = Tmin, vmax = Tmax)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
+    # plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
+    # plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
+    # plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
+    # plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
+    # plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p8
+    # plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
+    # plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # # plt.colorbar()
+    # plt.ylabel('Z [km]')
+    # plt.xlabel('Date')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.title('T [$^{\circ}$C]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    # cbaxes1 = fig.add_axes([0.1, 0.98, 0.3, 0.015])
+    # cb1 = plt.colorbar(sfig1, cax = cbaxes1, orientation = 'horizontal')
+    #
+    # ax  = fig.add_axes([0.05,0.56,0.4,0.12])   # left, bottom, width, height
+    # # dat3 = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
+    # # data3['temp_anomalies'] = dat3
+    # sfig2 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['temp_anomalies'],
+    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # plt.colorbar()
+    # # plt.set_cmap('seismic')
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label3, rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    # plt.title('T [K]')
+    # # plt.title(label3 + ' - Radiosondes, T[degC]')
+    # cbaxes2 = fig.add_axes([0.1, 0.73, 0.3, 0.015])
+    # cb2 = plt.colorbar(sfig2, cax = cbaxes2, orientation = 'horizontal')
+    #
+    # ax  = fig.add_axes([0.05,0.39,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data2['time_6hrly'],data1['universal_height'], data2['temp_anomalies'],
+    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # plt.colorbar()
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label2[:8], rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    #
+    # ax  = fig.add_axes([0.05,0.22,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data4['time_6hrly'],data1['universal_height'], data4['temp_anomalies'],
+    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # plt.colorbar()
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label4[:-4], rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    #
+    # ax  = fig.add_axes([0.05,0.05,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data1['time_6hrly'],data1['universal_height'], data1['temp_anomalies'],
+    #     vmin = -5.0, vmax = 5.0, cmap=mpl_cm.RdBu_r)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.xlabel('Date')
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    #
+    # ###-------------------------------------
+    # ### -------------------------------
+    # ### model q anomalies wrt radiosondes
+    # ### ------------------------------
+    # ax  = fig.add_axes([0.55,0.81,0.4,0.12])   # left, bottom, width, height
+    # sfig3 = plt.pcolor(obs['sondes']['doy_drift'],data1['universal_height'],np.transpose(obs['sondes']['q_driftSondes_UM']),
+    #     vmin = 0, vmax = qmax)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][0]], data1['time_6hrly'][p3[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p3[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p3[0][-1]], 8000, 'w.')
+    # plt.annotate('P3', xy=(227,6800), xytext=(227.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][0]], data1['time_6hrly'][p4[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p4[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p4[0][-1]], 8000, 'w.')
+    # plt.annotate('P4', xy=(234,6800), xytext=(234.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][0]], data1['time_6hrly'][p5[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p5[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p5[0][-1]], 8000, 'w.')
+    # plt.annotate('P5', xy=(242.5,6800), xytext=(242.6,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][0]], data1['time_6hrly'][p6[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p6[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p6[0][-1]], 8000, 'w.')
+    # plt.annotate('P6', xy=(248,6800), xytext=(248.1,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][0]], data1['time_6hrly'][p7[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p7[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p7[0][-1]], 8000, 'w.')
+    # plt.annotate('P7', xy=(252.25,6800), xytext=(252.5,6801), fontsize = 12, color = 'w')
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ## p8
+    # plt.plot([data1['time_6hrly'][p8[0][0]], data1['time_6hrly'][p8[0][-1]]], [8000, 8000], 'w--')
+    # plt.plot(data1['time_6hrly'][p8[0][0]], 8000, 'w.')
+    # plt.plot(data1['time_6hrly'][p8[0][-1]], 8000, 'w.')
+    # plt.annotate('P8', xy=(256,6800), xytext=(256.1,6801), fontsize = 12, color = 'w')
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'lightgrey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # plt.colorbar()
+    # plt.ylabel('Z [km]')
+    # plt.xlabel('Date')
+    # plt.title('q [g kg$^{-1}$]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel('Radiosondes', rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    # cbaxes3 = fig.add_axes([0.6, 0.98, 0.3, 0.015])
+    # cb3 = plt.colorbar(sfig3, cax = cbaxes3, orientation = 'horizontal')
+    #
+    # ax  = fig.add_axes([0.55,0.56,0.4,0.12])   # left, bottom, width, height
+    # sfig4 = plt.pcolor(data3['time_6hrly'], data1['universal_height'], data3['q_anomalies'],
+    #     vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label3, rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    # plt.title('q [g kg$^{-1}$]')
+    # cbaxes4 = fig.add_axes([0.6, 0.73, 0.3, 0.015])
+    # cb4 = plt.colorbar(sfig4, cax = cbaxes4, orientation = 'horizontal')
+    #
+    # ax  = fig.add_axes([0.55,0.39,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data2['time_6hrly'], data1['universal_height'], data2['q_anomalies'],
+    #     vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label2[:8], rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    #
+    # ax  = fig.add_axes([0.55,0.22,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data4['time_6hrly'], data1['universal_height'], data4['q_anomalies'],
+    #     vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # plt.ylabel('Z [km]')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label4[:-4], rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    #
+    # ax  = fig.add_axes([0.55,0.05,0.4,0.12])   # left, bottom, width, height
+    # plt.pcolor(data1['time_6hrly'], data1['universal_height'], data1['q_anomalies'],
+    #     vmin = qbiasmin, vmax = qbiasmax, cmap=mpl_cm.BrBG)
+    # plt.plot(np.squeeze(obs['inversions']['doy']),np.squeeze(obs['inversions']['invbase']), 'k')
+    # #### plot periods
+    # ## p3
+    # plt.plot([data1['time_6hrly'][p3[0][-1]], data1['time_6hrly'][p3[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p4
+    # plt.plot([data1['time_6hrly'][p4[0][-1]], data1['time_6hrly'][p4[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p5
+    # plt.plot([data1['time_6hrly'][p5[0][-1]], data1['time_6hrly'][p5[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p6
+    # plt.plot([data1['time_6hrly'][p6[0][-1]], data1['time_6hrly'][p6[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p7
+    # plt.plot([data1['time_6hrly'][p7[0][-1]], data1['time_6hrly'][p7[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ## p8
+    # # plt.plot([data1['time_6hrly'][p8[0][-1]], data1['time_6hrly'][p8[0][-1]]], [0, 9000], '--', color = 'grey', linewidth = 1)
+    # ##
+    # plt.ylim([0,ymax])
+    # plt.yticks(yticklist)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([doy[0],doy[-1]])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # plt.colorbar()
+    # plt.ylabel('Z [km]')
+    # plt.xlabel('Date')
+    # ax2 = ax.twinx()
+    # ax2.set_ylabel(label1, rotation = 270, labelpad = 15)
+    # ax2.set_yticks([])
+    # # plt.title(label1 + ' - Radiosondes, T[degC]')
+    #
+    # print ('******')
+    # print ('')
+    # print ('Finished plotting! :)')
+    # print ('')
+    #
+    # # fileout = '../FIGS/comparisons/TimeSeriesProfiles_TandSpHum-BrBG_ifs_casim-100-GA6alb_ra2t_ra2m-25_Dates_fixedRA2T.png'
+    # fileout = '../FIGS/PaperSubmission/Figure8.svg'
+    # # plt.savefig(fileout, dpi=300)
+    # # plt.show()
+    # plt.close()
+
 
 def main():
 
@@ -2655,7 +3377,15 @@ def main():
             data[dir[:2]] = {}
         data = loadNCs(data, root_dir, dir, model_list)
 
-    print (data.keys())
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Start sonde analysis
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    filenames = os.listdir(root_dir + dir)
+    for dir in out_dirs:
+        data, figure = radiosondeAnalysis(data, dir, obs, filenames, model_list)
+
 
     END_TIME = time.time()
     print ('******')
