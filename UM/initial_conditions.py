@@ -2456,7 +2456,13 @@ def loadNCs(date, data, root_dir, dir, model):
     '''
     Load in netCDF files of 36H forecasts into numpy dictionary (called 'data')
     '''
-    
+
+    filenames = os.listdir(root_dir + dir)
+
+    for filename in filenames:
+        data[dir[:2]][filename[:8]] = Dataset(filename)
+
+    return data
 
 def main():
 
@@ -2482,8 +2488,8 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
-        ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
+        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
+        ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
@@ -2634,10 +2640,10 @@ def main():
     out_dirs = [dir1, dir2, dir3]
 
     data = {}   ### load netcdfs into a single dictionary
-    # for dir in out_dirs:
-    dir = dir1
-    data[out_dirs[0][:2]] = {}  ### use run number as dictionary index
-    data = loadNCs(date, data, root_dir, dir, model)
+    for dir in out_dirs:
+        # dir = dir1
+        data[dir[:2]] = {}  ### use run number as dictionary index
+        data = loadNCs(date, data, root_dir, dir, model)
 
     END_TIME = time.time()
     print ('******')
