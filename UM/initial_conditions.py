@@ -2451,7 +2451,7 @@ def loadObservations(obs, platform, obs_root_dir):
 
     print ('...')
 
-def loadNCs(date, data, root_dir, dir, model):
+def loadNCs(data, root_dir, dir, model):
 
     '''
     Load in netCDF files of 36H forecasts into numpy dictionary (called 'data')
@@ -2460,7 +2460,8 @@ def loadNCs(date, data, root_dir, dir, model):
     filenames = os.listdir(root_dir + dir)
 
     for filename in filenames:
-        data[dir[:2]][filename[:8]] = Dataset(filename)
+        if model == 'lam': data[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
+        if model == 'glm': data[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
 
     return data
 
@@ -2502,6 +2503,11 @@ def main():
     out_dir2 = '24_u-cc324_RA2T_CON/'
     out_dir3 = '25_u-cc568_RA2M_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
+
+    ### Define model of interest (for pulling track only)
+    model_list = ['lam','glm']
+    model_flag = 1 # 0 for LAM, 1 for GLM
+    model = model_list[model_flag]
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
@@ -2588,8 +2594,7 @@ def main():
     ### Load combined PP files - pd for sea ice area fraction cartopy plot
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    model = 'glm'
-    model_flag = 1 # 0 for LAM, 1 for GLM
+
 
     # date_dir = os.listdir(root_dir + out_dir)
     # cube = loadPD(root_dir, out_dir, date_dir)
@@ -2637,13 +2642,17 @@ def main():
     dir3 = out_dir3 + 'OUT_R2/'
     dir_glm = out_dir_glm + 'OUT_R2_GLM/'
 
-    out_dirs = [dir1, dir2, dir3]
+    out_dirs = [dir1, dir2, dir3, dir_glm]
 
     data = {}   ### load netcdfs into a single dictionary
     for dir in out_dirs:
         # dir = dir1
-        data[dir[:2]] = {}  ### use run number as dictionary index
-        data = loadNCs(date, data, root_dir, dir, model)
+        for model in model_list:
+            if model == 'lam': data[dir[:2]] = {}  ### use run number as dictionary index
+            if model == 'glm': data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+        data = loadNCs(data, root_dir, dir, model_list)
+
+    print (data.keys())
 
     END_TIME = time.time()
     print ('******')
