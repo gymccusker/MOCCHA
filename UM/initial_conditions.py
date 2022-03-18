@@ -2365,6 +2365,9 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
 
 def loadObservations(obs, platform, obs_root_dir):
 
+    from readMAT import readMatlabStruct
+    from time_functions import calcTime_Mat2DOY
+
     # -------------------------------------------------------------
     # Load observations
     # -------------------------------------------------------------
@@ -2479,6 +2482,7 @@ def main():
     if platform == 'LAPTOP':
         root_dir = '~/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
         ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
+        obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
@@ -2490,7 +2494,6 @@ def main():
     out_dir2 = '24_u-cc324_RA2T_CON/'
     out_dir3 = '25_u-cc568_RA2M_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
-    date_dir = os.listdir(root_dir + out_dir)
 
     out_dirs = [out_dir, out_dir2, out_dir3]
 
@@ -2582,6 +2585,7 @@ def main():
     model = 'glm'
     model_flag = 1 # 0 for LAM, 1 for GLM
 
+    # date_dir = os.listdir(root_dir + out_dir)
     # cube = loadPD(root_dir, out_dir, date_dir)
     # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
     # print (cube)
@@ -2592,6 +2596,7 @@ def main():
     ### Pull track (LAM AND GLM Functional)
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
+    # date_dir = os.listdir(root_dir + out_dir)
     # for date in date_dir:
     # # date = '20180815T1200Z'
     #     if date[:4] == '2018':
@@ -2608,10 +2613,8 @@ def main():
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
-
     obs = {}
     obs = loadObservations(obs, platform, obs_root_dir)
-
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -2619,10 +2622,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     # for dir in out_dirs:
-    #     # for date in date_dir:
-    #     date = '20180815T1200Z'
-    #     if date[:4] == '2018':
-    #         data = loadNCs(date, root_dir, dir, model)
+         # data = loadNCs(date, root_dir, dir, model)
 
     END_TIME = time.time()
     print ('******')
