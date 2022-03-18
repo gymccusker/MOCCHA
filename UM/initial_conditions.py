@@ -2647,9 +2647,10 @@ def main():
     data = {}   ### load netcdfs into a single dictionary
     for dir in out_dirs:
         # dir = dir1
-        for model in model_list:
-            if model == 'lam': data[dir[:2]] = {}  ### use run number as dictionary index
-            if model == 'glm': data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
+        if dir[:2] == '24':
+            for model in model_list:
+                if model == 'lam': data[dir[:2]] = {}  ### use run number as dictionary index
+                if model == 'glm': data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
         data = loadNCs(data, root_dir, dir, model_list)
 
     print (data.keys())
