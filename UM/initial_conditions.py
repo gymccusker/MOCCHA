@@ -2477,8 +2477,8 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '~/MOCCHA/UM/DATA/INITIAL_CONDITIONS_TEST/'
-        ship_filename = '~/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
+        root_dir = '~/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
+        ship_filename = '~/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
