@@ -2496,24 +2496,25 @@ def radiosondeAnalysis(data, dir, obs, filenames, model_list):
     obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
 
     ### for reference in figures
-    zeros = np.zeros(len(data[dir[:2]]['forecast_time']))
-
-
+    zeros = np.zeros(len(data[dir[:2][filenames[0][:8]]]['forecast_time']))
 
     #### set flagged values to nans
     for filename in filenames:
         for model in model_list:
             if model == 'lam':
-                data[dir[:2]][filename[:8]]['postproc']['temperature']
-                data[dir[:2]][filename[:8]]['temperature'][data4['temperature']data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                data[dir[:2]][filename[:8]]['q'][data4['q']data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+                data[dir[:2]][filename[:8]]['postproc']['temperature'] = data[dir[:2]][filename[:8]]['temperature'][:]
+                data[dir[:2]][filename[:8]]['postproc']['q'] = data[dir[:2]][filename[:8]]['q'][:]
+                data[dir[:2]][filename[:8]]['postproc']['temperature'][data[dir[:2]][filename[:8]]['postproc']['temperature'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['postproc']['temperature'][data[dir[:2]][filename[:8]]['postproc']['temperature'] <= 0] = np.nan
+                data[dir[:2]][filename[:8]]['postproc']['q'][data[dir[:2]][filename[:8]]['postproc']['q'] == -9999] = np.nan
+                data[dir[:2]][filename[:8]]['postproc']['q'][data[dir[:2]][filename[:8]]['postproc']['q'] <= 0] = np.nan
             elif model == 'glm':
-                data[dir[:2] + '_glm'][filename[:8]]['temperature'][data4['temperature']data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['q'][data4['q']data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] = data[dir[:2] + '_glm'][filename[:8]]['temperature'][:]
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] = data[dir[:2] + '_glm'][filename[:8]]['q'][:]
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] == -9999] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['temperature'] <= 0] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] == -9999] = np.nan
+                data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'][data[dir[:2] + '_glm'][filename[:8]]['postproc']['q'] <= 0] = np.nan
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and IFS data to UM vertical grid <10km
