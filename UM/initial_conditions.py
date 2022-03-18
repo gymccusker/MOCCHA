@@ -114,6 +114,117 @@ def readGriddedTrack(grid_filename):
 
     return tim, ilat, ilon
 
+def readGlobal(cube, ship_data, date):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+
+    print ('******')
+    print ('')
+    print ('Defining longitude and latitude boundaries:')
+    print ('')
+
+    if np.ndim(cube[date][0].data) == 3:      ### 2D data + time
+        lats = cube[date][0].dim_coords[1].points
+        lons = cube[date][0].dim_coords[2].points
+    if np.ndim(cube[date][0].data) == 4:      ### 3D data + time
+        lats = cube[date][0].dim_coords[2].points
+        lons = cube[date][0].dim_coords[3].points
+
+    ###---------------------------------------------------------------------------------
+    ### find northern and southern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    print ('sb_lats.shape = ' + str(sb_lats.shape))
+
+    ###---------------------------------------------------------------------------------
+    ### find western and eastern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
+    #################################################################
+    ## find date of interest
+    #################################################################
+    month = int(date[5])
+    day = int(date[6:8])
+    endpt = int(day)+2
+
+    trackShip_start = np.where(np.logical_and(np.logical_and(ship_data.values[:,2]==day,ship_data.values[:,1]==month),ship_data.values[:,3]>=12))
+    trackShip_end = np.where(np.logical_and(ship_data.values[:,2]==endpt, ship_data.values[:,1]==month))
+
+    trackShip_index = range(trackShip_start[0][0],trackShip_end[0][0])
+    day_ind = trackShip_index
+
+    print(day_ind)
+
+    # day_ind = np.array([])
+    # day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[6:8]),ship_data.values[:,1] == float(date[4:6])))
+    print ('Daily ship track for ' + date + ': ' + str(len(day_ind)) + ' pts ')
+
+    #################################################################
+    ## save daily lat/lons as temp vars
+    #################################################################
+    ship_lats = ship_data.values[day_ind,7]
+    ship_lons = ship_data.values[day_ind,6]
+
+    print ('ship_lats.shape = ' + str(ship_lats.shape))
+
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
+    ### compare hourly lat-lon with GLM grid
+    data = {}
+    data['ship_lons'] = np.zeros(36)
+    data['ship_lats'] = np.zeros(36)
+    data['ship_i'] = np.zeros(36); data['ship_i'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
+    data['ship_j'] = np.zeros(36); data['ship_j'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
+    data['ship_hour'] = np.zeros(36)
+    hours = np.arange(0,36)
+    jflag = np.zeros(36)        ### flag for if grid boundary is crossed
+
+    for h in hours:
+        print ('')
+        print ('hour = ' + str(h))
+        for j in range(0,len(sb_lats)):     ### for all latitude points
+            if np.logical_and(ship_lats[h] >= sb_lats[j], ship_lats[h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
+                for i in range(0,len(wb_lons)):     ### for all longitude points
+                    if np.logical_and(ship_lons[h] >= wb_lons[i], ship_lons[h] < eb_lons[i]):     ### find where ship lon sits on glm lon grid
+                        print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
+                        jflag[h] = jflag[h] + 1
+                        data['ship_lons'][h] = lons[i]
+                        data['ship_hour'][h] = hours[h]
+                        data['ship_lats'][h] = lats[j]
+                        data['ship_j'][h] = j         # define grid point indices for use later
+                        data['ship_i'][h] = i         # define grid point indices for use later
+
+    # print data['ship_lats']
+    # print data['ship_j']
+    # print data['ship_lons']
+    # print data['ship_i']
+
+    # np.save('working_glm_grid', data)
+
+    ### need to constract an hour, lon index, lat index list like used for the lam
+    # for h in hours:
+    #     if data['ship_i'][h+1] == data['ship_i'][h]:
+
+    ### arguments to be passed back to pullTrack_CloudNet
+    tim = hours
+    ilon = data['ship_i']
+    ilat = data['ship_j']
+
+    print (tim)
+    print (ilon)
+    print (ilat)
+
+    return tim, ilat, ilon
+
 def trackShip(data, date):
 
     ###################################
@@ -259,7 +370,7 @@ def plot_cartmap(ship_data, cube, date_dir, model):
             ## plot UM nest
             #################################################################
             ### draw outline of grid
-            qplt.outline(cube[date][0][0,:,:])
+            if model == 'lam': qplt.outline(cube[date][0][0,:,:])
 
             #################################################################
             ## plot ship track
@@ -327,22 +438,35 @@ def plot_cartmap(ship_data, cube, date_dir, model):
                         lons_forecast = np.append(lons_forecast, lons)
                         lats_forecast = np.append(lats_forecast, lats)
 
-                    out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date)
+                    out = writeout36HGrid(time_forecast, lats_forecast, lons_forecast, date, model)
 
                     # for i in range(0, len(time_forecast)):
                     #     iplt.scatter(cube[date][0].dim_coords[2][int(lons_forecast[i] + xoffset)], cube[date][0].dim_coords[1][int(lats_forecast[i] + yoffset)], color='red')
 
-        plt.legend()
+                elif model == 'glm':
 
-        plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
-        plt.close()
+                    qplt.outline(cube[date][0][0,:,::10])
+
+                    tim, ilat, ilon = readGlobal(cube, ship_data, date)
+                    out = writeout36HGrid(tim, ilat, ilon, date, model)
+                    ###
+                    ### plot for sanity check
+                    ###
+                    for i in range(0, len(tim)):
+                        iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='k')
+                        # print (tim[i])
+
+            plt.legend()
+
+            plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
+            plt.close()
 
     print ('******')
     print ('')
     print ('Finished plotting cartopy map! :)')
     print ('')
 
-def writeout36HGrid(tim, lat, lon, date):
+def writeout36HGrid(tim, lat, lon, date, model):
 
     import pandas as pd
 
@@ -358,7 +482,8 @@ def writeout36HGrid(tim, lat, lon, date):
     dat[:,1] = lon
     dat[:,2] = lat
     df = pd.DataFrame(dat)
-    filename = 'AUX_DATA/' + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'lam': filename = 'AUX_DATA/' + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'glm': filename = 'AUX_DATA/' + date + '-36HForecast-GLM_ShipTrack_GRIDDED.csv'
     df.to_csv(filename,  sep = " ")
     print ('... finished!')
     print ('')
@@ -731,169 +856,6 @@ def testInput(cube):
     print (cube.dim_coords)
     print ('')
     print (np.size(cube.shape))
-
-def readGlobal(cube, ship_data, date_dir):
-
-    import iris.plot as iplt
-    import iris.quickplot as qplt
-    import iris.analysis.cartography
-    import cartopy.crs as ccrs
-    import cartopy
-
-    print ('******')
-    print ('')
-    print ('Defining longitude and latitude boundaries:')
-    print ('')
-
-    if np.ndim(cube[0].data) == 3:      ### 2D data + time
-        lats = cube[0].dim_coords[1].points
-        lons = cube[0].dim_coords[2].points
-    if np.ndim(cube[0].data) == 4:      ### 3D data + time
-        lats = cube[0].dim_coords[2].points
-        lons = cube[0].dim_coords[3].points
-
-    ###---------------------------------------------------------------------------------
-    ### find northern and southern boundaries of gridpoints
-    ###---------------------------------------------------------------------------------
-    nb_lats = lats + ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
-    sb_lats = lats - ((lats[1] - lats[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
-    print ('sb_lats.shape = ' + str(sb_lats.shape))
-
-    ###---------------------------------------------------------------------------------
-    ### find western and eastern boundaries of gridpoints
-    ###---------------------------------------------------------------------------------
-    wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
-    eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
-
-    #####--------------------------------------------------------------------------------------------------
-    #####--------------------------------------------------------------------------------------------------
-    #################################################################
-    ## find date of interest
-    #################################################################
-    date = date_dir[0:8]
-    if date == '20180831':
-        date = '20180901'
-    else:
-        date = date[:6] + str(int(date[-2:]) + 1).zfill(2)
-    day_ind = np.array([])
-    day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
-    print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
-
-    #################################################################
-    ## save daily lat/lons as temp vars
-    #################################################################
-    ship_lats = ship_data.values[day_ind[0],7]
-    ship_lons = ship_data.values[day_ind[0],6]
-
-    print ('ship_lats.shape = ' + str(ship_lats.shape))
-
-    #####--------------------------------------------------------------------------------------------------
-    #####--------------------------------------------------------------------------------------------------
-    ### compare hourly lat-lon with GLM grid
-    data = {}
-    data['ship_lons'] = np.zeros(24)
-    data['ship_lats'] = np.zeros(24)
-    data['ship_i'] = np.zeros(24); data['ship_i'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_j'] = np.zeros(24); data['ship_j'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_hour'] = np.zeros(24)
-    hours = np.arange(0,24)
-    jflag = np.zeros(24)        ### flag for if grid boundary is crossed
-
-    for h in hours:
-        print ('')
-        print ('hour = ' + str(h))
-        for j in range(0,len(sb_lats)):     ### for all latitude points
-            if np.logical_and(ship_lats[h] >= sb_lats[j], ship_lats[h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
-                for i in range(0,len(wb_lons)):     ### for all longitude points
-                    if np.logical_and(ship_lons[h] >= wb_lons[i], ship_lons[h] < eb_lons[i]):     ### find where ship lon sits on glm lon grid
-                        print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
-                        jflag[h] = jflag[h] + 1
-                        data['ship_lons'][h] = lons[i]
-                        data['ship_hour'][h] = hours[h]
-                        data['ship_lats'][h] = lats[j]
-                        data['ship_j'][h] = j         # define grid point indices for use later
-                        data['ship_i'][h] = i         # define grid point indices for use later
-
-    # print data['ship_lats']
-    # print data['ship_j']
-    # print data['ship_lons']
-    # print data['ship_i']
-
-    # np.save('working_glm_grid', data)
-
-    ### need to constract an hour, lon index, lat index list like used for the lam
-    # for h in hours:
-    #     if data['ship_i'][h+1] == data['ship_i'][h]:
-
-    ### arguments to be passed back to pullTrack_CloudNet
-    tim = hours
-    ilon = data['ship_i']
-    ilat = data['ship_j']
-
-    print (tim)
-    print (ilon)
-    print (ilat)
-
-    # #####--------------------------------------------------------------------------------------------------
-    # #####--------------------------------------------------------------------------------------------------
-    # ##################################################
-    # ##################################################
-    # #### 	CARTOPY MAP
-    # ##################################################
-    # ##################################################
-    #
-    # SMALL_SIZE = 12
-    # MED_SIZE = 14
-    # LARGE_SIZE = 16
-    #
-    # plt.rc('font',size=MED_SIZE)
-    # plt.rc('axes',titlesize=MED_SIZE)
-    # plt.rc('axes',labelsize=MED_SIZE)
-    # plt.rc('xtick',labelsize=SMALL_SIZE)
-    # plt.rc('ytick',labelsize=SMALL_SIZE)
-    # plt.rc('legend',fontsize=SMALL_SIZE)
-    # # plt.rc('figure',titlesize=LARGE_SIZE)
-    #
-    # #################################################################
-    # ## create figure and axes instances
-    # #################################################################
-    # plt.figure(figsize=(6,8))
-    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
-    #
-    # ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
-    #
-    # #################################################################
-    # ## add geographic features/guides for reference
-    # #################################################################
-    # ax.add_feature(cartopy.feature.OCEAN, zorder=0)
-    # ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
-    # ax.gridlines()
-    #
-    # #################################################################
-    # ## plot global grid outline
-    # #################################################################
-    # ### draw outline of grid
-    # # iplt.pcolormesh(cube[0][0,-10:-2,:-70])      ### covers whole drift
-    # iplt.pcolormesh(cube[0][0,-7:-2,70:-70])      ### covers 28Aug - 4Sep subset of drift
-    #
-    # #################################################################
-    # ## plot ship track
-    # #################################################################
-    # ### Plot tracks as line plot
-    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
-    #          color = 'darkorange', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    # plt.plot(data['ship_lons'], data['ship_lats'],
-    #          'o', color = 'yellow', linewidth = 3,
-    #          transform = ccrs.PlateCarree(), label = 'Ship track',
-    #          )
-    #
-    # plt.show()
-    #
-    # #####--------------------------------------------------------------------------------------------------
-
-    return tim, ilat, ilon
 
 def loadUMStartDump(filename):
 
@@ -1268,12 +1230,12 @@ def pull36HTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_da
     print ('Pulling gridded track from cube:')
     print ('')
 
-    if model == 'lam':
-        tim, ilat, ilon = readGriddedTrack(grid_filename)
-    elif model == 'glm':
-        tim, ilat, ilon = readGlobal(cube, ship_data, date)
-    else:
-        print ('Model option is not valid')
+    tim, ilat, ilon = readGriddedTrack(grid_filename)
+    # if model == 'lam':
+    # elif model == 'glm':
+    #     tim, ilat, ilon = readGlobal(cube, ship_data, date)
+    # else:
+    #     print ('Model option is not valid')
 
     #################################################################
     ## fix time index
@@ -2282,7 +2244,8 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
     # global_con = ['atmosphere_downward_eastward_stress','atmosphere_downward_northward_stress']
 
     grid_dirname = 'AUX_DATA/'
-    grid_filename = grid_dirname + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'lam': grid_filename = grid_dirname + date + '-36HForecast_ShipTrack_GRIDDED.csv'
+    if model == 'glm': grid_filename = grid_dirname + date + '-36HForecast-GLM_ShipTrack_GRIDDED.csv'
 
     print ('Loading grid:...')
     print (grid_filename)
@@ -2308,22 +2271,20 @@ def pullTrack(date, root_dir, out_dir, global_con, model, ship_data):
         ### -------------------------------------------------------------------------
         ### define output filename
         ### -------------------------------------------------------------------------
-        if np.logical_or(np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/'), out_dir == '28_u-ce627_RA2T_CON/'):    ## choose lam or global for 7_u-bn068/24_u-cc324/28_u-ce627
+        if model == 'lam':
             # #### LAM
             filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-            model = 'lam'
-            dirout = out_dir[-17:-10] + '_lam/'
+            dirout = out_dir[3:10] + '_lam/'
+        elif model == 'glm':
             ### GLM
-            # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-            # model = 'glm'
-            # dirout = out_dir[-17:-10] + '_glm/'
-        else:
-            filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '.pp'
-            model = 'lam'
-            if np.logical_or(np.logical_or(out_dir[0] == '1',out_dir[0] == '2'),out_dir[0] == '3'):
-                dirout = out_dir[3:10] + '/'
-            else:
-                dirout = out_dir[2:9] + '/'
+            filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '.pp'
+            dirout = out_dir[3:10] + '_glm/'
+        print ('dirout is: ' + dirout)
+
+        # if np.logical_or(np.logical_or(out_dir[0] == '1',out_dir[0] == '2'),out_dir[0] == '3'):
+        #     dirout = out_dir[3:10] + '/'
+        # else:
+        #     dirout = out_dir[2:9] + '/'
 
         print ('Checking: ' + filename)
         exist_flag = 0 # initialise exist_flag
@@ -2409,6 +2370,9 @@ def main():
     print ('')
     print ('Start: ' + time.strftime("%c"))
     print ('')
+
+    ### close any leftover figure instances
+    plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
     platform = 'JASMIN'
@@ -2525,15 +2489,15 @@ def main():
     model_flag = 1 # 0 for LAM, 1 for GLM
 
     # cube = loadPD(root_dir, out_dir, date_dir)
-    cube = loadPA(root_dir, out_dir, date_dir, model_flag)
-    print (cube)
+    # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
+    # print (cube)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Plot cartopy map
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    figure = plot_cartmap(ship_data, cube, date_dir, model)
+    # figure = plot_cartmap(ship_data, cube, date_dir, model)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -2541,9 +2505,10 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
 
-    # for date in date_dir:
-    date = '20180815T1200Z'
-    # data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
+    for date in date_dir:
+    # date = '20180815T1200Z'
+        if date[:4] == '2018':
+            data = pullTrack(date, root_dir, out_dir, global_con, model, ship_data)
 
     # ### list start dumps in UM_STARTFILES/
     # umdumps = os.listdir(init_dir)
