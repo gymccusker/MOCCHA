@@ -2451,9 +2451,12 @@ def loadObservations(obs, platform, obs_root_dir):
 
     print ('...')
 
-def loadNCs(date, root_dir, dir, model):
+def loadNCs(date, data, root_dir, dir, model):
 
-
+    '''
+    Load in netCDF files of 36H forecasts into numpy dictionary (called 'data')
+    '''
+    
 
 def main():
 
@@ -2493,8 +2496,6 @@ def main():
     out_dir2 = '24_u-cc324_RA2T_CON/'
     out_dir3 = '25_u-cc568_RA2M_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
-
-    out_dirs = [out_dir, out_dir2, out_dir3]
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
     ## 5_u-bl661_RA1M_CASIM/            # 100/cc accum mode aerosol; ARG + Cooper
@@ -2622,11 +2623,21 @@ def main():
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    ### Load pulled track file
+    ### Load pulled track files
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
+    dir1 = out_dir + 'OUT_R2/'
+    dir2 = out_dir2 + 'OUT_R2_LAM/'
+    dir3 = out_dir3 + 'OUT_R2/'
+    dir_glm = out_dir_glm + 'OUT_R2_GLM/'
+
+    out_dirs = [dir1, dir2, dir3]
+
+    data = {}   ### load netcdfs into a single dictionary
     # for dir in out_dirs:
-         # data = loadNCs(date, root_dir, dir, model)
+    dir = dir1
+    data[out_dirs[0][:2]] = {}  ### use run number as dictionary index
+    data = loadNCs(date, data, root_dir, dir, model)
 
     END_TIME = time.time()
     print ('******')
