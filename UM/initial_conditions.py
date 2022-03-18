@@ -2451,6 +2451,8 @@ def loadObservations(obs, platform, obs_root_dir):
 
     print ('...')
 
+    return obs
+
 def loadNCs(data, root_dir, dir, model):
 
     '''
@@ -2752,7 +2754,8 @@ def radiosondeAnalysis(data, dir, obs, filenames, model_list):
     print ('')
 
     #### change matlab time to doy
-    obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+    # obs['sondes']['doy'] = calcTime_Mat2DOY(np.squeeze(obs['sondes']['mday']))
+    print (obs.keys())
 
     ### for reference in figures
     zeros = np.zeros(len(data[dir[:2][filenames[0][:8]]]['forecast_time']))
@@ -3646,6 +3649,9 @@ def main():
     filenames = os.listdir(root_dir + dir)
     for dir in out_dirs:
         data = radiosondeAnalysis(data, dir, obs, filenames, model_list)
+
+    np.save('working_data', data)
+    # np.save('working_obs', obs['sondes'])
 
 
     END_TIME = time.time()
