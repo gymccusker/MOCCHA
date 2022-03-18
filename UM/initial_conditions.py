@@ -2451,8 +2451,7 @@ def loadObservations(obs, platform, obs_root_dir):
 
     print ('...')
 
-
-# def loadNCs(date, root_dir, dir, model):
+def loadNCs(date, root_dir, dir, model):
 
 
 
@@ -2613,6 +2612,11 @@ def main():
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load in observations
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
     obs = {}
     obs = loadObservations(obs, platform, obs_root_dir)
 
