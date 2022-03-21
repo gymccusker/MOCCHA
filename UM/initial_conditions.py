@@ -2519,8 +2519,8 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     #### ---------------------------------------------------------------
     #### make an array of forecast_time indices aligning with sonde_times
     #### ---------------------------------------------------------------
-    for file in filenames:
-        print (data[dir[:2]][file[:8]]['forecast_time'][::6]-1)
+    # for file in filenames:
+    #     print (data[dir[:2]][file[:8]]['forecast_time'][::6]-1)
 
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
@@ -2552,34 +2552,36 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
-    if dir[:2] + '_glm' in data.keys():
-        iGLM = np.where(data[dir[:2] + '_glm'][filenames[0][:8]]['height'] <= 11000)
-        print (iGLM)
-        print (data[dir[:2] + '_glm'][filenames[0][:8]]['height'][iGLM])
     for file in filenames:
         if file[:8] == '20180815':
             data['universal_height'] = data[dir[:2]][file[:8]]['height'][iUM[0][3:]]
             print ('Universal_height is len:')
             print (np.size(data['universal_height']))
-        if dir[:2] + '_glm' in data.keys():
-            print ('')
-            print ('Working on ' + dir[:2] + '_glm')
-            print ('Defining UM profile as a function:')
-            temp_time = data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1 ## temporary array
-            data[dir[:2] + '_glm'][file[:8]][var + '_UM'] = np.zeros([np.size(temp_time,0), len(data[dir[:2]][file[:8]]['height'][iUM[0][3:]])])
-            # print (np.size(data[dir[:2]][file[:8]][var],1))
-            print (temp_time)
-            print (data[dir[:2] + '_glm'][file[:8]][var + '_UM'].shape)
-            for iTim in range(0,np.size(temp_time)):
-                print (iTim)
-                fnct_GLM = interp1d(np.squeeze(data[dir[:2] + '_glm'][file[:8]]['height'][iGLM]), np.squeeze(data[dir[:2] + '_glm'][file[:8]][varlist[5]][iTim,iGLM]))
-                data[dir[:2] + '_glm'][file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data[dir[:2]][file[:8]]['height'][iUM[0][3:]].data)
-            print ('...')
-            print ('LAM(UM Grid) function worked!')
-            print (var + ' LAM data now on UM(lam) vertical grid')
-            print ('*****')
+        for key in data.keys():
+            print (key)
+            if key == '24_glm':
+                iGLM = np.where(data[dir[:2] + '_glm'][filenames[0][:8]]['height'] <= 11000)
+                print (iGLM)
+                print (data[key][filenames[0][:8]]['height'][iGLM])
+                print (key)
+                print ('')
+                print ('Working on ' + key)
+                print ('Defining UM profile as a function:')
+                temp_time = data[key][file[:8]]['forecast_time'][::6]-1 ## temporary array
+                data[key][file[:8]][var + '_UM'] = np.zeros([np.size(temp_time,0), len(data[key[:2]][file[:8]]['height'][iUM[0][3:]])])
+                # print (np.size(data[dir[:2]][file[:8]][var],1))
+                print (temp_time)
+                print (data[key][file[:8]][var + '_UM'].shape)
+                for iTim in range(0,np.size(temp_time)):
+                    print (iTim)
+                    fnct_GLM = interp1d(np.squeeze(data[key][file[:8]]['height'][iGLM]), np.squeeze(data[key][file[:8]][varlist[5]][iTim,iGLM]))
+                    data[key][file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data[key[:2]][file[:8]]['height'][iUM[0][3:]].data)
+                print ('...')
+                print ('LAM(UM Grid) function worked!')
+                print (var + ' LAM data now on UM(lam) vertical grid')
+                print ('*****')
 
-            print (data[dir[:2] + '_glm'][file[:8]][var + '_UM'])
+                print (data[key][file[:8]][var + '_UM'])
 
     # if dir[:2] + '_glm' in data.keys():
     #     plt.figure()
@@ -2587,10 +2589,9 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     #     plt.plot(data[dir[:2] + '_glm'][filenames[0][:8]]['temp_UM'][0,:], data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]])
     #     plt.show()
 
-    #### ---------------------------------------------------------------
-    #### make some dictionary assignments for use later
-    #### ---------------------------------------------------------------
-    data['universal_height'] = data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]]
+    for key in data.keys():
+        if key == '24_glm':
+            print (data[key[:2]][filenames[0][:8]].keys())
 
     return data, obs
 
@@ -2622,41 +2623,39 @@ def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
     for dir in out_dirs:
         zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
 
-        ### design model_addon for looping purposes
-        model_addon = ['', '_glm']
+    ### design model_addon for looping purposes
+    model_addon = ['', '_glm']
 
-        #### set flagged values to nans
-        for filename in filenames:
-            for model in model_list:
-                if model == 'lam':
-                    data[dir[:2]][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
-                    data[dir[:2]][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
-                    ##==
-                    data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                    data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                    data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                    data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
-                    ##==
-                    data[dir[:2]][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
-                    data[dir[:2]][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
-                    # print ('Forecast time = ')
-                    # print (data[dir[:2]][filename[:8]]['forecast_time'])
-                if model == 'glm':
-                    if dir[:2] + '_glm' in data.keys():
-                        print (dir[:2])
-                        print (filename[:8])
-                        data[dir[:2] + '_glm'][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
-                        data[dir[:2] + '_glm'][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
-                        ##==
-                        data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                        data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                        data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                        data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
-                        ##==
-                        data[dir[:2] + '_glm'][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
-                        data[dir[:2] + '_glm'][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
-                        # print ('Forecast time = ')
-                        # print (data[dir[:2] + '_glm'][filename[:8]]['forecast_time'])
+    #### set flagged values to nans
+    for filename in filenames:
+        for key in data.keys():
+            if key == '24_glm':
+                print (filename[:8])
+                data[key][filename[:8]]['temperature'] = nc[key][filename[:8]]['temperature'][:]
+                data[key][filename[:8]]['q'] = nc[key][filename[:8]]['q'][:]
+                ##==
+                data[key][filename[:8]]['temperature'][data[key][filename[:8]]['temperature'] == -9999] = np.nan
+                data[key][filename[:8]]['temperature'][data[key][filename[:8]]['temperature'] <= 0] = np.nan
+                data[key][filename[:8]]['q'][data[key][filename[:8]]['q'] == -9999] = np.nan
+                data[key][filename[:8]]['q'][data[key][filename[:8]]['q'] <= 0] = np.nan
+                ##==
+                data[key][filename[:8]]['forecast_time'] = nc[key][filename[:8]]['forecast_time'][:]
+                data[key][filename[:8]]['height'] = nc[key][filename[:8]]['height'][:]
+                # print ('Forecast time = ')
+                print (data[key][filename[:8]].keys())
+            else:
+                data[key[:2]][filename[:8]]['temperature'] = nc[key[:2]][filename[:8]]['temperature'][:]
+                data[key[:2]][filename[:8]]['q'] = nc[key[:2]][filename[:8]]['q'][:]
+                ##==
+                data[key[:2]][filename[:8]]['temperature'][data[key[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                data[key[:2]][filename[:8]]['temperature'][data[key[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                data[key[:2]][filename[:8]]['q'][data[key[:2]][filename[:8]]['q'] == -9999] = np.nan
+                data[key[:2]][filename[:8]]['q'][data[key[:2]][filename[:8]]['q'] <= 0] = np.nan
+                ##==
+                data[key[:2]][filename[:8]]['forecast_time'] = nc[key[:2]][filename[:8]]['forecast_time'][:]
+                data[key[:2]][filename[:8]]['height'] = nc[key[:2]][filename[:8]]['height'][:]
+                # print ('Forecast time = ')
+                # print (data[key[:2]][filename[:8]]['forecast_time'])
 
         #### ---------------------------------------------------------------
         #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -2679,18 +2678,19 @@ def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
     ymax = 9000
     qmax = 4.0
 
-    for dir in out_dirs:
-        zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
+    for key in data.keys():
+        if key == '24_glm':
+            zeros = np.zeros(len(nc[key][filenames[0][:8]]['forecast_time']))
 
-        ### design model_addon for looping purposes
-        model_addon = ['', '_glm']
+    ### design model_addon for looping purposes
+    model_addon = ['', '_glm']
 
-        #### set flagged values to nans
-        for file in filenames:
-            for model in model_list:
-                if model == 'lam':
-                    print (data[dir[:2]][file[:8]].keys())
-                    data[dir[:2][file[:8]]['temp_anomalies']] = np.transpose(data[dir[:2]][file[:8]]['temp_UM']) - np.transpose(obs['sondes']['temp_UM'] + 273.15)
+    #### set flagged values to nans
+    for file in filenames:
+        for key in data.keys():
+            if key == '24_glm':
+                print (data[key][file[:8]].keys())
+                data[key][file[:8]]['temp_anomalies'] = np.transpose(data[key][file[:8]]['temp_UM']) - np.transpose(obs['sondes']['temp_UM'] + 273.15)
 
     # data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     # data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
