@@ -2528,36 +2528,46 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     iTim = 0        ### initialised
     iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
     iUM = np.where(data[dir[:2]][filenames[0][:8]]['height'] <= 11000)
-    iGLM = np.where(data[dir[:2]][filenames[0][:8]]['height'] <= 11000)
+    if dir[:2] + '_glm' in data.keys():
+        iGLM = np.where(data[dir[:2] + '_glm'][filenames[0][:8]]['height'] <= 11000)
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
     #### ---------------------------------------------------------------
     print ('')
     print ('Defining Sonde temperature profile as a function for the UM:')
-    obs['sondes'][var + '_allSondes_UM'] = np.zeros([np.size(sonde_times,0),len(data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]])])
+    obs['sondes'][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]])])
     for iTim in range(0,np.size(sonde_times,0)):
         print ('iTim = ', str(iTim))
         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,iTim]), np.squeeze(obs['sondes'][varlist[0]][iObs,iTim]))
-        obs['sondes'][var + '_allSondes_UM'][iTim,:] = fnct_Obs(data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]].data)
+        obs['sondes'][var + '_UM'][iTim,:] = fnct_Obs(data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]].data)
     print ('...')
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
     print ('*****')
 
+    # plt.figure()
+    # plt.plot(obs['sondes']['temperature'][:,0], obs['sondes']['gpsaltitude'][:,0])
+    # plt.plot(obs['sondes']['temp_UM'][0,:], data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]])
+    # plt.show()
+
     for file in filenames:
         if file[:8] == '20180815':
             data['universal_height'] = data[dir[:2]][file[:8]]['height'][iUM[0][3:]]
+            print ('Universal_height is len:')
             print (np.size(data['universal_height']))
         if dir[:2] + '_glm' in data.keys():
             print ('')
+            print ('Working on ' + dir[:2] + '_glm')
             print ('Defining UM profile as a function:')
-            data[dir[:2] + '_glm'][file[:8]][var] = np.zeros([np.size(data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1,0),len(data[dir[:2] + '_glm'][file[:8]]['height'][iUM[0][3:]])])
+            data[dir[:2] + '_glm'][file[:8]][var] = np.zeros([np.size(data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1,0),len(data[dir[:2]][file[:8]]['height'][iUM[0][3:]])])
             # print (np.size(data[dir[:2]][file[:8]][var],1))
             temp_time = data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1 ## temporary array
             print (temp_time)
             for iTim in range(0,np.size(temp_time)):
                 print (iTim)
+                print (iGLM)
+                print (data[dir[:2] + '_glm'][file[:8]][var].shape)
                 fnct_GLM = interp1d(np.squeeze(data[dir[:2] + '_glm'][file[:8]]['height'][iGLM]), np.squeeze(data[dir[:2] + '_glm'][file[:8]][var][iTim,iGLM]))
                 data[dir[:2] + '_glm'][file[:8]][var][iTim,:] = fnct_GLM(data[dir[:2] + '_glm'][file[:8]]['height'][iUM[0][3:]].data)
             print ('...')
@@ -3603,9 +3613,8 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     filenames = os.listdir(root_dir + dir)
-    for dir in out_dirs:
-        print (data[dir[:2]].keys())
-        nc, data = radiosondeAnalysis(nc, data, dir, obs, filenames, model_list)
+        # print (data[dir[:2]].keys())
+    nc, data = radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list)
 
     np.save('working_data', data)
     # np.save('working_obs', obs['sondes'])
