@@ -2528,8 +2528,6 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     iTim = 0        ### initialised
     iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
     iUM = np.where(data[dir[:2]][filenames[0][:8]]['height'] <= 11000)
-    if dir[:2] + '_glm' in data.keys():
-        iGLM = np.where(data[dir[:2] + '_glm'][filenames[0][:8]]['height'] <= 11000)
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION
@@ -2551,6 +2549,13 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
     # plt.plot(obs['sondes']['temp_UM'][0,:], data[dir[:2]][filenames[0][:8]]['height'][iUM[0][3:]])
     # plt.show()
 
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    if dir[:2] + '_glm' in data.keys():
+        iGLM = np.where(data[dir[:2] + '_glm'][filenames[0][:8]]['height'] <= 11000)
+        print (iGLM)
+        print (data[dir[:2] + '_glm'][filenames[0][:8]]['height'][iGLM])
     for file in filenames:
         if file[:8] == '20180815':
             data['universal_height'] = data[dir[:2]][file[:8]]['height'][iUM[0][3:]]
@@ -2560,22 +2565,21 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
             print ('')
             print ('Working on ' + dir[:2] + '_glm')
             print ('Defining UM profile as a function:')
-            data[dir[:2] + '_glm'][file[:8]][var] = np.zeros([np.size(data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1,0),len(data[dir[:2]][file[:8]]['height'][iUM[0][3:]])])
-            # print (np.size(data[dir[:2]][file[:8]][var],1))
             temp_time = data[dir[:2] + '_glm'][file[:8]]['forecast_time'][::6]-1 ## temporary array
+            data[dir[:2] + '_glm'][file[:8]][var + '_UM'] = np.zeros([np.size(temp_time,0), len(data[dir[:2]][file[:8]]['height'][iUM[0][3:]])])
+            # print (np.size(data[dir[:2]][file[:8]][var],1))
             print (temp_time)
+            print (data[dir[:2] + '_glm'][file[:8]][var + '_UM'].shape)
             for iTim in range(0,np.size(temp_time)):
                 print (iTim)
-                print (iGLM)
-                print (data[dir[:2] + '_glm'][file[:8]][var].shape)
-                fnct_GLM = interp1d(np.squeeze(data[dir[:2] + '_glm'][file[:8]]['height'][iGLM]), np.squeeze(data[dir[:2] + '_glm'][file[:8]][var][iTim,iGLM]))
-                data[dir[:2] + '_glm'][file[:8]][var][iTim,:] = fnct_GLM(data[dir[:2] + '_glm'][file[:8]]['height'][iUM[0][3:]].data)
+                fnct_GLM = interp1d(np.squeeze(data[dir[:2] + '_glm'][file[:8]]['height'][iGLM]), np.squeeze(data[dir[:2] + '_glm'][file[:8]][varlist[0]][iTim,iGLM]))
+                data[dir[:2] + '_glm'][file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data[dir[:2]][file[:8]]['height'][iUM[0][3:]].data)
             print ('...')
             print ('LAM(UM Grid) function worked!')
             print (var + ' LAM data now on UM(lam) vertical grid')
             print ('*****')
 
-            print (data[dir[:2]][file[:8]][var])
+            print (data[dir[:2] + '_glm'][file[:8]][var + '_UM'])
 
     #### ---------------------------------------------------------------
     #### ONLY LOOK AT SONDES FROM THE DRIFT
@@ -2667,7 +2671,7 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
 
     return data, obs
 
-def radiosondeAnalysis(nc, data, dir, obs, filenames, model_list):
+def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2692,55 +2696,56 @@ def radiosondeAnalysis(nc, data, dir, obs, filenames, model_list):
     # print (obs['sondes'].keys())
 
     ### for reference in figures
-    zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
+    for dir in out_dirs:
+        zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
 
-    ### design model_addon for looping purposes
-    model_addon = ['', '_glm']
+        ### design model_addon for looping purposes
+        model_addon = ['', '_glm']
 
-    #### set flagged values to nans
-    for filename in filenames:
-        for model in model_list:
-            if model == 'lam':
-                data[dir[:2]][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
-                data[dir[:2]][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
-                ##==
-                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
-                ##==
-                data[dir[:2]][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
-                data[dir[:2]][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
-                # print ('Forecast time = ')
-                # print (data[dir[:2]][filename[:8]]['forecast_time'])
-            if model == 'glm':
-                if dir[:2] + '_glm' in data.keys():
-                    print (dir[:2])
-                    print (filename[:8])
-                    data[dir[:2] + '_glm'][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
-                    data[dir[:2] + '_glm'][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
+        #### set flagged values to nans
+        for filename in filenames:
+            for model in model_list:
+                if model == 'lam':
+                    data[dir[:2]][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
+                    data[dir[:2]][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
                     ##==
-                    data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                    data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                    data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
-                    data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+                    data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                    data[dir[:2]][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                    data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
+                    data[dir[:2]][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
                     ##==
-                    data[dir[:2] + '_glm'][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
-                    data[dir[:2] + '_glm'][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
+                    data[dir[:2]][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
+                    data[dir[:2]][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
                     # print ('Forecast time = ')
-                    # print (data[dir[:2] + '_glm'][filename[:8]]['forecast_time'])
+                    # print (data[dir[:2]][filename[:8]]['forecast_time'])
+                if model == 'glm':
+                    if dir[:2] + '_glm' in data.keys():
+                        print (dir[:2])
+                        print (filename[:8])
+                        data[dir[:2] + '_glm'][filename[:8]]['temperature'] = nc[dir[:2]][filename[:8]]['temperature'][:]
+                        data[dir[:2] + '_glm'][filename[:8]]['q'] = nc[dir[:2]][filename[:8]]['q'][:]
+                        ##==
+                        data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] == -9999] = np.nan
+                        data[dir[:2] + '_glm'][filename[:8]]['temperature'][data[dir[:2]][filename[:8]]['temperature'] <= 0] = np.nan
+                        data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] == -9999] = np.nan
+                        data[dir[:2] + '_glm'][filename[:8]]['q'][data[dir[:2]][filename[:8]]['q'] <= 0] = np.nan
+                        ##==
+                        data[dir[:2] + '_glm'][filename[:8]]['forecast_time'] = nc[dir[:2]][filename[:8]]['forecast_time'][:]
+                        data[dir[:2] + '_glm'][filename[:8]]['height'] = nc[dir[:2]][filename[:8]]['height'][:]
+                        # print ('Forecast time = ')
+                        # print (data[dir[:2] + '_glm'][filename[:8]]['forecast_time'])
 
-    #### ---------------------------------------------------------------
-    #### re-grid sonde and IFS data to UM vertical grid <10km
-    #### ---------------------------------------------------------------
+        #### ---------------------------------------------------------------
+        #### re-grid sonde and IFS data to UM vertical grid <10km
+        #### ---------------------------------------------------------------
 
-    print ('...')
-    print ('Re-gridding sonde and ifs data...')
-    print ('')
-    data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'temp')
-    # data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'q')
-    print ('')
-    print ('Done!')
+        print ('...')
+        print ('Re-gridding sonde and ifs data...')
+        print ('')
+        data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'temp')
+        # data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'q')
+        print ('')
+        print ('Done!')
 
     print ('')
     print ('Starting radiosonde figure (quite slow!)...:')
