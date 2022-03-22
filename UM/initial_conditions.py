@@ -2460,25 +2460,24 @@ def loadNCs(nc, data, root_dir, dir, model):
     '''
 
     filenames = os.listdir(root_dir + dir)
+    # print (filenames)
 
     #### read in netcdf data and initialise postprocessing dictionary
     print ('***')
     print ('Loading in: ' + dir[:2])
 
     for filename in filenames:
+        nc[filename[:8]] = {}
+        data[filename[:8]] = {}
         print (filename + ' + ' + model)
         if model == 'lam':
-            nc[dir[:2]][filename[:8]] = Dataset(root_dir + dir + filename)
-            data[dir[:2]][filename[:8]] = {}
-            # print (nc[dir[:2]][filename[:8]])
+            nc[filename[:8]] = Dataset(root_dir + dir + filename)
         if model == 'glm':
-            nc[dir[:2] + '_glm'][filename[:8]] = Dataset(root_dir + dir + filename)
-            data[dir[:2] + '_glm'][filename[:8]] = {}
-            # print (nc[dir[:2] + '_glm'][filename[:8]])
+            nc[filename[:8]] = Dataset(root_dir + dir + filename)
 
     return nc, data
 
-def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
+def reGrid_Sondes(data, obs, dir, filenames, model, var):
 
     from scipy.interpolate import interp1d
     from readMAT import readMatlabStruct
@@ -2595,7 +2594,7 @@ def reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, var):
 
     return data, obs
 
-def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
+def radiosondeInterpolation(nc, data, dir, obs, filenames, model):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -2620,42 +2619,27 @@ def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
     # print (obs['sondes'].keys())
 
     ### for reference in figures
-    for dir in out_dirs:
-        zeros = np.zeros(len(nc[dir[:2]][filenames[0][:8]]['forecast_time']))
+    zeros = np.zeros(len(nc[filenames[0][:8]]['forecast_time']))
 
     ### design model_addon for looping purposes
     model_addon = ['', '_glm']
 
     #### set flagged values to nans
     for filename in filenames:
-        for key in data.keys():
-            if key == '24_glm':
-                print (filename[:8])
-                data[key][filename[:8]]['temperature'] = nc[key][filename[:8]]['temperature'][:]
-                data[key][filename[:8]]['q'] = nc[key][filename[:8]]['q'][:]
-                ##==
-                data[key][filename[:8]]['temperature'][data[key][filename[:8]]['temperature'] == -9999] = np.nan
-                data[key][filename[:8]]['temperature'][data[key][filename[:8]]['temperature'] <= 0] = np.nan
-                data[key][filename[:8]]['q'][data[key][filename[:8]]['q'] == -9999] = np.nan
-                data[key][filename[:8]]['q'][data[key][filename[:8]]['q'] <= 0] = np.nan
-                ##==
-                data[key][filename[:8]]['forecast_time'] = nc[key][filename[:8]]['forecast_time'][:]
-                data[key][filename[:8]]['height'] = nc[key][filename[:8]]['height'][:]
-                # print ('Forecast time = ')
-                print (data[key][filename[:8]].keys())
-            else:
-                data[key[:2]][filename[:8]]['temperature'] = nc[key[:2]][filename[:8]]['temperature'][:]
-                data[key[:2]][filename[:8]]['q'] = nc[key[:2]][filename[:8]]['q'][:]
-                ##==
-                data[key[:2]][filename[:8]]['temperature'][data[key[:2]][filename[:8]]['temperature'] == -9999] = np.nan
-                data[key[:2]][filename[:8]]['temperature'][data[key[:2]][filename[:8]]['temperature'] <= 0] = np.nan
-                data[key[:2]][filename[:8]]['q'][data[key[:2]][filename[:8]]['q'] == -9999] = np.nan
-                data[key[:2]][filename[:8]]['q'][data[key[:2]][filename[:8]]['q'] <= 0] = np.nan
-                ##==
-                data[key[:2]][filename[:8]]['forecast_time'] = nc[key[:2]][filename[:8]]['forecast_time'][:]
-                data[key[:2]][filename[:8]]['height'] = nc[key[:2]][filename[:8]]['height'][:]
-                # print ('Forecast time = ')
-                # print (data[key[:2]][filename[:8]]['forecast_time'])
+        print (filename[:8])
+        data[filename[:8]]['temperature'] = nc[filename[:8]]['temperature'][:]
+        data[filename[:8]]['q'] = nc[filename[:8]]['q'][:]
+        ##==
+        data[filename[:8]]['temperature'][data[filename[:8]]['temperature'] == -9999] = np.nan
+        data[filename[:8]]['temperature'][data[filename[:8]]['temperature'] <= 0] = np.nan
+        data[filename[:8]]['q'][data[filename[:8]]['q'] == -9999] = np.nan
+        data[filename[:8]]['q'][data[filename[:8]]['q'] <= 0] = np.nan
+        ##==
+        data[filename[:8]]['forecast_time'] = nc[filename[:8]]['forecast_time'][:]
+        data[filename[:8]]['height'] = nc[filename[:8]]['height'][:]
+
+        print (filename[:8])
+        print (data[filename[:8]].keys())
 
         #### ---------------------------------------------------------------
         #### re-grid sonde and IFS data to UM vertical grid <10km
@@ -2664,33 +2648,33 @@ def radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list):
         print ('...')
         print ('Re-gridding sonde and ifs data...')
         print ('')
-        data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'temp')
-        data, obs = reGrid_Sondes(data, obs, dir, filenames, model_list, model_addon, 'q')
+        data, obs = reGrid_Sondes(data, obs, dir, filenames, model, 'temp')
+        data, obs = reGrid_Sondes(data, obs, dir, filenames, model, 'q')
         print ('')
         print ('Done!')
-
-    print ('')
-    print ('Starting radiosonde figure (quite slow!)...:')
-    print ('...')
-
-    Tmin = -45
-    Tmax = 5
-    ymax = 9000
-    qmax = 4.0
-
-    for key in data.keys():
-        if key == '24_glm':
-            zeros = np.zeros(len(nc[key][filenames[0][:8]]['forecast_time']))
-
-    ### design model_addon for looping purposes
-    model_addon = ['', '_glm']
-
-    #### set flagged values to nans
-    for file in filenames:
-        for key in data.keys():
-            if key == '24_glm':
-                print (data[key][file[:8]].keys())
-                data[key][file[:8]]['temp_anomalies'] = np.transpose(data[key][file[:8]]['temp_UM']) - np.transpose(obs['sondes']['temp_UM'] + 273.15)
+    #
+    # print ('')
+    # print ('Starting radiosonde figure (quite slow!)...:')
+    # print ('...')
+    #
+    # Tmin = -45
+    # Tmax = 5
+    # ymax = 9000
+    # qmax = 4.0
+    #
+    # for key in data.keys():
+    #     if key == '24_glm':
+    #         zeros = np.zeros(len(nc[key][filenames[0][:8]]['forecast_time']))
+    #
+    # ### design model_addon for looping purposes
+    # model_addon = ['', '_glm']
+    #
+    # #### set flagged values to nans
+    # for file in filenames:
+    #     for key in data.keys():
+    #         if key == '24_glm':
+    #             print (data[key][file[:8]].keys())
+    #             data[key][file[:8]]['temp_anomalies'] = np.transpose(data[key][file[:8]]['temp_UM']) - np.transpose(obs['sondes']['temp_UM'] + 273.15)
 
     # data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
     # data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_driftSondes_UM'] + 273.15)
@@ -3378,9 +3362,9 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
 
     ### CHOSEN RUN
-    out_dir = '23_u-cc278_RA1M_CASIM/'
-    out_dir2 = '24_u-cc324_RA2T_CON/'
-    out_dir3 = '25_u-cc568_RA2M_CON/'
+    out_dir1 = '25_u-cc568_RA2M_CON/'
+    out_dir2 = '23_u-cc278_RA1M_CASIM/'
+    out_dir4 = '24_u-cc324_RA2T_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
 
     ### Define model of interest (for pulling track only)
@@ -3516,48 +3500,43 @@ def main():
     ### Load pulled track files
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    dir1 = out_dir + 'OUT_R2/'
-    dir2 = out_dir2 + 'OUT_R2_LAM/'
-    dir3 = out_dir3 + 'OUT_R2/'
-    dir_glm = out_dir_glm + 'OUT_R2_GLM/'
+    dir1 = out_dir1 + 'OUT_R2/'
+    dir2 = out_dir2 + 'OUT_R2/'
+    dir4 = out_dir4 + 'OUT_R2_LAM/'
+    dir5 = out_dir_glm + 'OUT_R2_GLM/'
 
-    out_dirs = [dir1, dir2, dir3, dir_glm]
+    out_dirs = [dir1, dir2, dir4, dir5]
 
-    nc = {}   ### load netcdfs into a single dictionary
-    data = {}   ### load postprocessed data into a single dictionary
-    for dir in out_dirs:
-        model = model_list[model_flag]  ## reset model assignment
-        # dir = dir1
-        if dir[:2] == '24':
-            for model in model_list:
-                if model == 'lam':
-                    nc[dir[:2]] = {}  ### use run number as dictionary index
-                    data[dir[:2]] = {}  ### use run number as dictionary index
-                    nc, data = loadNCs(nc, data, root_dir, dir, model)
-                elif model == 'glm':
-                    nc[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
-                    data[dir[:2] + '_glm'] = {}  ### use -glm suffix with dictionary index
-                    nc, data = loadNCs(nc, data, root_dir, dir, model)
-        else:
-            nc[dir[:2]] = {}
-            data[dir[:2]] = {}
-            nc, data = loadNCs(nc, data, root_dir, dir, model)
+    nc1 = {}   ### load netcdfs into a single dictionary - actually no, didn't want to work
+    nc2 = {}
+    nc4 = {}
+    nc5 = {}
+    # data = {}   ### load postprocessed data into a single dictionary
+    data1 = {}
+    data2 = {}
+    data4 = {}
+    data5 = {}
+    nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
+    nc2, data2 = loadNCs(nc2, data1, root_dir, dir2, 'lam')
+    nc4, data4 = loadNCs(nc4, data1, root_dir, dir4, 'lam')
+    nc5, data5 = loadNCs(nc5, data1, root_dir, dir5, 'glm')
 
-    print (nc.keys())
-    print (data.keys())
-
-
+    for key in nc2.keys():
+        print (key)
+        print (nc2[key])
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     ### Start sonde analysis
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    filenames = os.listdir(root_dir + dir)
-        # print (data[dir[:2]].keys())
-    nc, data = radiosondeAnalysis(nc, data, out_dirs, obs, filenames, model_list)
+    filenames = os.listdir(root_dir + dir1)
+    print (filenames)
 
-    np.save('working_data', data)
+        # print (data[dir[:2]].keys())
+    nc1, data1 = radiosondeInterpolation(nc1, data1, dir1, obs, filenames, 'lam')
+
+    # np.save('working_data', data)
     # np.save('working_obs', obs['sondes'])
 
 
