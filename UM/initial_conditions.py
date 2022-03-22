@@ -2536,21 +2536,23 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     obs['sondes'][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
     print (sonde_times)
     print (np.round(obs['sondes']['doy'],1))
-    for iTim in range(0,np.size(sonde_times,0)):
-        print ('iTim = ', str(iTim))
-        for f in range(0,len(filenames)):
+    for f in range(0,len(filenames)):
+        for iTim in range(0,np.size(sonde_times,0)):
+            print ('iTim = ', str(iTim))
             print (sonde_times[0,f])
             tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
             print (obs['sondes']['doy'][tim_start])
             print (tim_start[1])
-            tim_end = tim_start[1] + int(len(sonde_times)-1)
+            tim_end = tim_start[1] + int(len(sonde_times))
             print (tim_end)
             print (obs['sondes']['doy'][:,tim_end])
             print (sonde_times[-1,f])
             tim_index = np.arange(tim_start[1],tim_end)
-            print (tim_index)
+            # print (tim_index)
+            # print (len(tim_index))
+            # print (len(iObs[0]))
             print (obs['sondes']['doy'][:,tim_index])
-            fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,tim_index]), np.squeeze(obs['sondes'][varlist[0]][iObs,tim_index]))
+            fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
             obs['sondes'][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
     print ('...')
     print ('Sonde(UM Grid) function worked!')
@@ -2591,9 +2593,13 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
         print ('*****')
 
     # plt.figure()
-    # plt.plot(data_glm[filenames[0][:8]][varlist[5]][0,:],data_glm['height'][:])
-    # plt.plot(data_glm[filenames[0][:8]][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]])
+    # plt.plot(data_glm[filenames[2][:8]]['temperature'][2,:],data_glm['height'][:], label = 'GLM native')
+    # plt.plot(data_glm[filenames[2][:8]]['temp_UM'][2,:], data_lam['height'][iUM[0][3:]], label = 'GLM interpd')
+    # plt.plot(obs['sondes']['temperature'][:,tim_index[0]] + 273.16, obs['sondes']['gpsaltitude'][:,0], label = 'Sonde native')
+    # plt.plot(obs['sondes']['temp_UM'][0,:] + 273.16, data_lam['height'][iUM[0][3:]], label = 'Sonde interpd')
+    # plt.title(str(sonde_times[0][2]) + ' ' + str(obs['sondes']['doy'][:,tim_index[0]]))
     # plt.ylim([0,1e4])
+    # plt.legend()
     # plt.show()
 
     return data_glm, obs
@@ -2871,7 +2877,9 @@ def main():
     nc4, data4 = radiosondePrep(nc4, data4, dir4, obs, filenames, 'lam')
     nc5, data5 = radiosondePrep(nc5, data5, dir5, obs, filenames, 'glm')
 
-    print (data1.keys())
+    # print (data1.keys())
+
+    # print (obs['sondes']['gpsaltitude'].shape)
 
     #### ---------------------------------------------------------------
     #### re-grid sonde and GLM data to LAM vertical grid <10km
