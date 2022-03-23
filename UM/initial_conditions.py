@@ -2537,8 +2537,11 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     print ('')
     print ('Defining Sonde temperature profile as a function for the UM:')
     obs['sondes'][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
-    # print (sonde_times)
+    obs['sondes']['case_study_times'] = sonde_times
+    print (sonde_times)
     # print (np.round(obs['sondes']['doy'],1))
+
+    plt.figure()
     for f in range(0,len(filenames)):
         # print (sonde_times[0,f])
         tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
@@ -2554,17 +2557,22 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
             # print (obs['sondes']['doy'][:,tim_index])
             fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
             obs['sondes'][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
+
+        ### plot test fig, looping over filenames
+        sp = f + 1
+        plt.subplot(1,3,sp)
+        plt.plot(obs['sondes'][varlist[0]][:,tim_index[0]], obs['sondes']['gpsaltitude'][:,0], label = 'Sondes native')
+        plt.plot(obs['sondes'][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], label = 'Sondes interpolated')
+        plt.ylim([0,1e4])
+
+    plt.legend()
+    # plt.show()
+    plt.close()
+
     print ('...')
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
     print ('*****')
-
-    # plt.figure()
-    # plt.plot(obs['sondes'][varlist[0]][:,0], obs['sondes']['gpsaltitude'][:,0])
-    # plt.plot(obs['sondes'][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]])
-    # plt.ylim([0,1e4])
-    # plt.show()
-
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
@@ -2574,6 +2582,8 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     print (np.size(data_glm['universal_height']))
 
     ### interpolate for all times in forecast_time - index later!
+    fig = plt.figure()
+    sp = 0
     for file in filenames:
         iGLM = np.where(data_glm['height'] <= 11000)
         # print (iGLM)
@@ -2596,10 +2606,24 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
             # print (glmtim_index[iTim])
             fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
             data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
-        print ('...')
-        print ('LAM(UM Grid) function worked!')
-        print (var + ' LAM data now on UM(lam) vertical grid')
-        print ('*****')
+
+        hour_indices = np.array([5, 11, 17, 23, 29, -1])
+
+        ### plot test fig, looping over filenames
+        sp = sp + 1
+        plt.subplot(1,3,sp)
+        plt.plot(data_glm[file[:8]][varlist[-1]][hour_indices[1],:], data_glm['height'][:], label = 'GLM native')
+        plt.plot(data_glm[file[:8]][var + '_UM'][hour_indices[1],:], data_lam['height'][iUM[0][3:]], label = 'GLM interpolated')
+        plt.ylim([0,1e4])
+
+    plt.legend()
+    # plt.show()
+    plt.close()
+
+    print ('...')
+    print ('LAM(UM Grid) function worked!')
+    print (var + ' LAM data now on UM(lam) vertical grid')
+    print ('*****')
 
     # plt.figure()
     # plt.plot(data_glm[filenames[2][:8]]['temperature'][2,:],data_glm['height'][:], label = 'GLM native')
@@ -2640,9 +2664,6 @@ def radiosondePrep(nc, data, dir, obs, filenames, model):
     ### for reference in figures
     zeros = np.zeros(len(nc[filenames[0][:8]]['forecast_time']))
 
-    ### design model_addon for looping purposes
-    model_addon = ['', '_glm']
-
     forecast_time = nc[filenames[0][:8]]['forecast_time'][:]
     height = nc[filenames[0][:8]]['height'][:]
 
@@ -2666,30 +2687,107 @@ def radiosondePrep(nc, data, dir, obs, filenames, model):
 
     return nc, data
 
-def calcAnomalies(data, data_glm, obs, hour_indices, file, model):
+def calcAnomalies(data, data_glm, obs, hour_indices, file):
 
     print (hour_indices.shape)
     print (obs['sondes']['temp_UM'].shape)
 
     tempvarT = data[file]['temperature'][hour_indices,:]
+    print (tempvarT.shape)
     tempvarq = data[file]['q'][hour_indices,:] * 1e3
 
     tempvarT_glm = data_glm[file]['temp_UM'][hour_indices,:]
     print (tempvarT_glm.shape)
     tempvarq_glm = data_glm[file]['q_UM'][hour_indices,:] * 1e3
 
-    if model == 'lam':
-        data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
-        data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
-        data[file]['temp_glm_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(tempvarT_glm)
-        data[file]['q_glm_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
-    elif model == 'glm':
-        data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
-        data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
+    ### lam biases wrt sondes
+    data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
+    data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
 
-    return data
+    ### lam biases wrt glm
+    data[file]['temp_glm_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(tempvarT_glm)
+    data[file]['q_glm_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(tempvarq_glm)
 
-# def plot_radiosondeAnomalies():
+    ### glm biases wrt sondes
+    data_glm[file]['temp_sonde_anomalies'] = np.transpose(tempvarT_glm) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
+    data_glm[file]['q_sonde_anomalies'] = np.transpose(tempvarq_glm) - np.transpose(obs['sondes']['q_UM'][1:,:])
+
+    return data, data_glm
+
+def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_indices):
+
+    print (data1[filenames[0][:8]]['temp_sonde_anomalies'][:,0].shape)
+
+    fig = plt.figure()
+    for f in range(0, len(filenames)):
+        sp = f + 1
+        plt.subplot(1,3,sp)
+        plt.plot(data1[filenames[f][:8]]['temperature'][hour_indices[1],:], data1['height'][:], label = 'UM-RA2M')
+        plt.plot(data2[filenames[f][:8]]['temperature'][hour_indices[1],:], data2['height'][:], label = 'UM-CASIM-100')
+        plt.plot(data4[filenames[f][:8]]['temperature'][hour_indices[1],:], data4['height'][:], label = 'UM-RA2T')
+        plt.plot(data5[filenames[f][:8]]['temp_UM'][hour_indices[1],:], data1['height'][data5['universal_height_index']], label = 'GLM interpolated')
+        plt.ylim([0,1e4])
+    plt.legend()
+    plt.show()
+
+    fig = plt.figure()
+    for f in range(0, len(filenames)):
+        sp = f + 1
+        ## top row
+        row1 = sp
+        plt.subplot(2,3,row1)
+        plt.plot(data1[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
+        plt.plot(data2[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
+        plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
+
+        row2 = sp+3
+        plt.subplot(2,3,row2)
+        plt.plot(data1[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
+        plt.plot(data2[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
+        plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
+        # plt.plot(data5[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']])
+    plt.legend()
+    plt.show()
+
+    fig = plt.figure()
+    for f in range(0, len(filenames)):
+        sp = f + 1
+        ## top row
+        row1 = sp
+        plt.subplot(2,3,row1)
+        plt.plot(data1[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
+        plt.plot(data2[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
+        plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
+        plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+
+        row2 = sp+3
+        plt.subplot(2,3,row2)
+        plt.plot(data1[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
+        plt.plot(data2[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
+        plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
+        plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+    plt.legend()
+    plt.show()
+
+    Tmin = -45
+    Tmax = 5
+    qbiasmin = -1.0
+    qbiasmax = 1.0
+    ymax = 9000
+    yticklist = [0, 3e3, 6e3, 9e3]
+
+    fig = plt.figure(10,8)
+    for f in range(0, len(filenames)):
+        sp = f + 1
+        row1 = sp
+        plt.subplot(4,3,row1)
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][:,f], data5['universal_height'], np.transpose(obs['sondes']['temp_UM']),
+            vmin = Tmin, vmax = Tmax)
+
+    plt.xlabel('DOY')
+    plt.title('T [$^{\circ}$C]')
+    plt.show()
+
 
 def main():
 
@@ -2879,9 +2977,9 @@ def main():
     data4 = {}
     data5 = {}
     nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
-    nc2, data2 = loadNCs(nc2, data1, root_dir, dir2, 'lam')
-    nc4, data4 = loadNCs(nc4, data1, root_dir, dir4, 'lam')
-    nc5, data5 = loadNCs(nc5, data1, root_dir, dir5, 'glm')
+    nc2, data2 = loadNCs(nc2, data2, root_dir, dir2, 'lam')
+    nc4, data4 = loadNCs(nc4, data4, root_dir, dir4, 'lam')
+    nc5, data5 = loadNCs(nc5, data5, root_dir, dir5, 'glm')
 
     # for key in nc2.keys():
     #     print (key)
@@ -2925,17 +3023,17 @@ def main():
     #### calculate thermodynamic anomalies
     #### ---------------------------------------------------------------
     for file in filenames:
-        data1 = calcAnomalies(data1, data5, obs, hour_indices, file[:8], 'lam')
-        data2 = calcAnomalies(data2, data5, obs, hour_indices, file[:8], 'lam')
-        data4 = calcAnomalies(data4, data5, obs, hour_indices, file[:8], 'lam')
-        data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8], 'glm')
+        data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
+        data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
+        data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
+        # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
 
         print (data1[file[:8]].keys())
 
     #### ---------------------------------------------------------------
     #### plot anomalies
     #### ---------------------------------------------------------------
-    # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, obs)
+    figure = plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_indices)
 
 
     # np.save('working_data', data)
