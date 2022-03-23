@@ -2573,6 +2573,7 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     print ('Universal_height is len:')
     print (np.size(data_glm['universal_height']))
 
+    ### interpolate for all times in forecast_time - index later!
     for file in filenames:
         iGLM = np.where(data_glm['height'] <= 11000)
         # print (iGLM)
@@ -2580,20 +2581,20 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
         print ('')
         print ('Defining UM profile as a function:')
         temp_time = data_glm['forecast_time'][::6]-1 ## temporary array
-        data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(temp_time,0), len(data_lam['height'][iUM[0][3:]])])
-        print (temp_time)
-        glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
-        glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
-        print (glmtim_start)
-        print (glmtim_end)
-        glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
-        print (data_glm['forecast_time'][glmtim_index[::6]])
-        print (glmtim_index[::6])
-        print (data_glm[file[:8]][var + '_UM'].shape)
-        for iTim in range(0,np.size(temp_time[1:])):
+        data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(data_glm['forecast_time'],0), len(data_lam['height'][iUM[0][3:]])])
+        # print (temp_time)
+        # glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
+        # glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
+        # print (glmtim_start)
+        # print (glmtim_end)
+        # glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
+        # print (data_glm['forecast_time'][glmtim_index[::6]])
+        # print (glmtim_index[::6])
+        # print (data_glm[file[:8]][var + '_UM'].shape)
+        for iTim in range(0,np.size(data_glm['forecast_time'])):
             print (iTim)
-            print (glmtim_index[iTim])
-            fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][glmtim_index[::6][iTim],iGLM]))
+            # print (glmtim_index[iTim])
+            fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
             data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
         print ('...')
         print ('LAM(UM Grid) function worked!')
@@ -2673,7 +2674,7 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file, model):
     tempvarT = data[file]['temperature'][hour_indices,:]
     tempvarq = data[file]['q'][hour_indices,:] * 1e3
 
-    tempvarT_glm = data_glm[file]['temp_UM'][:,:]
+    tempvarT_glm = data_glm[file]['temp_UM'][hour_indices,:]
     print (tempvarT_glm.shape)
     tempvarq_glm = data_glm[file]['q_UM'][hour_indices,:] * 1e3
 
@@ -2923,13 +2924,13 @@ def main():
     #### ---------------------------------------------------------------
     #### calculate thermodynamic anomalies
     #### ---------------------------------------------------------------
-    # for file in filenames:
-    #     data1 = calcAnomalies(data1, data5, obs, hour_indices, file[:8], 'lam')
-    #     data2 = calcAnomalies(data2, data5, obs, hour_indices, file[:8], 'lam')
-    #     data4 = calcAnomalies(data4, data5, obs, hour_indices, file[:8], 'lam')
-    #     data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8], 'glm')
-    #
-    #     print (data1[file[:8]].keys())
+    for file in filenames:
+        data1 = calcAnomalies(data1, data5, obs, hour_indices, file[:8], 'lam')
+        data2 = calcAnomalies(data2, data5, obs, hour_indices, file[:8], 'lam')
+        data4 = calcAnomalies(data4, data5, obs, hour_indices, file[:8], 'lam')
+        data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8], 'glm')
+
+        print (data1[file[:8]].keys())
 
     #### ---------------------------------------------------------------
     #### plot anomalies
