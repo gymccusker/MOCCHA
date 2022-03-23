@@ -2786,7 +2786,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
 
     fig = plt.figure(figsize=(12,10))
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
-            hspace = 0.3, wspace = 0.3)
+            hspace = 0.4, wspace = 0.2)
     for f in range(0, len(filenames)):
         sp = f + 1
         row1 = sp
@@ -2806,14 +2806,9 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         row2 = sp + 3
         plt.subplot(5,3,row2)
         ax1 = plt.gca()
-        if row2 == 4:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data5[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -2.0, vmax = 15.,
-                cmap = mpl_cm.RdBu_r)
-        else:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data5[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -5.0, vmax = 5.,
-                cmap = mpl_cm.RdBu_r)
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data5[filenames[f][:8]]['temp_sonde_anomalies'],
+            vmin = -5.0, vmax = 5.,
+            cmap = mpl_cm.RdBu_r)
         if row2 == 4: plt.ylabel('Z [km]')
         plt.title('UM_GLM')
         plt.ylim([0,9000])
@@ -2822,21 +2817,17 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.yticks(axmajor)
         ax1.set_yticklabels([0,3,6,9])
         plt.colorbar()
-        ax2 = ax1.twinx()
-        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 30)
-        ax2.set_yticks([])
+        if row2 == 6:
+            ax2 = ax1.twinx()
+            ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
+            ax2.set_yticks([])
 
         row3 = sp + 6
         plt.subplot(5,3,row3)
         ax1 = plt.gca()
-        if row3 == 7:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data1[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -2.0, vmax = 15.,
-                cmap = mpl_cm.RdBu_r)
-        else:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data1[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -5.0, vmax = 5.0,
-                cmap = mpl_cm.RdBu_r)
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data1[filenames[f][:8]]['temp_sonde_anomalies'],
+            vmin = -5.0, vmax = 5.0,
+            cmap = mpl_cm.RdBu_r)
         if row3 == 7: plt.ylabel('Z [km]')
         plt.title('UM_RA2M')
         plt.ylim([0,9000])
@@ -2845,21 +2836,17 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.yticks(axmajor)
         ax1.set_yticklabels([0,3,6,9])
         plt.colorbar()
-        ax2 = ax1.twinx()
-        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
-        ax2.set_yticks([])
+        if row3 == 9:
+            ax2 = ax1.twinx()
+            ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
+            ax2.set_yticks([])
 
         row4 = sp + 9
         plt.subplot(5,3,row4)
         ax1 = plt.gca()
-        if row4 == 10:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data2[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -2.0, vmax = 15.,
-                cmap = mpl_cm.RdBu_r)
-        else:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data2[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -5.0, vmax = 5.0,
-                cmap = mpl_cm.RdBu_r)
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data2[filenames[f][:8]]['temp_sonde_anomalies'],
+            vmin = -5.0, vmax = 5.0,
+            cmap = mpl_cm.RdBu_r)
         if row3 == 10: plt.ylabel('Z [km]')
         plt.title('UM_CASIM-100')
         plt.ylim([0,9000])
@@ -2868,21 +2855,17 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.yticks(axmajor)
         ax1.set_yticklabels([0,3,6,9])
         plt.colorbar()
-        ax2 = ax1.twinx()
-        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
-        ax2.set_yticks([])
+        if row4 == 12:
+            ax2 = ax1.twinx()
+            ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
+            ax2.set_yticks([])
 
         row5 = sp + 12
         plt.subplot(5,3,row5)
         ax1 = plt.gca()
-        if row5 == 13:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data4[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -2.0, vmax = 15.,
-                cmap = mpl_cm.RdBu_r)
-        else:
-            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data4[filenames[f][:8]]['temp_sonde_anomalies'],
-                vmin = -5.0, vmax = 5.0,
-                cmap = mpl_cm.RdBu_r)
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data4[filenames[f][:8]]['temp_sonde_anomalies'],
+            vmin = -5.0, vmax = 5.0,
+            cmap = mpl_cm.RdBu_r)
         if row3 == 7: plt.ylabel('Z [km]')
         plt.title('UM_RA2T')
         plt.ylim([0,9000])
@@ -2892,9 +2875,10 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         ax1.set_yticklabels([0,3,6,9])
         plt.xlabel('DOY')
         plt.colorbar()
-        ax2 = ax1.twinx()
-        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
-        ax2.set_yticks([])
+        if row2 == 15:
+            ax2 = ax1.twinx()
+            ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
+            ax2.set_yticks([])
 
     plt.show()
 
