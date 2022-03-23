@@ -2536,13 +2536,14 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     #### ---------------------------------------------------------------
     print ('')
     print ('Defining Sonde temperature profile as a function for the UM:')
-    obs['sondes'][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
-    obs['sondes']['case_study_times'] = sonde_times
-    print (sonde_times)
     # print (np.round(obs['sondes']['doy'],1))
+    obs['sondes']['case_study_times'] = sonde_times
 
     plt.figure()
     for f in range(0,len(filenames)):
+        obs['sondes'][filenames[f][:8]][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
+        obs['sondes'][filenames[f][:8]]['case_study_times'] = sonde_times[:,f]
+        print (sonde_times)
         # print (sonde_times[0,f])
         tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
         # print (obs['sondes']['doy'][tim_start])
@@ -2556,13 +2557,15 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
             # print ('iTim = ', str(iTim))
             # print (obs['sondes']['doy'][:,tim_index])
             fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
-            obs['sondes'][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
+            obs['sondes'][filenames[f][:8]][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
+
+            # print (obs['sondes'][filenames[f][:8]].keys())
 
         ### plot test fig, looping over filenames
         sp = f + 1
         plt.subplot(1,3,sp)
         plt.plot(obs['sondes'][varlist[0]][:,tim_index[0]], obs['sondes']['gpsaltitude'][:,0], label = 'Sondes native')
-        plt.plot(obs['sondes'][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], label = 'Sondes interpolated')
+        plt.plot(obs['sondes'][filenames[f][:8]][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], 'o-', label = 'Sondes interpolated')
         plt.ylim([0,1e4])
 
     plt.legend()
@@ -2617,8 +2620,8 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
         plt.ylim([0,1e4])
 
     plt.legend()
-    # plt.show()
-    plt.close()
+    plt.show()
+    # plt.close()
 
     print ('...')
     print ('LAM(UM Grid) function worked!')
@@ -2690,7 +2693,7 @@ def radiosondePrep(nc, data, dir, obs, filenames, model):
 def calcAnomalies(data, data_glm, obs, hour_indices, file):
 
     print (hour_indices.shape)
-    print (obs['sondes']['temp_UM'].shape)
+    print (obs['sondes'][file]['temp_UM'].shape)
 
     tempvarT = data[file]['temperature'][hour_indices,:]
     print (tempvarT.shape)
@@ -2701,24 +2704,26 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file):
     tempvarq_glm = data_glm[file]['q_UM'][hour_indices,:] * 1e3
 
     ### lam biases wrt sondes
-    data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
-    data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
+    data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes'][file]['temp_UM'][1:,:] + 273.15)
+    data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes'][file]['q_UM'][1:,:])
 
     ### lam biases wrt glm
     data[file]['temp_glm_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(tempvarT_glm)
     data[file]['q_glm_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(tempvarq_glm)
 
     ### glm biases wrt sondes
-    data_glm[file]['temp_sonde_anomalies'] = np.transpose(tempvarT_glm) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
-    data_glm[file]['q_sonde_anomalies'] = np.transpose(tempvarq_glm) - np.transpose(obs['sondes']['q_UM'][1:,:])
+    data_glm[file]['temp_sonde_anomalies'] = np.transpose(tempvarT_glm) - np.transpose(obs['sondes'][file]['temp_UM'][1:,:] + 273.15)
+    data_glm[file]['q_sonde_anomalies'] = np.transpose(tempvarq_glm) - np.transpose(obs['sondes'][file]['q_UM'][1:,:])
 
     return data, data_glm
 
 def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_indices):
 
     print (data1[filenames[0][:8]]['temp_sonde_anomalies'][:,0].shape)
+    print (obs['sondes']['20180815']['temp_UM'].shape)
 
     fig = plt.figure()
+    sondeindex = 1
     for f in range(0, len(filenames)):
         sp = f + 1
         plt.subplot(1,3,sp)
@@ -2726,7 +2731,10 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.plot(data2[filenames[f][:8]]['temperature'][hour_indices[1],:], data2['height'][:], label = 'UM-CASIM-100')
         plt.plot(data4[filenames[f][:8]]['temperature'][hour_indices[1],:], data4['height'][:], label = 'UM-RA2T')
         plt.plot(data5[filenames[f][:8]]['temp_UM'][hour_indices[1],:], data1['height'][data5['universal_height_index']], label = 'GLM interpolated')
+        plt.plot(np.squeeze(obs['sondes'][filenames[f][:8]]['temp_UM'][1,:] + 273.15), data1['height'][data5['universal_height_index']], 'k', label = 'Sondes interpolated')
+        sondeindex = sondeindex + 5
         plt.ylim([0,1e4])
+        # plt.title(obs['sondes']['case_study_times']])
     plt.legend()
     plt.show()
 
@@ -2776,16 +2784,118 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
     ymax = 9000
     yticklist = [0, 3e3, 6e3, 9e3]
 
-    fig = plt.figure(10,8)
+    fig = plt.figure(figsize=(12,10))
+    plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
+            hspace = 0.3, wspace = 0.3)
     for f in range(0, len(filenames)):
         sp = f + 1
         row1 = sp
-        plt.subplot(4,3,row1)
-        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][:,f], data5['universal_height'], np.transpose(obs['sondes']['temp_UM']),
+        plt.subplot(5,3,row1)
+        ax1 = plt.gca()
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][:,f], data5['universal_height'], np.transpose(obs['sondes'][filenames[f][:8]]['temp_UM']),
             vmin = Tmin, vmax = Tmax)
+        if row1 == 1: plt.ylabel('Z [km]')
+        plt.ylim([0,9000])
+        axmajor = np.arange(0,9.01e3,3.0e3)
+        axminor = np.arange(0,9.01e3,0.5e3)
+        plt.yticks(axmajor)
+        ax1.set_yticklabels([0,3,6,9])
+        plt.colorbar()
+        plt.title('Radiosondes')
 
-    plt.xlabel('DOY')
-    plt.title('T [$^{\circ}$C]')
+        row2 = sp + 3
+        plt.subplot(5,3,row2)
+        ax1 = plt.gca()
+        if row2 == 4:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data5[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -2.0, vmax = 15.,
+                cmap = mpl_cm.RdBu_r)
+        else:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data5[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -5.0, vmax = 5.,
+                cmap = mpl_cm.RdBu_r)
+        if row2 == 4: plt.ylabel('Z [km]')
+        plt.title('UM_GLM')
+        plt.ylim([0,9000])
+        axmajor = np.arange(0,9.01e3,3.0e3)
+        axminor = np.arange(0,9.01e3,0.5e3)
+        plt.yticks(axmajor)
+        ax1.set_yticklabels([0,3,6,9])
+        plt.colorbar()
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 30)
+        ax2.set_yticks([])
+
+        row3 = sp + 6
+        plt.subplot(5,3,row3)
+        ax1 = plt.gca()
+        if row3 == 7:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data1[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -2.0, vmax = 15.,
+                cmap = mpl_cm.RdBu_r)
+        else:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data1[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -5.0, vmax = 5.0,
+                cmap = mpl_cm.RdBu_r)
+        if row3 == 7: plt.ylabel('Z [km]')
+        plt.title('UM_RA2M')
+        plt.ylim([0,9000])
+        axmajor = np.arange(0,9.01e3,3.0e3)
+        axminor = np.arange(0,9.01e3,0.5e3)
+        plt.yticks(axmajor)
+        ax1.set_yticklabels([0,3,6,9])
+        plt.colorbar()
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
+        ax2.set_yticks([])
+
+        row4 = sp + 9
+        plt.subplot(5,3,row4)
+        ax1 = plt.gca()
+        if row4 == 10:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data2[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -2.0, vmax = 15.,
+                cmap = mpl_cm.RdBu_r)
+        else:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data2[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -5.0, vmax = 5.0,
+                cmap = mpl_cm.RdBu_r)
+        if row3 == 10: plt.ylabel('Z [km]')
+        plt.title('UM_CASIM-100')
+        plt.ylim([0,9000])
+        axmajor = np.arange(0,9.01e3,3.0e3)
+        axminor = np.arange(0,9.01e3,0.5e3)
+        plt.yticks(axmajor)
+        ax1.set_yticklabels([0,3,6,9])
+        plt.colorbar()
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
+        ax2.set_yticks([])
+
+        row5 = sp + 12
+        plt.subplot(5,3,row5)
+        ax1 = plt.gca()
+        if row5 == 13:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data4[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -2.0, vmax = 15.,
+                cmap = mpl_cm.RdBu_r)
+        else:
+            sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], data4[filenames[f][:8]]['temp_sonde_anomalies'],
+                vmin = -5.0, vmax = 5.0,
+                cmap = mpl_cm.RdBu_r)
+        if row3 == 7: plt.ylabel('Z [km]')
+        plt.title('UM_RA2T')
+        plt.ylim([0,9000])
+        axmajor = np.arange(0,9.01e3,3.0e3)
+        axminor = np.arange(0,9.01e3,0.5e3)
+        plt.yticks(axmajor)
+        ax1.set_yticklabels([0,3,6,9])
+        plt.xlabel('DOY')
+        plt.colorbar()
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 15)
+        ax2.set_yticks([])
+
     plt.show()
 
 
@@ -3008,10 +3118,14 @@ def main():
     print ('...')
     print ('Re-gridding sonde and glm data...')
     print ('')
+    for file in filenames:
+        obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
     data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
     data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
     print ('')
     print ('Done!')
+
+    print (obs['sondes']['20180815'].keys())
 
     hour_indices = np.array([5, 11, 17, 23, 29, -1])
     # print (data5['forecast_time'])
