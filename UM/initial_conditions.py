@@ -2661,17 +2661,16 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file, model):
 
     print (hour_indices.shape)
     print (obs['sondes']['temp_UM'].shape)
-    # print (data[file]['temperature'][hour_indices,data_glm['universal_height_index']].shape)
 
     tempvarT = data[file]['temperature'][hour_indices,:]
-    print (tempvarT.shape)
-    print (tempvarT[:, data_glm['universal_height_index']].shape)
-
     tempvarq = data[file]['q'][hour_indices,:] * 1e3
-    print (tempvarq.shape)
-    print (tempvarq[:, data_glm['universal_height_index']].shape)
+
+    tempvarT_glm = data_glm[file]['temperature'][hour_indices,:]
+    tempvarq_glm = data_glm[file]['q'][hour_indices,:] * 1e3
 
     if model == 'lam':
+        data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
+        data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
         data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['temp_UM'][1:,:] + 273.15)
         data[file]['q_sonde_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes']['q_UM'][1:,:])
     elif model == 'glm':
