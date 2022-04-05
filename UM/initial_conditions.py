@@ -2755,6 +2755,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
         # plt.plot(data5[filenames[f][:8]]['temp_glm_anomalies'][:,-1], data1['height'][data5['universal_height_index']])
     plt.legend()
+    plt.title('WRT GLM')
     plt.show()
 
     fig = plt.figure()
@@ -2775,6 +2776,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
         plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,-1], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
     plt.legend()
+    plt.title('WRT SONDES')
     plt.show()
 
     Tmin = -45
@@ -2788,11 +2790,11 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
     plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.08,
             hspace = 0.4, wspace = 0.2)
     for f in range(0, len(filenames)):
-        sp = f + 1
-        row1 = sp
+        sp = f + 1  # subplot number
+        row1 = sp   # row number
         plt.subplot(5,3,row1)
         ax1 = plt.gca()
-        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][:,f], data5['universal_height'], np.transpose(obs['sondes'][filenames[f][:8]]['temp_UM']),
+        sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], np.transpose(obs['sondes'][filenames[f][:8]]['temp_UM'][:,1:]),
             vmin = Tmin, vmax = Tmax)
         if row1 == 1: plt.ylabel('Z [km]')
         plt.ylim([0,9000])
