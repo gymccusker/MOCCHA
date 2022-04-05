@@ -2719,8 +2719,8 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file):
 
 def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_indices):
 
-    print (data1[filenames[0][:8]]['temp_sonde_anomalies'][:,0].shape)
-    print (obs['sondes']['20180815']['temp_UM'].shape)
+    # print (data1[filenames[0][:8]]['temp_sonde_anomalies'][:,0].shape)
+    # print (obs['sondes']['20180815']['temp_UM'].shape)
 
     fig = plt.figure()
     sondeindex = 1
@@ -2747,6 +2747,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.plot(data1[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
         plt.plot(data2[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
         plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
+        plt.title(filenames[f][:8])
 
         row2 = sp+3
         plt.subplot(2,3,row2)
@@ -2768,6 +2769,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         plt.plot(data2[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
         plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
         plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,0], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+        plt.title(filenames[f][:8])
 
         row2 = sp+3
         plt.subplot(2,3,row2)
@@ -2796,7 +2798,9 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         ax1 = plt.gca()
         sfig1 = plt.pcolor(obs['sondes']['case_study_times'][1:,f], data5['universal_height'], np.transpose(obs['sondes'][filenames[f][:8]]['temp_UM'][:,1:]),
             vmin = Tmin, vmax = Tmax)
-        if row1 == 1: plt.ylabel('Z [km]')
+        if row1 == 1:
+            plt.ylabel('Z [km]')
+            plt.title(filenames[f][:8])
         plt.ylim([0,9000])
         axmajor = np.arange(0,9.01e3,3.0e3)
         axminor = np.arange(0,9.01e3,0.5e3)
@@ -2814,8 +2818,6 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         if row2 == 4: plt.ylabel('Z [km]')
         plt.title('UM_GLM')
         plt.ylim([0,9000])
-        axmajor = np.arange(0,9.01e3,3.0e3)
-        axminor = np.arange(0,9.01e3,0.5e3)
         plt.yticks(axmajor)
         ax1.set_yticklabels([0,3,6,9])
         plt.colorbar()
@@ -2833,8 +2835,6 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, obs, filenames, hour_in
         if row3 == 7: plt.ylabel('Z [km]')
         plt.title('UM_RA2M')
         plt.ylim([0,9000])
-        axmajor = np.arange(0,9.01e3,3.0e3)
-        axminor = np.arange(0,9.01e3,0.5e3)
         plt.yticks(axmajor)
         ax1.set_yticklabels([0,3,6,9])
         plt.colorbar()
