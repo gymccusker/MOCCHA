@@ -2882,7 +2882,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
             if col3[sp] == col3[0]: plt.legend()
 
-        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'Biases.svg')
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'TBiases.svg')
         plt.show()
 
     for f in range(0, len(filenames)):
@@ -2908,10 +2908,12 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.ylim([0,3e3])
             plt.ylabel('Z [m]')
             if col1[sp] == col1[-1]: plt.xlabel('q bias wrt Sonde [K]')
-            # if filenames[f][:8] == '20180815':
-            #     plt.xlim([-8., 8.])
-            # else:
-            #     plt.xlim([-4.,4.])
+            if filenames[f][:8] == '20180815':
+                plt.xlim([-2., 2.])
+            if filenames[f][:8] == '20180902':
+                plt.xlim([-2., 2.])
+            else:
+                plt.xlim([-0.5,0.5])
 
         for sp in range(0, len(col2)):
             plt.subplot(5,3,col2[sp])
@@ -2924,7 +2926,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             # plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
             plt.title(lbls[sp])
             plt.ylim([0,3e3])
-            # plt.xlim([-3., 3.])
+            plt.xlim([-0.5,0.5])
             if col2[sp] == col2[-1]: plt.xlabel('q bias wrt GLM [K]')
 
         for sp in range(0, len(col3)):
@@ -2932,9 +2934,9 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             ax = plt.gca()
             ax.set_facecolor('whitesmoke')
             # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
-            # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
-            # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
-            # plt.plot(data2[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
+            # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
+            # plt.plot(data2[filenames[f][:8]]['qliq_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color='mediumseagreen',label = 'UM-CASIM-100')
             # plt.title(lbls[sp])
             # plt.ylim([0,5e3])
             # # plt.xlim([0, 0.2])
@@ -2950,7 +2952,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
             if col3[sp] == col3[0]: plt.legend()
 
-        # plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'Biases.svg')
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'qBiases.svg')
         plt.show()
 
 
@@ -3076,7 +3078,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
             ax2.set_yticks([])
 
-    # plt.savefig('../FIGS/ACPD/AllBiases-Pcolor.svg')
+    # plt.savefig('../FIGS/ACPD/AllTBiases-Pcolor.svg')
     # plt.show()
     plt.close()
 
@@ -3203,7 +3205,7 @@ def main():
     ### Combine PP files
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    dummy = combinePP(root_dir, out_dir, date_dir)
+    # dummy = combinePP(root_dir, out_dir, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
