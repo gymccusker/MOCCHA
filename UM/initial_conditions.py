@@ -2470,10 +2470,7 @@ def loadNCs(nc, data, root_dir, dir, model):
         nc[filename[:8]] = {}
         data[filename[:8]] = {}
         print (filename + ' + ' + model)
-        if model == 'lam':
-            nc[filename[:8]] = Dataset(root_dir + dir + filename)
-        if model == 'glm':
-            nc[filename[:8]] = Dataset(root_dir + dir + filename)
+        nc[filename[:8]] = Dataset(root_dir + dir + filename)
 
     return nc, data
 
@@ -2498,6 +2495,8 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
         varlist = ['sphum','q','q','q','q','q']
     elif var == 'rh':
         varlist = ['RH','rh','rh','rh','rh','rh']
+    elif var == 'qliq':
+        varlist = ['qliq','qliq','qliq','qliq','qliq','qliq']
 
     #### ---------------------------------------------------------------
     #### create 36h time array
@@ -2540,37 +2539,38 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     obs['sondes']['case_study_times'] = sonde_times
 
     # plt.figure()
-    # for f in range(0,len(filenames)):
-    #     obs['sondes'][filenames[f][:8]][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
-    #     obs['sondes'][filenames[f][:8]]['case_study_times'] = sonde_times[:,f]
-    #     print (sonde_times)
-    #     # print (sonde_times[0,f])
-    #     tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
-    #     # print (obs['sondes']['doy'][tim_start])
-    #     # print (tim_start[1])
-    #     tim_end = tim_start[1] + int(len(sonde_times))
-    #     # print (tim_end)
-    #     # print (obs['sondes']['doy'][:,tim_end])
-    #     # print (sonde_times[-1,f])
-    #     tim_index = np.arange(tim_start[1],tim_end)
-    #     for iTim in range(0,np.size(sonde_times,0)):
-    #         # print ('iTim = ', str(iTim))
-    #         # print (obs['sondes']['doy'][:,tim_index])
-    #         fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
-    #         obs['sondes'][filenames[f][:8]][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
-    #
-    #         # print (obs['sondes'][filenames[f][:8]].keys())
-    #
-    #     ### plot test fig, looping over filenames
-    #     sp = f + 1
-    #     plt.subplot(1,3,sp)
-    #     plt.plot(obs['sondes'][varlist[0]][:,tim_index[0]], obs['sondes']['gpsaltitude'][:,0], label = 'Sondes native')
-    #     plt.plot(obs['sondes'][filenames[f][:8]][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], 'o-', label = 'Sondes interpolated')
-    #     plt.ylim([0,1e4])
-    #
-    # plt.legend()
-    # # plt.show()
-    # plt.close()
+    if var != 'qliq':
+        for f in range(0,len(filenames)):
+            obs['sondes'][filenames[f][:8]][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
+            obs['sondes'][filenames[f][:8]]['case_study_times'] = sonde_times[:,f]
+            print (sonde_times)
+            # print (sonde_times[0,f])
+            tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
+            # print (obs['sondes']['doy'][tim_start])
+            # print (tim_start[1])
+            tim_end = tim_start[1] + int(len(sonde_times))
+            # print (tim_end)
+            # print (obs['sondes']['doy'][:,tim_end])
+            # print (sonde_times[-1,f])
+            tim_index = np.arange(tim_start[1],tim_end)
+            for iTim in range(0,np.size(sonde_times,0)):
+                # print ('iTim = ', str(iTim))
+                # print (obs['sondes']['doy'][:,tim_index])
+                fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
+                obs['sondes'][filenames[f][:8]][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
+
+                # print (obs['sondes'][filenames[f][:8]].keys())
+
+        #     ### plot test fig, looping over filenames
+        #     sp = f + 1
+        #     plt.subplot(1,3,sp)
+        #     plt.plot(obs['sondes'][varlist[0]][:,tim_index[0]], obs['sondes']['gpsaltitude'][:,0], label = 'Sondes native')
+        #     plt.plot(obs['sondes'][filenames[f][:8]][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], 'o-', label = 'Sondes interpolated')
+        #     plt.ylim([0,1e4])
+        #
+        # plt.legend()
+        # # plt.show()
+        # plt.close()
 
     print ('...')
     print ('Sonde(UM Grid) function worked!')
@@ -2584,44 +2584,44 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
     print ('Universal_height is len:')
     print (np.size(data_glm['universal_height']))
 
-    ### interpolate for all times in forecast_time - index later!
-    # fig = plt.figure()
-    # sp = 0
-    # for file in filenames:
-    #     iGLM = np.where(data_glm['height'] <= 11000)
-    #     # print (iGLM)
-    #     print (data_glm['height'][iGLM])
-    #     print ('')
-    #     print ('Defining UM profile as a function:')
-    #     temp_time = data_glm['forecast_time'][::6]-1 ## temporary array
-    #     data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(data_glm['forecast_time'],0), len(data_lam['height'][iUM[0][3:]])])
-    #     # print (temp_time)
-    #     # glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
-    #     # glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
-    #     # print (glmtim_start)
-    #     # print (glmtim_end)
-    #     # glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
-    #     # print (data_glm['forecast_time'][glmtim_index[::6]])
-    #     # print (glmtim_index[::6])
-    #     # print (data_glm[file[:8]][var + '_UM'].shape)
-    #     for iTim in range(0,np.size(data_glm['forecast_time'])):
-    #         print (iTim)
-    #         # print (glmtim_index[iTim])
-    #         fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
-    #         data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
-    #
-    #     hour_indices = np.array([5, 11, 17, 23, 29, -1])
-    #
-    #     ### plot test fig, looping over filenames
-    #     sp = sp + 1
-    #     plt.subplot(1,3,sp)
-    #     plt.plot(data_glm[file[:8]][varlist[-1]][hour_indices[1],:], data_glm['height'][:], label = 'GLM native')
-    #     plt.plot(data_glm[file[:8]][var + '_UM'][hour_indices[1],:], data_lam['height'][iUM[0][3:]], label = 'GLM interpolated')
-    #     plt.ylim([0,1e4])
-    #
-    # plt.legend()
-    # plt.show()
-    # plt.close()
+    ## interpolate for all times in forecast_time - index later!
+    fig = plt.figure()
+    sp = 0
+    for file in filenames:
+        iGLM = np.where(data_glm['height'] <= 11000)
+        # print (iGLM)
+        print (data_glm['height'][iGLM])
+        print ('')
+        print ('Defining UM profile as a function:')
+        temp_time = data_glm['forecast_time'][::6]-1 ## temporary array
+        data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(data_glm['forecast_time'],0), len(data_lam['height'][iUM[0][3:]])])
+        # print (temp_time)
+        # glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
+        # glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
+        # print (glmtim_start)
+        # print (glmtim_end)
+        # glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
+        # print (data_glm['forecast_time'][glmtim_index[::6]])
+        # print (glmtim_index[::6])
+        # print (data_glm[file[:8]][var + '_UM'].shape)
+        for iTim in range(0,np.size(data_glm['forecast_time'])):
+            print (iTim)
+            # print (glmtim_index[iTim])
+            fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
+            data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
+
+        hour_indices = np.array([5, 11, 17, 23, 29, -1])
+
+        ### plot test fig, looping over filenames
+        sp = sp + 1
+        plt.subplot(1,3,sp)
+        plt.plot(data_glm[file[:8]][varlist[-1]][hour_indices[1],:], data_glm['height'][:], label = 'GLM native')
+        plt.plot(data_glm[file[:8]][var + '_UM'][hour_indices[1],:], data_lam['height'][iUM[0][3:]], label = 'GLM interpolated')
+        plt.ylim([0,1e4])
+
+    plt.legend()
+    plt.show()
+    plt.close()
 
     print ('...')
     print ('LAM(UM Grid) function worked!')
@@ -2675,11 +2675,14 @@ def radiosondePrep(nc, data, dir, obs, filenames, model):
         print (filename[:8])
         data[filename[:8]]['temperature'] = nc[filename[:8]]['temperature'][:]
         data[filename[:8]]['q'] = nc[filename[:8]]['q'][:]
+        data[filename[:8]]['qliq'] = nc[filename[:8]]['qliq'][:]
         ##==
         data[filename[:8]]['temperature'][data[filename[:8]]['temperature'] == -9999] = np.nan
         data[filename[:8]]['temperature'][data[filename[:8]]['temperature'] <= 0] = np.nan
         data[filename[:8]]['q'][data[filename[:8]]['q'] == -9999] = np.nan
         data[filename[:8]]['q'][data[filename[:8]]['q'] <= 0] = np.nan
+        data[filename[:8]]['qliq'][data[filename[:8]]['qliq'] == -9999] = np.nan
+        data[filename[:8]]['qliq'][data[filename[:8]]['qliq'] <= 0] = np.nan
         ##==
 
         print (filename[:8])
@@ -2698,10 +2701,12 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file):
     tempvarT = data[file]['temperature'][hour_indices,:]
     print (tempvarT.shape)
     tempvarq = data[file]['q'][hour_indices,:] * 1e3
+    tempvarqliq = data[file]['qliq'][hour_indices,:] * 1e3
 
     tempvarT_glm = data_glm[file]['temp_UM'][hour_indices,:]
     print (tempvarT_glm.shape)
     tempvarq_glm = data_glm[file]['q_UM'][hour_indices,:] * 1e3
+    tempvarqliq_glm = data_glm[file]['qliq_UM'][hour_indices,:] * 1e3
 
     ### lam biases wrt sondes
     data[file]['temp_sonde_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(obs['sondes'][file]['temp_UM'][1:,:] + 273.15)
@@ -2710,6 +2715,7 @@ def calcAnomalies(data, data_glm, obs, hour_indices, file):
     ### lam biases wrt glm
     data[file]['temp_glm_anomalies'] = np.transpose(tempvarT[:, data_glm['universal_height_index']]) - np.transpose(tempvarT_glm)
     data[file]['q_glm_anomalies'] = np.transpose(tempvarq[:, data_glm['universal_height_index']]) - np.transpose(tempvarq_glm)
+    data[file]['qliq_glm_anomalies'] = np.transpose(tempvarqliq[:, data_glm['universal_height_index']]) - np.transpose(tempvarqliq_glm)
 
     ### glm biases wrt sondes
     data_glm[file]['temp_sonde_anomalies'] = np.transpose(tempvarT_glm) - np.transpose(obs['sondes'][file]['temp_UM'][1:,:] + 273.15)
@@ -2812,22 +2818,71 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
 
 
     for f in range(0, len(filenames)):
-        fig = plt.figure()
+        fig = plt.figure(figsize=(10,11))
+        plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.1,
+                hspace = 0.4, wspace = 0.3)
         # sp = f + 1
         ## first column
         col1 = [1, 4, 7, 10, 13]
+        col2 = [2, 5, 8, 11, 14]
+        col3 = [3, 6, 9, 12, 15]
         lbls = ['T+6', 'T+12', 'T+18', 'T+24', 'T+30']
         for sp in range(0, len(col1)):
-            plt.subplot(5,3,col[sp])
-            plt.plot(data1[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_RA2M')
-            plt.plot(data2[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_CASIM-100')
-            plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_RA2T')
-            plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+            plt.subplot(5,3,col1[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'k', label = 'UM_GLM')
+            plt.plot(data1[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            plt.plot(data2[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
             plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            plt.ylabel('Z [km]')
+            if col1[sp] == col1[-1]: plt.xlabel('T bias wrt Sonde [K]')
+            if filenames[f][:8] == '20180815':
+                plt.xlim([-8., 8.])
+            else:
+                plt.xlim([-4.,4.])
 
+        for sp in range(0, len(col2)):
+            plt.subplot(5,3,col2[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            plt.plot(data1[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            plt.plot(data2[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            # plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+            plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            plt.xlim([-3., 3.])
+            if col2[sp] == col2[-1]: plt.xlabel('T bias wrt GLM [K]')
 
+        for sp in range(0, len(col3)):
+            plt.subplot(5,3,col3[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
+            # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
+            # plt.plot(data2[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.title(lbls[sp])
+            # plt.ylim([0,5e3])
+            # # plt.xlim([0, 0.2])
+            # if col3[sp] == col3[-1]: plt.xlabel('LWMR bias wrt GLM [g/kg]')
 
-        plt.legend()
+            plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            plt.xlim([0, 0.2])
+            if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
+            if col3[sp] == col3[0]: plt.legend()
+
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'Biases.svg')
         plt.show()
 
 
@@ -2955,7 +3010,9 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
             ax2.set_yticks([])
 
+    plt.savefig('../FIGS/ACPD/AllBiases-Pcolor.svg')
     plt.show()
+    # plt.close()
 
 
 def main():
@@ -3181,10 +3238,11 @@ def main():
         obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
     data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
     data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
+    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
     print ('')
     print ('Done!')
 
-    print (obs['sondes']['20180815'].keys())
+    print (data5['20180815'].keys())
 
     hour_indices = np.array([5, 11, 17, 23, 29, -1])
     # print (data5['forecast_time'])
