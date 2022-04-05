@@ -3486,79 +3486,11 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
 
     # fileout = '../FIGS/comparisons/netSW_netLW_netRad_line+PDFS-gt230DOY_odenOnly_ifs_23-24-25_casim-100-GAalb_ra2t_ra2m_splitSeason_fixLabels_newColours_Dates_wPeriods_wShipRadiation_fixedRA2T.png'
     fileout = '../FIGS/ACPD/Figure2.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     # plt.show()
     plt.close()
 
 
-
-    # SMALL_SIZE = 12
-    # MED_SIZE = 14
-    # LARGE_SIZE = 16
-    #
-    # plt.rc('font',size=MED_SIZE)
-    # plt.rc('axes',titlesize=MED_SIZE)
-    # plt.rc('axes',labelsize=MED_SIZE)
-    # plt.rc('xtick',labelsize=MED_SIZE)
-    # plt.rc('ytick',labelsize=MED_SIZE)
-    # plt.rc('legend',fontsize=MED_SIZE)
-    # plt.figure(figsize=(9,3))
-    # # plt.rc('figure',titlesize=LARGE_SIZE)
-    # plt.subplots_adjust(top = 0.95, bottom = 0.2, right = 0.95, left = 0.1,
-    #         hspace = 0.4, wspace = 0.35)
-    #
-    # plt.subplot(131)
-    # yEmax = 0.08
-    # plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    # # f = sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
-    # f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
-    # f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'], hist=False, color="black")
-    # plt.xlim([-10,110])
-    # plt.ylim([0,yEmax])
-    # plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
-    #
-    # plt.subplot(132)
-    # yFmax = 0.11
-    # plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
-    # # f = sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
-    # f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
-    # f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    # f = sns.distplot(obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
-    # plt.xlim([-80,20])
-    # plt.ylim([0,yFmax])
-    # plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
-    #
-    # plt.subplot(133)
-    # yDmax = 0.08
-    # plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
-    # # crf1 = sw1 + lw1
-    # # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
-    # # crf4 = sw4 + lw4
-    # # f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
-    # crf2 = sw2 + lw2
-    # f = sns.distplot(crf2, hist=False, color="steelblue", kde_kws={"shade": True})
-    # crf3 = sw3 + lw3
-    # f = sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
-    # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
-    # plt.xlim([-80,80])
-    # plt.ylim([0,yDmax])
-    # plt.xlabel('R$_{net}$ [W m$^{-2}$]')
-    #
-    # # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
-    # plt.show()
-
-
-    sw1 = data1['fixed_radiation']['SWd']
-    lw1 = data1['fixed_radiation']['LWd']
-    sw2 = data2['fixed_radiation']['SWd']
-    lw2 = data2['fixed_radiation']['LWd']
-    sw3 = data3['fixed_radiation']['SWd']
-    lw3 = data3['fixed_radiation']['LWd']
-    sw4 = data4['fixed_radiation']['SWd']
-    lw4 = data4['fixed_radiation']['LWd']
 
     SMALL_SIZE = 12
     MED_SIZE = 14
@@ -3582,10 +3514,11 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['SWd_ship'], hist=False, color="black")
-    # plt.xlim([-10,110])
-    # plt.ylim([0,yEmax])
-    plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
+    f = sns.distplot(obs['fixed_radiation']['SWnet_ship'], hist=False, color="black")
+    plt.xlim([-10,110])
+    plt.ylim([0,yEmax])
+    plt.xlabel('SW$_{net}$ [W m$^{-2}$]')
+    plt.ylabel('')
 
     plt.subplot(132)
     yFmax = 0.11
@@ -3594,11 +3527,83 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
     f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
-    f = sns.distplot(obs['fixed_radiation']['LWd_ship'], hist=False, color="black")
-    # plt.xlim([-80,20])
-    # plt.ylim([0,yFmax])
-    plt.xlabel('LW$_{\downarrow}$ [W m$^{-2}$]')
+    f = sns.distplot(obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
+    plt.xlim([-80,20])
+    plt.ylim([0,yFmax])
+    plt.xlabel('LW$_{net}$ [W m$^{-2}$]')
+    plt.ylabel('')
 
+    plt.subplot(133)
+    yDmax = 0.08
+    plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
+    # crf1 = sw1 + lw1
+    # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # crf4 = sw4 + lw4
+    # f = sns.distplot(crf4, hist=False, color="steelblue", kde_kws={"shade": True})
+    crf2 = sw2 + lw2
+    f = sns.distplot(crf2, hist=False, color="steelblue", kde_kws={"shade": True})
+    crf3 = sw3 + lw3
+    f = sns.distplot(crf3, hist=False, color="darkorange", kde_kws={"shade": True})
+    f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
+    plt.xlim([-80,80])
+    plt.ylim([0,0.06])
+    plt.xlabel('R$_{net}$ [W m$^{-2}$]')
+    plt.ylabel('')
+
+    plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
+    plt.show()
+
+    #
+    # sw1 = data1['fixed_radiation']['SWd']
+    # lw1 = data1['fixed_radiation']['LWd']
+    # sw2 = data2['fixed_radiation']['SWd']
+    # lw2 = data2['fixed_radiation']['LWd']
+    # sw3 = data3['fixed_radiation']['SWd']
+    # lw3 = data3['fixed_radiation']['LWd']
+    # sw4 = data4['fixed_radiation']['SWd']
+    # lw4 = data4['fixed_radiation']['LWd']
+
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=MED_SIZE)
+    # plt.rc('ytick',labelsize=MED_SIZE)
+    # plt.rc('legend',fontsize=MED_SIZE)
+    # plt.figure(figsize=(9,3))
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    # plt.subplots_adjust(top = 0.95, bottom = 0.2, right = 0.95, left = 0.1,
+    #         hspace = 0.4, wspace = 0.35)
+    #
+    # plt.subplot(131)
+    # yEmax = 0.08
+    # plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
+    # # f = sns.distplot(sw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # f = sns.distplot(sw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(sw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(sw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['SWd_ship'], hist=False, color="black")
+    # # plt.xlim([-10,110])
+    # # plt.ylim([0,yEmax])
+    # plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
+    # plt.ylabel('')
+    #
+    # plt.subplot(132)
+    # yFmax = 0.11
+    # plt.plot([0,0],[0,yFmax],'--', color='lightgrey')
+    # # f = sns.distplot(lw1, hist=False, color="darkblue", kde_kws={"shade": True})
+    # # f = sns.distplot(lw4, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(lw2, hist=False, color="steelblue", kde_kws={"shade": True})
+    # f = sns.distplot(lw3, hist=False, color="darkorange", kde_kws={"shade": True})
+    # f = sns.distplot(obs['fixed_radiation']['LWd_ship'], hist=False, color="black")
+    # # plt.xlim([-80,20])
+    # # plt.ylim([0,yFmax])
+    # plt.xlabel('LW$_{\downarrow}$ [W m$^{-2}$]')
+    # plt.ylabel('')
+    #
     # plt.subplot(133)
     # yDmax = 0.08
     # plt.plot([0,0],[0,yDmax],'--', color='lightgrey')
@@ -3613,11 +3618,12 @@ def plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, o
     # f = sns.distplot(obs['fixed_radiation']['SWnet_ship'] + obs['fixed_radiation']['LWnet_ship'], hist=False, color="black")
     # plt.xlim([-80,80])
     # plt.ylim([0,yDmax])
+    # plt.ylabel('')
     # plt.xlabel('R$_{net}$ [W m$^{-2}$]')
-
-    # plt.savefig('../FIGS/comparisons/SWnet_LWnet_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
+    #
+    # plt.savefig('../FIGS/comparisons/SWdown_LWdown_Rnet_CASIM-100-steelblue_IFS-darkorange_fullDrift.svg')
     # plt.show()
-    plt.close()
+    # plt.close()
 
 def plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4):
 
@@ -11596,12 +11602,12 @@ def main():
     # Plot paper figures
     # -------------------------------------------------------------
     # figure = plot_paperFluxes(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
+    figure = plot_paperRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_paperSIRadiation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_Precipitation(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
-    figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)

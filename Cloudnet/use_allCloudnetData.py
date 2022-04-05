@@ -2628,7 +2628,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     ##################################################
     ##################################################
-    #### 	CARTOPY
+    #### 	TWC CLOUD MASK
     ##################################################
     ##################################################
 
@@ -2715,7 +2715,7 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
     if month_flag == -1:
         # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
         fileout = '../FIGS/ACPD/Figure4b.svg'
-    plt.savefig(fileout)
+    # plt.savefig(fileout)
     # plt.show()
     plt.close()
 
@@ -2749,7 +2749,100 @@ def plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_
 
     ##################################################
     ##################################################
-    #### 	CARTOPY
+    #### 	TWC CLOUD MASK - CASIM-100 + IFS only
+    ##################################################
+    ##################################################
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=LARGE_SIZE)
+    plt.figure(figsize=(4.5,6))
+    plt.subplots_adjust(top = 0.95, bottom = 0.12, right = 0.95, left = 0.15,
+            hspace = 0.4, wspace = 0.1)
+
+    ### define axis instance
+    ax1 = plt.gca()
+
+    plt.plot(np.nanmean(mask0,0),np.nanmean(obs_data['height'],0), 'k', linewidth = 3, label = 'Observations', zorder = 5)
+    # ax1.fill_betweenx(np.nanmean(obs_data['height'],0),np.nanmean(mask0,0) - np.nanstd(mask0,0),
+    #     np.nanmean(mask0,0) + np.nanstd(mask0,0), color = 'lightgrey', alpha = 0.5)
+    # plt.plot(np.nanmean(mask0,0) - np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+    #     '--', color = 'k', linewidth = 0.5)
+    # plt.plot(np.nanmean(mask0,0) + np.nanstd(mask0,0), np.nanmean(obs_data['height'],0),
+    #     '--', color = 'k', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(np.nanmean(ifs_data['height'],0),np.nanmean(mask3,0) - np.nanstd(mask3,0),
+    #     np.nanmean(mask3,0) + np.nanstd(mask3,0), color = 'navajowhite', alpha = 0.35)
+    # plt.plot(np.nanmean(mask3,0) - np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    # plt.plot(np.nanmean(mask3,0) + np.nanstd(mask3,0), np.nanmean(ifs_data['height'],0),
+    #     '--', color = '#FFC107', linewidth = 0.5)
+    #
+    # ax1.fill_betweenx(np.nanmean(um_data['height'],0),np.nanmean(mask1,0) - np.nanstd(mask1,0),
+    #     np.nanmean(mask1,0) + np.nanstd(mask1,0), color = 'blue', alpha = 0.05)
+    # plt.plot(np.nanmean(mask1,0) - np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
+    #     '--', color = 'darkblue', linewidth = 0.5)
+    # plt.plot(np.nanmean(mask1,0) + np.nanstd(mask1,0), np.nanmean(um_data['height'],0),
+    #     '--', color = 'darkblue', linewidth = 0.5)
+
+    # ax1.fill_betweenx(np.nanmean(misc_data['height'],0),np.nanmean(mask2,0) - np.nanstd(mask2,0),
+    #     np.nanmean(mask2,0) + np.nanstd(mask2,0), color = 'mediumaquamarine', alpha = 0.15)
+    # plt.plot(np.nanmean(mask2,0) - np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+    # plt.plot(np.nanmean(mask2,0) + np.nanstd(mask2,0), np.nanmean(misc_data['height'],0),
+    #     '--', color = 'mediumseagreen', linewidth = 0.5)
+
+    # ax1.fill_betweenx(np.nanmean(ra2t_data['height'],0),np.nanmean(mask4,0) - np.nanstd(mask4,0),
+    #     np.nanmean(mask4,0) + np.nanstd(mask4,0), color = 'lightblue', alpha = 0.15)
+    # plt.plot(np.nanmean(mask4,0) - np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
+    #     '--', color = 'steelblue', linewidth = 0.5)
+    # plt.plot(np.nanmean(mask4,0) + np.nanstd(mask4,0), np.nanmean(ra2t_data['height'],0),
+    #     '--', color = 'steelblue', linewidth = 0.5)
+
+    plt.plot(np.nanmean(mask3,0),np.nanmean(ifs_data['height'],0), color = 'darkorange', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    plt.plot(np.nanmean(mask2,0),np.nanmean(misc_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
+    # plt.plot(np.nanmean(mask4,0),np.nanmean(ra2t_data['height'],0), color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
+    # plt.plot(np.nanmean(mask1,0),np.nanmean(um_data['height'],0), color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
+
+    # plt.plot(np.nanmedian(mask3,0),np.nanmedian(ifs_data['height'],0), '--', color = '#FFC107', linewidth = 3, label = 'ECMWF_IFS', zorder = 4)
+    # plt.plot(np.nanmedian(mask2,0),np.nanmedian(misc_data['height'],0), '--', color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100', zorder = 3)
+    # plt.plot(np.nanmedian(mask4,0),np.nanmedian(ra2t_data['height'],0), '--', color = 'steelblue', linewidth = 3, label = 'UM_RA2T', zorder = 2)
+    # plt.plot(np.nanmedian(mask1,0),np.nanmedian(um_data['height'],0), '--', color = 'darkblue', linewidth = 3, label = 'UM_RA2M', zorder = 1)
+
+    plt.xlabel('TWC Cloud mask')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(np.arange(0,9.01e3,0.5e3))
+    ax1.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+    plt.xlim([0,1])
+    plt.xticks(np.arange(0,1.01,0.1))
+    ax1.set_xticklabels([0,' ',0.2,' ',0.4,' ',0.6,' ',0.8,' ',1.0])
+    plt.legend()
+
+    # plt.grid('on')
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    if month_flag == -1:
+        # fileout = 'FIGS/Obs-' + obs_switch + 'grid-QF30_RA2M-25_IFS_CASIM-100-GA6alb_RA2T_TWC-MASK_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_newColours_wSetFlags_wFixedIWC.png'
+        fileout = '../FIGS/comparisons/TWCcloudmask_IFS_UM-CASIM-100_pres.svg'
+    plt.savefig(fileout)
+    plt.show()
+    plt.close()
+
+    ##################################################
+    ##################################################
+    #### 	TWC
     ##################################################
     ##################################################
 
@@ -10422,7 +10515,7 @@ def main():
     # figure = plot_CvTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, obs_testing_flag)
     #### figure = plot_LWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
     #### figure = plot_IWCTimeseries(um_data, ifs_data, misc_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch)
-    # figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    figure = plot_TWCTimeseries(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
     #### figure = plot_TWCTesting(um_data, ifs_data, misc_data, obs_data, data1, data2, data3, obs, month_flag, missing_files, doy)
 
     # -------------------------------------------------------------
@@ -10461,7 +10554,7 @@ def main():
     # -------------------------------------------------------------
     # look closer at specific periods
     # -------------------------------------------------------------
-    figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
+    # figure = period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_flag, missing_files, cn_um_out_dir, doy, obs_switch, obs, data1, data2, data3, data4, nanind, lwcind, iwcind)
 
     ## -------------------------------------------------------------
     ## look closer at biases - not used
