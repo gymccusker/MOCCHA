@@ -2838,7 +2838,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.plot(data4[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
             plt.title(lbls[sp])
             plt.ylim([0,3e3])
-            plt.ylabel('Z [km]')
+            plt.ylabel('Z [m]')
             if col1[sp] == col1[-1]: plt.xlabel('T bias wrt Sonde [K]')
             if filenames[f][:8] == '20180815':
                 plt.xlim([-8., 8.])
@@ -2885,7 +2885,73 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
         plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'Biases.svg')
         plt.show()
 
+    for f in range(0, len(filenames)):
+        fig = plt.figure(figsize=(10,11))
+        plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.1,
+                hspace = 0.4, wspace = 0.3)
+        # sp = f + 1
+        ## first column
+        col1 = [1, 4, 7, 10, 13]
+        col2 = [2, 5, 8, 11, 14]
+        col3 = [3, 6, 9, 12, 15]
+        lbls = ['T+6', 'T+12', 'T+18', 'T+24', 'T+30']
+        for sp in range(0, len(col1)):
+            plt.subplot(5,3,col1[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            plt.plot(data5[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'k', label = 'UM_GLM')
+            plt.plot(data1[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            plt.plot(data2[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            plt.plot(data4[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            plt.ylabel('Z [m]')
+            if col1[sp] == col1[-1]: plt.xlabel('q bias wrt Sonde [K]')
+            # if filenames[f][:8] == '20180815':
+            #     plt.xlim([-8., 8.])
+            # else:
+            #     plt.xlim([-4.,4.])
 
+        for sp in range(0, len(col2)):
+            plt.subplot(5,3,col2[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            plt.plot(data1[filenames[f][:8]]['q_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            plt.plot(data2[filenames[f][:8]]['q_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            plt.plot(data4[filenames[f][:8]]['q_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            # plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
+            plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            # plt.xlim([-3., 3.])
+            if col2[sp] == col2[-1]: plt.xlabel('q bias wrt GLM [K]')
+
+        for sp in range(0, len(col3)):
+            plt.subplot(5,3,col3[sp])
+            ax = plt.gca()
+            ax.set_facecolor('whitesmoke')
+            # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
+            # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
+            # plt.plot(data2[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.title(lbls[sp])
+            # plt.ylim([0,5e3])
+            # # plt.xlim([0, 0.2])
+            # if col3[sp] == col3[-1]: plt.xlabel('LWMR bias wrt GLM [g/kg]')
+
+            plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            plt.title(lbls[sp])
+            plt.ylim([0,3e3])
+            plt.xlim([0, 0.2])
+            if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
+            if col3[sp] == col3[0]: plt.legend()
+
+        # plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'Biases.svg')
+        plt.show()
 
 
     Tmin = -45
@@ -3010,9 +3076,9 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             ax2.set_ylabel('T [$^{\circ}$C]', rotation = 270, labelpad = 60)
             ax2.set_yticks([])
 
-    plt.savefig('../FIGS/ACPD/AllBiases-Pcolor.svg')
-    plt.show()
-    # plt.close()
+    # plt.savefig('../FIGS/ACPD/AllBiases-Pcolor.svg')
+    # plt.show()
+    plt.close()
 
 
 def main():
