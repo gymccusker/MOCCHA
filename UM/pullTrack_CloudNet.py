@@ -5955,6 +5955,553 @@ def fixHeight(data, cube):
 
     return cubedata
 
+def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile):
+
+    from iris.coords import DimCoord
+    from iris.cube import Cube
+    import iris.plot as iplt
+    import pandas as pd
+
+    print ('******')
+    print ('')
+    ###---------------------------------
+    ### DEFINE OFFSETS DEPENDENT ON NEST ROI
+    ###---------------------------------
+    print ('What grid are we looking at?')
+    if len(cube[0].dim_coords[-1].points) == 25:
+        xoffset = -239
+        yoffset = -470
+    elif len(cube[0].dim_coords[-1].points) == 56:
+        xoffset = -210
+        yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 94:
+        xoffset = -211
+        yoffset = -385
+    elif len(cube[0].dim_coords[-1].points) == 81:          ### 14th and 24th August
+        xoffset = -209
+        yoffset = -399
+    elif len(cube[0].dim_coords[-1].points) == 380:         ### needs checked
+        xoffset = -60
+        yoffset = -110
+    else:
+        ### if glm
+        xoffset = 0
+        yoffset = 0
+
+    print ('Because cube shape = ', str(len(cube[0].dim_coords[-1].points)))
+    print ('xoffset = ', xoffset)
+    print ('yoffset = ', yoffset)
+
+    #################################################################
+    ## load gridded ship track
+    #################################################################
+    # print '******'
+    print ('')
+    print ('Pulling gridded track from cube:')
+    print ('')
+
+    if model == 'lam':
+        tim, ilat, ilon = readGriddedTrack(grid_filename)
+    elif model == 'glm':
+        tim, ilat, ilon = readGlobal(cube, ship_data, date)
+    else:
+        print ('Model option is not valid')
+
+    #################################################################
+    ## fix time index
+    #################################################################
+
+    if np.size(cube)>1:
+        print ('')
+        print ('More than one variable constraint. Proceeding...')
+        print ('')
+        print (np.size(cube))
+
+        #################################################################
+        ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
+        #################################################################
+        ncube = Cube(np.zeros([np.size(cube),70,24]))
+
+        #################################################################
+        ## POPULATE NP ARRAY WITH DATA
+        #################################################################
+        ### populate 0th dimension with time field
+        # data[:,0] = cubetime[:,:-1]
+
+        # #################################################################
+        # ## if our diagnostics are 3-hourly, ignore
+        # #################################################################
+        # if len(np.round(cube[k].coord('forecast_period').points)) <= 10:
+        #     print cube[k].standard_name
+        #     print 'Diagnostic is 3-hourly, break from loop'
+        #     break
+        # # elif len(np.round(cube[k].coord('forecast_period').points)) > 10:
+        # #     if xoffset == 0:
+        # #         print cube[k].standard_name
+        # #         print 'Diagnostic is 1-hourly, BUT this is a STASH typo since diagnostic covers whole nest.'
+        # #         ok = False
+        # else:
+        #     print cube[k].standard_name
+        #     # if int(xoffset) != 0:
+        #     print 'Diagnostic is 1-hourly, pull ship track...'
+        #     ok = True
+        #
+        # if not ok: continue
+
+        for k in range(0,np.size(cube)):            ### loop over number of variables
+            print ('')
+            print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
+            print ('')
+            #################################################################
+            ## only consider hourly diagnostics
+            #################################################################
+            if len(np.round(cube[k].coord('forecast_period').points)) > 10:
+                ###---------------------------------
+                ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
+                ###---------------------------------
+                print ('Double-checking grid:')
+                if len(cube[k].dim_coords[-1].points) == 25:
+                # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+                    xoffset = -239
+                    yoffset = -470
+                elif len(cube[k].dim_coords[-1].points) == 56:
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -210
+                    yoffset = -385
+                elif len(cube[k].dim_coords[-1].points) == 94:
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -211
+                    yoffset = -385
+                elif len(cube[k].dim_coords[-1].points) == 81:          ### 14th and 24th August
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -209
+                    yoffset = -399
+                elif len(cube[k].dim_coords[-1].points) == 380:         ### needs checked
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -60
+                    yoffset = -110
+                else:
+                # elif cube[0,0].shape >= 500-1:
+                    xoffset = 0
+                    yoffset = 0
+                print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
+
+                #################################################################
+                ## make hourly time array
+                #################################################################
+                print ('cubetime = ' + str(np.size(cube[k].coord('forecast_period').points)))
+                # if np.size(cube[k].coord('forecast_period').points) == 24:
+                cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
+                # else:
+                #     cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)
+
+                        #### will need to add code for dealing with forecast_period
+                        ####    i.e. 1.00016 hrs past 0000 UTC
+                        ####     will need to concatenate from next day's file?
+
+                # print ''
+                # print 'Cube times relative to forecast start:', cubetime[:-1]
+                # print ''
+
+                #################################################################
+                ## PROBE VARIABLE
+                #################################################################
+                ### do we want to average exluding zeros?
+                stash_flag, stash = excludeZeros(cube[k])
+
+                ### do we need to re-grid?  -- DOESN'T WORK LIKE WRF, GRID NOT SPACED SAME WAY
+                # cube[k], wind_stash = checkWind(cube[k])
+
+                #################################################################
+                ## CHECK DIMENSIONS
+                #################################################################
+                if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
+                    print ('Variable is 4D:')
+                    print ('')
+                    #### create empty arrays to be filled
+                    data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
+                    ### make dimension flag
+                    dim_flag = 1        ### for next loops
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
+                else:
+                    print ('Variable is 3D:')
+                    print ('')
+                    #### create empty arrays to be filled
+                    if stream[1:3] == 'pb':
+                        if cube[k].long_name == 'large_scale_ice_water_path':
+                            data = np.zeros([len(cubetime)])
+                        elif cube[k].long_name == 'large_scale_liquid_water_path':
+                            data = np.zeros([len(cubetime)])
+                        else:
+                            data = np.zeros([len(cubetime)-1])
+                    elif stream[1:3] == 'pa':
+                        if len(cubetime) == 25:
+                            data = np.zeros([len(cubetime)-1])
+                        elif len(cubetime) == 24:
+                            data = np.zeros([len(cubetime)])
+                    elif stream[1:3] == 'pd':
+                        data = np.zeros([len(cubetime)-1])
+                    dim_flag = 0       ### for next loops
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
+
+                #################################################################
+                ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
+                #################################################################
+                for j in range(0,len(cubetime)-1):              ### loop over time
+                    if j < len(cubetime[:-1]):
+                        itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+                    else:
+                        ### end point (23h)
+                        itime = np.where(tim >= cubetime[-1])
+                    # print ''
+                    print ('For ', str(j), 'h, itime = ', itime)
+                    if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                    if dim_flag == 0: dat = np.zeros([len(itime[0])])
+                    for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
+                        if np.size(itime) > 1:
+                            # print 'Processing i = ', str(itime[0][i])
+                            # print '...'
+                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                        else:
+                            # print 'Processing i = ', str(itime[i])
+                            # print '...'
+                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                        if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
+                        if dim_flag == 0: dat[i] = np.squeeze(temp.data)
+                        if np.size(itime) > 1:
+                            if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+                            if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                            if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                            # print 'averaging over itime ...'
+                            # print ''
+                        else:
+                            if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                            if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                            # print 'no averaging, itime = 1 ...'
+                            print ('')
+                    # print data
+            # print 'data.shape = ', data.shape
+
+            #################################################################
+            ## FIGURES TO TEST OUTPUT
+            #################################################################
+            ### timeseries of lowest model level
+            # plt.figure(figsize=(7,5))
+            # plt.plot(cubetime[:-1],data[0:10,:])
+            # plt.show()
+
+            ### vertical profile of 1st timestep
+            # plt.figure(figsize=(7,5))
+            # plt.plot(data[:,0],cube.coord('model_level_number').points)
+            # plt.show()
+
+            ### pcolormesh of timeseries
+            # plt.figure(figsize=(7,5))
+            # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+            # plt.colorbar()
+            # plt.show()
+
+            #################################################################
+            ## CREATE CUBE
+            #################################################################
+            ### ECMWF FIELD NAMES
+            # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+            #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+            #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+                varname = varnames.findfieldName(stash)
+                print ('standard_name = ', cube[k].standard_name)
+                print ('long name = ', cube[k].long_name)
+                print ('varname = ', varname)
+                print ('')
+
+                if stream[1:3] == 'pa':
+                    a = len(cube[k].aux_coords)
+                    for ft in range(0,a):
+                        print(cube[k].aux_coords[ft].standard_name)
+                        if cube[k].aux_coords[ft].standard_name == 'forecast_period':
+                            if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
+                                ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                            else:
+                                ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                else:
+                    if cube[k].long_name == 'large_scale_ice_water_path':
+                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    elif cube[k].long_name == 'large_scale_liquid_water_path':
+                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    else:
+                        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                print (ntime.shape)
+                if dim_flag == 1:         ### 4D VARIABLE
+                    if stream[1:3] == 'pd':
+                        model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                        comdata = data                    #### leave BL diagnostics on RHO levels
+                    else:
+                        model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                        comdata = fixHeight(data, cube[k])
+                    ncube = Cube(np.transpose(comdata),
+                            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                            standard_name = cube[k].standard_name,
+                            long_name = cube[k].long_name,
+                            units = cube[k].units,
+                            var_name = varname,
+                            attributes = cube[k].attributes,
+                            aux_coords_and_dims = None,
+                            )
+                elif dim_flag == 0:         ### 3D VARIABLE
+                    ncube = Cube(np.transpose(data),
+                            dim_coords_and_dims=[(ntime, 0)],
+                            standard_name = cube[k].standard_name,
+                            long_name = cube[k].long_name,
+                            units = cube[k].units,
+                            var_name = varname,
+                            attributes = cube[k].attributes,
+                            aux_coords_and_dims = None,
+                            )
+                # ncube.attributes = cube[k].attributes
+                # iris.save(ncube, pp_outfile, append=True)
+                if k == 0:
+                    print ('Initialising fcube')
+                    print ('')
+                    fcube = [ncube]
+                else:
+                    print ('Appending variable to fcube')
+                    print ('')
+                    fcube.append(ncube)
+
+        # print fcube
+
+    else:
+        print ('')
+        print ('Only one variable constraint. Proceeding...')
+        print ('')
+
+        cubetime = np.round(cube.coord('forecast_period').points - 12.0)      ### forecast period (ignore first 12h)
+        print ('')
+        print ('Cube times relative to forecast start (excluding first 12H):', cubetime[:-1])
+        print ('')
+
+        #################################################################
+        ## CREATE EMPTY CUBE
+        #################################################################
+        ncube = Cube(np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1]))
+
+        #################################################################
+        ## PROBE VARIABLE
+        #################################################################
+        ### do we want to average exluding zeros?
+        stash_flag, stash = excludeZeros(cube)
+
+        #################################################################
+        ## FIND ARRAY SIZE AND CREATE EMPTY NP ARRAY
+        #################################################################
+        if np.logical_and(np.size(cube.data,1) >= 69, np.size(cube.data,1) < 71):
+            print ('Variable is 4D:')
+            print ('')
+            #### create empty arrays to be filled
+            data = np.zeros([len(cube.coord('model_level_number').points),len(cubetime)-1])
+            dim_flag = 1        ### for next loops
+            print ('data.shape = ', str(data.shape))
+            print ('')
+        else:
+            print ('Variable is 3D:')
+            print ('')
+            #### create empty arrays to be filled
+            data = np.zeros([len(cubetime)-1])
+            dim_flag = 0       ### for next loops
+            print ('data.shape = ', str(data.shape))
+            print ('')
+
+        #################################################################
+        ## POPULATE NP ARRAY WITH DATA
+        #################################################################
+        ### populate 0th dimension with time field
+        # data[:,0] = cubetime[:,:-1]
+
+        for j in range(0,len(cubetime)-1):
+            if j < len(cubetime[:-1]):
+                itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+            else:
+                ### end point (23h)
+                itime = np.where(tim >= cubetime[-1])
+            print ('For ', str(j), 'h, itime = ', itime)
+            if dim_flag == 1: dat = np.zeros([len(cube.coord('model_level_number').points),len(itime[0])])
+            if dim_flag == 0: dat = np.zeros([len(itime[0])])
+            for i in range(0, len(itime[0])):
+                if np.size(itime) > 1:
+                    # print 'Processing i = ', str(itime[0][i])
+                    if dim_flag == 1: temp = cube[j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                    if dim_flag == 0: temp = cube[j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                else:
+                    # print 'Processing i = ', str(itime[i])
+                    if dim_flag == 1: temp = cube[j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                    if dim_flag == 0: temp = cube[j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                if dim_flag == 1: dat[:,i] = temp.data
+                if dim_flag == 0: dat[i] = temp.data
+                if np.size(itime) > 1:
+                    if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+                    if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                    # print 'averaging over itime...'
+                else:
+                    if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                    # print 'no averaging, itime = 1...'
+        # print data
+        # print 'data.shape = ', data.shape
+
+        #################################################################
+        ## FIGURES TO TEST OUTPUT
+        #################################################################
+        ### timeseries of lowest model level
+        # plt.figure(figsize=(7,5))
+        # plt.plot(cubetime[:-1],data[0:10,:])
+        # plt.show()
+
+        ### vertical profile of 1st timestep
+        # plt.figure(figsize=(7,5))
+        # plt.plot(data[:,0],cube.coord('model_level_number').points)
+        # plt.show()
+
+        ### pcolormesh of timeseries
+        # plt.figure(figsize=(7,5))
+        # plt.pcolormesh(cubetime[:-1], cube.coord('model_level_number').points, data)
+        # plt.colorbar()
+        # plt.show()
+
+        #################################################################
+        ## CREATE CUBE
+        #################################################################
+        ### ECMWF FIELD NAMES
+        # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
+        #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
+        #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+
+        varname = varnames.findfieldName(stash)
+        print ('standard_name = ', cube.standard_name)
+        print ('long name = ', cube.long_name)
+        print ('varname = ', varname)
+        print ('')
+
+        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+        if dim_flag == 1:             ### 4D VARIABLE
+            model_height = DimCoord(cube.aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+            comdata = fixHeight(data, cube)
+            ncube = Cube(np.transpose(data),
+                    dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                    standard_name = cube.standard_name,
+                    long_name = cube.long_name,
+                    units = cube.units,
+                    var_name = varname,
+                    )
+        elif dim_flag == 0:             ### 3D VARIABLE
+            ncube = Cube(np.transpose(data),
+                    dim_coords_and_dims=[(ntime, 0)],
+                    standard_name = cube.standard_name,
+                    long_name = cube.long_name,
+                    units = cube.units,
+                    var_name = varname,
+                    )
+        ncube.attributes = cube.attributes
+        ### for consistency with multi-diag option
+        fcube = ncube
+
+    #################################################################
+    ## define output filename
+    #################################################################
+    # print 'Define pp stream outfile:'
+    # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
+    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+    ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
+    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+    # print 'Outfile = ', pp_outfile
+
+    ### save cube to netcdf file
+    print ('')
+    print ('Writing fcube to file:')
+    print ('')
+    if stream[1:3] == 'pc':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pc stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('')
+        if not os.path.exists(nc_outfile):
+            if 'fcube' in locals():
+                out = writeNetCDF(date, fcube, nc_outfile)
+            # if PC outfile already exists, combine other stream data
+            # if PC outfile doesn't exist, write new
+
+    if stream[1:3] == 'pd':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pd stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
+        doutfile = nc_outfile[:-3] + '_d.nc'
+        if not os.path.exists(doutfile):
+            if 'fcube' in locals():
+                out = writePD_BL(fcube, doutfile)
+            # if PD outfile already exists, combine other stream data
+            # if PD outfile doesn't exist, write new
+
+    if stream[1:3] == 'pe':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pd stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
+        eoutfile = nc_outfile[:-3] + '_e.nc'
+        if not os.path.exists(eoutfile):
+            if 'fcube' in locals():
+                out = writeFile_netCDF4(fcube, eoutfile)
+            # if PC outfile already exists, combine other stream data
+            # if PC outfile doesn't exist, write new
+
+    elif stream[1:3] == 'pb':
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        boutfile = nc_outfile[:-3] + '_b.nc'
+        if not os.path.exists(boutfile):
+            if 'fcube' in locals():
+                out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+
+    elif stream[1:3] == 'pa':
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        aoutfile = nc_outfile[:-3] + '_a.nc'
+        if not os.path.exists(aoutfile):
+            if 'fcube' in locals():
+                out = writePA_Analysis(fcube, aoutfile)
+
+    return nc_outfile
+
 def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile):
 
     from iris.coords import DimCoord
@@ -7327,9 +7874,9 @@ def main():
 
     for date in date_dir:
         ### just do 2018 dates
-        if date[0:4] == '2018':
+        # if date[0:4] == '2018':
         ### just do first date:
-        # if date == date_dir[0]:
+        if date == date_dir[0]:
         ### just do specific date
         # if date[0:8] == '20180913':
             # # -------------------------------------------------------------
