@@ -613,7 +613,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
 
                     # plt.legend()
 
-                    plt.savefig('../../FIGS/Grid_' + model + '_Swath.png')
+                    plt.savefig('../../FIGS/Grid_' + model + '_Swath.svg')
                     plt.close()
 
     print ('******')
