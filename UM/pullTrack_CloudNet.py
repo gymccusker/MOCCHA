@@ -6020,6 +6020,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
         #################################################################
+        ### swath definition based on date, change of shape at 2 Sept
         if date[5] == 8:
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
         elif np.logical_and(date[5] == 9, int(date[6:8]) <= 2):
@@ -6029,6 +6030,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
 
         print (date)
         print (ncube.shape)
+        print (np.size(ncube),2)
 
         #################################################################
         ## POPULATE NP ARRAY WITH DATA
@@ -6096,19 +6098,19 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
 
                 ### do we need to re-grid?  -- DOESN'T WORK LIKE WRF, GRID NOT SPACED SAME WAY
                 # cube[k], wind_stash = checkWind(cube[k])
-    #
-    #             #################################################################
-    #             ## CHECK DIMENSIONS
-    #             #################################################################
-    #             if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
-    #                 print ('Variable is 4D:')
-    #                 print ('')
-    #                 #### create empty arrays to be filled
-    #                 data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1])
-    #                 ### make dimension flag
-    #                 dim_flag = 1        ### for next loops
-    #                 print ('data.shape = ', str(data.shape))
-    #                 print ('')
+
+                #################################################################
+                ## CHECK DIMENSIONS
+                #################################################################
+                if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
+                    print ('Variable is 4D:')
+                    print ('')
+                    #### create empty arrays to be filled
+                    data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
+                    ### make dimension flag
+                    dim_flag = 1        ### for next loops
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
     #             else:
     #                 print ('Variable is 3D:')
     #                 print ('')
