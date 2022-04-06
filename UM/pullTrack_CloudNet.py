@@ -6022,7 +6022,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         #################################################################
         if date[5] == 8:
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
-        elif np.logical_and(date[5] == 9, date[6:8] <= 2):
+        elif np.logical_and(date[5] == 9, int(date[6:8]) <= 2):
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
         else:
             ncube = Cube(np.zeros([np.size(cube),70,24,72,20]))
