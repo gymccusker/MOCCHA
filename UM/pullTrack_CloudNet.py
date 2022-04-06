@@ -6070,32 +6070,32 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     xoffset = 0
                     yoffset = 0
                 print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
-    #
-    #             #################################################################
-    #             ## make hourly time array
-    #             #################################################################
-    #             print ('cubetime = ' + str(np.size(cube[k].coord('forecast_period').points)))
-    #             # if np.size(cube[k].coord('forecast_period').points) == 24:
-    #             cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
-    #             # else:
-    #             #     cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)
-    #
-    #                     #### will need to add code for dealing with forecast_period
-    #                     ####    i.e. 1.00016 hrs past 0000 UTC
-    #                     ####     will need to concatenate from next day's file?
-    #
-    #             # print ''
-    #             # print 'Cube times relative to forecast start:', cubetime[:-1]
-    #             # print ''
-    #
-    #             #################################################################
-    #             ## PROBE VARIABLE
-    #             #################################################################
-    #             ### do we want to average exluding zeros?
-    #             stash_flag, stash = excludeZeros(cube[k])
-    #
-    #             ### do we need to re-grid?  -- DOESN'T WORK LIKE WRF, GRID NOT SPACED SAME WAY
-    #             # cube[k], wind_stash = checkWind(cube[k])
+
+                #################################################################
+                ## make hourly time array
+                #################################################################
+                print ('cubetime = ' + str(np.size(cube[k].coord('forecast_period').points)))
+                # if np.size(cube[k].coord('forecast_period').points) == 24:
+                cubetime = np.round(cube[k].coord('forecast_period').points - 12.0)      ### 24h forecast period (ignore first 12h)
+                # else:
+                #     cubetime = np.round(cube[k].coord('forecast_period').points[:-1] - 12.0)      ### 25h forecast period (ignore first 12h, exclude 36h)
+
+                        #### will need to add code for dealing with forecast_period
+                        ####    i.e. 1.00016 hrs past 0000 UTC
+                        ####     will need to concatenate from next day's file?
+
+                # print ''
+                # print 'Cube times relative to forecast start:', cubetime[:-1]
+                # print ''
+
+                #################################################################
+                ## PROBE VARIABLE
+                #################################################################
+                ### do we want to average exluding zeros?
+                stash_flag, stash = excludeZeros(cube[k])
+
+                ### do we need to re-grid?  -- DOESN'T WORK LIKE WRF, GRID NOT SPACED SAME WAY
+                # cube[k], wind_stash = checkWind(cube[k])
     #
     #             #################################################################
     #             ## CHECK DIMENSIONS
