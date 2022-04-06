@@ -263,6 +263,26 @@ def trackShip(data, date):
 
     return trackShip_index
 
+def splitShip(data, date):
+
+    ###################################
+    ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
+    ###################################
+
+    # Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    # Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+
+    splitShip1_start = np.where(np.logical_and(data.values[:,2]=>14,data.values[:,1]==8))
+    splitShip1_end = np.where(np.logical_and(data.values[:,2]<=31,data.values[:,1]==8))
+
+    splitShip2_start = np.where(np.logical_and(data.values[:,2]=>1,data.values[:,1]==9))
+    splitShip2_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+
+    splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
+    splitShip2_index = range(splitShip2_start[0][0],splitShip2_end[0][0])
+
+    return splitShip1_index, splitShip2_index
+
 def plot_cartmap(ship_data, cube, date_dir, model, case_study):
 
     import iris.plot as iplt
@@ -364,7 +384,9 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
             ## plot UM nest
             #################################################################
             ### draw outline of grid
-            if model == 'lam': qplt.outline(cube[date][0][0,70:,20:70])
+            if model == 'lam':
+                qplt.outline(cube[date][0][0,70:,20:70])
+                qplt.outline(cube[date][0][0,20:70,50:])
 
             if case_study == True:
 
@@ -380,18 +402,33 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                 drift_index = iceDrift(ship_data)
                 inIce_index = inIce(ship_data)
                 trackShip_index = trackShip(ship_data, date)
+                splitShip1_index, splitShip2_index = trackShip(ship_data, date)
 
                 ### Plot tracks as line plot
-                plt.plot(ship_data.values[trackShip_index,6], ship_data.values[trackShip_index,7],
+                plt.plot(ship_data.values[splitShip1_index,6], ship_data.values[splitShip1_index,7],
                          color = 'darkorange', linewidth = 3,
                          transform = ccrs.PlateCarree(), label = date,
                          )
-                plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[trackShip_index[0],7],
+                plt.plot(ship_data.values[splitShip1_index[0],6], ship_data.values[splitShip1_index[0],7],
                          'k^', markerfacecolor = 'darkorange', linewidth = 3,
                          transform = ccrs.PlateCarree(),
                          )
-                plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[trackShip_index[-1],7],
+                plt.plot(ship_data.values[splitShip1_index[-1],6], ship_data.values[splitShip1_index[-1],7],
                          'kv', markerfacecolor = 'darkorange', linewidth = 3,
+                         transform = ccrs.PlateCarree(),
+                         )
+
+                ### Plot tracks as line plot
+                plt.plot(ship_data.values[splitShip2_index,6], ship_data.values[splitShip2_index,7],
+                         color = 'firebrick', linewidth = 3,
+                         transform = ccrs.PlateCarree(), label = date,
+                         )
+                plt.plot(ship_data.values[splitShip2_index[0],6], ship_data.values[splitShip2_index[0],7],
+                         'k^', markerfacecolor = 'firebrick', linewidth = 3,
+                         transform = ccrs.PlateCarree(),
+                         )
+                plt.plot(ship_data.values[splitShip2_index[-1],6], ship_data.values[splitShip2_index[-1],7],
+                         'kv', markerfacecolor = 'firebrick', linewidth = 3,
                          transform = ccrs.PlateCarree(),
                          )
 
