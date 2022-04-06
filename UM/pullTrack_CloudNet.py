@@ -6111,28 +6111,28 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     dim_flag = 1        ### for next loops
                     print ('data.shape = ', str(data.shape))
                     print ('')
-    #             else:
-    #                 print ('Variable is 3D:')
-    #                 print ('')
-    #                 #### create empty arrays to be filled
-    #                 if stream[1:3] == 'pb':
-    #                     if cube[k].long_name == 'large_scale_ice_water_path':
-    #                         data = np.zeros([len(cubetime)])
-    #                     elif cube[k].long_name == 'large_scale_liquid_water_path':
-    #                         data = np.zeros([len(cubetime)])
-    #                     else:
-    #                         data = np.zeros([len(cubetime)-1])
-    #                 elif stream[1:3] == 'pa':
-    #                     if len(cubetime) == 25:
-    #                         data = np.zeros([len(cubetime)-1])
-    #                     elif len(cubetime) == 24:
-    #                         data = np.zeros([len(cubetime)])
-    #                 elif stream[1:3] == 'pd':
-    #                     data = np.zeros([len(cubetime)-1])
-    #                 dim_flag = 0       ### for next loops
-    #                 print ('data.shape = ', str(data.shape))
-    #                 print ('')
-    #
+                else:
+                    print ('Variable is 3D:')
+                    print ('')
+                    #### create empty arrays to be filled
+                    if stream[1:3] == 'pb':
+                        if cube[k].long_name == 'large_scale_ice_water_path':
+                            data = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                        elif cube[k].long_name == 'large_scale_liquid_water_path':
+                            data = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                        else:
+                            data = np.zeros([len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
+                    elif stream[1:3] == 'pa':
+                        if len(cubetime) == 25:
+                            data = np.zeros([len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
+                        elif len(cubetime) == 24:
+                            data = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                    elif stream[1:3] == 'pd':
+                        data = np.zeros([len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
+                    dim_flag = 0       ### for next loops
+                    print ('data.shape = ', str(data.shape))
+                    print ('')
+
     #             #################################################################
     #             ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
     #             #################################################################
