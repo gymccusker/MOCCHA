@@ -284,13 +284,13 @@ def splitShip(data, date):
     # splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
     # splitShip2_index = range(splitShip2_start[0][0],splitShip2_end[0][0])
 
-    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=8,data.values[:,1]==9),data.values[:,3]<=1))
-    splitShip1_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+    Aug1_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Sep1_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=8,data.values[:,1]==9),data.values[:,3]<=1))
+    splitShip1_index = range(Aug1_drift_index[0][0],Sep1_drift_index[0][-1])
 
-    Aug_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=8,data.values[:,1]==9),data.values[:,3]>1))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
-    splitShip2_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+    Aug2_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=8,data.values[:,1]==9),data.values[:,3]>1))
+    Sep2_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    splitShip2_index = range(Aug2_drift_index[0][0],Sep2_drift_index[0][-1])
 
     return splitShip1_index, splitShip2_index
 
