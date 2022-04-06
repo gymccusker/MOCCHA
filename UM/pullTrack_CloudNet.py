@@ -6098,9 +6098,9 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         ####    i.e. 1.00016 hrs past 0000 UTC
                         ####     will need to concatenate from next day's file?
 
-                # print ''
-                # print 'Cube times relative to forecast start:', cubetime[:-1]
-                # print ''
+                print ('')
+                print ('Cube times relative to forecast start:', cubetime[:-1])
+                print ('')
 
                 #################################################################
                 ## PROBE VARIABLE
@@ -6148,16 +6148,17 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 #################################################################
                 ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
                 #################################################################
-                for j in range(0,len(cubetime)-1):              ### loop over time
-                    if j < len(cubetime[:-1]):
-                        itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-                    else:
-                        ### end point (23h)
-                        itime = np.where(tim >= cubetime[-1])
-                    # print ''
-                    print ('For ', str(j), 'h, itime = ', itime)
-                    if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
-                    if dim_flag == 0: dat = np.zeros([len(itime[0])])
+                # for j in range(0,len(cubetime)-1):              ### loop over time
+                #     if j < len(cubetime[:-1]):
+                #         itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+                #     else:
+                #         ### end point (23h)
+                #         itime = np.where(tim >= cubetime[-1])
+                #     # print ''
+                #     print ('For ', str(j), 'h, itime = ', itime)
+
+                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                if dim_flag == 0: dat = np.zeros([len(itime[0])])
                     for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
                         if np.size(itime) > 1:
                             # print 'Processing i = ', str(itime[0][i])
