@@ -479,15 +479,15 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                 trackShip_index = trackShip(ship_data, date)
 
                 ### Plot tracks as line plot
-                plt.plot(ship_data.values[trackShip_index,6], ship_data.values[drift_index,7],
+                plt.plot(ship_data.values[drift_index,6], ship_data.values[drift_index,7],
                          color = 'darkorange', linewidth = 3,
                          transform = ccrs.PlateCarree(), label = date,
                          )
-                plt.plot(ship_data.values[trackShip_index[0],6], ship_data.values[drift_index[0],7],
+                plt.plot(ship_data.values[drift_index[0],6], ship_data.values[drift_index[0],7],
                          'k^', markerfacecolor = 'darkorange', linewidth = 3,
                          transform = ccrs.PlateCarree(),
                          )
-                plt.plot(ship_data.values[trackShip_index[-1],6], ship_data.values[drift_index[-1],7],
+                plt.plot(ship_data.values[drift_index[-1],6], ship_data.values[drift_index[-1],7],
                          'kv', markerfacecolor = 'darkorange', linewidth = 3,
                          transform = ccrs.PlateCarree(),
                          )
