@@ -6023,10 +6023,22 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         ### swath definition based on date, change of shape at 2 Sept
         if date[5] == 8:
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
+            lat0 = 70
+            lat1 = -1
+            lon0 = 20
+            lon1 = 70
         elif np.logical_and(date[5] == 9, int(date[6:8]) <= 2):
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
+            lat0 = 70
+            lat1 = -1
+            lon0 = 20
+            lon1 = 70
         else:
             ncube = Cube(np.zeros([np.size(cube),70,24,72,20]))
+            lat0 = 0
+            lat1 = 72
+            lon0 = 50
+            lon1 = 70
 
         print (date)
         print (ncube.shape)
@@ -6133,45 +6145,45 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     print ('data.shape = ', str(data.shape))
                     print ('')
 
-    #             #################################################################
-    #             ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
-    #             #################################################################
-    #             for j in range(0,len(cubetime)-1):              ### loop over time
-    #                 if j < len(cubetime[:-1]):
-    #                     itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-    #                 else:
-    #                     ### end point (23h)
-    #                     itime = np.where(tim >= cubetime[-1])
-    #                 # print ''
-    #                 print ('For ', str(j), 'h, itime = ', itime)
-    #                 if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
-    #                 if dim_flag == 0: dat = np.zeros([len(itime[0])])
-    #                 for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
-    #                     if np.size(itime) > 1:
-    #                         # print 'Processing i = ', str(itime[0][i])
-    #                         # print '...'
-    #                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-    #                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-    #                     else:
-    #                         # print 'Processing i = ', str(itime[i])
-    #                         # print '...'
-    #                         if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-    #                         if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-    #                     if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
-    #                     if dim_flag == 0: dat[i] = np.squeeze(temp.data)
-    #                     if np.size(itime) > 1:
-    #                         if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-    #                         if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-    #                         if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-    #                         # print 'averaging over itime ...'
-    #                         # print ''
-    #                     else:
-    #                         if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-    #                         if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-    #                         # print 'no averaging, itime = 1 ...'
-    #                         print ('')
-    #                 # print data
-    #         # print 'data.shape = ', data.shape
+                #################################################################
+                ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
+                #################################################################
+                for j in range(0,len(cubetime)-1):              ### loop over time
+                    if j < len(cubetime[:-1]):
+                        itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
+                    else:
+                        ### end point (23h)
+                        itime = np.where(tim >= cubetime[-1])
+                    # print ''
+                    print ('For ', str(j), 'h, itime = ', itime)
+                    if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
+                    if dim_flag == 0: dat = np.zeros([len(itime[0])])
+                    for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
+                        if np.size(itime) > 1:
+                            # print 'Processing i = ', str(itime[0][i])
+                            # print '...'
+                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
+                        else:
+                            # print 'Processing i = ', str(itime[i])
+                            # print '...'
+                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
+                        if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
+                        if dim_flag == 0: dat[i] = np.squeeze(temp.data)
+                        if np.size(itime) > 1:
+                            if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+                            if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                            if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                            # print 'averaging over itime ...'
+                            # print ''
+                        else:
+                            if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                            if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                            # print 'no averaging, itime = 1 ...'
+                            print ('')
+                    # print data
+            # print 'data.shape = ', data.shape
     #
     #         #################################################################
     #         ## CREATE CUBE
