@@ -6155,24 +6155,15 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print ('varname = ', varname)
                 print ('')
 
-                # for j in range(0,len(cubetime)-1):              ### loop over time
-                #     if j < len(cubetime[:-1]):
-                #         itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
-                #     else:
-                #         ### end point (23h)
-                #         itime = np.where(tim >= cubetime[-1])
-                #     # print ''
-                #     print ('For ', str(j), 'h, itime = ', itime)
-
-                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points), len(cubetime), np.size(ncube,3), np.size(ncube,4)])
-                if dim_flag == 0: dat = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                # if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points), len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                # if dim_flag == 0: dat = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
                 for i in range(0, len(cubetime)):                   ### loop over time gridded by ship track
                     if dim_flag == 1:
                         temp = cube[k][i,:,lat0:lat1,lon0:lon1]
-                        dat[:,i,:,:] = np.squeeze(temp.data)
+                        data[:,i,:,:] = np.squeeze(temp.data)
                     if dim_flag == 0:
                         temp = cube[k][i,lat0:lat1,lon0:lon1]
-                        dat[i,:,:] = np.squeeze(temp.data)
+                        data[i,:,:] = np.squeeze(temp.data)
                     # if np.size(itime) > 1:
                     #     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
                     #     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
@@ -6185,16 +6176,11 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     #     # print 'no averaging, itime = 1 ...'
                     #     print ('')
                 # print data
-            print ('dat.shape = ', dat.shape)
-    #
-    #         #################################################################
-    #         ## CREATE CUBE
-    #         #################################################################
-    #         ### ECMWF FIELD NAMES
-    #         # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
-    #         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
-    #         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
+            print ('data.shape = ', dat.shape)
 
+            #################################################################
+            ## CREATE CUBE
+            #################################################################
     #
     #             if stream[1:3] == 'pa':
     #                 a = len(cube[k].aux_coords)
