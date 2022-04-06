@@ -3215,8 +3215,8 @@ def main():
     ### -------------------------------------------------------------------------
     #
     date_dir = os.listdir(root_dir + out_dir1)
-    cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
-    # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
+    # cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
+    cube = loadPA(root_dir, out_dir1, date_dir, model_flag)
     print (cube)
     figure = plot_cartmap(ship_data, cube, date_dir, model)
 
