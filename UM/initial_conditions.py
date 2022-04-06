@@ -275,7 +275,7 @@ def splitShip(data, date):
     splitShip1_start = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
     splitShip1_end = np.where(np.logical_and(data.values[:,2]<=31,data.values[:,1]==8))
 
-    splitShip2_start = np.where(np.logical_and(data.values[:,2]=>1,data.values[:,1]==9))
+    splitShip2_start = np.where(np.logical_and(data.values[:,2]>=1,data.values[:,1]==9))
     splitShip2_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
 
     splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
