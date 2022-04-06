@@ -2908,12 +2908,13 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.ylim([0,3e3])
             plt.ylabel('Z [m]')
             if col1[sp] == col1[-1]: plt.xlabel('q bias wrt Sonde [K]')
-            if filenames[f][:8] == '20180815':
-                plt.xlim([-2., 2.])
-            if filenames[f][:8] == '20180902':
-                plt.xlim([-2., 2.])
-            else:
-                plt.xlim([-0.5,0.5])
+            # print (filenames[f][:8])
+            # if filenames[f][:8] == '20180815':
+            #     plt.xlim([-2., 2.])
+            # elif filenames[f][:8] == '20180828':
+            #     plt.xlim([-0.5,0.5])
+            # elif filenames[f][:8] == '20180902':
+            plt.xlim([-2., 2.])
 
         for sp in range(0, len(col2)):
             plt.subplot(5,3,col2[sp])
@@ -3095,7 +3096,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
@@ -3205,7 +3206,7 @@ def main():
     ### Combine PP files
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # dummy = combinePP(root_dir, out_dir, date_dir)
+    dummy = combinePP(root_dir, out_dir, date_dir)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -3213,11 +3214,11 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     #
-    # date_dir = os.listdir(root_dir + out_dir)
-    # cube = loadPD(root_dir, out_dir, date_dir)
-    # # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
-    # print (cube)
-    # figure = plot_cartmap(ship_data, cube, date_dir, model)
+    date_dir = os.listdir(root_dir + out_dir)
+    cube = loadPD(root_dir, out_dir, date_dir)
+    # cube = loadPA(root_dir, out_dir, date_dir, model_flag)
+    print (cube)
+    figure = plot_cartmap(ship_data, cube, date_dir, model)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -3241,97 +3242,97 @@ def main():
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    ### Load in observations - laptop analysis
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    obs = {}
-    obs = loadObservations(obs, platform, obs_root_dir)
-
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    ### Load pulled track files
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    dir1 = out_dir1 + 'OUT_R2/'
-    dir2 = out_dir2 + 'OUT_R2/'
-    dir4 = out_dir4 + 'OUT_R2_LAM/'
-    dir5 = out_dir_glm + 'OUT_R2_GLM/'
-
-    out_dirs = [dir1, dir2, dir4, dir5]
-
-    nc1 = {}   ### load netcdfs into a single dictionary - actually no, didn't want to work
-    nc2 = {}
-    nc4 = {}
-    nc5 = {}
-    data1 = {}
-    data2 = {}
-    data4 = {}
-    data5 = {}
-    nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
-    nc2, data2 = loadNCs(nc2, data2, root_dir, dir2, 'lam')
-    nc4, data4 = loadNCs(nc4, data4, root_dir, dir4, 'lam')
-    nc5, data5 = loadNCs(nc5, data5, root_dir, dir5, 'glm')
-
-    # for key in nc2.keys():
-    #     print (key)
-    #     print (nc2[key])
-
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    ### Start sonde analysis
-    ### -------------------------------------------------------------------------
-    ### -------------------------------------------------------------------------
-    filenames = os.listdir(root_dir + dir1)
-    print (filenames)
-
-    nc1, data1 = radiosondePrep(nc1, data1, dir1, obs, filenames, 'lam')
-    nc2, data2 = radiosondePrep(nc2, data2, dir2, obs, filenames, 'lam')
-    nc4, data4 = radiosondePrep(nc4, data4, dir4, obs, filenames, 'lam')
-    nc5, data5 = radiosondePrep(nc5, data5, dir5, obs, filenames, 'glm')
-
-    print (data4.keys())
-
-    # print (obs['sondes']['gpsaltitude'].shape)
-
-    #### ---------------------------------------------------------------
-    #### re-grid sonde and GLM data to LAM vertical grid <10km
-    #### ---------------------------------------------------------------
-    print ('...')
-    print ('Re-gridding sonde and glm data...')
-    print ('')
-    for file in filenames:
-        obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
-    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
-    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
-    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
-    print ('')
-    print ('Done!')
-
-    print (data5['20180815'].keys())
-
-    hour_indices = np.array([5, 11, 17, 23, 29, -1])
-    # print (data5['forecast_time'])
-    # print (data5['forecast_time'][hour_indices])
-    # print (obs['sondes']['temp_UM'].shape)
-    ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
-
-    #### ---------------------------------------------------------------
-    #### calculate thermodynamic anomalies
-    #### ---------------------------------------------------------------
-    for file in filenames:
-        data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
-        data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
-        data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
-        # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
-
-        print (data1[file[:8]].keys())
-
-    #### ---------------------------------------------------------------
-    #### plot anomalies
-    #### ---------------------------------------------------------------
-    figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # ### Load in observations - laptop analysis
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # obs = {}
+    # obs = loadObservations(obs, platform, obs_root_dir)
+    #
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # ### Load pulled track files
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # dir1 = out_dir1 + 'OUT_R2/'
+    # dir2 = out_dir2 + 'OUT_R2/'
+    # dir4 = out_dir4 + 'OUT_R2_LAM/'
+    # dir5 = out_dir_glm + 'OUT_R2_GLM/'
+    #
+    # out_dirs = [dir1, dir2, dir4, dir5]
+    #
+    # nc1 = {}   ### load netcdfs into a single dictionary - actually no, didn't want to work
+    # nc2 = {}
+    # nc4 = {}
+    # nc5 = {}
+    # data1 = {}
+    # data2 = {}
+    # data4 = {}
+    # data5 = {}
+    # nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
+    # nc2, data2 = loadNCs(nc2, data2, root_dir, dir2, 'lam')
+    # nc4, data4 = loadNCs(nc4, data4, root_dir, dir4, 'lam')
+    # nc5, data5 = loadNCs(nc5, data5, root_dir, dir5, 'glm')
+    #
+    # # for key in nc2.keys():
+    # #     print (key)
+    # #     print (nc2[key])
+    #
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # ### Start sonde analysis
+    # ### -------------------------------------------------------------------------
+    # ### -------------------------------------------------------------------------
+    # filenames = os.listdir(root_dir + dir1)
+    # print (filenames)
+    #
+    # nc1, data1 = radiosondePrep(nc1, data1, dir1, obs, filenames, 'lam')
+    # nc2, data2 = radiosondePrep(nc2, data2, dir2, obs, filenames, 'lam')
+    # nc4, data4 = radiosondePrep(nc4, data4, dir4, obs, filenames, 'lam')
+    # nc5, data5 = radiosondePrep(nc5, data5, dir5, obs, filenames, 'glm')
+    #
+    # print (data4.keys())
+    #
+    # # print (obs['sondes']['gpsaltitude'].shape)
+    #
+    # #### ---------------------------------------------------------------
+    # #### re-grid sonde and GLM data to LAM vertical grid <10km
+    # #### ---------------------------------------------------------------
+    # print ('...')
+    # print ('Re-gridding sonde and glm data...')
+    # print ('')
+    # for file in filenames:
+    #     obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
+    # print ('')
+    # print ('Done!')
+    #
+    # print (data5['20180815'].keys())
+    #
+    # hour_indices = np.array([5, 11, 17, 23, 29, -1])
+    # # print (data5['forecast_time'])
+    # # print (data5['forecast_time'][hour_indices])
+    # # print (obs['sondes']['temp_UM'].shape)
+    # ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
+    #
+    # #### ---------------------------------------------------------------
+    # #### calculate thermodynamic anomalies
+    # #### ---------------------------------------------------------------
+    # for file in filenames:
+    #     data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
+    #     data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
+    #     data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
+    #     # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
+    #
+    #     print (data1[file[:8]].keys())
+    #
+    # #### ---------------------------------------------------------------
+    # #### plot anomalies
+    # #### ---------------------------------------------------------------
+    # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
 
 
     # np.save('working_data', data)
