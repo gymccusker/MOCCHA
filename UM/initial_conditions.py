@@ -508,7 +508,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                     drift_index = iceDrift(ship_data)
                     inIce_index = inIce(ship_data)
                     trackShip_index = trackShip(ship_data, date)
-                    splitShip1_index, splitShip2_index = trackShip(ship_data, date)
+                    splitShip1_index, splitShip2_index = splitShip(ship_data, date)
 
                     ### Plot tracks as line plot
                     plt.plot(ship_data.values[splitShip1_index,6], ship_data.values[splitShip1_index,7],
