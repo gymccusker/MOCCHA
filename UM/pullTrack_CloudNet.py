@@ -6025,7 +6025,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         elif np.logical_and(date[5] == 9, date[6:8] <= 2):
             ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
         else:
-            ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
+            ncube = Cube(np.zeros([np.size(cube),70,24,72,20]))
 
         print (date)
         print (ncube.shape)
@@ -7738,7 +7738,7 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
+            names = ['_pa009']#,'_pb009','_pd011','_pe011','_pc011']
             # names = ['_pa012','_pb012','_pd012','_pe012','_pc012']
             # names = ['_pb009']         ### only do specific files as a test
             if out_dir[-6:-1] == 'CASIM':
@@ -7838,7 +7838,7 @@ def main():
                                 outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
                         else:
                             print ('Valid stream not found.')
-                    elif swath == False:
+                    elif swath == True:
                         if stream[1:3] == 'pa':
                             if not os.path.exists(aoutfile):
                                 print (aoutfile + ' does not exist, so pulling swath...')
