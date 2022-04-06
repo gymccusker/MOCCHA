@@ -6871,7 +6871,7 @@ def writeFile_netCDF4(cube, eoutfile):
 
     return dataset
 
-def appendMetaNetCDF(outfile, date, out_dir, model):
+def appendMetaNetCDF(outfile, date, out_dir, model, swath):
 
     from netCDF4 import num2date, date2num
     import time
@@ -6977,7 +6977,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model):
     dataset.project = 'MOCCHA: Microbiology-Ocean-Cloud Coupling in the High Arctic. '
     if model == 'lam':
         modelnote = 'UM limited area model. '
-        dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed. '
+        if swath == False:
+            dataset.description = 'Hourly data taken from grid box closest to ship location. Where the ship covers more than one grid box within an hour period, data are averaged from all grid boxes crossed. '
+        if swath == True:
+            dataset.description = 'Data are from swath area surrounding ship track. Swath setup changes at 2 Sep. '
     elif model == 'glm':
         modelnote = 'UM global model. '
         dataset.description = 'Hourly data taken from grid box closest to ship location. '
@@ -7234,7 +7237,7 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/'
+        root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/UM/DATA/'
@@ -7247,7 +7250,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '31_u-cl349_RA2M_CASIM/'
+    out_dir = '23_u-cc278_RA1M_CASIM/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
@@ -7371,15 +7374,15 @@ def main():
                 ### -------------------------------------------------------------------------
                 if np.logical_or(np.logical_or(out_dir == '7_u-bn068_RA2T_CON/', out_dir == '24_u-cc324_RA2T_CON/'), out_dir == '28_u-ce627_RA2T_CON/'):    ## choose lam or global for 7_u-bn068/24_u-cc324/28_u-ce627
                     # #### LAM
-                    # filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
-                    # model = 'lam'
-                    # dirout = out_dir[-17:-10] + '_lam/'
+                    filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
+                    model = 'lam'
+                    dirout = out_dir[-17:-10] + '_lam/'
                     ### GLM
                     if stream == '_pb009': stream = '_pb012'  ## hard fix for glm, pb stream starts at 012
                     if stream == '_pa009': stream = '_pa012'  ## hard fix for glm, pa stream *sometimes* starts at 012
-                    filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
-                    model = 'glm'
-                    dirout = out_dir[-17:-10] + '_glm/'
+                    # filename = root_dir + out_dir + date + '/' + date + '_glm' + stream + '_r0.pp'
+                    # model = 'glm'
+                    # dirout = out_dir[-17:-10] + '_glm/'
                 else:
                     filename = root_dir + out_dir + date + '/' + date + '_HighArctic_1p5km_' + expt + stream + '_r0.pp'
                     model = 'lam'
@@ -7430,28 +7433,55 @@ def main():
                     doutfile = nc_outfile[:-3] + '_d.nc'
                     eoutfile = nc_outfile[:-3] + '_e.nc'
 
-                    if stream[1:3] == 'pa':
-                        if not os.path.exists(aoutfile):
-                            print (aoutfile + ' does not exist, so pulling ship track...')
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[1:3] == 'pb':
-                        if not os.path.exists(boutfile):
-                            print (boutfile + ' does not exist, so pulling ship track...')
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[1:3] == 'pd':
-                        if not os.path.exists(doutfile):
-                            print (doutfile + ' does not exist, so pulling ship track...')
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[1:3] == 'pe':
-                        if not os.path.exists(eoutfile):
-                            print (eoutfile + ' does not exist, so pulling ship track...')
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    elif stream[1:3] == 'pc':
-                        if not os.path.exists(nc_outfile):
-                            print (nc_outfile + ' does not exist, so pulling ship track...')
-                            outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
-                    else:
-                        print ('Valid stream not found.')
+                    ### 1-to-1 or swath perspective?
+                    swath = True
+
+                    if swath == False:
+                        if stream[1:3] == 'pa':
+                            if not os.path.exists(aoutfile):
+                                print (aoutfile + ' does not exist, so pulling ship track...')
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pb':
+                            if not os.path.exists(boutfile):
+                                print (boutfile + ' does not exist, so pulling ship track...')
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pd':
+                            if not os.path.exists(doutfile):
+                                print (doutfile + ' does not exist, so pulling ship track...')
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pe':
+                            if not os.path.exists(eoutfile):
+                                print (eoutfile + ' does not exist, so pulling ship track...')
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pc':
+                            if not os.path.exists(nc_outfile):
+                                print (nc_outfile + ' does not exist, so pulling ship track...')
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        else:
+                            print ('Valid stream not found.')
+                    elif swath == False:
+                        if stream[1:3] == 'pa':
+                            if not os.path.exists(aoutfile):
+                                print (aoutfile + ' does not exist, so pulling swath...')
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pb':
+                            if not os.path.exists(boutfile):
+                                print (boutfile + ' does not exist, so pulling swath...')
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pd':
+                            if not os.path.exists(doutfile):
+                                print (doutfile + ' does not exist, so pulling swath...')
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pe':
+                            if not os.path.exists(eoutfile):
+                                print (eoutfile + ' does not exist, so pulling swath...')
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        elif stream[1:3] == 'pc':
+                            if not os.path.exists(nc_outfile):
+                                print (nc_outfile + ' does not exist, so pulling swath...')
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                        else:
+                            print ('Valid stream not found.')
 
                     # -------------------------------------------------------------
                     ### 2. use the following if only want the variability over a certain grid size
@@ -7499,7 +7529,7 @@ def main():
                         print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
                         print ('')
                         # outfile = '20180902_oden_metum.nc'
-                        out = appendMetaNetCDF(nc_outfile, date, out_dir, model)
+                        out = appendMetaNetCDF(nc_outfile, date, out_dir, model, swath)
                             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
                             ## os.rename(nc_outfile, final_outfile)
 
