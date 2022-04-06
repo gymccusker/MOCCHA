@@ -272,8 +272,8 @@ def splitShip(data, date):
     # splitShip1_start = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
     # splitShip1_end = np.where(np.logical_and(data.values[:,2]<=30,data.values[:,1]==8))
     #
-    splitShip2_start = np.where(np.logical_and(data.values[:,2]>=1,data.values[:,1]==9))
-    splitShip2_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    # splitShip2_start = np.where(np.logical_and(data.values[:,2]>=1,data.values[:,1]==9))
+    # splitShip2_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
     #
     # print (splitShip1_start[0][0])
     # print (splitShip1_end[0][0])
@@ -282,11 +282,15 @@ def splitShip(data, date):
     # print (splitShip2_end[0][0])
     #
     # splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
-    splitShip2_index = range(splitShip2_start[0][0],splitShip2_end[0][0])
+    # splitShip2_index = range(splitShip2_start[0][0],splitShip2_end[0][0])
 
     Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=1,data.values[:,1]==9),data.values[:,3]<=1))
     splitShip1_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
+
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=31,data.values[:,1]==8))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    splitShip2_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     return splitShip1_index, splitShip2_index
 
@@ -506,7 +510,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                     ### draw outline of grid
                     if model == 'lam':
                         qplt.outline(cube[date][0][0,70:,20:70])
-                        qplt.outline(cube[date][0][0,:70,55:70])
+                        qplt.outline(cube[date][0][0,:70,50:70])
 
                     #################################################################
                     ## plot ship track
