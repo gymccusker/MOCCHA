@@ -269,23 +269,24 @@ def splitShip(data, date):
     ## DEFINE METUM PERIOD (CLOUDNET COMPARISON)
     ###################################
 
-    # Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    # Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
-
-    splitShip1_start = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
-    splitShip1_end = np.where(np.logical_and(data.values[:,2]<=30,data.values[:,1]==8))
-
+    # splitShip1_start = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    # splitShip1_end = np.where(np.logical_and(data.values[:,2]<=30,data.values[:,1]==8))
+    #
     splitShip2_start = np.where(np.logical_and(data.values[:,2]>=1,data.values[:,1]==9))
     splitShip2_end = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
-
-    print (splitShip1_start[0])
-    print (splitShip1_end[0])
-
-    print (splitShip2_start[0])
-    print (splitShip2_end[0])
-
-    splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
+    #
+    # print (splitShip1_start[0][0])
+    # print (splitShip1_end[0][0])
+    #
+    # print (splitShip2_start[0][0])
+    # print (splitShip2_end[0][0])
+    #
+    # splitShip1_index = range(splitShip1_start[0][0],splitShip1_end[0][0])
     splitShip2_index = range(splitShip2_start[0][0],splitShip2_end[0][0])
+
+    Aug_drift_index = np.where(np.logical_and(data.values[:,2]>=14,data.values[:,1]==8))
+    Sep_drift_index = np.where(np.logical_and(np.logical_and(data.values[:,2]<=14,data.values[:,1]==9),data.values[:,3]<=22))
+    splitShip1_index = range(Aug_drift_index[0][0],Sep_drift_index[0][-1])
 
     return splitShip1_index, splitShip2_index
 
@@ -606,7 +607,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                     #             iplt.scatter(cube[date][0].dim_coords[2][int(ilon[i] + xoffset)], cube[date][0].dim_coords[1][int(ilat[i] + yoffset)],color='k')
                     #             # print (tim[i])
 
-                    plt.legend()
+                    # plt.legend()
 
                     plt.savefig('../../FIGS/Grid_' + model + '_Swath.png')
                     plt.close()
