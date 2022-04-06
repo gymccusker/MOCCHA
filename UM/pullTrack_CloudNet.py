@@ -7616,7 +7616,7 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/UM/DATA/'
@@ -7629,7 +7629,7 @@ def main():
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
     ### CHOSEN RUN
-    out_dir = '23_u-cc278_RA1M_CASIM/'
+    out_dir = '25_u-cc568_RA2M_CON/'
     date_dir = os.listdir(root_dir + out_dir)
 
     ## 4_u-bg610_RA2M_CON/              # Wilson and Ballard 1999 uphys
