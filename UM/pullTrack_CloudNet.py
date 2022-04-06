@@ -6029,48 +6029,47 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
 
         print (date)
         print (ncube.shape)
-        # ncube = Cube(np.zeros([np.size(cube),70,24]))
 
-    #     #################################################################
-    #     ## POPULATE NP ARRAY WITH DATA
-    #     #################################################################
-    #     for k in range(0,np.size(cube)):            ### loop over number of variables
-    #         print ('')
-    #         print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
-    #         print ('')
-    #         #################################################################
-    #         ## only consider hourly diagnostics
-    #         #################################################################
-    #         if len(np.round(cube[k].coord('forecast_period').points)) > 10:
-    #             ###---------------------------------
-    #             ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
-    #             ###---------------------------------
-    #             print ('Double-checking grid:')
-    #             if len(cube[k].dim_coords[-1].points) == 25:
-    #             # if cube[0,0].shape >= 25-1:    # ll = 240, 471
-    #                 xoffset = -239
-    #                 yoffset = -470
-    #             elif len(cube[k].dim_coords[-1].points) == 56:
-    #             # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #                 xoffset = -210
-    #                 yoffset = -385
-    #             elif len(cube[k].dim_coords[-1].points) == 94:
-    #             # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #                 xoffset = -211
-    #                 yoffset = -385
-    #             elif len(cube[k].dim_coords[-1].points) == 81:          ### 14th and 24th August
-    #             # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #                 xoffset = -209
-    #                 yoffset = -399
-    #             elif len(cube[k].dim_coords[-1].points) == 380:         ### needs checked
-    #             # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
-    #                 xoffset = -60
-    #                 yoffset = -110
-    #             else:
-    #             # elif cube[0,0].shape >= 500-1:
-    #                 xoffset = 0
-    #                 yoffset = 0
-    #             print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
+        #################################################################
+        ## POPULATE NP ARRAY WITH DATA
+        #################################################################
+        for k in range(0,np.size(cube)):            ### loop over number of variables
+            print ('')
+            print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
+            print ('')
+            ################################################################
+            # only consider hourly diagnostics
+            ################################################################
+            if len(np.round(cube[k].coord('forecast_period').points)) > 10:
+                ###---------------------------------
+                ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
+                ###---------------------------------
+                print ('Double-checking grid:')
+                if len(cube[k].dim_coords[-1].points) == 25:
+                # if cube[0,0].shape >= 25-1:    # ll = 240, 471
+                    xoffset = -239
+                    yoffset = -470
+                elif len(cube[k].dim_coords[-1].points) == 56:
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -210
+                    yoffset = -385
+                elif len(cube[k].dim_coords[-1].points) == 94:
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -211
+                    yoffset = -385
+                elif len(cube[k].dim_coords[-1].points) == 81:          ### 14th and 24th August
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -209
+                    yoffset = -399
+                elif len(cube[k].dim_coords[-1].points) == 380:         ### needs checked
+                # elif cube[0,0].shape >= 93-1:    # ll = 211, 386
+                    xoffset = -60
+                    yoffset = -110
+                else:
+                # elif cube[0,0].shape >= 500-1:
+                    xoffset = 0
+                    yoffset = 0
+                print ('Offsets are: ' + str(xoffset) + ', ' + str(yoffset))
     #
     #             #################################################################
     #             ## make hourly time array
