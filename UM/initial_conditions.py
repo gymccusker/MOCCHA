@@ -510,7 +510,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                     ### draw outline of grid
                     if model == 'lam':
                         qplt.outline(cube[date][0][0,70:,20:70])
-                        qplt.outline(cube[date][0][0,:75,50:70], color = 'grey')
+                        qplt.outline(cube[date][0][0,:72,50:70], color = 'grey')
 
                     #################################################################
                     ## plot ship track
