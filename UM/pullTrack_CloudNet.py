@@ -7739,9 +7739,9 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            names = ['_pa009']#,'_pb009','_pd011','_pe011','_pc011']
+            # names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
             # names = ['_pa012','_pb012','_pd012','_pe012','_pc012']
-            # names = ['_pb009']         ### only do specific files as a test
+            names = ['_pc011']         ### only do specific files as a test
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
