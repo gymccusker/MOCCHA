@@ -6099,7 +6099,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         ####     will need to concatenate from next day's file?
 
                 print ('')
-                print ('Cube times relative to forecast start:', cubetime[:-1])
+                print ('Cube times relative to forecast start:', cubetime[:])
                 print ('')
 
                 #################################################################
@@ -6148,6 +6148,13 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 #################################################################
                 ## LOOP OVER TIME INDEX, DECOMPOSE ONTO 24H TIMESERIES
                 #################################################################
+
+                varname = varnames.findfieldName(stash)
+                print ('standard_name = ', cube[k].standard_name)
+                print ('long name = ', cube[k].long_name)
+                print ('varname = ', varname)
+                print ('')
+
                 # for j in range(0,len(cubetime)-1):              ### loop over time
                 #     if j < len(cubetime[:-1]):
                 #         itime = np.where(np.logical_and(tim >= cubetime[j], tim < cubetime[j+1]))
@@ -6157,34 +6164,28 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 #     # print ''
                 #     print ('For ', str(j), 'h, itime = ', itime)
 
-                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points),len(itime[0])])
-                if dim_flag == 0: dat = np.zeros([len(itime[0])])
-                    for i in range(0, len(itime[0])):                   ### loop over time gridded by ship track
-                        if np.size(itime) > 1:
-                            # print 'Processing i = ', str(itime[0][i])
-                            # print '...'
-                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[0][i]] + yoffset),int(ilon[itime[0][i]] + xoffset)]
-                        else:
-                            # print 'Processing i = ', str(itime[i])
-                            # print '...'
-                            if dim_flag == 1: temp = cube[k][j,:,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                            if dim_flag == 0: temp = cube[k][j,int(ilat[itime[i]] + yoffset),int(ilon[itime[i]] + xoffset)]
-                        if dim_flag == 1: dat[:,i] = np.squeeze(temp.data)
-                        if dim_flag == 0: dat[i] = np.squeeze(temp.data)
-                        if np.size(itime) > 1:
-                            if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                            if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                            if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                            # print 'averaging over itime ...'
-                            # print ''
-                        else:
-                            if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                            if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                            # print 'no averaging, itime = 1 ...'
-                            print ('')
-                    # print data
-            # print 'data.shape = ', data.shape
+                if dim_flag == 1: dat = np.zeros([len(cube[k].coord('model_level_number').points), len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                if dim_flag == 0: dat = np.zeros([len(cubetime), np.size(ncube,3), np.size(ncube,4)])
+                for i in range(0, len(cubetime)):                   ### loop over time gridded by ship track
+                    if dim_flag == 1:
+                        temp = cube[k][i,:,lat0:lat1,lon0:lon1]
+                        dat[:,i,:,:] = np.squeeze(temp.data)
+                    if dim_flag == 0:
+                        temp = cube[k][i,lat0:lat1,lon0:lon1]
+                        dat[i,:,:] = np.squeeze(temp.data)
+                    # if np.size(itime) > 1:
+                    #     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
+                    #     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
+                    #     if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
+                    #     # print 'averaging over itime ...'
+                    #     # print ''
+                    # else:
+                    #     if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
+                    #     if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
+                    #     # print 'no averaging, itime = 1 ...'
+                    #     print ('')
+                # print data
+            print ('dat.shape = '), dat.shape
     #
     #         #################################################################
     #         ## CREATE CUBE
@@ -6193,11 +6194,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     #         # field_names = {'forecast_time','pressure','height','temperature','q','rh','ql','qi','uwind','vwind','cloud_fraction',
     #         #             'wwind','gas_atten','specific_gas_atten','specific_dry_gas_atten','specific_saturated_gas_atten','K2',
     #         #             'specific_liquid_atten','sfc_pressure','sfc_height_amsl'};
-    #             varname = varnames.findfieldName(stash)
-    #             print ('standard_name = ', cube[k].standard_name)
-    #             print ('long name = ', cube[k].long_name)
-    #             print ('varname = ', varname)
-    #             print ('')
+
     #
     #             if stream[1:3] == 'pa':
     #                 a = len(cube[k].aux_coords)
