@@ -3122,7 +3122,7 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     # define case_study flag
-    case_study == True
+    case_study = True
     date_dir = os.listdir(root_dir + out_dir1)
     # cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
     cube = loadPA(root_dir, out_dir1, date_dir, model_flag)
