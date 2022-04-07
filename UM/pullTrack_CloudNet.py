@@ -6176,7 +6176,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     #     # print 'no averaging, itime = 1 ...'
                     #     print ('')
                 # print data
-            print ('data.shape = ', dat.shape)
+            print ('data.shape = ', data.shape)
 
             #################################################################
             ## CREATE CUBE
