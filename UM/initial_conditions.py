@@ -14,9 +14,9 @@ import diags_MOCCHA as diags
 import diags_varnames as varnames
 import cartopy.crs as ccrs
 import iris
+import os
 import matplotlib.pyplot as plt
 import matplotlib.cm as mpl_cm
-import os
 import datetime
 from iris.time import PartialDateTime
 
@@ -3157,7 +3157,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'MAC'
 
     ### JASMIN
     ### LAPTOP
@@ -3172,6 +3172,10 @@ def main():
         root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
+    if platform == 'MAC':
+        root_dir = '/Users/eargy/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
+        ship_filename = '/Users/eargy/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
+        obs_root_dir = '/Users/eargy/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MONSOON':
         root_dir = '~/cylc-run/u-bg610/share/cycle/20160401T0000Z/HighArctic/1p5km/RA2M_CON/um/'
     if platform == 'DESKTOP':
