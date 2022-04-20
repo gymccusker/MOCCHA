@@ -6206,10 +6206,11 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
                     model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    model_lat = DimCoord(cube[1].aux_coords[2].points, var_name = 'y_position', standard_name = 'y_position', units='grid boxes')
+                    model_lat = DimCoord(np.size(ncube,3), var_name = 'y_position', standard_name = 'latitude', units='grid boxes')
+                    model_lon = DimCoord(np.size(ncube,4), var_name = 'x_position', standard_name = 'longitude', units='grid boxes')
                     comdata = fixHeight(data, cube[k])
                 ncube = Cube(np.transpose(comdata),
-                        dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                        dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
                         standard_name = cube[k].standard_name,
                         long_name = cube[k].long_name,
                         units = cube[k].units,
