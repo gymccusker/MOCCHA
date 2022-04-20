@@ -6134,6 +6134,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
                     print ('Variable is 4D:')
                     print ('')
+                    print (cube[k])
                     #### create empty arrays to be filled
                     data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
                     ### make dimension flag
