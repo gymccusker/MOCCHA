@@ -6255,12 +6255,12 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print ('Initialising fcube')
                 print ('')
                 fcube = [ncube]
+                print (fcube)
             else:
                 print ('Appending variable to fcube')
                 print ('')
                 fcube.append(ncube)
 
-        # print fcube
 
     # #################################################################
     # ## define output filename
