@@ -3157,7 +3157,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'MAC'
+    platform = 'JASMIN'
 
     ### JASMIN
     ### LAPTOP
