@@ -509,7 +509,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
                     #################################################################
                     ### draw outline of grid
                     if model == 'lam':
-                        qplt.outline(cube[date][0][0,70:,20:70])
+                        qplt.outline(cube[date][0][0,72:,20:70])
                         qplt.outline(cube[date][0][0,:72,50:70], color = 'grey')
 
                     #################################################################
@@ -3275,13 +3275,18 @@ def main():
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
+    ### define case_study flag
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    case_study = False
+    date_dir = os.listdir(root_dir + out_dir1)
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
     ### Load combined PP files for a test figure - pd for sea ice area fraction cartopy plot
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    # define case_study flag
-    case_study = False
-    date_dir = os.listdir(root_dir + out_dir1)
-    # cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
+    #### cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
     cube = loadPA(root_dir, out_dir1, date_dir, model_flag)
     print (cube)
     figure = plot_cartmap(ship_data, cube, date_dir, model, case_study)
