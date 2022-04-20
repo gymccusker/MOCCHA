@@ -6238,7 +6238,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         aux_coords_and_dims = None,
                         )
             elif dim_flag == 0:         ### 3D VARIABLE
-                ncube = Cube(data),
+                ncube = Cube(data,
                         dim_coords_and_dims=[(ntime, 0), (model_lat, 1), (model_lon, 2)],
                         standard_name = cube[k].standard_name,
                         long_name = cube[k].long_name,
