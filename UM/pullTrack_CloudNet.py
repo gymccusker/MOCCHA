@@ -6227,8 +6227,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     print (ncube[0,0,:,0])
                     print (cube[1].dim_coords)
                     model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    model_lat = DimCoord(ncube[0,0,:,0], var_name = 'y_position', standard_name = 'grid_latitude', units='')
-                    model_lon = DimCoord(ncube[0,0,0,:], var_name = 'x_position', standard_name = 'grid_longitude', units='')
+                    model_lat = DimCoord(cube[1].dim_coords[2], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                    model_lon = DimCoord(cube[1].dim_coords[2], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                     comdata = fixHeight(data, cube[k], swath, ncube)
                 ncube = Cube(np.transpose(comdata,(1,0,2,3)),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
