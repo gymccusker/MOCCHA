@@ -6177,7 +6177,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     #     print ('')
                 # print data
             print ('data.shape = ', data.shape)
-            prnt (cube[1].aux_coords)
+            print (cube[1].aux_coords)
 
             #################################################################
             ## CREATE CUBE
