@@ -5964,7 +5964,7 @@ def fixHeight(data, cube, swath, ncube):
             ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
             cubedata = np.zeros([71,24,np.size(ncube,3),np.size(ncube,4)])
             for i in range(0,24):
-                temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+                temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i,:,:])
                 cubedata[1:,i,:,:] = temp
                 cubedata[0,i,:,:] = np.nan
         else:
@@ -6032,7 +6032,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         print ('')
         print ('More than one variable constraint. Proceeding...')
         print ('')
-        print (np.size(cube))
+        # print (np.size(cube))
 
         #################################################################
         ## CREATE EMPTY CUBE FOR PC COLUMN DIAGNOSTICS
@@ -6262,11 +6262,12 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 print ('Initialising fcube')
                 print ('')
                 fcube = [newcube]
-                print (fcube)
             else:
                 print ('Appending variable to fcube')
                 print ('')
                 fcube.append(newcube)
+
+            print (fcube)
 
 
     # #################################################################
