@@ -6022,14 +6022,14 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         #################################################################
         ### swath definition based on date, change of shape at 2 Sept
         if date[5] == 8:
-            ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
-            lat0 = 70
+            ncube = Cube(np.zeros([np.size(cube),72,24,26,50]))
+            lat0 = 72
             lat1 = -1
             lon0 = 20
             lon1 = 70
         elif np.logical_and(date[5] == 9, int(date[6:8]) <= 2):
-            ncube = Cube(np.zeros([np.size(cube),70,24,26,50]))
-            lat0 = 70
+            ncube = Cube(np.zeros([np.size(cube),72,24,26,50]))
+            lat0 = 72
             lat1 = -1
             lon0 = 20
             lon1 = 70
