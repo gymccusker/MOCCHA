@@ -492,7 +492,7 @@ def plot_cartmap(ship_data, cube, date_dir, model, case_study):
 
                 plt.legend()
 
-                plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.png')
+                plt.savefig('../../FIGS/Grid_' + model + '_ZoomedTrack_' + date + '.svg')
                 plt.close()
 
             elif case_study == False:
