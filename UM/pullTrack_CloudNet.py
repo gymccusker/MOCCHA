@@ -5924,7 +5924,7 @@ def checkWind(cube):
 
     return cube, stash
 
-def fixHeight(data, cube):
+def fixHeight(data, cube, swath, ncube):
 
     print ('******')
     print ('')
@@ -5935,27 +5935,44 @@ def fixHeight(data, cube):
 
     ### wind fields have Z[0] == 2.5
     ### all other 4D fields have Z[0] >= 5.0
-
-    if np.round(cube.aux_coords[2][0].points) > 3:
-    # if np.round(cube.aux_coords[2][0].points) == 5:
-        ### making 70 levels into 71 for common grid
-        cubedata = np.zeros([71,24])
-        cubedata[1:,:] = data
-        cubedata[0,:] = np.nan
-    elif np.round(cube.aux_coords[2][0].points) == 2:
-        ### interpolating to n71 common grid
-        ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
-        cubedata = np.zeros([71,24])
-        for i in range(0,24):
-            temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
-            cubedata[1:,i] = temp
-            cubedata[0,i] = np.nan
-    else:
-        cubedata = data
+    if swath == False:
+        if np.round(cube.aux_coords[2][0].points) > 3:
+        # if np.round(cube.aux_coords[2][0].points) == 5:
+            ### making 70 levels into 71 for common grid
+            cubedata = np.zeros([71,24])
+            cubedata[1:,:] = data
+            cubedata[0,:] = np.nan
+        elif np.round(cube.aux_coords[2][0].points) == 2:
+            ### interpolating to n71 common grid
+            ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
+            cubedata = np.zeros([71,24])
+            for i in range(0,24):
+                temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+                cubedata[1:,i] = temp
+                cubedata[0,i] = np.nan
+        else:
+            cubedata = data
+    elif swath == True:
+        if np.round(cube.aux_coords[2][0].points) > 3:
+        # if np.round(cube.aux_coords[2][0].points) == 5:
+            ### making 70 levels into 71 for common grid
+            cubedata = np.zeros([71,24,np.size(ncube,3),np.size(ncube,4)])
+            cubedata[1:,:,:,:] = data
+            cubedata[0,:,:,:] = np.nan
+        elif np.round(cube.aux_coords[2][0].points) == 2:
+            ### interpolating to n71 common grid
+            ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
+            cubedata = np.zeros([71,24,np.size(ncube,3),np.size(ncube,4)])
+            for i in range(0,24):
+                temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i])
+                cubedata[1:,i,:,:] = temp
+                cubedata[0,i,:,:] = np.nan
+        else:
+            cubedata = data
 
     return cubedata
 
-def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile):
+def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile, swath):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -6208,7 +6225,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                     model_lat = DimCoord(np.size(ncube,3), var_name = 'y_position', standard_name = 'latitude', units='')
                     model_lon = DimCoord(np.size(ncube,4), var_name = 'x_position', standard_name = 'longitude', units='')
-                    comdata = fixHeight(data, cube[k])
+                    comdata = fixHeight(data, cube[k], swath, ncube)
                 ncube = Cube(np.transpose(comdata),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
                         standard_name = cube[k].standard_name,
@@ -6334,7 +6351,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     #
     # return nc_outfile
 
-def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile):
+def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile, swath):
 
     from iris.coords import DimCoord
     from iris.cube import Cube
@@ -7819,46 +7836,46 @@ def main():
                         if stream[1:3] == 'pa':
                             if not os.path.exists(aoutfile):
                                 print (aoutfile + ' does not exist, so pulling ship track...')
-                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pb':
                             if not os.path.exists(boutfile):
                                 print (boutfile + ' does not exist, so pulling ship track...')
-                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pd':
                             if not os.path.exists(doutfile):
                                 print (doutfile + ' does not exist, so pulling ship track...')
-                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pe':
                             if not os.path.exists(eoutfile):
                                 print (eoutfile + ' does not exist, so pulling ship track...')
-                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pc':
                             if not os.path.exists(nc_outfile):
                                 print (nc_outfile + ' does not exist, so pulling ship track...')
-                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullTrack_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         else:
                             print ('Valid stream not found.')
                     elif swath == True:
                         if stream[1:3] == 'pa':
                             if not os.path.exists(aoutfile):
                                 print (aoutfile + ' does not exist, so pulling swath...')
-                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pb':
                             if not os.path.exists(boutfile):
                                 print (boutfile + ' does not exist, so pulling swath...')
-                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pd':
                             if not os.path.exists(doutfile):
                                 print (doutfile + ' does not exist, so pulling swath...')
-                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pe':
                             if not os.path.exists(eoutfile):
                                 print (eoutfile + ' does not exist, so pulling swath...')
-                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         elif stream[1:3] == 'pc':
                             if not os.path.exists(nc_outfile):
                                 print (nc_outfile + ' does not exist, so pulling swath...')
-                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile)
+                                outfile = pullSwath_CloudNet(cube, grid_filename, global_con, stream, date, model, ship_data, nc_outfile, swath)
                         else:
                             print ('Valid stream not found.')
 
