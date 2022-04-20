@@ -6183,60 +6183,60 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             ## CREATE CUBE
             #################################################################
 
-                if stream[1:3] == 'pa':
-                    a = len(cube[k].aux_coords)
-                    for ft in range(0,a):
-                        print(cube[k].aux_coords[ft].standard_name)
-                        if cube[k].aux_coords[ft].standard_name == 'forecast_period':
-                            if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
-                                ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                            else:
-                                ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+            if stream[1:3] == 'pa':
+                a = len(cube[k].aux_coords)
+                for ft in range(0,a):
+                    print(cube[k].aux_coords[ft].standard_name)
+                    if cube[k].aux_coords[ft].standard_name == 'forecast_period':
+                        if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
+                            ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                        else:
+                            ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+            else:
+                if cube[k].long_name == 'large_scale_ice_water_path':
+                    ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                elif cube[k].long_name == 'large_scale_liquid_water_path':
+                    ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 else:
-                    if cube[k].long_name == 'large_scale_ice_water_path':
-                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                    elif cube[k].long_name == 'large_scale_liquid_water_path':
-                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                    else:
-                        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                print (ntime.shape)
-                if dim_flag == 1:         ### 4D VARIABLE
-                    if stream[1:3] == 'pd':
-                        model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                        comdata = data                    #### leave BL diagnostics on RHO levels
-                    else:
-                        model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                        model_lat = DimCoord(cube[1].aux_coords[2].points, var_name = 'y_position', standard_name = 'y_position', units='grid boxes')
-                        comdata = fixHeight(data, cube[k])
-                    ncube = Cube(np.transpose(comdata),
-                            dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
-                            standard_name = cube[k].standard_name,
-                            long_name = cube[k].long_name,
-                            units = cube[k].units,
-                            var_name = varname,
-                            attributes = cube[k].attributes,
-                            aux_coords_and_dims = None,
-                            )
-                elif dim_flag == 0:         ### 3D VARIABLE
-                    ncube = Cube(np.transpose(data),
-                            dim_coords_and_dims=[(ntime, 0)],
-                            standard_name = cube[k].standard_name,
-                            long_name = cube[k].long_name,
-                            units = cube[k].units,
-                            var_name = varname,
-                            attributes = cube[k].attributes,
-                            aux_coords_and_dims = None,
-                            )
-                # ncube.attributes = cube[k].attributes
-                # iris.save(ncube, pp_outfile, append=True)
-                if k == 0:
-                    print ('Initialising fcube')
-                    print ('')
-                    fcube = [ncube]
+                    ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+            print (ntime.shape)
+            if dim_flag == 1:         ### 4D VARIABLE
+                if stream[1:3] == 'pd':
+                    model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                    comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
-                    print ('Appending variable to fcube')
-                    print ('')
-                    fcube.append(ncube)
+                    model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                    model_lat = DimCoord(cube[1].aux_coords[2].points, var_name = 'y_position', standard_name = 'y_position', units='grid boxes')
+                    comdata = fixHeight(data, cube[k])
+                ncube = Cube(np.transpose(comdata),
+                        dim_coords_and_dims=[(ntime, 0),(model_height, 1)],
+                        standard_name = cube[k].standard_name,
+                        long_name = cube[k].long_name,
+                        units = cube[k].units,
+                        var_name = varname,
+                        attributes = cube[k].attributes,
+                        aux_coords_and_dims = None,
+                        )
+            elif dim_flag == 0:         ### 3D VARIABLE
+                ncube = Cube(np.transpose(data),
+                        dim_coords_and_dims=[(ntime, 0)],
+                        standard_name = cube[k].standard_name,
+                        long_name = cube[k].long_name,
+                        units = cube[k].units,
+                        var_name = varname,
+                        attributes = cube[k].attributes,
+                        aux_coords_and_dims = None,
+                        )
+            # ncube.attributes = cube[k].attributes
+            # iris.save(ncube, pp_outfile, append=True)
+            if k == 0:
+                print ('Initialising fcube')
+                print ('')
+                fcube = [ncube]
+            else:
+                print ('Appending variable to fcube')
+                print ('')
+                fcube.append(ncube)
 
         # print fcube
 
