@@ -6227,8 +6227,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     model_lon = DimCoord(np.size(ncube,4), var_name = 'x_position', standard_name = 'longitude', units='')
                     comdata = fixHeight(data, cube[k], swath, ncube)
                     print (comdata.shape)
-                    print (np.transpose(comdata).shape)
-                ncube = Cube(np.transpose(comdata),
+                    print (np.transpose(comdata,(1,0,2,3)).shape)
+                ncube = Cube(np.transpose(comdata,(1,0,2,3)),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
                         standard_name = cube[k].standard_name,
                         long_name = cube[k].long_name,
@@ -6238,8 +6238,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         aux_coords_and_dims = None,
                         )
             elif dim_flag == 0:         ### 3D VARIABLE
-                ncube = Cube(np.transpose(data),
-                        dim_coords_and_dims=[(ntime, 0)],
+                ncube = Cube(data),
+                        dim_coords_and_dims=[(ntime, 0), (model_lat, 1), (model_lon, 2)],
                         standard_name = cube[k].standard_name,
                         long_name = cube[k].long_name,
                         units = cube[k].units,
