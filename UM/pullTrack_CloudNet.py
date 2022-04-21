@@ -6140,10 +6140,10 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     print ('Variable is 4D:')
                     print ('')
                     print (cube[k])
-                    print (len(cube[k].coord('model_level_number').points))
-                    print (len(cubetime)-1)
-                    print (np.size(ncube,3))
-                    print (np.size(ncube,4))
+                    # print (len(cube[k].coord('model_level_number').points))
+                    # print (len(cubetime)-1)
+                    # print (np.size(ncube,3))
+                    # print (np.size(ncube,4))
                     #### create empty arrays to be filled
                     data = np.zeros([len(cube[k].coord('model_level_number').points),len(cubetime)-1, np.size(ncube,3), np.size(ncube,4)])
                     ### make dimension flag
@@ -6230,6 +6230,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             if dim_flag == 1:         ### 4D VARIABLE
                 if stream[1:3] == 'pd':
                     model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                    model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                    model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')                    
                     comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
                     # print (data.shape)
@@ -6272,98 +6274,98 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             print (fcube)
 
 
-    # #################################################################
-    # ## define output filename
-    # #################################################################
-    # # print 'Define pp stream outfile:'
-    # # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
-    # # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-    # ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
-    # # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
-    # # print 'Outfile = ', pp_outfile
-    #
-    # ### save cube to netcdf file
-    # print ('')
-    # print ('Writing fcube to file:')
-    # print ('')
-    # if stream[1:3] == 'pc':
-    #     ## Combine track-pulled pp output files to one netCDF
-    #     ## First, make netCDF with pc stream (using Iris cubes)
-    #     print ('fcube = ')
-    #     print (fcube)
-    #     print ('')
-    #     print ('******')
-    #     print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-    #     print ('')
-    #     if not os.path.exists(nc_outfile):
-    #         if 'fcube' in locals():
-    #             out = writeNetCDF(date, fcube, nc_outfile)
-    #         # if PC outfile already exists, combine other stream data
-    #         # if PC outfile doesn't exist, write new
-    #
-    # if stream[1:3] == 'pd':
-    #     ## Combine track-pulled pp output files to one netCDF
-    #     ## First, make netCDF with pd stream (using Iris cubes)
-    #     print ('fcube = ')
-    #     print (fcube)
-    #     print ('')
-    #     print ('******')
-    #     print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-    #     print ('***file is merged to outfile later***')
-    #     print ('')
-    #     doutfile = nc_outfile[:-3] + '_d.nc'
-    #     if not os.path.exists(doutfile):
-    #         if 'fcube' in locals():
-    #             out = writePD_BL(fcube, doutfile)
-    #         # if PD outfile already exists, combine other stream data
-    #         # if PD outfile doesn't exist, write new
-    #
-    # if stream[1:3] == 'pe':
-    #     ## Combine track-pulled pp output files to one netCDF
-    #     ## First, make netCDF with pd stream (using Iris cubes)
-    #     print ('fcube = ')
-    #     print (fcube)
-    #     print ('')
-    #     print ('******')
-    #     print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-    #     print ('***file is merged to outfile later***')
-    #     print ('')
-    #     eoutfile = nc_outfile[:-3] + '_e.nc'
-    #     if not os.path.exists(eoutfile):
-    #         if 'fcube' in locals():
-    #             out = writeFile_netCDF4(fcube, eoutfile)
-    #         # if PC outfile already exists, combine other stream data
-    #         # if PC outfile doesn't exist, write new
-    #
-    # elif stream[1:3] == 'pb':
-    #     print ('fcube = ')
-    #     print (fcube)
-    #     print ('')
-    #     print ('******')
-    #     print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
-    #     print ('***file is merged to outfile later***')
-    #     print ('')
-    #     ## Next, append 1D timeseries (surface) data (pb stream)
-    #     ## Can't use Iris for this as cubes can't be 1D
-    #     ##              -> uses standard netCDF appending function
-    #     boutfile = nc_outfile[:-3] + '_b.nc'
-    #     if not os.path.exists(boutfile):
-    #         if 'fcube' in locals():
-    #             out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
-    #
-    # elif stream[1:3] == 'pa':
-    #     print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
-    #     print ('***file is merged to outfile later***')
-    #     print ('')
-    #     ## Next, append 1D timeseries (surface) data (pb stream)
-    #     ## Can't use Iris for this as cubes can't be 1D
-    #     ##              -> uses standard netCDF appending function
-    #     aoutfile = nc_outfile[:-3] + '_a.nc'
-    #     if not os.path.exists(aoutfile):
-    #         if 'fcube' in locals():
-    #             out = writePA_Analysis(fcube, aoutfile)
-    #
-    # return nc_outfile
+    #################################################################
+    ## define output filename
+    #################################################################
+    # print 'Define pp stream outfile:'
+    # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
+    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+    ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
+    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+    # print 'Outfile = ', pp_outfile
+
+    ### save cube to netcdf file
+    print ('')
+    print ('Writing fcube to file:')
+    print ('')
+    if stream[1:3] == 'pc':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pc stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('')
+        if not os.path.exists(nc_outfile):
+            if 'fcube' in locals():
+                out = writeNetCDF(date, fcube, nc_outfile)
+            # if PC outfile already exists, combine other stream data
+            # if PC outfile doesn't exist, write new
+
+    if stream[1:3] == 'pd':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pd stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
+        doutfile = nc_outfile[:-3] + '_d.nc'
+        if not os.path.exists(doutfile):
+            if 'fcube' in locals():
+                out = writePD_BL(fcube, doutfile)
+            # if PD outfile already exists, combine other stream data
+            # if PD outfile doesn't exist, write new
+
+    if stream[1:3] == 'pe':
+        ## Combine track-pulled pp output files to one netCDF
+        ## First, make netCDF with pd stream (using Iris cubes)
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+        print ('***file is merged to outfile later***')
+        print ('')
+        eoutfile = nc_outfile[:-3] + '_e.nc'
+        if not os.path.exists(eoutfile):
+            if 'fcube' in locals():
+                out = writeFile_netCDF4(fcube, eoutfile)
+            # if PC outfile already exists, combine other stream data
+            # if PC outfile doesn't exist, write new
+
+    elif stream[1:3] == 'pb':
+        print ('fcube = ')
+        print (fcube)
+        print ('')
+        print ('******')
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        boutfile = nc_outfile[:-3] + '_b.nc'
+        if not os.path.exists(boutfile):
+            if 'fcube' in locals():
+                out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+
+    elif stream[1:3] == 'pa':
+        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+        print ('***file is merged to outfile later***')
+        print ('')
+        ## Next, append 1D timeseries (surface) data (pb stream)
+        ## Can't use Iris for this as cubes can't be 1D
+        ##              -> uses standard netCDF appending function
+        aoutfile = nc_outfile[:-3] + '_a.nc'
+        if not os.path.exists(aoutfile):
+            if 'fcube' in locals():
+                out = writePA_Analysis(fcube, aoutfile)
+
+    return nc_outfile
 
 def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile, swath):
 
