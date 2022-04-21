@@ -7180,16 +7180,16 @@ def writePD_BL(cube, doutfile, swath):
     for l in range(0,len(cube)):
         if swath == True:
             if np.ndim(cube[l]) == 4:
-            lind = l
-            print ('height dim based on ' )
-            print (cube[l])
-            break
+                lind = l
+                print ('height dim based on ' )
+                print (cube[l])
+                break
         else:
             if np.ndim(cube[l]) == 2:
-            lind = l
-            print ('height dim based on ' )
-            print (cube[l])
-            break
+                lind = l
+                print ('height dim based on ' )
+                print (cube[l])
+                break
 
     forecast_time = dataset.createDimension('forecast_time', np.size(cube[lind].dim_coords[0].points))
     height = dataset.createDimension('height', np.size(cube[lind].dim_coords[1].points))
