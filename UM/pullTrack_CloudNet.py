@@ -6231,7 +6231,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 if stream[1:3] == 'pd':
                     model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
                     model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-                    model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')                    
+                    model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                     comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
                     # print (data.shape)
@@ -6280,7 +6280,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
     # print 'Define pp stream outfile:'
     # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
     # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-    ### bespoke setup if dir is 20180831T1200Z (for 20180901 data)
+    # # bespoke setup if dir is 20180831T1200Z (for 20180901 data)
     # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
     # print 'Outfile = ', pp_outfile
 
@@ -6863,7 +6863,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         doutfile = nc_outfile[:-3] + '_d.nc'
         if not os.path.exists(doutfile):
             if 'fcube' in locals():
-                out = writePD_BL(fcube, doutfile)
+                out = writePD_BL(fcube, doutfile, swath)
             # if PD outfile already exists, combine other stream data
             # if PD outfile doesn't exist, write new
 
@@ -7092,7 +7092,7 @@ def writePA_Analysis(cube, aoutfile):
 
     return dataset
 
-def writePD_BL(cube, doutfile):
+def writePD_BL(cube, doutfile, swath):
     #################################################################
     ## Write boundary layer diagnosticsa (PD) to newly created netCDF
     #################################################################
@@ -7115,6 +7115,7 @@ def writePD_BL(cube, doutfile):
     print ('')
     print ('Cube is: ')
     print (cube)
+    print (cube.dim_coords)
     print ('')
 
     ###################################
@@ -7157,6 +7158,31 @@ def writePD_BL(cube, doutfile):
     height.long_name = 'height'
     height[:] = cube[lind].dim_coords[1].points      ### forecast time (ignore first 12h)
 
+    if swath == True:
+        grid_latitude = dataset.createDimension('forecast_time', np.size(cube[lind].dim_coords[2].points))
+        grid_longitude = dataset.createDimension('height', np.size(cube[lind].dim_coords[3].points))
+
+        ###################################
+        ## Dimensions variables
+        ###################################
+        #### grid_latitude
+        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude.scale_factor = float(1)
+        grid_latitude.add_offset = float(0)
+        grid_latitude.comment = 'Latitude in rotated grid framework. '
+        grid_latitude.units = 'deg N'
+        grid_latitude.long_name = 'grid_latitude'
+        grid_latitude[:] = cube[lind].dim_coords[2].points
+
+        #### grid_longitude
+        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude.scale_factor = float(1)
+        grid_longitude.add_offset = float(0)
+        grid_longitude.comment = 'Latitude in rotated grid framework. '
+        grid_longitude.units = 'deg N'
+        grid_longitude.long_name = 'grid_latitude'
+        grid_longitude[:] = cube[lind].dim_coords[2].points
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -7181,7 +7207,7 @@ def writePD_BL(cube, doutfile):
             # elif np.size(cube[d].data,1) == 69:
             #     dat[:,:-1] = cube[d].data
             #     dat[:,-1] = np.nan
-            dat[:,:] = cube[d].data
+            dat[:,:,:,:] = cube[d].data
         elif np.ndim(cube[d]) == 1:
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -7190,7 +7216,7 @@ def writePD_BL(cube, doutfile):
             dat.STASH = str(cube[d].attributes['STASH'])
             if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
             if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-            dat[:] = cube[d].data
+            dat[:,:,:] = cube[d].data
 
     ###################################
     ## Write out file
@@ -7773,7 +7799,7 @@ def main():
             # -------------------------------------------------------------
             # names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
             # names = ['_pa012','_pb012','_pd012','_pe012','_pc012']
-            names = ['_pc011']         ### only do specific files as a test
+            names = ['_pd011','_pc011']         ### only do specific files as a test
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
