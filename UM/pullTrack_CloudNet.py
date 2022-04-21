@@ -6331,7 +6331,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
-                out = writeFile_netCDF4(fcube, eoutfile)
+                out = writeFile_netCDF4(fcube, eoutfile, swath)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6349,7 +6349,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         boutfile = nc_outfile[:-3] + '_b.nc'
         if not os.path.exists(boutfile):
             if 'fcube' in locals():
-                out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+                out = writePB_Cloudnet(fcube, boutfile, swath)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream[1:3] == 'pa':
         print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
@@ -6361,7 +6361,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         aoutfile = nc_outfile[:-3] + '_a.nc'
         if not os.path.exists(aoutfile):
             if 'fcube' in locals():
-                out = writePA_Analysis(fcube, aoutfile)
+                out = writePA_Analysis(fcube, aoutfile, swath)
 
     return nc_outfile
 
@@ -6878,7 +6878,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         eoutfile = nc_outfile[:-3] + '_e.nc'
         if not os.path.exists(eoutfile):
             if 'fcube' in locals():
-                out = writeFile_netCDF4(fcube, eoutfile)
+                out = writeFile_netCDF4(fcube, eoutfile, swath)
             # if PC outfile already exists, combine other stream data
             # if PC outfile doesn't exist, write new
 
@@ -6896,7 +6896,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         boutfile = nc_outfile[:-3] + '_b.nc'
         if not os.path.exists(boutfile):
             if 'fcube' in locals():
-                out = writePB_Cloudnet(fcube, boutfile)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
+                out = writePB_Cloudnet(fcube, boutfile, swath)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
     elif stream[1:3] == 'pa':
         print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
@@ -6908,7 +6908,7 @@ def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         aoutfile = nc_outfile[:-3] + '_a.nc'
         if not os.path.exists(aoutfile):
             if 'fcube' in locals():
-                out = writePA_Analysis(fcube, aoutfile)
+                out = writePA_Analysis(fcube, aoutfile, swath)
 
     return nc_outfile
 
@@ -6989,6 +6989,31 @@ def writePB_Cloudnet(cube, boutfile):
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
+    if swath == True:
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[2].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[3].points))
+
+        ###################################
+        ## Dimensions variables
+        ###################################
+        #### grid_latitude
+        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude.scale_factor = float(1)
+        grid_latitude.add_offset = float(0)
+        grid_latitude.comment = 'Latitude in rotated grid framework. '
+        grid_latitude.units = 'deg N'
+        grid_latitude.long_name = 'grid_latitude'
+        grid_latitude[:] = cube[0].dim_coords[2].points
+
+        #### grid_longitude
+        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude.scale_factor = float(1)
+        grid_longitude.add_offset = float(0)
+        grid_longitude.comment = 'Longitude in rotated grid framework. '
+        grid_longitude.units = 'deg E'
+        grid_longitude.long_name = 'grid_longitude'
+        grid_longitude[:] = cube[0].dim_coords[2].points
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -7005,7 +7030,10 @@ def writePB_Cloudnet(cube, boutfile):
         dat.STASH = str(cube[d].attributes['STASH'])
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-        dat[:] = cube[d].data
+        if swath == True:
+            dat[:,:,:] = cube[d].data
+        else:
+            dat[:] = cube[d].data
 
     ###################################
     ## Write out file
@@ -7063,6 +7091,31 @@ def writePA_Analysis(cube, aoutfile):
     timem.long_name = 'forecast_time'
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
+    if swath == True:
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[2].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[3].points))
+
+        ###################################
+        ## Dimensions variables
+        ###################################
+        #### grid_latitude
+        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude.scale_factor = float(1)
+        grid_latitude.add_offset = float(0)
+        grid_latitude.comment = 'Latitude in rotated grid framework. '
+        grid_latitude.units = 'deg N'
+        grid_latitude.long_name = 'grid_latitude'
+        grid_latitude[:] = cube[0].dim_coords[2].points
+
+        #### grid_longitude
+        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude.scale_factor = float(1)
+        grid_longitude.add_offset = float(0)
+        grid_longitude.comment = 'Longitude in rotated grid framework. '
+        grid_longitude.units = 'deg E'
+        grid_longitude.long_name = 'grid_longitude'
+        grid_longitude[:] = cube[0].dim_coords[2].points
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -7081,7 +7134,10 @@ def writePA_Analysis(cube, aoutfile):
                 dat.STASH = str(cube[d].attributes['STASH'])
                 if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
                 if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-                dat[:] = cube[d].data
+                if swath == True:
+                    dat[:,:,:] = cube[d].data
+                else:
+                    dat[:] = cube[d].data
 
     ###################################
     ## Write out file
@@ -7157,8 +7213,8 @@ def writePD_BL(cube, doutfile, swath):
     height[:] = cube[lind].dim_coords[1].points      ### forecast time (ignore first 12h)
 
     if swath == True:
-        grid_latitude = dataset.createDimension('forecast_time', np.size(cube[lind].dim_coords[2].points))
-        grid_longitude = dataset.createDimension('height', np.size(cube[lind].dim_coords[3].points))
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[lind].dim_coords[2].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[lind].dim_coords[3].points))
 
         ###################################
         ## Dimensions variables
@@ -7176,9 +7232,9 @@ def writePD_BL(cube, doutfile, swath):
         grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
         grid_longitude.scale_factor = float(1)
         grid_longitude.add_offset = float(0)
-        grid_longitude.comment = 'Latitude in rotated grid framework. '
-        grid_longitude.units = 'deg N'
-        grid_longitude.long_name = 'grid_latitude'
+        grid_longitude.comment = 'Longitude in rotated grid framework. '
+        grid_longitude.units = 'deg E'
+        grid_longitude.long_name = 'grid_longitude'
         grid_longitude[:] = cube[lind].dim_coords[2].points
 
     ###################################
@@ -7205,7 +7261,10 @@ def writePD_BL(cube, doutfile, swath):
             # elif np.size(cube[d].data,1) == 69:
             #     dat[:,:-1] = cube[d].data
             #     dat[:,-1] = np.nan
-            dat[:,:,:,:] = cube[d].data
+            if swath == True:
+                dat[:,:,:,:] = cube[d].data
+            else:
+                dat[:,:] = cube[d].data
         elif np.ndim(cube[d]) == 1:
             dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
@@ -7214,7 +7273,10 @@ def writePD_BL(cube, doutfile, swath):
             dat.STASH = str(cube[d].attributes['STASH'])
             if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
             if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-            dat[:,:,:] = cube[d].data
+            if swath == True:
+                dat[:,:,:] = cube[d].data
+            else:
+                dat[:] = cube[d].data
 
     ###################################
     ## Write out file
@@ -7282,6 +7344,31 @@ def writeFile_netCDF4(cube, eoutfile):
     height.long_name = 'height'
     height[:] = cube[0].dim_coords[1].points      ### forecast time (ignore first 12h)
 
+    if swath == True:
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[lind].dim_coords[2].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[lind].dim_coords[3].points))
+
+        ###################################
+        ## Dimensions variables
+        ###################################
+        #### grid_latitude
+        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude.scale_factor = float(1)
+        grid_latitude.add_offset = float(0)
+        grid_latitude.comment = 'Latitude in rotated grid framework. '
+        grid_latitude.units = 'deg N'
+        grid_latitude.long_name = 'grid_latitude'
+        grid_latitude[:] = cube[lind].dim_coords[2].points
+
+        #### grid_longitude
+        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude.scale_factor = float(1)
+        grid_longitude.add_offset = float(0)
+        grid_longitude.comment = 'Longitude in rotated grid framework. '
+        grid_longitude.units = 'deg E'
+        grid_longitude.long_name = 'grid_longitude'
+        grid_longitude[:] = cube[lind].dim_coords[2].points
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -7298,7 +7385,10 @@ def writeFile_netCDF4(cube, eoutfile):
         dat.STASH = str(cube[d].attributes['STASH'])
         if not cube[d].standard_name == None: dat.standard_name = str(cube[d].standard_name)
         if not cube[d].long_name == None: dat.long_name = str(cube[d].long_name)
-        dat[:,:] = cube[d].data
+        if swath == True:
+            dat[:,:,:,:] = cube[d].data
+        else:
+            dat[:,:] = cube[d].data
 
     ###################################
     ## Write out file
@@ -7795,9 +7885,9 @@ def main():
             #           start at 009 if 1h dumps in pb
             #           start at 011 if 1h dumps (c--e)
             # -------------------------------------------------------------
-            # names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
+            names = ['_pa009','_pb009','_pd011','_pe011','_pc011']
             # names = ['_pa012','_pb012','_pd012','_pe012','_pc012']
-            names = ['_pd011','_pc011']         ### only do specific files as a test
+            # names = ['_pd011','_pc011']         ### only do specific files as a test
             if out_dir[-6:-1] == 'CASIM':
                 expt = out_dir[-11:-1]
             elif out_dir[-4:-1] == 'CON':
