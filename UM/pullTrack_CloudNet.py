@@ -5964,9 +5964,11 @@ def fixHeight(data, cube, swath, ncube):
             ### upper bounds = cube[8].aux_coords[2].bounds[:,1]
             cubedata = np.zeros([71,24,np.size(ncube,3),np.size(ncube,4)])
             for i in range(0,24):
-                temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i,:,:])
-                cubedata[1:,i,:,:] = temp
-                cubedata[0,i,:,:] = np.nan
+                for y in range(0, np.size(ncube,3)):
+                    for x in range(0, np.size(ncube,3)):
+                        temp = np.interp(cube.aux_coords[2].bounds[:,1],cube.aux_coords[2].points,data[:,i,y,x])
+                        cubedata[1:,i,y,x] = temp
+                        cubedata[0,i,y,x] = np.nan
         else:
             cubedata = data
 
