@@ -7484,13 +7484,13 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
         revision = 'Revision no. 0. '
     elif out_dir[3:10] == 'u-cc278':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation mode soluble aerosol: num = 1.00e8 /m3, mass = 1.50e-9 kg/kg. Aitken and coarse modes = 0. No aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
-        revision = 'Revision no. 0. '
+        revision = 'Revision no. 1. '
     elif out_dir[3:10] == 'u-cc324':
         micro = 'Cloud microphysics: Both the global model and LAM use the PC2 (Wilson et al., 2008) cloud scheme (i_cld_vn = 2); specifically, the LAM uses the RA2T_CON configuration. Also set l_subgrid_qcl_mp to .true. to allow for turbulent production of mixed-phase cloud. Extended BL diagnostic list. '
-        revision = 'Revision no. 0. '
+        revision = 'Revision no. 1. '
     elif out_dir[3:10] == 'u-cc568':
         micro = 'Cloud microphysics: Smith (1990) but includes a cloud/precipitation microphysical scheme with prognostic ice (Wilson and Ballard, 1999), based on Rutledge and Hobbs (1983). Extended BL diagnostic list. Updated revision of suite u-bg610. '
-        revision = 'Revision no. 1. '
+        revision = 'Revision no. 2. '
     elif out_dir[3:10] == 'u-cd847':
         micro = 'CASIM microphysics + cloud scheme (i_cld_vn = 1). Double-moment [droplet activation = Abdul-Razzak and Ghan (2000); ice nucleation = Cooper (1986)]. 3 modes of soluble aerosol, no insoluble aerosol. Accumulation and coarse mode soluble aerosol number concentration input taken from UKCA daily average profiles provided by Ruth Price (University of Leeds) <eersp@leeds.ac.uk>. No aerosol processing. Updated RHcrit profile for vn11.4. Uses sea ice options from the global model (alpham = 0.72 [from 0.5], dtice = 2.0 [from 5.0]). '
         revision = 'Revision no. 0. '
@@ -7561,7 +7561,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
             if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
-                dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
+                if swath == True:
+                    dat = dataset.createVariable(d, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                else:
+                    dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if getattr(ncB.variables[d],'units', None):
@@ -7574,7 +7577,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
                     dat.standard_name = str(ncB.variables[d].standard_name)
                 if getattr(ncB.variables[d],'long_name', None):
                     dat.long_name = str(ncB.variables[d].long_name)
-                dat[:] = ncB.variables[d][:]
+                if swath == True:
+                    dat[:,:,:] = ncB.variables[d][:,:,:]
+                else:
+                    dat[:] = ncB.variables[d][:]
 
         ###################################
         ## Close read-only pbXXX file
@@ -7599,7 +7605,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
             if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
-                dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
+                if swath == True:
+                    dat = dataset.createVariable(d, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                else:
+                    dat = dataset.createVariable(d, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if getattr(ncA.variables[d],'units', None):
@@ -7612,7 +7621,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
                     dat.standard_name = str(ncA.variables[d].standard_name)
                 if getattr(ncA.variables[d],'long_name', None):
                     dat.long_name = str(ncA.variables[d].long_name)
-                dat[:] = ncA.variables[d][:]
+                if swath == True:
+                    dat[:,:,:] = ncA.variables[d][:,:,:]
+                else:
+                    dat[:] = ncA.variables[d][:]
 
         ###################################
         ## Close read-only paXXX file
@@ -7653,38 +7665,72 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
             if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
-                if np.ndim(ncD.variables[d]) == 2:
-                    print ('Variable is 2D:')
-                    daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height2',), fill_value='-9999')
-                    daat.scale_factor = float(1)
-                    daat.add_offset = float(0)
-                    if getattr(ncD.variables[d],'units', None):
-                        daat.units = str(ncD.variables[d].units)
-                    else:
-                        daat.units = 'unknown'
-                    if getattr(ncD.variables[d],'STASH', None):
-                        daat.STASH = str(ncD.variables[d].STASH)
-                    if getattr(ncD.variables[d],'standard_name', None):
-                        daat.standard_name = str(ncD.variables[d].standard_name)
-                    if getattr(ncD.variables[d],'long_name', None):
-                        daat.long_name = str(ncD.variables[d].long_name)
-                    daat[:,:] = ncD.variables[d][:,:]
-                elif np.ndim(ncD.variables[d]) == 1:
-                    print ('Variable is 1D:')
-                    dat = dataset.createVariable(d, np.float64, ('forecast_time', ), fill_value='-9999')
-                    dat.scale_factor = float(1)
-                    dat.add_offset = float(0)
-                    if getattr(ncD.variables[d],'units', None):
-                        dat.units = str(ncD.variables[d].units)
-                    else:
-                        dat.units = 'unknown'
-                    if getattr(ncD.variables[d],'STASH', None):
-                        dat.STASH = str(ncD.variables[d].STASH)
-                    if getattr(ncD.variables[d],'standard_name', None):
-                        dat.standard_name = str(ncD.variables[d].standard_name)
-                    if getattr(ncD.variables[d],'long_name', None):
-                        dat.long_name = str(ncD.variables[d].long_name)
-                    dat[:] = ncD.variables[d][:]
+                if swath == False:
+                    if np.ndim(ncD.variables[d]) == 2:
+                        print ('Variable is 2D:')
+                        daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height2',), fill_value='-9999')
+                        daat.scale_factor = float(1)
+                        daat.add_offset = float(0)
+                        if getattr(ncD.variables[d],'units', None):
+                            daat.units = str(ncD.variables[d].units)
+                        else:
+                            daat.units = 'unknown'
+                        if getattr(ncD.variables[d],'STASH', None):
+                            daat.STASH = str(ncD.variables[d].STASH)
+                        if getattr(ncD.variables[d],'standard_name', None):
+                            daat.standard_name = str(ncD.variables[d].standard_name)
+                        if getattr(ncD.variables[d],'long_name', None):
+                            daat.long_name = str(ncD.variables[d].long_name)
+                        daat[:,:] = ncD.variables[d][:,:]
+                    elif np.ndim(ncD.variables[d]) == 1:
+                        print ('Variable is 1D:')
+                        dat = dataset.createVariable(d, np.float64, ('forecast_time', ), fill_value='-9999')
+                        dat.scale_factor = float(1)
+                        dat.add_offset = float(0)
+                        if getattr(ncD.variables[d],'units', None):
+                            dat.units = str(ncD.variables[d].units)
+                        else:
+                            dat.units = 'unknown'
+                        if getattr(ncD.variables[d],'STASH', None):
+                            dat.STASH = str(ncD.variables[d].STASH)
+                        if getattr(ncD.variables[d],'standard_name', None):
+                            dat.standard_name = str(ncD.variables[d].standard_name)
+                        if getattr(ncD.variables[d],'long_name', None):
+                            dat.long_name = str(ncD.variables[d].long_name)
+                        dat[:] = ncD.variables[d][:]
+                else:
+                    if np.ndim(ncD.variables[d]) == 4:
+                        print ('Variable is 4D:')
+                        daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height2','grid_latitude','grid_longitude',), fill_value='-9999')
+                        daat.scale_factor = float(1)
+                        daat.add_offset = float(0)
+                        if getattr(ncD.variables[d],'units', None):
+                            daat.units = str(ncD.variables[d].units)
+                        else:
+                            daat.units = 'unknown'
+                        if getattr(ncD.variables[d],'STASH', None):
+                            daat.STASH = str(ncD.variables[d].STASH)
+                        if getattr(ncD.variables[d],'standard_name', None):
+                            daat.standard_name = str(ncD.variables[d].standard_name)
+                        if getattr(ncD.variables[d],'long_name', None):
+                            daat.long_name = str(ncD.variables[d].long_name)
+                        daat[:,:,:,:] = ncD.variables[d][:,:,:,:]
+                    elif np.ndim(ncD.variables[d]) == 3:
+                        print ('Variable is 3D:')
+                        dat = dataset.createVariable(d, np.float64, ('forecast_time', 'grid_latitude','grid_longitude',), fill_value='-9999')
+                        dat.scale_factor = float(1)
+                        dat.add_offset = float(0)
+                        if getattr(ncD.variables[d],'units', None):
+                            dat.units = str(ncD.variables[d].units)
+                        else:
+                            dat.units = 'unknown'
+                        if getattr(ncD.variables[d],'STASH', None):
+                            dat.STASH = str(ncD.variables[d].STASH)
+                        if getattr(ncD.variables[d],'standard_name', None):
+                            dat.standard_name = str(ncD.variables[d].standard_name)
+                        if getattr(ncD.variables[d],'long_name', None):
+                            dat.long_name = str(ncD.variables[d].long_name)
+                        dat[:,:,:] = ncD.variables[d][:,:,:]
 
         ###################################
         ## Close read-only pdXXX file
@@ -7709,7 +7755,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
             if not d in dataset.variables:
                 print ('Writing ' + d)
                 print ('')
-                daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height',), fill_value='-9999')
+                if swath == True:
+                    daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height','grid_latitude','grid_longitude',), fill_value='-9999')
+                else:
+                    daat = dataset.createVariable(d, np.float64, ('forecast_time', 'height',), fill_value='-9999')
                 daat.scale_factor = float(1)
                 daat.add_offset = float(0)
                 if getattr(ncE.variables[d],'units', None):
@@ -7722,7 +7771,10 @@ def appendMetaNetCDF(outfile, date, out_dir, model, swath):
                     daat.standard_name = str(ncE.variables[d].standard_name)
                 if getattr(ncE.variables[d],'long_name', None):
                     daat.long_name = str(ncE.variables[d].long_name)
-                daat[:,:] = ncE.variables[d][:,:]
+                if swath == True:
+                    daat[:,:,:,:] = ncE.variables[d][:,:,:,:]
+                else:
+                    daat[:,:] = ncE.variables[d][:,:]
 
         ###################################
         ## Close read-only peXXX file
@@ -8057,19 +8109,19 @@ def main():
                     print ('****File does not exist****')
                     print ('')
 
-                # if stream[1:3] == 'pc':
-                #     if exist_flag == 1:
-                #         ##-------------------------------------------------------------
-                #         ## For each date, append metadata to netCDF
-                #         ## -------------------------------------------------------------
-                #         print ('******')
-                #         print ('')
-                #         print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
-                #         print ('')
-                #         # outfile = '20180902_oden_metum.nc'
-                #         out = appendMetaNetCDF(nc_outfile, date, out_dir, model, swath)
-                #             ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
-                #             ## os.rename(nc_outfile, final_outfile)
+                if stream[1:3] == 'pc':
+                    if exist_flag == 1:
+                        ##-------------------------------------------------------------
+                        ## For each date, append metadata to netCDF
+                        ## -------------------------------------------------------------
+                        print ('******')
+                        print ('')
+                        print ('stream = ' + stream + ', so appending pa, pb, pd, pe (if present), and metadata')
+                        print ('')
+                        # outfile = '20180902_oden_metum.nc'
+                        out = appendMetaNetCDF(nc_outfile, date, out_dir, model, swath)
+                            ### final_outfile = root_dir + out_dir + 'OUT/' + nc_outfile
+                            ## os.rename(nc_outfile, final_outfile)
 
     END_TIME = time.time()
     print ('******')
