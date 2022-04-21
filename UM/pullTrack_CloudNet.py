@@ -7923,9 +7923,9 @@ def main():
 
     for date in date_dir:
         ### do 2018 dates (ignores other directories)
-        # if date[0:4] == '2018':
+        if date[0:4] == '2018':
         ### just do first date:
-        if date == date_dir[0]:
+        # if date == date_dir[0]:
         ### just do specific date
         # if date[0:8] == '20180903':
             # # -------------------------------------------------------------
