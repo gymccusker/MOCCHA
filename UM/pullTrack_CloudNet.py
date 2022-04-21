@@ -6226,20 +6226,18 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 else:
                     ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-            print (ntime.shape)
+            ### define lat/lon dimensions, relevant for all streams
+            model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+            model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
             if dim_flag == 1:         ### 4D VARIABLE
                 if stream[1:3] == 'pd':
                     model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-                    model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                     comdata = data                    #### leave BL diagnostics on RHO levels
                 else:
                     # print (data.shape)
                     # print (np.transpose(data,(1,0,2,3)).shape)
                     # print (cube[1].dim_coords)
                     model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-                    model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                     comdata = fixHeight(data, cube[k], swath, ncube)
                 newcube = Cube(np.transpose(comdata,(1,0,2,3)),
                         dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
@@ -6316,7 +6314,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         doutfile = nc_outfile[:-3] + '_d.nc'
         if not os.path.exists(doutfile):
             if 'fcube' in locals():
-                out = writePD_BL(fcube, doutfile)
+                out = writePD_BL(fcube, doutfile, swath)
             # if PD outfile already exists, combine other stream data
             # if PD outfile doesn't exist, write new
 
