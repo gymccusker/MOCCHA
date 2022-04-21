@@ -6222,7 +6222,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 if np.ndim(cube[k].data == 4):
                     model_lat = DimCoord(cube[k].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
                     model_lon = DimCoord(cube[k].dim_coords[3].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
-                elif np.ndim(cube[k].data == 3):
+                else:
                     model_lat = DimCoord(cube[k].dim_coords[1].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
                     model_lon = DimCoord(cube[k].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                 if dim_flag == 1:         ### 4D VARIABLE
