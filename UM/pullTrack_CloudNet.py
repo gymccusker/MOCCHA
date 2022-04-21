@@ -6931,7 +6931,7 @@ def writeNetCDF(date, cube, nc_outfile):
 
     return nc_outfile
 
-def writePB_Cloudnet(cube, boutfile):
+def writePB_Cloudnet(cube, boutfile, swath):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
