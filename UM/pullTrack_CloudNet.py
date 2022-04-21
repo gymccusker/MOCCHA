@@ -6188,12 +6188,12 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 for i in range(0, len(cubetime)-1):                   ### loop over time gridded by ship track
                     if dim_flag == 1:
                         temp = cube[k][i,:,lat0:lat1,lon0:lon1]
-                        print (temp.shape)
-                        data[:,i,:,:] = temp.data
+                        # print (temp.shape)
+                        data[:,i,:,:] = np.squeeze(temp.data)
                     if dim_flag == 0:
                         temp = cube[k][i,lat0:lat1,lon0:lon1]
-                        print (temp.shape)
-                        data[i,:,:] = temp.data
+                        # print (temp.shape)
+                        data[i,:,:] = np.squeeze(temp.data)
                 # print data
                 # print ('data.shape = ', data.shape)
                 # print (cube[1].aux_coords)
@@ -6219,8 +6219,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     else:
                         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 ### define lat/lon dimensions, relevant for all streams
-                model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-                model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
+                model_lat = DimCoord(cube[k].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                model_lon = DimCoord(cube[k].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                 if dim_flag == 1:         ### 4D VARIABLE
                     if stream[1:3] == 'pd':
                         model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
