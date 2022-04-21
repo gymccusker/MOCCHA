@@ -7032,7 +7032,7 @@ def writePB_Cloudnet(cube, boutfile):
 
     return dataset
 
-def writePA_Analysis(cube, aoutfile):
+def writePA_Analysis(cube, aoutfile, swath):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
