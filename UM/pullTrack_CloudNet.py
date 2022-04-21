@@ -6069,6 +6069,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
         for k in range(0,np.size(cube)):            ### loop over number of variables
             print ('')
             print ('k = ', k) ###', so processing', con[k]   # doesn't work with global_con
+            print (cube[k])
             print ('')
 
             ## reinitialise data array
@@ -6191,17 +6192,6 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     if dim_flag == 0:
                         temp = cube[k][i,lat0:lat1,lon0:lon1]
                         data[i,:,:] = np.squeeze(temp.data)
-                    # if np.size(itime) > 1:
-                    #     if stash_flag == 1: dat[dat==0] = np.nan              # set zeros to nans
-                    #     if dim_flag == 1: data[:,j] = np.nanmean(dat,1)     # mean over time indices
-                    #     if dim_flag == 0: data[j] = np.nanmean(dat)     # mean over time indices
-                    #     # print 'averaging over itime ...'
-                    #     # print ''
-                    # else:
-                    #     if dim_flag == 1: data[:,j] = np.squeeze(dat)                   # if only one index per hour
-                    #     if dim_flag == 0: data[j] = np.squeeze(dat)                   # if only one index per hour
-                    #     # print 'no averaging, itime = 1 ...'
-                    #     print ('')
                 # print data
             # print ('data.shape = ', data.shape)
             # print (cube[1].aux_coords)
