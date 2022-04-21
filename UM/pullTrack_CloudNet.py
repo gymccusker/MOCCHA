@@ -7113,7 +7113,7 @@ def writePD_BL(cube, doutfile, swath):
     print ('')
     print ('Cube is: ')
     print (cube)
-    print (cube.dim_coords)
+    # print (cube.dim_coords)
     print ('')
 
     ###################################
