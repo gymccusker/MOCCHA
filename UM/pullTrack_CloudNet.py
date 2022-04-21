@@ -6188,10 +6188,12 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 for i in range(0, len(cubetime)-1):                   ### loop over time gridded by ship track
                     if dim_flag == 1:
                         temp = cube[k][i,:,lat0:lat1,lon0:lon1]
-                        data[:,i,:,:] = np.squeeze(temp.data)
+                        print (temp.shape)
+                        data[:,i,:,:] = temp.data
                     if dim_flag == 0:
                         temp = cube[k][i,lat0:lat1,lon0:lon1]
-                        data[i,:,:] = np.squeeze(temp.data)
+                        print (temp.shape)
+                        data[i,:,:] = temp.data
                 # print data
                 # print ('data.shape = ', data.shape)
                 # print (cube[1].aux_coords)
