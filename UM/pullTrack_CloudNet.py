@@ -6219,7 +6219,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     else:
                         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                 ### define lat/lon dimensions (dependent on ndims of var), relevant for all streams
-                if len(cube[k].dim_coords == 4):
+                if len(cube[k].dim_coords) == 4:
                     model_lat = DimCoord(cube[k].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
                     model_lon = DimCoord(cube[k].dim_coords[3].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                 else:
