@@ -6980,8 +6980,8 @@ def writePB_Cloudnet(cube, boutfile):
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
     if swath == True:
-        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[2].points))
-        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[3].points))
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[1].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[2].points))
 
         ###################################
         ## Dimensions variables
@@ -6993,7 +6993,7 @@ def writePB_Cloudnet(cube, boutfile):
         grid_latitude.comment = 'Latitude in rotated grid framework. '
         grid_latitude.units = 'deg N'
         grid_latitude.long_name = 'grid_latitude'
-        grid_latitude[:] = cube[0].dim_coords[2].points
+        grid_latitude[:] = cube[0].dim_coords[1].points
 
         #### grid_longitude
         grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
@@ -7056,7 +7056,7 @@ def writePA_Analysis(cube, aoutfile, swath):
     print ('')
 
     print (cube)
-    print (cube[0].dim_coords)
+    # print (cube[0].dim_coords)
 
     ###################################
     ## Switch off automatic filling
@@ -7095,7 +7095,7 @@ def writePA_Analysis(cube, aoutfile, swath):
         grid_latitude.comment = 'Latitude in rotated grid framework. '
         grid_latitude.units = 'deg N'
         grid_latitude.long_name = 'grid_latitude'
-        grid_latitude[:] = cube[0].dim_coords[2].points
+        grid_latitude[:] = cube[0].dim_coords[1].points
 
         #### grid_longitude
         grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
@@ -7225,7 +7225,7 @@ def writePD_BL(cube, doutfile, swath):
         grid_longitude.comment = 'Longitude in rotated grid framework. '
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
-        grid_longitude[:] = cube[lind].dim_coords[2].points
+        grid_longitude[:] = cube[lind].dim_coords[3].points
 
     ###################################
     ## Create DIAGNOSTICS
@@ -7357,7 +7357,7 @@ def writeFile_netCDF4(cube, eoutfile):
         grid_longitude.comment = 'Longitude in rotated grid framework. '
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
-        grid_longitude[:] = cube[lind].dim_coords[2].points
+        grid_longitude[:] = cube[lind].dim_coords[3].points
 
     ###################################
     ## Create DIAGNOSTICS
