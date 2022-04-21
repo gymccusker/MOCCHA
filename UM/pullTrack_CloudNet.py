@@ -7056,7 +7056,7 @@ def writePA_Analysis(cube, aoutfile, swath):
     print ('')
 
     print (cube)
-    # print cube[0].dim_coords
+    print (cube[0].dim_coords)
 
     ###################################
     ## Switch off automatic filling
@@ -7082,8 +7082,8 @@ def writePA_Analysis(cube, aoutfile, swath):
     timem[:] = cube[0].dim_coords[0].points      ### forecast time (ignore first 12h)
 
     if swath == True:
-        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[2].points))
-        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[3].points))
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(cube[0].dim_coords[1].points))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(cube[0].dim_coords[2].points))
 
         ###################################
         ## Dimensions variables
