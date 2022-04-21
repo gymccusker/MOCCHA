@@ -6193,167 +6193,167 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         temp = cube[k][i,lat0:lat1,lon0:lon1]
                         data[i,:,:] = np.squeeze(temp.data)
                 # print data
-            # print ('data.shape = ', data.shape)
-            # print (cube[1].aux_coords)
+                # print ('data.shape = ', data.shape)
+                # print (cube[1].aux_coords)
+
+                #################################################################
+                ## CREATE CUBE
+                #################################################################
+
+                if stream[1:3] == 'pa':
+                    a = len(cube[k].aux_coords)
+                    for ft in range(0,a):
+                        print(cube[k].aux_coords[ft].standard_name)
+                        if cube[k].aux_coords[ft].standard_name == 'forecast_period':
+                            if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
+                                ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                            else:
+                                ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                else:
+                    if cube[k].long_name == 'large_scale_ice_water_path':
+                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    elif cube[k].long_name == 'large_scale_liquid_water_path':
+                        ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                    else:
+                        ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
+                ### define lat/lon dimensions, relevant for all streams
+                model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
+                if dim_flag == 1:         ### 4D VARIABLE
+                    if stream[1:3] == 'pd':
+                        model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                        comdata = data                    #### leave BL diagnostics on RHO levels
+                    else:
+                        # print (data.shape)
+                        # print (np.transpose(data,(1,0,2,3)).shape)
+                        # print (cube[1].dim_coords)
+                        model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
+                        comdata = fixHeight(data, cube[k], swath, ncube)
+                    newcube = Cube(np.transpose(comdata,(1,0,2,3)),
+                            dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
+                            standard_name = cube[k].standard_name,
+                            long_name = cube[k].long_name,
+                            units = cube[k].units,
+                            var_name = varname,
+                            attributes = cube[k].attributes,
+                            aux_coords_and_dims = None,
+                            )
+                elif dim_flag == 0:         ### 3D VARIABLE
+                    newcube = Cube(data,
+                            dim_coords_and_dims=[(ntime, 0), (model_lat, 1), (model_lon, 2)],
+                            standard_name = cube[k].standard_name,
+                            long_name = cube[k].long_name,
+                            units = cube[k].units,
+                            var_name = varname,
+                            attributes = cube[k].attributes,
+                            aux_coords_and_dims = None,
+                            )
+                # ncube.attributes = cube[k].attributes
+                # iris.save(ncube, pp_outfile, append=True)
+                if k == 0:
+                    print ('Initialising fcube')
+                    print ('')
+                    fcube = [newcube]
+                else:
+                    print ('Appending variable to fcube')
+                    print ('')
+                    fcube.append(newcube)
+
+                print (fcube)
+
 
             #################################################################
-            ## CREATE CUBE
+            ## define output filename
             #################################################################
+            # print 'Define pp stream outfile:'
+            # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
+            # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
+            # # bespoke setup if dir is 20180831T1200Z (for 20180901 data)
+            # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
+            # print 'Outfile = ', pp_outfile
 
-            if stream[1:3] == 'pa':
-                a = len(cube[k].aux_coords)
-                for ft in range(0,a):
-                    print(cube[k].aux_coords[ft].standard_name)
-                    if cube[k].aux_coords[ft].standard_name == 'forecast_period':
-                        if np.size(cube[k].aux_coords[ft].points) > 24:          ## accounts for arrays with 25 timesteps (includes t12 and t36)
-                            ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                        else:
-                            ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-            else:
-                if cube[k].long_name == 'large_scale_ice_water_path':
-                    ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                elif cube[k].long_name == 'large_scale_liquid_water_path':
-                    ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                else:
-                    ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-            ### define lat/lon dimensions, relevant for all streams
-            model_lat = DimCoord(cube[1].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-            model_lon = DimCoord(cube[1].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
-            if dim_flag == 1:         ### 4D VARIABLE
-                if stream[1:3] == 'pd':
-                    model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    comdata = data                    #### leave BL diagnostics on RHO levels
-                else:
-                    # print (data.shape)
-                    # print (np.transpose(data,(1,0,2,3)).shape)
-                    # print (cube[1].dim_coords)
-                    model_height = DimCoord(cube[1].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
-                    comdata = fixHeight(data, cube[k], swath, ncube)
-                newcube = Cube(np.transpose(comdata,(1,0,2,3)),
-                        dim_coords_and_dims=[(ntime, 0),(model_height, 1), (model_lat, 2), (model_lon, 3)],
-                        standard_name = cube[k].standard_name,
-                        long_name = cube[k].long_name,
-                        units = cube[k].units,
-                        var_name = varname,
-                        attributes = cube[k].attributes,
-                        aux_coords_and_dims = None,
-                        )
-            elif dim_flag == 0:         ### 3D VARIABLE
-                newcube = Cube(data,
-                        dim_coords_and_dims=[(ntime, 0), (model_lat, 1), (model_lon, 2)],
-                        standard_name = cube[k].standard_name,
-                        long_name = cube[k].long_name,
-                        units = cube[k].units,
-                        var_name = varname,
-                        attributes = cube[k].attributes,
-                        aux_coords_and_dims = None,
-                        )
-            # ncube.attributes = cube[k].attributes
-            # iris.save(ncube, pp_outfile, append=True)
-            if k == 0:
-                print ('Initialising fcube')
+            ### save cube to netcdf file
+            print ('')
+            print ('Writing fcube to file:')
+            print ('')
+            if stream[1:3] == 'pc':
+                ## Combine track-pulled pp output files to one netCDF
+                ## First, make netCDF with pc stream (using Iris cubes)
+                print ('fcube = ')
+                print (fcube)
                 print ('')
-                fcube = [newcube]
-            else:
-                print ('Appending variable to fcube')
+                print ('******')
+                print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
                 print ('')
-                fcube.append(newcube)
+                if not os.path.exists(nc_outfile):
+                    if 'fcube' in locals():
+                        out = writeNetCDF(date, fcube, nc_outfile)
+                    # if PC outfile already exists, combine other stream data
+                    # if PC outfile doesn't exist, write new
 
-            print (fcube)
+            if stream[1:3] == 'pd':
+                ## Combine track-pulled pp output files to one netCDF
+                ## First, make netCDF with pd stream (using Iris cubes)
+                print ('fcube = ')
+                print (fcube)
+                print ('')
+                print ('******')
+                print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+                print ('***file is merged to outfile later***')
+                print ('')
+                doutfile = nc_outfile[:-3] + '_d.nc'
+                if not os.path.exists(doutfile):
+                    if 'fcube' in locals():
+                        out = writePD_BL(fcube, doutfile, swath)
+                    # if PD outfile already exists, combine other stream data
+                    # if PD outfile doesn't exist, write new
 
+            if stream[1:3] == 'pe':
+                ## Combine track-pulled pp output files to one netCDF
+                ## First, make netCDF with pd stream (using Iris cubes)
+                print ('fcube = ')
+                print (fcube)
+                print ('')
+                print ('******')
+                print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
+                print ('***file is merged to outfile later***')
+                print ('')
+                eoutfile = nc_outfile[:-3] + '_e.nc'
+                if not os.path.exists(eoutfile):
+                    if 'fcube' in locals():
+                        out = writeFile_netCDF4(fcube, eoutfile, swath)
+                    # if PC outfile already exists, combine other stream data
+                    # if PC outfile doesn't exist, write new
 
-    #################################################################
-    ## define output filename
-    #################################################################
-    # print 'Define pp stream outfile:'
-    # pp_outfile = date[:6] + str(int(date[6:8])+1) + '_oden_metum_' + str(stream[2:3]) + '.pp'
-    # nc_outfile = date[:6] + str(int(date[6:8])+1).zfill(2) + '_oden_metum.nc'
-    # # bespoke setup if dir is 20180831T1200Z (for 20180901 data)
-    # if date == '20180831T1200Z': nc_outfile = '20180901_oden_metum.nc'
-    # print 'Outfile = ', pp_outfile
+            elif stream[1:3] == 'pb':
+                print ('fcube = ')
+                print (fcube)
+                print ('')
+                print ('******')
+                print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+                print ('***file is merged to outfile later***')
+                print ('')
+                ## Next, append 1D timeseries (surface) data (pb stream)
+                ## Can't use Iris for this as cubes can't be 1D
+                ##              -> uses standard netCDF appending function
+                boutfile = nc_outfile[:-3] + '_b.nc'
+                if not os.path.exists(boutfile):
+                    if 'fcube' in locals():
+                        out = writePB_Cloudnet(fcube, boutfile, swath)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
 
-    ### save cube to netcdf file
-    print ('')
-    print ('Writing fcube to file:')
-    print ('')
-    if stream[1:3] == 'pc':
-        ## Combine track-pulled pp output files to one netCDF
-        ## First, make netCDF with pc stream (using Iris cubes)
-        print ('fcube = ')
-        print (fcube)
-        print ('')
-        print ('******')
-        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-        print ('')
-        if not os.path.exists(nc_outfile):
-            if 'fcube' in locals():
-                out = writeNetCDF(date, fcube, nc_outfile)
-            # if PC outfile already exists, combine other stream data
-            # if PC outfile doesn't exist, write new
+            elif stream[1:3] == 'pa':
+                print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
+                print ('***file is merged to outfile later***')
+                print ('')
+                ## Next, append 1D timeseries (surface) data (pb stream)
+                ## Can't use Iris for this as cubes can't be 1D
+                ##              -> uses standard netCDF appending function
+                aoutfile = nc_outfile[:-3] + '_a.nc'
+                if not os.path.exists(aoutfile):
+                    if 'fcube' in locals():
+                        out = writePA_Analysis(fcube, aoutfile, swath)
 
-    if stream[1:3] == 'pd':
-        ## Combine track-pulled pp output files to one netCDF
-        ## First, make netCDF with pd stream (using Iris cubes)
-        print ('fcube = ')
-        print (fcube)
-        print ('')
-        print ('******')
-        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-        print ('***file is merged to outfile later***')
-        print ('')
-        doutfile = nc_outfile[:-3] + '_d.nc'
-        if not os.path.exists(doutfile):
-            if 'fcube' in locals():
-                out = writePD_BL(fcube, doutfile, swath)
-            # if PD outfile already exists, combine other stream data
-            # if PD outfile doesn't exist, write new
-
-    if stream[1:3] == 'pe':
-        ## Combine track-pulled pp output files to one netCDF
-        ## First, make netCDF with pd stream (using Iris cubes)
-        print ('fcube = ')
-        print (fcube)
-        print ('')
-        print ('******')
-        print ('Stream = ' + stream[1:] + ', so making netCDF file with iris')
-        print ('***file is merged to outfile later***')
-        print ('')
-        eoutfile = nc_outfile[:-3] + '_e.nc'
-        if not os.path.exists(eoutfile):
-            if 'fcube' in locals():
-                out = writeFile_netCDF4(fcube, eoutfile, swath)
-            # if PC outfile already exists, combine other stream data
-            # if PC outfile doesn't exist, write new
-
-    elif stream[1:3] == 'pb':
-        print ('fcube = ')
-        print (fcube)
-        print ('')
-        print ('******')
-        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
-        print ('***file is merged to outfile later***')
-        print ('')
-        ## Next, append 1D timeseries (surface) data (pb stream)
-        ## Can't use Iris for this as cubes can't be 1D
-        ##              -> uses standard netCDF appending function
-        boutfile = nc_outfile[:-3] + '_b.nc'
-        if not os.path.exists(boutfile):
-            if 'fcube' in locals():
-                out = writePB_Cloudnet(fcube, boutfile, swath)     ##!!!! NEEDS UPDATING TO ONLY WRITE VARIABLES IN FILE, NOT HARD CODED
-
-    elif stream[1:3] == 'pa':
-        print ('Stream = ' + stream[1:] + ', so writing to new netCDF file with netCDF4.Dataset')
-        print ('***file is merged to outfile later***')
-        print ('')
-        ## Next, append 1D timeseries (surface) data (pb stream)
-        ## Can't use Iris for this as cubes can't be 1D
-        ##              -> uses standard netCDF appending function
-        aoutfile = nc_outfile[:-3] + '_a.nc'
-        if not os.path.exists(aoutfile):
-            if 'fcube' in locals():
-                out = writePA_Analysis(fcube, aoutfile, swath)
-
-    return nc_outfile
+            return nc_outfile
 
 def pullTrack_CloudNet(cube, grid_filename, con, stream, date, model, ship_data, nc_outfile, swath):
 
