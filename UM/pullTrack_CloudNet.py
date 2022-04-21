@@ -6075,9 +6075,9 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
             ## reinitialise data array
             data = []
             ################################################################
-            # only consider hourly diagnostics
+            # only consider hourly diagnostics from swath
             ################################################################
-            if len(np.round(cube[k].coord('forecast_period').points)) > 10:
+            if np.logical_and(len(np.round(cube[k].coord('forecast_period').points)) > 10, len(cube[k].dim_coords[2].points) < 100):
                 ###---------------------------------
                 ### CHECK IF OFFSETS NEED TO BE RE-ADJUSTED
                 ###---------------------------------
