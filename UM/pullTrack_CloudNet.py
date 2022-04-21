@@ -6136,7 +6136,7 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                 #################################################################
                 ## CHECK DIMENSIONS
                 #################################################################
-                if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) < 72):
+                if np.logical_and(np.size(cube[k].data,1) > 68, np.size(cube[k].data,1) <= 71):
                     print ('Variable is 4D:')
                     print ('')
                     print (cube[k])
@@ -6203,8 +6203,8 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                     #     # print 'no averaging, itime = 1 ...'
                     #     print ('')
                 # print data
-            print ('data.shape = ', data.shape)
-            print (cube[1].aux_coords)
+            # print ('data.shape = ', data.shape)
+            # print (cube[1].aux_coords)
 
             #################################################################
             ## CREATE CUBE
