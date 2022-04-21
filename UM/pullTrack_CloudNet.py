@@ -7294,7 +7294,7 @@ def writePD_BL(cube, doutfile, swath):
 
     return dataset
 
-def writeFile_netCDF4(cube, eoutfile):
+def writeFile_netCDF4(cube, eoutfile, swath):
     #################################################################
     ## Write 1D timeseries Cloudnet data (PB) to newly created netCDF
     #################################################################
