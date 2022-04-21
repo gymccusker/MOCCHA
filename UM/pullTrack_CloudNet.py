@@ -6218,9 +6218,13 @@ def pullSwath_CloudNet(cube, grid_filename, con, stream, date, model, ship_data,
                         ntime = DimCoord(cubetime[:], var_name = 'forecast_time', standard_name = 'time', units = 'h')
                     else:
                         ntime = DimCoord(cubetime[:-1], var_name = 'forecast_time', standard_name = 'time', units = 'h')
-                ### define lat/lon dimensions, relevant for all streams
-                model_lat = DimCoord(cube[k].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
-                model_lon = DimCoord(cube[k].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
+                ### define lat/lon dimensions (dependent on ndims of var), relevant for all streams
+                if np.ndim(cube[k] == 4):
+                    model_lat = DimCoord(cube[k].dim_coords[2].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                    model_lon = DimCoord(cube[k].dim_coords[3].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
+                elif np.ndim(cube[k] == 3):
+                    model_lat = DimCoord(cube[k].dim_coords[1].points[lat0:lat1], var_name = 'grid_latitude', standard_name = 'grid_latitude', units='')
+                    model_lon = DimCoord(cube[k].dim_coords[2].points[lon0:lon1], var_name = 'grid_longitude', standard_name = 'grid_longitude', units='')
                 if dim_flag == 1:         ### 4D VARIABLE
                     if stream[1:3] == 'pd':
                         model_height = DimCoord(cube[k].aux_coords[2].points, var_name = 'height', standard_name = 'height', units='m')
