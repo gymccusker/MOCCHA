@@ -7013,7 +7013,10 @@ def writePB_Cloudnet(cube, boutfile, swath):
     for d in range(0,len(cube)):
         print ('Writing ' + cube[d].var_name)
         print ('')
-        dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+        if swath == True:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+        else:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
@@ -7117,7 +7120,10 @@ def writePA_Analysis(cube, aoutfile, swath):
             print ('Writing ' + cube[d].var_name)
             print ('')
             if not cube[d].var_name in dataset.variables:
-                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+                if swath == True:
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                else:
+                    dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 dat.units = str(cube[d].units)
@@ -7239,7 +7245,10 @@ def writePD_BL(cube, doutfile, swath):
         print
         if np.ndim(cube[d]) == 2:
             if cube[d].var_name == 'air_pressure': continue
-            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
+            if swath == True:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+            else:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
@@ -7256,7 +7265,10 @@ def writePD_BL(cube, doutfile, swath):
             else:
                 dat[:,:] = cube[d].data
         elif np.ndim(cube[d]) == 1:
-            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
+            if swath == True:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+            else:
+                dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time',), fill_value='-9999')
             dat.scale_factor = float(1)
             dat.add_offset = float(0)
             dat.units = str(cube[d].units)
@@ -7368,7 +7380,10 @@ def writeFile_netCDF4(cube, eoutfile):
     for d in range(0,len(cube)):
         print ('Writing ' + cube[d].var_name)
         print ('')
-        dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
+        if swath == True:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+        else:
+            dat = dataset.createVariable(cube[d].var_name, np.float64, ('forecast_time','height',), fill_value='-9999')
         dat.scale_factor = float(1)
         dat.add_offset = float(0)
         dat.units = str(cube[d].units)
