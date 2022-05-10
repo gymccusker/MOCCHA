@@ -3144,7 +3144,6 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
     # plt.show()
     plt.close()
 
-
 def main():
 
     START_TIME = time.time()
@@ -3422,7 +3421,7 @@ def main():
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
 
     for i in range(0,len(names)):
-        filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
+        filename_um2 = root_dir + dir2 + names[i] + 'metum.nc'
 
         print (filename_um2)
         print ('')
