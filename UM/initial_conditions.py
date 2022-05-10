@@ -3165,7 +3165,7 @@ def main():
     ### DESKTOP
 
     if platform == 'JASMIN':
-        root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
+        root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/UM/' # '/gws/nopw/j04/arcticcloud/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
@@ -3184,7 +3184,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '25_u-cc568_RA2M_CON/'
-    out_dir2 = '23_u-cc278_RA1M_CASIM/'
+    out_dir2 = 'u-cc278/' # '23_u-cc278_RA1M_CASIM/'
     out_dir4 = '24_u-cc324_RA2T_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
 
@@ -3287,9 +3287,9 @@ def main():
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
     #### cube = loadPD(root_dir, out_dir1, date_dir, model_flag)
-    cube = loadPA(root_dir, out_dir1, date_dir, model_flag)
-    print (cube)
-    figure = plot_cartmap(ship_data, cube, date_dir, model, case_study)
+    # cube = loadPA(root_dir, out_dir1, date_dir, model_flag)
+    # print (cube)
+    # figure = plot_cartmap(ship_data, cube, date_dir, model, case_study)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
@@ -3404,6 +3404,92 @@ def main():
     # #### plot anomalies
     # #### ---------------------------------------------------------------
     # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
+
+    #### ---------------------------------------------------------------
+    #### plot swath data
+    ####    requires loading all data first
+    #### ---------------------------------------------------------------
+    dir2 = out_dir2 + 'OUT_R1_swath/'
+    names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+
+    for i in range(0,len(names)):
+        filename_um2 = um_root_dir + out_dir2 + names[i] + 'metum.nc'
+
+        print (filename_um2)
+        print ('')
+        print( 'Loading diagnostics:')
+        nc2 = Dataset(filename_um2,'r')
+
+        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
+            'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+            'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation', 'latent_heat_flux',
+            'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg']
+
+        if i == 0:
+            ## ------------------
+            #### UM read in
+            ## ------------------
+            data2 = {}
+            time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
+
+            ### define height arrays explicitly
+            data2['height'] = nc2.variables['height'][:]
+            ## ------------------
+            #### read in netcdfs and initialise
+            ## ------------------
+            print ('Starting on t=0 CASIM data:')
+            for j in range(0,len(var_list2)):
+                print (var_list2[j])
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
+                    data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
+            nc2.close()
+        else:
+            time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+
+            ## ------------------
+            #### read in netcdfs and append
+            ## ------------------
+            print ('Appending CASIM data:')
+            for j in range(0,len(var_list2)):
+                print (var_list2[j])
+                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list2[j]]) == 3:
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:], axis=0)
+                elif np.ndim(nc2.variables[var_list2[j]]) == 4:
+                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:], axis=0)
+            nc2.close()
+
+    #################################################################
+    ## save time to dictionary now we're not looping over all diags anymore
+    #################################################################
+    data2['time'] = time_um2
+
+    ### stop double counting of 0000 and 2400 from model data
+    temp2 = np.zeros([len(data2['time'])])
+    for i in range(0, len(temp2)-1):
+        if data2['time'][i] == data2['time'][i+1]:
+            continue
+        else:
+            temp2[i] = data2['time'][i]
+    ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
+    ### can use temp for all model data since they are on the same (hourly) time binning
+    data2['time_hrly'] = temp2[ii2]
+    data2['time_6hrly'] = data2['time_hrly'][::6]
+    data2['hrly_flag'] = ii2
+
+
 
 
     # np.save('working_data', data)
