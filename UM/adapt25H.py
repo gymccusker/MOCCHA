@@ -249,6 +249,12 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
             if diag == 'grid_longitude':
                 print ('Diagnostic is grid_longitude which is already defined... skipping.')
                 continue
+            if diag == 'grid_latitude_0':
+                print ('Diagnostic is grid_latitude_0 which is already defined... skipping.')
+                continue
+            if diag == 'grid_longitude_0':
+                print ('Diagnostic is grid_longitude_0 which is already defined... skipping.')
+                continue
             # if diag in missed_list:     ## if sea ice albedo
             #     print ('Diagnostic is sea ice albedo, so need to append some nans.')
             #     continue
@@ -531,7 +537,12 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
                 dat[24,:,:,:] = nc2.variables[diag][0,:,:,:]
             elif diag in winds:
                 diagfull = diag + 'wind'
-                dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+                if diag == 'v':
+                    dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude_0','grid_longitude',), fill_value='-9999')
+                elif diag == 'u':
+                    dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude_0',), fill_value='-9999')
+                else:
+                    dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')                
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
