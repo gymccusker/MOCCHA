@@ -997,7 +997,7 @@ def main():
 
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/'
-        ship_filename = '~/GWS/MOCCHA/ODEN/2018_shipposition_1hour.txt'
+        ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/UM/DATA/'
         obs_root_dir = '/home/gillian/MOCCHA/ODEN/DATA/'
