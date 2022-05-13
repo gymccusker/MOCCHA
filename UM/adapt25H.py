@@ -218,7 +218,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
         grid_longitude.comment = 'Longitude in rotated grid framework. '
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
-        grid_longitude[:] = nc1.variables['grid_latitude'][:]
+        grid_longitude[:] = nc1.variables['grid_longitude'][:]
 
     ###################################
     ## Create DIAGNOSTICS
@@ -692,7 +692,7 @@ def copyNC(nc1, filename1, out_dir, swath):
         grid_longitude.comment = 'Longitude in rotated grid framework. '
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
-        grid_longitude[:] = nc1.variables['grid_latitude'][:]
+        grid_longitude[:] = nc1.variables['grid_longitude'][:]
 
     ###################################
     ## Create DIAGNOSTICS
