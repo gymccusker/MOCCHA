@@ -196,14 +196,14 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
             height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
     if swath == True:
-        grid_latitude = dataset.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
-        grid_longitude = dataset.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
+        grid_latitude = nc.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
+        grid_longitude = nc.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
 
         ###################################
         ## Dimensions variables
         ###################################
         #### grid_latitude
-        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude = nc.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
         grid_latitude.scale_factor = float(1)
         grid_latitude.add_offset = float(0)
         grid_latitude.comment = 'Latitude in rotated grid framework. '
@@ -212,7 +212,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
         grid_latitude[:] = nc1.variables['grid_latitude'][:]
 
         #### grid_longitude
-        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude = nc.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
         grid_longitude.scale_factor = float(1)
         grid_longitude.add_offset = float(0)
         grid_longitude.comment = 'Longitude in rotated grid framework. '
@@ -670,14 +670,14 @@ def copyNC(nc1, filename1, out_dir, swath):
             height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
     if swath == True:
-        grid_latitude = dataset.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
-        grid_longitude = dataset.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
+        grid_latitude = nc.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
+        grid_longitude = nc.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
 
         ###################################
         ## Dimensions variables
         ###################################
         #### grid_latitude
-        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude = nc.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
         grid_latitude.scale_factor = float(1)
         grid_latitude.add_offset = float(0)
         grid_latitude.comment = 'Latitude in rotated grid framework. '
@@ -686,7 +686,7 @@ def copyNC(nc1, filename1, out_dir, swath):
         grid_latitude[:] = nc1.variables['grid_latitude'][:]
 
         #### grid_longitude
-        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude = nc.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
         grid_longitude.scale_factor = float(1)
         grid_longitude.add_offset = float(0)
         grid_longitude.comment = 'Longitude in rotated grid framework. '
