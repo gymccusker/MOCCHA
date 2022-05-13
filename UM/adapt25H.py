@@ -195,6 +195,31 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
             height2.long_name = 'height2'
             height2[:] = nc1.variables['height2'][:]      ### forecast time (ignore first 12h)
 
+    if swath == True:
+        grid_latitude = dataset.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
+        grid_longitude = dataset.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
+
+        ###################################
+        ## Dimensions variables
+        ###################################
+        #### grid_latitude
+        grid_latitude = dataset.createVariable('grid_latitude', np.float64, ('grid_latitude',), fill_value='-9999')
+        grid_latitude.scale_factor = float(1)
+        grid_latitude.add_offset = float(0)
+        grid_latitude.comment = 'Latitude in rotated grid framework. '
+        grid_latitude.units = 'deg N'
+        grid_latitude.long_name = 'grid_latitude'
+        grid_latitude[:] = nc1.variables['grid_latitude'][:]
+
+        #### grid_longitude
+        grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
+        grid_longitude.scale_factor = float(1)
+        grid_longitude.add_offset = float(0)
+        grid_longitude.comment = 'Longitude in rotated grid framework. '
+        grid_longitude.units = 'deg E'
+        grid_longitude.long_name = 'grid_longitude'
+        grid_longitude[:] = nc1.variables['grid_latitude'][:]
+
     ###################################
     ## Create DIAGNOSTICS
     ###################################
@@ -298,6 +323,97 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
                 dat[0:24] = nc1.variables[diag][0:]
                 dat[24] = nc2.variables[diag][0]
 
+        ### 3Dimensions
+        if np.size(np.shape(nc1.variables[diag])) == 3:
+            if diag == 'forecast_time':
+                print ('Diagnostic is forecast_time which is already defined... skipping.')
+                continue
+            if diag == 'height':
+                print ('Diagnostic is height which is already defined... skipping.')
+                continue
+            if diag == 'height2':
+                print ('Diagnostic is height2 which is already defined... skipping.')
+                continue
+            # if diag in missed_list:     ## if sea ice albedo
+            #     print ('Diagnostic is sea ice albedo, so need to append some nans.')
+            #     continue
+            if diag in radlist:
+                if diag == 'sfc_net_SW':
+                    dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                elif diag == 'sfc_net_LW':
+                    dat = nc.createVariable('surface_net_LW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_SW':
+                    dat = nc.createVariable('surface_downwelling_SW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                elif diag == 'sfc_downwelling_LW':
+                    dat = nc.createVariable('surface_downwelling_LW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                else:
+                    dat = nc.createVariable(diag, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:23] = nc1.variables[diag][0:-1]
+                if diag == 'sfc_net_SW':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = nc2.variables['surface_net_SW_radiation'][0:2,:,:]
+                elif diag == 'sfc_net_LW':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = nc2.variables['surface_net_LW_radiation'][0:2,:,:]
+                elif diag == 'sfc_downwelling_SW':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = np.nan
+                elif diag == 'sfc_downwelling_LW':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = np.nan
+                elif diag == 'toa_outgoing_longwave_flux':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = np.nan
+                elif diag == 'toa_outgoing_shortwave_flux':
+                    if diag in nc2.variables:
+                        dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+                    else:
+                        dat[23:25,:,:] = np.nan
+                else:
+                    dat[23:25,:,:] = nc2.variables[diag][0:2,:,:]
+            elif diag in flxlist:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:,:] = nc1.variables[diag][0:,:,:]
+                if diag in nc2.variables:   ## if missing, fill with nans
+                    dat[24,:,:] = nc2.variables[diag][0,:,:]
+                else:
+                    dat[24,:,:] = np.nan
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:,:] = nc1.variables[diag][0:,:,:]
+                dat[24,:,:] = nc2.variables[diag][0,:,:]
+
         ### 2Dimensions
         elif np.size(np.shape(nc1.variables[diag])) == 2:
             # if diag in missed_list:
@@ -371,6 +487,80 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
                 if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
                 dat[0:24,:] = nc1.variables[diag][0:,:]
                 dat[24,:] = nc2.variables[diag][0,:]
+
+        ### 4Dimensions
+        elif np.size(np.shape(nc1.variables[diag])) == 4:
+            # if diag in missed_list:
+            #     print ('Diagnostic is in missed_list, so not always in outfile... skipping.')
+            #     continue
+            if diag in flxlist:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height2','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:,:,:] = nc1.variables[diag][0:,:,:,:]
+                ## check diagnostic is in both files
+                if diag in nc2.variables:
+                    dat[24,:,:,:] = nc2.variables[diag][0,:,:,:]
+                else:
+                    dat[24,:,:,:] = np.nan
+            elif np.logical_and(diag == 'qice', out_dir[16:21] == 'CASIM'):         ### if it's a casim run, create new total ice var
+                if out_dir[:21] == '12_u-br210_RA1M_CASIM':
+                    print ('Run is ' + out_dir[:21] + ', no qicecrystals for this run yet')
+                    continue
+                ### make total ice variable (qice)
+                dat = nc.createVariable('qice', np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                dat.comment = 'Total cloud ice mass (crystals + aggregates)'
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = 'mass_fraction_of_total_cloud_ice_in_air'
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_total_cloud_ice_in_air'
+                qice1 = nc1.variables['qice'][:] + nc1.variables['qicecrystals'][:]
+                qice2 = nc2.variables['qice'][:] + nc2.variables['qicecrystals'][:]
+                dat[0:24,:,:,:] = qice1[0:,:,:,:]
+                dat[24,:,:,:] = qice2[0,:,:,:]
+                ### make ice aggregates variable (qsnow)
+                dat = nc.createVariable('qsnow', np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = 'mass_fraction_of_cloud_ice_aggregates_in_air'
+                dat[0:24,:,:,:] = nc1.variables[diag][0:,:,:,:]
+                dat[24,:,:,:] = nc2.variables[diag][0,:,:,:]
+            elif diag in winds:
+                diagfull = diag + 'wind'
+                dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:,:,:] = nc1.variables[diag][0:,:,:,:]
+                if diag in nc2.variables:
+                    dat[24,:,:,:] = nc2.variables[diag][0,:,:,:]
+                else:
+                    dat[24,:,:,:] = nc2.variables[diagfull][0,:,:,:]
+            else:
+                dat = nc.createVariable(diag, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
+                dat.scale_factor = float(1)
+                dat.add_offset = float(0)
+                if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
+                if 'STASH' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].STASH
+                if 'um_stash_source' in nc1.variables[diag].ncattrs(): dat.um_stash_source = nc1.variables[diag].um_stash_source
+                if 'standard_name' in nc1.variables[diag].ncattrs(): dat.standard_name = nc1.variables[diag].standard_name
+                if 'long_name' in nc1.variables[diag].ncattrs(): dat.long_name = nc1.variables[diag].long_name
+                dat[0:24,:,:,:] = nc1.variables[diag][0:,:,:,:]
+                dat[24,:,:,:] = nc2.variables[diag][0,:,:,:]
 
         ### 0Dimensions
         else:
@@ -493,7 +683,7 @@ def copyNC(nc1, filename1, out_dir, swath):
         grid_latitude.comment = 'Latitude in rotated grid framework. '
         grid_latitude.units = 'deg N'
         grid_latitude.long_name = 'grid_latitude'
-        grid_latitude[:] = cube[0].dim_coords[2].points
+        grid_latitude[:] = nc1.variables['grid_latitude'][:]
 
         #### grid_longitude
         grid_longitude = dataset.createVariable('grid_longitude', np.float64, ('grid_longitude',), fill_value='-9999')
@@ -502,7 +692,7 @@ def copyNC(nc1, filename1, out_dir, swath):
         grid_longitude.comment = 'Longitude in rotated grid framework. '
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
-        grid_longitude[:] = cube[0].dim_coords[3].points
+        grid_longitude[:] = nc1.variables['grid_latitude'][:]
 
     ###################################
     ## Create DIAGNOSTICS
@@ -766,7 +956,6 @@ def copyNC(nc1, filename1, out_dir, swath):
         nc.um_version = nc1.um_version
 
     nc.close()
-
 
 def callback(cube, field, filename):
     '''
