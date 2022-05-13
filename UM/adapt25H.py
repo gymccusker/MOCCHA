@@ -243,6 +243,12 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
             if diag == 'height2':
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
+            if diag == 'grid_latitude':
+                print ('Diagnostic is grid_latitude which is already defined... skipping.')
+                continue
+            if diag == 'grid_longitude':
+                print ('Diagnostic is grid_longitude which is already defined... skipping.')
+                continue
             # if diag in missed_list:     ## if sea ice albedo
             #     print ('Diagnostic is sea ice albedo, so need to append some nans.')
             #     continue
@@ -325,18 +331,6 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
 
         ### 3Dimensions
         if np.size(np.shape(nc1.variables[diag])) == 3:
-            if diag == 'forecast_time':
-                print ('Diagnostic is forecast_time which is already defined... skipping.')
-                continue
-            if diag == 'height':
-                print ('Diagnostic is height which is already defined... skipping.')
-                continue
-            if diag == 'height2':
-                print ('Diagnostic is height2 which is already defined... skipping.')
-                continue
-            # if diag in missed_list:     ## if sea ice albedo
-            #     print ('Diagnostic is sea ice albedo, so need to append some nans.')
-            #     continue
             if diag in radlist:
                 if diag == 'sfc_net_SW':
                     dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
@@ -716,6 +710,12 @@ def copyNC(nc1, filename1, out_dir, swath):
             if diag == 'height2':
                 print ('Diagnostic is height2 which is already defined... skipping.')
                 continue
+            if diag == 'grid_latitude':
+                print ('Diagnostic is grid_latitude which is already defined... skipping.')
+                continue
+            if diag == 'grid_longitude':
+                print ('Diagnostic is grid_longitude which is already defined... skipping.')
+                continue
             if diag in radlist:
                 if diag == 'sfc_net_SW':
                     dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time',), fill_value='-9999')
@@ -758,15 +758,6 @@ def copyNC(nc1, filename1, out_dir, swath):
 
         ### 3Dimensions
         if np.size(np.shape(nc1.variables[diag])) == 3: ### time, latitude, longitude
-            if diag == 'forecast_time':
-                print ('Diagnostic is forecast_time which is already defined... skipping.')
-                continue
-            if diag == 'height':
-                print ('Diagnostic is height which is already defined... skipping.')
-                continue
-            if diag == 'height2':
-                print ('Diagnostic is height2 which is already defined... skipping.')
-                continue
             if diag in radlist:
                 if diag == 'sfc_net_SW':
                     dat = nc.createVariable('surface_net_SW_radiation', np.float64, ('forecast_time','grid_latitude','grid_longitude',), fill_value='-9999')
