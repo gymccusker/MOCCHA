@@ -1135,7 +1135,7 @@ def main():
     names = moccha_names
     missing_files = moccha_missing_files
     month_flag = -1
-    swatch = True
+    swath = True
 
     # i = 0
     for i in range(0,len(moccha_names)):
