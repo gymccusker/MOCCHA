@@ -198,6 +198,8 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
     if swath == True:
         grid_latitude = nc.createDimension('grid_latitude', np.size(nc1.variables['grid_latitude']))
         grid_longitude = nc.createDimension('grid_longitude', np.size(nc1.variables['grid_longitude']))
+        grid_latitude_0 = nc.createDimension('grid_latitude_0', np.size(nc1.variables['grid_latitude_0']))
+        grid_longitude_0 = nc.createDimension('grid_longitude_0', np.size(nc1.variables['grid_longitude_0']))
 
         ###################################
         ## Dimensions variables
@@ -219,6 +221,24 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
         grid_longitude.units = 'deg E'
         grid_longitude.long_name = 'grid_longitude'
         grid_longitude[:] = nc1.variables['grid_longitude'][:]
+
+        #### grid_latitude
+        grid_latitude_0 = nc.createVariable('grid_latitude_0', np.float64, ('grid_latitude_0',), fill_value='-9999')
+        grid_latitude_0.scale_factor = float(1)
+        grid_latitude_0.add_offset = float(0)
+        grid_latitude_0.comment = 'Latitude in rotated grid framework. V only. '
+        grid_latitude_0.units = 'deg N'
+        grid_latitude_0.long_name = 'grid_latitude_0'
+        grid_latitude_0[:] = nc1.variables['grid_latitude_0'][:]
+
+        #### grid_longitude
+        grid_longitude_0 = nc.createVariable('grid_longitude_0', np.float64, ('grid_longitude_0',), fill_value='-9999')
+        grid_longitude_0.scale_factor = float(1)
+        grid_longitude_0.add_offset = float(0)
+        grid_longitude_0.comment = 'Longitude in rotated grid framework. U only. '
+        grid_longitude_0.units = 'deg E'
+        grid_longitude_0.long_name = 'grid_longitude_0'
+        grid_longitude_0[:] = nc1.variables['grid_longitude_0'][:]
 
     ###################################
     ## Create DIAGNOSTICS
@@ -542,7 +562,7 @@ def combineNC(nc1, nc2, filename1, filename2, out_dir, swath):
                 elif diag == 'u':
                     dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude_0',), fill_value='-9999')
                 else:
-                    dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')                
+                    dat = nc.createVariable(diagfull, np.float64, ('forecast_time','height','grid_latitude','grid_longitude',), fill_value='-9999')
                 dat.scale_factor = float(1)
                 dat.add_offset = float(0)
                 if 'units' in nc1.variables[diag].ncattrs(): dat.units = nc1.variables[diag].units
