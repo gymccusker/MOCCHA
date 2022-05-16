@@ -1170,8 +1170,8 @@ def main():
                 # '20180821_oden_metum.nc','20180822_oden_metum.nc','20180823_oden_metum.nc','20180824_oden_metum.nc',
                 # '20180825_oden_metum.nc','20180826_oden_metum.nc','20180827_oden_metum.nc','20180828_oden_metum.nc',
                 # '20180829_oden_metum.nc','20180830_oden_metum.nc','20180831_oden_metum.nc','20180901_oden_metum.nc',
-                # '20180902_oden_metum.nc',
-                '20180903_oden_metum.nc','20180904_oden_metum.nc','20180905_oden_metum.nc',
+                # '20180902_oden_metum.nc','20180903_oden_metum.nc',
+                '20180904_oden_metum.nc','20180905_oden_metum.nc',
                 '20180906_oden_metum.nc','20180907_oden_metum.nc','20180908_oden_metum.nc','20180909_oden_metum.nc',
                 '20180910_oden_metum.nc','20180911_oden_metum.nc','20180912_oden_metum.nc',
                 '20180913_oden_metum.nc','20180914_oden_metum.nc']
@@ -1183,7 +1183,7 @@ def main():
     moccha_missing_files = []
 
     # doy = np.arange(225,259)        ## set DOY for full moccha figures
-    doy = np.arange(246,259)        ## set DOY for 3 Sep onwards
+    doy = np.arange(247,259)        ## set DOY for 4 Sep onwards (3 Sep initialisation)
     # doy = np.arange(245,253)        ## set DOY for subset of moccha figures
     # doy = np.arange(240,248)        ## set DOY for subset of moccha figures (28 Aug to 4 Sep)
     # doy = np.arange(243,249)        ## set DOY for subset of moccha figures (31 Aug to 5 Sep)
