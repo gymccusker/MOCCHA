@@ -3408,7 +3408,8 @@ def main():
     #### plot swath data
     ####    requires loading all data first
     #### ---------------------------------------------------------------
-    dir2 = out_dir2 + 'OUT_R1_swath/'
+    swath_dir = out_dir2 + 'OUT_R1_swath/'
+    point_dir = out_dir2 + 'OUT_R0/'
     names = ['20180814_oden_','20180815_oden_','20180816_oden_',
             '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
             '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
@@ -3421,15 +3422,18 @@ def main():
     doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
 
     for i in range(0,len(names)):
-        filename_um2 = root_dir + dir2 + names[i] + 'metum.nc'
+        filename_swath = root_dir + swath_dir + names[i] + 'metum.nc'
+        filename_point = root_dir + point_dir + names[i] + 'metum.nc'
 
-        print (filename_um2)
+        print (filename_swath)
+        print (filename_point)
         print ('')
         print( 'Loading diagnostics:')
-        nc2 = Dataset(filename_um2,'r')
+        nc1 = Dataset(filename_point,'r')
+        nc2 = Dataset(filename_swath,'r')
 
-        var_list2 = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation','sensible_heat_flux',
-            'air_temperature_at_1.5m', 'rainfall_flux','snowfall_flux','q','pressure','bl_depth','bl_type','qliq','uwind','vwind','wwind',
+        var_list = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation',
+            'q','pressure','qliq','uwind','vwind','wwind',
             'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation', 'latent_heat_flux',
             'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg']
 
@@ -3437,53 +3441,92 @@ def main():
             ## ------------------
             #### UM read in
             ## ------------------
+            data1 = {}
+            time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
+
             data2 = {}
             time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
 
             ### define height arrays explicitly
+            data1['height'] = nc1.variables['height'][:]
             data2['height'] = nc2.variables['height'][:]
             ## ------------------
             #### read in netcdfs and initialise
             ## ------------------
-            print ('Starting on t=0 CASIM data:')
-            for j in range(0,len(var_list2)):
-                print (var_list2[j])
-                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+            print ('Starting on t=0 point data:')
+            for j in range(0,len(var_list)):
+                print (var_list[j])
+                if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
                     continue
-                elif np.ndim(nc2.variables[var_list2[j]]) >= 1:
-                    data2[var_list2[j]] = nc2.variables[var_list2[j]][:]
+                elif np.ndim(nc1.variables[var_list[j]]) >= 1:
+                    data1[var_list[j]] = nc1.variables[var_list[j]][:]
+            nc1.close()
+
+            print ('Starting on t=0 swath data:')
+            for j in range(0,len(var_list)):
+                print (var_list[j])
+                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list[j]]) >= 1:
+                    data2[var_list[j]] = nc2.variables[var_list[j]][:]
             nc2.close()
+
+
         else:
+            time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
             time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
 
             ## ------------------
             #### read in netcdfs and append
             ## ------------------
-            print ('Appending CASIM data:')
-            for j in range(0,len(var_list2)):
-                print (var_list2[j])
-                if np.ndim(nc2.variables[var_list2[j]]) == 0:     # ignore horizontal_resolution
+            print ('Appending point data:')
+            for j in range(0,len(var_list)):
+                print (var_list[j])
+                if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
                     continue
-                elif np.ndim(nc2.variables[var_list2[j]]) == 3:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:], axis=0)
-                elif np.ndim(nc2.variables[var_list2[j]]) == 4:
-                    data2[var_list2[j]] = np.append(data2[var_list2[j]],nc2.variables[var_list2[j]][:], axis=0)
+                elif np.ndim(nc1.variables[var_list[j]]) == 1:
+                    data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:])
+                elif np.ndim(nc1.variables[var_list[j]]) == 2:
+                    data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:], axis=0)
+            nc1.close()
+
+            print ('Appending swath data:')
+            for j in range(0,len(var_list)):
+                print (var_list[j])
+                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list[j]]) >= 3:
+                    data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+                # elif np.ndim(nc2.variables[var_list[j]]) == 4:
+                #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
             nc2.close()
 
     #################################################################
     ## save time to dictionary now we're not looping over all diags anymore
     #################################################################
+    data1['time'] = time_um1
     data2['time'] = time_um2
 
     ### stop double counting of 0000 and 2400 from model data
+    temp1 = np.zeros([len(data1['time'])])
     temp2 = np.zeros([len(data2['time'])])
+    for i in range(0, len(temp1)-1):
+        if data1['time'][i] == data1['time'][i+1]:
+            continue
+        else:
+            temp1[i] = data1['time'][i]
     for i in range(0, len(temp2)-1):
         if data2['time'][i] == data2['time'][i+1]:
             continue
         else:
             temp2[i] = data2['time'][i]
+
+    ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
-    ### can use temp for all model data since they are on the same (hourly) time binning
+
+    data1['time_hrly'] = temp1[ii1]
+    data1['time_6hrly'] = data1['time_hrly'][::6]
+    data1['hrly_flag'] = ii1
     data2['time_hrly'] = temp2[ii2]
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data2['hrly_flag'] = ii2
