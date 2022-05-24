@@ -10908,7 +10908,10 @@ def main():
 
     ### CHOSEN RUN
     if platform == 'LAPTOP':
-        out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
+        if swath == True:
+            out_dir1 = '23_u-cc278_RA1M_CASIM/OUT_R1_swath/'
+        else:
+            out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
         out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_R1_25H/'
