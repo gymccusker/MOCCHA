@@ -10904,6 +10904,8 @@ def main():
         ship_filename = '/nfs/a96/MOCCHA/working/gillian/ship/2018_shipposition_1hour.txt'
         position_filename = 'AUX_DATA/POSITION_UNROTATED.csv'
 
+    swath = True
+
     ### CHOSEN RUN
     if platform == 'LAPTOP':
         out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
