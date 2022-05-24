@@ -10876,7 +10876,7 @@ def main():
     # np = py3_FixNPLoad(np)
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'LAPTOP'
+    platform = 'JASMIN'
 
     ### only works on laptop for now
 
@@ -10888,8 +10888,8 @@ def main():
     if platform == 'JASMIN':
         platformflag = 'jasmin'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
-        um_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
-        misc_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/processed_models/'
+        um_root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/'
+        misc_root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/'
         obs_root_dir = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/'
     if platform == 'LAPTOP':
         platformflag = 'laptop'
