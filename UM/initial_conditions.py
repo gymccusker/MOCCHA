@@ -3746,9 +3746,26 @@ def main():
                     data2[var_list[j]] = nc2.variables[var_list[j]][:]
             nc2.close()
 
+        elif i == 21:
+            data3 = {}
+            time_um3 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
+
+            ### define height arrays explicitly
+            data3['height'] = nc2.variables['height'][:]
+            ## ------------------
+            #### read in netcdfs and initialise
+            ## ------------------
+            print ('Starting on t=0 point data:')
+            for j in range(0,len(var_list)):
+                print (var_list[j])
+                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+                    continue
+                elif np.ndim(nc2.variables[var_list[j]]) >= 1:
+                    data3[var_list[j]] = nc2.variables[var_list[j]][:]
+            nc2.close()
+
         else:
             time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-            time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
 
             ## ------------------
             #### read in netcdfs and append
@@ -3764,15 +3781,35 @@ def main():
                     data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:], axis=0)
             nc1.close()
 
-            print ('Appending swath data:')
-            for j in range(0,len(var_list)):
-                print (var_list[j])
-                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list[j]]) >= 3:
-                    data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
-                # elif np.ndim(nc2.variables[var_list[j]]) == 4:
-                #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+            if i > 21:
+                time_um3 = np.append(time_um3, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+
+                ## ------------------
+                #### read in netcdfs and append
+                ## ------------------
+                print ('Appending Sept swath data:')
+                for j in range(0,len(var_list)):
+                    print (var_list[j])
+                    if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc2.variables[var_list[j]]) >= 3:
+                        data3[var_list[j]] = np.append(data3[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+                    # elif np.ndim(nc2.variables[var_list[j]]) == 4:
+                    #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+            else:
+                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+
+                print ('Appending Aug swath data:')
+                for j in range(0,len(var_list)):
+                    print (var_list[j])
+                    if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+                        continue
+                    elif np.ndim(nc2.variables[var_list[j]]) >= 3:
+                        data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+                    # elif np.ndim(nc2.variables[var_list[j]]) == 4:
+                    #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+                # nc2.close()
+
             nc2.close()
 
     #################################################################
@@ -3780,10 +3817,12 @@ def main():
     #################################################################
     data1['time'] = time_um1
     data2['time'] = time_um2
+    data3['time'] = time_um3
 
     ### stop double counting of 0000 and 2400 from model data
     temp1 = np.zeros([len(data1['time'])])
     temp2 = np.zeros([len(data2['time'])])
+    temp3 = np.zeros([len(data3['time'])])
     for i in range(0, len(temp1)-1):
         if data1['time'][i] == data1['time'][i+1]:
             continue
@@ -3794,9 +3833,14 @@ def main():
             continue
         else:
             temp2[i] = data2['time'][i]
-
+    for i in range(0, len(temp3)-1):
+        if data3['time'][i] == data3['time'][i+1]:
+            continue
+        else:
+            temp3[i] = data3['time'][i]
     ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
     ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
+    ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
 
     data1['time_hrly'] = temp1[ii1]
     data1['time_6hrly'] = data1['time_hrly'][::6]
@@ -3804,12 +3848,15 @@ def main():
     data2['time_hrly'] = temp2[ii2]
     data2['time_6hrly'] = data2['time_hrly'][::6]
     data2['hrly_flag'] = ii2
+    data3['time_hrly'] = temp3[ii3]
+    data3['time_6hrly'] = data3['time_hrly'][::6]
+    data3['hrly_flag'] = ii3
 
     #################################################################
     ## compare cloud fields for paper review
     #################################################################
 
-    figure = plot_CASIM_NdropTimeseries(data1, data2)
+    # figure = plot_CASIM_NdropTimeseries(data1, data2)
 
 
 
