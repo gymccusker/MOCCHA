@@ -3181,9 +3181,9 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     plt.rc('xtick',labelsize=LARGE_SIZE)
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
-    fig = plt.figure(figsize=(13, 12))
-    plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.88, left = 0.06,
-            hspace = 0.3, wspace = 0.1)
+    fig = plt.figure(figsize=(10, 7))
+    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.88, left = 0.08,
+            hspace = 0.3, wspace = 0.28)
 
     ### define axis instance
     # ax = plt.gca()
@@ -3211,8 +3211,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     # plt.ylabel('Z [km]')
     # plt.ylim([0,9000])
     # # axmajor = np.arange(0,9.01e3,0.5e3)
-    # axmajor = np.arange(0,9.01e3,3.0e3)
-    # axminor = np.arange(0,9.01e3,0.5e3)
+    axmajor = np.arange(0,9.01e3,3.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
     # plt.yticks(axmajor)
     # ax.set_yticklabels([0,3,6,9])
     # plt.title('UM_CASIM-100_Swath', fontsize = 14)
@@ -3240,18 +3240,19 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     # cbaxes.xaxis.set_label_position('top')
 
     #### set flagged data to nans
-    data2['cloud_fraction'][data2['cloud_fraction'] < 0.0] = np.nan
+    data2['mean_cloud_fraction'][data2['mean_cloud_fraction'] < 0.0] = np.nan
     data1['cloud_fraction'][data1['cloud_fraction'] < 0.0] = np.nan
 
-    ax  = fig.add_axes([0.83,0.55,0.13,0.15])   # left, bottom, width, height
+    plt.subplot(131)
     ax = plt.gca()
-    ax.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
-        np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['mean_cloud_fraction'],0) - np.nanstd(data2['mean_cloud_fraction'],0),
+        np.nanmean(data2['mean_cloud_fraction'],0) + np.nanstd(data2['mean_cloud_fraction'],0), color = 'orange', alpha = 0.15)
     ax.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
-        np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'violet', alpha = 0.15)
-    plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
-    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'purple', linewidth = 3, label = label4)
+        np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(data2['mean_cloud_fraction'],0),data2['height'], color = 'darkorange', linewidth = 3, label = 'Swath')
+    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'Point')
     plt.xlabel('C$_{V}$')
+    plt.legend()
     # ax.xaxis.set_label_position('top')
     plt.ylabel('Z [km]')
     plt.ylim([0,9000])
@@ -3260,6 +3261,50 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     plt.xlim([0,1])
     plt.xticks(np.arange(0,1.01,0.25))
     ax.set_xticklabels([0,' ',0.5,' ',1.0])
+
+    #### set flagged data to nans
+    data2['mean_qliq'][data2['mean_qliq'] < 0.0] = np.nan
+    data1['qliq'][data1['qliq'] < 0.0] = np.nan
+
+    plt.subplot(132)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['mean_qliq'],0)*1e3 - np.nanstd(data2['mean_qliq'],0)*1e3,
+        np.nanmean(data2['mean_qliq'],0)*1e3 + np.nanstd(data2['mean_qliq'],0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(data1['qliq'],0)*1e3 - np.nanstd(data1['qliq'],0)*1e3,
+        np.nanmean(data1['qliq'],0)*1e3 + np.nanstd(data1['qliq'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(data2['mean_qliq'],0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(data1['qliq'],0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.1])
+    # plt.xticks(np.arange(0,0.05,0.11))
+    # ax.set_xticklabels([0,' ',0.05,' ',0.1])
+
+    #### set flagged data to nans
+    data2['mean_qice'][data2['mean_qice'] < 0.0] = np.nan
+    data1['qice'][data1['qice'] < 0.0] = np.nan
+
+    plt.subplot(133)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(data2['mean_qice'],0)*1e3 - np.nanstd(data2['mean_qice'],0)*1e3,
+        np.nanmean(data2['mean_qice'],0)*1e3 + np.nanstd(data2['mean_qice'],0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(data1['qice'],0)*1e3 - np.nanstd(data1['qice'],0)*1e3,
+        np.nanmean(data1['qice'],0)*1e3 + np.nanstd(data1['qice'],0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(data2['mean_qice'],0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(data1['qice'],0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    plt.xlabel('q$_{ice}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.02])
+    # plt.xticks(np.arange(0,0.005,0.021))
+    # ax.set_xticklabels([0,' ',0.1,' ',1.0])
 
     # ########            NDROP
     # ########
@@ -3417,8 +3462,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     print ('Finished plotting! :)')
     print ('')
 
-    # fileout = '../FIGS/PaperSubmission/Figure7.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/ACPD/Point_Vs_Swath_allDrift.svg'
+    plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
 
@@ -3710,7 +3755,7 @@ def main():
         nc1 = Dataset(filename_point,'r')
         nc2 = Dataset(filename_swath,'r')
 
-        var_list = ['q','qliq','cloud_fraction','radr_refl','qnliq','qnice']
+        var_list = ['q','qliq','cloud_fraction','radr_refl','qnliq','qnice','qice']
 
         if i == 0:
             ## ------------------
@@ -3858,12 +3903,20 @@ def main():
     cv2 = np.nanmean(np.nanmean(data2['cloud_fraction'],3),2)
     cv3 = np.nanmean(np.nanmean(data3['cloud_fraction'],3),2)
 
+    ql2 = np.nanmean(np.nanmean(data2['qliq'],3),2)
+    ql3 = np.nanmean(np.nanmean(data3['qliq'],3),2)
+
+    qi2 = np.nanmean(np.nanmean(data2['qice'],3),2)
+    qi3 = np.nanmean(np.nanmean(data3['qice'],3),2)
+
     print (data2['cloud_fraction'].shape)
     print (data3['cloud_fraction'].shape)
     print (cv2.shape)
     print (cv3.shape)
 
     data2['mean_cloud_fraction'] = np.append(cv2, cv3, axis = 0)
+    data2['mean_qliq'] = np.append(ql2, ql3, axis = 0)
+    data2['mean_qice'] = np.append(qi2, qi3, axis = 0)
     data2['all_times'] = np.append(data2['time_hrly'], data3['time_hrly'])
     data2['all_hrly_flags'] = np.append(data2['hrly_flag'], data3['hrly_flag'])
 
@@ -3873,7 +3926,7 @@ def main():
     ## compare cloud fields for paper review
     #################################################################
 
-    # figure = plot_CASIM_NdropTimeseries(data1, data2)
+    figure = plot_CASIM_NdropTimeseries(data1, data2)
 
 
 
