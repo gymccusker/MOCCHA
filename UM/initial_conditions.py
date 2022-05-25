@@ -3144,7 +3144,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
     # plt.show()
     plt.close()
 
-def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5): #, lon, lat):
+def plot_CASIM_NdropTimeseries(data1, data2):
 
     import iris.plot as iplt
     import iris.quickplot as qplt
@@ -3191,86 +3191,6 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     ### for reference in figures
     zeros = np.zeros(len(data2['time']))
 
-    # ### convert radiation matlab timesteps to doy
-    # datenums_radice = obs['obs_temp'].variables['time3'][:] ### radiation on different timestep
-    # time_radice_all = calcTime_Mat2DOY(datenums_radice)
-    #
-    # ### calculate net LW and SW from obs
-    # time_radice = time_radice_all[:-1:2]
-    # lwd = obs['obs_temp'].variables['LWdice'][:]
-    # lwu = obs['obs_temp'].variables['LWuice'][:]
-    # lwdmean = np.nanmean(lwd[:-1].reshape(-1, 2), axis=1)
-    # lwumean = np.nanmean(lwu[:-1].reshape(-1, 2), axis=1)
-    # swd = obs['obs_temp'].variables['SWdice'][:]
-    # swu = obs['obs_temp'].variables['SWuice'][:]
-    # swdmean = np.nanmean(swd[:-1].reshape(-1, 2), axis=1)
-    # swumean = np.nanmean(swu[:-1].reshape(-1, 2), axis=1)
-    # netLW = lwdmean - lwumean
-    # netSW = swdmean - swumean
-
-    ########            Radiation timeseries
-    ########
-
-    sw1 = data1['surface_downwelling_SW_radiation'][data1['hrly_flag']] # data2['surface_net_SW_radiation'][data2['hrly_flag']] #
-    lw1 = data1['surface_net_LW_radiation'][data1['hrly_flag']]
-    sw2 = data2['surface_downwelling_SW_radiation'][data2['hrly_flag']] # data2['surface_net_SW_radiation'][data2['hrly_flag']] #
-    lw2 = data2['surface_net_LW_radiation'][data2['hrly_flag']]
-    sw4 = data4['surface_downwelling_SW_radiation'][data4['hrly_flag']] # data4['surface_net_SW_radiation'][data4['hrly_flag']] #
-    lw4 = data4['surface_net_LW_radiation'][data4['hrly_flag']]
-    crf1 = sw1
-    crf2 = sw2# + lw2
-    crf4 = sw4# + lw4
-
-    ### ---------------------------------------------
-    ### just downwelling radiation timeseries
-    ### ---------------------------------------------
-    # ax  = fig.add_axes([0.18,0.8,0.6,0.18])   # left, bottom, width, height
-    # plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
-    # plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
-    # plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2)
-    # plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
-    # plt.xlim(doy[0], doy[-1])
-    # plt.ylim([-10, 220])
-    # plt.legend(bbox_to_anchor=(0.36, 0.79, 1., .102), loc=1, ncol=1)
-    # plt.ylabel('SW$_{\downarrow}$ \n [W m$^{-2}$]')
-    # plt.xlabel('Date')
-    # plt.xticks([230,235,240,245,250,255])
-    # ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-
-    ### ---------------------------------------------
-    ### timeseries + pdf
-    ### ---------------------------------------------
-    ax  = fig.add_axes([0.1,0.81,0.62,0.18])   # left, bottom, width, height
-    plt.plot(data2['time'], zeros,'--', color='lightgrey')
-    # plt.plot(obs['fixed_radiation']['time_ice'], obs['fixed_radiation']['SWd_ice'], color = 'grey', label = 'Ice_station')
-    plt.plot(obs['fixed_radiation']['time_ship'], obs['fixed_radiation']['SWd_ship'], color = 'k', label = 'Ship')
-    # plt.plot(data1['time'][data1['hrly_flag']], crf1, color = 'darkblue', label = label1)
-    plt.plot(data2['time'][data2['hrly_flag']], crf2, color = 'mediumseagreen', label = label2[:-8])
-    plt.plot(data4['time'][data4['hrly_flag']], crf4, color = 'purple', label = label4)
-    plt.xlim(doy[0], doy[-1])
-    plt.ylim([-10, 240])
-    plt.legend(bbox_to_anchor=(-0.05, 0.92, 1., .102), loc=1, ncol=1)
-    plt.ylabel('SW$_{\downarrow}$ [W m$^{-2}$]')
-    plt.xlabel('Date')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18 Aug','23 Aug','28 Aug','2 Sep','7 Sep','12 Sep'])
-
-
-    ax  = fig.add_axes([0.78,0.83,0.13,0.15])   # left, bottom, width, height
-    yEmax = 0.02
-    plt.plot([0,0],[0,yEmax],'--', color='lightgrey')
-    # f = sns.distplot(obs['fixed_radiation']['SWd_ice'], hist=False, color="grey", kde_kws={"linewidth": 2})
-    f = sns.distplot(obs['fixed_radiation']['SWd_ship'], hist=False, color="black")
-    # f = sns.distplot(crf1, hist=False, color="darkblue", kde_kws={"shade": True})
-    f = sns.distplot(crf4, hist=False, color="purple", kde_kws={"shade": True})
-    f = sns.distplot(crf2, hist=False, color="mediumseagreen", kde_kws={"shade": True})
-    # plt.annotate('Melt', xy=(87,0.087), xytext=(87,0.087), fontsize = 14)
-    plt.xlim([-20,240])
-    plt.ylim([0,yEmax])
-    plt.yticks([0,0.01,0.02])
-    plt.xlabel('SW$_{\downarrow}$ [W m$^{-2}$]')
-
     ########            Cloud fraction
     ########
     #### set up colourmaps to grey out zeros on figures
@@ -3281,56 +3201,56 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     newcmp = ListedColormap(newcolors)
 
     # plt.subplot(434)
-    ax  = fig.add_axes([0.05,0.53,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    # axmajor = np.arange(0,9.01e3,0.5e3)
-    axmajor = np.arange(0,9.01e3,3.0e3)
-    axminor = np.arange(0,9.01e3,0.5e3)
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.title(label2[:-8], fontsize = 14)# + '\n Cloud fraction')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    # plt.subplot(435)
-    ax  = fig.add_axes([0.38,0.53,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['cloud_fraction']),
-        [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.title(label4, fontsize = 14)# + '\n Cloud fraction')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
-    cbaxes = fig.add_axes([0.71, 0.54, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    cbaxes.set_xlabel('C$_{V}$', rotation = 0, labelpad = 15, fontsize = 14)
-    cbaxes.xaxis.set_label_position('top')
+    # ax  = fig.add_axes([0.05,0.53,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
+    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # # axmajor = np.arange(0,9.01e3,0.5e3)
+    # axmajor = np.arange(0,9.01e3,3.0e3)
+    # axminor = np.arange(0,9.01e3,0.5e3)
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.title('UM_CASIM-100_Swath', fontsize = 14)
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # # plt.subplot(435)
+    # ax  = fig.add_axes([0.38,0.53,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # img = plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
+    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.title('UM_CASIM-100_Point', fontsize = 14)# + '\n Cloud fraction')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
+    # cbaxes = fig.add_axes([0.71, 0.54, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # cbaxes.set_xlabel('C$_{V}$', rotation = 0, labelpad = 15, fontsize = 14)
+    # cbaxes.xaxis.set_label_position('top')
 
     #### set flagged data to nans
     data2['cloud_fraction'][data2['cloud_fraction'] < 0.0] = np.nan
-    data4['cloud_fraction'][data4['cloud_fraction'] < 0.0] = np.nan
+    data1['cloud_fraction'][data1['cloud_fraction'] < 0.0] = np.nan
 
     ax  = fig.add_axes([0.83,0.55,0.13,0.15])   # left, bottom, width, height
     ax = plt.gca()
     ax.fill_betweenx(data2['height'],np.nanmean(data2['cloud_fraction'],0) - np.nanstd(data2['cloud_fraction'],0),
         np.nanmean(data2['cloud_fraction'],0) + np.nanstd(data2['cloud_fraction'],0), color = 'mediumaquamarine', alpha = 0.15)
-    ax.fill_betweenx(data4['height'],np.nanmean(data4['cloud_fraction'],0) - np.nanstd(data4['cloud_fraction'],0),
-        np.nanmean(data4['cloud_fraction'],0) + np.nanstd(data4['cloud_fraction'],0), color = 'violet', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(data1['cloud_fraction'],0) - np.nanstd(data1['cloud_fraction'],0),
+        np.nanmean(data1['cloud_fraction'],0) + np.nanstd(data1['cloud_fraction'],0), color = 'violet', alpha = 0.15)
     plt.plot(np.nanmean(data2['cloud_fraction'],0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
-    plt.plot(np.nanmean(data4['cloud_fraction'],0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    plt.plot(np.nanmean(data1['cloud_fraction'],0),data1['height'], color = 'purple', linewidth = 3, label = label4)
     plt.xlabel('C$_{V}$')
     # ax.xaxis.set_label_position('top')
     plt.ylabel('Z [km]')
@@ -3341,168 +3261,166 @@ def plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, mi
     plt.xticks(np.arange(0,1.01,0.25))
     ax.set_xticklabels([0,' ',0.5,' ',1.0])
 
-    ########            NDROP
-    ########
-    #### calculate air density in kg/m3
-    data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
-    data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
-
-    print(data2.keys())
-
-    ### convert /kg to /m3
-    data2['qnliq'] = data2['qnliq'] * data2['rho']
-    data4['qnliq'] = data4['qnliq'] * data4['rho']
-
-    #### set flagged um_data to nans
-    data2['qnliq'][data2['qnliq'] < 0] = 0.0
-    data4['qnliq'][data4['qnliq'] < 0] = 0.0
-
-    #### set up colourmaps to grey out zeros on figures
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
-    # plt.subplot(425)
-    ax  = fig.add_axes([0.05,0.3,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
-        [0, 10, 50, 100, 150, 200, 250],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    # plt.subplot(426)
-    ax  = fig.add_axes([0.38,0.3,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
-        [0, 10, 50, 100, 150, 200, 250],
-        # vmin = 0, vmax = 150,
-        cmap = newcmp #mpl_cm.Blues
-        )
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.71, 0.31, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    cbaxes.set_xlabel('N$_{d}$ \n[cm$^{-3}$]', rotation = 0, labelpad = 10, fontsize = 14)
-    cbaxes.xaxis.set_label_position('top')
-
-    #### set flagged data to nans
-    data2['qnliq'][data2['qnliq'] <= 0.0] = np.nan
-    data4['qnliq'][data4['qnliq'] <= 0.0] = np.nan
-
-    ax  = fig.add_axes([0.83,0.32,0.13,0.15])   # left, bottom, width, height
-    ax = plt.gca()
-    ax.fill_betweenx(data2['height'],np.nanmean(data2['qnliq']/1e6,0) - np.nanstd(data2['qnliq']/1e6,0),
-        np.nanmean(data2['qnliq']/1e6,0) + np.nanstd(data2['qnliq']/1e6,0), color = 'mediumaquamarine', alpha = 0.15)
-    ax.fill_betweenx(data4['height'],np.nanmean(data4['qnliq']/1e6,0) - np.nanstd(data4['qnliq']/1e6,0),
-        np.nanmean(data4['qnliq']/1e6,0) + np.nanstd(data4['qnliq']/1e6,0), color = 'violet', alpha = 0.15)
-    plt.plot(np.nanmean(data2['qnliq']/1e6,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
-    plt.plot(np.nanmean(data4['qnliq']/1e6,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
-    plt.xlabel('N$_{d}$ [cm$^{-3}$]')
-    # ax.xaxis.set_label_position('top')
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlim([0,150])
-    plt.xticks(np.arange(0,151,25))
-    ax.set_xticklabels([0,' ',' ',75,' ',' ',150])
-    # plt.legend()
-
-    ########            QLIQ
-    ########
-    #### set flagged um_data to nans
-    data2['qliq'][data2['qliq'] < 0] = 0.0
-    data4['qliq'][data4['qliq'] < 0] = 0.0
-
-    #### set up colourmaps to grey out zeros on figures
-    viridis = mpl_cm.get_cmap('viridis', 256)
-    newcolors = viridis(np.linspace(0, 1, 256))
-    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
-    newcolors[:10, :] = greyclr
-    newcmp = ListedColormap(newcolors)
-
-    # plt.subplot(427)
-    ax  = fig.add_axes([0.05,0.07,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
-        # vmin = 0, vmax = 0.35,
-        cmap = newcmp
-        )
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlabel('Date')
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-
-    # plt.subplot(428)
-    ax  = fig.add_axes([0.38,0.07,0.3,0.18])   # left, bottom, width, height
-    ax = plt.gca()
-    img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
-        [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
-        # vmin = 0, vmax = 0.35,
-        cmap = newcmp
-        )
-    plt.xlabel('Date')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    ax.set_yticklabels([0,3,6,9])
-    plt.xticks([230,235,240,245,250,255])
-    ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    cbaxes = fig.add_axes([0.71, 0.08, 0.015, 0.15])
-    cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    cbaxes.set_xlabel('q$_{liq}$ \n[g kg$^{-1}$]', rotation = 0, labelpad = 10, fontsize = 14)
-    cbaxes.xaxis.set_label_position('top')
-
-    #### set flagged data to nans
-    data2['qliq'][data2['qliq'] <= 0.0] = np.nan
-    data4['qliq'][data4['qliq'] <= 0.0] = np.nan
-
-    ax  = fig.add_axes([0.83,0.09,0.13,0.15])   # left, bottom, width, height
-    ax = plt.gca()
-    ax.fill_betweenx(data2['height'],np.nanmean(data2['qliq']*1e3,0) - np.nanstd(data2['qliq']*1e3,0),
-        np.nanmean(data2['qliq']*1e3,0) + np.nanstd(data2['qliq']*1e3,0), color = 'mediumaquamarine', alpha = 0.15)
-    ax.fill_betweenx(data4['height'],np.nanmean(data4['qliq']*1e3,0) - np.nanstd(data4['qliq']*1e3,0),
-        np.nanmean(data4['qliq']*1e3,0) + np.nanstd(data4['qliq']*1e3,0), color = 'violet', alpha = 0.15)
-    plt.plot(np.nanmean(data2['qliq']*1e3,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
-    plt.plot(np.nanmean(data4['qliq']*1e3,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
-    plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
-    # ax.xaxis.set_label_position('top')
-    plt.ylabel('Z [km]')
-    plt.ylim([0,9000])
-    plt.yticks(axmajor)
-    # plt.grid('on')
-    ax.set_yticklabels([0,3,6,9])
-    plt.xlim([0,0.1])
-    plt.xticks(np.arange(0,0.11,0.025))
-    ax.set_xticklabels([0,' ',0.05,' ',0.1])
-    # plt.legend(bbox_to_anchor=(1.0, 0.0, 1., .102), loc=1, ncol=1)
+    # ########            NDROP
+    # ########
+    # #### calculate air density in kg/m3
+    # data2['rho'] = calcAirDensity(data2['temperature'].data, data2['pressure'].data / 1e2)
+    # data4['rho'] = calcAirDensity(data4['temperature'].data, data4['pressure'].data / 1e2)
+    #
+    # print(data2.keys())
+    #
+    # ### convert /kg to /m3
+    # data2['qnliq'] = data2['qnliq'] * data2['rho']
+    # data4['qnliq'] = data4['qnliq'] * data4['rho']
+    #
+    # #### set flagged um_data to nans
+    # data2['qnliq'][data2['qnliq'] < 0] = 0.0
+    # data4['qnliq'][data4['qnliq'] < 0] = 0.0
+    #
+    # #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:10, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+    #
+    # # plt.subplot(425)
+    # ax  = fig.add_axes([0.05,0.3,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # # plt.subplot(426)
+    # ax  = fig.add_axes([0.38,0.3,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qnliq'])/1e6,
+    #     [0, 10, 50, 100, 150, 200, 250],
+    #     # vmin = 0, vmax = 150,
+    #     cmap = newcmp #mpl_cm.Blues
+    #     )
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # cbaxes = fig.add_axes([0.71, 0.31, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # cbaxes.set_xlabel('N$_{d}$ \n[cm$^{-3}$]', rotation = 0, labelpad = 10, fontsize = 14)
+    # cbaxes.xaxis.set_label_position('top')
+    #
+    # #### set flagged data to nans
+    # data2['qnliq'][data2['qnliq'] <= 0.0] = np.nan
+    # data4['qnliq'][data4['qnliq'] <= 0.0] = np.nan
+    #
+    # ax  = fig.add_axes([0.83,0.32,0.13,0.15])   # left, bottom, width, height
+    # ax = plt.gca()
+    # ax.fill_betweenx(data2['height'],np.nanmean(data2['qnliq']/1e6,0) - np.nanstd(data2['qnliq']/1e6,0),
+    #     np.nanmean(data2['qnliq']/1e6,0) + np.nanstd(data2['qnliq']/1e6,0), color = 'mediumaquamarine', alpha = 0.15)
+    # ax.fill_betweenx(data4['height'],np.nanmean(data4['qnliq']/1e6,0) - np.nanstd(data4['qnliq']/1e6,0),
+    #     np.nanmean(data4['qnliq']/1e6,0) + np.nanstd(data4['qnliq']/1e6,0), color = 'violet', alpha = 0.15)
+    # plt.plot(np.nanmean(data2['qnliq']/1e6,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
+    # plt.plot(np.nanmean(data4['qnliq']/1e6,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    # plt.xlabel('N$_{d}$ [cm$^{-3}$]')
+    # # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([0,150])
+    # plt.xticks(np.arange(0,151,25))
+    # ax.set_xticklabels([0,' ',' ',75,' ',' ',150])
+    # # plt.legend()
+    #
+    # ########            QLIQ
+    # ########
+    # #### set flagged um_data to nans
+    # data2['qliq'][data2['qliq'] < 0] = 0.0
+    # data4['qliq'][data4['qliq'] < 0] = 0.0
+    #
+    # #### set up colourmaps to grey out zeros on figures
+    # viridis = mpl_cm.get_cmap('viridis', 256)
+    # newcolors = viridis(np.linspace(0, 1, 256))
+    # greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    # newcolors[:10, :] = greyclr
+    # newcmp = ListedColormap(newcolors)
+    #
+    # # plt.subplot(427)
+    # ax  = fig.add_axes([0.05,0.07,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['qliq'])*1e3,
+    #     [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+    #     # vmin = 0, vmax = 0.35,
+    #     cmap = newcmp
+    #     )
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlabel('Date')
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    #
+    # # plt.subplot(428)
+    # ax  = fig.add_axes([0.38,0.07,0.3,0.18])   # left, bottom, width, height
+    # ax = plt.gca()
+    # img = plt.contourf(data4['time'], data4['height'][:], np.transpose(data4['qliq'])*1e3,
+    #     [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+    #     # vmin = 0, vmax = 0.35,
+    #     cmap = newcmp
+    #     )
+    # plt.xlabel('Date')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xticks([230,235,240,245,250,255])
+    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
+    # cbaxes = fig.add_axes([0.71, 0.08, 0.015, 0.15])
+    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
+    # cbaxes.set_xlabel('q$_{liq}$ \n[g kg$^{-1}$]', rotation = 0, labelpad = 10, fontsize = 14)
+    # cbaxes.xaxis.set_label_position('top')
+    #
+    # #### set flagged data to nans
+    # data2['qliq'][data2['qliq'] <= 0.0] = np.nan
+    # data4['qliq'][data4['qliq'] <= 0.0] = np.nan
+    #
+    # ax  = fig.add_axes([0.83,0.09,0.13,0.15])   # left, bottom, width, height
+    # ax = plt.gca()
+    # ax.fill_betweenx(data2['height'],np.nanmean(data2['qliq']*1e3,0) - np.nanstd(data2['qliq']*1e3,0),
+    #     np.nanmean(data2['qliq']*1e3,0) + np.nanstd(data2['qliq']*1e3,0), color = 'mediumaquamarine', alpha = 0.15)
+    # ax.fill_betweenx(data4['height'],np.nanmean(data4['qliq']*1e3,0) - np.nanstd(data4['qliq']*1e3,0),
+    #     np.nanmean(data4['qliq']*1e3,0) + np.nanstd(data4['qliq']*1e3,0), color = 'violet', alpha = 0.15)
+    # plt.plot(np.nanmean(data2['qliq']*1e3,0),data2['height'], color = 'mediumseagreen', linewidth = 3, label = label2)
+    # plt.plot(np.nanmean(data4['qliq']*1e3,0),data4['height'], color = 'purple', linewidth = 3, label = label4)
+    # plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
+    # # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    # plt.ylim([0,9000])
+    # plt.yticks(axmajor)
+    # # plt.grid('on')
+    # ax.set_yticklabels([0,3,6,9])
+    # plt.xlim([0,0.1])
+    # plt.xticks(np.arange(0,0.11,0.025))
+    # ax.set_xticklabels([0,' ',0.05,' ',0.1])
+    # # plt.legend(bbox_to_anchor=(1.0, 0.0, 1., .102), loc=1, ncol=1)
 
     print ('******')
     print ('')
     print ('Finished plotting! :)')
     print ('')
 
-    if month_flag == -1:
-        # fileout = '../FIGS/CASIM/CASIM-100-23_CASIM-AeroProf-26_SWdown-TS-PDFs_Cv_Ndrop_Qliq_hourlyObs_newColours_Dates_newRadiation.svg'
-        fileout = '../FIGS/PaperSubmission/Figure7.png'
+    # fileout = '../FIGS/PaperSubmission/Figure7.png'
     # plt.savefig(fileout)
-    # plt.show()
-    plt.close()
+    plt.show()
+    # plt.close()
 
 def main():
 
@@ -3516,7 +3434,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -3528,7 +3446,7 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
+        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/' # INITIAL_CONDITIONS_TEST/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MAC':
@@ -3543,7 +3461,7 @@ def main():
 
     ### CHOSEN RUN
     out_dir1 = '25_u-cc568_RA2M_CON/'
-    out_dir2 = 'u-cc278/' # '23_u-cc278_RA1M_CASIM/'
+    out_dir2 = '23_u-cc278_RA1M_CASIM/' #'u-cc278/'
     out_dir4 = '24_u-cc324_RA2T_CON/'
     out_dir_glm = '24_u-cc324_RA2T_CON/'
 
@@ -3792,10 +3710,7 @@ def main():
         nc1 = Dataset(filename_point,'r')
         nc2 = Dataset(filename_swath,'r')
 
-        var_list = ['temperature','surface_net_SW_radiation','surface_net_LW_radiation',
-            'q','pressure','qliq','uwind','vwind','wwind',
-            'cloud_fraction','radr_refl','qnliq','qnice','surface_downwelling_LW_radiation','surface_downwelling_SW_radiation', 'latent_heat_flux',
-            'toa_outgoing_longwave_flux','toa_incoming_shortwave_flux','toa_outgoing_shortwave_flux','seaice_albedo_agg']
+        var_list = ['q','qliq','cloud_fraction','radr_refl','qnliq','qnice']
 
         if i == 0:
             ## ------------------
@@ -3830,7 +3745,6 @@ def main():
                 elif np.ndim(nc2.variables[var_list[j]]) >= 1:
                     data2[var_list[j]] = nc2.variables[var_list[j]][:]
             nc2.close()
-
 
         else:
             time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
@@ -3895,7 +3809,7 @@ def main():
     ## compare cloud fields for paper review
     #################################################################
 
-    figure = plot_CASIM_NdropTimeseries(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_CASIM_NdropTimeseries(data1, data2)
 
 
 
