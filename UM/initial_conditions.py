@@ -3853,6 +3853,23 @@ def main():
     data3['hrly_flag'] = ii3
 
     #################################################################
+    ## concatenate data2 and data3 data
+    #################################################################
+    cv2 = np.nanmean(np.nanmean(data2['cloud_fraction'],3),2)
+    cv3 = np.nanmean(np.nanmean(data3['cloud_fraction'],3),2)
+
+    print (data2['cloud_fraction'].shape)
+    print (data3['cloud_fraction'].shape)
+    print (cv2.shape)
+    print (cv3.shape)
+
+    data2['mean_cloud_fraction'] = np.append(cv2, cv3, axis = 0)
+    data2['all_times'] = np.append(data2['time_hrly'], data3['time_hrly'])
+    data2['all_hrly_flags'] = np.append(data2['hrly_flag'], data3['hrly_flag'])
+
+    print (data2['mean_cloud_fraction'].shape)
+
+    #################################################################
     ## compare cloud fields for paper review
     #################################################################
 
