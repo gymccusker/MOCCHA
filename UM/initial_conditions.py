@@ -3470,7 +3470,7 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/ACPD/Point_Vs_Swath_Melt-FreezeSplit.png'
+    fileout = '../FIGS/ACPD/Point_Vs_Swath_Melt-FreezeSplit.svg'
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
