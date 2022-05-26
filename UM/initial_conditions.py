@@ -2875,9 +2875,6 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
     # plt.title('WRT SONDES')
     # plt.show()
 
-
-
-
     for f in range(0, len(filenames)):
         fig = plt.figure(figsize=(10,11))
         plt.subplots_adjust(top = 0.95, bottom = 0.1, right = 0.97, left = 0.1,
@@ -2924,6 +2921,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.subplot(5,3,col3[sp])
             ax = plt.gca()
             ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
             # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
             # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
             # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp]*1e3, data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
@@ -2933,17 +2931,25 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             # # plt.xlim([0, 0.2])
             # if col3[sp] == col3[-1]: plt.xlabel('LWMR bias wrt GLM [g/kg]')
 
-            plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
-            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
-            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
-            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            # plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            # plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            # plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.title(lbls[sp])
+            # plt.ylim([0,3e3])
+            # plt.xlim([0, 0.2])
+
+            # plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
             plt.title(lbls[sp])
+            plt.xlim([-0.2, 0.2])
             plt.ylim([0,3e3])
-            plt.xlim([0, 0.2])
-            if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
+            if col3[sp] == col3[-1]: plt.xlabel('q$_{liq}$ [g/kg]')
             if col3[sp] == col3[0]: plt.legend()
 
-        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'TBiases.svg')
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'TBiases_QliqAnom.svg')
         plt.show()
 
     for f in range(0, len(filenames)):
@@ -2995,6 +3001,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.subplot(5,3,col3[sp])
             ax = plt.gca()
             ax.set_facecolor('whitesmoke')
+            plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
             # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
             # plt.plot(data1[filenames[f][:8]]['qliq_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color='darkblue', label = 'UM-RA2M')
             # plt.plot(data4[filenames[f][:8]]['qliq_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color='steelblue',label = 'UM-RA2T')
@@ -3004,17 +3011,24 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             # # plt.xlim([0, 0.2])
             # if col3[sp] == col3[-1]: plt.xlabel('LWMR bias wrt GLM [g/kg]')
 
-            plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
-            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
-            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
-            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            # plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            # plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            # plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
+            # plt.title(lbls[sp])
+            # plt.xlim([0, 0.2])
+
+            # plt.plot(nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc5[filenames[f][:8]]['height'][:], color='k', label = 'UM_GLM')
+            plt.plot(nc1[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc1[filenames[f][:8]]['height'][:], color='darkblue', label = 'UM-RA2M')
+            plt.plot(nc4[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc4[filenames[f][:8]]['height'][:], color='steelblue',label = 'UM-RA2T')
+            plt.plot(nc2[filenames[f][:8]]['qliq'][sp,:]*1e3 - nc5[filenames[f][:8]]['qliq'][sp,:]*1e3, nc2[filenames[f][:8]]['height'][:], color='mediumseagreen',label = 'UM-CASIM-100')
             plt.title(lbls[sp])
+            plt.xlim([-0.2, 0.2])
             plt.ylim([0,3e3])
-            plt.xlim([0, 0.2])
-            if col3[sp] == col3[-1]: plt.xlabel('LWMR [g/kg]')
+            if col3[sp] == col3[-1]: plt.xlabel('q$_{liq}$ [g/kg]')
             if col3[sp] == col3[0]: plt.legend()
 
-        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'qBiases.svg')
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'qBiases_QliqAnom.svg')
         plt.show()
 
 
@@ -3227,8 +3241,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     ax.set_xticklabels([0,' ',0.5,' ',1.0])
 
     #### set flagged data to nans
-    data2['mean_qliq'][data2['mean_qliq'] < 0.0] = np.nan
-    data1['qliq'][data1['qliq'] < 0.0] = np.nan
+    data2['mean_qliq'][data2['mean_qliq'] <= 0.0] = np.nan
+    data1['qliq'][data1['qliq'] <= 0.0] = np.nan
 
     plt.subplot(132)
     ax = plt.gca()
@@ -3249,8 +3263,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     # ax.set_xticklabels([0,' ',0.05,' ',0.1])
 
     #### set flagged data to nans
-    data2['mean_qice'][data2['mean_qice'] < 0.0] = np.nan
-    data1['qice'][data1['qice'] < 0.0] = np.nan
+    data2['mean_qice'][data2['mean_qice'] <= 0.0] = np.nan
+    data1['qice'][data1['qice'] <= 0.0] = np.nan
 
     plt.subplot(133)
     ax = plt.gca()
@@ -3327,12 +3341,12 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     data1['cloud_fraction'][data1['cloud_fraction'] < 0.0] = np.nan
 
     #### set flagged data to nans
-    data2['mean_qliq'][data2['mean_qliq'] < 0.0] = np.nan
-    data1['qliq'][data1['qliq'] < 0.0] = np.nan
+    data2['mean_qliq'][data2['mean_qliq'] <= 0.0] = np.nan
+    data1['qliq'][data1['qliq'] <= 0.0] = np.nan
 
     #### set flagged data to nans
-    data2['mean_qice'][data2['mean_qice'] < 0.0] = np.nan
-    data1['qice'][data1['qice'] < 0.0] = np.nan
+    data2['mean_qice'][data2['mean_qice'] <= 0.0] = np.nan
+    data1['qice'][data1['qice'] <= 0.0] = np.nan
 
     plt.subplot(231)
     ax = plt.gca()
@@ -3385,7 +3399,7 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.xlim([0,0.02])
+    plt.xlim([0,0.06])
     axx = ax.twinx()
     axx.set_ylabel('Melt',fontsize = 14,  rotation = 270, labelpad = 20)
     axx.set_yticks([])
@@ -3444,7 +3458,7 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     plt.ylim([0,9000])
     plt.yticks(axmajor)
     ax.set_yticklabels([0,3,6,9])
-    plt.xlim([0,0.02])
+    plt.xlim([0,0.06])
     axx = ax.twinx()
     axx.set_ylabel('Freeze',fontsize = 14,  rotation = 270, labelpad = 20)
     axx.set_yticks([])
@@ -3486,7 +3500,7 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/' # INITIAL_CONDITIONS_TEST/'
+        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/' #INITIAL_CONDITIONS_TEST/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MAC':
