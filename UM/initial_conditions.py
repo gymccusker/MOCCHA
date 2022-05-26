@@ -3200,44 +3200,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     newcolors[:20, :] = greyclr
     newcmp = ListedColormap(newcolors)
 
-    # plt.subplot(434)
-    # ax  = fig.add_axes([0.05,0.53,0.3,0.18])   # left, bottom, width, height
-    # ax = plt.gca()
-    # plt.contourf(data2['time'], data2['height'][:], np.transpose(data2['cloud_fraction']),
-    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    #     # vmin = 0, vmax = 150,
-    #     cmap = newcmp
-    #     )
-    # plt.ylabel('Z [km]')
-    # plt.ylim([0,9000])
-    # # axmajor = np.arange(0,9.01e3,0.5e3)
     axmajor = np.arange(0,9.01e3,3.0e3)
     axminor = np.arange(0,9.01e3,0.5e3)
-    # plt.yticks(axmajor)
-    # ax.set_yticklabels([0,3,6,9])
-    # plt.title('UM_CASIM-100_Swath', fontsize = 14)
-    # plt.xticks([230,235,240,245,250,255])
-    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    #
-    # # plt.subplot(435)
-    # ax  = fig.add_axes([0.38,0.53,0.3,0.18])   # left, bottom, width, height
-    # ax = plt.gca()
-    # img = plt.contourf(data1['time'], data1['height'][:], np.transpose(data1['cloud_fraction']),
-    #     [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-    #     # vmin = 0, vmax = 150,
-    #     cmap = newcmp
-    #     )
-    # plt.ylim([0,9000])
-    # plt.yticks(axmajor)
-    # ax.set_yticklabels([0,3,6,9])
-    # plt.title('UM_CASIM-100_Point', fontsize = 14)# + '\n Cloud fraction')
-    # plt.xticks([230,235,240,245,250,255])
-    # ax.set_xticklabels(['18/8','23/8','28/8','2/9','7/9','12/9'])
-    # # cbaxes = fig.add_axes([0.9, 0.56, 0.015, 0.15])
-    # cbaxes = fig.add_axes([0.71, 0.54, 0.015, 0.15])
-    # cb = plt.colorbar(img, cax = cbaxes, orientation = 'vertical')
-    # cbaxes.set_xlabel('C$_{V}$', rotation = 0, labelpad = 15, fontsize = 14)
-    # cbaxes.xaxis.set_label_position('top')
 
     #### set flagged data to nans
     data2['mean_cloud_fraction'][data2['mean_cloud_fraction'] < 0.0] = np.nan
@@ -3313,9 +3277,190 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     print ('')
 
     fileout = '../FIGS/ACPD/Point_Vs_Swath_allDrift.svg'
+    # plt.savefig(fileout, dpi=300)
+    # plt.show()
+    plt.close()
+
+    ##################################################
+    ##################################################
+    #### 	CARTOPY
+    ##################################################
+    ##################################################
+
+    melt = np.where(data1['time_hrly'] < 240.0)
+    freeze = np.where(data1['time_hrly'] >= 240.0)
+
+    SMALL_SIZE = 12
+    MED_SIZE = 14
+    LARGE_SIZE = 16
+
+    plt.rc('font',size=MED_SIZE)
+    plt.rc('axes',titlesize=LARGE_SIZE)
+    plt.rc('axes',labelsize=LARGE_SIZE)
+    plt.rc('xtick',labelsize=LARGE_SIZE)
+    plt.rc('ytick',labelsize=LARGE_SIZE)
+    plt.rc('legend',fontsize=MED_SIZE)
+    fig = plt.figure(figsize=(10, 7))
+    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.88, left = 0.08,
+            hspace = 0.3, wspace = 0.28)
+
+    ### define axis instance
+    # ax = plt.gca()
+
+    ### for reference in figures
+    zeros = np.zeros(len(data2['time']))
+
+    ########            Cloud fraction
+    ########
+    #### set up colourmaps to grey out zeros on figures
+    viridis = mpl_cm.get_cmap('viridis', 256)
+    newcolors = viridis(np.linspace(0, 1, 256))
+    greyclr = np.array([0.1, 0.1, 0.1, 0.1])
+    newcolors[:20, :] = greyclr
+    newcmp = ListedColormap(newcolors)
+
+    axmajor = np.arange(0,9.01e3,3.0e3)
+    axminor = np.arange(0,9.01e3,0.5e3)
+
+    #### set flagged data to nans
+    data2['mean_cloud_fraction'][data2['mean_cloud_fraction'] < 0.0] = np.nan
+    data1['cloud_fraction'][data1['cloud_fraction'] < 0.0] = np.nan
+
+    #### set flagged data to nans
+    data2['mean_qliq'][data2['mean_qliq'] < 0.0] = np.nan
+    data1['qliq'][data1['qliq'] < 0.0] = np.nan
+
+    #### set flagged data to nans
+    data2['mean_qice'][data2['mean_qice'] < 0.0] = np.nan
+    data1['qice'][data1['qice'] < 0.0] = np.nan
+
+    plt.subplot(231)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_cloud_fraction'][melt,:]),0) - np.nanstd(np.squeeze(data2['mean_cloud_fraction'][melt,:]),0),
+        np.nanmean(np.squeeze(data2['mean_cloud_fraction'][melt,:]),0) + np.nanstd(np.squeeze(data2['mean_cloud_fraction'][melt,:]),0), color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['cloud_fraction'][melt,:]),0) - np.nanstd(np.squeeze(data1['cloud_fraction'][melt,:]),0),
+        np.nanmean(np.squeeze(data1['cloud_fraction'][melt,:]),0) + np.nanstd(np.squeeze(data1['cloud_fraction'][melt,:]),0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_cloud_fraction'][melt,:]),0),data2['height'], color = 'darkorange', linewidth = 3, label = 'Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['cloud_fraction'][melt,:]),0),data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'Point')
+    # plt.xlabel('C$_{V}$')
+    plt.legend()
+    # ax.xaxis.set_label_position('top')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,1])
+    plt.xticks(np.arange(0,1.01,0.25))
+    ax.set_xticklabels([0,' ',0.5,' ',1.0])
+
+    plt.subplot(232)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_qliq'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(data2['mean_qliq'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(data2['mean_qliq'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(data2['mean_qliq'][melt,:]),0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['qliq'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(data1['qliq'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(data1['qliq'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(data1['qliq'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_qliq'][melt,:]),0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['qliq'][melt,:]),0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    # plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.2])
+    # plt.xticks(np.arange(0,0.05,0.11))
+    # ax.set_xticklabels([0,' ',0.05,' ',0.1])
+
+    plt.subplot(233)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_qice'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(data2['mean_qice'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(data2['mean_qice'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(data2['mean_qice'][melt,:]),0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['qice'][melt,:]),0)*1e3 - np.nanstd(np.squeeze(data1['qice'][melt,:]),0)*1e3,
+        np.nanmean(np.squeeze(data1['qice'][melt,:]),0)*1e3 + np.nanstd(np.squeeze(data1['qice'][melt,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_qice'][melt,:]),0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['qice'][melt,:]),0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    # plt.xlabel('q$_{ice}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.02])
+    axx = ax.twinx()
+    axx.set_ylabel('Melt',fontsize = 14,  rotation = 270, labelpad = 20)
+    axx.set_yticks([])
+    # plt.xticks(np.arange(0,0.005,0.021))
+    # ax.set_xticklabels([0,' ',0.1,' ',1.0])
+
+
+    plt.subplot(234)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_cloud_fraction'][freeze,:]),0) - np.nanstd(np.squeeze(data2['mean_cloud_fraction'][freeze,:]),0),
+        np.nanmean(np.squeeze(data2['mean_cloud_fraction'][freeze,:]),0) + np.nanstd(np.squeeze(data2['mean_cloud_fraction'][freeze,:]),0), color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['cloud_fraction'][freeze,:]),0) - np.nanstd(np.squeeze(data1['cloud_fraction'][freeze,:]),0),
+        np.nanmean(np.squeeze(data1['cloud_fraction'][freeze,:]),0) + np.nanstd(np.squeeze(data1['cloud_fraction'][freeze,:]),0), color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_cloud_fraction'][freeze,:]),0),data2['height'], color = 'darkorange', linewidth = 3, label = 'Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['cloud_fraction'][freeze,:]),0),data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'Point')
+    plt.xlabel('C$_{V}$')
+    # plt.legend()
+    # ax.xaxis.set_label_position('top')
+    plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,1])
+    plt.xticks(np.arange(0,1.01,0.25))
+    ax.set_xticklabels([0,' ',0.5,' ',1.0])
+
+    plt.subplot(235)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_qliq'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(data2['mean_qliq'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(data2['mean_qliq'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(data2['mean_qliq'][freeze,:]),0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['qliq'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(data1['qliq'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(data1['qliq'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(data1['qliq'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_qliq'][freeze,:]),0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['qliq'][freeze,:]),0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    plt.xlabel('q$_{liq}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.2])
+    # plt.xticks(np.arange(0,0.05,0.11))
+    # ax.set_xticklabels([0,' ',0.05,' ',0.1])
+
+    plt.subplot(236)
+    ax = plt.gca()
+    ax.fill_betweenx(data2['height'],np.nanmean(np.squeeze(data2['mean_qice'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(data2['mean_qice'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(data2['mean_qice'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(data2['mean_qice'][freeze,:]),0)*1e3, color = 'orange', alpha = 0.15)
+    ax.fill_betweenx(data1['height'],np.nanmean(np.squeeze(data1['qice'][freeze,:]),0)*1e3 - np.nanstd(np.squeeze(data1['qice'][freeze,:]),0)*1e3,
+        np.nanmean(np.squeeze(data1['qice'][freeze,:]),0)*1e3 + np.nanstd(np.squeeze(data1['qice'][freeze,:]),0)*1e3, color = 'mediumaquamarine', alpha = 0.15)
+    plt.plot(np.nanmean(np.squeeze(data2['mean_qice'][freeze,:]),0)*1e3,data2['height'], color = 'darkorange', linewidth = 3, label = 'UM_CASIM-100_Swath')
+    plt.plot(np.nanmean(np.squeeze(data1['qice'][freeze,:]),0)*1e3,data1['height'], color = 'mediumseagreen', linewidth = 3, label = 'UM_CASIM-100_Point')
+    plt.xlabel('q$_{ice}$ [g kg$^{-1}$]')
+    # ax.xaxis.set_label_position('top')
+    # plt.ylabel('Z [km]')
+    plt.ylim([0,9000])
+    plt.yticks(axmajor)
+    ax.set_yticklabels([0,3,6,9])
+    plt.xlim([0,0.02])
+    axx = ax.twinx()
+    axx.set_ylabel('Freeze',fontsize = 14,  rotation = 270, labelpad = 20)
+    axx.set_yticks([])
+    # plt.xticks(np.arange(0,0.005,0.021))
+    # ax.set_xticklabels([0,' ',0.1,' ',1.0])
+
+    print ('******')
+    print ('')
+    print ('Finished plotting! :)')
+    print ('')
+
+    fileout = '../FIGS/ACPD/Point_Vs_Swath_Melt-FreezeSplit.svg'
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
+
 
 def main():
 
