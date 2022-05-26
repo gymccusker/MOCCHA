@@ -3301,8 +3301,8 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     plt.rc('ytick',labelsize=LARGE_SIZE)
     plt.rc('legend',fontsize=MED_SIZE)
     fig = plt.figure(figsize=(10, 7))
-    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.88, left = 0.08,
-            hspace = 0.3, wspace = 0.28)
+    plt.subplots_adjust(top = 0.95, bottom = 0.15, right = 0.92, left = 0.08,
+            hspace = 0.2, wspace = 0.25)
 
     ### define axis instance
     # ax = plt.gca()
@@ -3456,7 +3456,7 @@ def plot_CASIM_NdropTimeseries(data1, data2):
     print ('Finished plotting! :)')
     print ('')
 
-    fileout = '../FIGS/ACPD/Point_Vs_Swath_Melt-FreezeSplit.svg'
+    fileout = '../FIGS/ACPD/Point_Vs_Swath_Melt-FreezeSplit.png'
     plt.savefig(fileout, dpi=300)
     plt.show()
     # plt.close()
