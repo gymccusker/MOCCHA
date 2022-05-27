@@ -2966,22 +2966,25 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.subplot(5,3,col1[sp])
             ax = plt.gca()
             ax.set_facecolor('whitesmoke')
+            # plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
+            # plt.plot(data5[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'k', label = 'UM_GLM')
+            # plt.plot(data1[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            # plt.plot(data2[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            # plt.plot(data4[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            # plt.title(lbls[sp])
+            # plt.ylim([0,3e3])
+            # plt.ylabel('Z [m]')
+            # if col1[sp] == col1[-1]: plt.xlabel('q bias wrt Sonde [K]')
+            # plt.xlim([-2., 2.])
             plt.plot([0,0], [0,1e4], '--', color='grey')     ### zero line
-            plt.plot(data5[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'k', label = 'UM_GLM')
-            plt.plot(data1[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
-            plt.plot(data2[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
-            plt.plot(data4[filenames[f][:8]]['q_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            plt.plot(data1[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'darkblue', label = 'UM_RA2M')
+            plt.plot(data2[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'mediumseagreen', label = 'UM_CASIM-100')
+            plt.plot(data4[filenames[f][:8]]['temp_glm_anomalies'][:,sp], data1['height'][data5['universal_height_index']], color = 'steelblue', label = 'UM_RA2T')
+            # plt.plot(data5[filenames[f][:8]]['temp_sonde_anomalies'][:,sp], data1['height'][data5['universal_height_index']], label = 'UM_GLM')
             plt.title(lbls[sp])
             plt.ylim([0,3e3])
-            plt.ylabel('Z [m]')
-            if col1[sp] == col1[-1]: plt.xlabel('q bias wrt Sonde [K]')
-            # print (filenames[f][:8])
-            # if filenames[f][:8] == '20180815':
-            #     plt.xlim([-2., 2.])
-            # elif filenames[f][:8] == '20180828':
-            #     plt.xlim([-0.5,0.5])
-            # elif filenames[f][:8] == '20180902':
-            plt.xlim([-2., 2.])
+            plt.xlim([-3., 3.])
+            if col1[sp] == col1[-1]: plt.xlabel('T bias wrt GLM [K]')
 
         for sp in range(0, len(col2)):
             plt.subplot(5,3,col2[sp])
@@ -3028,7 +3031,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             if col3[sp] == col3[-1]: plt.xlabel('q$_{liq}$ [g/kg]')
             if col3[sp] == col3[0]: plt.legend()
 
-        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'qBiases_QliqAnom.svg')
+        plt.savefig('../FIGS/ACPD/' + filenames[f][:8] + 'T-qBiases_QliqAnom.svg')
         plt.show()
 
 
@@ -3500,7 +3503,7 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/'#INITIAL_CONDITIONS_TEST/'
+        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MAC':
@@ -3644,303 +3647,303 @@ def main():
     # ### test out with first file
     # startdump = loadUMStartDump(umdumps[0])
 
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # ### Load in observations - laptop analysis
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # obs = {}
-    # obs = loadObservations(obs, platform, obs_root_dir)
-    #
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # ### Load pulled track files
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # dir1 = out_dir1 + 'OUT_R2/'
-    # dir2 = out_dir2 + 'OUT_R2/'
-    # dir4 = out_dir4 + 'OUT_R2_LAM/'
-    # dir5 = out_dir_glm + 'OUT_R2_GLM/'
-    #
-    # out_dirs = [dir1, dir2, dir4, dir5]
-    #
-    # nc1 = {}   ### load netcdfs into a single dictionary - actually no, didn't want to work
-    # nc2 = {}
-    # nc4 = {}
-    # nc5 = {}
-    # data1 = {}
-    # data2 = {}
-    # data4 = {}
-    # data5 = {}
-    # nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
-    # nc2, data2 = loadNCs(nc2, data2, root_dir, dir2, 'lam')
-    # nc4, data4 = loadNCs(nc4, data4, root_dir, dir4, 'lam')
-    # nc5, data5 = loadNCs(nc5, data5, root_dir, dir5, 'glm')
-    #
-    # # for key in nc2.keys():
-    # #     print (key)
-    # #     print (nc2[key])
-    #
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # ### Start sonde analysis
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # filenames = os.listdir(root_dir + dir1)
-    # print (filenames)
-    #
-    # nc1, data1 = radiosondePrep(nc1, data1, dir1, obs, filenames, 'lam')
-    # nc2, data2 = radiosondePrep(nc2, data2, dir2, obs, filenames, 'lam')
-    # nc4, data4 = radiosondePrep(nc4, data4, dir4, obs, filenames, 'lam')
-    # nc5, data5 = radiosondePrep(nc5, data5, dir5, obs, filenames, 'glm')
-    #
-    # print (data4.keys())
-    #
-    # # print (obs['sondes']['gpsaltitude'].shape)
-    #
-    # #### ---------------------------------------------------------------
-    # #### re-grid sonde and GLM data to LAM vertical grid <10km
-    # #### ---------------------------------------------------------------
-    # print ('...')
-    # print ('Re-gridding sonde and glm data...')
-    # print ('')
-    # for file in filenames:
-    #     obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
-    # print ('')
-    # print ('Done!')
-    #
-    # print (data5['20180815'].keys())
-    #
-    # hour_indices = np.array([5, 11, 17, 23, 29, -1])
-    # # print (data5['forecast_time'])
-    # # print (data5['forecast_time'][hour_indices])
-    # # print (obs['sondes']['temp_UM'].shape)
-    # ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
-    #
-    # #### ---------------------------------------------------------------
-    # #### calculate thermodynamic anomalies
-    # #### ---------------------------------------------------------------
-    # for file in filenames:
-    #     data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
-    #     data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
-    #     data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
-    #     # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
-    #
-    #     print (data1[file[:8]].keys())
-    #
-    # #### ---------------------------------------------------------------
-    # #### plot anomalies
-    # #### ---------------------------------------------------------------
-    # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load in observations - laptop analysis
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    obs = {}
+    obs = loadObservations(obs, platform, obs_root_dir)
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load pulled track files
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    dir1 = out_dir1 + 'OUT_R2/'
+    dir2 = out_dir2 + 'OUT_R2/'
+    dir4 = out_dir4 + 'OUT_R2_LAM/'
+    dir5 = out_dir_glm + 'OUT_R2_GLM/'
+
+    out_dirs = [dir1, dir2, dir4, dir5]
+
+    nc1 = {}   ### load netcdfs into a single dictionary - actually no, didn't want to work
+    nc2 = {}
+    nc4 = {}
+    nc5 = {}
+    data1 = {}
+    data2 = {}
+    data4 = {}
+    data5 = {}
+    nc1, data1 = loadNCs(nc1, data1, root_dir, dir1, 'lam')
+    nc2, data2 = loadNCs(nc2, data2, root_dir, dir2, 'lam')
+    nc4, data4 = loadNCs(nc4, data4, root_dir, dir4, 'lam')
+    nc5, data5 = loadNCs(nc5, data5, root_dir, dir5, 'glm')
+
+    # for key in nc2.keys():
+    #     print (key)
+    #     print (nc2[key])
+
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Start sonde analysis
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    filenames = os.listdir(root_dir + dir1)
+    print (filenames)
+
+    nc1, data1 = radiosondePrep(nc1, data1, dir1, obs, filenames, 'lam')
+    nc2, data2 = radiosondePrep(nc2, data2, dir2, obs, filenames, 'lam')
+    nc4, data4 = radiosondePrep(nc4, data4, dir4, obs, filenames, 'lam')
+    nc5, data5 = radiosondePrep(nc5, data5, dir5, obs, filenames, 'glm')
+
+    print (data4.keys())
+
+    # print (obs['sondes']['gpsaltitude'].shape)
 
     #### ---------------------------------------------------------------
-    #### plot swath data
-    ####    requires loading all data first
+    #### re-grid sonde and GLM data to LAM vertical grid <10km
     #### ---------------------------------------------------------------
-    swath_dir = out_dir2 + 'OUT_R1_swath/'
-    point_dir = out_dir2 + 'OUT_R0/'
-    names = ['20180814_oden_','20180815_oden_','20180816_oden_',
-            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
-            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    print ('...')
+    print ('Re-gridding sonde and glm data...')
+    print ('')
+    for file in filenames:
+        obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
+    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
+    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
+    data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
+    print ('')
+    print ('Done!')
 
-    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    print (data5['20180815'].keys())
 
-    for i in range(0,len(names)):
-        filename_swath = root_dir + swath_dir + names[i] + 'metum.nc'
-        filename_point = root_dir + point_dir + names[i] + 'metum.nc'
+    hour_indices = np.array([5, 11, 17, 23, 29, -1])
+    # print (data5['forecast_time'])
+    # print (data5['forecast_time'][hour_indices])
+    # print (obs['sondes']['temp_UM'].shape)
+    ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
 
-        print (filename_swath)
-        print (filename_point)
-        print ('')
-        print( 'Loading diagnostics:')
-        nc1 = Dataset(filename_point,'r')
-        nc2 = Dataset(filename_swath,'r')
+    #### ---------------------------------------------------------------
+    #### calculate thermodynamic anomalies
+    #### ---------------------------------------------------------------
+    for file in filenames:
+        data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
+        data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
+        data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
+        # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
 
-        var_list = ['q','qliq','cloud_fraction','radr_refl','qnliq','qnice','qice']
+        print (data1[file[:8]].keys())
 
-        if i == 0:
-            ## ------------------
-            #### UM read in
-            ## ------------------
-            data1 = {}
-            time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
+    #### ---------------------------------------------------------------
+    #### plot anomalies
+    #### ---------------------------------------------------------------
+    figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
 
-            data2 = {}
-            time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
-
-            ### define height arrays explicitly
-            data1['height'] = nc1.variables['height'][:]
-            data2['height'] = nc2.variables['height'][:]
-            ## ------------------
-            #### read in netcdfs and initialise
-            ## ------------------
-            print ('Starting on t=0 point data:')
-            for j in range(0,len(var_list)):
-                print (var_list[j])
-                if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list[j]]) >= 1:
-                    data1[var_list[j]] = nc1.variables[var_list[j]][:]
-            nc1.close()
-
-            print ('Starting on t=0 swath data:')
-            for j in range(0,len(var_list)):
-                print (var_list[j])
-                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list[j]]) >= 1:
-                    data2[var_list[j]] = nc2.variables[var_list[j]][:]
-            nc2.close()
-
-        elif i == 21:
-            data3 = {}
-            time_um3 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
-
-            ### define height arrays explicitly
-            data3['height'] = nc2.variables['height'][:]
-            ## ------------------
-            #### read in netcdfs and initialise
-            ## ------------------
-            print ('Starting on t=0 point data:')
-            for j in range(0,len(var_list)):
-                print (var_list[j])
-                if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc2.variables[var_list[j]]) >= 1:
-                    data3[var_list[j]] = nc2.variables[var_list[j]][:]
-            nc2.close()
-
-        else:
-            time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
-
-            ## ------------------
-            #### read in netcdfs and append
-            ## ------------------
-            print ('Appending point data:')
-            for j in range(0,len(var_list)):
-                print (var_list[j])
-                if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                    continue
-                elif np.ndim(nc1.variables[var_list[j]]) == 1:
-                    data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:])
-                elif np.ndim(nc1.variables[var_list[j]]) == 2:
-                    data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:], axis=0)
-            nc1.close()
-
-            if i > 21:
-                time_um3 = np.append(time_um3, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-
-                ## ------------------
-                #### read in netcdfs and append
-                ## ------------------
-                print ('Appending Sept swath data:')
-                for j in range(0,len(var_list)):
-                    print (var_list[j])
-                    if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc2.variables[var_list[j]]) >= 3:
-                        data3[var_list[j]] = np.append(data3[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
-                    # elif np.ndim(nc2.variables[var_list[j]]) == 4:
-                    #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
-            else:
-                time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
-
-                print ('Appending Aug swath data:')
-                for j in range(0,len(var_list)):
-                    print (var_list[j])
-                    if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
-                        continue
-                    elif np.ndim(nc2.variables[var_list[j]]) >= 3:
-                        data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
-                    # elif np.ndim(nc2.variables[var_list[j]]) == 4:
-                    #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
-                # nc2.close()
-
-            nc2.close()
-
-    #################################################################
-    ## save time to dictionary now we're not looping over all diags anymore
-    #################################################################
-    data1['time'] = time_um1
-    data2['time'] = time_um2
-    data3['time'] = time_um3
-
-    ### stop double counting of 0000 and 2400 from model data
-    temp1 = np.zeros([len(data1['time'])])
-    temp2 = np.zeros([len(data2['time'])])
-    temp3 = np.zeros([len(data3['time'])])
-    for i in range(0, len(temp1)-1):
-        if data1['time'][i] == data1['time'][i+1]:
-            continue
-        else:
-            temp1[i] = data1['time'][i]
-    for i in range(0, len(temp2)-1):
-        if data2['time'][i] == data2['time'][i+1]:
-            continue
-        else:
-            temp2[i] = data2['time'][i]
-    for i in range(0, len(temp3)-1):
-        if data3['time'][i] == data3['time'][i+1]:
-            continue
-        else:
-            temp3[i] = data3['time'][i]
-    ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
-    ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
-    ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
-
-    data1['time_hrly'] = temp1[ii1]
-    data1['time_6hrly'] = data1['time_hrly'][::6]
-    data1['hrly_flag'] = ii1
-    data2['time_hrly'] = temp2[ii2]
-    data2['time_6hrly'] = data2['time_hrly'][::6]
-    data2['hrly_flag'] = ii2
-    data3['time_hrly'] = temp3[ii3]
-    data3['time_6hrly'] = data3['time_hrly'][::6]
-    data3['hrly_flag'] = ii3
-
-    #################################################################
-    ## concatenate data2 and data3 data
-    #################################################################
-    cv2 = np.nanmean(np.nanmean(data2['cloud_fraction'],3),2)
-    cv3 = np.nanmean(np.nanmean(data3['cloud_fraction'],3),2)
-
-    data2['qliq'][data2['qliq']<=0] = np.nan
-    data3['qliq'][data3['qliq']<=0] = np.nan
-    data2['qice'][data2['qice']<=0] = np.nan
-    data3['qice'][data3['qice']<=0] = np.nan
-
-    ql2 = np.nanmean(np.nanmean(data2['qliq'],3),2)
-    ql3 = np.nanmean(np.nanmean(data3['qliq'],3),2)
-
-    qi2 = np.nanmean(np.nanmean(data2['qice'],3),2)
-    qi3 = np.nanmean(np.nanmean(data3['qice'],3),2)
-
-    print (data2['cloud_fraction'].shape)
-    print (data3['cloud_fraction'].shape)
-    print (cv2.shape)
-    print (cv3.shape)
-
-    data2['mean_cloud_fraction'] = np.append(cv2, cv3, axis = 0)
-    data2['mean_qliq'] = np.append(ql2, ql3, axis = 0)
-    data2['mean_qice'] = np.append(qi2, qi3, axis = 0)
-    data2['all_times'] = np.append(data2['time_hrly'], data3['time_hrly'])
-    data2['all_hrly_flags'] = np.append(data2['hrly_flag'], data3['hrly_flag'])
-
-    print (data2['mean_cloud_fraction'].shape)
-
-    #################################################################
-    ## compare cloud fields for paper review
-    #################################################################
-
-    figure = plot_CASIM_NdropTimeseries(data1, data2)
+    # #### ---------------------------------------------------------------
+    # #### plot swath data
+    # ####    requires loading all data first
+    # #### ---------------------------------------------------------------
+    # swath_dir = out_dir2 + 'OUT_R1_swath/'
+    # point_dir = out_dir2 + 'OUT_R0/'
+    # names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+    #         '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+    #         '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+    #         '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+    #         '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+    #         '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+    #         '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+    #         '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    #
+    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    #
+    # for i in range(0,len(names)):
+    #     filename_swath = root_dir + swath_dir + names[i] + 'metum.nc'
+    #     filename_point = root_dir + point_dir + names[i] + 'metum.nc'
+    #
+    #     print (filename_swath)
+    #     print (filename_point)
+    #     print ('')
+    #     print( 'Loading diagnostics:')
+    #     nc1 = Dataset(filename_point,'r')
+    #     nc2 = Dataset(filename_swath,'r')
+    #
+    #     var_list = ['q','qliq','cloud_fraction','radr_refl','qnliq','qnice','qice']
+    #
+    #     if i == 0:
+    #         ## ------------------
+    #         #### UM read in
+    #         ## ------------------
+    #         data1 = {}
+    #         time_um1 = doy[i] + (nc1.variables['forecast_time'][:]/24.0)
+    #
+    #         data2 = {}
+    #         time_um2 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
+    #
+    #         ### define height arrays explicitly
+    #         data1['height'] = nc1.variables['height'][:]
+    #         data2['height'] = nc2.variables['height'][:]
+    #         ## ------------------
+    #         #### read in netcdfs and initialise
+    #         ## ------------------
+    #         print ('Starting on t=0 point data:')
+    #         for j in range(0,len(var_list)):
+    #             print (var_list[j])
+    #             if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                 continue
+    #             elif np.ndim(nc1.variables[var_list[j]]) >= 1:
+    #                 data1[var_list[j]] = nc1.variables[var_list[j]][:]
+    #         nc1.close()
+    #
+    #         print ('Starting on t=0 swath data:')
+    #         for j in range(0,len(var_list)):
+    #             print (var_list[j])
+    #             if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                 continue
+    #             elif np.ndim(nc2.variables[var_list[j]]) >= 1:
+    #                 data2[var_list[j]] = nc2.variables[var_list[j]][:]
+    #         nc2.close()
+    #
+    #     elif i == 21:
+    #         data3 = {}
+    #         time_um3 = doy[i] + (nc2.variables['forecast_time'][:]/24.0)
+    #
+    #         ### define height arrays explicitly
+    #         data3['height'] = nc2.variables['height'][:]
+    #         ## ------------------
+    #         #### read in netcdfs and initialise
+    #         ## ------------------
+    #         print ('Starting on t=0 point data:')
+    #         for j in range(0,len(var_list)):
+    #             print (var_list[j])
+    #             if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                 continue
+    #             elif np.ndim(nc2.variables[var_list[j]]) >= 1:
+    #                 data3[var_list[j]] = nc2.variables[var_list[j]][:]
+    #         nc2.close()
+    #
+    #     else:
+    #         time_um1 = np.append(time_um1, doy[i] + (nc1.variables['forecast_time'][:]/24.0))
+    #
+    #         ## ------------------
+    #         #### read in netcdfs and append
+    #         ## ------------------
+    #         print ('Appending point data:')
+    #         for j in range(0,len(var_list)):
+    #             print (var_list[j])
+    #             if np.ndim(nc1.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                 continue
+    #             elif np.ndim(nc1.variables[var_list[j]]) == 1:
+    #                 data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:])
+    #             elif np.ndim(nc1.variables[var_list[j]]) == 2:
+    #                 data1[var_list[j]] = np.append(data1[var_list[j]],nc1.variables[var_list[j]][:], axis=0)
+    #         nc1.close()
+    #
+    #         if i > 21:
+    #             time_um3 = np.append(time_um3, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+    #
+    #             ## ------------------
+    #             #### read in netcdfs and append
+    #             ## ------------------
+    #             print ('Appending Sept swath data:')
+    #             for j in range(0,len(var_list)):
+    #                 print (var_list[j])
+    #                 if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                     continue
+    #                 elif np.ndim(nc2.variables[var_list[j]]) >= 3:
+    #                     data3[var_list[j]] = np.append(data3[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+    #                 # elif np.ndim(nc2.variables[var_list[j]]) == 4:
+    #                 #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+    #         else:
+    #             time_um2 = np.append(time_um2, doy[i] + (nc2.variables['forecast_time'][:]/24.0))
+    #
+    #             print ('Appending Aug swath data:')
+    #             for j in range(0,len(var_list)):
+    #                 print (var_list[j])
+    #                 if np.ndim(nc2.variables[var_list[j]]) == 0:     # ignore horizontal_resolution
+    #                     continue
+    #                 elif np.ndim(nc2.variables[var_list[j]]) >= 3:
+    #                     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+    #                 # elif np.ndim(nc2.variables[var_list[j]]) == 4:
+    #                 #     data2[var_list[j]] = np.append(data2[var_list[j]],nc2.variables[var_list[j]][:], axis=0)
+    #             # nc2.close()
+    #
+    #         nc2.close()
+    #
+    # #################################################################
+    # ## save time to dictionary now we're not looping over all diags anymore
+    # #################################################################
+    # data1['time'] = time_um1
+    # data2['time'] = time_um2
+    # data3['time'] = time_um3
+    #
+    # ### stop double counting of 0000 and 2400 from model data
+    # temp1 = np.zeros([len(data1['time'])])
+    # temp2 = np.zeros([len(data2['time'])])
+    # temp3 = np.zeros([len(data3['time'])])
+    # for i in range(0, len(temp1)-1):
+    #     if data1['time'][i] == data1['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp1[i] = data1['time'][i]
+    # for i in range(0, len(temp2)-1):
+    #     if data2['time'][i] == data2['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp2[i] = data2['time'][i]
+    # for i in range(0, len(temp3)-1):
+    #     if data3['time'][i] == data3['time'][i+1]:
+    #         continue
+    #     else:
+    #         temp3[i] = data3['time'][i]
+    # ii1 = np.where(temp1 != 0.0)      ### picks out where data are non-zero
+    # ii2 = np.where(temp2 != 0.0)      ### picks out where data are non-zero
+    # ii3 = np.where(temp3 != 0.0)      ### picks out where data are non-zero
+    #
+    # data1['time_hrly'] = temp1[ii1]
+    # data1['time_6hrly'] = data1['time_hrly'][::6]
+    # data1['hrly_flag'] = ii1
+    # data2['time_hrly'] = temp2[ii2]
+    # data2['time_6hrly'] = data2['time_hrly'][::6]
+    # data2['hrly_flag'] = ii2
+    # data3['time_hrly'] = temp3[ii3]
+    # data3['time_6hrly'] = data3['time_hrly'][::6]
+    # data3['hrly_flag'] = ii3
+    #
+    # #################################################################
+    # ## concatenate data2 and data3 data
+    # #################################################################
+    # cv2 = np.nanmean(np.nanmean(data2['cloud_fraction'],3),2)
+    # cv3 = np.nanmean(np.nanmean(data3['cloud_fraction'],3),2)
+    #
+    # data2['qliq'][data2['qliq']<=0] = np.nan
+    # data3['qliq'][data3['qliq']<=0] = np.nan
+    # data2['qice'][data2['qice']<=0] = np.nan
+    # data3['qice'][data3['qice']<=0] = np.nan
+    #
+    # ql2 = np.nanmean(np.nanmean(data2['qliq'],3),2)
+    # ql3 = np.nanmean(np.nanmean(data3['qliq'],3),2)
+    #
+    # qi2 = np.nanmean(np.nanmean(data2['qice'],3),2)
+    # qi3 = np.nanmean(np.nanmean(data3['qice'],3),2)
+    #
+    # print (data2['cloud_fraction'].shape)
+    # print (data3['cloud_fraction'].shape)
+    # print (cv2.shape)
+    # print (cv3.shape)
+    #
+    # data2['mean_cloud_fraction'] = np.append(cv2, cv3, axis = 0)
+    # data2['mean_qliq'] = np.append(ql2, ql3, axis = 0)
+    # data2['mean_qice'] = np.append(qi2, qi3, axis = 0)
+    # data2['all_times'] = np.append(data2['time_hrly'], data3['time_hrly'])
+    # data2['all_hrly_flags'] = np.append(data2['hrly_flag'], data3['hrly_flag'])
+    #
+    # print (data2['mean_cloud_fraction'].shape)
+    #
+    # #################################################################
+    # ## compare cloud fields for paper review
+    # #################################################################
+    #
+    # figure = plot_CASIM_NdropTimeseries(data1, data2)
 
 
 
