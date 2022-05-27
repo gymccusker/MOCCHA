@@ -3500,7 +3500,7 @@ def main():
         init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
-        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/' #INITIAL_CONDITIONS_TEST/'
+        root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/'#INITIAL_CONDITIONS_TEST/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MAC':
@@ -3911,6 +3911,11 @@ def main():
     #################################################################
     cv2 = np.nanmean(np.nanmean(data2['cloud_fraction'],3),2)
     cv3 = np.nanmean(np.nanmean(data3['cloud_fraction'],3),2)
+
+    data2['qliq'][data2['qliq']<=0] = np.nan
+    data3['qliq'][data3['qliq']<=0] = np.nan
+    data2['qice'][data2['qice']<=0] = np.nan
+    data3['qice'][data3['qice']<=0] = np.nan
 
     ql2 = np.nanmean(np.nanmean(data2['qliq'],3),2)
     ql3 = np.nanmean(np.nanmean(data3['qliq'],3),2)
