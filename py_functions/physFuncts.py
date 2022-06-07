@@ -119,6 +119,34 @@ def calcThetaE(temperature, pressure, q):
 
     return theta, thetaE
 
+def calcTemp(theta, rho):
+
+    """
+    Function to calculate temperature from theta and rho (UM startfiles)
+    ==============================
+    inputs:
+    theta = K
+    rho = kg/m3
+
+    """
+
+    cpd = 1005.7     # J/kg.K
+    Rd = 287.04   # dry air J kg^-1 K^-1
+    kd = Rd/cpd     # k dry air
+    kdinv = cpd/Rd
+
+    tempvar = 1.0 / (kdinv - 1.0)
+
+    print('Calculating temperature:')
+    temperature = np.power(( rho * Rd * np.power(theta, kdinv) ) / (1e5)), tempvar)
+    print('...')
+
+    print('...')
+    print('Done!')
+
+    return temperature
+
+
 def calcThetaVL(temperature, pressure, q, ql, qi, tim, height):
 
     """
