@@ -3650,6 +3650,14 @@ def main():
     ### test out with first file
     startdump = loadUMStartDump(um_startfile)
 
+    ### -------------------------------------------------------------------------
+    ### Calculate temperature over area of interest only
+    ### -------------------------------------------------------------------------
+    data = {}
+    theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+    rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
+    data['temperature'] = calcTemp(theta, rho)
+
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
     # ### Load in observations - laptop analysis
