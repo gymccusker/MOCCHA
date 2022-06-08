@@ -145,7 +145,10 @@ def calcTemp(theta, rho):
     # elif np.ndim(theta) == 2:
     #     temperature = np.zeros([np.size(theta,0), np.size(theta,1)])
     #     for k in range(0,np.size(theta, 1)):
-    temperature = np.power((( rho * Rd * np.power(theta, kdinv) ) / (1e5)), tempvar)        
+    if np.size(rho) == np.size(theta):
+        temperature = np.power((( rho * Rd * np.power(theta, kdinv) ) / (1e5)), tempvar)
+    else:
+        temperature = np.power((( rho * Rd * np.power(theta[1:], kdinv) ) / (1e5)), tempvar)        
     print('...')
 
     print('...')
