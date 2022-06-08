@@ -3635,15 +3635,6 @@ def main():
     # # date = '20180815T1200Z'
     #     if date[:4] == '2018':
     #         data = pullTrack(date, root_dir, out_s in UM_STARTFILES/
-    umdumps = os.listdir(init_dir)
-
-    ### test out wis in UM_STARTFILES/
-    umdumps = os.listdir(init_dir)
-    s in UM_STARTFILES/
-    umdumps = os.listdir(init_dir)
-
-    ### test out wi
-    ### test out widir, global_con, model, ship_data)
 
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
