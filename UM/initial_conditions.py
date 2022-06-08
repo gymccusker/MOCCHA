@@ -3645,18 +3645,22 @@ def main():
     umdumps = os.listdir(init_dir)
 
     print (umdumps[0])
-    um_startfile = init_dir + umdumps[0]
+    um_startfile = init_dir + umdumps[2]
 
     ### test out with first file
     startdump = loadUMStartDump(um_startfile)
+    print (startdump)
 
     ### -------------------------------------------------------------------------
     ### Calculate temperature over area of interest only
     ### -------------------------------------------------------------------------
     data = {}
     theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+    print (np.size(theta))
     rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
     data['temperature'] = calcTemp(theta, rho)
+
+
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
