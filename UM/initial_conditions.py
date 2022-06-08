@@ -23,6 +23,7 @@ from iris.time import PartialDateTime
 #### import python functions
 import sys
 sys.path.insert(1, '../py_functions/')
+from physFuncts import calcTemp
 
 # STASH_CODE = 'm01s04i118'
 
