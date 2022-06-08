@@ -3644,6 +3644,8 @@ def main():
     ### list start dumps in UM_STARTFILES/
     umdumps = os.listdir(init_dir)
 
+    print (umdumps[0])
+
     ### test out with first file
     startdump = loadUMStartDump(umdumps[0])
 
