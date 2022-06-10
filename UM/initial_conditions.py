@@ -3669,9 +3669,9 @@ def main():
     print (startdump[0].dim_coords[0])
 
     plt.subplot(121)
-    plt.plot(data['temperature'],startdump[0].dim_coords[0].points[::-1])
+    plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
     plt.subplot(122)
-    plt.plot(theta,startdump[0].dim_coords[0].points[::-1])
+    plt.plot(theta,startdump[0].dim_coords[0].points)
     plt.show()
 
 
