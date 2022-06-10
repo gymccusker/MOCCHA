@@ -3665,7 +3665,7 @@ def main():
 
     print (np.size(data['temperature']))
 
-    print (startdump[0].dim_coords())
+    print (startdump[0].dim_coords)
 
 
 
