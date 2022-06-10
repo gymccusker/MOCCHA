@@ -3671,7 +3671,8 @@ def main():
     plt.subplot(121)
     plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
     plt.subplot(122)
-    plt.plot(rho,startdump[2].dim_coords[0].points)
+    plt.plot(theta,startdump[0].dim_coords[0].points)
+    # plt.plot(rho,startdump[2].dim_coords[0].points)
     plt.show()
 
 
