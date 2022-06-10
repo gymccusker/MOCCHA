@@ -3655,7 +3655,8 @@ def main():
     ### Calculate temperature over area of interest only
     ### -------------------------------------------------------------------------
     data = {}
-    theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+    # theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+    theta = startdump[0][:,-1,-1]
     print (np.size(theta))
     rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
 
