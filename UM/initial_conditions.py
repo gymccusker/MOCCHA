@@ -3660,7 +3660,7 @@ def main():
     rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
     data['temperature'] = calcTemp(theta, rho)
 
-    print (data['temperature'].shape())
+    print (np.size(data['temperature']))
 
 
 
