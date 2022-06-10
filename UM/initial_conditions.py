@@ -3671,7 +3671,7 @@ def main():
     plt.subplot(121)
     plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
     plt.ylim([0,20])
-    plt.xlim([260,290])
+    plt.xlim([260,275])
     plt.subplot(122)
     plt.plot(theta,startdump[0].dim_coords[0].points)
     plt.xlim([260,290])
