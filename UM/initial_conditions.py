@@ -3667,7 +3667,7 @@ def main():
 
     print (startdump[0].dim_coords[0])
 
-    plt.plot(data['temperature'],startdump[0].dim_coords[0].data)
+    plt.plot(data['temperature'],startdump[0].dim_coords[0])
     plt.show()
 
 
