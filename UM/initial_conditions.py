@@ -3500,7 +3500,7 @@ def main():
 
     if platform == 'JASMIN':
         root_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM/INITIAL_CONDITIONS_TEST/'
-        init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/'
+        init_dir = '/gws/nopw/j04/arcticcloud/MOCCHA/UM_STARTFILES/INITIAL_CONDITIONS_TEST/'
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
@@ -3655,11 +3655,11 @@ def main():
     ### Calculate temperature over area of interest only
     ### -------------------------------------------------------------------------
     data = {}
-    # theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
-    theta = startdump[0][:,-1,-1].data
+    theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+    # theta = startdump[0][:,-1,-1].data
     print (np.size(theta))
-    # rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
-    rho = startdump[2][:,-1,-1].data
+    rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
+    # rho = startdump[2][:,-1,-1].data
 
     data['temperature'] = np.zeros([np.size(theta,0)])
     data['temperature'][1:] = calcTemp(theta, rho)
