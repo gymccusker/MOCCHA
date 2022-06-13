@@ -3660,7 +3660,7 @@ def main():
 
     print (umdumps[0])
     for f in umdumps:
-        um_startfile = init_dir + umdumps[f]
+        um_startfile = init_dir + f
 
         ### test out with first file
         startdump = loadUMStartDump(um_startfile)
