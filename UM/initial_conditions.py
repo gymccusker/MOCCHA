@@ -3646,12 +3646,12 @@ def main():
     i = 0
     for f in range(0,len(dumps)):
         if dumps[f][0:4] == '2018':
-            if i = 0:
+            if i == 0:
                 umdumps = dumps[f]
             if i > 0:
                 umdumps = np.append(umdumps, dumps[f])
         elif dumps[f][0:5] == 'ecmwf':
-            if i = 0:
+            if i == 0:
                 ifsdumps = dumps[f]
             if i > 0:
                 ifsdumps = np.append(ifsdumps, dumps[f])
