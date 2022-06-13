@@ -3659,7 +3659,7 @@ def main():
     theta = startdump[0][:,-1,-1].data
     print (np.size(theta))
     # rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
-    theta = startdump[2][:,-1,-1].data
+    rho = startdump[2][:,-1,-1].data
 
     data['temperature'] = np.zeros([np.size(theta,0)])
     data['temperature'][1:] = calcTemp(theta, rho)
