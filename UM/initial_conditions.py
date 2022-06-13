@@ -3652,9 +3652,9 @@ def main():
                 umdumps = np.append(umdumps, dumps[f])
             i = i + 1
         elif dumps[f][0:5] == 'ecmwf':
-            if i == 0:
+            if i == 6:
                 ifsdumps = dumps[f]
-            if i > 0:
+            if i > 6:
                 ifsdumps = np.append(ifsdumps, dumps[f])
             i = i + 1
 
