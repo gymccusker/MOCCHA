@@ -3659,40 +3659,41 @@ def main():
             i = i + 1
 
     print (umdumps[0])
-    um_startfile = init_dir + umdumps[2]
+    for f in umdumps:
+        um_startfile = init_dir + umdumps[f]
 
-    ### test out with first file
-    startdump = loadUMStartDump(um_startfile)
-    print (startdump)
+        ### test out with first file
+        startdump = loadUMStartDump(um_startfile)
+        print (startdump)
 
-    ### -------------------------------------------------------------------------
-    ### Calculate temperature over area of interest only
-    ### -------------------------------------------------------------------------
-    data = {}
-    theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
-    # theta = startdump[0][:,-1,-1].data
-    print (np.size(theta))
-    rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
-    # rho = startdump[2][:,-1,-1].data
+        ### -------------------------------------------------------------------------
+        ### Calculate temperature over area of interest only
+        ### -------------------------------------------------------------------------
+        data = {}
+        theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+        # theta = startdump[0][:,-1,-1].data
+        print (np.size(theta))
+        rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
+        # rho = startdump[2][:,-1,-1].data
 
-    data['temperature'] = np.zeros([np.size(theta,0)])
-    data['temperature'][1:] = calcTemp(theta, rho)
-    data['temperature'][0] = np.nan
+        data['temperature'] = np.zeros([np.size(theta,0)])
+        data['temperature'][1:] = calcTemp(theta, rho)
+        data['temperature'][0] = np.nan
 
-    print (np.size(data['temperature']))
+        print (np.size(data['temperature']))
 
-    print (startdump[0].dim_coords[0])
+        print (startdump[0].dim_coords[0])
 
-    plt.subplot(121)
-    plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
-    plt.ylim([0,20])
-    plt.xlim([260,275])
-    plt.subplot(122)
-    plt.plot(theta,startdump[0].dim_coords[0].points)
-    plt.xlim([260,290])
-    plt.ylim([0,20])
-    # plt.plot(rho,startdump[2].dim_coords[0].points)
-    plt.show()
+        plt.subplot(121)
+        plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
+        plt.ylim([0,20])
+        plt.xlim([260,275])
+        plt.subplot(122)
+        plt.plot(theta,startdump[0].dim_coords[0].points)
+        plt.xlim([260,290])
+        plt.ylim([0,20])
+        # plt.plot(rho,startdump[2].dim_coords[0].points)
+        plt.show()
 
 
 
