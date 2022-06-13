@@ -3643,9 +3643,11 @@ def main():
     ### -------------------------------------------------------------------------
     ### list start dumps in UM_STARTFILES/
     dumps = os.listdir(init_dir)
-    for f in dumps:
-        if f[0:4] == '2018': umdumps = dumps[f]
-        elif f[0:5] == 'ecmwf': ifsdumps = dumps[f]
+    i = 0
+    for f in range(0,len(dumps)):
+        if dumps[f][0:4] == '2018': umdumps[i] = dumps[f]
+        elif dumps[f][0:5] == 'ecmwf': ifsdumps[i] = dumps[f]
+        i = i + 1
 
     print (umdumps[0])
     um_startfile = init_dir + umdumps[2]
