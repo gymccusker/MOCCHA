@@ -52,6 +52,7 @@ UM/DATA/*
 
 # ERA5 grib files
 ERA5/*
+*grib*
 
 # Temporary processing scripts for JASMIN
 diags_CloudNet_JASMIN.py
