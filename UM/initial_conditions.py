@@ -4001,33 +4001,45 @@ def main():
             if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
                 os.remove(erai_init_dir + ifsdumps[f])
                 continue
-            else:
+            elif ifsdumps[f][0:8] == 'ecmwf_pl':
                 ifs_startfile = erai_init_dir + ifsdumps[f]
+            else:
+                continue
+
+            print (ifs_startfile)
 
             ### load ERAI grib file
             ic_data['erai'] = {}
             ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
 
             ### pull ships location
-            date = ifsdumps[f][9:17]
-            ilat, ilon = readERAIGlobal(ic_data, ship_data, date, f)
+            month = ifsdumps[f][14]
+            if month == '8':
+                date = ['20180830','20180831']
+                tims = [29,30]
+            elif month == '9':
+                date = ['20180901','20180902','20180903','20180904']
+                tims = [0,1,2,3]
 
-            x1 = ic_data['erai'][f].variables['t'][:,ilat,ilon].data
-            x2 = ic_data['erai'][f].variables['q'][:,ilat,ilon].data
-            y = ic_data['erai'][f].variables['hybrid'].data
+            for d in range(0,len(date)):
+                ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
 
-            # plt.close()
-            plt.subplot(121)
-            plt.plot(x1, y)
-            # plt.ylim([0,20])
-            # plt.xlim([260,275])
-            plt.legend(str(f))
-            plt.subplot(122)
-            plt.plot(x2, y)
-            # plt.xlim([260,290])
-            # plt.ylim([0,20])
-            # plt.plot(rho,startdump[2].dim_coords[0].points)
-            if f == len(ifsdumps) - 1: plt.show()
+                x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
+                x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
+                y = ic_data['erai'][f].coords['isobaricInhPa'].data
+
+                # plt.close()
+                plt.subplot(121)
+                plt.plot(x1, y)
+                # plt.ylim([0,20])
+                # plt.xlim([260,275])
+                plt.legend(str(f))
+                plt.subplot(122)
+                plt.plot(x2, y)
+                # plt.xlim([260,290])
+                # plt.ylim([0,20]t
+                # plt.plot(rho,startdump[2].dim_coords[0].points)
+                if d == 3: plt.show()
 
 
     # ### -------------------------------------------------------------------------
