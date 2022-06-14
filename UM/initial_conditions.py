@@ -1083,6 +1083,123 @@ def readUMGlobal(cube, ship_data, date):
 
     return tim, ilat, ilon
 
+def readERAIGlobal(ic_data, ship_data, date, f):
+
+    import iris.plot as iplt
+    import iris.quickplot as qplt
+    import iris.analysis.cartography
+    import cartopy.crs as ccrs
+    import cartopy
+
+    print ('******')
+    print ('')
+    print ('Defining longitude and latitude boundaries:')
+    print ('')
+
+    lats = ic_data['erai'][f].coords['latitude'].data
+    lons = ic_data['erai'][f].coords['longitude'].data
+
+    ###---------------------------------------------------------------------------------
+    ### find northern and southern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    nb_lats = lats + ((lats[0] - lats[1]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    sb_lats = lats - ((lats[0] - lats[1]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    print ('sb_lats.shape = ' + str(sb_lats.shape))
+
+    ###---------------------------------------------------------------------------------
+    ### find western and eastern boundaries of gridpoints
+    ###---------------------------------------------------------------------------------
+    wb_lons = lons - ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+    eb_lons = lons + ((lons[1] - lons[0]) / 2.0)    ## use grid diff between 0 and 1 indices since uniform grid
+
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
+    #################################################################
+    ## find 1200 on date of interest
+    #################################################################
+    day_ind = np.array([])
+    day_ind = np.where(np.logical_and(np.logical_and(ship_data.values[:,2] == float(date[-2:]), ship_data.values[:,1] == float(date[-4:-2])), ship_data.values[:,3] == 12.))
+    print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
+
+    #################################################################
+    ## save daily lat/lons as temp vars
+    #################################################################
+    ship_lats = ship_data.values[day_ind[0],7]
+    ship_lons = ship_data.values[day_ind[0],6]
+
+    print ('ship_lats.shape = ' + str(ship_lats.shape))
+
+    #####--------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------
+    ### compare 1200 position with ERAI grid
+
+    for j in range(0,len(sb_lats)):     ### for all latitude points
+        if np.logical_and(ship_lats >= sb_lats[j], ship_lats < nb_lats[j]):     ### find where ship lat sits on glm lat grid
+            for i in range(0,len(wb_lons)):     ### for all longitude points
+                if np.logical_and(ship_lons >= wb_lons[i], ship_lons < eb_lons[i]):     ### find where ship lon sits on glm lon grid
+                    print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
+                    ilat = j         # define grid point indices for use later
+                    ilon = i         # define grid point indices for use later
+
+    print (ilon)
+    print (ilat)
+
+    # #####--------------------------------------------------------------------------------------------------
+    # #####--------------------------------------------------------------------------------------------------
+    # ##################################################
+    # ##################################################
+    # #### 	CARTOPY MAP
+    # ##################################################
+    # ##################################################
+    #
+    # SMALL_SIZE = 12
+    # MED_SIZE = 14
+    # LARGE_SIZE = 16
+    #
+    # plt.rc('font',size=MED_SIZE)
+    # plt.rc('axes',titlesize=MED_SIZE)
+    # plt.rc('axes',labelsize=MED_SIZE)
+    # plt.rc('xtick',labelsize=SMALL_SIZE)
+    # plt.rc('ytick',labelsize=SMALL_SIZE)
+    # plt.rc('legend',fontsize=SMALL_SIZE)
+    # # plt.rc('figure',titlesize=LARGE_SIZE)
+    #
+    # #################################################################
+    # ## create figure and axes instances
+    # #################################################################
+    # plt.figure(figsize=(6,8))
+    # ax = plt.axes(projection=ccrs.NorthPolarStereo(central_longitude=30))
+    #
+    # ### DON'T USE PLATECARREE, NORTHPOLARSTEREO (on it's own), LAMBERT
+    #
+    # #################################################################
+    # ## add geographic features/guides for reference
+    # #################################################################
+    # ax.add_feature(cartopy.feature.OCEAN, zorder=0)
+    # ax.add_feature(cartopy.feature.LAND, zorder=0, edgecolor='black')
+    # ax.gridlines()
+    #
+    # #################################################################
+    # ## plot ship track
+    # #################################################################
+    # ### Plot tracks as line plot
+    # plt.plot(ship_data.values[day_ind[0],6], ship_data.values[day_ind[0],7],
+    #          's', color = 'darkorange', linewidth = 3, markersize = 10,
+    #          transform = ccrs.PlateCarree(), label = 'Ship track',
+    #          )
+    # plt.plot(ship_lons, ship_lats,
+    #          'o', color = 'yellow', linewidth = 3,
+    #          transform = ccrs.PlateCarree(), label = 'Grid point',
+    #          )
+    # plt.legend()
+    #
+    # plt.close()
+    # plt.show()
+    #
+    # #####--------------------------------------------------------------------------------------------------
+
+    return ilat, ilon
+
 def loadUMStartDump(filename):
 
     '''
@@ -3845,7 +3962,7 @@ def main():
             ### -------------------------------------------------------------------------
             ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
             ### -------------------------------------------------------------------------
-            date = um_dumps[f][:8]
+            date = umdumps[f][:8]
             tim, ilat, ilon = readUMGlobal(startdump, ship_data, date)
 
             ### -------------------------------------------------------------------------
@@ -3891,8 +4008,12 @@ def main():
             ic_data['erai'] = {}
             ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
 
-            x1 = ic_data['erai'][f].variables['t'][:,0,0].data
-            x2 = ic_data['erai'][f].variables['q'][:,0,0].data
+            ### pull ships location
+            date = ifsdumps[f][9:17]
+            ilat, ilon = readERAIGlobal(ic_data, ship_data, date, f)
+
+            x1 = ic_data['erai'][f].variables['t'][:,ilat,ilon].data
+            x2 = ic_data['erai'][f].variables['q'][:,ilat,ilon].data
             y = ic_data['erai'][f].variables['hybrid'].data
 
             # plt.close()
@@ -3900,7 +4021,7 @@ def main():
             plt.plot(x1, y)
             # plt.ylim([0,20])
             # plt.xlim([260,275])
-            plt.legend(f)
+            plt.legend(str(f))
             plt.subplot(122)
             plt.plot(x2, y)
             # plt.xlim([260,290])
