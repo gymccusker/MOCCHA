@@ -3887,8 +3887,8 @@ def main():
             ic_data['erai'] = {}
             ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
 
-            x1 = ic_data['erai']['t'][:,0,0].data
-            x2 = ic_data['erai']['q'][:,0,0].data
+            x1 = ic_data['erai'][f].variables['t'][:,0,0].data
+            x2 = ic_data['erai'][f].variables['q'][:,0,0].data
             y = tt.variables['hybrid'].data
 
             plt.close()
