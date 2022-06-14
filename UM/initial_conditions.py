@@ -3866,6 +3866,7 @@ def main():
 
             print (startdump[0].dim_coords[0])
 
+            plt.close()
             plt.subplot(121)
             plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
             plt.ylim([0,20])
@@ -3883,13 +3884,24 @@ def main():
             ifs_startfile = init_dir + ifsdumps[f]
 
             ### load ERAI grib file
-            data['erai'] = xr.load_dataset(ifs_startfile, engine='cfgrib')
+            ic_data['erai'] = {}
+            ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
 
+            x1 = ic_data['erai']['t'][:,0,0].data
+            x2 = ic_data['erai']['q'][:,0,0].data
+            y = tt.variables['hybrid'].data
 
-
-        ### load ERA-Interim file
-        # erai = xr.load_dataset(ifs_startfile, engine = "cfgrib")  #### only works on laptop
-        # print (startdump)
+            plt.close()
+            plt.subplot(121)
+            plt.plot(x1, y)
+            # plt.ylim([0,20])
+            # plt.xlim([260,275])
+            plt.subplot(122)
+            plt.plot(x2, y)
+            # plt.xlim([260,290])
+            # plt.ylim([0,20])
+            # plt.plot(rho,startdump[2].dim_coords[0].points)
+            plt.show()
 
 
     # ### -------------------------------------------------------------------------
