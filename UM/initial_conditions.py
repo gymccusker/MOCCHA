@@ -3889,7 +3889,7 @@ def main():
 
             x1 = ic_data['erai'][f].variables['t'][:,0,0].data
             x2 = ic_data['erai'][f].variables['q'][:,0,0].data
-            y = tt.variables['hybrid'].data
+            y = ic_data['erai'][f].variables['hybrid'].data
 
             plt.close()
             plt.subplot(121)
