@@ -3655,7 +3655,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -3668,6 +3668,7 @@ def main():
         ship_filename = '/gws/nopw/j04/ncas_weather/gyoung/MOCCHA/ODEN/DATA/2018_shipposition_1hour.txt'
     if platform == 'LAPTOP':
         root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/UM/DATA/INITIAL_CONDITIONS_TEST/'
+        erai_init_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ECMWF/ERAI_ICS/'
         ship_filename = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/2018_shipposition_1hour.txt'
         obs_root_dir = '/home/gillian/MOCCHA/MOCCHA_GIT/ODEN/DATA/'
     if platform == 'MAC':
@@ -3805,74 +3806,90 @@ def main():
     ### Load in relevant LBC data
     ### -------------------------------------------------------------------------
     ### -------------------------------------------------------------------------
-    ### list start dumps in UM_STARTFILES/
-    dumps = os.listdir(init_dir)
-    i = 0
-    for f in range(0,len(dumps)):
-        if dumps[f][0:4] == '2018':
-            if i == 0:
-                umdumps = dumps[f]
-            if i > 0:
-                umdumps = np.append(umdumps, dumps[f])
-            i = i + 1
-        elif dumps[f][0:5] == 'ecmwf':
-            if i == 6:
-                ifsdumps = dumps[f]
-            if i > 6:
-                ifsdumps = np.append(ifsdumps, dumps[f])
-            i = i + 1
 
-    print (umdumps[0])
-    for f in range(0,len(umdumps)):
-        um_startfile = init_dir + um_dumps[f]
-        ifs_startfile = init_dir + ifsdumps[f]
+    ic_data = {}
 
-        ### load UM file
-        startdump = loadUMStartDump(um_startfile)
-        # print (startdump)
+    ### list start dumps in UM_STARTFILES/ if JASMIN
+    if platform == 'JASMIN':
+        dumps = os.listdir(init_dir)
+        i = 0
+        for f in range(0,len(dumps)):
+            if dumps[f][0:4] == '2018':
+                if i == 0:
+                    umdumps = dumps[f]
+                if i > 0:
+                    umdumps = np.append(umdumps, dumps[f])
+                i = i + 1
+            elif dumps[f][0:5] == 'ecmwf':
+                if i == 6:
+                    ifsdumps = dumps[f]
+                if i > 6:
+                    ifsdumps = np.append(ifsdumps, dumps[f])
+                i = i + 1
+
+    elif platform == 'LAPTOP':
+        ifsdumps = os.listdir(erai_init_dir)
+
+
+    # print (umdumps[0])
+    for f in range(0,len(ifsdumps)):
+        if platform == 'JASMIN':
+
+            ### define filename
+            um_startfile = init_dir + um_dumps[f]
+
+            ### load UM file
+            startdump = loadUMStartDump(um_startfile)
+            # print (startdump)
+
+            ### -------------------------------------------------------------------------
+            ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
+            ### -------------------------------------------------------------------------
+            date = um_dumps[f][:8]
+            tim, ilat, ilon = readUMGlobal(startdump, ship_data, date)
+
+            ### -------------------------------------------------------------------------
+            ### Calculate temperature over area of interest only
+            ### -------------------------------------------------------------------------
+            theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
+            # theta = startdump[0][:,-1,-1].data
+            print (np.size(theta))
+            rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
+            # rho = startdump[2][:,-1,-1].data
+
+            ic_data['um'] = {}
+            ic_data['um']['temperature'] = np.zeros([np.size(theta,0)])
+            ic_data['um']['temperature'][1:] = calcTemp(theta, rho)
+            ic_data['um']['temperature'][0] = np.nan
+
+            print (np.size(ic_data['um']['temperature']))
+
+            print (startdump[0].dim_coords[0])
+
+            plt.subplot(121)
+            plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
+            plt.ylim([0,20])
+            plt.xlim([260,275])
+            plt.subplot(122)
+            plt.plot(theta,startdump[0].dim_coords[0].points)
+            plt.xlim([260,290])
+            plt.ylim([0,20])
+            # plt.plot(rho,startdump[2].dim_coords[0].points)
+            plt.show()
+
+        elif platform == 'LAPTOP':
+
+            ### define filename
+            ifs_startfile = init_dir + ifsdumps[f]
+
+            ### load ERAI grib file
+            data['erai'] = xr.load_dataset(ifs_startfile, engine='cfgrib')
+
+
 
         ### load ERA-Interim file
         # erai = xr.load_dataset(ifs_startfile, engine = "cfgrib")  #### only works on laptop
         # print (startdump)
-
-        ### -------------------------------------------------------------------------
-        ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
-        ### -------------------------------------------------------------------------
-        date = um_dumps[f][:8]
-        tim, ilat, ilon = readUMGlobal(startdump, ship_data, date)
-
-
-
-        ### -------------------------------------------------------------------------
-        ### Calculate temperature over area of interest only
-        ### -------------------------------------------------------------------------
-        data = {}
-        theta = np.nanmean(np.nanmean(startdump[0][:,-2:,:].data,2),1)
-        # theta = startdump[0][:,-1,-1].data
-        print (np.size(theta))
-        rho = np.nanmean(np.nanmean(startdump[2][:,-2:,:].data,2),1)
-        # rho = startdump[2][:,-1,-1].data
-
-        data['temperature'] = np.zeros([np.size(theta,0)])
-        data['temperature'][1:] = calcTemp(theta, rho)
-        data['temperature'][0] = np.nan
-
-        print (np.size(data['temperature']))
-
-        print (startdump[0].dim_coords[0])
-
-        plt.subplot(121)
-        plt.plot(data['temperature'],startdump[0].dim_coords[0].points)
-        plt.ylim([0,20])
-        plt.xlim([260,275])
-        plt.subplot(122)
-        plt.plot(theta,startdump[0].dim_coords[0].points)
-        plt.xlim([260,290])
-        plt.ylim([0,20])
-        # plt.plot(rho,startdump[2].dim_coords[0].points)
-        plt.show()
-
-
 
 
     # ### -------------------------------------------------------------------------
