@@ -3881,7 +3881,11 @@ def main():
         elif platform == 'LAPTOP':
 
             ### define filename
-            ifs_startfile = erai_init_dir + ifsdumps[f]
+            if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
+                os.remove(erai_init_dir + ifsdumps[f])
+                continue
+            else:
+                ifs_startfile = erai_init_dir + ifsdumps[f]
 
             ### load ERAI grib file
             ic_data['erai'] = {}
@@ -3891,20 +3895,19 @@ def main():
             x2 = ic_data['erai'][f].variables['q'][:,0,0].data
             y = ic_data['erai'][f].variables['hybrid'].data
 
-            plt.close()
+            # plt.close()
             plt.subplot(121)
             plt.plot(x1, y)
             # plt.ylim([0,20])
             # plt.xlim([260,275])
-            plt.title(ifsdumps[f])
+            plt.legend(f)
             plt.subplot(122)
             plt.plot(x2, y)
             # plt.xlim([260,290])
             # plt.ylim([0,20])
             # plt.plot(rho,startdump[2].dim_coords[0].points)
-            plt.show()
+            if f == len(ifsdumps) - 1: plt.show()
 
-            ic_data['erai'][f].close()
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
