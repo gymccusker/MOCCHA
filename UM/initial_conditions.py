@@ -3896,6 +3896,7 @@ def main():
             plt.plot(x1, y)
             # plt.ylim([0,20])
             # plt.xlim([260,275])
+            plt.title(ifsdumps[f])
             plt.subplot(122)
             plt.plot(x2, y)
             # plt.xlim([260,290])
