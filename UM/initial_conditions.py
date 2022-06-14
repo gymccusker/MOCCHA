@@ -3881,7 +3881,7 @@ def main():
         elif platform == 'LAPTOP':
 
             ### define filename
-            ifs_startfile = init_dir + ifsdumps[f]
+            ifs_startfile = erai_init_dir + ifsdumps[f]
 
             ### load ERAI grib file
             ic_data['erai'] = {}
