@@ -3836,7 +3836,7 @@ def main():
         # print (startdump)
 
         ### -------------------------------------------------------------------------
-        ### Find lat/lon location of ship --- UNTESTED
+        ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
         ### -------------------------------------------------------------------------
         date = um_dumps[f][:8]
         tim, ilat, ilon = readUMGlobal(startdump, ship_data, date)
