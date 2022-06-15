@@ -4031,13 +4031,13 @@ def main():
                 # plt.close()
                 plt.subplot(121)
                 plt.plot(x1, y)
-                # plt.ylim([0,20])
-                # plt.xlim([260,275])
-                plt.legend(str(f))
+                plt.ylim([850,1000])
+                plt.xlim([260,275])
+                plt.legend(str(date[d]))
                 plt.subplot(122)
                 plt.plot(x2, y)
                 # plt.xlim([260,290])
-                # plt.ylim([0,20]t
+                plt.ylim([850,1000])
                 # plt.plot(rho,startdump[2].dim_coords[0].points)
                 if d == 3: plt.show()
 
