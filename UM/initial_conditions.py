@@ -968,7 +968,8 @@ def readUMGlobal(cube, ship_data, date):
     ship_lats = ship_data.values[day_ind[0],7]
     ship_lons = ship_data.values[day_ind[0],6]
 
-    print ('ship_lats.shape = ' + str(ship_lats.shape))
+    print ('ship_lats = ' + str(ship_lats))
+    print ('ship_lons = ' + str(ship_lons))
 
     for j in range(0,len(sb_lats)):     ### for all latitude points
         if np.logical_and(ship_lats >= sb_lats[j], ship_lats < nb_lats[j]):     ### find where ship lat sits on glm lat grid
@@ -3936,19 +3937,22 @@ def main():
             rho = startdump[2][:,ilat,ilon].data
             # rho = startdump[2][:,-1,-1].data
 
-
             ic_data['um'] = {}
-            ic_data['um']['temperature'] = np.zeros([np.size(theta,0)])
-            ic_data['um']['temperature'][1:] = calcTemp(theta, rho)
-            ic_data['um']['temperature'][0] = np.nan
+            ic_data['um'][date] = {}
+            ic_data['um'][date]['temperature'] = np.zeros([np.size(theta,0)])
+            ic_data['um'][date]['temperature'][1:] = calcTemp(theta, rho)
+            ic_data['um'][date]['temperature'][0] = np.nan
 
-            print (np.size(ic_data['um']['temperature']))
+            ic_data['um'][date]['lat'] = startdump[0].dim_coords[1].points[ilat]
+            ic_data['um'][date]['lon'] = startdump[0].dim_coords[2].points[ilon]
+
+            print (np.size(ic_data['um'][date]['temperature']))
 
             print (startdump[0].dim_coords[0])
 
             plt.close()
             plt.subplot(121)
-            plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
+            plt.plot(ic_data['um'][date]['temperature'],startdump[0].dim_coords[0].points)
             plt.ylim([0,20])
             plt.xlim([260,275])
             plt.subplot(122)
@@ -3957,6 +3961,9 @@ def main():
             plt.ylim([0,20])
             # plt.plot(rho,startdump[2].dim_coords[0].points)
             plt.show()
+
+            ### save to dictionary
+            np.save('temp', ic_data)
 
         elif platform == 'LAPTOP':
 
