@@ -4028,6 +4028,7 @@ def main():
                 ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
                 ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data
+                print (ic_data['erai'][date[d]])
 
                 # x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 # x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
