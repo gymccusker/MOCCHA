@@ -4027,19 +4027,32 @@ def main():
 
                 x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                y = zdata.variables['z'][tims[d],:,ilat,ilon].data
+                y1 = ic_data['erai'][f].variables['hybrid'].data
+                y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data
 
                 # plt.close()
-                plt.subplot(121)
-                plt.plot(x1, y)
-                plt.ylim([850,1000])
-                plt.xlim([260,275])
+                plt.subplot(221)#
+                ax1 = plt.gca()
+                plt.plot(x1, y1[::-1])
+                # ax1.invert_yaxis()
+                # plt.ylim([0,10000])
+                # plt.xlim([260,275])
                 plt.legend(str(date[d]))
-                plt.subplot(122)
-                plt.plot(x2, y)
+                plt.subplot(222)
+                ax2 = plt.gca()
+                plt.plot(x2, y1[::-1])
+                # ax2.invert_yaxis()
                 # plt.xlim([260,290])
-                plt.ylim([850,1000])
-                # plt.plot(rho,startdump[2].dim_coords[0].points)
+                # plt.ylim([0,10000])
+                plt.subplot(223)
+                plt.plot(x1, y2)
+                # plt.ylim([0,10000])
+                # plt.xlim([260,275])
+                plt.legend(str(date[d]))
+                plt.subplot(224)
+                plt.plot(x2, y2)
+                # plt.xlim([260,290])
+                # plt.ylim([0,10000])
                 if d == 3: plt.show()
 
 
