@@ -3946,7 +3946,8 @@ def main():
             ic_data['um'][date]['lat'] = startdump[0].dim_coords[1].points[ilat]
             ic_data['um'][date]['lon'] = startdump[0].dim_coords[2].points[ilon]
 
-            print (np.size(ic_data['um'][date]['temperature']))
+            print (ic_data['um'][date]['lat'])
+            print (ic_data['um'][date]['lon'])
 
             print (startdump[0].dim_coords[0])
 
