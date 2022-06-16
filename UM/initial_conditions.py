@@ -956,13 +956,8 @@ def readUMGlobal(cube, ship_data, date):
     #####--------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------
     #################################################################
-    ## find date of interest
+    ## find date of interest in ship data
     #################################################################
-    # date = date_dir[0:8]
-    if date == '20180831':
-        date = '20180901'
-    else:
-        date = date[:6] + str(int(date[-2:]) + 1).zfill(2)
     day_ind = np.array([])
     day_ind = np.where(np.logical_and(ship_data.values[:,2] == float(date[-2:]),ship_data.values[:,1] == float(date[-4:-2])))
     print ('Daily ship track for ' + date + ': ' + str(len(day_ind[0])) + ' pts ')
@@ -975,50 +970,14 @@ def readUMGlobal(cube, ship_data, date):
 
     print ('ship_lats.shape = ' + str(ship_lats.shape))
 
-    #####--------------------------------------------------------------------------------------------------
-    #####--------------------------------------------------------------------------------------------------
-    ### compare hourly lat-lon with GLM grid
-    data = {}
-    data['ship_lons'] = np.zeros(24)
-    data['ship_lats'] = np.zeros(24)
-    data['ship_i'] = np.zeros(24); data['ship_i'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_j'] = np.zeros(24); data['ship_j'][:] = np.nan        ### set default ship_ind to nan so we can easily pick out out-of-grid values
-    data['ship_hour'] = np.zeros(24)
-    hours = np.arange(0,24)
-    jflag = np.zeros(24)        ### flag for if grid boundary is crossed
+    for j in range(0,len(sb_lats)):     ### for all latitude points
+        if np.logical_and(ship_lats >= sb_lats[j], ship_lats < nb_lats[j]):     ### find where ship lat sits on glm lat grid
+            for i in range(0,len(wb_lons)):     ### for all longitude points
+                if np.logical_and(ship_lons >= wb_lons[i], ship_lons < eb_lons[i]):     ### find where ship lon sits on glm lon grid
+                    print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
+                    ilat = j         # define grid point indices for use later
+                    ilon = i         # define grid point indices for use later
 
-    for h in hours:
-        print ('')
-        print ('hour = ' + str(h))
-        for j in range(0,len(sb_lats)):     ### for all latitude points
-            if np.logical_and(ship_lats[h] >= sb_lats[j], ship_lats[h] < nb_lats[j]):     ### find where ship lat sits on glm lat grid
-                for i in range(0,len(wb_lons)):     ### for all longitude points
-                    if np.logical_and(ship_lons[h] >= wb_lons[i], ship_lons[h] < eb_lons[i]):     ### find where ship lon sits on glm lon grid
-                        print ('lats and lons match at i = ' + str(i) + ', j = ' + str(j))
-                        jflag[h] = jflag[h] + 1
-                        data['ship_lons'][h] = lons[i]
-                        data['ship_hour'][h] = hours[h]
-                        data['ship_lats'][h] = lats[j]
-                        data['ship_j'][h] = j         # define grid point indices for use later
-                        data['ship_i'][h] = i         # define grid point indices for use later
-
-    # print data['ship_lats']
-    # print data['ship_j']
-    # print data['ship_lons']
-    # print data['ship_i']
-
-    # np.save('working_glm_grid', data)
-
-    ### need to constract an hour, lon index, lat index list like used for the lam
-    # for h in hours:
-    #     if data['ship_i'][h+1] == data['ship_i'][h]:
-
-    ### arguments to be passed back to pullTrack_CloudNet
-    tim = hours
-    ilon = data['ship_i']
-    ilat = data['ship_j']
-
-    print (tim)
     print (ilon)
     print (ilat)
 
@@ -1072,7 +1031,7 @@ def readUMGlobal(cube, ship_data, date):
              color = 'darkorange', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
-    plt.plot(data['ship_lons'], data['ship_lats'],
+    plt.plot(ship_lons, ship_lats,
              'o', color = 'yellow', linewidth = 3,
              transform = ccrs.PlateCarree(), label = 'Ship track',
              )
@@ -1081,7 +1040,7 @@ def readUMGlobal(cube, ship_data, date):
     #
     # #####--------------------------------------------------------------------------------------------------
 
-    return tim, ilat, ilon
+    return ilat, ilon
 
 def readERAIGlobal(ic_data, ship_data, date, f):
 
@@ -3966,7 +3925,7 @@ def main():
             ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
             ### -------------------------------------------------------------------------
             date = umdumps[f][:8]
-            tim, ilat, ilon = readUMGlobal(startdump, ship_data, date)
+            ilat, ilon = readUMGlobal(startdump, ship_data, date)
 
             ### -------------------------------------------------------------------------
             ### Calculate temperature over area of interest only
@@ -3986,17 +3945,17 @@ def main():
 
             print (startdump[0].dim_coords[0])
 
-            plt.close()
-            plt.subplot(121)
-            plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
-            plt.ylim([0,20])
-            plt.xlim([260,275])
-            plt.subplot(122)
-            plt.plot(theta,startdump[0].dim_coords[0].points)
-            plt.xlim([260,290])
-            plt.ylim([0,20])
-            # plt.plot(rho,startdump[2].dim_coords[0].points)
-            plt.show()
+            # plt.close()
+            # plt.subplot(121)
+            # plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
+            # plt.ylim([0,20])
+            # plt.xlim([260,275])
+            # plt.subplot(122)
+            # plt.plot(theta,startdump[0].dim_coords[0].points)
+            # plt.xlim([260,290])
+            # plt.ylim([0,20])
+            # # plt.plot(rho,startdump[2].dim_coords[0].points)
+            # plt.show()
 
         elif platform == 'LAPTOP':
 
