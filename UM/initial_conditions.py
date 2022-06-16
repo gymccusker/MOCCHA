@@ -4024,36 +4024,40 @@ def main():
 
             for d in range(0,len(date)):
                 ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
+                ic_data['erai'][date[d]] = {}
+                ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
+                ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
+                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data
 
-                x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
-                x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                y1 = ic_data['erai'][f].variables['hybrid'].data
-                y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data
-
-                # plt.close()
-                plt.subplot(221)#
-                ax1 = plt.gca()
-                plt.plot(x1, y1[::-1])
-                # ax1.invert_yaxis()
-                # plt.ylim([0,10000])
-                # plt.xlim([260,275])
-                plt.legend(str(date[d]))
-                plt.subplot(222)
-                ax2 = plt.gca()
-                plt.plot(x2, y1[::-1])
-                # ax2.invert_yaxis()
-                # plt.xlim([260,290])
-                # plt.ylim([0,10000])
-                plt.subplot(223)
-                plt.plot(x1, y2)
-                # plt.ylim([0,10000])
-                # plt.xlim([260,275])
-                plt.legend(str(date[d]))
-                plt.subplot(224)
-                plt.plot(x2, y2)
-                # plt.xlim([260,290])
-                # plt.ylim([0,10000])
-                if d == 3: plt.show()
+                # x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
+                # x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
+                # y1 = ic_data['erai'][f].variables['hybrid'].data
+                # y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data
+                #
+                # # plt.close()
+                # plt.subplot(221)#
+                # ax1 = plt.gca()
+                # plt.plot(x1, y1[::-1])
+                # # ax1.invert_yaxis()
+                # # plt.ylim([0,10000])
+                # # plt.xlim([260,275])
+                # plt.legend(str(date[d]))
+                # plt.subplot(222)
+                # ax2 = plt.gca()
+                # plt.plot(x2, y1[::-1])
+                # # ax2.invert_yaxis()
+                # # plt.xlim([260,290])
+                # # plt.ylim([0,10000])
+                # plt.subplot(223)
+                # plt.plot(x1, y2)
+                # # plt.ylim([0,10000])
+                # # plt.xlim([260,275])
+                # plt.legend(str(date[d]))
+                # plt.subplot(224)
+                # plt.plot(x2, y2)
+                # # plt.xlim([260,290])
+                # # plt.ylim([0,10000])
+                # if d == 3: plt.show()
 
 
     # ### -------------------------------------------------------------------------
