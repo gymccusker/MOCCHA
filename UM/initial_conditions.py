@@ -3930,11 +3930,12 @@ def main():
             ### -------------------------------------------------------------------------
             ### Calculate temperature over area of interest only
             ### -------------------------------------------------------------------------
-            theta = startdump[0][:,ilat,ilon]
+            theta = startdump[0][:,ilat,ilon].data
             # theta = startdump[0][:,-1,-1].data
             print (np.size(theta))
-            rho = startdump[2][:,ilat,ilon]
+            rho = startdump[2][:,ilat,ilon].data
             # rho = startdump[2][:,-1,-1].data
+
 
             ic_data['um'] = {}
             ic_data['um']['temperature'] = np.zeros([np.size(theta,0)])
