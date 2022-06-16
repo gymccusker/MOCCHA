@@ -4014,7 +4014,7 @@ def main():
 
             ### pull ships location
             month = ifsdumps[f][14]
-            zdata = xr.load_dataset(ifs_startfile[:5] + '_z_20180' + month + '.grib', engine='cfgrib')
+            zdata = xr.load_dataset(erai_init_dir + ifsdumps[f][:5] + '_z_20180' + month + '.grib', engine='cfgrib')
             if month == '8':
                 date = ['20180830','20180831']
                 tims = [29,30]
