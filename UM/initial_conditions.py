@@ -3937,19 +3937,21 @@ def main():
                 if i > 0:
                     umdumps = np.append(umdumps, dumps[f])
                 i = i + 1
-            elif dumps[f][0:8] == 'ecmwf_pl':
-                if i == 6:
-                    ifsdumps = dumps[f]
-                if i > 6:
-                    ifsdumps = np.append(ifsdumps, dumps[f])
-                i = i + 1
+            # elif dumps[f][0:8] == 'ecmwf_pl':
+            #     if i == 6:
+            #         ifsdumps = dumps[f]
+            #     if i > 6:
+            #         ifsdumps = np.append(ifsdumps, dumps[f])
+            #     i = i + 1
 
     elif platform == 'LAPTOP':
         ifsdumps = os.listdir(erai_init_dir)
 
+    if 'ifsdumps' in locals(): filenames = ifsdumps
+    if 'umdumps' in locals(): filenames = umdumps
 
     # print (umdumps[0])
-    for f in range(0,len(ifsdumps)):
+    for f in range(0,len(filenames)):
         if platform == 'JASMIN':
 
             ### define filename
