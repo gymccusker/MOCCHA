@@ -3926,7 +3926,7 @@ def main():
 
     ic_data = {}
 
-    ### list start dumps in UM_STARTFILES/ if JASMIN
+    ### load UM start dumps if JASMIN
     if platform == 'JASMIN':
         dumps = os.listdir(init_dir)
         i = 0
@@ -3944,6 +3944,7 @@ def main():
             #         ifsdumps = np.append(ifsdumps, dumps[f])
             #     i = i + 1
 
+    ### load ERAI start dumps if LAPTOP
     elif platform == 'LAPTOP':
         ifsdumps = os.listdir(erai_init_dir)
 
