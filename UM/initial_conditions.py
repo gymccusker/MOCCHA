@@ -4027,7 +4027,7 @@ def main():
 
                 x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                y = zdata.variable['z'][tims[d],:,ilat,ilon].data
+                y = zdata.variables['z'][tims[d],:,ilat,ilon].data
 
                 # plt.close()
                 plt.subplot(121)
