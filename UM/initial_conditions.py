@@ -3956,7 +3956,7 @@ def main():
         if platform == 'JASMIN':
 
             ### define filename
-            um_startfile = init_dir + um_dumps[f]
+            um_startfile = init_dir + umdumps[f]
 
             ### load UM file
             startdump = loadUMStartDump(um_startfile)
