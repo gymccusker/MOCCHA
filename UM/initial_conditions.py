@@ -4001,7 +4001,7 @@ def main():
             if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
                 os.remove(erai_init_dir + ifsdumps[f])
                 continue
-            elif ifsdumps[f][0:8] == 'ecmwf_pl':
+            elif ifsdumps[f][0:8] == 'ecmwf_tq':
                 ifs_startfile = erai_init_dir + ifsdumps[f]
             else:
                 continue
@@ -4014,6 +4014,7 @@ def main():
 
             ### pull ships location
             month = ifsdumps[f][14]
+            zdata = xr.load_dataset(ifs_startfile[:5] + '_z_20180' + month + '.grib', engine='cfgrib')
             if month == '8':
                 date = ['20180830','20180831']
                 tims = [29,30]
@@ -4026,7 +4027,7 @@ def main():
 
                 x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                y = ic_data['erai'][f].coords['isobaricInhPa'].data
+                y = zdata.variable['z'][tims[d],:,ilat,ilon].data
 
                 # plt.close()
                 plt.subplot(121)
