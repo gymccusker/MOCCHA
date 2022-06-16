@@ -3946,17 +3946,17 @@ def main():
 
             print (startdump[0].dim_coords[0])
 
-            # plt.close()
-            # plt.subplot(121)
-            # plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
-            # plt.ylim([0,20])
-            # plt.xlim([260,275])
-            # plt.subplot(122)
-            # plt.plot(theta,startdump[0].dim_coords[0].points)
-            # plt.xlim([260,290])
-            # plt.ylim([0,20])
-            # # plt.plot(rho,startdump[2].dim_coords[0].points)
-            # plt.show()
+            plt.close()
+            plt.subplot(121)
+            plt.plot(ic_data['um']['temperature'],startdump[0].dim_coords[0].points)
+            plt.ylim([0,20])
+            plt.xlim([260,275])
+            plt.subplot(122)
+            plt.plot(theta,startdump[0].dim_coords[0].points)
+            plt.xlim([260,290])
+            plt.ylim([0,20])
+            # plt.plot(rho,startdump[2].dim_coords[0].points)
+            plt.show()
 
         elif platform == 'LAPTOP':
 
