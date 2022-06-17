@@ -3885,6 +3885,8 @@ def main():
     ### -------------------------------------------------------------------------
 
     ic_data = {}
+    ic_data['um'] = {}
+    ic_data['erai'] = {}
 
     ### load UM start dumps if JASMIN
     if platform == 'JASMIN':
@@ -3931,7 +3933,6 @@ def main():
             rho = startdump[2][:,ilat,ilon].data
             # rho = startdump[2][:,-1,-1].data
 
-            ic_data['um'] = {}
             ic_data['um'][date] = {}
             ic_data['um'][date]['temperature'] = np.zeros([np.size(theta,0)])
             ic_data['um'][date]['temperature'][1:] = calcTemp(theta, rho)
@@ -3978,7 +3979,7 @@ def main():
             print (ifs_startfile)
 
             ### load ERAI grib file
-            ic_data['erai'] = {}
+            # ic_data['erai'] = {}
             ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
 
             ### pull ships location
