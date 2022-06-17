@@ -3732,7 +3732,7 @@ def main():
     plt.close()
 
     ### CHOOSE PLATFORM (OPTIONS BELOW)
-    platform = 'JASMIN'
+    platform = 'LAPTOP'
 
     ### JASMIN
     ### LAPTOP
@@ -3969,7 +3969,12 @@ def main():
 
 
             ### load UM startfile data (numpy dictionary)
-            ic_data['um'] = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
+            temp = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
+            ic_data['um'] = temp['um']
+
+            ### load a GLM file to get model levelist
+            glm = Dataset(root_dir + out_dir_glm + 'OUT_R2_GLM/20180902-36HForecast_oden_metum.nc')
+            ic_data['um']['z'] = glm.variables['height'][:]
 
             ### define ERAI filename
             if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
@@ -3989,6 +3994,7 @@ def main():
             ### pull ships location
             month = ifsdumps[f][14]
             zdata = xr.load_dataset(erai_init_dir + ifsdumps[f][:5] + '_z_20180' + month + '.grib', engine='cfgrib')
+
             if month == '8':
                 date = ['20180830','20180831']
                 tims = [29,30]
@@ -4001,47 +4007,48 @@ def main():
                 ic_data['erai'][date[d]] = {}
                 ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
                 ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data
+                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data / 10.
                 print (ic_data['erai'][date[d]])
 
-                # x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
-                # x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                # y1 = ic_data['erai'][f].variables['hybrid'].data
-                # y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data
-                #
-                # # plt.close()
-                # plt.subplot(221)#
-                # ax1 = plt.gca()
-                # plt.plot(x1, y1[::-1])
-                # # ax1.invert_yaxis()
-                # # plt.ylim([0,10000])
-                # # plt.xlim([260,275])
-                # plt.legend(str(date[d]))
-                # plt.subplot(222)
-                # ax2 = plt.gca()
-                # plt.plot(x2, y1[::-1])
-                # # ax2.invert_yaxis()
-                # # plt.xlim([260,290])
-                # # plt.ylim([0,10000])
-                # plt.subplot(223)
-                # plt.plot(x1, y2)
-                # # plt.ylim([0,10000])
-                # # plt.xlim([260,275])
-                # plt.legend(str(date[d]))
-                # plt.subplot(224)
-                # plt.plot(x2, y2)
-                # # plt.xlim([260,290])
-                # # plt.ylim([0,10000])
-                # if d == 3: plt.show()
+                x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
+                x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
+                y1 = ic_data['erai'][f].variables['hybrid'].data
+                y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data / 10.
 
+                # # # plt.close()
+                # # plt.subplot(221)#
+                # # ax1 = plt.gca()
+                # # plt.plot(x1, y1[::-1])
+                # # # ax1.invert_yaxis()
+                # # # plt.ylim([0,10000])
+                # # # plt.xlim([260,275])
+                # # plt.legend(str(date[d]))
+                # # plt.subplot(222)
+                # # ax2 = plt.gca()
+                # # plt.plot(x2, y1[::-1])
+                # # # ax2.invert_yaxis()
+                # # # plt.xlim([260,290])
+                # # # plt.ylim([0,10000])
+                # plt.subplot(121)
+                # plt.plot(x1, y2)
+                # plt.plot(ic_data['um'][date[d]]['temperature'], ic_data['um']['z'])
+                # plt.ylim([0,10000])
+                # # plt.xlim([260,275])
+                # plt.legend(str(date[d]))
+                # plt.subplot(122)
+                # plt.plot(x2, y2)
+                # plt.plot(ic_data['um'][date[d]]['q'], ic_data['um']['z'])
+                # # plt.xlim([260,290])
+                # plt.ylim([0,10000])
+                # plt.show()
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
     # ### Load in observations - laptop analysis
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
-    # obs = {}
-    # obs = loadObservations(obs, platform, obs_root_dir)
+    obs = {}
+    obs = loadObservations(obs, platform, obs_root_dir)
     #
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
