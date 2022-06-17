@@ -3928,15 +3928,16 @@ def main():
             ### Calculate temperature over area of interest only
             ### -------------------------------------------------------------------------
             theta = startdump[0][:,ilat,ilon].data
-            # theta = startdump[0][:,-1,-1].data
-            print (np.size(theta))
+                        print (np.size(theta))
             rho = startdump[2][:,ilat,ilon].data
-            # rho = startdump[2][:,-1,-1].data
+            q = startdump[1][:,ilat,ilon].data
 
             ic_data['um'][date] = {}
             ic_data['um'][date]['temperature'] = np.zeros([np.size(theta,0)])
             ic_data['um'][date]['temperature'][1:] = calcTemp(theta, rho)
             ic_data['um'][date]['temperature'][0] = np.nan
+
+            ic_data['um'][date]['q'] = q
 
             ic_data['um'][date]['lat'] = startdump[0].dim_coords[1].points[ilat]
             ic_data['um'][date]['lon'] = startdump[0].dim_coords[2].points[ilon]
@@ -3947,15 +3948,18 @@ def main():
             print (startdump[0].dim_coords[0])
 
             plt.close()
-            plt.subplot(121)
+            plt.subplot(131)
             plt.plot(ic_data['um'][date]['temperature'],startdump[0].dim_coords[0].points)
             plt.ylim([0,20])
             plt.xlim([260,275])
-            plt.subplot(122)
+            plt.subplot(132)
             plt.plot(theta,startdump[0].dim_coords[0].points)
             plt.xlim([260,290])
             plt.ylim([0,20])
-            # plt.plot(rho,startdump[2].dim_coords[0].points)
+            plt.subplot(132)
+            plt.plot(q,startdump[0].dim_coords[0].points)
+            # plt.xlim([260,290])
+            plt.ylim([0,20])
             plt.show()
 
             ### save to dictionary
