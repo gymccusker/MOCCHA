@@ -3968,7 +3968,11 @@ def main():
 
         elif platform == 'LAPTOP':
 
-            ### define filename
+
+            ### load UM startfile data (numpy dictionary)
+            ic_data['um'] = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
+
+            ### define ERAI filename
             if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
                 os.remove(erai_init_dir + ifsdumps[f])
                 continue
