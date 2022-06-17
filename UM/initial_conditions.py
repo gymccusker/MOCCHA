@@ -3964,7 +3964,7 @@ def main():
             plt.show()
 
             ### save to dictionary
-            np.save('temp', ic_data)
+            np.save('glm_startdump_TDprofiles', ic_data)
 
         elif platform == 'LAPTOP':
 
