@@ -3928,7 +3928,7 @@ def main():
             ### Calculate temperature over area of interest only
             ### -------------------------------------------------------------------------
             theta = startdump[0][:,ilat,ilon].data
-                        print (np.size(theta))
+            print (np.size(theta))
             rho = startdump[2][:,ilat,ilon].data
             q = startdump[1][:,ilat,ilon].data
 
