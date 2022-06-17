@@ -3897,12 +3897,6 @@ def main():
                 if i > 0:
                     umdumps = np.append(umdumps, dumps[f])
                 i = i + 1
-            # elif dumps[f][0:8] == 'ecmwf_pl':
-            #     if i == 6:
-            #         ifsdumps = dumps[f]
-            #     if i > 6:
-            #         ifsdumps = np.append(ifsdumps, dumps[f])
-            #     i = i + 1
 
     ### load ERAI start dumps if LAPTOP
     elif platform == 'LAPTOP':
