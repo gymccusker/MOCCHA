@@ -2942,6 +2942,172 @@ def reGrid_Sondes(data_glm, data_lam, obs, dir, filenames, model, var):
 
     return data_glm, obs
 
+def reGrid_ICData(ic_data, data_lam, obs, dir, filenames, model, var):
+
+    from scipy.interpolate import interp1d
+    from readMAT import readMatlabStruct
+    from time_functions import calcTime_Mat2DOY, calcTime_Date2DOY
+
+    #### ---------------------------------------------------------------
+    ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
+    #### ---------------------------------------------------------------
+    if var == 'temp':
+        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature']
+    elif var == 'thetaE':
+        # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
+        varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE', 'thetaE']         # use sonde calculated thetaE
+    elif var == 'theta':
+        # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
+        varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
+    elif var == 'q':
+        varlist = ['sphum','q','q','q','q','q']
+    elif var == 'rh':
+        varlist = ['RH','rh','rh','rh','rh','rh']
+    elif var == 'qliq':
+        varlist = ['qliq','qliq','qliq','qliq','qliq','qliq']
+
+    #### ---------------------------------------------------------------
+    #### create 36h time array
+    #### ---------------------------------------------------------------
+    timestamps = np.arange(1, 38) ### make array a bit longer
+    timebins = (timestamps[::6]-1)/24       ### change hours into doy fraction
+
+    sonde_times = np.zeros([len(timebins),3])
+    f = 0
+    for file in filenames:
+        sonde0 = calcTime_Date2DOY(file) + 0.5      ### date + 1200Z for start time
+        sonde_times[0,f] = sonde0
+        for t in range(1,len(timebins)):
+            sonde_times[t,f] = sonde0 + timebins[t]
+        obs['sondes']['sonde_' + file[:8]] = sonde_times[:,f]
+        print ('sonde_' + file[:8])
+        print (obs['sondes']['sonde_' + file[:8]])
+        f = f + 1
+    # print (sonde_times)
+    obs['sondes']['sonde_times'] = sonde_times
+    #### ---------------------------------------------------------------
+    #### make an array of forecast_time indices aligning with sonde_times
+    #### ---------------------------------------------------------------
+    # for file in filenames:
+    #     print (data[dir[:2]][file[:8]]['forecast_time'][::6]-1)
+
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    iTim = 0        ### initialised
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
+    iUM = np.where(data_lam['height'] <= 11000)
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION
+    #### ---------------------------------------------------------------
+    print ('')
+    print ('Defining Sonde temperature profile as a function for the UM:')
+    # print (np.round(obs['sondes']['doy'],1))
+    obs['sondes']['case_study_times'] = sonde_times
+
+    # plt.figure()
+    if var != 'qliq':
+        for f in range(0,len(filenames)):
+            obs['sondes'][filenames[f][:8]][var + '_UM'] = np.zeros([np.size(sonde_times,0),len(data_lam['height'][iUM[0][3:]])])
+            obs['sondes'][filenames[f][:8]]['case_study_times'] = sonde_times[:,f]
+            print (sonde_times)
+            # print (sonde_times[0,f])
+            tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde_times[0,f])
+            # print (obs['sondes']['doy'][tim_start])
+            # print (tim_start[1])
+            tim_end = tim_start[1] + int(len(sonde_times))
+            # print (tim_end)
+            # print (obs['sondes']['doy'][:,tim_end])
+            # print (sonde_times[-1,f])
+            tim_index = np.arange(tim_start[1],tim_end)
+            for iTim in range(0,np.size(sonde_times,0)):
+                # print ('iTim = ', str(iTim))
+                # print (obs['sondes']['doy'][:,tim_index])
+                fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs[0],tim_index[iTim]]), np.squeeze(obs['sondes'][varlist[0]][iObs[0],tim_index[iTim]]))
+                obs['sondes'][filenames[f][:8]][var + '_UM'][iTim,:] = fnct_Obs(data_lam['height'][iUM[0][3:]].data)
+
+                # print (obs['sondes'][filenames[f][:8]].keys())
+
+        #     ### plot test fig, looping over filenames
+        #     sp = f + 1
+        #     plt.subplot(1,3,sp)
+        #     plt.plot(obs['sondes'][varlist[0]][:,tim_index[0]], obs['sondes']['gpsaltitude'][:,0], label = 'Sondes native')
+        #     plt.plot(obs['sondes'][filenames[f][:8]][var + '_UM'][0,:], data_lam['height'][iUM[0][3:]], 'o-', label = 'Sondes interpolated')
+        #     plt.ylim([0,1e4])
+        #
+        # plt.legend()
+        # # plt.show()
+        # plt.close()
+
+    print ('...')
+    print ('Sonde(UM Grid) function worked!')
+    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('*****')
+    #### ---------------------------------------------------------------
+    #### index to only look at altitudes <10km
+    #### ---------------------------------------------------------------
+    data_glm['universal_height'] = data_lam['height'][iUM[0][3:]]
+    data_glm['universal_height_index'] = iUM[0][3:]
+    print ('Universal_height is len:')
+    print (np.size(data_glm['universal_height']))
+
+    ## interpolate for all times in forecast_time - index later!
+    fig = plt.figure()
+    sp = 0
+    for file in filenames:
+        iGLM = np.where(data_glm['height'] <= 11000)
+        # print (iGLM)
+        print (data_glm['height'][iGLM])
+        print ('')
+        print ('Defining UM profile as a function:')
+        temp_time = data_glm['forecast_time'][::6]-1 ## temporary array
+        data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(data_glm['forecast_time'],0), len(data_lam['height'][iUM[0][3:]])])
+        # print (temp_time)
+        # glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
+        # glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
+        # print (glmtim_start)
+        # print (glmtim_end)
+        # glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
+        # print (data_glm['forecast_time'][glmtim_index[::6]])
+        # print (glmtim_index[::6])
+        # print (data_glm[file[:8]][var + '_UM'].shape)
+        for iTim in range(0,np.size(data_glm['forecast_time'])):
+            print (iTim)
+            # print (glmtim_index[iTim])
+            fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
+            data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
+
+        hour_indices = np.array([5, 11, 17, 23, 29, -1])
+
+        ### plot test fig, looping over filenames
+        sp = sp + 1
+        plt.subplot(1,3,sp)
+        plt.plot(data_glm[file[:8]][varlist[-1]][hour_indices[1],:], data_glm['height'][:], label = 'GLM native')
+        plt.plot(data_glm[file[:8]][var + '_UM'][hour_indices[1],:], data_lam['height'][iUM[0][3:]], label = 'GLM interpolated')
+        plt.ylim([0,1e4])
+
+    plt.legend()
+    plt.show()
+    plt.close()
+
+    print ('...')
+    print ('LAM(UM Grid) function worked!')
+    print (var + ' LAM data now on UM(lam) vertical grid')
+    print ('*****')
+
+    # plt.figure()
+    # plt.plot(data_glm[filenames[2][:8]]['temperature'][2,:],data_glm['height'][:], label = 'GLM native')
+    # plt.plot(data_glm[filenames[2][:8]]['temp_UM'][2,:], data_lam['height'][iUM[0][3:]], label = 'GLM interpd')
+    # plt.plot(obs['sondes']['temperature'][:,tim_index[0]] + 273.16, obs['sondes']['gpsaltitude'][:,0], label = 'Sonde native')
+    # plt.plot(obs['sondes']['temp_UM'][0,:] + 273.16, data_lam['height'][iUM[0][3:]], label = 'Sonde interpd')
+    # plt.title(str(sonde_times[0][2]) + ' ' + str(obs['sondes']['doy'][:,tim_index[0]]))
+    # plt.ylim([0,1e4])
+    # plt.legend()
+    # plt.show()
+
+    return ic_data, obs
+
 def radiosondePrep(nc, data, dir, obs, filenames, model):
 
     import iris.plot as iplt
@@ -4042,6 +4208,9 @@ def main():
                 # plt.ylim([0,10000])
                 # plt.show()
 
+    ### load a reference LAM file to get model levelist
+    lam = Dataset(root_dir + out_dir_glm + 'OUT_R2_LAM/20180902-36HForecast_oden_metum.nc')
+
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
     # ### Load in observations - laptop analysis
@@ -4049,7 +4218,7 @@ def main():
     # ### -------------------------------------------------------------------------
     obs = {}
     obs = loadObservations(obs, platform, obs_root_dir)
-    #
+
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
     # ### Load pulled track files
@@ -4133,6 +4302,52 @@ def main():
     # #### plot anomalies
     # #### ---------------------------------------------------------------
     # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
+
+    #####--------------------------------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------------------------------
+
+    # #### ---------------------------------------------------------------
+    # #### re-grid ERAI and GLM IC data to LAM vertical grid <10km
+    # #### ---------------------------------------------------------------
+    print ('...')
+    print ('Re-gridding ERAI and GLM IC data...')
+    print ('')
+    # for file in filenames:
+    #     obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
+    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
+    # print ('')
+    # print ('Done!')
+    #
+    # print (data5['20180815'].keys())
+    #
+    # hour_indices = np.array([5, 11, 17, 23, 29, -1])
+    # # print (data5['forecast_time'])
+    # # print (data5['forecast_time'][hour_indices])
+    # # print (obs['sondes']['temp_UM'].shape)
+    # ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
+    #
+    # #### ---------------------------------------------------------------
+    # #### calculate thermodynamic anomalies
+    # #### ---------------------------------------------------------------
+    # for file in filenames:
+    #     data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
+    #     data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
+    #     data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
+    #     # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
+    #
+    #     print (data1[file[:8]].keys())
+    #
+    # #### ---------------------------------------------------------------
+    # #### plot anomalies
+    # #### ---------------------------------------------------------------
+    # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
+
+    #####--------------------------------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------------------------------
+    #####--------------------------------------------------------------------------------------------------------------------------
 
     # #### ---------------------------------------------------------------
     # #### plot swath data
