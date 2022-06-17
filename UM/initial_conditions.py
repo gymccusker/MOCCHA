@@ -3956,7 +3956,7 @@ def main():
             plt.plot(theta,startdump[0].dim_coords[0].points)
             plt.xlim([260,290])
             plt.ylim([0,20])
-            plt.subplot(132)
+            plt.subplot(133)
             plt.plot(q,startdump[0].dim_coords[0].points)
             # plt.xlim([260,290])
             plt.ylim([0,20])
