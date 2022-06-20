@@ -2976,6 +2976,8 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     print (sonde0)
 
     heightLAM = data_lam.variables['height'][:].data
+    heightGLM = ic_data['um']['z']
+
     obs['sondes'][date][var + '_UM'] = np.zeros([len(heightLAM)])
     tim_start = np.where(np.round(obs['sondes']['doy'],1) == sonde0)
     print (tim_start)
@@ -2983,11 +2985,11 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     #### ---------------------------------------------------------------
     #### index to only look at altitudes <10km
     #### ---------------------------------------------------------------
-    iTim = 0        ### initialised
-    iObs = np.where(obs['sondes']['gpsaltitude'][:,iTim] <= 11000)
-    iUM = np.where(np.logical_and(heightLAM >= obs['sondes']['gpsaltitude'][0,iTim], heightLAM <= 11000))
+    iObs = np.where(obs['sondes']['gpsaltitude'][:,tim_start[1]] <= 11000)
+    iUM = np.where(np.logical_and(heightLAM >= obs['sondes']['gpsaltitude'][0,tim_start[1]], heightLAM <= 11000))
+    iGLM = np.where(np.logical_and(ic_data['um']['z'] >= obs['sondes']['gpsaltitude'][0,tim_start[1]], ic_data['um']['z'] <= 11000))
 
-    print(len(heightLAM[iUM]))
+    # print(len(heightLAM[iUM]))
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION - RADIOSONDES
@@ -2995,77 +2997,49 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     print ('')
     print ('Defining Sonde temperature profile as a function for the UM:')
 
-    fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,tim_start[1]]), np.squeeze(obs['sondes'][varlist[0]][iObs,tim_start[1]]))
+    print (np.shape(obs['sondes']['gpsaltitude'][iObs[0],tim_start[1]]))
+    print (np.shape(obs['sondes'][varlist[0]][iObs[0],tim_start[1]]))
+
+    fnct_Obs = interp1d(obs['sondes']['gpsaltitude'][iObs[0],tim_start[1]], obs['sondes'][varlist[0]][iObs[0],tim_start[1]])
     obs['sondes'][date][var + '_UM'] = fnct_Obs(heightLAM[iUM])
 
-    plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]], obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
-    plt.plot(obs['sondes'][date][var + '_UM'][:], heightLAM[iUM], 'o-', label = 'Sondes interpolated')
+    # plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]], obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
+    # plt.plot(obs['sondes'][date][var + '_UM'][:], heightLAM[iUM], 'o-', label = 'Sondes interpolated')
+    # plt.ylim([0,1e4])
+    # plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
+
+    # plt.legend()
+    # # plt.show()
+    # plt.close()
+
+    print ('...')
+    print ('Sonde (UM Grid) function worked!')
+    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('*****')
+
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION - GLM IC DATA
+    #### ---------------------------------------------------------------
+
+    fnct_GLM = interp1d(ic_data['um']['z'][iGLM], ic_data['um'][date][varlist[5]][iGLM])
+    ic_data['um'][date][var + '_UM'] = fnct_GLM(heightLAM[iUM])
+
+    ### plot test fig, looping over filenames
+    plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]] + 273.16, obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
+    plt.plot(obs['sondes'][date][var + '_UM'][:] + 273.16, heightLAM[iUM], 'o-', label = 'Sondes interpolated')
+    plt.plot(ic_data['um'][date][varlist[-1]][:], ic_data['um']['z'], label = 'GLM native')
+    plt.plot(ic_data['um'][date][var + '_UM'][:], heightLAM[iUM], label = 'GLM interpolated')
     plt.ylim([0,1e4])
     plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
 
     plt.legend()
-    # plt.show()
-    plt.close()
+    plt.show()
+    # plt.close()
 
     print ('...')
-    print ('Sonde(UM Grid) function worked!')
-    print ('All ' + var + ' sonde data now on UM vertical grid.')
+    print ('GLM IC (UM Grid) function worked!')
+    print (var + ' LAM data now on UM(lam) vertical grid')
     print ('*****')
-
-
-
-
-    # #### ---------------------------------------------------------------
-    # #### index to only look at altitudes <10km
-    # #### ---------------------------------------------------------------
-    # data_glm['universal_height'] = data_lam['height'][iUM[0][3:]]
-    # data_glm['universal_height_index'] = iUM[0][3:]
-    # print ('Universal_height is len:')
-    # print (np.size(data_glm['universal_height']))
-    #
-    # ## interpolate for all times in forecast_time - index later!
-    # fig = plt.figure()
-    # sp = 0
-    # for file in filenames:
-    #     iGLM = np.where(data_glm['height'] <= 11000)
-    #     # print (iGLM)
-    #     print (data_glm['height'][iGLM])
-    #     print ('')
-    #     print ('Defining UM profile as a function:')
-    #     temp_time = data_glm['forecast_time'][::6]-1 ## temporary array
-    #     data_glm[file[:8]][var + '_UM'] = np.zeros([np.size(data_glm['forecast_time'],0), len(data_lam['height'][iUM[0][3:]])])
-    #     # print (temp_time)
-    #     # glmtim_start = np.where(data_glm['forecast_time'] == temp_time[1])
-    #     # glmtim_end = np.where(data_glm['forecast_time'] == temp_time[-1])
-    #     # print (glmtim_start)
-    #     # print (glmtim_end)
-    #     # glmtim_index = np.arange(glmtim_start[0],(glmtim_end[0]+1))
-    #     # print (data_glm['forecast_time'][glmtim_index[::6]])
-    #     # print (glmtim_index[::6])
-    #     # print (data_glm[file[:8]][var + '_UM'].shape)
-    #     for iTim in range(0,np.size(data_glm['forecast_time'])):
-    #         print (iTim)
-    #         # print (glmtim_index[iTim])
-    #         fnct_GLM = interp1d(np.squeeze(data_glm['height'][iGLM]), np.squeeze(data_glm[file[:8]][varlist[5]][iTim,iGLM]))
-    #         data_glm[file[:8]][var + '_UM'][iTim,:] = fnct_GLM(data_lam['height'][iUM[0][3:]].data)
-    #
-    #     hour_indices = np.array([5, 11, 17, 23, 29, -1])
-    #
-    #     ### plot test fig, looping over filenames
-    #     sp = sp + 1
-    #     plt.subplot(1,3,sp)
-    #     plt.plot(data_glm[file[:8]][varlist[-1]][hour_indices[1],:], data_glm['height'][:], label = 'GLM native')
-    #     plt.plot(data_glm[file[:8]][var + '_UM'][hour_indices[1],:], data_lam['height'][iUM[0][3:]], label = 'GLM interpolated')
-    #     plt.ylim([0,1e4])
-    #
-    # plt.legend()
-    # plt.show()
-    # plt.close()
-    #
-    # print ('...')
-    # print ('LAM(UM Grid) function worked!')
-    # print (var + ' LAM data now on UM(lam) vertical grid')
-    # print ('*****')
     #
     # # plt.figure()
     # # plt.plot(data_glm[filenames[2][:8]]['temperature'][2,:],data_glm['height'][:], label = 'GLM native')
