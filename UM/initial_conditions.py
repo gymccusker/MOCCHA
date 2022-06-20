@@ -2970,7 +2970,6 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     #### find times where ic data = sonde time
     #### ---------------------------------------------------------------
     sonde0 = calcTime_Date2DOY(date) + 0.5      ### date + 1200Z for start time
-    obs['sondes'][date] = {}
     obs['sondes'][date]['sonde_time'] = sonde0
 
     print (sonde0)
@@ -3026,6 +3025,11 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     fnct_GLM = interp1d(ic_data['um']['z'][iGLM], ic_data['um'][date][varlist[5]][iGLM])
     ic_data['um'][date][var + '_UM'] = fnct_GLM(heightLAM[iUM])
 
+    print ('...')
+    print ('GLM IC (UM Grid) function worked!')
+    print (var + ' data now on UM(lam) vertical grid')
+    print ('*****')
+
     #### ---------------------------------------------------------------
     #### START INTERPOLATION - ERAI IC DATA
     #### ---------------------------------------------------------------
@@ -3033,28 +3037,55 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     fnct_ERAI = interp1d(ic_data['erai'][date]['z'][iERAI], ic_data['erai'][date][varlist[6]][iERAI])
     ic_data['erai'][date][var + '_UM'] = fnct_ERAI(heightLAM[iUM])
 
-    ### plot test fig, looping over filenames
-    if varlist[0] == 'temperature':
-        plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]] + 273.16, obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
-        plt.plot(obs['sondes'][date][var + '_UM'][:] + 273.16, heightLAM[iUM], 'o-', color = 'k', label = 'Sondes interpolated')
-        plt.plot(ic_data['um'][date][varlist[5]][:], ic_data['um']['z'], label = 'GLM native')
-        plt.plot(ic_data['um'][date][var + '_UM'][:], heightLAM[iUM], 'o-', color = 'grey', label = 'GLM interpolated')
-        plt.plot(ic_data['erai'][date][varlist[-1]][:], ic_data['erai'][date]['z'], label = 'ERAI native')
-        plt.plot(ic_data['erai'][date][var + '_UM'][:], heightLAM[iUM],'o-', color = 'darkorange', label = 'ERAI interpolated')
-        plt.ylim([0,1e4])
-        plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
-
-        plt.legend()
-        plt.show()
-        # plt.close()
-
     print ('...')
-    print ('GLM IC (UM Grid) function worked!')
-    print (var + ' LAM data now on UM(lam) vertical grid')
+    print ('ERAI IC (UM Grid) function worked!')
+    print (var + ' data now on UM(lam) vertical grid')
     print ('*****')
 
+    ### plot test fig, looping over filenames
+    # if varlist[0] == 'temperature':
+    #     plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]] + 273.16, obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
+    #     plt.plot(obs['sondes'][date][var + '_UM'][:] + 273.16, heightLAM[iUM], 'o-', color = 'k', label = 'Sondes interpolated')
+    #     plt.plot(ic_data['um'][date][varlist[5]][:], ic_data['um']['z'], label = 'GLM native')
+    #     plt.plot(ic_data['um'][date][var + '_UM'][:], heightLAM[iUM], 'o-', color = 'grey', label = 'GLM interpolated')
+    #     plt.plot(ic_data['erai'][date][varlist[-1]][:], ic_data['erai'][date]['z'], label = 'ERAI native')
+    #     plt.plot(ic_data['erai'][date][var + '_UM'][:], heightLAM[iUM],'o-', color = 'darkorange', label = 'ERAI interpolated')
+    #     plt.ylim([0,1e4])
+    #     plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
+    #
+    #     plt.legend()
+    #     plt.show()
+    #     # plt.close()
+
+    ### store height array
+    ic_data['um'][date]['z_UM'] = iUM
+    ic_data['erai'][date]['z_UM'] = iUM
+    ic_data['universal_height'] = heightLAM[iUM]
 
     return ic_data, obs
+
+def calcICAnomalies(ic_data, obs, date):
+
+    tempvarT_glm = ic_data['um'][date]['temp_UM'][:]
+    print (tempvarT_glm.shape)
+    tempvarq_glm = ic_data['um'][date]['q_UM'][:] * 1e3
+
+    tempvarT_erai = ic_data['erai'][date]['temp_UM'][:]
+    print (tempvarT_erai.shape)
+    tempvarq_erai = ic_data['erai'][date]['q_UM'][:] * 1e3
+
+    print (obs['sondes'][date].keys())
+
+    ### glm biases wrt sondes
+    ic_data['um'][date]['temp_sonde_anomalies'] = tempvarT_glm - (obs['sondes'][date]['temp_UM'][:] + 273.15)
+    ic_data['um'][date]['q_sonde_anomalies'] = tempvarq_glm - obs['sondes'][date]['q_UM'][:]
+
+    ### erai biases wrt sondes
+    ic_data['erai'][date]['temp_sonde_anomalies'] = tempvarT_erai - (obs['sondes'][date]['temp_UM'][:] + 273.15)
+    ic_data['erai'][date]['q_sonde_anomalies'] = tempvarq_erai - obs['sondes'][date]['q_UM'][:]
+
+    return ic_data
+
 
 def radiosondePrep(nc, data, dir, obs, filenames, model):
 
@@ -4177,32 +4208,34 @@ def main():
                 print ('Re-gridding ERAI and GLM IC data...')
                 print ('')
 
+                print (obs['sondes'].keys())
+                obs['sondes'][date[d]] = {}
                 ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'temp')
                 ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'q')
 
                 print ('')
                 print ('Done!')
-                #
-                # print (data5['20180815'].keys())
-                #
-                # hour_indices = np.array([5, 11, 17, 23, 29, -1])
-                # # print (data5['forecast_time'])
-                # # print (data5['forecast_time'][hour_indices])
-                # # print (obs['sondes']['temp_UM'].shape)
-                # ### print (np.size(data5['20180815']['temp_UM'][::6]-1))
-                #
-                # #### ---------------------------------------------------------------
-                # #### calculate thermodynamic anomalies
-                # #### ---------------------------------------------------------------
-                # for file in filenames:
-                #     data1, data5 = calcAnomalies(data1, data5, obs, hour_indices, file[:8])
-                #     data2, data5 = calcAnomalies(data2, data5, obs, hour_indices, file[:8])
-                #     data4, data5 = calcAnomalies(data4, data5, obs, hour_indices, file[:8])
-                #     # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
-                #
-                #     print (data1[file[:8]].keys())
 
+                #### ---------------------------------------------------------------
+                #### calculate thermodynamic anomalies
+                #### ---------------------------------------------------------------
+                ic_data = calcICAnomalies(ic_data, obs, date[d])
 
+                ### plot profiles and biases
+                plt.subplot(121)
+                plt.plot(obs['sondes'][date[d]]['temp_UM'][:] + 273.16, ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
+                plt.plot(ic_data['um'][date[d]]['temp_UM'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
+                plt.plot(ic_data['erai'][date[d]]['temp_UM'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
+                plt.ylim([0,1e4])
+                plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+
+                plt.subplot(122)
+                plt.plot([0,1e4],[0,0], '--', color = 'lightgrey')
+                plt.plot(ic_data['um'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
+                plt.plot(ic_data['erai'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
+                plt.ylim([0,1e4])
+                plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                plt.show()
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
