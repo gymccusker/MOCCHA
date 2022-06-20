@@ -2952,7 +2952,7 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     ### build list of variables names wrt input data [OBS, UM, CASIM, IFS]
     #### ---------------------------------------------------------------
     if var == 'temp':
-        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature']
+        varlist = ['temperature','temperature','temperature','temperature', 'temperature', 'temperature', 't']
     elif var == 'thetaE':
         # varlist = ['epottemp','thetaE','thetaE','thetaE']     # use sonde file's epottemp
         varlist = ['thetaE','thetaE','thetaE','thetaE', 'thetaE', 'thetaE']         # use sonde calculated thetaE
@@ -2960,7 +2960,7 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
         # varlist = ['pottemp','theta','theta','theta']     # use sonde file's pottemp
         varlist = ['theta','theta','theta','theta','theta','theta']         # use sonde calculated theta
     elif var == 'q':
-        varlist = ['sphum','q','q','q','q','q']
+        varlist = ['sphum','q','q','q','q','q','q']
     elif var == 'rh':
         varlist = ['RH','rh','rh','rh','rh','rh']
     elif var == 'qliq':
@@ -2988,8 +2988,10 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     iObs = np.where(obs['sondes']['gpsaltitude'][:,tim_start[1]] <= 11000)
     iUM = np.where(np.logical_and(heightLAM >= obs['sondes']['gpsaltitude'][0,tim_start[1]], heightLAM <= 11000))
     iGLM = np.where(np.logical_and(ic_data['um']['z'] >= obs['sondes']['gpsaltitude'][0,tim_start[1]], ic_data['um']['z'] <= 11000))
+    iERAI = np.where(ic_data['erai'][date]['z'] <= 12000)
 
-    # print(len(heightLAM[iUM]))
+    print(heightLAM[iUM])
+    print (ic_data['erai'][date]['z'][iERAI])
 
     #### ---------------------------------------------------------------
     #### START INTERPOLATION - RADIOSONDES
@@ -3024,11 +3026,20 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     fnct_GLM = interp1d(ic_data['um']['z'][iGLM], ic_data['um'][date][varlist[5]][iGLM])
     ic_data['um'][date][var + '_UM'] = fnct_GLM(heightLAM[iUM])
 
+    #### ---------------------------------------------------------------
+    #### START INTERPOLATION - ERAI IC DATA
+    #### ---------------------------------------------------------------
+
+    fnct_ERAI = interp1d(ic_data['erai'][date]['z'][iERAI], ic_data['erai'][date][varlist[6]][iERAI])
+    ic_data['erai'][date][var + '_UM'] = fnct_ERAI(heightLAM[iUM])
+
     ### plot test fig, looping over filenames
     plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]] + 273.16, obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
-    plt.plot(obs['sondes'][date][var + '_UM'][:] + 273.16, heightLAM[iUM], 'o-', label = 'Sondes interpolated')
-    plt.plot(ic_data['um'][date][varlist[-1]][:], ic_data['um']['z'], label = 'GLM native')
-    plt.plot(ic_data['um'][date][var + '_UM'][:], heightLAM[iUM], label = 'GLM interpolated')
+    plt.plot(obs['sondes'][date][var + '_UM'][:] + 273.16, heightLAM[iUM], 'o-', color = 'k', label = 'Sondes interpolated')
+    plt.plot(ic_data['um'][date][varlist[5]][:], ic_data['um']['z'], label = 'GLM native')
+    plt.plot(ic_data['um'][date][var + '_UM'][:], heightLAM[iUM], 'o-', color = 'grey', label = 'GLM interpolated')
+    plt.plot(ic_data['erai'][date][varlist[-1]][:], ic_data['erai'][date]['z'], label = 'ERAI native')
+    plt.plot(ic_data['erai'][date][var + '_UM'][:], heightLAM[iUM],'o-', color = 'darkorange', label = 'ERAI interpolated')
     plt.ylim([0,1e4])
     plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
 
@@ -3040,16 +3051,7 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     print ('GLM IC (UM Grid) function worked!')
     print (var + ' LAM data now on UM(lam) vertical grid')
     print ('*****')
-    #
-    # # plt.figure()
-    # # plt.plot(data_glm[filenames[2][:8]]['temperature'][2,:],data_glm['height'][:], label = 'GLM native')
-    # # plt.plot(data_glm[filenames[2][:8]]['temp_UM'][2,:], data_lam['height'][iUM[0][3:]], label = 'GLM interpd')
-    # # plt.plot(obs['sondes']['temperature'][:,tim_index[0]] + 273.16, obs['sondes']['gpsaltitude'][:,0], label = 'Sonde native')
-    # # plt.plot(obs['sondes']['temp_UM'][0,:] + 273.16, data_lam['height'][iUM[0][3:]], label = 'Sonde interpd')
-    # # plt.title(str(sonde_times[0][2]) + ' ' + str(obs['sondes']['doy'][:,tim_index[0]]))
-    # # plt.ylim([0,1e4])
-    # # plt.legend()
-    # # plt.show()
+
 
     return ic_data, obs
 
@@ -4126,9 +4128,9 @@ def main():
             for d in range(0,len(date)):
                 ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
                 ic_data['erai'][date[d]] = {}
-                ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
-                ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data / 10.
+                ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data[::-1]
+                ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data[::-1]
+                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data[::-1] / 10.
                 print (ic_data['erai'][date[d]])
 
                 x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
@@ -4175,6 +4177,7 @@ def main():
                 print ('')
 
                 ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'temp')
+                ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'q')
 
                 print ('')
                 print ('Done!')
