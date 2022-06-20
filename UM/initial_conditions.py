@@ -3084,6 +3084,9 @@ def calcICAnomalies(ic_data, obs, date):
     ic_data['erai'][date]['temp_sonde_anomalies'] = tempvarT_erai - (obs['sondes'][date]['temp_UM'][:] + 273.15)
     ic_data['erai'][date]['q_sonde_anomalies'] = tempvarq_erai - obs['sondes'][date]['q_UM'][:]
 
+    print (ic_data['um'][date].keys())
+    print (ic_data['erai'][date].keys())
+
     return ic_data
 
 
@@ -4060,10 +4063,14 @@ def main():
     if 'ifsdumps' in locals(): filenames = ifsdumps
     if 'umdumps' in locals(): filenames = umdumps
 
-    # print (umdumps[0])
-    for f in range(0,len(filenames)):
-        if platform == 'JASMIN':
+    all_dates = ['20180830','20180831','20180901','20180902','20180903','20180904']
+    for t in range(0, len(all_dates)):
+        ic_data['erai'][all_dates[t]] = {}
 
+    # print (umdumps[0])
+
+    if platform == 'JASMIN':
+        for f in range(0,len(filenames)):
             ### define filename
             um_startfile = init_dir + umdumps[f]
 
@@ -4118,19 +4125,20 @@ def main():
             ### save to dictionary
             np.save('glm_startdump_TDprofiles', ic_data)
 
-        elif platform == 'LAPTOP':
+    elif platform == 'LAPTOP':
 
-            ### load UM startfile data (numpy dictionary)
-            temp = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
-            ic_data['um'] = temp['um']
+        ### load UM startfile data (numpy dictionary)
+        temp = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
+        ic_data['um'] = temp['um']
 
-            ### load a reference LAM file to get model levelist
-            lam = Dataset(root_dir + out_dir_glm + 'OUT_R2_LAM/20180902-36HForecast_oden_metum.nc')
+        ### load a reference LAM file to get model levelist
+        lam = Dataset(root_dir + out_dir_glm + 'OUT_R2_LAM/20180902-36HForecast_oden_metum.nc')
 
-            ### load a GLM file to get model levelist
-            glm = Dataset(root_dir + out_dir_glm + 'OUT_R2_GLM/20180902-36HForecast_oden_metum.nc')
-            ic_data['um']['z'] = glm.variables['height'][:]
+        ### load a GLM file to get model levelist
+        glm = Dataset(root_dir + out_dir_glm + 'OUT_R2_GLM/20180902-36HForecast_oden_metum.nc')
+        ic_data['um']['z'] = glm.variables['height'][:]
 
+        for f in range(0,len(filenames)):
             ### define ERAI filename
             if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
                 os.remove(erai_init_dir + ifsdumps[f])
@@ -4159,7 +4167,6 @@ def main():
 
             for d in range(0,len(date)):
                 ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
-                ic_data['erai'][date[d]] = {}
                 ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data[::-1]
                 ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data[::-1]
                 ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data[::-1] / 10.
@@ -4219,23 +4226,98 @@ def main():
                 #### ---------------------------------------------------------------
                 #### calculate thermodynamic anomalies
                 #### ---------------------------------------------------------------
+
+                print (date[d])
                 ic_data = calcICAnomalies(ic_data, obs, date[d])
 
-                ### plot profiles and biases
-                plt.subplot(121)
-                plt.plot(obs['sondes'][date[d]]['temp_UM'][:] + 273.16, ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
-                plt.plot(ic_data['um'][date[d]]['temp_UM'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
-                plt.plot(ic_data['erai'][date[d]]['temp_UM'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
-                plt.ylim([0,1e4])
-                plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                print (ic_data['um'][date[d]].keys())
+                print (ic_data['erai'][date[d]].keys())
 
-                plt.subplot(122)
-                plt.plot([0,1e4],[0,0], '--', color = 'lightgrey')
-                plt.plot(ic_data['um'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
-                plt.plot(ic_data['erai'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
-                plt.ylim([0,1e4])
-                plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
-                plt.show()
+                ### plot profiles and biases
+                # plt.subplot(221)
+                # plt.plot(obs['sondes'][date[d]]['temp_UM'][:] + 273.16, ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
+                # plt.plot(ic_data['um'][date[d]]['temp_UM'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
+                # plt.plot(ic_data['erai'][date[d]]['temp_UM'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
+                # plt.ylim([0,9e3])
+                # plt.legend()
+                # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                #
+                # plt.subplot(222)
+                # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+                # plt.plot(ic_data['um'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
+                # plt.plot(ic_data['erai'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
+                # plt.ylim([0,9e3])
+                # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                #
+                # plt.subplot(223)
+                # plt.plot(obs['sondes'][date[d]]['q_UM'][:], ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
+                # plt.plot(ic_data['um'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
+                # plt.plot(ic_data['erai'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
+                # plt.ylim([0,9e3])
+                #
+                # plt.subplot(224)
+                # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+                # plt.plot(ic_data['um'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
+                # plt.plot(ic_data['erai'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
+                # plt.ylim([0,9e3])
+                #
+                # plt.show()
+
+        um_temps = np.zeros([6, len(ic_data['universal_height'])])
+        erai_temps = np.zeros([6, len(ic_data['universal_height'])])
+        um_qs = np.zeros([6, len(ic_data['universal_height'])])
+        erai_qs = np.zeros([6, len(ic_data['universal_height'])])
+        print (um_temps.shape)
+        print (ic_data['um'].keys())
+        print (ic_data['erai'].keys())
+        for t in range(0, 6):
+            print (all_dates[t])
+            print (ic_data['um'][all_dates[t]].keys())
+            print (ic_data['erai'][all_dates[t]].keys())
+            um_temps[t,:] = ic_data['um'][all_dates[t]]['temp_sonde_anomalies'][:]
+            erai_temps[t,:] = ic_data['erai'][all_dates[t]]['temp_sonde_anomalies'][:]
+            um_qs[t,:] = ic_data['um'][all_dates[t]]['q_sonde_anomalies'][:]
+            erai_qs[t,:] = ic_data['erai'][all_dates[t]]['q_sonde_anomalies'][:]
+
+        print (um_temps)
+
+        plt.subplot(221)
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(um_temps[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(um_temps,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9e3])
+        plt.xlim([-4.,5.])
+        plt.title('UM GLM IC')
+        plt.subplot(222)
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(erai_temps[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(erai_temps,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9e3])
+        plt.xlim([-4.,5.])
+        plt.title('ERA-Interim IC')
+
+        plt.subplot(223)
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(um_qs[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(um_qs,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9e3])
+        plt.xlabel('T bias [k]')
+        plt.xlim([-0.5,1.])
+        # plt.title('UM GLM IC')
+        plt.subplot(224)
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(erai_qs[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(erai_qs,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9e3])
+        plt.xlabel('q bias [g/kg]')
+        plt.xlim([-0.5,1.])
+        # plt.title('ERA-Interim IC')
+
+        plt.show()
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
