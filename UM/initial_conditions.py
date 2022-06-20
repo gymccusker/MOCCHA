@@ -4313,13 +4313,11 @@ def main():
     print ('...')
     print ('Re-gridding ERAI and GLM IC data...')
     print ('')
-    # for file in filenames:
-    #     obs['sondes'][file[:8]] = {}    ### initiliase dictionary for each case study date
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'temp')
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'q')
-    # data5, obs = reGrid_Sondes(data5, data4, obs, dir5, filenames, model, 'qliq')
-    # print ('')
-    # print ('Done!')
+
+    ic_data, obs = reGrid_ICData(data5, data4, obs, dir5, filenames, model, 'temp')
+
+    print ('')
+    print ('Done!')
     #
     # print (data5['20180815'].keys())
     #
@@ -4339,11 +4337,6 @@ def main():
     #     # data5 = calcAnomalies(data5, data5, obs, hour_indices, file[:8])
     #
     #     print (data1[file[:8]].keys())
-    #
-    # #### ---------------------------------------------------------------
-    # #### plot anomalies
-    # #### ---------------------------------------------------------------
-    # figure = plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs, filenames, hour_indices)
 
     #####--------------------------------------------------------------------------------------------------------------------------
     #####--------------------------------------------------------------------------------------------------------------------------
