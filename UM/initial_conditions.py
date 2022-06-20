@@ -2998,22 +2998,23 @@ def reGrid_ICData(ic_data, data_lam, obs, date, var):
     fnct_Obs = interp1d(np.squeeze(obs['sondes']['gpsaltitude'][iObs,tim_start[1]]), np.squeeze(obs['sondes'][varlist[0]][iObs,tim_start[1]]))
     obs['sondes'][date][var + '_UM'] = fnct_Obs(heightLAM[iUM])
 
-            # print (obs['sondes'][filenames[f][:8]].keys())
-
-        ### plot test fig, looping over filenames
     plt.plot(obs['sondes'][varlist[0]][:,tim_start[1]], obs['sondes']['gpsaltitude'][:,tim_start[1]], label = 'Sondes native')
     plt.plot(obs['sondes'][date][var + '_UM'][:], heightLAM[iUM], 'o-', label = 'Sondes interpolated')
     plt.ylim([0,1e4])
     plt.title(date + ' = ' + str(obs['sondes'][date]['sonde_time']))
 
     plt.legend()
-    plt.show()
-    # plt.close()
+    # plt.show()
+    plt.close()
 
     print ('...')
     print ('Sonde(UM Grid) function worked!')
     print ('All ' + var + ' sonde data now on UM vertical grid.')
     print ('*****')
+
+
+
+
     # #### ---------------------------------------------------------------
     # #### index to only look at altitudes <10km
     # #### ---------------------------------------------------------------
