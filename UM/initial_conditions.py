@@ -4281,42 +4281,82 @@ def main():
 
         print (um_temps)
 
+        ##################################################
+        ##################################################
+        #### 	SET AXES PROPERTIES
+        ##################################################
+        ##################################################
+
+        SMALL_SIZE = 12
+        MED_SIZE = 14
+        LARGE_SIZE = 16
+
+        plt.rc('font',size=MED_SIZE)
+        plt.rc('axes',titlesize=MED_SIZE)
+        plt.rc('axes',labelsize=MED_SIZE)
+        plt.rc('xtick',labelsize=MED_SIZE)
+        plt.rc('ytick',labelsize=MED_SIZE)
+        plt.rc('legend',fontsize=MED_SIZE)
+        ### -------------------------------
+        ### Build figure
+        ### -------------------------------
+        fig = plt.figure(figsize=(6,8))
+        plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
+                hspace = 0.18, wspace = 0.18)
+
         plt.subplot(221)
+        ax = plt.gca()
         plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
         for t in range(0, 6):
             plt.plot(um_temps[t,:], ic_data['universal_height'], color = 'grey')
         plt.plot(np.nanmedian(um_temps,0), ic_data['universal_height'],'k', linewidth = 3)
-        plt.ylim([0,9e3])
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
         plt.xlim([-4.,5.])
-        plt.title('UM GLM IC')
+        plt.title('UM GLM Analyses')
+        plt.ylabel('Z [km]')
+
         plt.subplot(222)
+        ax = plt.gca()
         plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
         for t in range(0, 6):
             plt.plot(erai_temps[t,:], ic_data['universal_height'], color = 'grey')
         plt.plot(np.nanmedian(erai_temps,0), ic_data['universal_height'],'k', linewidth = 3)
         plt.ylim([0,9e3])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
         plt.xlim([-4.,5.])
-        plt.title('ERA-Interim IC')
+        plt.title('ERA-Interim')
 
         plt.subplot(223)
+        ax = plt.gca()
         plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
         for t in range(0, 6):
             plt.plot(um_qs[t,:], ic_data['universal_height'], color = 'grey')
         plt.plot(np.nanmedian(um_qs,0), ic_data['universal_height'],'k', linewidth = 3)
-        plt.ylim([0,9e3])
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
         plt.xlabel('T bias [k]')
         plt.xlim([-0.5,1.])
+        plt.ylabel('Z [km]')
         # plt.title('UM GLM IC')
+
         plt.subplot(224)
+        ax = plt.gca()
         plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
         for t in range(0, 6):
             plt.plot(erai_qs[t,:], ic_data['universal_height'], color = 'grey')
         plt.plot(np.nanmedian(erai_qs,0), ic_data['universal_height'],'k', linewidth = 3)
-        plt.ylim([0,9e3])
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
         plt.xlabel('q bias [g/kg]')
         plt.xlim([-0.5,1.])
         # plt.title('ERA-Interim IC')
 
+        plt.savefig('../FIGS/ACPD/ICBiases_TQ_31Aug-5Sep.svg')
         plt.show()
 
     # ### -------------------------------------------------------------------------
