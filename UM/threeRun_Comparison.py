@@ -6591,6 +6591,13 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ymax = 9000
     qmax = 4.0
 
+    # hours = np.array([2,6,10,14,18,22])     ## mid points (1200) only
+    hours = np.arange(0,24)     ## all PROFILES
+
+    # print (np.shape(obs['sondes']['temp_subsetSondes_UM'][hours,:]))
+    # print (np.shape(data1['temp_6hrly'][hours,np.squeeze(data1['universal_height_UMindex'])]))
+
+
     data3['temp_anomalies'] = np.transpose(data3['temp_hrly_UM'][::6]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
     data1['temp_anomalies'] = np.transpose(data1['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
     data2['temp_anomalies'] = np.transpose(data2['temp_6hrly'][:,data1['universal_height_UMindex']]) - np.transpose(obs['sondes']['temp_subsetSondes_UM'] + 273.15)
@@ -6602,6 +6609,8 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     data2['q_anomalies'] = np.transpose(data2['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
     data4['q_anomalies'] = np.transpose(data4['q_6hrly'][:,data1['universal_height_UMindex']])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
     data5['q_anomalies'] = np.transpose(data5['q_6hrly_UM'])*1e3 - np.transpose(obs['sondes']['q_subsetSondes_UM'])
+
+    print (np.shape(data5['temp_anomalies'][hours,:]))
 
     ##################################################
     ##################################################
@@ -6667,11 +6676,11 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     # plt.plot(np.nanmedian(data3['temp_anomalies'],1) + np.nanstd(data3['temp_anomalies'],1), data1['universal_height'],
     #     '--', color = '#FFC107', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(data3['temp_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data3['temp_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['temp_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
     # plt.plot(np.nanmedian(data4['temp_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
-    plt.plot(np.nanmedian(data1['temp_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    plt.plot(np.nanmedian(data5['temp_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    plt.plot(np.nanmedian(data1['temp_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['temp_anomalies'][:,hours],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.legend(bbox_to_anchor=(0.9, 1.03, 1., .102), loc=4, ncol=2)
     plt.legend(bbox_to_anchor=(1.0, 1.03, 1., .102), loc=4, ncol=2)
@@ -6683,7 +6692,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-2.0,1.5])
+    if len(hours) > 6: plt.xlim([-2.0,1.5])
     plt.xlabel('T bias [K]')
 
     ###-------------------------
@@ -6722,11 +6731,11 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     # plt.plot(np.nanmedian(data3['q_anomalies'],1) + np.nanstd(data3['q_anomalies'],1), data1['universal_height'],
     #     '--', color = '#FFC107', linewidth = 0.5)
 
-    plt.plot(np.nanmedian(data3['q_anomalies'],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
-    plt.plot(np.nanmedian(data2['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
+    plt.plot(np.nanmedian(data3['q_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = '#FFC107', label = label3, zorder = 4)
+    plt.plot(np.nanmedian(data2['q_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = 'firebrick', label = label2, zorder = 1)
     # plt.plot(np.nanmedian(data4['q_anomalies'],1),data1['universal_height'],'.-', color = 'steelblue', label = label4, zorder = 2)
-    plt.plot(np.nanmedian(data1['q_anomalies'],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
-    plt.plot(np.nanmedian(data5['q_anomalies'],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
+    plt.plot(np.nanmedian(data1['q_anomalies'][:,hours],1),data1['universal_height'],'.-' ,color = 'darkblue', label = label1, zorder = 3)
+    plt.plot(np.nanmedian(data5['q_anomalies'][:,hours],1),data1['universal_height'],'.-' ,linewidth = 3, markersize = 8, color = 'grey', label = label5, zorder = 1)
 
     # plt.legend()
     plt.xlabel('q bias [g kg$^{-1}$]')
@@ -6735,7 +6744,7 @@ def plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missin
     ax1.set_yticklabels([0,1,2,3,4,5,6,7,8,9])
     ax1.set_yticks(axminor, minor = True)
     ax1.grid(which = 'major', alpha = 0.5)
-    plt.xlim([-0.4,0.4])#plt.xlim([-0.05,0.45])
+    if len(hours) > 6: plt.xlim([-0.4,0.4])#plt.xlim([-0.05,0.45])
     plt.grid('on')
 
     ###-------------------------
