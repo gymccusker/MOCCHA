@@ -4048,330 +4048,332 @@ def main():
     obs = {}
     obs = loadObservations(obs, platform, obs_root_dir)
 
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    # ### Load in relevant LBC data
-    # ### -------------------------------------------------------------------------
-    # ### -------------------------------------------------------------------------
-    #
-    # ic_data = {}
-    # ic_data['um'] = {}
-    # ic_data['erai'] = {}
-    #
-    # ### load UM start dumps if JASMIN
-    # if platform == 'JASMIN':
-    #     dumps = os.listdir(init_dir)
-    #     i = 0
-    #     for f in range(0,len(dumps)):
-    #         if dumps[f][0:4] == '2018':
-    #             if i == 0:
-    #                 umdumps = dumps[f]
-    #             if i > 0:
-    #                 umdumps = np.append(umdumps, dumps[f])
-    #             i = i + 1
-    #
-    # ### load ERAI start dumps if LAPTOP
-    # elif platform == 'LAPTOP':
-    #     ifsdumps = os.listdir(erai_init_dir)
-    #
-    # if 'ifsdumps' in locals(): filenames = ifsdumps
-    # if 'umdumps' in locals(): filenames = umdumps
-    #
-    # all_dates = ['20180830','20180831','20180901','20180902','20180903','20180904']
-    # for t in range(0, len(all_dates)):
-    #     ic_data['erai'][all_dates[t]] = {}
-    #
-    # # print (umdumps[0])
-    #
-    # if platform == 'JASMIN':
-    #     for f in range(0,len(filenames)):
-    #         ### define filename
-    #         um_startfile = init_dir + umdumps[f]
-    #
-    #         ### load UM file
-    #         startdump = loadUMStartDump(um_startfile)
-    #         # print (startdump)
-    #
-    #         ### -------------------------------------------------------------------------
-    #         ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
-    #         ### -------------------------------------------------------------------------
-    #         date = umdumps[f][:8]
-    #         ilat, ilon = readUMGlobal(startdump, ship_data, date)
-    #
-    #         ### -------------------------------------------------------------------------
-    #         ### Calculate temperature over area of interest only
-    #         ### -------------------------------------------------------------------------
-    #         theta = startdump[0][:,ilat,ilon].data
-    #         print (np.size(theta))
-    #         rho = startdump[2][:,ilat,ilon].data
-    #         q = startdump[1][:,ilat,ilon].data
-    #
-    #         ic_data['um'][date] = {}
-    #         ic_data['um'][date]['temperature'] = np.zeros([np.size(theta,0)])
-    #         ic_data['um'][date]['temperature'][1:] = calcTemp(theta, rho)
-    #         ic_data['um'][date]['temperature'][0] = np.nan
-    #
-    #         ic_data['um'][date]['q'] = q
-    #
-    #         ic_data['um'][date]['lat'] = startdump[0].dim_coords[1].points[ilat]
-    #         ic_data['um'][date]['lon'] = startdump[0].dim_coords[2].points[ilon]
-    #
-    #         print (ic_data['um'][date]['lat'])
-    #         print (ic_data['um'][date]['lon'])
-    #
-    #         print (startdump[0].dim_coords[0])
-    #
-    #         plt.close()
-    #         plt.subplot(131)
-    #         plt.plot(ic_data['um'][date]['temperature'],startdump[0].dim_coords[0].points)
-    #         plt.ylim([0,20])
-    #         plt.xlim([260,275])
-    #         plt.subplot(132)
-    #         plt.plot(theta,startdump[0].dim_coords[0].points)
-    #         plt.xlim([260,290])
-    #         plt.ylim([0,20])
-    #         plt.subplot(133)
-    #         plt.plot(q,startdump[0].dim_coords[0].points)
-    #         # plt.xlim([260,290])
-    #         plt.ylim([0,20])
-    #         plt.show()
-    #
-    #         ### save to dictionary
-    #         np.save('glm_startdump_TDprofiles', ic_data)
-    #
-    # elif platform == 'LAPTOP':
-    #
-    #     ### load UM startfile data (numpy dictionary)
-    #     temp = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
-    #     ic_data['um'] = temp['um']
-    #
-    #     ### load a reference LAM file to get model levelist
-    #     lam = Dataset(root_dir + out_dir_glm + 'OUT_R2_LAM/20180902-36HForecast_oden_metum.nc')
-    #
-    #     ### load a GLM file to get model levelist
-    #     glm = Dataset(root_dir + out_dir_glm + 'OUT_R2_GLM/20180902-36HForecast_oden_metum.nc')
-    #     ic_data['um']['z'] = glm.variables['height'][:]
-    #
-    #     for f in range(0,len(filenames)):
-    #         ### define ERAI filename
-    #         if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
-    #             os.remove(erai_init_dir + ifsdumps[f])
-    #             continue
-    #         elif ifsdumps[f][0:8] == 'ecmwf_tq':
-    #             ifs_startfile = erai_init_dir + ifsdumps[f]
-    #         else:
-    #             continue
-    #
-    #         print (ifs_startfile)
-    #
-    #         ### load ERAI grib file
-    #         # ic_data['erai'] = {}
-    #         ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
-    #
-    #         ### pull ships location
-    #         month = ifsdumps[f][14]
-    #         zdata = xr.load_dataset(erai_init_dir + ifsdumps[f][:5] + '_z_20180' + month + '.grib', engine='cfgrib')
-    #
-    #         if month == '8':
-    #             date = ['20180830','20180831']
-    #             tims = [29,30]
-    #         elif month == '9':
-    #             date = ['20180901','20180902','20180903','20180904']
-    #             tims = [0,1,2,3]
-    #
-    #         for d in range(0,len(date)):
-    #             ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
-    #             ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data[::-1]
-    #             ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data[::-1]
-    #             ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data[::-1] / 10.
-    #             print (ic_data['erai'][date[d]])
-    #
-    #             x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
-    #             x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
-    #             y1 = ic_data['erai'][f].variables['hybrid'].data
-    #             y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data / 10.
-    #
-    #             # # # plt.close()
-    #             # # plt.subplot(221)#
-    #             # # ax1 = plt.gca()
-    #             # # plt.plot(x1, y1[::-1])
-    #             # # # ax1.invert_yaxis()
-    #             # # # plt.ylim([0,10000])
-    #             # # # plt.xlim([260,275])
-    #             # # plt.legend(str(date[d]))
-    #             # # plt.subplot(222)
-    #             # # ax2 = plt.gca()
-    #             # # plt.plot(x2, y1[::-1])
-    #             # # # ax2.invert_yaxis()
-    #             # # # plt.xlim([260,290])
-    #             # # # plt.ylim([0,10000])
-    #             # plt.subplot(121)
-    #             # plt.plot(x1, y2)
-    #             # plt.plot(ic_data['um'][date[d]]['temperature'], ic_data['um']['z'])
-    #             # plt.ylim([0,10000])
-    #             # # plt.xlim([260,275])
-    #             # plt.legend(str(date[d]))
-    #             # plt.subplot(122)
-    #             # plt.plot(x2, y2)
-    #             # plt.plot(ic_data['um'][date[d]]['q'], ic_data['um']['z'])
-    #             # # plt.xlim([260,290])
-    #             # plt.ylim([0,10000])
-    #             # plt.show()
-    #
-    #             #####--------------------------------------------------------------------------------------------------------------------------
-    #             #####--------------------------------------------------------------------------------------------------------------------------
-    #             #####--------------------------------------------------------------------------------------------------------------------------
-    #
-    #             # #### ---------------------------------------------------------------
-    #             # #### re-grid ERAI and GLM IC data to LAM vertical grid <10km
-    #             # #### ---------------------------------------------------------------
-    #             print ('...')
-    #             print ('Re-gridding ERAI and GLM IC data...')
-    #             print ('')
-    #
-    #             print (obs['sondes'].keys())
-    #             obs['sondes'][date[d]] = {}
-    #             ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'temp')
-    #             ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'q')
-    #
-    #             print ('')
-    #             print ('Done!')
-    #
-    #             #### ---------------------------------------------------------------
-    #             #### calculate thermodynamic anomalies
-    #             #### ---------------------------------------------------------------
-    #
-    #             print (date[d])
-    #             ic_data = calcICAnomalies(ic_data, obs, date[d])
-    #
-    #             print (ic_data['um'][date[d]].keys())
-    #             print (ic_data['erai'][date[d]].keys())
-    #
-    #             ### plot profiles and biases
-    #             # plt.subplot(221)
-    #             # plt.plot(obs['sondes'][date[d]]['temp_UM'][:] + 273.16, ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
-    #             # plt.plot(ic_data['um'][date[d]]['temp_UM'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
-    #             # plt.plot(ic_data['erai'][date[d]]['temp_UM'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
-    #             # plt.ylim([0,9e3])
-    #             # plt.legend()
-    #             # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
-    #             #
-    #             # plt.subplot(222)
-    #             # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #             # plt.plot(ic_data['um'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
-    #             # plt.plot(ic_data['erai'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
-    #             # plt.ylim([0,9e3])
-    #             # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
-    #             #
-    #             # plt.subplot(223)
-    #             # plt.plot(obs['sondes'][date[d]]['q_UM'][:], ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
-    #             # plt.plot(ic_data['um'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
-    #             # plt.plot(ic_data['erai'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
-    #             # plt.ylim([0,9e3])
-    #             #
-    #             # plt.subplot(224)
-    #             # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #             # plt.plot(ic_data['um'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
-    #             # plt.plot(ic_data['erai'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
-    #             # plt.ylim([0,9e3])
-    #             #
-    #             # plt.show()
-    #
-    #     um_temps = np.zeros([6, len(ic_data['universal_height'])])
-    #     erai_temps = np.zeros([6, len(ic_data['universal_height'])])
-    #     um_qs = np.zeros([6, len(ic_data['universal_height'])])
-    #     erai_qs = np.zeros([6, len(ic_data['universal_height'])])
-    #     print (um_temps.shape)
-    #     print (ic_data['um'].keys())
-    #     print (ic_data['erai'].keys())
-    #     for t in range(0, 6):
-    #         print (all_dates[t])
-    #         print (ic_data['um'][all_dates[t]].keys())
-    #         print (ic_data['erai'][all_dates[t]].keys())
-    #         um_temps[t,:] = ic_data['um'][all_dates[t]]['temp_sonde_anomalies'][:]
-    #         erai_temps[t,:] = ic_data['erai'][all_dates[t]]['temp_sonde_anomalies'][:]
-    #         um_qs[t,:] = ic_data['um'][all_dates[t]]['q_sonde_anomalies'][:]
-    #         erai_qs[t,:] = ic_data['erai'][all_dates[t]]['q_sonde_anomalies'][:]
-    #
-    #     print (um_temps)
-    #
-    #     ##################################################
-    #     ##################################################
-    #     #### 	SET AXES PROPERTIES
-    #     ##################################################
-    #     ##################################################
-    #
-    #     SMALL_SIZE = 12
-    #     MED_SIZE = 14
-    #     LARGE_SIZE = 16
-    #
-    #     plt.rc('font',size=MED_SIZE)
-    #     plt.rc('axes',titlesize=MED_SIZE)
-    #     plt.rc('axes',labelsize=MED_SIZE)
-    #     plt.rc('xtick',labelsize=MED_SIZE)
-    #     plt.rc('ytick',labelsize=MED_SIZE)
-    #     plt.rc('legend',fontsize=MED_SIZE)
-    #     ### -------------------------------
-    #     ### Build figure
-    #     ### -------------------------------
-    #     fig = plt.figure(figsize=(6,8))
-    #     plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
-    #             hspace = 0.18, wspace = 0.18)
-    #
-    #     plt.subplot(221)
-    #     ax = plt.gca()
-    #     plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #     for t in range(0, 6):
-    #         plt.plot(um_temps[t,:], ic_data['universal_height'], color = 'grey')
-    #     plt.plot(np.nanmedian(um_temps,0), ic_data['universal_height'],'k', linewidth = 3)
-    #     plt.ylim([0,9000])
-    #     plt.yticks(np.arange(0,9.01e3,0.5e3))
-    #     ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    #     plt.xlim([-4.,5.])
-    #     plt.title('UM GLM Analyses')
-    #     plt.ylabel('Z [km]')
-    #
-    #     plt.subplot(222)
-    #     ax = plt.gca()
-    #     plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #     for t in range(0, 6):
-    #         plt.plot(erai_temps[t,:], ic_data['universal_height'], color = 'grey')
-    #     plt.plot(np.nanmedian(erai_temps,0), ic_data['universal_height'],'k', linewidth = 3)
-    #     plt.ylim([0,9e3])
-    #     plt.yticks(np.arange(0,9.01e3,0.5e3))
-    #     ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    #     plt.xlim([-4.,5.])
-    #     plt.title('ERA-Interim')
-    #
-    #     plt.subplot(223)
-    #     ax = plt.gca()
-    #     plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #     for t in range(0, 6):
-    #         plt.plot(um_qs[t,:], ic_data['universal_height'], color = 'grey')
-    #     plt.plot(np.nanmedian(um_qs,0), ic_data['universal_height'],'k', linewidth = 3)
-    #     plt.ylim([0,9000])
-    #     plt.yticks(np.arange(0,9.01e3,0.5e3))
-    #     ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    #     plt.xlabel('T bias [k]')
-    #     plt.xlim([-0.5,1.])
-    #     plt.ylabel('Z [km]')
-    #     # plt.title('UM GLM IC')
-    #
-    #     plt.subplot(224)
-    #     ax = plt.gca()
-    #     plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
-    #     for t in range(0, 6):
-    #         plt.plot(erai_qs[t,:], ic_data['universal_height'], color = 'grey')
-    #     plt.plot(np.nanmedian(erai_qs,0), ic_data['universal_height'],'k', linewidth = 3)
-    #     plt.ylim([0,9000])
-    #     plt.yticks(np.arange(0,9.01e3,0.5e3))
-    #     ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
-    #     plt.xlabel('q bias [g/kg]')
-    #     plt.xlim([-0.5,1.])
-    #     # plt.title('ERA-Interim IC')
-    #
-    #     plt.savefig('../FIGS/ACPD/ICBiases_TQ_31Aug-5Sep.svg')
-    #     plt.show()
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+    ### Load in relevant LBC data
+    ### -------------------------------------------------------------------------
+    ### -------------------------------------------------------------------------
+
+    ic_data = {}
+    ic_data['um'] = {}
+    ic_data['erai'] = {}
+
+    ### load UM start dumps if JASMIN
+    if platform == 'JASMIN':
+        dumps = os.listdir(init_dir)
+        i = 0
+        for f in range(0,len(dumps)):
+            if dumps[f][0:4] == '2018':
+                if i == 0:
+                    umdumps = dumps[f]
+                if i > 0:
+                    umdumps = np.append(umdumps, dumps[f])
+                i = i + 1
+
+    ### load ERAI start dumps if LAPTOP
+    elif platform == 'LAPTOP':
+        ifsdumps = os.listdir(erai_init_dir)
+
+    if 'ifsdumps' in locals(): filenames = ifsdumps
+    if 'umdumps' in locals(): filenames = umdumps
+
+    all_dates = ['20180830','20180831','20180901','20180902','20180903','20180904']
+    for t in range(0, len(all_dates)):
+        ic_data['erai'][all_dates[t]] = {}
+
+    # print (umdumps[0])
+
+    if platform == 'JASMIN':
+        for f in range(0,len(filenames)):
+            ### define filename
+            um_startfile = init_dir + umdumps[f]
+
+            ### load UM file
+            startdump = loadUMStartDump(um_startfile)
+            # print (startdump)
+
+            ### -------------------------------------------------------------------------
+            ### Find lat/lon location of ship --- UNTESTED, JASMIN OUT 14 JUNE 2022
+            ### -------------------------------------------------------------------------
+            date = umdumps[f][:8]
+            ilat, ilon = readUMGlobal(startdump, ship_data, date)
+
+            ### -------------------------------------------------------------------------
+            ### Calculate temperature over area of interest only
+            ### -------------------------------------------------------------------------
+            theta = startdump[0][:,ilat,ilon].data
+            print (np.size(theta))
+            rho = startdump[2][:,ilat,ilon].data
+            q = startdump[1][:,ilat,ilon].data
+
+            ic_data['um'][date] = {}
+            ic_data['um'][date]['temperature'] = np.zeros([np.size(theta,0)])
+            ic_data['um'][date]['temperature'][1:] = calcTemp(theta, rho)
+            ic_data['um'][date]['temperature'][0] = np.nan
+
+            ic_data['um'][date]['q'] = q
+
+            ic_data['um'][date]['lat'] = startdump[0].dim_coords[1].points[ilat]
+            ic_data['um'][date]['lon'] = startdump[0].dim_coords[2].points[ilon]
+
+            print (ic_data['um'][date]['lat'])
+            print (ic_data['um'][date]['lon'])
+
+            print (startdump[0].dim_coords[0])
+
+            plt.close()
+            plt.subplot(131)
+            plt.plot(ic_data['um'][date]['temperature'],startdump[0].dim_coords[0].points)
+            plt.ylim([0,20])
+            plt.xlim([260,275])
+            plt.subplot(132)
+            plt.plot(theta,startdump[0].dim_coords[0].points)
+            plt.xlim([260,290])
+            plt.ylim([0,20])
+            plt.subplot(133)
+            plt.plot(q,startdump[0].dim_coords[0].points)
+            # plt.xlim([260,290])
+            plt.ylim([0,20])
+            plt.show()
+
+            ### save to dictionary
+            np.save('glm_startdump_TDprofiles', ic_data)
+
+    elif platform == 'LAPTOP':
+
+        ### load UM startfile data (numpy dictionary)
+        temp = np.load(root_dir + 'glm_startdump_TDprofiles.npy', allow_pickle=True, encoding = 'latin1').item()
+        ic_data['um'] = temp['um']
+
+        ### load a reference LAM file to get model levelist
+        lam = Dataset(root_dir + out_dir_glm + 'OUT_R2_LAM/20180902-36HForecast_oden_metum.nc')
+
+        ### load a GLM file to get model levelist
+        glm = Dataset(root_dir + out_dir_glm + 'OUT_R2_GLM/20180902-36HForecast_oden_metum.nc')
+        ic_data['um']['z'] = glm.variables['height'][:]
+
+        for f in range(0,len(filenames)):
+            ### define ERAI filename
+            if ifsdumps[f][-3:] == 'idx': ## remove intermediate temp files
+                os.remove(erai_init_dir + ifsdumps[f])
+                continue
+            elif ifsdumps[f][0:8] == 'ecmwf_tq':
+                ifs_startfile = erai_init_dir + ifsdumps[f]
+            else:
+                continue
+
+            print (ifs_startfile)
+
+            ### load ERAI grib file
+            # ic_data['erai'] = {}
+            ic_data['erai'][f] = xr.load_dataset(ifs_startfile, engine='cfgrib')
+
+            ### pull ships location
+            month = ifsdumps[f][14]
+            zdata = xr.load_dataset(erai_init_dir + ifsdumps[f][:5] + '_z_20180' + month + '.grib', engine='cfgrib')
+
+            if month == '8':
+                date = ['20180830','20180831']
+                tims = [29,30]
+            elif month == '9':
+                date = ['20180901','20180902','20180903','20180904']
+                tims = [0,1,2,3]
+
+            for d in range(0,len(date)):
+                ilat, ilon = readERAIGlobal(ic_data, ship_data, date[d], f)
+                ic_data['erai'][date[d]]['t'] = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data[::-1]
+                ic_data['erai'][date[d]]['q'] = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data[::-1]
+                ic_data['erai'][date[d]]['z'] = zdata.variables['z'][tims[d],:,ilat,ilon].data[::-1] / 10.
+                print (ic_data['erai'][date[d]])
+
+                x1 = ic_data['erai'][f].variables['t'][tims[d],:,ilat,ilon].data
+                x2 = ic_data['erai'][f].variables['q'][tims[d],:,ilat,ilon].data
+                y1 = ic_data['erai'][f].variables['hybrid'].data
+                y2 = zdata.variables['z'][tims[d],:,ilat,ilon].data / 10.
+
+                # # # plt.close()
+                # # plt.subplot(221)#
+                # # ax1 = plt.gca()
+                # # plt.plot(x1, y1[::-1])
+                # # # ax1.invert_yaxis()
+                # # # plt.ylim([0,10000])
+                # # # plt.xlim([260,275])
+                # # plt.legend(str(date[d]))
+                # # plt.subplot(222)
+                # # ax2 = plt.gca()
+                # # plt.plot(x2, y1[::-1])
+                # # # ax2.invert_yaxis()
+                # # # plt.xlim([260,290])
+                # # # plt.ylim([0,10000])
+                # plt.subplot(121)
+                # plt.plot(x1, y2)
+                # plt.plot(ic_data['um'][date[d]]['temperature'], ic_data['um']['z'])
+                # plt.ylim([0,10000])
+                # # plt.xlim([260,275])
+                # plt.legend(str(date[d]))
+                # plt.subplot(122)
+                # plt.plot(x2, y2)
+                # plt.plot(ic_data['um'][date[d]]['q'], ic_data['um']['z'])
+                # # plt.xlim([260,290])
+                # plt.ylim([0,10000])
+                # plt.show()
+
+                #####--------------------------------------------------------------------------------------------------------------------------
+                #####--------------------------------------------------------------------------------------------------------------------------
+                #####--------------------------------------------------------------------------------------------------------------------------
+
+                # #### ---------------------------------------------------------------
+                # #### re-grid ERAI and GLM IC data to LAM vertical grid <10km
+                # #### ---------------------------------------------------------------
+                print ('...')
+                print ('Re-gridding ERAI and GLM IC data...')
+                print ('')
+
+                print (obs['sondes'].keys())
+                obs['sondes'][date[d]] = {}
+                ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'temp')
+                ic_data, obs = reGrid_ICData(ic_data, lam, obs, date[d], 'q')
+
+                print ('')
+                print ('Done!')
+
+                #### ---------------------------------------------------------------
+                #### calculate thermodynamic anomalies
+                #### ---------------------------------------------------------------
+
+                print (date[d])
+                ic_data = calcICAnomalies(ic_data, obs, date[d])
+
+                print (ic_data['um'][date[d]].keys())
+                print (ic_data['erai'][date[d]].keys())
+
+                ### plot profiles and biases
+                # plt.subplot(221)
+                # plt.plot(obs['sondes'][date[d]]['temp_UM'][:] + 273.16, ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
+                # plt.plot(ic_data['um'][date[d]]['temp_UM'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
+                # plt.plot(ic_data['erai'][date[d]]['temp_UM'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
+                # plt.ylim([0,9e3])
+                # plt.legend()
+                # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                #
+                # plt.subplot(222)
+                # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+                # plt.plot(ic_data['um'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
+                # plt.plot(ic_data['erai'][date[d]]['temp_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
+                # plt.ylim([0,9e3])
+                # plt.title(date[d] + ' = ' + str(obs['sondes'][date[d]]['sonde_time']))
+                #
+                # plt.subplot(223)
+                # plt.plot(obs['sondes'][date[d]]['q_UM'][:], ic_data['universal_height'], '.-', color = 'k', label = 'Sondes interpolated')
+                # plt.plot(ic_data['um'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'], '.-', color = 'grey', label = 'GLM interpolated')
+                # plt.plot(ic_data['erai'][date[d]]['q_UM'][:] * 1e3, ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI interpolated')
+                # plt.ylim([0,9e3])
+                #
+                # plt.subplot(224)
+                # plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+                # plt.plot(ic_data['um'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'], '.-', color = 'grey', label = 'GLM Bias')
+                # plt.plot(ic_data['erai'][date[d]]['q_sonde_anomalies'][:], ic_data['universal_height'],'.-', color = 'darkorange', label = 'ERAI Bias')
+                # plt.ylim([0,9e3])
+                #
+                # plt.show()
+
+        um_temps = np.zeros([6, len(ic_data['universal_height'])])
+        erai_temps = np.zeros([6, len(ic_data['universal_height'])])
+        um_qs = np.zeros([6, len(ic_data['universal_height'])])
+        erai_qs = np.zeros([6, len(ic_data['universal_height'])])
+        print (um_temps.shape)
+        print (ic_data['um'].keys())
+        print (ic_data['erai'].keys())
+        for t in range(0, 6):
+            print (all_dates[t])
+            print (ic_data['um'][all_dates[t]].keys())
+            print (ic_data['erai'][all_dates[t]].keys())
+            um_temps[t,:] = ic_data['um'][all_dates[t]]['temp_sonde_anomalies'][:]
+            erai_temps[t,:] = ic_data['erai'][all_dates[t]]['temp_sonde_anomalies'][:]
+            um_qs[t,:] = ic_data['um'][all_dates[t]]['q_sonde_anomalies'][:]
+            erai_qs[t,:] = ic_data['erai'][all_dates[t]]['q_sonde_anomalies'][:]
+
+        print (um_temps)
+
+        ##################################################
+        ##################################################
+        #### 	SET AXES PROPERTIES
+        ##################################################
+        ##################################################
+
+        SMALL_SIZE = 12
+        MED_SIZE = 14
+        LARGE_SIZE = 16
+
+        plt.rc('font',size=MED_SIZE)
+        plt.rc('axes',titlesize=MED_SIZE)
+        plt.rc('axes',labelsize=MED_SIZE)
+        plt.rc('xtick',labelsize=MED_SIZE)
+        plt.rc('ytick',labelsize=MED_SIZE)
+        plt.rc('legend',fontsize=MED_SIZE)
+        ### -------------------------------
+        ### Build figure
+        ### -------------------------------
+        fig = plt.figure(figsize=(6,8))
+        plt.subplots_adjust(top = 0.95, bottom = 0.08, right = 0.95, left = 0.1,
+                hspace = 0.18, wspace = 0.18)
+
+        plt.subplot(221)
+        ax = plt.gca()
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(um_temps[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(um_temps,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+        plt.xlim([-4.,5.])
+        plt.title('UM GLM Analyses')
+        plt.xlabel('T bias [k]')
+        plt.ylabel('Z [km]')
+
+        plt.subplot(222)
+        ax = plt.gca()
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(erai_temps[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(erai_temps,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9e3])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+        plt.xlim([-4.,5.])
+        plt.title('ERA-Interim')
+        plt.xlabel('T bias [k]')
+
+        plt.subplot(223)
+        ax = plt.gca()
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(um_qs[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(um_qs,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+        plt.xlabel('q bias [g/kg]')
+        plt.xlim([-0.5,1.])
+        plt.ylabel('Z [km]')
+        # plt.title('UM GLM IC')
+
+        plt.subplot(224)
+        ax = plt.gca()
+        plt.plot([0,0],[0,1e4], '--', color = 'lightgrey')
+        for t in range(0, 6):
+            plt.plot(erai_qs[t,:], ic_data['universal_height'], color = 'grey')
+        plt.plot(np.nanmedian(erai_qs,0), ic_data['universal_height'],'k', linewidth = 3)
+        plt.ylim([0,9000])
+        plt.yticks(np.arange(0,9.01e3,0.5e3))
+        ax.set_yticklabels([0,' ',1,' ',2,' ',3,' ',4,' ',5,' ',6,' ',7,' ',8,' ',9])
+        plt.xlabel('q bias [g/kg]')
+        plt.xlim([-0.5,1.])
+        # plt.title('ERA-Interim IC')
+
+        plt.savefig('../FIGS/ACPD/ICBiases_TQ_31Aug-5Sep.png', dpi = 300)
+        plt.show()
 
     # ### -------------------------------------------------------------------------
     # ### -------------------------------------------------------------------------
