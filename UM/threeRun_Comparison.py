@@ -8735,9 +8735,9 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     # fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p3-p6_wSTDEV_newColours_fixedRA2T.svg'
     fileout = '../FIGS/ACPD/Figure13b.svg'
-    plt.savefig(fileout)
-    # plt.show()
-    plt.close()
+    # plt.savefig(fileout)
+    plt.show()
+    # plt.close()
 
     Zindex1 = np.where(np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p3]),1) < 0)
     Zindex3 = np.where(np.nanmedian(np.squeeze(data3['temp_anomalies'][:,p3]),1) < 0)
@@ -8784,6 +8784,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(221)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p4]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p4]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p4]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p4]),1),
@@ -8833,6 +8834,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(222)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p4]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p4]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p4]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p4]),1),
@@ -8883,6 +8885,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(223)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p5]),1) - np.nanstd(np.squeeze(data1['temp_anomalies'][:,p5]),1),
         np.nanmedian(np.squeeze(data1['temp_anomalies'][:,p5]),1) + np.nanstd(np.squeeze(data1['temp_anomalies'][:,p5]),1),
@@ -8933,6 +8936,7 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
     plt.subplot(224)
     ax3 = plt.gca()
+    ax3.set_facecolor('whitesmoke')
     plt.plot([0,0], [0,1e4], '--', color='grey')
     ax3.fill_betweenx(data1['universal_height'], np.nanmedian(np.squeeze(data1['q_anomalies'][:,p5]),1) - np.nanstd(np.squeeze(data1['q_anomalies'][:,p5]),1),
         np.nanmedian(np.squeeze(data1['q_anomalies'][:,p5]),1) + np.nanstd(np.squeeze(data1['q_anomalies'][:,p5]),1),
@@ -8982,10 +8986,10 @@ def period_Selection(data1, data2, data3, data4, data5, month_flag, missing_file
 
 
     # fileout = '../FIGS/comparisons/Temp-SpHumMedianProfiles_ra2m-25_ra2t_ifs_casim-100-GA6alb_periodSelection-p4-p5_wSTDEV_newColours_fixedRA2T.svg'
-    # fileout = '../FIGS/PaperSubmission/FigureS7b.png'
-    # plt.savefig(fileout)
-    # plt.show()
-    plt.close()
+    fileout = '../FIGS/ACPD/FigureS13b.svg'
+    plt.savefig(fileout)
+    plt.show()
+    # plt.close()
 
 def reGrid_Sondes(data1, data2, data3, data4, data5, obs, doy, ifs_flag, var):
 
@@ -10921,7 +10925,7 @@ def main():
             out_dir1 = '23_u-cc278_RA1M_CASIM/OUT_R1_swath/'
         else:
             out_dir1 = '25_u-cc568_RA2M_CON/OUT_R1/'
-        out_dir2 = '8_u-bp738_RA2M_CON/OUT_R0/' # '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  # #
+        out_dir2 = '23_u-cc278_RA1M_CASIM/OUT_R0/'# '14_u-bu570_RA1M_CASIM/OUT_R1/' # # '16_u-bv926_RA2T_CON/OUT_R0/' #  # #'8_u-bp738_RA2M_CON/OUT_R0/' #
         # out_dir3 = 'MET_DATA/'
         out_dir3 = 'OUT_R1_25H/'
         out_dir4 = '24_u-cc324_RA2T_CON/OUT_R0_LAM/'#'26_u-cd847_RA1M_CASIM/OUT_R0/'#'14_u-bu570_RA1M_CASIM/OUT_R1/'# ##  # #'12_u-br210_RA1M_CASIM/OUT_R1/' #'28_u-ce627_RA2T_CON/OUT_R0_GLM/' #
@@ -11079,15 +11083,14 @@ def main():
             '20180909_oden_','20180910_oden_','20180911_oden_','20180912_oden_',
             '20180913_oden_','20180914_oden_']
 
-    moccha_names = [#'20180814_oden_','20180815_oden_','20180816_oden_',
-            # '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
-            # '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
-            # '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
-            # '20180829_oden_','20180830_oden_',
-            '20180831_oden_','20180901_oden_',
-            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_']#,
-            # '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
-            # '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
+    moccha_names = ['20180814_oden_','20180815_oden_','20180816_oden_',
+            '20180817_oden_','20180818_oden_','20180819_oden_','20180820_oden_',
+            '20180821_oden_','20180822_oden_','20180823_oden_','20180824_oden_',
+            '20180825_oden_','20180826_oden_','20180827_oden_','20180828_oden_',
+            '20180829_oden_','20180830_oden_','20180831_oden_','20180901_oden_',
+            '20180902_oden_','20180903_oden_','20180904_oden_','20180905_oden_',
+            '20180906_oden_','20180907_oden_','20180908_oden_','20180909_oden_',
+            '20180910_oden_','20180911_oden_','20180912_oden_','20180913_oden_','20180914_oden_']
 
     Aug_missing_files = []
 
@@ -11096,11 +11099,11 @@ def main():
     moccha_missing_files = ['20180813_oden_','20180910_oden_']   ### cloud radar not working    #,'20180914_oden_'
     missing_files = [225,253]    # manually set missing files doy for now ## 230, , 257
 
-    # doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
+    doy = np.arange(226,259)        ## set DOY for full drift figures (over which we have cloudnet data)
     # doy = np.arange(226,258)        ## exclude 2019014 for RadPA files
     # doy = np.arange(240,251)        ## set DOY for subset of drift figures (presentations)
     # doy = np.arange(240,248)        ## set DOY for UM_CASIM-100_CICE  (28th Aug to 4th Sep)
-    doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
+    # doy = np.arange(243,250)        ## set DOY for ERAI-GLM  (31st Aug to 5th Sep)
     # doy = np.arange(243,250)        ## set DOY for CASIM_Nice tests  (31st Aug to 5th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-AeroProf (14th Aug to 14th Sep)
     # doy = np.arange(226,259)        ## set DOY for CASIM-100_AP (1st Sep to 14th Sep)
@@ -11623,12 +11626,12 @@ def main():
     # figure = plot_BLDepth(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_BLType(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_paperGLMAnalysis(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    # figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
-    figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = plot_paperRadiosondes(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    # figure = plot_paperERAIProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_paperCASIMNiceProfiles(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesTemperature(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
     # figure = plot_RadiosondesQ(data1, data2, data3, data4, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4)
-    # figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
+    figure = period_Selection(data1, data2, data3, data4, data5, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3, label4, label5)
     # figure = plot_RadiosondesThetaE(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_RadiosondesTheta(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
     # figure = plot_line_RA2T(data1, data2, data3, month_flag, missing_files, out_dir1, out_dir2, out_dir3, obs, doy, label1, label2, label3)
