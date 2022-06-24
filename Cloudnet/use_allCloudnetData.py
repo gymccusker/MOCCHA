@@ -7992,8 +7992,8 @@ def period_Selection(um_data, ifs_data, misc_data, ra2t_data, obs_data, month_fl
     print ('')
 
     # fileout = 'FIGS/Obs-' + obs_switch + 'grid_IFS_RA2M-25_CASIM-AeroProf_RA2T_TWCMask-LWC-IWC_p3-p6_MTThresholding-wLWCadiabatic-noOffsetLWP_226-257DOY_fixedRA2T_wSTDEV_newColours_wSetFlags_wFixedIWC.svg'
-    fileout = '../FIGS/ACPD/Figure13a.png'
-    # plt.savefig(fileout)
+    fileout = '../FIGS/ACPD/Figure13a.svg'
+    plt.savefig(fileout)
     plt.show()
     # plt.close()
 
