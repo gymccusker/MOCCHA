@@ -3373,6 +3373,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.title(lbls[sp])
             plt.ylim([0,3e3])
             plt.xlim([-3., 3.])
+            plt.ylabel('Z [m]')
             if col1[sp] == col1[-1]: plt.xlabel('T bias wrt GLM [K]')
 
         for sp in range(0, len(col2)):
@@ -3387,7 +3388,7 @@ def plot_radiosondeAnomalies(data1, data2, data4, data5, nc1, nc2, nc4, nc5, obs
             plt.title(lbls[sp])
             plt.ylim([0,3e3])
             plt.xlim([-0.5,0.5])
-            if col2[sp] == col2[-1]: plt.xlabel('q bias wrt GLM [K]')
+            if col2[sp] == col2[-1]: plt.xlabel('q bias wrt GLM [g/kg]')
 
         for sp in range(0, len(col3)):
             plt.subplot(5,3,col3[sp])
